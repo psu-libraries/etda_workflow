@@ -30,6 +30,10 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# Used to schedule cron jobs on the servers
+gem 'whenever'
+
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -48,6 +52,23 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  gem 'capistrano-resque', '~> 0.2.1', require: false
+
+  # Deploy to multiple environments
+  gem 'capistrano-ext'
+
+  # rbenv support for capistrano
+  gem 'capistrano-rbenv', '1.0.5'
+
+  gem 'capistrano-notification'
+
+  # Fix for old capistrano, should be deleted when we upgrade cap
+  # ------------
+  gem 'net-sftp', '2.1.2'
+  gem 'net-ssh-gateway', '1.2.0'
+  # ------------
+
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -10,7 +10,7 @@ application up and running.
 * Configuration
 
 * To create the database, run the following commands: `rake db:create` followed by `rake db:migrate`
-* To drop the database, run rake db:drop
+* To drop the database, run `rake db:drop`
 
 * How to run the test suite
 

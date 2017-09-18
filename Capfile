@@ -1,0 +1,6 @@
+load 'deploy'         # The default tasks that come with capistrano
+load 'deploy/assets'  # Precompile rails assets during deployment
+load 'config/deploy'  # Our custom deployment recipe
+load 'config/deploy/_passenger.rb' # Passenger custom recipe
+require 'capistrano-resque' #resque
+
