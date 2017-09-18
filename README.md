@@ -3,15 +3,14 @@
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
-Things you may want to cover:
-
-* Ruby version
+* Ruby version: 2.4.1
 
 * System dependencies
 
 * Configuration
 
-* Database creation
+* To create the database, run the following commands: rake db:create, rake db:migrate
+* To drop the database, run rake db:drop
 
 * Database initialization
 
