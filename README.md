@@ -9,7 +9,7 @@ application up and running.
 
 * Configuration
 
-* To create the database, run the following commands: rake db:create, rake db:migrate
+* To create the database, run the following commands: `rake db:create` followed by `rake db:migrate`
 * To drop the database, run rake db:drop
 
 * Database initialization
