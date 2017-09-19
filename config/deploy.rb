@@ -65,21 +65,10 @@ namespace :deploy do
   desc "Link shared files"
   task :symlink_shared do
     run <<-CMD.compact
-    # ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_blacklight.yml #{release_path}/config/blacklight.yml &&
-    # ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_blacklight.yml #{release_path}/config/solr.yml &&
-    ln -sf /#{application}/config_#{stage}/#{application}/devise.yml #{release_path}/config/devise.yml &&
-    ln -sf /#{application}/config_#{stage}/#{application}/database.yml #{release_path}/config/database.yml &&
-    # ln -sf /#{application}/config_#{stage}/#{application}/database_legacy.yml #{release_path}/config/database_legacy.yml &&
-    # ln -sf /#{application}/config_#{stage}/#{application}/database_fix.yml #{release_path}/config/database_fix.yml &&
-    # ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_secrets.yml #{release_path}/config/secrets.yml &&
-    # ln -sf /#{application}/config_#{stage}/#{application}/ldap.yml #{release_path}/config/ &&
-    # ln -sf /#{application}/config_#{stage}/#{application}/hydra-ldap.yml #{release_path}/config/ &&
-    # ln -sf /#{application}/config_#{stage}/#{application}/newrelic.yml #{release_path}/config/ &&
-    # ln -sf /#{application}/config_#{stage}/#{application}/redis.yml #{release_path}/config/ &&
-    # ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_resque_pool.yml #{release_path}/config/resque-pool.yml &&
-    # ln -sf /#{application}/config_#{stage}/#{application}/lion_path.yml #{release_path}/config/lion_path.yml &&
-    # ln -sf /#{application}/config_#{stage}/#{application}/carrierwave.rb #{release_path}/config/initializers/ &&
-    # ln -sf /var/data/#{application}-#{partner} #{release_path}/uploads
+     ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_devise.yml #{release_path}/config/devise.yml &&
+    ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_database.yml #{release_path}/config/database.yml &&
+     ln -sf /#{application}/config_#{stage}/#{application}/lion_path.yml #{release_path}/config/lion_path.yml &&
+    ln -sf /var/data/#{application}-#{partner} #{release_path}/uploads
     CMD
   end
 end
