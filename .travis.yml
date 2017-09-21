@@ -26,6 +26,7 @@ before_script:
   - "cp config/lion_path.yml.travis config/lion_path.yml"
   - redis-cli info
 script:
+   - "bundle exec rubocop -a"
    - "bundle exec rake db:create"
    - "bundle exec rake db:test:load"
    - "bundle exec rake ci"

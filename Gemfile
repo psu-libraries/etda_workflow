@@ -51,6 +51,7 @@ group :development, :test do
   gem "database_cleaner"
   gem "rspec-rails"
   gem "simplecov"
+  gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
 end
 
 group :development do
@@ -84,6 +85,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
 
-gem 'rubocop'    #, '0.35.1'
-gem 'rubocop-rspec'  # , '1.3.1'
+gem 'rubocop'
+gem 'rubocop-rspec'
 
