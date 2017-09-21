@@ -1,0 +1,6 @@
+# needed for travis
+test:
+  adapter: mysql2
+  database: etdflow_test
+  username: travis
+  encoding: utf8
