@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require 'rails_helper'
-require 'shoulda-matchers'
 
 RSpec.describe Author, type: :model do
   subject { described_class.new }
@@ -36,4 +35,7 @@ RSpec.describe Author, type: :model do
   it { is_expected.to have_db_column(:psu_idn).of_type(:string) }
 
   it { is_expected.to have_db_index(:legacy_id) }
+
+  it 'can sign-in' do
+  end
 end

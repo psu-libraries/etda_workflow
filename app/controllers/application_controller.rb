@@ -24,7 +24,8 @@ class ApplicationController < ActionController::Base
   protected
 
     def author_logged_in?
-      author_signed_in? && (valid?(request.headers) || Rails.env.test?)
+      author_signed_in? || Rails.env.test?
+      # author_signed_in? && (valid?(request.headers) || Rails.env.test?)
     end
 
     def configure_permitted_parameters
