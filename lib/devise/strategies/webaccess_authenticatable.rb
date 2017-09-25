@@ -3,32 +3,38 @@ require 'devise/strategies/authenticatable'
 module Devise
   module Strategies
     class WebaccessAuthenticatable < Authenticatable
-      def valid?
-        !remote_user(headers).blank? && (Author.current.blank? || (Author.current.reload.access_id == remote_user(headers)))
-      end
-
       def authenticate!
         access_id = remote_user(request.headers)
-        if access_id.present? && valid? # webaccess successful
-          author = complete_login(access_id)
+        if access_id.present? # webaccess successful
+          a = Author.find_by_access_id(access_id)
+          if a.nil?
+            author = Author.create(access_id: access_id, psu_email_address: "#{access_id}@psu.edu")
+            author.populate_attributes
+          end
           success! (author)
         else
           fail!
         end
       end
 
+      def author_valid?(headers)
+        this_remote_user = remote_user(headers)
+        !this_remote_user.nil?
+      end
+
       protected
 
         def remote_user(headers)
-          return headers['REMOTE_USER'] if headers['REMOTE_USER']
-          return headers['HTTP_REMOTE_USER'] if headers['HTTP_REMOTE_USER'] && Rails.env.development?
-          nil
+          if Rails.env.production?
+            headers.fetch('REMOTE_USER', nil)
+          else
+            headers.fetch('REMOTE_USER', nil) || headers.fetch('HTTP_REMOTE_USER', nil)
+          end
         end
 
-        def complete_login(access_id)
-          author = Author.where(access_id: access_id).first_or_create(access_id: access_id, psu_email_address: "#{access_id}@psu.edu")
-          author.save(validate: false)
-          author
+      protected
+
+        def complete_login
         end
     end
   end

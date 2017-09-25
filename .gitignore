@@ -15,6 +15,9 @@
 !/tmp/.keep
 config/secrets.yml
 config/database.yml
+spec/examples.txt
+ 
+coverage
 
 /node_modules
 /yarn-error.log

@@ -1,9 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe ApplicationController do
-  it 'signs user in and out' do
-    author = Author.create!(access_id: 'abc123', psu_email_address: 'abc123@psu.edu', last_name: 'Testor', first_name: 'Testy', address_1: 'test drive', city: 'Testburg', state: 'PA', zip: '16801', phone_number: '999-999-9999', psu_idn: '9123412344')
+RSpec.describe 'Devise Login', type: :request do
+  RSpec::Mocks.configuration.allow_message_expectations_on_nil = true
+  let(:author) { FactoryGirl.create(:author) }
+  before do
+    allow(request).to receive(:headers).and_return('REMOTE_USER' => author.access_id)
+  end
 
+  it 'signs author in and out' do
+    headers = { 'REMOTE_USER' => author.access_id }
+    request.headers.merge! headers
     sign_in author
     get root_path
     expect(controller.current_author).to eq(author)
@@ -11,5 +17,35 @@ RSpec.describe ApplicationController do
     sign_out author
     get root_path
     expect(controller.current_author).to be_nil
+  end
+
+  before do
+    allow(Rails.application.secrets).to receive(:webaccess).and_return(vservice: "ahost.psu.edu", vhost: 'https://myapp.psu.edu')
+  end
+  context 'production environment' do
+    before do
+      allow(Rails).to receive(:env) { "production".inquiry }
+    end
+
+    it 'author can login and logout' do
+      get login_author_path
+      assert_response :redirect, '<302: Found> redirect to <"#{WebAccess.new().login_url}">'
+
+      get logout_author_path
+      assert_response :redirect, '<302: Found> redirect to <"#{WebAccess.new().logout_url}">'
+    end
+  end
+  context 'development environment' do
+    before do
+      allow(Rails).to receive(:env) { "development".inquiry }
+    end
+
+    it 'author can login and logout' do
+      get login_author_path
+      assert_response :redirect, '<302: Found> redirect to <"#{WebAccess.new().login_url}">'
+
+      get logout_author_path
+      assert_response :redirect, '<302: Found> redirect to <"#{WebAccess.new().logout_url}">'
+    end
   end
 end

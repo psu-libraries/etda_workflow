@@ -65,9 +65,10 @@ namespace :deploy do
   desc "Link shared files"
   task :symlink_shared do
     run <<-CMD.compact
-     ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_devise.yml #{release_path}/config/devise.yml &&
+    ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_devise.yml #{release_path}/config/devise.yml &&
     ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_database.yml #{release_path}/config/database.yml &&
-     ln -sf /#{application}/config_#{stage}/#{application}/lion_path.yml #{release_path}/config/lion_path.yml &&
+    ln -sf /#{application}/config_#{stage}/#{application}/lion_path.yml #{release_path}/config/lion_path.yml &&
+    ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_secrets.yml #{release_path}/config/secrets.yml &&
     ln -sf /var/data/#{application}-#{partner} #{release_path}/uploads
     CMD
   end

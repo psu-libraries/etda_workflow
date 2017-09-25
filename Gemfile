@@ -39,6 +39,14 @@ gem 'jquery-rails'
 # jQuery user interface widgets
 gem 'jquery-ui-rails'
 
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'devise'
+
+gem 'etda_utilities', git: "https://github.com/psu-stewardship/etda_utilities.git", branch: 'master'
+
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -46,18 +54,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 2.13'
-
-  gem 'selenium-webdriver'
-
-  gem "database_cleaner"
-
-  gem "rspec-rails"
-
   gem "simplecov"
-
-  gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
 
   gem 'rubocop'
   gem 'rubocop-rspec'
@@ -87,11 +84,33 @@ group :development do
   gem 'net-sftp', '2.1.2'
   gem 'net-ssh-gateway', '1.2.0'
   # ------------
+
+  gem 'better_errors'
+  gem 'binding_of_caller'
+
+
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+group :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 
-gem 'devise'
+  # Adds support for Capybara system testing and selenium driver
+  gem 'capybara', '~> 2.13'
 
+  gem 'selenium-webdriver'
+
+  gem "database_cleaner"
+
+  gem "rspec-rails"
+
+  gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
+
+  gem 'rspec-activemodel-mocks'
+
+  gem 'webmock'
+
+  gem 'factory_girl_rails'
+
+end
 

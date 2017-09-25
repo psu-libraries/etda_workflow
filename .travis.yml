@@ -1,47 +1,49 @@
 language: ruby
 cache: bundler
-bundler_args: --without development debug
+bundler_args: "--without development debug"
 sudo: required
 rvm:
-  - 2.4.1
+- 2.4.1
 jdk:
-  - oraclejdk8
+- oraclejdk8
 env:
   global:
-    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
-    - JS=true
-
+  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+  - JS=true
+  - secure: nl5yIS5fVbdkwv6exdD2iQMwq5leVBBOGEVRjVqTtISvx4nueghfTHh2UAH/cvagkcs+ioKOIU+zxNoxQ6GUQmTUwG+FLtQGVvQn70ATS0CkW/CLBfa2kil+DWc2Nx5DYP+F9O+WAMDOY0/UiSGMajDApoLqrLNbvIMeAeOHyfu6sLjxgFwuc1V3k04DGkLonQCY4yxsXN3qNWTYcBzPA+sRPmMXmCjbhzwqMmDYVsDSElVl+ppbJOq8HI1Vt3Xyhf+gIgDFBGt8U8zXnjfrURCxz2XRhAFTlGYzFgWl+5obeStVFMa/2sq9kB/D6Y62MHwbhVuiKhi5pbjSAowdEEcQM5x0vQH52mMyzpYWwcMDP5plq9mOBiqmzGLVF1RA5ukpbbgLMSXmHfWaWVX/V2Lv752VF+E4L2EK2moYI1akkYC+LuSUfBcLmHCfHQJo4rTnNHHe1uqzqomtHn6ned4VCH+gVz2PdqL5UV0vmpJUnCTeqf3RsWIYQmf7rkR+H2PS0DC3c+3c1VTxtl21RenEeuekbcXOkFn6egYxeD3RS3HeijBe+BhfdxEyeXq13tEhrsd9ATwIS+g/jkAvYNW+LGpITkQHzR4jbcWJUParRmM9x07A7D7zGQGw49k2BM2KgwohKRxdezBWrPCv/WILC967Mp8rN16gnhqYl84=
 before_install:
-  - "export PATH=$PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH"
-  - "if [ $(phantomjs --version) != '2.1.1' ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi"
-  - "if [ $(phantomjs --version) != '2.1.1' ]; then wget https://assets.membergetmember.co/software/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2; fi"
-  - "if [ $(phantomjs --version) != '2.1.1' ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
-  - "phantomjs --version"
-
+- export PATH=$PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH
+- if [ $(phantomjs --version) != '2.1.1' ]; then rm -rf $PWD/travis_phantomjs; mkdir
+  -p $PWD/travis_phantomjs; fi
+- if [ $(phantomjs --version) != '2.1.1' ]; then wget https://assets.membergetmember.co/software/phantomjs-2.1.1-linux-x86_64.tar.bz2
+  -O $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2; fi
+- if [ $(phantomjs --version) != '2.1.1' ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2
+  -C $PWD/travis_phantomjs; fi
+- phantomjs --version
 before_script:
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS etd_workflow_test;'
-  - mysql -e 'GRANT ALL ON etdflow_test.* TO 'travis'@'localhost';'
-  - "cp config/database.yml.travis config/database.yml"
-  - "cp config/devise.yml.travis config/devise.yml"
-  - "cp config/lion_path.yml.travis config/lion_path.yml"
-  - "cp config/secrets.yml.travis config/secrets.yml"
-  - redis-cli info
+- mysql -e 'CREATE DATABASE IF NOT EXISTS etd_workflow_test;'
+- mysql -e 'GRANT ALL ON etdflow_test.* TO 'travis'@'localhost';'
+- cp config/database.yml.travis config/database.yml
+- cp config/devise.yml.travis config/devise.yml
+- cp config/secrets.yml.travis config/secrets.yml
+- cp config/lion_path.yml.travis config/lion_path.yml
+- redis-cli info
 script:
-   - "bundle exec rubocop -a"
-   - "bundle exec rake db:create"
-   - "bundle exec rake db:test:load"
-   - "bundle exec rake ci"
+- bundle exec rubocop
+- bundle exec rake db:create
+- bundle exec rake db:test:load
+- bundle exec rake ci
 services:
-  - mysql
-  - redis-server
+- mysql
+- redis-server
 notifications:
   email:
     recipients:
-      - "jxb13@psu.edu"
-    on_success: "change"
-    on_failure: "always"
+    - jxb13@psu.edu
+    on_success: change
+    on_failure: always
   irc:
     channels:
-      - "irc.freenode.org#scholarsphere"
+    - irc.freenode.org#scholarsphere
     template:
-      - "%{repository}//%{branch}@%{commit} by %{author}: %{message} - %{build_url}"
+    - "%{repository}//%{branch}@%{commit} by %{author}: %{message} - %{build_url}"

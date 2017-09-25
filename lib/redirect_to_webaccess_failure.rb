@@ -1,7 +1,6 @@
 class RedirectToWebaccessFailure < Devise::FailureApp
   def redirect_url
-    # Webaccess.new.login_url + (request.env["ORIGINAL_FULLPATH"].blank? ? '' : request.env["ORIGINAL_FULLPATH"])
-    'http://psu.edu'
+    WebAccess.new(request.env['ORIGINAL_FULLPATH'] || '').login_url
   end
 
   def respond
