@@ -24,6 +24,7 @@ before_script:
   - "cp config/database.yml.travis config/database.yml"
   - "cp config/devise.yml.travis config/devise.yml"
   - "cp config/lion_path.yml.travis config/lion_path.yml"
+  - "cp config/secrets.yml.travis config/secrets.yml"
   - redis-cli info
 script:
    - "bundle exec rubocop -a"
