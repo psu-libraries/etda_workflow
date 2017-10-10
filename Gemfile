@@ -44,7 +44,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
 
-gem 'etda_utilities', git: "https://github.com/psu-stewardship/etda_utilities.git", branch: 'master'
+gem 'etda_utilities', git: "https://#{ENV.fetch('ETDA_UTILITIES_TOKEN')}@github.com/psu-stewardship/etda_utilities.git", branch: 'master'
 
 
 # Use Capistrano for deployment
@@ -56,9 +56,11 @@ group :development, :test do
 
   gem "simplecov"
 
-  gem 'rubocop'
-  gem 'rubocop-rspec'
+  gem 'rubocop', '0.35.1'
+  gem 'rubocop-rspec', '1.3.1'
+  gem 'rspec-rails'
 
+  gem 'rake', '< 11.0'
 end
 
 group :development do
@@ -102,7 +104,6 @@ group :test do
 
   gem "database_cleaner"
 
-  gem "rspec-rails"
 
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
 
