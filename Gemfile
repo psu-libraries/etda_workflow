@@ -44,9 +44,12 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
 
-gem 'etda_utilities', git: "https://#{ENV.fetch('ETDA_UTILITIES_TOKEN')}@github.com/psu-stewardship/etda_utilities.git", branch: 'master'
+gem 'etda_utilities', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/psu-stewardship/etda_utilities.git", branch: 'master'
 
 gem 'rake', '< 11.0'
+
+
+#gem 'etda_utilities', git: "https://#{ENV.fetch('ETDA_UTILITIES_TOKEN')}@github.com/psu-stewardship/etda_utilities.git", branch: 'master'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -113,6 +116,7 @@ group :test do
   gem 'webmock'
 
   gem 'factory_girl_rails'
+
 
 end
 

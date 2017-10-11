@@ -21,8 +21,6 @@ before_install:
   -C $PWD/travis_phantomjs; fi
 - phantomjs --version
 before_script:
-#- mysql -e 'CREATE DATABASE IF NOT EXISTS etd_workflow_test;'
-#- mysql -e 'GRANT ALL ON etdflow_test.* TO 'travis'@'localhost';'
 - cp config/database.yml.travis config/database.yml
 - cp config/devise.yml.travis config/devise.yml
 - cp config/secrets.yml.travis config/secrets.yml
@@ -43,7 +41,7 @@ notifications:
     on_success: change
     on_failure: always
   irc:
-    channels:
-    # - irc.freenode.org#scholarsphere
-    template:
-    # - "%{repository}//%{branch}@%{commit} by %{author}: %{message} - %{build_url}"
+    channels: 
+    template: 
+dd:
+  secure: I3Oa3/YtT0UCRM6gIU7z9ab15bn1DVC9EC9b2zXfCkq02aPbTgkyMYZCBgwEcuIsGcf8Yydl/7r/vZmqyEoMHbqjYB3m6Ct3jHaFpVLor7movIg4mr2lZpRJ0NLzG26b7ICG5AmNlBx+fZGRv/+cjNqVd9AdYCni1Rd3iYjxlBOjgNnCpFNLjVDLcfRZlFzFe7zq4Cz2whF0qgC4NQQNMH0jmLixfOP+JAF+p62aJwKe+qsivpyYLX0FK8W9PMdOGodeBvJY+OOqAk+cAl7BVhoP4QhXVOHvRWvtL1CL/vYITeR+RvckfNUScgGQU3XhkoJ2hzYHafHF5SP3zjecDc7kLnkpe+n9/FLDGp8PDaZStZWpxFzWE4IIMUbgYd3KeXV3bsYktUNWG6R/hnw6Z1JlvLs+anefPnQDBuRU4ygraGtUgXqRSKuaPQODJDA1s5iqVBcXnvRT4oEDDG6NUf8LE1MULUvw+hfCKHVHrhlg9VF/Iee57owwUS0KP1FotvKU2KsV4/yqi54dl7aZQ2MbzrqmRKOSyOG6gxgZ/yXMzAAmy5h3NeIrhhoDz/qmrayN5XaLowvVZsBA7mbmS1GKt+4Qg+Hfoqzc259iP/Iuo6PAxf7SZJ1hl3a4R+zlyacCA4o/wa0UfKG7HN/kNdWWRoCC3kP34Ev5HAdtCjs=

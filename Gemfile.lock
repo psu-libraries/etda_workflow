@@ -1,5 +1,5 @@
 GIT
-  remote: https://abae6beaa4c48d5f6e9d2bc348703816f1a05d0a@github.com/psu-stewardship/etda_utilities.git
+  remote: https://@github.com/psu-stewardship/etda_utilities.git
   revision: 9b1fbfe03b7cc8f063fdd1380e80bf8ca2931592
   branch: master
   specs:
@@ -391,4 +391,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   1.16.0.pre.2
+   1.16.0.pre.3
