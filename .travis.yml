@@ -21,8 +21,8 @@ before_install:
   -C $PWD/travis_phantomjs; fi
 - phantomjs --version
 before_script:
-- mysql -e 'CREATE DATABASE IF NOT EXISTS etd_workflow_test;'
-- mysql -e 'GRANT ALL ON etdflow_test.* TO 'travis'@'localhost';'
+#- mysql -e 'CREATE DATABASE IF NOT EXISTS etd_workflow_test;'
+#- mysql -e 'GRANT ALL ON etdflow_test.* TO 'travis'@'localhost';'
 - cp config/database.yml.travis config/database.yml
 - cp config/devise.yml.travis config/devise.yml
 - cp config/secrets.yml.travis config/secrets.yml

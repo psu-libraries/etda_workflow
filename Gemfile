@@ -46,6 +46,7 @@ gem 'devise'
 
 gem 'etda_utilities', git: "https://#{ENV.fetch('ETDA_UTILITIES_TOKEN')}@github.com/psu-stewardship/etda_utilities.git", branch: 'master'
 
+gem 'rake', '< 11.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -60,7 +61,7 @@ group :development, :test do
   gem 'rubocop-rspec', '1.3.1'
   gem 'rspec-rails'
 
-  gem 'rake', '< 11.0'
+
 end
 
 group :development do
