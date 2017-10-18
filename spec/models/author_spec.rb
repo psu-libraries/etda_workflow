@@ -21,6 +21,7 @@ RSpec.describe Author, type: :model do
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:legacy_id).of_type(:integer) }
+  it { is_expected.to have_db_column(:confidential_hold).of_type(:boolean) }
   it { is_expected.to have_db_column(:is_admin).of_type(:boolean) }
   it { is_expected.to have_db_column(:is_site_admin).of_type(:boolean) }
 

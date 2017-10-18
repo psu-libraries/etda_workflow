@@ -15,6 +15,7 @@ class AddMoreColumnsToAuthors < ActiveRecord::Migration[5.1]
     add_column :authors, :phone_number, :string
     add_column :authors, :psu_idn, :string
     add_column :authors, :legacy_id, :integer
+    add_column :authors, :confidential_hold, :boolean
     add_column :authors, :is_admin, :boolean
     add_column :authors, :is_site_admin, :boolean
     add_index  :authors, :legacy_id

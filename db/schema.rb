@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20170918152200) do
     t.string "phone_number"
     t.string "psu_idn"
     t.integer "legacy_id"
+    t.boolean "confidential_hold"
     t.boolean "is_admin"
     t.boolean "is_site_admin"
     t.index ["access_id"], name: "index_authors_on_access_id", unique: true
