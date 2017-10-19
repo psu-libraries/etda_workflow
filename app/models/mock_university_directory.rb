@@ -63,6 +63,12 @@ class MockUniversityDirectory
         city: 'State College', state: 'PA',
         zip: '16801', phone_number: '666-666-6666',
         country: 'US', is_admin: true, psu_idn: '981818181' }
+    when /(xxb13)/i
+      { access_id: 'testid', first_name: 'testfirst', middle_name: 'testmiddle',
+        last_name: 'testlast', address_1: 'Anywhere',
+        city: 'University Park', state: 'PA',
+        zip: '16802', phone_number: '555-555-5555',
+        country: 'US', is_admin: true, psu_idn: '999999999' }
     else
       []
     end
