@@ -1,11 +1,5 @@
 class MockUniversityDirectory
-  AUTHOR_LDAP_MAP = { uid: [:access_id],
-                      givenname: [:first_name, :middle_name],
-                      sn: [:last_name],
-                      postaladdress: [:address_1, :city, :state, :country, :zip],
-                      telephonenumber: [:phone_number],
-                      psmemberof: [:is_admin],
-                      psidn: [:psu_idn] }
+  AUTHOR_LDAP_MAP = LdapResultsMap::AUTHOR_LDAP_MAP
 
   KNOWN_ACCESS_IDS = %w(
     saw140
@@ -13,12 +7,7 @@ class MockUniversityDirectory
     amg32
   )
 
-  COMMITTEE_LDAP_MAP = { map: { displayname: [:label, :value],
-                                mail: [:id],
-                                psadminarea: [:dept_admin],
-                                psdepartment: [:dept]
-  },
-                         defaults: { dept: 'Department not available', id: 'Email not available' } }
+  COMMITTEE_LDAP_MAP = LdapResultsMap::COMMITTEE_LDAP_MAP
 
   # Return an array of tuples that are suitable for returning
   # to a jQuery autocomplete widget.
@@ -63,6 +52,12 @@ class MockUniversityDirectory
         city: 'State College', state: 'PA',
         zip: '16801', phone_number: '666-666-6666',
         country: 'US', is_admin: true, psu_idn: '981818181' }
+    when /(xxb13)/i
+      { access_id: 'testid', first_name: 'testfirst', middle_name: 'testmiddle',
+        last_name: 'testlast', address_1: 'Anywhere',
+        city: 'University Park', state: 'PA',
+        zip: '16802', phone_number: '555-555-5555',
+        country: 'US', is_admin: true, psu_idn: '999999999' }
     else
       []
     end
