@@ -48,8 +48,7 @@ gem 'etda_utilities', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/ps
 
 gem 'rake', '< 11.0'
 
-
-#gem 'etda_utilities', git: "https://#{ENV.fetch('ETDA_UTILITIES_TOKEN')}@github.com/psu-stewardship/etda_utilities.git", branch: 'master'
+gem 'net-ldap'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

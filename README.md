@@ -19,5 +19,12 @@ In order to use the private repository, etda_utilities, the psu-stewardship-bot 
 
 * Deployment instructions
 
-* ...
+* Testing  
+
+To run the tests: rspec runs graduate tests; PARTNER=honors rspec runs honors
+ PARTNER=milsch rspec runs milsch
+
+Additionally, there are some integration tests that use javascript and some component tests that run against Penn State's LDAP directory service: rspec --tag glacial --tag ldap. Glacial are excluded by default when running in development because they are so slow.  Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.
+
+
 # etda_workflow
