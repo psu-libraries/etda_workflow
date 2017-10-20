@@ -51,6 +51,11 @@ gem 'rake', '< 11.0'
 gem 'net-ldap'
 
 gem 'country_select', git: 'https://github.com/stefanpenner/country_select.git', branch: 'master'
+
+gem 'seedbank'
+
+gem 'enumerize'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

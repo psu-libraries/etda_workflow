@@ -31,3 +31,13 @@
 
 en:
   hello: "Hello world"
+  errors:
+    messages:
+      virus_free: "contains a virus"
+  activerecord:
+    errors:
+      models:
+        submission:
+          attributes:
+            title:
+              capitalization: "Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."

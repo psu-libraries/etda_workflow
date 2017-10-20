@@ -5,6 +5,8 @@ class Author < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :webaccess_authenticatable, :rememberable, :trackable, :registerable
 
+  has_many :submissions, dependent: :nullify
+
   # validate for author
   validates :access_id,
             :first_name,

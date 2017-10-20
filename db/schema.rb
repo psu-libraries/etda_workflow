@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170918152200) do
+ActiveRecord::Schema.define(version: 20171024124833) do
 
   create_table "authors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "access_id", default: "", null: false
@@ -44,4 +44,143 @@ ActiveRecord::Schema.define(version: 20170918152200) do
     t.index ["legacy_id"], name: "index_authors_on_legacy_id"
   end
 
+  create_table "committee_members", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "submission_id"
+    t.bigint "committee_role_id"
+    t.string "name"
+    t.string "email"
+    t.integer "legacy_id"
+    t.boolean "is_required"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["committee_role_id"], name: "committee_members_committee_role_id_fk"
+    t.index ["submission_id"], name: "committee_members_submission_id_fk"
+  end
+
+  create_table "committee_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "degree_type_id", null: false
+    t.string "name", null: false
+    t.integer "num_required", default: 0, null: false
+    t.boolean "is_active", default: true, null: false
+    t.index ["degree_type_id"], name: "committee_roles_degree_type_id_fk"
+  end
+
+  create_table "degree_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.index ["name"], name: "index_degree_types_on_name", unique: true
+    t.index ["slug"], name: "index_degree_types_on_slug", unique: true
+  end
+
+  create_table "degrees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.string "description"
+    t.boolean "is_active"
+    t.bigint "degree_type_id"
+    t.integer "legacy_id"
+    t.integer "legacy_old_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["degree_type_id"], name: "degrees_degree_type_id_fk"
+    t.index ["legacy_id"], name: "index_degrees_on_legacy_id"
+  end
+
+  create_table "final_submission_files", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "submission_id"
+    t.text "asset"
+    t.integer "legacy_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["submission_id"], name: "final_submission_files_submission_id_fk"
+  end
+
+  create_table "format_review_files", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "submission_id"
+    t.text "asset"
+    t.integer "legacy_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["submission_id"], name: "format_review_files_submission_id_fk"
+  end
+
+  create_table "keywords", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "submission_id"
+    t.text "word"
+    t.integer "legacy_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["legacy_id"], name: "index_keywords_on_legacy_id"
+    t.index ["submission_id"], name: "keywords_submission_id_fk"
+  end
+
+  create_table "programs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.string "description"
+    t.boolean "is_active"
+    t.integer "legacy_id"
+    t.integer "legacy_old_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["legacy_id"], name: "index_programs_on_legacy_id"
+  end
+
+  create_table "submissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "author_id"
+    t.bigint "program_id"
+    t.bigint "degree_id"
+    t.string "semester"
+    t.integer "year"
+    t.string "status"
+    t.string "title", limit: 400
+    t.text "format_review_notes"
+    t.text "final_submission_notes"
+    t.datetime "defended_at"
+    t.text "abstract"
+    t.string "access_level"
+    t.boolean "has_agreed_to_terms"
+    t.datetime "committee_provided_at"
+    t.datetime "format_review_files_uploaded_at"
+    t.datetime "format_review_rejected_at"
+    t.datetime "format_review_approved_at"
+    t.datetime "final_submission_files_uploaded_at"
+    t.datetime "final_submission_rejected_at"
+    t.datetime "final_submission_approved_at"
+    t.datetime "released_for_publication_at"
+    t.datetime "released_metadata_at"
+    t.integer "legacy_id"
+    t.integer "format_review_legacy_id"
+    t.integer "format_review_legacy_old_id"
+    t.integer "final_submission_legacy_id"
+    t.integer "final_submission_legacy_old_id"
+    t.string "admin_notes"
+    t.boolean "is_printed"
+    t.boolean "allow_all_caps_in_title"
+    t.string "public_id"
+    t.datetime "format_review_files_first_uploaded_at"
+    t.datetime "final_submission_files_first_uploaded_at"
+    t.string "lion_path_degree_code"
+    t.text "restricted_notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "submissions_author_id_fk"
+    t.index ["degree_id"], name: "submissions_degree_id_fk"
+    t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"
+    t.index ["final_submission_legacy_old_id"], name: "index_submissions_on_final_submission_legacy_old_id"
+    t.index ["format_review_legacy_id"], name: "index_submissions_on_format_review_legacy_id"
+    t.index ["format_review_legacy_old_id"], name: "index_submissions_on_format_review_legacy_old_id"
+    t.index ["legacy_id"], name: "index_submissions_on_legacy_id"
+    t.index ["program_id"], name: "submissions_program_id_fk"
+    t.index ["public_id"], name: "index_submissions_on_public_id", unique: true
+  end
+
+  add_foreign_key "committee_members", "committee_roles", name: "committee_members_committee_role_id_fk"
+  add_foreign_key "committee_members", "submissions", name: "committee_members_submission_id_fk"
+  add_foreign_key "committee_roles", "degree_types", name: "committee_roles_degree_type_id_fk"
+  add_foreign_key "degrees", "degree_types", name: "degrees_degree_type_id_fk"
+  add_foreign_key "final_submission_files", "submissions", name: "final_submission_files_submission_id_fk"
+  add_foreign_key "format_review_files", "submissions", name: "format_review_files_submission_id_fk"
+  add_foreign_key "keywords", "submissions", name: "keywords_submission_id_fk"
+  add_foreign_key "submissions", "authors", name: "submissions_author_id_fk"
+  add_foreign_key "submissions", "degrees", name: "submissions_degree_id_fk"
+  add_foreign_key "submissions", "programs", name: "submissions_program_id_fk"
 end
