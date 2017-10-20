@@ -6,6 +6,15 @@ GIT
     etda_utilities (0.1.0)
 
 GIT
+  remote: https://github.com/stefanpenner/country_select.git
+  revision: c3783260edf7a7a5954078a1b5f7e7f24bc20445
+  branch: master
+  specs:
+    country_select (3.1.1)
+      countries (~> 2.0)
+      sort_alphabetical (~> 1.0)
+
+GIT
   remote: https://github.com/thoughtbot/shoulda-matchers.git
   revision: 4b160bd19ecca7f97d7ac22dccd5fde9b0da5a9f
   branch: rails-5
@@ -109,6 +118,11 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
+    countries (2.1.2)
+      i18n_data (~> 0.8.0)
+      money (~> 6.9)
+      sixarm_ruby_unaccent (~> 1.1)
+      unicode_utils (~> 1.4)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.2)
@@ -137,6 +151,7 @@ GEM
     hashdiff (0.3.7)
     highline (1.7.8)
     i18n (0.8.6)
+    i18n_data (0.8.0)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
@@ -164,6 +179,8 @@ GEM
     mini_mime (0.1.4)
     mini_portile2 (2.3.0)
     minitest (5.10.3)
+    money (6.9.0)
+      i18n (>= 0.6.4, < 0.9)
     mono_logger (1.1.0)
     multi_json (1.12.2)
     mustermann (1.0.1)
@@ -298,6 +315,9 @@ GEM
       rack (~> 2.0)
       rack-protection (= 2.0.0)
       tilt (~> 2.0)
+    sixarm_ruby_unaccent (1.2.0)
+    sort_alphabetical (1.1.0)
+      unicode_utils (>= 1.2.2)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -324,6 +344,7 @@ GEM
       thread_safe (~> 0.1)
     uglifier (3.2.0)
       execjs (>= 0.3.0, < 3)
+    unicode_utils (1.4.0)
     validatable (1.6.7)
     vegas (0.1.11)
       rack (>= 1.0.0)
@@ -359,6 +380,7 @@ DEPENDENCIES
   capistrano-resque (~> 0.2.1)
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
+  country_select!
   database_cleaner
   devise
   etda_utilities!

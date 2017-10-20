@@ -5,6 +5,7 @@ class MockUniversityDirectory
     saw140
     jxb13
     amg32
+    xxb13
   )
 
   COMMITTEE_LDAP_MAP = LdapResultsMap::COMMITTEE_LDAP_MAP
@@ -63,8 +64,8 @@ class MockUniversityDirectory
     end
   end
 
-  def populate_with_ldap_attributes(psu_access_id)
-    case psu_access_id
+  def populate_with_ldap_attributes
+    case access_id
     when /(xxb13)/i
       { access_id: 'xxb13', first_name: 'Test', middle_name: 'Person',
         last_name: 'Rails', address_1: 'TSB Building',

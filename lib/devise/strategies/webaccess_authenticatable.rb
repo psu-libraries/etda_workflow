@@ -32,10 +32,10 @@ module Devise
           end
         end
 
-      protected
+      # protected
 
-        def complete_login
-        end
+      # def complete_login
+      # end
     end
   end
 end
