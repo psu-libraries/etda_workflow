@@ -120,7 +120,7 @@ group :test do
 
   gem 'webmock'
 
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
 
 
 end

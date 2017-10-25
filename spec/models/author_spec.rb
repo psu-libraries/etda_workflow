@@ -52,32 +52,32 @@ RSpec.describe Author, type: :model do
     it { is_expected.to validate_presence_of(:zip) }
 
     it 'only accepts correctly formatted email addresses' do
-      expect(FactoryGirl.build(:author, alternate_email_address: 'xyz-123@yahoo.com')).to be_valid
-      expect(FactoryGirl.build(:author, alternate_email_address: 'someone@smith.ac.nz')).to be_valid
-      expect(FactoryGirl.build(:author, alternate_email_address: 'abc123@cse.psu.edu')).to be_valid
-      expect(FactoryGirl.build(:author, alternate_email_address: 'xyz-123 .com')).to_not be_valid
-      expect(FactoryGirl.build(:author, alternate_email_address: 'abc123@.psu.edu')).to_not be_valid
+      expect(FactoryBot.build(:author, alternate_email_address: 'xyz-123@yahoo.com')).to be_valid
+      expect(FactoryBot.build(:author, alternate_email_address: 'someone@smith.ac.nz')).to be_valid
+      expect(FactoryBot.build(:author, alternate_email_address: 'abc123@cse.psu.edu')).to be_valid
+      expect(FactoryBot.build(:author, alternate_email_address: 'xyz-123 .com')).to_not be_valid
+      expect(FactoryBot.build(:author, alternate_email_address: 'abc123@.psu.edu')).to_not be_valid
     end
 
     it 'only accepts correctly formatted psu_idn numbers' do
-      expect(FactoryGirl.build(:author, psu_idn: '912345678')).to be_valid
-      expect(FactoryGirl.build(:author, psu_idn: '901287085')).to be_valid
-      expect(FactoryGirl.build(:author, psu_idn: '91234567a')).to_not be_valid
-      expect(FactoryGirl.build(:author, psu_idn: '91234567.')).to_not be_valid
-      expect(FactoryGirl.build(:author, psu_idn: '9123456')).to_not be_valid
-      expect(FactoryGirl.build(:author, psu_idn: '9123456789')).to_not be_valid
-      expect(FactoryGirl.build(:author, psu_idn: '712345678')).to_not be_valid
-      expect(FactoryGirl.build(:author, psu_idn: '9123456-8')).to_not be_valid
+      expect(FactoryBot.build(:author, psu_idn: '912345678')).to be_valid
+      expect(FactoryBot.build(:author, psu_idn: '901287085')).to be_valid
+      expect(FactoryBot.build(:author, psu_idn: '91234567a')).to_not be_valid
+      expect(FactoryBot.build(:author, psu_idn: '91234567.')).to_not be_valid
+      expect(FactoryBot.build(:author, psu_idn: '9123456')).to_not be_valid
+      expect(FactoryBot.build(:author, psu_idn: '9123456789')).to_not be_valid
+      expect(FactoryBot.build(:author, psu_idn: '712345678')).to_not be_valid
+      expect(FactoryBot.build(:author, psu_idn: '9123456-8')).to_not be_valid
     end
     it 'does not check format of phone number' do
-      expect(FactoryGirl.build(:author, legacy_id: 1, phone_number: '123-xyz-7890')).to be_valid
-      expect(FactoryGirl.build(:author, legacy_id: 1, phone_number: '1234-567890')).to be_valid
-      expect(FactoryGirl.build(:author, legacy_id: 1, phone_number: '123456789')).to be_valid
-      expect(FactoryGirl.build(:author, legacy_id: 1, phone_number: '12345678901')).to be_valid
+      expect(FactoryBot.build(:author, legacy_id: 1, phone_number: '123-xyz-7890')).to be_valid
+      expect(FactoryBot.build(:author, legacy_id: 1, phone_number: '1234-567890')).to be_valid
+      expect(FactoryBot.build(:author, legacy_id: 1, phone_number: '123456789')).to be_valid
+      expect(FactoryBot.build(:author, legacy_id: 1, phone_number: '12345678901')).to be_valid
     end
 
     it 'expects correctly formatted zip code if one is entered for graduate authors' do
-      author = FactoryGirl.build(:author)
+      author = FactoryBot.build(:author)
       author.zip = '078431=1234'
       expect(author).to_not be_valid
       author.zip = '07843-12345'

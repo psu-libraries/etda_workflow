@@ -39,6 +39,10 @@ class Submission < ApplicationRecord
     access_level.to_s
   end
 
+  def current_status
+    SubmissionStatus.new(self)
+  end
+
   after_initialize :set_status_to_collecting_program_information
 
   validates :author_id,
@@ -48,21 +52,17 @@ class Submission < ApplicationRecord
 
   validates :semester,
             :year,
-            presence: true # ,
-  # unless: proc { InboundLionPathRecord.active? }
+            presence: true # , unless: proc { InboundLionPathRecord.active? }
 
   validates :abstract,
             :keywords,
             :access_level,
-            presence: true # ,
-  # if: proc { |s| s.beyond_waiting_for_format_review_response? }
+            presence: true, if: proc { |s| s.current_status.beyond_waiting_for_format_review_response? }
 
   validates :defended_at,
-            presence: true # ,
-  # if: proc { |s| s.beyond_waiting_for_format_review_response? && EtdaUtilities::Partner.current.graduate? }   # && !InboundLionPathRecord.active? }
+            presence: true, if: proc { |s| s.current_status.beyond_waiting_for_format_review_response? && EtdaUtilities::Partner.current.graduate? } # && !InboundLionPathRecord.active? }
 
-  validate :agreement_to_terms # ,
-  # if: proc { |s| s.beyond_waiting_for_format_review_response? }
+  validate :agreement_to_terms, if: proc { |s| s.current_status.beyond_waiting_for_format_review_response? }
 
   validates :title,
             length: { maximum: 400 }

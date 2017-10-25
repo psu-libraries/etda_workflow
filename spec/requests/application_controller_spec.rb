@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Devise Login', type: :request do
   RSpec::Mocks.configuration.allow_message_expectations_on_nil = true
-  let(:author) { FactoryGirl.create(:author) }
+  let(:author) { FactoryBot.create(:author) }
   before do
     allow(request).to receive(:headers).and_return('REMOTE_USER' => author.access_id)
   end
