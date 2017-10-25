@@ -29,7 +29,7 @@ class CommitteeRole < ApplicationRecord
   ROLES = { 'graduate' => CommitteeRole::GRADUATE_ROLES, 'honors' => CommitteeRole::HONORS_ROLES, 'milsch' => CommitteeRole::MILSCH_ROLES }
 
   def self.seed
-    CommitteeRole::ROLES[EtdaUtilities::Partner.current.id].each do |degree_type, roles|
+    CommitteeRole::ROLES[current_partner.id].each do |degree_type, roles|
       dt = DegreeType.find_by_slug(degree_type)
       roles.each do |r|
         dt.committee_roles.find_or_create_by!(name: r[:name]) do |new_committee_role|
@@ -45,7 +45,9 @@ class CommitteeRole < ApplicationRecord
   end
 
   def self.advisor_role
-    special_role_name = I18n.t("#{EtdaUtilities::Partner.current.id}.committee.special_role")
+    # special_role_name = I18n.t("#{current_partner.id}.committee.special_role")
+    # hardcoding until locales file is added
+    special_role_name = 'advisor'
     role = CommitteeRole.find_by("name LIKE '%#{special_role_name}'")
     role.id || nil
   end

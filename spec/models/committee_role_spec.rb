@@ -14,7 +14,7 @@ RSpec.describe CommitteeRole, type: :model do
   it { is_expected.to have_many :committee_members }
 
   before do
-    @ordered_roles_list = CommitteeRole::ROLES[EtdaUtilities::Partner.current.id][DegreeType.default.slug].map { |x| x[:name] }.sort
+    @ordered_roles_list = CommitteeRole::ROLES[current_partner.id][DegreeType.default.slug].map { |x| x[:name] }.sort
   end
 
   describe "the CommitteeRole seed data" do
@@ -31,6 +31,14 @@ RSpec.describe CommitteeRole, type: :model do
       expect(described_class.find_by(name: "#{bogus_name}")).to be_nil
       described_class.add_lp_role("#{bogus_name}")
       expect(described_class.find_by(name: "#{bogus_name}")).to_not be_nil
+    end
+  end
+  describe 'advisor_role' do
+    it 'returns the ID of the special role for each partner' do
+      role_id = described_class.advisor_role
+      role = described_class.find(role_id)
+      expect(role).to_not be_blank
+      # expect(role).to_include ('value from locales file......')
     end
   end
 end

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :author, class: Author do |_p|
     sequence :access_id, 1000 do |n|
       "XYZ#{n}"
@@ -17,13 +17,14 @@ FactoryGirl.define do
     last_name "Example"
     alternate_email_address "email@domain.com"
     phone_number "123-456-7890"
-    # is_alternate_email_public current_partner.graduate? ? true : false
+    is_alternate_email_public current_partner.graduate? ? true : false
     address_1 "123 Example Ave."
     address_2 "Apt. 8H"
     city "State College"
     state "PA"
     zip "16801"
     is_admin false
+    updated_at 4.days.ago
     # inbound_lion_path_record { create(:inbound_lion_path_record) }
   end
 

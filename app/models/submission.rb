@@ -21,25 +21,18 @@ class Submission < ApplicationRecord
   delegate :access_id, to: :author, prefix: false
   delegate :alternate_email_address, to: :author, prefix: false
 
-  enum_for :access_level, in: ::AccessLevel.valid_levels, default: '', i18n_scope: "#{EtdaUtilities::Partner.current.id}.access_level"
-
-  def access_level=(access_level)
-    @decorated_level = access_level
-    @decorated_level = AccessLevel.new(@decorated_level) unless @decorated_level.class == AccessLevel
-    super(@decorated_level)
-  end
-
-  def access_level
-    @decorated_level = super()
-    @decorated_level ||= ''
-    @decorated_level = AccessLevel.new(@decorated_level) unless @decorated_level.class == AccessLevel
-  end
+  enumerize :access_level, in: ::AccessLevel.valid_levels, default: '', i18n_scope: "#{current_partner.id}.access_level"
 
   def access_level_key
     access_level.to_s
   end
 
+  def current_status
+    SubmissionStatus.new(self)
+  end
+
   after_initialize :set_status_to_collecting_program_information
+  after_initialize :initialize_access_level
 
   validates :author_id,
             :title,
@@ -48,21 +41,17 @@ class Submission < ApplicationRecord
 
   validates :semester,
             :year,
-            presence: true # ,
-  # unless: proc { InboundLionPathRecord.active? }
+            presence: true # , unless: proc { InboundLionPathRecord.active? }
 
   validates :abstract,
             :keywords,
             :access_level,
-            presence: true # ,
-  # if: proc { |s| s.beyond_waiting_for_format_review_response? }
+            presence: true, if: proc { |s| s.current_status.beyond_waiting_for_format_review_response? }
 
   validates :defended_at,
-            presence: true # ,
-  # if: proc { |s| s.beyond_waiting_for_format_review_response? && EtdaUtilities::Partner.current.graduate? }   # && !InboundLionPathRecord.active? }
+            presence: true, if: proc { |s| s.current_status.beyond_waiting_for_format_review_response? && current_partner.graduate? } # && !InboundLionPathRecord.active? }
 
-  validate :agreement_to_terms # ,
-  # if: proc { |s| s.beyond_waiting_for_format_review_response? }
+  validate :agreement_to_terms, if: proc { |s| s.current_status.beyond_waiting_for_format_review_response? }
 
   validates :title,
             length: { maximum: 400 }
@@ -75,9 +64,9 @@ class Submission < ApplicationRecord
 
   validates :semester, inclusion: { in: Semester::SEMESTERS }
   validates :degree_id, presence: true
-  validates :access_level, inclusion: { in: ::AccessLevel.valid_levels }
+  validates :access_level, inclusion: { in: AccessLevel::ACCESS_LEVEL_KEYS }
 
-  # validates :invention_disclosure, invention_disclosure_number: true, if: proc { |s| s.restricted? && s.invention_disclosure_expected? }
+  validates :invention_disclosure, invention_disclosure_number: true, if: proc { |s| s.status == 'collecting final submission files' }
 
   validates :year, numericality: { only_integer: true }
 
@@ -90,10 +79,10 @@ class Submission < ApplicationRecord
   accepts_nested_attributes_for :format_review_files, allow_destroy: true
   accepts_nested_attributes_for :final_submission_files, allow_destroy: true
   accepts_nested_attributes_for :keywords, allow_destroy: true
-  # accepts_nested_attributes_for :invention_disclosures,
-  #                             allow_destroy: true,
-  #                             limit: 1,
-  #                             reject_if: :reject_disclosure_number
+  accepts_nested_attributes_for :invention_disclosures,
+                                allow_destroy: true,
+                                limit: 1,
+                                reject_if: :reject_disclosure_number
 
   scope :format_review_is_incomplete, lambda {
     where(status: ['collecting program information', 'collecting committee', 'collecting format review files', 'collecting format review files rejected'])
@@ -108,11 +97,14 @@ class Submission < ApplicationRecord
   scope :final_is_restricted_institution, -> { where(status: 'released for publication', access_level: 'restricted_to_institution') }
   scope :final_is_withheld, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted') }
   scope :ok_to_release, -> { where('released_for_publication_at <= ?', Time.zone.today.end_of_day) }
-
-  # Initialize our committee members with empty records for each of the required roles.
+  scope :final_is_embargoed, -> { where(status: 'confidential hold embargo') }
 
   def set_status_to_collecting_program_information
     self.status = 'collecting program information' if self.new_record? && status.nil?
+  end
+
+  def initialize_access_level
+    self.access_level = '' if self.new_record? && access_level.nil?
   end
 
   def title_words
@@ -131,5 +123,20 @@ class Submission < ApplicationRecord
 
   def agreement_to_terms
     errors.add(:base, 'You must agree to terms') unless has_agreed_to_terms?
+  end
+
+  def invention_disclosure
+    # return '' unless current_partner.graduate?
+    @invention_disclosure = invention_disclosures.present? ? invention_disclosures.first : invention_disclosures.build
+    @invention_disclosure
+  end
+
+  def reject_disclosure_number(attributes)
+    # destroy the invention disclosure id_number if it's no longer needed
+    # submission is edited and submitted with blank invention disclosure id_number
+    exists = attributes['id'].present?
+    empty = attributes['id_number'].blank?
+    attributes.merge!(_destroy: 1) if exists && empty
+    (!exists && empty)
   end
 end

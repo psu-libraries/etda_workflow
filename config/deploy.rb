@@ -14,9 +14,9 @@ require 'capistrano/ext/multistage'
 require 'capistrano-notification'
 
 # Namespace environments so crontabs don't overwrite each other.
-set :whenever_identifier, defer { "#{application}_#{partner}" }
-set :whenever_command, "bundle exec whenever --update-crontab"
-require 'whenever/capistrano'
+# set :whenever_identifier, defer { "#{application}_#{partner}" }
+# set :whenever_command, "bundle exec whenever --update-crontab"
+# require 'whenever/capistrano'
 
 set :application, "etda_workflow"
 # set :stage, fetch(:partner, 'qa')
@@ -65,14 +65,15 @@ namespace :deploy do
   desc "Link shared files"
   task :symlink_shared do
     run <<-CMD.compact
-    ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_devise.yml #{release_path}/config/devise.yml &&
-    ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_database.yml #{release_path}/config/database.yml &&
-    ln -sf /#{application}/config_#{stage}/#{application}/lion_path.yml #{release_path}/config/lion_path.yml &&
-    ln -sf /#{application}/config_#{stage}/#{application}/#{partner}_secrets.yml #{release_path}/config/secrets.yml &&
-    ln -sf /var/data/#{application}-#{partner} #{release_path}/uploads
+    ln -sf /#{application}/config_#{stage}/#{partner}_devise.yml #{release_path}/config/devise.yml &&
+    ln -sf /#{application}/config_#{stage}/#{partner}_database.yml #{release_path}/config/database.yml &&
+    ln -sf /#{application}/config_#{stage}/lion_path.yml #{release_path}/config/lion_path.yml &&
+    ln -sf /#{application}/config_#{stage}/#{partner}_secrets.yml #{release_path}/config/secrets.yml
     CMD
   end
 end
+# belongs in the block above when configuration is ready AND must ad && after last line
+# ln -sf /var/data/#{application}-#{partner} #{release_path}/uploads
 
 before "deploy:finalize_update", "deploy:symlink_shared"
 

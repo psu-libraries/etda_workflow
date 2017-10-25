@@ -10,6 +10,9 @@ module Devise
           if a.nil?
             author = Author.create(access_id: access_id, psu_email_address: "#{access_id}@psu.edu")
             author.populate_attributes
+          else
+            author = a
+            author.update_missing_attributes
           end
           success! (author)
         else

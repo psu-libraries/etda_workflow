@@ -57,6 +57,11 @@ class LdapUniversityDirectory
     mapped_attributes.first
   end
 
+  def authors_confidential_status(this_access_id)
+    pshold = get_ldap_attribute(this_access_id, 'psconfhold')
+    ActiveModel::Type::Boolean.new.cast(pshold.downcase)
+  end
+
   def get_psu_id_number(this_access_id)
     attrs = ['psidn']
     with_connection do |connection|

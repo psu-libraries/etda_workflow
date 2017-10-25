@@ -44,7 +44,7 @@ RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
   # end
 
   describe 'authenticate!' do
-    let(:author) { FactoryGirl.create(:author) }
+    let(:author) { FactoryBot.create(:author) }
     let(:request) { double(headers: { 'HTTP_REMOTE_USER' =>  author.access_id }) }
 
     context 'with a new user' do
