@@ -4,6 +4,7 @@ class CreateFormatReviewFiles < ActiveRecord::Migration[5.1]
       t.bigint :submission_id
       t.text :asset
       t.integer :legacy_id
+      t.index :legacy_id
 
       t.timestamps
     end

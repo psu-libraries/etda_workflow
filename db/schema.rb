@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171024124833) do
+ActiveRecord::Schema.define(version: 20171117124833) do
 
   create_table "authors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "access_id", default: "", null: false
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20171024124833) do
     t.string "psu_idn"
     t.integer "legacy_id"
     t.boolean "confidential_hold"
+    t.datetime "confidential_hold_set_at"
     t.boolean "is_admin"
     t.boolean "is_site_admin"
     t.index ["access_id"], name: "index_authors_on_access_id", unique: true
@@ -91,6 +92,7 @@ ActiveRecord::Schema.define(version: 20171024124833) do
     t.integer "legacy_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["legacy_id"], name: "index_final_submission_files_on_legacy_id"
     t.index ["submission_id"], name: "final_submission_files_submission_id_fk"
   end
 
@@ -100,7 +102,16 @@ ActiveRecord::Schema.define(version: 20171024124833) do
     t.integer "legacy_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["legacy_id"], name: "index_format_review_files_on_legacy_id"
     t.index ["submission_id"], name: "format_review_files_submission_id_fk"
+  end
+
+  create_table "invention_disclosures", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "submission_id"
+    t.string "id_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["submission_id"], name: "invention_disclosures_submission_id_fk"
   end
 
   create_table "keywords", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -160,6 +171,7 @@ ActiveRecord::Schema.define(version: 20171024124833) do
     t.datetime "final_submission_files_first_uploaded_at"
     t.string "lion_path_degree_code"
     t.text "restricted_notes"
+    t.datetime "confidential_hold_embargoed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "submissions_author_id_fk"
@@ -179,6 +191,7 @@ ActiveRecord::Schema.define(version: 20171024124833) do
   add_foreign_key "degrees", "degree_types", name: "degrees_degree_type_id_fk"
   add_foreign_key "final_submission_files", "submissions", name: "final_submission_files_submission_id_fk"
   add_foreign_key "format_review_files", "submissions", name: "format_review_files_submission_id_fk"
+  add_foreign_key "invention_disclosures", "submissions", name: "invention_disclosures_submission_id_fk"
   add_foreign_key "keywords", "submissions", name: "keywords_submission_id_fk"
   add_foreign_key "submissions", "authors", name: "submissions_author_id_fk"
   add_foreign_key "submissions", "degrees", name: "submissions_degree_id_fk"

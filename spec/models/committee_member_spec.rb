@@ -29,8 +29,6 @@ RSpec.describe CommitteeMember, type: :model do
       cm.committee_role_id = committee_role.id
       cm.submission_id = submission.id
       cm.is_required = true
-      puts cm.inspect
-      puts cm.valid?.inspect
       expect(cm.valid?).to be_truthy
     end
   end
@@ -49,9 +47,7 @@ RSpec.describe CommitteeMember, type: :model do
   #
   # context 'advisors' do
   #   before do
-  #     committee_member.committee_role_id = CommitteeRole.advisor_role
-  #     committee_member.name = "I am #{Partner.current.id}.committee.special_role"
-  #     committee_member.submission_id = submission.id
+  #     committee_member = described_class.new(role_id: CommitteeRole.advisor_role, name: "I am #{current_partner.id}".committee.special_role, submission_id: subumission.id)
   #     committee_member.save
   #   end
   #   it 'returns the Committee Members who have an Advisor Role' do

@@ -36,6 +36,8 @@ RSpec.describe Author, type: :model do
   it { is_expected.to have_db_column(:last_sign_in_ip).of_type(:string) }
   it { is_expected.to have_db_column(:country).of_type(:string) }
   it { is_expected.to have_db_column(:psu_idn).of_type(:string) }
+  it { is_expected.to have_db_column(:confidential_hold).of_type(:boolean) }
+  it { is_expected.to have_db_column(:confidential_hold_set_at).of_type(:datetime) }
 
   it { is_expected.to validate_presence_of(:access_id) }
   it { is_expected.to validate_presence_of(:first_name) }
@@ -44,7 +46,7 @@ RSpec.describe Author, type: :model do
   it { is_expected.to validate_presence_of(:alternate_email_address) }
   it { is_expected.to validate_presence_of(:psu_idn) }
 
-  if EtdaUtilities::Partner.current.graduate?
+  if current_partner.graduate?
     it { is_expected.to validate_presence_of(:phone_number) }
     it { is_expected.to validate_presence_of(:address_1) }
     it { is_expected.to validate_presence_of(:city) }
@@ -97,7 +99,7 @@ RSpec.describe Author, type: :model do
     end
   end
 
-  unless EtdaUtilities::Partner.current.graduate?
+  unless current_partner.graduate?
     context 'non graduate students are not expected to have contact address fields' do
       it { is_expected.not_to validate_inclusion_of(:state).in_array(UsStates.names.keys.map(&:to_s)) }
       it { is_expected.not_to validate_presence_of(:state) }
@@ -108,16 +110,6 @@ RSpec.describe Author, type: :model do
   end
 
   it { is_expected.to have_db_index(:legacy_id) }
-
-  context '#populate_attributes' do
-  end
-
-  context '#populate_with_ldap_attributes' do
-    it 'populates the author record with ldap information' do
-      expect(described_class.new.to_json).to eql(described_class.new.to_json)
-      expect(described_class.new(access_id: 'xxb13').populate_with_ldap_attributes).to_not eql(described_class.new.to_json)
-    end
-  end
 
   context '#ldap_results_valid?' do
     it 'returns false if results are empty' do
@@ -163,14 +155,63 @@ RSpec.describe Author, type: :model do
   end
   context '#is_site_admin?' do
     it 'knows when an author has site administration privileges' do
-      expect(described_class.new(access_id: 'me123', is_site_admin: true).is_site_admin?).to be_truthy
-      expect(described_class.new(access_id: 'me123', is_site_admin: nil).is_site_admin?).to be_falsey
+      author = described_class.new(access_id: 'me123')
+      author.is_site_admin = true
+      expect(author.is_site_admin?).to be_truthy
+      author.is_site_admin = false
+      expect(author.is_site_admin?).to be_falsey
     end
   end
   context '#legacy' do
     it 'identifies legacy records' do
       expect(described_class.new(access_id: 'me123', legacy_id: nil).legacy?).to be_falsey
       expect(described_class.new(access_id: 'me123', legacy_id: '1').legacy?).to be_truthy
+    end
+  end
+  describe 'confidential?' do
+    author = described_class.new
+    context 'author does not have a confidential hold' do
+      it 'returns false' do
+        author.confidential_hold = false
+        expect(author.confidential?).to be_falsey
+      end
+      it 'returns true' do
+        author.confidential_hold = true
+        expect(author.confidential?).to be_truthy
+      end
+      it 'returns false if value is nil' do
+        author.confidential_hold = nil
+        expect(author.confidential?).to be_falsey
+      end
+    end
+  end
+  describe '#populate_attributes' do
+    author = described_class.new(access_id: 'xyz123', psu_email_address: 'xyz123')
+    author.save validate: false
+    let(:author_ldap_results) { { access_id: 'xyz123', first_name: 'Xyzlaphon', middle_name: 'Yhoo', last_name: 'Zebra', address_1: '0116 H Technology Sppt Bldg', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '814-865-4845', is_admin: false, psu_idn: '988888888', confidential_hold: false } }
+
+    it 'updates author attributes using LDAP information ' do
+      expect(author.last_name).to be_blank
+      expect(author.phone_number).to be_blank
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('xyz123').and_return(author_ldap_results)
+      author.populate_attributes
+      expect(author.last_name).to eql('Zebra')
+      expect(author.phone_number).to eql('814-865-4845')
+    end
+  end
+  describe '#populate_attributes' do
+    author = described_class.new(access_id: 'bbb123', psu_email_address: 'bbb123')
+    author.save validate: false
+    let(:author_ldap_results) { { access_id: 'bbb123', first_name: '', middle_name: '', last_name: '', address_1: '', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '', is_admin: false, psu_idn: '988888888', confidential_hold: true } }
+    it 'populates first and last name with access_id and a message when LDAP does not return those fields' do
+      expect(author.last_name).to be_blank
+      expect(author.phone_number).to be_blank
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('bbb123').and_return(author_ldap_results)
+      author.populate_attributes
+      expect(author.first_name).to eql("#{author.access_id}")
+      expect(author.phone_number).to eql('')
+      expect(author.last_name).to eql('No Associated Name')
+      expect(author.confidential_hold).to be_truthy
     end
   end
 end

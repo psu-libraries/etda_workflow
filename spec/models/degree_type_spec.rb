@@ -60,7 +60,7 @@ RSpec.describe DegreeType, type: :model do
   describe "the DegreeType seed data" do
     context "when partner is graduate" do
       it "creates the two essential degree types" do
-        expect(described_class.all.collect(&:name)).to eq(DegreeType::NAMES[EtdaUtilities::Partner.current.id])
+        expect(described_class.all.collect(&:name)).to eq(DegreeType::NAMES[current_partner.id])
       end
     end
   end

@@ -37,8 +37,10 @@ class CreateSubmissions < ActiveRecord::Migration[5.1]
       t.datetime :final_submission_files_first_uploaded_at
       t.string :lion_path_degree_code
       t.text :restricted_notes
+      t.datetime :confidential_hold_embargoed_at
       t.timestamps
     end
+
     add_index :submissions, :legacy_id
     add_index :submissions, :final_submission_legacy_id
     add_index :submissions, :final_submission_legacy_old_id

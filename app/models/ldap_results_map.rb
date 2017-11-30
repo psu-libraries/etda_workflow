@@ -11,7 +11,8 @@ class LdapResultsMap
                       postaladdress: [:address_1, :city, :state, :country, :zip],
                       telephonenumber: [:phone_number],
                       psmemberof: [:is_admin],
-                      psidn: [:psu_idn] }
+                      psidn: [:psu_idn],
+                      psconfhold: [:confidential_hold] }
 
   COMMITTEE_LDAP_MAP = { map: { displayname: [:label, :value],
                                 mail: [:id],
@@ -35,6 +36,7 @@ class LdapResultsMap
     country: { method: :format_country, options: {} },
     zip: { method: :format_zip, options: {} },
     is_admin: { method: :format_is_admin, options: {} },
-    psuidn: { method: :format_psuidn, options: {} }
+    psuidn: { method: :format_psuidn, options: {} },
+    confidential_hold: { method: :format_confidential, options: {} }
   }
 end
