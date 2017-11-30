@@ -50,7 +50,7 @@ RSpec.describe CommitteeMember, type: :model do
   # context 'advisors' do
   #   before do
   #     committee_member.committee_role_id = CommitteeRole.advisor_role
-  #     committee_member.name = "I am #{EtdaUtilities::Partner.current.id}.committee.special_role"
+  #     committee_member.name = "I am #{Partner.current.id}.committee.special_role"
   #     committee_member.submission_id = submission.id
   #     committee_member.save
   #   end
