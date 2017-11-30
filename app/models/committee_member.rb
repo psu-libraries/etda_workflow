@@ -14,7 +14,7 @@ class CommitteeMember < ApplicationRecord
   def self.advisors(submission)
     advisors_array = []
     submission.committee_members.each do |cm|
-      advisors_array << cm if cm.role.downcase.include? I18n.t("#{EtdaUtilities.Parnter.current.id}.committee.special_role")
+      advisors_array << cm if cm.role.downcase.include? I18n.t("#{current_partner.id}.committee.special_role")
     end
     advisors_array
   end

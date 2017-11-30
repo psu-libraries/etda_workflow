@@ -9,7 +9,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 # Use mysql as the database for Active Record
-gem 'mysql2', '>= 0.3.18', '< 0.5'
+gem 'mysql2', '>= 0.3.18', '< 0.4.10'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
@@ -44,7 +44,11 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
 
-gem 'etda_utilities', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/psu-stewardship/etda_utilities.git", branch: 'master'
+if ENV['CI']
+  gem 'etda_utilities', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/psu-stewardship/etda_utilities.git"
+else
+  gem 'etda_utilities', git: 'git@github.com:psu-stewardship/etda_utilities.git'
+end
 
 gem 'rake', '< 11.0'
 
@@ -55,6 +59,9 @@ gem 'country_select', git: 'https://github.com/stefanpenner/country_select.git',
 gem 'seedbank'
 
 gem 'enumerize'
+
+# Virus scanning for file uploads
+gem 'clam_scan'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

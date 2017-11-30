@@ -55,7 +55,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_index(:format_review_legacy_old_id) }
   it { is_expected.to have_db_index(:public_id).unique(true) }
 
-  # let(:submission) { create :submission }
+  let(:submission) { described_class.new(access_level:  AccessLevel.OPEN_ACCESS.current_access_level) }
   # before { allow(InboundLionPathRecord).to receive(:active?).and_return(false) }
 
   it { is_expected.to validate_presence_of :author_id }
@@ -75,10 +75,10 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_many :format_review_files }
   it { is_expected.to have_many :final_submission_files }
   it { is_expected.to have_many :keywords }
-  #  it { is_expected.to have_many :invention_disclosures }
+  it { is_expected.to have_many :invention_disclosures }
 
   it { is_expected.to validate_inclusion_of(:semester).in_array(Semester::SEMESTERS) }
-  # it { is_expected.to validate_inclusion_of(:access_level).in_array(::AccessLevel.valid_levels) }
+  # it { is_expected.to validate_inclusion_of(:access_level).in_array(AccessLevel::ACCESS_LEVEL_KEYS) }
 
   it { is_expected.to validate_numericality_of :year }
 

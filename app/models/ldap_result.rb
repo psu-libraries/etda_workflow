@@ -114,10 +114,14 @@ class LdapResult
       ldap_value
     end
 
+    def format_confidential(ldap_value, _options)
+      ActiveModel::Type::Boolean.new.cast(ldap_value.downcase)
+    end
+
   private
 
     def user_in_admin_group?(ldap_value)
-      return true if ldap_value.include?("cn=umg/psu.sas.etda-#{EtdaUtilities::Partner.current.id}-admins,dc=psu,dc=edu") || ldap_value.include?("cn=umg/psu.dsrd.etda_#{EtdaUtilities::Partner.current.id}_admin_users,dc=psu,dc=edu")
+      return true if ldap_value.include?("cn=umg/psu.sas.etda-#{current_partner.id}-admins,dc=psu,dc=edu") || ldap_value.include?("cn=umg/psu.dsrd.etda_#{current_partner.id}_admin_users,dc=psu,dc=edu")
       false
     end
 end

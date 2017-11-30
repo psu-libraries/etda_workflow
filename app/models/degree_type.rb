@@ -23,7 +23,7 @@ class DegreeType < ApplicationRecord
   end
 
   def self.seed
-    NAMES[EtdaUtilities::Partner.current.id].each do |name|
+    NAMES[current_partner.id].each do |name|
       find_or_create_by!(slug: name.parameterize.underscore) do |new_degree|
         new_degree.name = name
       end

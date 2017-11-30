@@ -23,7 +23,7 @@ Metrics/MethodLength:
 
 Metrics/ClassLength:
   Exclude:
-
+  - app/models/submission.rb
 
 Metrics/CyclomaticComplexity:
   Exclude:
@@ -114,7 +114,6 @@ Rails/Output:
     - 'config/deploy.rb'
     - 'config/qa-grad.rb'
     - 'config/qa-honors.rb'
-    - 'lib/devise/strategies/http_header_authenticatable.rb'
 
 Rails/TimeZone:
   Enabled: false

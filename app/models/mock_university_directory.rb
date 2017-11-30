@@ -6,6 +6,7 @@ class MockUniversityDirectory
     jxb13
     amg32
     xxb13
+    conf123
   )
 
   COMMITTEE_LDAP_MAP = LdapResultsMap::COMMITTEE_LDAP_MAP
@@ -40,25 +41,30 @@ class MockUniversityDirectory
         last_name: 'Barnoff', address_1: 'TSB Building',
         city: 'University Park', state: 'PA',
         zip: '16802', phone_number: '555-555-5555',
-        country: 'US', is_admin: true, psu_idn: '999999999' }
+        country: 'US', is_admin: true, psu_idn: '999999999', confidential_hold: true }
     when /(amg32)/i
       { access_id: 'amg32', first_name: 'Andrew', middle_name: 'Michael',
         last_name: 'Gearhart', address_1: 'Pattee Library',
         city: 'University Park', state: 'PA',
         zip: '16802', phone_number: '814-867-5373',
-        country: 'US', is_admin: true, psu_idn: '987654321' }
+        country: 'US', is_admin: true, psu_idn: '987654321', confidential_hold: false }
     when /(saw140)/i
       { access_id: 'saw140', first_name: 'Scott', middle_name: 'Aaron',
         last_name: 'Woods', address_1: 'Allenway Bldg.',
         city: 'State College', state: 'PA',
         zip: '16801', phone_number: '666-666-6666',
-        country: 'US', is_admin: true, psu_idn: '981818181' }
+        country: 'US', is_admin: true, psu_idn: '981818181', confidential_hold: false }
     when /(xxb13)/i
       { access_id: 'testid', first_name: 'testfirst', middle_name: 'testmiddle',
         last_name: 'testlast', address_1: 'Anywhere',
         city: 'University Park', state: 'PA',
         zip: '16802', phone_number: '555-555-5555',
         country: 'US', is_admin: true, psu_idn: '999999999' }
+    when /(conf123)/i
+      { access_id: 'conf123', first_name: 'Confidential', middle_name: 'X.',
+        last_name: 'Student', address_1: 'I cannot tell you', city: 'Secret', state: 'PA',
+        zip: '16801', phone_number: '111-111-1111', is_admin: false, psu_idn: '977777777',
+        confidential_hold: true }
     else
       []
     end
@@ -71,13 +77,13 @@ class MockUniversityDirectory
         last_name: 'Rails', address_1: 'TSB Building',
         city: 'University Park', state: 'PA',
         zip: '16802', phone_number: '555-555-5555',
-        country: 'US', is_admin: true, psu_idn: '999999999' }
+        country: 'US', is_admin: true, psu_idn: '999999999', confidential_hold: false }
     when /(admin123)/i
       { access_id: 'admin123', first_name: 'Test', middle_name: 'Admin',
         last_name: 'Person', address_1: 'TSB Building',
         city: 'University Park', state: 'PA',
         zip: '16802', phone_number: '555-555-5555',
-        country: 'US', is_admin: true, psu_idn: '988888888' }
+        country: 'US', is_admin: true, psu_idn: '988888888', confidential_hold: false }
     else
       {}
     end
@@ -85,5 +91,9 @@ class MockUniversityDirectory
 
   def get_psu_id_number(_psu_access_id)
     '999999999'
+  end
+
+  def authors_confidential_status(psu_access_id)
+    retrieve(psu_access_id)[:confidential_hold]
   end
 end

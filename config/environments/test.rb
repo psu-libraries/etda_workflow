@@ -42,4 +42,5 @@ Rails.application.configure do
 
   # Mocks
   LdapUniversityDirectory = MockUniversityDirectory
+  VirusScanner = MockVirusScanner
 end

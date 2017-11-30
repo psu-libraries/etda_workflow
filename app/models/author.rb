@@ -21,17 +21,17 @@ class Author < ApplicationRecord
             :address_1,
             :city,
             :state,
-            :zip, presence: true, if: proc { EtdaUtilities::Partner.current.graduate? }
+            :zip, presence: true, if: proc { current_partner.graduate? }
 
   validates :alternate_email_address,
             :psu_email_address,
             format: { with: /\A[\w]([^@\s,;]+)@(([\w-]+\.)+([\w]+))/i }
 
-  validates :zip, format: { with: /\A\d{5}-\d{4}\z|\A\d{5}\z/, message: "Must be in the format '12345' or '12345-1234'" }, if: proc { EtdaUtilities::Partner.current.graduate? }
+  validates :zip, format: { with: /\A\d{5}-\d{4}\z|\A\d{5}\z/, message: "Must be in the format '12345' or '12345-1234'" }, if: proc { current_partner.graduate? }
 
   validates :psu_idn, format: { with: /\A(^9\d{8})\z/ }
 
-  validates :state, inclusion: { in:  UsStates.names.keys.map(&:to_s) }, if: proc { EtdaUtilities::Partner.current.graduate? }
+  validates :state, inclusion: { in:  UsStates.names.keys.map(&:to_s) }, if: proc { current_partner.graduate? }
 
   def self.current
     Thread.current[:author]
@@ -42,26 +42,28 @@ class Author < ApplicationRecord
   end
 
   def populate_attributes
-    # result =
+    update_confidential_status(access_id)
     populate_with_ldap_attributes
     # retrieve_lion_path_information unless result.nil?
+    self
   end
 
   def populate_with_ldap_attributes
     results = LdapUniversityDirectory.new.retrieve(access_id)
     # raise an error unless ldap_results_valid?(results)
-    # mapped_attributes =
-    results.except(:access_id)
-    # save_mapped_attributes(mapped_attributes) if mapped_attributes
+    mapped_attributes = results.except(:access_id)
+    save_mapped_attributes(mapped_attributes) if mapped_attributes
   end
 
   def retrieve_lion_path_information
   end
 
   def update_missing_attributes
+    update_confidential_status(access_id)
     return unless psu_idn.blank?
     ldap_psu_idn = LdapUniversityDirectory.new.get_psu_id_number(access_id)
     update_attribute :psu_idn, ldap_psu_idn
+    self
   end
 
   def can_edit?
@@ -70,15 +72,19 @@ class Author < ApplicationRecord
   end
 
   def admin?
-    is_admin
+    is_admin || false
   end
 
   def site_admin?
-    is_site_admin
+    is_site_admin || false
   end
 
   def legacy?
     legacy_id.present?
+  end
+
+  def confidential?
+    confidential_hold || false
   end
 
   # def academic_plan?
@@ -106,5 +112,24 @@ class Author < ApplicationRecord
         return false
       end
       true
+    end
+
+    def update_confidential_status(login_id)
+      confidential_hold_status = ConfidentialHoldUtility.new(login_id, confidential_hold)
+      return unless confidential_hold_status.changed?
+      # send emails and save the new status
+      confidential_hold_status.send_confidential_status_notifications(self)
+      self.confidential_hold = confidential_hold_status.new_confidential_status
+      self.confidential_hold_set_at = confidential_hold_status.hold_set_at(confidential_hold_set_at, confidential_hold_status.new_confidential_status)
+      save(validate: false)
+    end
+
+    def save_mapped_attributes(mapped_attributes)
+      if mapped_attributes[:confidential_hold]
+        mapped_attributes[:first_name] = access_id if mapped_attributes[:first_name].blank?
+        mapped_attributes[:last_name] = 'No Associated Name' if mapped_attributes[:last_name].blank?
+      end
+      update_attributes(mapped_attributes)
+      save(validate: false)
     end
 end
