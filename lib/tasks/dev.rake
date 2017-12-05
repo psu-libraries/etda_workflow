@@ -14,14 +14,18 @@ if defined?(RSpec)
 
   desc 'run specs'
   task ci: :environment do
+    Rake::Task['rubocop'].invoke
+    puts 'PARTNER=GRADUATE'
     ENV['PARTNER'] = 'graduate'
     Rake::Task['spec'].invoke
-    # ::Rake.application['spec'].reenable
-    # ENV['PARTNER'] = 'honors'
-    # Rake::Task['spec'].invoke
-    # ::Rake.application['spec'].reenable
-    # ENV['PARTNER'] = 'milsch'
-    # Rake::Task['spec'].invoke
+    ::Rake.application['spec'].reenable
+    puts 'PARTNER=HONORS'
+    ENV['PARTNER'] = 'honors'
+    Rake::Task['spec'].invoke
+    ::Rake.application['spec'].reenable
+    puts 'PARTNER=MILSCH'
+    ENV['PARTNER'] = 'milsch'
+    Rake::Task['spec'].invoke
   end
 end
 

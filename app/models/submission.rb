@@ -20,6 +20,7 @@ class Submission < ApplicationRecord
   delegate :psu_email_address, to: :author, prefix: true
   delegate :access_id, to: :author, prefix: false
   delegate :alternate_email_address, to: :author, prefix: false
+  delegate :confidential?, to: :author
 
   enumerize :access_level, in: ::AccessLevel.valid_levels, default: '', i18n_scope: "#{current_partner.id}.access_level"
 
@@ -27,7 +28,7 @@ class Submission < ApplicationRecord
     access_level.to_s
   end
 
-  def current_status
+  def status_behavior
     SubmissionStatus.new(self)
   end
 
@@ -46,12 +47,12 @@ class Submission < ApplicationRecord
   validates :abstract,
             :keywords,
             :access_level,
-            presence: true, if: proc { |s| s.current_status.beyond_waiting_for_format_review_response? }
+            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? }
 
   validates :defended_at,
-            presence: true, if: proc { |s| s.current_status.beyond_waiting_for_format_review_response? && current_partner.graduate? } # && !InboundLionPathRecord.active? }
+            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? } # && !InboundLionPathRecord.active? }
 
-  validate :agreement_to_terms, if: proc { |s| s.current_status.beyond_waiting_for_format_review_response? }
+  validate :agreement_to_terms, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? }
 
   validates :title,
             length: { maximum: 400 }

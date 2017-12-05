@@ -37,7 +37,7 @@ RSpec.describe 'Devise Login', type: :request do
   end
   context 'development environment' do
     before do
-      allow(Rails).to receive(:env) { "development".inquiry }
+      allow(Rails).to receive(:env) { "production".inquiry }
     end
 
     it 'author can login and logout' do

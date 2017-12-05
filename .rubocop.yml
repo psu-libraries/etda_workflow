@@ -11,6 +11,7 @@ AllCops:
     - 'script/**/*'
     - 'vendor/**/*'
     - 'config/deploy/**/*'
+    - 'spec/lib/tasks/*'
 
 Metrics/LineLength:
   Enabled: false

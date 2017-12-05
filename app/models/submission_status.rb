@@ -69,10 +69,6 @@ class SubmissionStatus
     released_for_publication? && current_submission.access_level == 'restricted'
   end
 
-  def final_confidential_embargo?
-    status == 'confidential hold embargo'
-  end
-
   def beyond_collecting_program_information?
     collecting_committee? || beyond_collecting_committee?
   end
@@ -95,5 +91,13 @@ class SubmissionStatus
 
   def beyond_waiting_for_final_submission_response?
     waiting_for_publication_release? || released_for_publication?
+  end
+
+  def embargoed?
+    current_status == 'confidential hold embargo'
+  end
+
+  def final_confidential_hold?
+    waiting_for_final_submission_response? && @current_submission.confidential?
   end
 end

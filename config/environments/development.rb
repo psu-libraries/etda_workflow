@@ -57,4 +57,6 @@ Rails.application.configure do
   # Mocks
   LdapUniversityDirectory = MockUniversityDirectory
   VirusScanner = MockVirusScanner
+  WORKFLOW_BASE_PATH = 'tmp/workflow_files/'
+  EXPLORE_BASE_PATH = 'tmp/explore_files/'
 end

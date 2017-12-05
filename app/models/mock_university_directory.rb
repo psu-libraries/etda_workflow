@@ -94,6 +94,8 @@ class MockUniversityDirectory
   end
 
   def authors_confidential_status(psu_access_id)
-    retrieve(psu_access_id)[:confidential_hold]
+    results = retrieve(psu_access_id)
+    return false if results.empty?
+    results[:confidential_hold]
   end
 end

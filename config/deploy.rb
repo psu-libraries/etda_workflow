@@ -126,7 +126,7 @@ end
 # server be present.
 namespace :rbenv do
   task(:setup_default_environment, except: { no_release: true }) do
-    unless %w( staging qa prod ).include?(stage) # our addition
+    unless %w( dev staging qa prod ).include?(stage) # our addition
       if rbenv_setup_default_environment
         set(:default_environment, _merge_environment(default_environment, rbenv_environment))
       end

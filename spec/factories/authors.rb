@@ -33,6 +33,11 @@ FactoryBot.define do
     to_create { |instance| instance.save(validate: false) }
   end
 
+  trait :confidential_hold do
+    confidential_hold true
+    confidential_hold_set_at Time.zone.yesterday
+  end
+
   # trait :no_lionpath_record do
   #   inbound_lion_path_record nil
   # end
