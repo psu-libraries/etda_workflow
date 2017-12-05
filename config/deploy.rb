@@ -68,6 +68,7 @@ namespace :deploy do
     ln -sf /#{application}/config_#{stage}/#{partner}_devise.yml #{release_path}/config/devise.yml &&
     ln -sf /#{application}/config_#{stage}/#{partner}_database.yml #{release_path}/config/database.yml &&
     ln -sf /#{application}/config_#{stage}/lion_path.yml #{release_path}/config/lion_path.yml &&
+    ln -sf /#{application}/config_#{stage}/ldap.yml #{release_path}/config/ldap.yml &&
     ln -sf /#{application}/config_#{stage}/#{partner}_secrets.yml #{release_path}/config/secrets.yml
     CMD
   end
