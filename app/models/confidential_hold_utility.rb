@@ -8,17 +8,17 @@ class ConfidentialHoldUtility
     # new_confidential_status is the author's confidential status found in LDAP
     # if author is not in LDAP it uses the value of confidential hold in the author's record
     # it can also be set from a parameter (used by admin when editing)
-    @this_access_id = access_id
+    @this_access_id = access_id || ''
     @original_confidential_status = original_confidential_status.nil? ? false : original_confidential_status
     @new_confidential_status = current_status.nil? ? set_confidential_status : current_status
   end
 
   def set_confidential_status
     directory = LdapUniversityDirectory.new
-    if directory.exists? this_access_id
-      current_status = directory.authors_confidential_status(this_access_id)
+    if directory.exists? @this_access_id
+      current_status = directory.authors_confidential_status(@this_access_id)
     else
-      author = Author.find_by(access_id: this_access_id)
+      author = Author.find_by(access_id: @this_access_id)
       return false if author.nil?
       current_status = author.confidential_hold || nil
     end
@@ -50,11 +50,11 @@ class ConfidentialHoldUtility
 
     def send_update_to_confidential_email(author)
       # send email
-      AuthorMailer.confidential_hold_set_email(author).deliver_now
+      # AuthorMailer.confidential_hold_set_email(author).deliver_now
     end
 
     def send_release_hold_email(author)
-      AuthorMailer.confidential_hold_released_email(author).deliver_now
+      # AuthorMailer.confidential_hold_released_email(author).deliver_now
       # send email
     end
 

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root to: 'home#index'
+
   devise_for :authors
 
   get '/logout', to: 'application#logout', as: :logout_author
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
     resources :authors, except: [:index, :show, :destroy]
     resources :submissions, except: [:show] do
     end
+    root to: 'submissions#index'
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -1,6 +1,5 @@
 require 'rails_helper'
 require 'shoulda-matchers'
-require 'support/request_spec_helper'
 
 RSpec.describe SubmissionStates::ReleasedForPublication do
   describe 'instance methods' do

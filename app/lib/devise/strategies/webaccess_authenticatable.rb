@@ -23,9 +23,10 @@ module Devise
         end
       end
 
-      def author_valid?(headers)
-        this_remote_user = remote_user(headers)
-        !this_remote_user.nil?
+      def valid?
+        this_remote_user = remote_user(request.headers)
+        return true unless this_remote_user.nil?
+        false
       end
 
       protected
@@ -37,11 +38,6 @@ module Devise
             headers.fetch('REMOTE_USER', nil) || headers.fetch('HTTP_REMOTE_USER', nil)
           end
         end
-
-      # protected
-
-      # def complete_login
-      # end
     end
   end
 end

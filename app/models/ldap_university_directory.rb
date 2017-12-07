@@ -52,22 +52,21 @@ class LdapUniversityDirectory
   end
 
   def authors_confidential_status(this_access_id)
-    pshold = get_ldap_attribute(this_access_id, 'psconfhold')
-    ActiveModel::Type::Boolean.new.cast(pshold.downcase)
+    attr = get_ldap_attribute(this_access_id, 'psconfhold')
+    ActiveModel::Type::Boolean.new.cast(attr.downcase)
   end
 
   def get_psu_id_number(this_access_id)
-    attrs = ['psidn']
-    with_connection do |connection|
-      attrs = connection.search(base: ldap_configuration['base'], filter: Net::LDAP::Filter.eq('uid', this_access_id), attributes: attrs)
-      raise ResultError, connection.get_operation_result.message if attrs.nil?
-      return ' ' if attrs.empty?
-      psuid = attrs.first[:psidn].first
-      psuid
-    end
+    get_ldap_attribute(this_access_id, 'psidn')
   end
 
   private
+
+    def get_ldap_attribute(this_access_id, this_attribute)
+      attrs = directory_lookup('uid', this_access_id)
+      return '' if attrs.nil? || attrs.empty?
+      attrs.first[this_attribute].first
+    end
 
     def ldap_configuration
       # Only ever read this once.

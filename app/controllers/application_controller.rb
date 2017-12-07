@@ -1,14 +1,12 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  Devise.add_module(:webacess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
+
   before_action :clear_session_author
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def clear_session_author
-    if request.nil?
-      logger.warn "Request is Nil, how weird!!!"
-      return
-    end
     # only logout if the REMOTE_USER is not set in the HTTP headers and a user is set within warden
     # logout clears the entire session including flash messages
     request.env['warden'].logout unless author_logged_in?
@@ -30,7 +28,7 @@ class ApplicationController < ActionController::Base
   protected
 
     def author_logged_in?
-      author_signed_in? && Devise::Strategies::WebaccessAuthenticatable.new(nil).author_valid?(request.headers) # || Rails.env.test?
+      author_signed_in? || Rails.env.test?
       # author_signed_in? && valid?(request.headers) || Rails.env.test?
     end
 

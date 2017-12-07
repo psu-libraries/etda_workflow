@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 require 'rails_helper'
 require 'shoulda-matchers'
-require 'support/request_spec_helper'
 require 'invention_disclosure_number_validator'
 
 RSpec.describe InventionDisclosure, type: :model do

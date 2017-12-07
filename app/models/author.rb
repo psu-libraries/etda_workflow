@@ -1,8 +1,8 @@
 class Author < ApplicationRecord
   class NotAuthorizedToEdit < StandardError; end
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  Devise.add_module(:webacess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
+
   devise :webaccess_authenticatable, :rememberable, :trackable, :registerable
 
   has_many :submissions, dependent: :nullify
@@ -40,6 +40,10 @@ class Author < ApplicationRecord
   def self.current=(author)
     Thread.current[:author] = author
   end
+
+  # def current_author
+  #   Author.current || nil
+  # end
 
   def populate_attributes
     update_confidential_status(access_id)

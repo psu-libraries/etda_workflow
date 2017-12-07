@@ -1,0 +1,4 @@
+development:
+   secret_key: 'asdfasdfasdfsadfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfjkl;jkljkl;jkljkl;j;kl'
+test:
+   secret_key: 'testkeyasdfasdfasdfasdfasdfasdfasdf'

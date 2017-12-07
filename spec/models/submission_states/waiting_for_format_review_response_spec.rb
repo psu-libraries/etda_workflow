@@ -1,6 +1,5 @@
 require 'rails_helper'
 require 'shoulda-matchers'
-require 'support/request_spec_helper'
 
 RSpec.describe SubmissionStates::WaitingForFormatReviewResponse do
   describe 'instance methods' do
