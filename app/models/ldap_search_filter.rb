@@ -1,7 +1,7 @@
 class LdapSearchFilter
-  def initialize(term, only_faculty_staff)
+  def initialize(term, limit_faculty_staff)
     @term = term
-    @only_faculty_staff = only_faculty_staff
+    @limit_faculty_staff = limit_faculty_staff
   end
 
   def create_filter
@@ -23,7 +23,7 @@ class LdapSearchFilter
     ldap_name_attribute = search_words.count == 1 ? 'sn' : 'cn'
     search_string_filter = Net::LDAP::Filter.eq(ldap_name_attribute, ldap_search_string)
 
-    if @only_faculty_staff
+    if @limit_faculty_staff
       # faculty_filter = Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "FACULTY")
       # staff_filter = Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "STAFF")
       # faculty_staff_filter = Net::LDAP::Filter.intersect(faculty_filter, staff_filter) # yeah, we know

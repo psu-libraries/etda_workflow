@@ -5,6 +5,9 @@ module Devise
     class WebaccessAuthenticatable < Authenticatable
       def authenticate!
         access_id = remote_user(request.headers)
+
+        Rails.logger.info "Devise Access ID ******* #{access_id}"
+
         if access_id.present? # webaccess successful
           a = Author.find_by_access_id(access_id)
           if a.nil?
@@ -14,7 +17,7 @@ module Devise
             author = a
             author.update_missing_attributes
           end
-          success! (author)
+          success!(author)
         else
           fail!
         end

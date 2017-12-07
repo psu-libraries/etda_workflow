@@ -5,45 +5,39 @@ class LdapUniversityDirectory
   class UnreachableError < Error; end
   class ResultError < Error; end
 
-  def autocomplete(term, _only_faculty_staff)
-    return [] unless term_is_valid?(term)
+  def autocomplete(term_given)
+    term = term_given
+    return [] unless searchterm_valid?(term)
+    term = term.strip!
+
     ldap_records = []
 
-    with_connection do |conn|
-      10.times || ldap_records.present? do
-        ldap_records = conn.search(base: ldap_configuration['base'],
-                                   filter: LdapSearchFilter.new(term.strip!, true).create_filter,
-                                   attributes: %w( cn displayname mail psadminarea psdepartment ),
-                                   return_result: true) # was size: 200
+    with_connection do |connection|
+      autocomplete_search_filter = LdapSearchFilter.new(term, true).create_filter
+      ldap_records = connection.search(base: ldap_configuration['base'],
+                                       filter: autocomplete_search_filter,
+                                       attributes: %w( cn displayname mail psadminarea psdepartment ),
+                                       return_result: true) # was size: 200
+
+      if connection.get_operation_result.message == "Size Limit Exceeded"
+        return []
+      else
+        raise ResultError, connection.get_operation_result.message unless connection.get_operation_result.message == 'Success'
       end
     end
     if ldap_records.present?
-      LdapResult.new(ldap_record: ldap_records,
-                     attribute_map: LdapResultsMap::AUTOCOMPLETE_LDAP_MAP[:map],
-                     defaults:  LdapResultsMap[:defaults]).map_directory_info
-    else
-      if conn.get_operation_result.message == "Size Limit Exceeded"
-        return []
-      else
-        raise ResultError, conn.get_operation_result.message
-      end
+      mapped_attributes = LdapResult.new(ldap_record: ldap_records,
+                                         attribute_map: LdapResultsMap::AUTOCOMPLETE_LDAP_MAP[:map],
+                                         defaults:  LdapResultsMap::AUTOCOMPLETE_LDAP_MAP[:defaults]).map_directory_info
+      return mapped_attributes
     end
+    []
   end
 
   def exists?(psu_access_id)
-    retrieve(psu_access_id).present?
-
-    result = nil
-    with_connection do |conn|
-      3.times || !result.nil? do
-        result = conn.search(base: ldap_configuration['base'], filter: Net::LDAP::Filter.eq('uid', psu_access_id))
-        # break if result
-      end
-      if result.nil?
-        Rails.logger.warn "No LDAP entry found for initial lookup of #{psu_access_id.inspect}"
-        raise ResultError, conn.get_operation_result.message
-      end
-    end
+    # result = nil
+    result = retrieve(psu_access_id).present?
+    return false if result.nil?
     result.present?
   end
 
@@ -65,10 +59,7 @@ class LdapUniversityDirectory
   def get_psu_id_number(this_access_id)
     attrs = ['psidn']
     with_connection do |connection|
-      3.times || !attrs.empty? do
-        attrs = connection.search(base: ldap_configuration['base'], filter: Net::LDAP::Filter.eq('uid', this_access_id), attributes: attrs)
-        # break unless attrs == []
-      end
+      attrs = connection.search(base: ldap_configuration['base'], filter: Net::LDAP::Filter.eq('uid', this_access_id), attributes: attrs)
       raise ResultError, connection.get_operation_result.message if attrs.nil?
       return ' ' if attrs.empty?
       psuid = attrs.first[:psidn].first
@@ -86,11 +77,7 @@ class LdapUniversityDirectory
     def directory_lookup(query_type, search_string)
       attrs = []
       with_connection do |conn|
-        3.times || !attrs.empty do
-          attrs = conn.search(base: ldap_configuration['base'], filter: Net::LDAP::Filter.eq(query_type, search_string), attributes: attrs)
-          # break unless attrs == []
-        end
-
+        attrs = conn.search(base: ldap_configuration['base'], filter: Net::LDAP::Filter.eq(query_type, search_string), attributes: attrs)
         raise ResultError, conn.get_operation_result.message if attrs.nil?
       end
       attrs
@@ -112,7 +99,8 @@ class LdapUniversityDirectory
       (term =~ /\*/) != nil
     end
 
-    def term_is_valid?(term)
-      term.present? && term =~ /^[a-z '\-]+$/i
+    def searchterm_valid?(term)
+      result = term.present? && term =~ /^[a-z '\-]+$/i
+      result
     end
 end

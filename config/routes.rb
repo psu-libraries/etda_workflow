@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   namespace :author do
     resources :authors, except: [:index, :show, :destroy]
+    resources :submissions, except: [:show] do
+    end
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

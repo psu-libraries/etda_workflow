@@ -11,16 +11,18 @@ class WebAccess
   end
 
   def logout_url
-    format(WebAccess::BASE_LOGOUT_URL, Rails.application.secrets.webaccess[:vservice])
+    format(WebAccess::BASE_LOGOUT_URL, service)
   end
 
   private
 
     def application_url
-      Rails.application.secrets.webaccess[:vhost]
+      Rails.application.secrets.webaccess[:vservice]
     end
 
     def service
-      Rails.application.secrets.webaccess[:vservice]
+      url = Rails.application.secrets.webaccess[:vservice]
+      uri = URI.parse(url)
+      uri.host
     end
 end
