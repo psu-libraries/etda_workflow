@@ -1,0 +1,263 @@
+@import '_base';
+
+.add-button {
+  margin: 27px 0px 0px;
+}
+
+.dataTables_wrapper {
+  .dataTables_filter {
+    max-width: 100%;
+
+    input {
+      width: 285px;
+      max-width: 100%;
+      margin-left: 0px;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .dataTables_wrapper {
+    .row {
+      .col-xs-12 {
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+    }
+
+    .dataTables_info {
+      margin-bottom: 5px;
+      color: $gray-light;
+    }
+
+    .dataTables_length {
+      width: 100%;
+      label {
+        width: 100%;
+        line-height: 30px;
+        select {
+          float: left;
+          width: 75%;
+          max-width: 115px;
+          margin-right: 5px;
+        }
+      }
+    }
+
+    .dataTables_filter {
+      float: none;
+      label {
+        width: 100%;
+        input {
+          width: 100%;
+        }
+      }
+    }
+
+    .dataTables_processing {
+      left: 5px;
+      right: 5px;
+    }
+  }
+}
+
+table {
+  &.dataTable {
+    thead {
+      th, td {
+        border-color: $table-border-color;
+      }
+    }
+
+    &.no-footer {
+      border-color: $table-border-color;
+    }
+  }
+}
+
+table.dataTable {
+  &.admin-submissions-index {
+    tbody {
+      tr {
+        td:first-child {
+          display: none;
+        }
+      }
+    }
+    thead {
+      tr {
+        th:first-child {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .release-label {
+    font-weight: normal;
+    font-size: 100%;
+  }
+  .label-none {
+    color: $text-color;
+  }
+}
+
+#bulk-actions {
+  display: none;
+  border-top: 1px solid $gray-lighter;
+  border-bottom: 1px solid $gray-lighter;
+  background: #fcfcfc;
+  padding: 5px 10px 0;
+  margin-bottom: 15px;
+
+  .actions {
+    @extend .clearfix;
+    margin-left: 15px;
+
+    .action {
+      clear: left;
+    }
+
+    .date-submitter {
+      label {
+        margin: 8px 5px 0 0;
+      }
+    }
+
+    form.button_to {
+      float: left;
+      margin-right: 10px;
+      margin-bottom: 15px;
+    }
+  }
+}
+
+#row-selection-buttons {
+  margin-bottom: 10px;
+
+  .btn:focus {
+    background-color: #fff;
+    outline: 0;
+  }
+}
+
+.panel {
+
+  &.filter {
+    display: block;
+    color: $text-color;
+    @include transition(all 0.2s ease);
+
+    .panel-heading {
+      background-color: $gray-lightest;
+      border-color: $link-color;
+
+      .panel-title {
+        color: $link-color;
+
+        .badge {
+          background-color: $link-color;
+          color: #fff;
+        }
+
+        .badge-left {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        .badge-right {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+
+        .badge-mute {
+          background-color: #66706c;
+        }
+      }
+    }
+
+    &:hover {
+      color: $gray;
+      text-decoration: none;
+      box-shadow: 0px 1px 4px rgba(0,0,0,0.3);
+
+      .panel-heading {
+        background-color: $gray-lighter;
+        border-color: $link-hover-color;
+
+        .panel-title {
+          color: $link-hover-color;
+        }
+      }
+    }
+  }
+
+  &.no-submissions {
+    color: $gray-light;
+
+    .panel-heading {
+      background-color: #fff;
+
+      .panel-title {
+        color: #767676;
+
+        .badge {
+          background-color: $gray-light;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.form-section-heading {
+  @extend .h5;
+  padding: 10px;
+  margin: 0px 0px 10px;
+  background-color: $gray-lightest;
+  border-radius: 6px 6px 0px 0px;
+  border-bottom: 1px solid #ccc;
+  color: #666;
+  cursor: pointer;
+  @include transition(all 0.25s ease-out);
+
+  .hide-show-indicator {
+    @extend .fa;
+    @extend .fa-lg;
+    @extend .fa-chevron-circle-right;
+    position: relative;
+    bottom: -2px;
+    float: right;
+    @include transition(all 0.25s ease-out);
+  }
+
+  &:hover {
+    color: $link-hover-color;
+    background-color: #f8f8f8;
+  }
+}
+
+.form-section-body {
+  padding: 5px 5px 20px 5px;
+}
+
+.form-edit-link {
+  @extend .btn;
+  @extend .btn-xs;
+  @extend .btn-default;
+
+  .fa {
+    @extend .fa-edit;
+  }
+
+  &.ready-to-lock {
+    .fa {
+      @extend .fa-lock;
+    }
+  }
+}
+
+#submission_semester_year {
+  width: auto;
+  margin-bottom: .5em;
+}

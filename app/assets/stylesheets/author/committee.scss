@@ -1,0 +1,107 @@
+@import "_base";
+
+/* search button on committee form page*/
+.main-committee-search-button {
+  float: right;
+}
+
+/* search modal */
+div.modal-footer .btn {
+  float: left;
+}
+
+.modal-wide .modal-dialog{
+  width: 76%;
+}
+
+/* modal search box */
+#ldap_lookup_info_uid {
+  width: 55%;
+}
+
+/*modal search results drop-down list*/
+#search_committee_role_list {
+  margin-left: 58%;
+}
+
+fieldset.name-list
+{
+  .row {
+    line-height: 2em;
+    margin-left: 1em;
+    border-bottom: 1px solid $gray-lighter;
+    width: 55%;
+  }
+
+}
+
+//the following 3 sections correct error message display
+fieldset.committee-member-fields {
+  .row {
+    padding-top: 1em;
+  }
+
+  .has-error
+  {
+    position: relative;
+    padding-bottom: 1em;
+  }
+
+  .help-block {
+    white-space: nowrap;
+    position: absolute;
+    top: 2.15em;
+    left: .25em;
+  }
+
+}
+
+
+a.add_link {
+  line-height: 3em;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+
+a.delete-link
+{
+  font-weight: bold;
+  float: right;
+  padding-right: 1em;
+  margin-top: 0;
+}
+//
+//a.btn.add_fields {
+//    padding-left: 2.5em;
+//    position: relative;
+//    left: -2em;
+//    z-index: -999;
+//}
+
+//.committee_members{
+//  .glyphicon-plus {
+//    clear: none;
+//    float: left;
+//  }
+//  a.btn.add_fields {
+//    float: left;
+//  }
+//}
+.committee_members {
+  a.btn.add_fields {
+
+    display: inline-block;
+    position: relative;
+    padding-left: 2em;
+    text-align: right;
+  }
+
+  .glyphicon-plus {
+    display: inline-block;
+    position: absolute;
+    z-index: 999;
+    padding-top: .5em;
+    padding-left: .5em;
+  }
+}

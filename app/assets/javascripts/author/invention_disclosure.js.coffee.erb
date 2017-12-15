@@ -1,0 +1,22 @@
+
+bind_to_access_level = () ->
+    $('body').on 'click', 'div.author div.submission_access_level', (e) ->
+        if $('div.author #submission_access_level_restricted').prop('checked')
+            $('div#invention').removeClass('hidden')
+            $('#submission_invention_disclosures_attributes_0_id_number').focus()
+        else
+            $('input#submission_invention_disclosures_attributes_0_id_number').attr('value', '')
+            $('div#invention').addClass('hidden')
+            e.preventDefault
+
+        if $('div.author #submission_access_level_restricted_to_institution').prop('checked')
+          $('div#restricted_note').removeClass('hidden')
+          $('#submission_restricted_notes').focus()
+        else
+          $('div#restricted_note').addClass('hidden')
+          e.preventDefault
+
+
+$(document).on('page:load ready', bind_to_access_level)
+
+

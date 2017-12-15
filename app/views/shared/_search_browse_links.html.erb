@@ -1,0 +1,10 @@
+<% if current_partner.milsch? %>
+    <li>
+      <%= link_to "Explore #{current_partner.slug}", catalog_by_author_path, class: 'btn btn-default', :onclick => "alert('Explore Coming Soon'); return false;" %>
+    </li>
+<% else %>
+    <li>
+      <%#= link_to "Explore #{current_partner.slug}", catalog_by_author_path, class: 'btn btn-default' %>
+    </li>
+<% end %>
+

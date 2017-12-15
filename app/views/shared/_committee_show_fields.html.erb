@@ -1,0 +1,18 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th class="col-md-3">Name</th>
+    <th class="col-md-3">Role</th>
+    <th class="col-md-3">Email</th>
+  </tr>
+  </thead>
+  <tbody>
+  <%  @submission.committee_members.each do |cm| %>
+      <tr class="<%= cycle('odd', '') %>">
+        <td><%= cm.name %></td>
+        <td><%= cm.role %></td>
+        <td><%= cm.email %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

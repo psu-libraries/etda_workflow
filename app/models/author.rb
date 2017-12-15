@@ -41,9 +41,11 @@ class Author < ApplicationRecord
     Thread.current[:author] = author
   end
 
-  # def current_author
-  #   Author.current || nil
-  # end
+  def full_name
+    return access_id if first_name.nil? || last_name.nil?
+    return first_name + ' ' + last_name unless middle_name.present?
+    first_name + ' ' + middle_name + ' ' + last_name
+  end
 
   def populate_attributes
     update_confidential_status(access_id)
