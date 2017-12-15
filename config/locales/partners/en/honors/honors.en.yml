@@ -1,0 +1,143 @@
+en:
+  honors:
+    time:
+      formats:
+        medium: '%b %-d, %Y %l:%M %P'
+    header:
+      title: Electronic Theses for Schreyer Honors College
+    submission:
+      create:
+        success: Your Graduate School submission was created successfully.
+        failure: There was a problem submitting your Schreyer Honors Thesis (eHT).
+      new: If you would like to start a new thesis submission, you may do so by clicking the link below.  Your final submission will not be complete until you have added your committee members.
+    partner:
+      abbrev: schreyer
+      name: Schreyer Honors College
+      url: http://www.shc.psu.edu/students/thesis
+      slug: eHT
+      description:
+        title: Welcome to the starting point for the Penn State electronic honors thesis database.
+        text: <p>Electronic submission of the final Honors Thesis became a requirement beginning spring semester 2010. Honors theses submitted prior to spring semester 2010 will not be found on this database. Both the mandatory draft submission and the final thesis must be submitted electronically through this site.</p><p>All final theses are open to the public. If there is a reason (usually for patent or proprietary purposes) your thesis should not be released to the public, you must contact the Schreyer Honors College and request restricted access. Restricted access may be granted for a period up to two years. The thesis will be automatically released for public access at end of the approved restricted period.</p>
+      alternate_email_hint: 'The Alternate email address will be used after your psu.edu email address expires.'
+      thesis_guide: 'https://www.shc.psu.edu/academic/thesis/submission.cfm'
+      document_title_label: 'Title'
+      email:
+        url:  'honors-url-figure-out-what-it-is'
+        address: honorsthesis@psu.edu
+        signature: 'Schreyer Honors College<br /> University Park, PA'
+
+        final_submission_approved:
+          message: |
+                    The electronic honors %{degree_type} submitted by you has been approved by the %{partner_name}.
+                    The access level for your %{degree_type} is: %{access_level}
+                    Use the following URL to access the available information for Honors Theses: %{url}
+                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA  16802
+                    cc: %{author_email}
+                    %{committee_email_list}
+        pay_thesis_fee:
+          message: |
+                    Now that your honors %{degree_type} has been approved, you must complete two more steps to finalize the process:
+                    1. Go to https://www.shc.psu.edu/srs/grad/fee and pay the thesis processing fee.
+                    2.  Bring payment receipt and your signed signatory page to the Honors College, C-4 Atherton Hall. In Summer and Fall, you must make an advance appointment to submit your signature page. In Spring, you must attend during the designated Thesis Days.
+                    Once fee and signatory page are received, you can hit the GONG and we will celebrate with you.  Congratulations!
+                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA 16802
+        release_for_publication:
+          message: |
+                    When you submitted your electronic %{degree_type} (eHT) to the %{partner_name} in %{submission_year},
+                    you elected to restrict access to it for two years. The time has come to change it to open access.
+                    Please acknowledge that you are aware that your eHT will be available as an open document on our
+                    eHT Web site (http://www.honors.libraries.psu.edu/browse/author/all)
+                    If you or your advisor are in the process of seeking a patent associated with your %{degree_type} and
+                    have filed an Invention Disclosure with the Office of Technology Management, we can grant another two-year extension
+                    of the restriction. Please let us know immediately if this is the case.
+                    If you are seeking publication and wish to extend the restriction for that reason, we will allow a change
+                    to the 'Penn State Only' option. This will allow the document to be accessed only by those with a valid
+                    Penn State Access Account, and will provide an additional two-year period until open access. Please
+                    let us know if you need to use this option.
+                    In any case, it is important that you respond to this message. Thank you.
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+        access_level_updated:
+          message: |
+                    The Schreyer Honors College has changed the availability of the following honor thesis as shown below:
+                    Author - %{full_name}
+                    Title - %{title}
+                    New Availability - %{new_access_level}
+                    Old Availability - %{old_access_level}
+                    Graduation Year - %{graduation_year}
+                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA 16802
+    program:
+      label: Area of Honors
+    committee:
+      label: Thesis Supervisor
+      list:
+        label: Thesis Supervisors
+      author_instructions:
+        The honors college only requires two people to read and approve the thesis, an Honors Advisor and Thesis Supervisor. The only time a "Faculty Reader" is required is if the honors advisor and thesis supervisor are the same person.
+      special_role: supervisor
+    admin_filters:
+      format_review_incomplete:
+        title: Format Review is Incomplete
+        description: Draft submissions without format review files or were rejected and need formatting corrections
+      format_review_submitted:
+        title: Format Review is Submitted
+        description: Thesis drafts to be reviewed
+      format_review_completed:
+        title: Format Review is Completed
+        description: Completed and approved drafts
+      final_submission_submitted:
+        title: Final Submission is Submitted
+        description: Theses waiting to be reviewed for final formatting approval by Schreyer Honors College
+      final_submission_incomplete:
+        title: Final Submission is Incomplete
+        description: Submissions that were rejected and need formatting corrections
+      final_submission_approved:
+        title: Final Submission to be Released
+        description: Approved and waiting to be released
+      released_for_publication:
+        title: Released Theses
+        description: Manage theses which have already been released
+      final_restricted_institution:
+        title: Final Submission is Restricted to Penn State
+        description: Submissions restricted to the Penn State community.
+      final_withheld:
+        title: Restricted Theses
+        description: Availability restricted for 2 years.
+    access_level:
+      open_access: Open Access
+      open_access_attr:
+        description_html: Allows for open access to the body of the thesis. Note:"Withheld" status must be arranged by contacting the Honors College Records Department.
+        scope: released_for_publication
+      restricted_to_institution: 'Restricted (Penn State Only)'
+      restricted_to_institution_attr:
+        description_html: 'Access restricted to individuals having a valid Penn State Access Account, for a period of two years. Allows restricted access of the entire work beginning immediately after degree conferral. At the end of the two-year period, the status will automatically change to Open Access. <i>Intended for use by authors in cases where prior public release of the work may compromise its acceptance for publication.</i>'
+        scope: final_restricted_institution
+      restricted: 'Restricted'
+      restricted_attr:
+        description_html: 'The option selected secures the body of the thesis for a period of two years. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final honors thesis and confirmed by OTM. At the end of the two-year period, the work will be released automatically for open access unless a written request is made to extend this option for an additional year. The written request for an extension should be sent 30 days prior to the end of the two-year period to the Honors College Records Department, 10 Schreyer Honors College, The Pennsylvania State University, University Park, PA 16802, or by e-mail to <a href="mailto:honorsthesis@psu.edu">honorsthesis@psu.edu</a>. Please note: No one will be able to view your work under this option.'
+        scope: final_withheld
+    download:
+      login_html: 'Login using your Penn State access account to view the paper.'
+    admin:
+      submission:
+        edit:
+          author-information: Author Information
+          format-review-files: Format Review Information
+          committee: Committee
+          program-information: Program Information

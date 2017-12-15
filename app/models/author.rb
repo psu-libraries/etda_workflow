@@ -53,7 +53,7 @@ class Author < ApplicationRecord
   end
 
   def populate_with_ldap_attributes
-    results = LdapUniversityDirectory.new.retrieve(access_id)
+    results = LdapUniversityDirectory.new.retrieve(access_id, LdapResultsMap::AUTHOR_LDAP_MAP)
     # raise an error unless ldap_results_valid?(results)
     mapped_attributes = results.except(:access_id)
     save_mapped_attributes(mapped_attributes) if mapped_attributes
@@ -73,14 +73,6 @@ class Author < ApplicationRecord
   def can_edit?
     raise NotAuthorizedToEdit unless access_id.downcase.strip == Author.current.access_id.downcase.strip
     true
-  end
-
-  def admin?
-    is_admin || false
-  end
-
-  def site_admin?
-    is_site_admin || false
   end
 
   def legacy?

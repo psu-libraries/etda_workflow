@@ -1,0 +1,139 @@
+en:
+  graduate:
+    time:
+      formats:
+        medium: '%b %-d, %Y %l:%M %P'
+    header:
+      title: Electronic Theses and Dissertations for Graduate School
+    submission:
+      create:
+        success: Your Graduate School submission was created successfully.
+        failure: There was a problem submitting your Graduate School eTD.
+      new: If you would like to start a new thesis submission, you may do so by clicking the link below.
+    partner:
+      abbrev: graduate
+      name: Graduate School
+      url: http://www.gradschool.psu.edu/index.cfm/current-students/etd/
+      slug: eTD
+      description:
+        title: Welcome to the Graduate School section of the eTD database.
+        text: <p>The primary purpose of a thesis or dissertation is to train the student in the process of scholarly research and writing under the direction of members of the Graduate Faculty. After the student has graduated and the work is published, it serves as a contribution to human knowledge, is useful to other scholars and perhaps even to a more general audience. Electronic thesis and dissertations (eTDs) expand the creative possibilities open to students and empower students to convey a richer message by permitting video, sound, and color images to be integrated into their work. Submitting and archiving eTDs helps students to understand electronic publishing issues and provides greater acess to students' research. Through the Web, people from any place on the globe can link directly to eTD collections at Penn State and other universities.</p><p>The Graduate School, the University Libraries, and the Graduate Faculty of Penn State have established format standards that theses and dissertations must meet before receiving final approval as fulfillment of graduate requirements.  The Office of Theses and Dissertations staff is responsible for verifying that all eTDs have met these requirements <a href="%{thesis_guide_link}">(refer to the Thesis and Dissertation Guide)</a>.  The text of the eTD should be proofread and free of grammatical errors and typos.  It is extremely important that the author carefully review and proofread the thesis or dissertation before submitting the final document.  After the official approval of the final eTD by the Office of Theses and Dissertations, changes will not be permitted.</p>
+      alternate_email_hint: 'The Alternate email address will be used after your psu.edu email address expires.'
+      thesis_guide: 'http://www.gradschool.psu.edu/index.cfm/current-students/etd/'
+      document_title_label: 'Please enter your Thesis or Dissertation Title'
+      email:
+        url: 'http://etda.libraries.psu.edu'
+        address: gradthesis@psu.edu
+        signature: 'Graduate School <br />Keller Building<br /> University Park, PA'
+
+        format_review_received:
+          message: |
+                    Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with
+                    you when the review has been completed.
+                    You will receive the results of the review by email within two weeks.
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+        final_submission_received:
+          message: |
+                    Thank you for submitting your final %{degree_type}.  You will be notified by email of your eTD approval
+                    or if changes are required within 2-3 weeks after submitting your final.
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+        final_submission_approved:
+          message: |
+                    Your eTD has been reviewed and approved. Everything is in order, and you need do nothing further for our office.
+                    After graduation, the eTD will be available through Penn State’s eTD database %{url} and will be sent to ProQuest/UMI Dissertation Services for processing unless you have chosen to restrict access to it. If it is restricted, it will automatically change to Open Access after two years.
+                    The access level for your %{degree_type} is: %{access_level}.
+                    Please accept our congratulations as you complete your degree (commencement information can be found online as http://commencement.psu.edu/).
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+                    cc:%{author_email}
+                    %{committee_email_list}
+          dissertation_publish_msg: and will be sent to ProQuest/UMI Dissertation Services for processing
+        access_level_updated:
+          message: |
+                    The Graduate School has changed the availability of the following eTD as shown below:
+                     Author - %{full_name}
+                     Title - %{title}
+                     Paper - %{degree_type}
+                     New Availability - %{new_access_level}
+                     Old Availability - %{old_access_level}
+                     Graduation Year - %{graduation_year}
+                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                     You may also call (814)865-5448, or send mail to:
+                     Office of Theses and Dissertations
+                     115 Kern Building
+                     Graduate School
+                     University Park, PA  16802
+    program:
+      label: Graduate Program
+    committee:
+      label: Committee Member
+      list:
+        label: Committee Members
+      author_instructions:
+        The committee for a Master's thesis must consist of at least one Thesis Advisor and two Committee Members.  The committee for a Dissertation must include one Dissertation Advisor, one Committee Chair, two Committee Members, and one Outside Member.
+
+      special_role: advisor
+    admin_filters:
+      format_review_incomplete:
+        title: Format Review is Incomplete
+        description: Draft submissions without format review files or were rejected and need formatting corrections
+      format_review_submitted:
+        title: Format Review is Submitted
+        description: Thesis drafts to be reviewed
+      format_review_completed:
+        title: Format Review is Completed
+        description: Completed and approved drafts
+      final_submission_submitted:
+        title: Final Submission is Submitted
+        description: Theses waiting to be reviewed for final formatting approval by the Graduate School.
+      final_submission_incomplete:
+        title: Final Submission is Incomplete
+        description: Submissions that were rejected and need formatting corrections
+      final_submission_approved:
+        title: Final Submission to be Released
+        description: Approved and waiting to be released
+      released_for_publication:
+        title: Released Theses
+        description: Manage theses which have already been released
+      final_restricted_institution:
+        title: Final Submission is Restricted to Penn State
+        description: Submissions restricted to the Penn State community.
+      final_withheld:
+        title: Restricted Theses
+        description: Availability restricted for 2 years.
+    access_level:
+      open_access: Open Access
+      open_access_attr:
+        description_html: Allows free worldwide access to the entire work beginning immediately after degree conferral. Appropriate for the majority of dissertation submissions in immediately fulfilling the requirement for making the work available to the public.
+        scope: released_for_publication
+      restricted_to_institution: 'Restricted (Penn State Only)'
+      restricted_to_institution_attr:
+        description_html: 'Access restricted to individuals having a valid Penn State Access Account, for a period of two years. Allows restricted access of the entire work beginning immediately after degree conferral. At the end of the two-year period, the status will automatically change to Open Access. <i>Intended for use by authors in cases where prior public release of the work may compromise its acceptance for publication.</i>'
+        scope: final_restricted_institution
+      restricted: 'Restricted'
+      restricted_attr:
+        description_html: 'Restricts the entire work for a period of two years, for patent and/or proprietary purposes. At the end of the two-year period, the status will automatically change to Open Access. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final thesis/dissertation, and confirmed by OTM.'
+        scope: final_withheld
+    download:
+      login_html: 'Login using your Penn State access account to view the paper.'
+    admin:
+      submission:
+        edit:
+          author-information: Author Information
+          format-review-files: Format Review Information
+          committee: Committee
+          program-information: Program Information

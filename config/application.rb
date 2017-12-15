@@ -19,6 +19,7 @@ module EtdaWorkflow
     #
     config.time_zone = 'Eastern Time (US & Canada)'
 
-    config.time_zone = 'Eastern Time (US & Canada)'
+    # config.autoload_paths += Dir["#{config.root}/lib/**/*"]
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'partners', I18n.default_locale.to_s, '*', '*.{rb,yml}').to_s]
   end
 end

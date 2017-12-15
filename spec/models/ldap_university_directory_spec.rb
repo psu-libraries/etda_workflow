@@ -233,7 +233,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
   end
 
   describe '#retrieve' do
-    let(:result) { directory.retrieve(access_id) }
+    let(:result) { directory.retrieve(access_id, LdapResultsMap::AUTHOR_LDAP_MAP) }
     context "when given an unknown access ID" do
       let(:access_id) { "zzz9999" }
       it "returns an empty hash" do

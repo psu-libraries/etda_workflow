@@ -10,7 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171117124833) do
+ActiveRecord::Schema.define(version: 20171212004556) do
+
+  create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "access_id", default: "", null: false
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "psu_email_address"
+    t.string "address_1"
+    t.string "phone_number"
+    t.string "psu_idn"
+    t.boolean "administrator"
+    t.boolean "site_administrator"
+    t.index ["access_id"], name: "index_admins_on_access_id", unique: true
+  end
 
   create_table "authors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "access_id", default: "", null: false
@@ -39,8 +60,6 @@ ActiveRecord::Schema.define(version: 20171117124833) do
     t.integer "legacy_id"
     t.boolean "confidential_hold"
     t.datetime "confidential_hold_set_at"
-    t.boolean "is_admin"
-    t.boolean "is_site_admin"
     t.index ["access_id"], name: "index_authors_on_access_id", unique: true
     t.index ["legacy_id"], name: "index_authors_on_legacy_id"
   end

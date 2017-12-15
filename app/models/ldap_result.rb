@@ -37,7 +37,7 @@ class LdapResult
       if ldap_value.nil? || ldap_value.blank?
         res[k] = default(k)
       else
-        new_ldap_value = (k == :is_admin) ? ldap_value : ldap_value.first
+        new_ldap_value = (k == :administrator) ? ldap_value : ldap_value.first
         res[k] = map_value(new_ldap_value, k)
       end
     end
@@ -106,7 +106,7 @@ class LdapResult
       ldap_value.split(' ').last || ''
     end
 
-    def format_is_admin(ldap_value, _options)
+    def format_administrator(ldap_value, _options)
       user_in_admin_group? ldap_value
     end
 

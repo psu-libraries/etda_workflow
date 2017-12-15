@@ -21,8 +21,8 @@ RSpec.shared_examples "a UniversityDirectory" do
     it "exists" do
       expect(directory).to respond_to(:retrieve)
     end
-    it "takes one argument" do
-      expect(directory.method(:retrieve).arity).to eq(1)
+    it "takes two arguments" do
+      expect(directory.method(:retrieve).arity).to eq(2)
     end
   end
 

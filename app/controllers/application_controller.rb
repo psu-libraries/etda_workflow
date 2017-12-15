@@ -3,19 +3,35 @@ class ApplicationController < ActionController::Base
 
   Devise.add_module(:webacess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
-  before_action :clear_session_author
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  def clear_session_author
-    # only logout if the REMOTE_USER is not set in the HTTP headers and a user is set within warden
-    # logout clears the entire session including flash messages
-    request.env['warden'].logout unless author_logged_in?
+  rescue_from ActionController::RoutingError, with: :route_not_found
+  unless Rails.env.test?
+    # rescue_from Blacklight::Exceptions::InvalidSolrID, with: :render_404
+    rescue_from ActionView::MissingTemplate, with: :render_404
+    rescue_from ActionController::RoutingError, with: :render_404
+    rescue_from ActiveRecord::RecordNotFound, with: :render_404
+    # rescue_from CanCan::AccessDenied, with: :render_401
+    rescue_from ActionView::Template::Error, with: :render_500
+    rescue_from ActiveRecord::StatementInvalid, with: :render_500
+    rescue_from Mysql2::Error, with: :render_500
+    rescue_from Net::LDAP::LdapError, with: :render_500
+    # rescue_from Redis::CannotConnectError, with: :render_500
+    rescue_from Errno::ECONNREFUSED, with: :render_500
+    rescue_from ActionDispatch::Cookies::CookieOverflow, with: :render_500
+    rescue_from RuntimeError, with: :render_500
+    # rescue_from RestClient::Unauthorized, RestClient::Forbidden, with: :render_401
   end
 
+  # Prevent CSRF attacks by raising an exception.
+  # For APIs, you may want to use :null_session instead.
+  protect_from_forgery with: :null_session
+
   def login
-    webaccess_login_url = WebAccess.new(request.env['HTTP_REFERER']).login_url unless author_logged_in?
+    Rails.logger.info 'LOGGING IN APP CONTROLLER'
+    webaccess_login_url = WebAccess.new(request.env['HTTP_REFERER']).login_url
     Rails.logger.info "REDIRECTING---" + "#{webaccess_login_url}  #{Time.zone.now}"
-    redirect_to webaccess_login_url unless Rails.env.development? || Rails.env.test?
+    redirect_to webaccess_login_url # unless Rails.env.development? || Rails.env.test?
   end
 
   def logout
@@ -25,12 +41,16 @@ class ApplicationController < ActionController::Base
     redirect_to WebAccess.new.logout_url unless Rails.env.development? || Rails.env.test?
   end
 
+  def current_remote_user
+    Devise::Strategies::WebaccessAuthenticatable.new(nil).remote_user(request.headers)
+  end
+
   protected
 
-    def author_logged_in?
-      author_signed_in? || Rails.env.test?
-      # author_signed_in? && valid?(request.headers) || Rails.env.test?
-    end
+    # def logged_in?
+    #   ((author_signed_in? || admin_signed_in?) && Devise::Strategies::WebaccessAuthenticatable.new(request.headers).valid?) || Rails.env.test?
+    #   #   # ()author_signed_in? && valid?(request.headers) || Rails.env.test?
+    # end
 
     def configure_permitted_parameters
       devise_parameter_sanitizer.permit(:access_id)

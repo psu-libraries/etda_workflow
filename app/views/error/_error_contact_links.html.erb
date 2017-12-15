@@ -1,0 +1,7 @@
+<span id="contact_link">
+<% if Author.current.blank? %>
+    <%= link_to 'reporting this error', I18n.t('libraries_help_link'), target: '_blank' %><span class="sr-only">this link will open in a new tab</span>
+<% else %>
+    <%= link_to 'reporting this error', '/contact_form' %>
+<% end %>
+</span>

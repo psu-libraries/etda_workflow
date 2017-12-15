@@ -23,7 +23,6 @@ FactoryBot.define do
     city "State College"
     state "PA"
     zip "16801"
-    is_admin false
     updated_at 4.days.ago
     # inbound_lion_path_record { create(:inbound_lion_path_record) }
   end
@@ -37,8 +36,4 @@ FactoryBot.define do
     confidential_hold true
     confidential_hold_set_at Time.zone.yesterday
   end
-
-  # trait :no_lionpath_record do
-  #   inbound_lion_path_record nil
-  # end
 end

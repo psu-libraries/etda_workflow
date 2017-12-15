@@ -5,22 +5,34 @@ RSpec.describe 'Devise Login', type: :request do
   RSpec::Mocks.configuration.allow_message_expectations_on_nil = true
   let(:author) { FactoryBot.create(:author) }
   before do
+    allow(request).to receive(:controller).and_return("admin/degrees")
     allow(request).to receive(:headers).and_return('REMOTE_USER' => 'saw140')
   end
 
   it 'signs author in and out' do
-    headers = { 'REMOTE_USER' => 'saw140' }
-    author = Author.find_by_access_id('saw140')
-    expect(author).to be_nil
+    headers = { 'REMOTE_USER' => 'saw140', 'REQUEST_URI' => '/author/submissions' }
+    expect(Author.find_by_access_id('saw140')).to be_nil
     request.headers.merge! headers
     Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate!
     get root_path
-    author = Author.find_by_access_id('saw140')
-    expect(author).to_not be_nil
-    # expect(current_author).to eql(author)
-    # sign_out(author)
-    # get root_path
-    # expect(current_author).to be_nil
+    expect(Author.find_by_access_id('saw140')).to_not be_nil
+  end
+
+  it 'signs admin in and out' do
+    headers = { 'REMOTE_USER' => 'xxb13', 'REQUEST_URI' => '/admin/degrees' }
+    expect(Admin.find_by_access_id('xxb13')).to be_nil
+    request.headers.merge! headers
+    Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate!
+    get root_path
+    expect(Admin.find_by_access_id('xxb13')).not_to be_nil
+  end
+
+  it 'does not authenticate an admin who is not in ldap admin group' do
+    headers = { 'REMOTE_USER' => 'saw140', 'REQUEST_URI' => '/admin/degrees' }
+    expect(Admin.find_by_access_id('saw140')).to be_nil
+    request.headers.merge! headers
+    Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate! if LdapUniversityDirectory.new.in_admin_group? 'saw140'
+    expect(Admin.find_by_access_id('saw140')).to be_nil
   end
 
   before do
@@ -32,10 +44,10 @@ RSpec.describe 'Devise Login', type: :request do
     end
 
     it 'author can login and logout' do
-      get login_author_path
+      get login_path
       assert_response :redirect, '<302: Found> redirect to <"#{WebAccess.new().login_url}">'
 
-      get logout_author_path
+      get logout_path
       assert_response :redirect, '<302: Found> redirect to <"#{WebAccess.new().logout_url}">'
     end
   end
@@ -45,10 +57,10 @@ RSpec.describe 'Devise Login', type: :request do
     end
 
     it 'author can login and logout' do
-      get login_author_path
+      get login_path
       assert_response :redirect, '<302: Found> redirect to <"#{WebAccess.new().login_url}">'
 
-      get logout_author_path
+      get logout_path
       assert_response :redirect, '<302: Found> redirect to <"#{WebAccess.new().logout_url}">'
     end
   end

@@ -36,16 +36,16 @@ class LdapUniversityDirectory
 
   def exists?(psu_access_id)
     # result = nil
-    result = retrieve(psu_access_id).present?
+    result = retrieve(psu_access_id, LdapResultsMap::AUTHOR_LDAP_MAP).present?
     return false if result.nil?
     result.present?
   end
 
-  def retrieve(psu_access_id)
+  def retrieve(psu_access_id, attributes_map)
     return {} if string_has_wildcard_character? psu_access_id
     ldap_record = directory_lookup('uid', psu_access_id)
     mapped_attributes = LdapResult.new(ldap_record: ldap_record,
-                                       attribute_map: LdapResultsMap::AUTHOR_LDAP_MAP).map_directory_info
+                                       attribute_map: attributes_map).map_directory_info
     return {} if mapped_attributes.nil? || mapped_attributes.empty?
 
     mapped_attributes.first
@@ -60,12 +60,21 @@ class LdapUniversityDirectory
     get_ldap_attribute(this_access_id, 'psidn')
   end
 
+  def in_admin_group?(this_access_id)
+    result = get_ldap_attribute(this_access_id, 'psmemberof')
+    return false if result.nil? || result.empty?
+    return true if result.include? "cn=umg/psu.sas.etda-#{current_partner.id}-admins,dc=psu,dc=edu"
+    return true if result.include? "cn=umg/psu.dsrd.etda_#{current_partner.id}_admin_users,dc=psu,dc=edu"
+    false
+  end
+
   private
 
     def get_ldap_attribute(this_access_id, this_attribute)
       attrs = directory_lookup('uid', this_access_id)
       return '' if attrs.nil? || attrs.empty?
-      attrs.first[this_attribute].first
+      return attrs.first[this_attribute].first unless this_attribute == 'psmemberof'
+      attrs.first[this_attribute]
     end
 
     def ldap_configuration

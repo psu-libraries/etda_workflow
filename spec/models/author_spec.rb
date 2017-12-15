@@ -22,8 +22,6 @@ RSpec.describe Author, type: :model do
   it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:legacy_id).of_type(:integer) }
   it { is_expected.to have_db_column(:confidential_hold).of_type(:boolean) }
-  it { is_expected.to have_db_column(:is_admin).of_type(:boolean) }
-  it { is_expected.to have_db_column(:is_site_admin).of_type(:boolean) }
 
   it { is_expected.to have_db_column(:remember_created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:sign_in_count).of_type(:integer) }
@@ -115,10 +113,10 @@ RSpec.describe Author, type: :model do
       expect(described_class.new(access_id: 'testid').send('ldap_results_valid?', nil)).to be_falsey
     end
     it 'returns false if access_ids do not match' do
-      expect(described_class.new(access_id: 'wrongid').send('ldap_results_valid?', access_id: 'testid', first_name: "xtester", middle_name: "xmiddle", last_name: "xlast", address_1: "TSB Building", city: "University Park", state: "PA", zip: "16802", phone_number: "555-555-5555", country: "US", is_admin: true, psu_idn: "999999999"))
+      expect(described_class.new(access_id: 'wrongid').send('ldap_results_valid?', access_id: 'testid', first_name: "xtester", middle_name: "xmiddle", last_name: "xlast", address_1: "TSB Building", city: "University Park", state: "PA", zip: "16802", phone_number: "555-555-5555", country: "US", psu_idn: "999999999"))
     end
     it 'returns true if results are not empty' do
-      expect(described_class.new(access_id: 'testid').send('ldap_results_valid?', access_id: 'testid', first_name: "xtester", middle_name: "xmiddle", last_name: "xlast", address_1: "TSB Building", city: "University Park", state: "PA", zip: "16802", phone_number: "555-555-5555", country: "US", is_admin: true, psu_idn: "999999999")).to be_truthy
+      expect(described_class.new(access_id: 'testid').send('ldap_results_valid?', access_id: 'testid', first_name: "xtester", middle_name: "xmiddle", last_name: "xlast", address_1: "TSB Building", city: "University Park", state: "PA", zip: "16802", phone_number: "555-555-5555", country: "US", psu_idn: "999999999")).to be_truthy
     end
   end
 
@@ -144,21 +142,6 @@ RSpec.describe Author, type: :model do
     it "does not allow an author to edit someone else's personal information" do
       described_class.current = described_class.new(access_id: 'me123')
       expect { described_class.new(access_id: 'somebodyelse456').can_edit? }.to raise_error(Author::NotAuthorizedToEdit)
-    end
-  end
-  context '#is_admin?' do
-    it 'knows when an author has admin privileges' do
-      expect(described_class.new(access_id: 'me123', is_admin: true).is_admin?).to be_truthy
-      expect(described_class.new(access_id: 'me123', is_admin: nil).is_admin?).to be_falsey
-    end
-  end
-  context '#is_site_admin?' do
-    it 'knows when an author has site administration privileges' do
-      author = described_class.new(access_id: 'me123')
-      author.is_site_admin = true
-      expect(author.is_site_admin?).to be_truthy
-      author.is_site_admin = false
-      expect(author.is_site_admin?).to be_falsey
     end
   end
   context '#legacy' do
@@ -187,12 +170,12 @@ RSpec.describe Author, type: :model do
   describe '#populate_attributes' do
     author = described_class.new(access_id: 'xyz123', psu_email_address: 'xyz123')
     author.save validate: false
-    let(:author_ldap_results) { { access_id: 'xyz123', first_name: 'Xyzlaphon', middle_name: 'Yhoo', last_name: 'Zebra', address_1: '0116 H Technology Sppt Bldg', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '814-865-4845', is_admin: false, psu_idn: '988888888', confidential_hold: false } }
+    let(:author_ldap_results) { { access_id: 'xyz123', first_name: 'Xyzlaphon', middle_name: 'Yhoo', last_name: 'Zebra', address_1: '0116 H Technology Sppt Bldg', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '814-865-4845', psu_idn: '988888888', confidential_hold: false } }
 
     it 'updates author attributes using LDAP information ' do
       expect(author.last_name).to be_blank
       expect(author.phone_number).to be_blank
-      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('xyz123').and_return(author_ldap_results)
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('xyz123', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_ldap_results)
       author.populate_attributes
       expect(author.last_name).to eql('Zebra')
       expect(author.phone_number).to eql('814-865-4845')
@@ -201,11 +184,11 @@ RSpec.describe Author, type: :model do
   describe '#populate_attributes' do
     author = described_class.new(access_id: 'bbb123', psu_email_address: 'bbb123')
     author.save validate: false
-    let(:author_ldap_results) { { access_id: 'bbb123', first_name: '', middle_name: '', last_name: '', address_1: '', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '', is_admin: false, psu_idn: '988888888', confidential_hold: true } }
+    let(:author_ldap_results) { { access_id: 'bbb123', first_name: '', middle_name: '', last_name: '', address_1: '', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '', psu_idn: '988888888', confidential_hold: true } }
     it 'populates first and last name with access_id and a message when LDAP does not return those fields' do
       expect(author.last_name).to be_blank
       expect(author.phone_number).to be_blank
-      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('bbb123').and_return(author_ldap_results)
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('bbb123', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_ldap_results)
       author.populate_attributes
       expect(author.first_name).to eql("#{author.access_id}")
       expect(author.phone_number).to eql('')

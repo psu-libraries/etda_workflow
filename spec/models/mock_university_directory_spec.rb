@@ -42,7 +42,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
   end
 
   describe '#retrieve' do
-    let(:result) { directory.retrieve(access_id) }
+    let(:result) { directory.retrieve(access_id, LdapResultsMap::AUTHOR_LDAP_MAP) }
     context "when given an access ID that is not part of the fake data" do
       let(:access_id) { "not there" }
       it "returns an empty string" do
@@ -69,6 +69,27 @@ RSpec.describe MockUniversityDirectory, type: :model do
     context "using any access id to return a fake number" do
       it "returns a fake psu_id_number" do
         expect(result).to eq('999999999')
+      end
+    end
+  end
+
+  describe 'in_admin_group?' do
+    let(:result) { directory.in_admin_group?('jxb13') }
+    context 'returns true if admin user' do
+      it 'is true' do
+        expect(result).to be_truthy
+      end
+    end
+    context 'returns false if no results' do
+      it 'is false' do
+        result = directory.in_admin_group?('saw140')
+        expect(result).to be_falsey
+      end
+    end
+    context 'returns false if user does not exist' do
+      it 'is false' do
+        result = directory.in_admin_group?('')
+        expect(result).to be_falsey
       end
     end
   end

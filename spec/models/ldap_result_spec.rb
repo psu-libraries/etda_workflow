@@ -15,7 +15,6 @@ RSpec.describe LdapResult, type: :model do
         expect(mapped_record.first[:city]).to eq 'University Park'
         expect(mapped_record.first[:state]).to eq 'PA'
         expect(mapped_record.first[:zip]).to eq '16802'
-        expect(mapped_record.first[:is_admin]).to be(true)
         expect(mapped_record.first[:psu_idn]).to eq('987654321')
       end
     end
@@ -47,6 +46,24 @@ RSpec.describe LdapResult, type: :model do
       it 'returns a message when department information is missing' do
         expect(mapped_record[2][:dept]).to eq 'Department not available'
         expect(mapped_record[2][:id]).to eq 'Email not available'
+      end
+    end
+  end
+
+  describe 'ADMIN_LDAP_MAP' do
+    context 'Parsed LDAP attributes are returned for administrators' do
+      let(:mapped_record) do
+        described_class.new(ldap_record: mock_ldap_entry,
+                            attribute_map: LdapUniversityDirectory::ADMIN_LDAP_MAP).map_directory_info
+      end
+
+      it 'returns a list containing key-value pairs mapped to ETD Author labels' do
+        expect(mapped_record.first[:last_name]).to eq 'Barnoff'
+        expect(mapped_record.first[:first_name]).to eq 'Joni'
+        expect(mapped_record.first[:phone_number]).to eq '814-865-4845'
+        expect(mapped_record.first[:address_1]).to eq '003 E Paterno Library'
+        expect(mapped_record.first[:psu_idn]).to eq('987654321')
+        expect(mapped_record.first[:administrator]).to be_truthy
       end
     end
   end

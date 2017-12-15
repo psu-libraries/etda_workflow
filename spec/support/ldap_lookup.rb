@@ -15,6 +15,13 @@ def create_author_from_ldap
   author
 end
 
+def create_admin_from_ldap
+  @ldap_info = LdapLookup.new(uid: 'xxb13', ldap_record: mock_ldap_entry.first)
+  @ldap_info.map_author_attributes
+  admin = Admin.create(@ladp_info.mapped_attributes)
+  admin
+end
+
 def create_committee_lookup_list
   @ldap_info = LdapLookup.new(uid: 'barnoff', ldap_record: mock_ldap_list)
 end
