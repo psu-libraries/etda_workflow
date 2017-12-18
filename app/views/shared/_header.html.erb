@@ -1,0 +1,69 @@
+<header class="<%= page_classes %>" >
+<%#  <div id="shield-and-logo">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <a href="/">
+            <%= image_tag t('partner.abbrev')+'/logo.png', alt: t('partner.name')+' banner', usemap: "#psulink", class: 'img-responsive' %>
+<%#          </a>
+          <map name="psulink">
+            <area role="presentation" alt="Penn State home page" href="http://www.psu.edu" coords="0,0,134,82" shape="rect">
+          </map>
+        </div>
+      </div>
+    </div>
+  </div>    %>
+  <div id="shield-and-logo">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-3 col-lg-2">
+          <a id="psu-shield" href="http://www.psu.edu/">
+            <%= image_tag 'PS_HOR_REV_RGB_2C.png', alt: 'PSU logo', width: '200' %>
+          </a>
+        </div>
+        <div class="col-xs-12 col-sm-9 col-lg-10">
+
+
+        <span id="logo-old">
+          <a href="/"><%= I18n.t("#{current_partner.id}.header.title").html_safe %></a>
+        </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav id="account-navigation" class="navbar navbar-default" role="navigation" aria-labelledby="top-navigation">
+    <div class="container">
+      <div class="row">
+
+          <div id=top-navigation class="col-xs-8 col-sm-7">
+            <ul class="list-inline navbar-list">
+              <% unless Author.current.blank? %>
+                <li>
+                  <%= link_to "Home", root_path, class: 'btn btn-default' %>
+                </li>
+              <% end %>
+              <%#= render partial: 'shared/search_browse_links' %>
+              <% unless Author.current.blank? %>
+                <li>
+                    <%= link_to "Contact Us", contact_form_new_path, class: 'btn btn-default' %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="col-xs-4 col-sm-5">
+            <!--<div class="pull-right">-->
+
+            <% if Author.current.blank? %>
+              <%#= link_to 'Log In', :login_author, class: "btn btn-default btn-sm navbar-btn pull-right" %>
+            <% else %>
+              <span class="navbar-text small hidden-xs">Logged in as <%= Author.current.full_name %></span>
+              <%#= link_to 'Log Out', :logout_author, class: "btn btn-default btn-sm navbar-btn" %>
+            <% end %>
+                  <!--</div>-->
+          </div>
+        </div>
+        <!-- /.col-* -->
+    </div>
+  </nav>
+  <%= render partial: '/google_analytics' unless Rails.env.development? %>
+</header>

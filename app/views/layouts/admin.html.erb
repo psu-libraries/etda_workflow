@@ -1,17 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>ETDA</title>
 
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0">
+  <title>ETDA Admin</title>
 
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0" >
+
+  <%= stylesheet_link_tag 'admin', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'base', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'admin', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
 </head>
 
-<body>
-Admin  page
+<body class='<%= page_classes %>'>
+<div id="body-container">
+  <%= render 'shared/header' %>
+  <main>
+    <div id="content-container" class="container">
+      <%= render partial: 'shared/flash_messages' unless flash.empty? %>
+      <div id="content-row" class="row">
+        <div class="col-xs-12 col-md-2">
+          <%= render 'admin/shared/main_navigation' %>
+        </div>
+        <div class="col-xs-12 col-md-10">
 
-<%= yield %>
+          <%= yield %>
 
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<%= render 'shared/site_footer' %>
 
 </body>
 </html>

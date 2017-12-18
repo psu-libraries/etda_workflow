@@ -1,0 +1,13 @@
+<% if object.errors.any? %>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="alert alert-danger">
+        <ul>
+          <% for message in object.errors.full_messages %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+<% end %>

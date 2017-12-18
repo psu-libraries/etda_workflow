@@ -1,0 +1,34 @@
+<div class="row">
+  <div id="main-navigation" class="collapse navbar-collapse" role="navigation" aria-labelledby="admin-nav">
+    <ul id="admin-nav" class="nav nav-pills nav-stacked" >
+      <% DegreeType.all.each do |dt| %>
+          <li class="<%= 'active' if params[:degree_type] ==dt.slug %>">
+            <%= link_to dt.name.pluralize, admin_submissions_dashboard_path(dt.slug) %>
+          </li>
+      <% end %>
+      <li class="<%= 'active' if controller_name == 'authors' %>">
+        <%#= link_to 'Authors', admin_authors_path %>
+      </li>
+      <li class="<%= 'active' if controller_name == 'programs' %>">
+        <%#= link_to 'Programs', admin_programs_path %>
+      </li>
+      <li class="<%= 'active' if controller_name == 'degrees' %>">
+        <%#= link_to 'Degrees', admin_degrees_path %>
+      </li>
+      <li>
+        <a href="#" data-toggle="collapse" data-target="#reports_list" class="<%= 'active' if controller_name == 'reports' %> " id='reports_menu'>
+          Reports<span class="caret caret-right"></span></a>
+        <div class='report-buttons collapse' id='reports_list'>
+          <ul>
+            <li>
+              <%#= link_to 'Committee Report', admin_committee_report_index_path, id: 'committee_report' %>
+            </li>
+            <li>
+              <%#= link_to 'Custom Report', admin_custom_report_index_path, id: 'custom_report' %>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -68,6 +68,7 @@ RSpec.configure do |config|
   end
   config.before(:each, js: true) do
     DatabaseCleaner.strategy = :truncation
+    page.driver.browser.url_blacklist = ["www.google-analytics.com"]
   end
 
   config.before(:each) do
