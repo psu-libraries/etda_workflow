@@ -1,6 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
-require 'shoulda-matchers'
+require 'model_spec_helper'
 
 RSpec.describe Program, type: :model do
   it { is_expected.to have_db_column(:id).of_type(:integer).with_options(null: false) }
@@ -30,7 +29,8 @@ RSpec.describe Program, type: :model do
     end
     context 'When is_active is true' do
       it 'returns Yes' do
-        expect(described_class.new(is_active: true).active_status).to eq('Yes')
+        active_program = described_class.new(is_active: true)
+        expect(active_program.active_status).to eq('Yes')
       end
     end
   end

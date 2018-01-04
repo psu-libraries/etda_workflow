@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-require 'rails_helper'
-require 'shoulda-matchers'
+require 'model_spec_helper'
+
 RSpec.describe AccessLevel do
   context '#ACCESS_LEVEL_KEYS' do
     it 'constant containing all access levels' do

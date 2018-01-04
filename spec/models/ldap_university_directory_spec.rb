@@ -3,7 +3,7 @@
 # rspec spec/component/models/ldap_university_directory_spec.rb --tag ldap
 # require 'models/model_spec_helper'
 #
-require 'models/model_spec_helper'
+require 'model_spec_helper'
 require 'support/ldap_lookup'
 require 'shared/shared_examples_for_university_directory'
 

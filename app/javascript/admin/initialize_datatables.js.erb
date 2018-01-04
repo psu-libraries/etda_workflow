@@ -1,0 +1,141 @@
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+
+var $ = require('jquery');
+window.jQuery = $;
+var DataTable = require('datatables.net-bs');
+
+$('table').DataTable();
+
+//require( '../../../node_modules/datatables.net' );
+
+setup_datatables = function() {
+
+    let admin_submission_options, degree_options, program_options;
+    table = $('.datatable');
+
+    if (table === null) { return; }
+
+    const common_options = {
+        ajax: table.attr('data-ajax-url'),
+        processing: true,
+        lengthMenu: [[25, 50, 100, 200, 500, -1], [25, 50, 100, 200, 500, "All"]],
+        pageLength: 25,
+        stateSave: true,
+        stateDuration: 60 * 60 * 24,
+        language: {
+            loadingRecords: "&nbsp;",
+            processing: "<div class='spinner'><div class='spinner-info'>Loading Data...</div></div>",
+        },
+        fnDrawCallback() {
+            const pagination = $('.dataTables_paginate');
+            const buttons_we_care_to_see = pagination.find('.paginate_button').not('.disabled, .active');
+            if (buttons_we_care_to_see.length) {
+                return pagination.show();
+            } else {
+                return pagination.hide();
+            }
+        }
+    };
+
+    $('#programs-index.datatable').dataTable(
+        (program_options = {
+            rowCallback(row, program_data) {
+                const program_status = program_data[1];
+                if (program_status === "No") {
+                    return $(row).addClass('inactive');
+                }
+            },
+            initComplete() {
+                let startswith;
+                return startswith= $('#starts-with_check').on('change', function(event){
+                    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+
+//only use checkbox for matching on beginning of line on programs page
+                        if  ($.fn.dataTable.tables('visible')[0]['id'] !== 'programs-index') { return true; }
+
+                        startswith = $('#starts-with_check').prop('checked') || false;
+                        const term = $('#programs-index_filter input').val().toLowerCase() || '';
+                        let i = 0;
+                        while (i < data.length) {
+                            const position = (data[i].toString().toLowerCase()).indexOf(term);
+                            if ((startswith && (position === 0)) || (!startswith && (position >=0)))
+                              { return true; }
+                            i++;
+                        }
+                    });
+
+                    return false;
+                });
+            }
+
+        }),
+        $.extend(program_options, common_options)
+    );
+
+    $('#degrees-index.datatable').dataTable(
+        (degree_options = {
+            rowCallback(row, degree_data) {
+                const degree_status = degree_data[1];
+                if (degree_status === "No") {
+                    return $(row).addClass('inactive');
+                }
+            }
+        }),
+        $.extend(degree_options, common_options)
+    );
+
+    $('#authors-index.datatable').dataTable(
+        common_options
+    );
+
+    const column_options = () =>
+        table.find('th').map(function() {
+            const column = $(this);
+            return { "name": column.data('name'), "orderable": column.data('orderable'), "visible": column.data('visible') };})
+    ;
+
+    $('.admin-submissions-index.datatable').dataTable(
+        (admin_submission_options = {
+            columns: column_options(),
+            rowCallback(row, submission_data) {
+                const id = submission_data[0];
+                return $(row).attr('data-submission-id', id);
+            },
+            initComplete() {
+                const column = this.api().column("graduation_semester:name");
+                const current_semester = $(this).data('current-semester');
+                const select = $('<select class="form-control input-sm semester"><option value="">All Semesters</option></select>').on('change', function() {
+                    const val = $.fn.dataTable.util.escapeRegex($(this).val() || '');
+                    column.search( (val ? `^${val}$` : '') , true, false).draw();
+                });
+
+                //it is possible that current_semester is not contained in the list
+                //of submissions so default to 'All Semesters'; otherwise list-drop
+                //down is blank when page loads
+                let selected_item = '';
+                column.data().unique().sort().each(function(d, j) {
+                    if (current_semester === d) { selected_item = d; }
+                    return select.append(`<option value="${d}">${d}</option>`);
+                });
+
+                select.val(selected_item).change();
+
+                const $filters = $("#row-selection-buttons"); //$(@api().table().container()).find('.dataTables_filter')
+                $filters.append( $('<label class="pull-right"></label>').append(select) );
+
+                return select.val(selected_item).prop('selected', true);
+            }
+        }),
+        $.extend(admin_submission_options, common_options)
+    );
+
+    $('#starts-with_check').on('click', event = $('div.dataTables_filter input').val(''));
+
+    return $('div.dataTables_filter input').attr('placeholder', 'Search records...');
+};
+
+$(document).ready(setup_datatables);

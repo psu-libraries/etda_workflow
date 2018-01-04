@@ -53,6 +53,7 @@ RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
         expect(Author).to receive(:create).with(access_id: author.access_id, psu_email_address: "#{author.access_id}@psu.edu").once.and_return(author)
         expect_any_instance_of(Author).to receive(:populate_attributes).once
         # expect(subject).to be_valid
+        expect(subject.valid?).to be_truthy
         expect(subject.authenticate!).to eq(:success)
       end
     end
@@ -62,9 +63,17 @@ RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
       it 'does not populate attributes' do
         expect(Author).to receive(:create).with(access_id: author.access_id).never
         expect_any_instance_of(Author).to receive(:populate_attributes).never
+        expect_any_instance_of(Author).to receive(:update_missing_attributes).once
         # expect(subject).to be_valid
         expect(subject.authenticate!).to eq(:success)
       end
+    end
+  end
+  describe 'fail!' do
+    let(:request) { double(headers: { 'HTTP_REMOTE_USER' => nil, 'REQUEST_URI' => '/author/submissions' }) }
+    it 'fails' do
+      expect(subject.valid?).to be_falsey
+      expect(subject.authenticate!).to eq(:failure)
     end
   end
 end

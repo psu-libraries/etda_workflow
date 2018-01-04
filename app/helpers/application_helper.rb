@@ -29,4 +29,8 @@ module ApplicationHelper
       render partial: 'shared/admin_support_link'
     end
   end
+
+  def fingerprinted_asset(name)
+    "#{name}-#{ASSET_FINGERPRINT}"
+  end
 end

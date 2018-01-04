@@ -6,12 +6,11 @@
 
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0" >
 
-  <%= stylesheet_link_tag 'admin', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'base', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'admin', 'data-turbolinks-track' => true %>
+  <%= stylesheet_pack_tag 'admin' %>
+  <%= javascript_pack_tag 'base' %>
+  <%= javascript_pack_tag 'admin' %>
   <%= csrf_meta_tags %>
 </head>
-
 <body class='<%= page_classes %>'>
 <div id="body-container">
   <%= render 'shared/header' %>

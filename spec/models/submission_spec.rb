@@ -1,6 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
-require 'shoulda-matchers'
+require 'model_spec_helper'
 
 RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:author_id).of_type(:integer) }

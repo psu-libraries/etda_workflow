@@ -1,3 +1,4 @@
+
 class Partner < EtdaUtilities::Partner
   def email_address
     I18n.t("#{id}.partner.email.address")

@@ -12,6 +12,8 @@ AllCops:
     - 'vendor/**/*'
     - 'config/deploy/**/*'
     - 'spec/lib/tasks/*'
+    - 'bin/*'
+    - 'webpack.config.js'
 
 Metrics/LineLength:
   Enabled: false
@@ -70,9 +72,14 @@ Style/SignalException:
 
 Style/ClassVars:
   Exclude:
+   - 'spec/support/authentication.rb'
 
 Style/VariableName:
   Exclude:
+
+Style/GlobalVars:
+  Exclude:
+    - 'node_modules/node-sass/src/libsass/extconf.rb'
 
 Style/BracesAroundHashParameters:
   Exclude:
@@ -137,6 +144,8 @@ RSpec/InstanceVariable:
 
 RSpec/DescribeClass:
   Exclude:
+    - 'spec/integration/admin/manage_degrees_spec.rb'
+    - 'spec/integration/admin/manage_programs_spec.rb'
 
 RSpec/MultipleDescribes:
   Enabled: false

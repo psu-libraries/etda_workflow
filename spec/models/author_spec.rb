@@ -1,6 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
-require 'shoulda-matchers'
+require 'model_spec_helper'
 
 RSpec.describe Author, type: :model do
   subject { described_class.new }
@@ -179,6 +178,7 @@ RSpec.describe Author, type: :model do
       author.populate_attributes
       expect(author.last_name).to eql('Zebra')
       expect(author.phone_number).to eql('814-865-4845')
+      expect(author.full_name).to eql("#{author.first_name} #{author.middle_name} #{author.last_name}")
     end
   end
   describe '#populate_attributes' do
@@ -194,6 +194,7 @@ RSpec.describe Author, type: :model do
       expect(author.phone_number).to eql('')
       expect(author.last_name).to eql('No Associated Name')
       expect(author.confidential_hold).to be_truthy
+      expect(author.full_name).to eql("#{author.first_name} No Associated Name")
     end
   end
 end

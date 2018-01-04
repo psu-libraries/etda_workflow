@@ -1,4 +1,4 @@
-require 'models/model_spec_helper'
+require 'model_spec_helper'
 require 'shared/shared_examples_for_university_directory'
 
 RSpec.describe MockUniversityDirectory, type: :model do

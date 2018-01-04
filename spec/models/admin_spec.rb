@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'model_spec_helper'
 
 RSpec.describe Admin, type: :model do
   subject { described_class.new }

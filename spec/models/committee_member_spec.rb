@@ -1,6 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
-require 'shoulda-matchers'
+require 'model_spec_helper'
 
 RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_column(:submission_id).of_type(:integer) }
@@ -37,21 +36,22 @@ RSpec.describe CommitteeMember, type: :model do
   #   end
   # end
   #
-  # context 'role name' do
-  #   before { committee_member.committee_role_id = CommitteeRole.first.id }
-  #   it 'returns the role name' do
-  #     expect(committee_member.role).to eq(CommitteeRole.first.name)
-  #   end
-  # end
-  #
+  context 'role name' do
+    it 'returns the role name' do
+      committee_member = described_class.new(committee_role_id: CommitteeRole.first.id)
+      expect(committee_member.role).to eq(CommitteeRole.first.name)
+    end
+  end
+
   # context 'advisors' do
-  #   before do
-  #     committee_member = described_class.new(role_id: CommitteeRole.advisor_role, name: "I am #{current_partner.id}".committee.special_role, submission_id: subumission.id)
-  #     committee_member.save
-  #   end
   #   it 'returns the Committee Members who have an Advisor Role' do
+  #     submission = FactoryBot.create(:submission)
+  #     committee_member = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am #{I18n.t('current_partner.id.committee.special_role')}", submission_id: submission.id)
+  #     committee_member.save
   #     advisor_member = committee_member
   #     expect(described_class.advisors(submission)).to eq([advisor_member])
+  #
+  #     #      expect(described_class.advisor_name(submission)).to eq(submission.committee_members.where(committee_role_id: CommitteeRole.advisor_role))
   #   end
   # end
 end

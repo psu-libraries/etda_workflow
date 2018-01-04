@@ -1,6 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
-require 'shoulda-matchers'
+require 'model_spec_helper'
 
 RSpec.describe EtdaFilePaths, type: :model do
   workflow_path = WORKFLOW_BASE_PATH

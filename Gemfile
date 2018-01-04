@@ -12,18 +12,11 @@ gem 'rails', '~> 5.1.4'
 gem 'mysql2', '>= 0.3.18', '< 0.4.10'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
+gem 'webpacker', github: 'rails/webpacker'
 
 gem 'therubyracer', platforms: :ruby
 
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -34,25 +27,36 @@ gem 'jbuilder', '~> 2.5'
 # Used to schedule cron jobs on the servers
 gem 'whenever'
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+# gem 'jquery-rails'
 
 # jQuery user interface widgets
-gem 'jquery-ui-rails'
+# gem 'jquery-ui-rails'
+
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 5.0'
+
+# Use Uglifier as compressor for JavaScript assets
+# gem 'uglifier', '>= 2.7.2'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem 'rabl'
+gem 'jquery-rails'
 
-gem 'bootstrap-sass'
+# jQuery user interface widgets
+gem 'jquery-ui-rails'
+gem 'rabl-rails'
+gem 'rabl'
+gem 'oj'
+
+# gem 'bootstrap-sass'
 
 
 # FontAwesome sass integration
-gem 'font-awesome-rails'
+# gem 'font-awesome-rails'
 
 # Easily handle nested forms
 gem 'cocoon'
-
 
 gem 'devise'
 
@@ -75,6 +79,7 @@ gem 'enumerize'
 # Virus scanning for file uploads
 gem 'clam_scan'
 
+gem 'simple_form'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -87,6 +92,12 @@ group :development, :test do
   gem 'rubocop', '0.35.1'
   gem 'rubocop-rspec', '1.3.1'
   gem 'rspec-rails'
+
+  # Adds support for Capybara system testing and selenium driver
+  gem 'capybara', '~> 2.13'
+  gem 'capybara-email'
+
+  gem 'factory_bot_rails'
 
 
 end
@@ -122,13 +133,14 @@ group :development do
 end
 
 group :test do
+  gem 'rails-controller-testing'
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 2.13'
 
-  gem 'selenium-webdriver'
+  gem 'poltergeist'
+  gem 'launchy'
 
   gem "database_cleaner"
 
@@ -139,7 +151,6 @@ group :test do
 
   gem 'webmock'
 
-  gem 'factory_bot_rails'
 
 
 end

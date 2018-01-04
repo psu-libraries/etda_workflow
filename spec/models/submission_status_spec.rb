@@ -1,5 +1,4 @@
-require 'rails_helper'
-require 'shoulda-matchers'
+require 'model_spec_helper'
 
 RSpec.describe SubmissionStatus, type: :model do
   context '#initialize' do

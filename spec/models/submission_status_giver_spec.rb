@@ -1,4 +1,4 @@
-require 'models/model_spec_helper'
+require 'model_spec_helper'
 
 RSpec.describe SubmissionStatusGiver, type: :model do
   let(:submission) { FactoryBot.create :submission }

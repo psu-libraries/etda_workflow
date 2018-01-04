@@ -28,6 +28,10 @@ class Admin < ApplicationRecord
     site_administrator
   end
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   def populate_attributes
     results = LdapUniversityDirectory.new.retrieve(access_id, LdapResultsMap::ADMIN_LDAP_MAP)
     mapped_attributes = results.except(:access_id)
