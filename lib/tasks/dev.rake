@@ -1,6 +1,7 @@
 if defined?(RSpec)
   require 'rspec/core'
   require 'rspec/core/rake_task'
+  require 'bundler/audit/task'
 
   if defined?(RuboCop)
     require 'rubocop/rake_task'
@@ -27,6 +28,12 @@ if defined?(RSpec)
     puts 'PARTNER=MILSCH'
     ENV['PARTNER'] = 'milsch'
     Rake::Task['spec'].invoke
+    Rake::Task['bundle:audit'].invoke
+  end
+
+  desc 'bundle audit'
+  Bundler::Audit::Task.new do |task|
+    task default: 'bundle:audit'
   end
 end
 
