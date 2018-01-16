@@ -5,12 +5,12 @@ class CreateDegrees < ActiveRecord::Migration[5.1]
       t.string :name
       t.string :description
       t.boolean :is_active
-      t.bigint :degree_type_id
+      t.integer :degree_type_id, null: false
       t.integer :legacy_id
       t.integer :legacy_old_id
       t.timestamps
       t.index :legacy_id
+      t.index :degree_type_id
     end
-    add_foreign_key :degrees, :degree_types, name: :degrees_degree_type_id_fk
   end
 end

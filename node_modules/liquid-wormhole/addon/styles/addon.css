@@ -1,0 +1,39 @@
+.default-liquid-destination {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+
+  width: 100%;
+  z-index: 9999;
+}
+
+.default-liquid-destination .liquid-destination-stack {
+  position: absolute;
+
+  width: 100%;
+}
+
+.default-liquid-destination > .liquid-destination-stack > .liquid-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  overflow: visible;
+  visibility: hidden;
+}
+
+.default-liquid-destination > .liquid-destination-stack > .liquid-child > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100vh;
+  visibility: hidden;
+}
+
+.liquid-wormhole-container {
+  display: none;
+}

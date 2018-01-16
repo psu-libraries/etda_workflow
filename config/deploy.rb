@@ -1,158 +1,154 @@
-# Understanding Capistrano Processing Workflow
-# http://capistranorb.com/documentation/getting-started/flow/
-# Example Usage:
-# First time:
-# cap -S vstage=prod -s branch=master -s partner=honors prod-honors rbenv:setup deploy
-# cap -S vstage=prod -s branch=master -s partner=graduate prod-graduate rbenv:setup deploy
-# Subsequent Deploys
-# cap -S vstage=prod -s branch=master -s partner=graduate prod-graduate  deploy
-# cap -S vstage=prod -s branch=master -s partner=honors prod-honors deploy
-
-require 'bundler/capistrano'
-require 'capistrano-rbenv'
-require 'capistrano/ext/multistage'
-require 'capistrano-notification'
-
-# Namespace environments so crontabs don't overwrite each other.
-# set :whenever_identifier, defer { "#{application}_#{partner}" }
-# set :whenever_command, "bundle exec whenever --update-crontab"
-# require 'whenever/capistrano'
+# config valid for current version and patch releases of Capistrano
+lock "~> 3.10.1"
 
 set :application, "etda_workflow"
-# set :stage, fetch(:partner, 'qa')
-set :partner, fetch(:partner, 'nopartnerspecified')
-# set :stage
-set :scm, :git
-set :deploy_via, :remote_cache
-set :repository,  "git@github.com:/psu-stewardship/#{application}.git"
+# set :partner, fetch(:partner, 'graduate')
+set :repo_url, "git@github.com:/psu-stewardship/#{fetch(:application)}.git"
 
-# set :deploy_to, "/opt/heracles/deploy/#{application}"
-set :user, "deploy"
+# Default branch is :master
+# ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+
+# Default deploy_to directory is /var/www/my_app_name
+# set :deploy_to, "/var/www/my_app_name"
+set :branch, ENV['REVISION'] || ENV['BRANCH_NAME'] || 'master'
+
+set :user, 'deploy'
 set :use_sudo, false
-default_run_options[:pty] = true
-ssh_options[:forward_agent] = true
-deploy_key = File.join(ENV["HOME"], ".ssh", "id_deploy_rsa")
-if File.exist?(deploy_key)
-  ssh_options[:keys] = [deploy_key]
-else
-  puts "Warning: You appear to be missing your ~/.ssh/id_deploy_rsa key. See the README for setup instructions."
-end
 
-set :rbenv_ruby_version, File.read(File.join(File.dirname(__FILE__), '..', '.ruby-version')).chomp
-set :rbenv_setup_shell, false
+set :deploy_via, :remote_cache
+# set :tmp_dir, "/opt/heracles/deploy/#{fetch(:application)}_#{fetch(:partner)}/tmp"
+set :copy_remote_dir, deploy_to
 
-# These are run manually, not as part of a deployment.
+# Uncomment the following to require manually verifying the host key before first deploy.
+# set :ssh_options, verify_host_key: :secure
+set :ssh_options, {
+  keys: [File.join(ENV['HOME'], '.ssh', 'id_deploy_rsa')],
+  forward_agent: true
+}
+
+# rbenv settings
+set :rbenv_type, :user # or :system, depends on your rbenv setup
+set :rbenv_ruby, File.read(File.join(File.dirname(__FILE__), '..', '.ruby-version')).chomp # read from file above
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec" # rbenv settings
+set :rbenv_map_bins, %w(rake gem bundle ruby rails) # map the following bins
+set :rbenv_roles, :all # default value
+
+# set passenger to just the web servers
+set :passenger_roles, :web
+
+# rails settings, NOTE: Task is wired into event stack
+set :rails_env, 'production'
+
+# Settings for whenever gem that updates the crontab file on the server
+# See schedule.rb for details
+set :whenever_roles, [:app, :job]
+
+set :log_level, :debug
+# set :pty, true
+
+# Default value for :format is :airbrussh.
+# set :format, :airbrussh
+set :format_options, command_output: false
+
+# You can configure the Airbrussh format using :format_options.
+# These are the defaults.
+# set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: :auto
+
+# Default value for :pty is false
+# set :pty, true
+
+# Default value for :linked_files is []
+# append :linked_files, "config/database.yml", "config/secrets.yml"
+#
+#
+
+# Default value for default_env is {}
+# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+
+# Default value for local_user is ENV['USER']
+# set :local_user, -> { `git config user.name`.chomp }
+
+# Default value for keep_releases is 5
+set :keep_releases, 7
+
+# Apache namespace to control apache
 namespace :apache do
   [:stop, :start, :restart, :reload].each do |action|
     desc "#{action.to_s.capitalize} Apache"
-    task action, roles: :web do
-      invoke_command "sudo service httpd #{action}", via: run_method
+    task action do
+      on roles(:web) do
+        execute "sudo service httpd #{action}"
+      end
     end
   end
 end
 
-# override default restart task for apache passenger
-namespace :deploy do
-  task :start do; end
-  task :stop do; end
-  task :restart, roles: :app, except: { no_release: true } do
-    run "sudo /sbin/service httpd restart"
-  end
-end
+set :linked_dirs, fetch(:linked_dirs, []).push(
+  'log',
+  'tmp/cache',
+  'tmp/pids',
+  'tmp/sockets',
+  'tmp/uploads',
+  'vendor/bundle'
+)
 
-# insert new task to symlink shared files
 namespace :deploy do
-  desc "Link shared files"
   task :symlink_shared do
-    run <<-CMD.compact
-    ln -sf /#{application}/config_#{stage}/#{partner}_devise.yml #{release_path}/config/devise.yml &&
-    ln -sf /#{application}/config_#{stage}/#{partner}_database.yml #{release_path}/config/database.yml &&
-    ln -sf /#{application}/config_#{stage}/lion_path.yml #{release_path}/config/lion_path.yml &&
-    ln -sf /#{application}/config_#{stage}/ldap.yml #{release_path}/config/ldap.yml &&
-    ln -sf /#{application}/config_#{stage}/#{partner}_secrets.yml #{release_path}/config/secrets.yml
-    CMD
+    desc 'set up the shared directory to have the symbolic links to the appropriate directories shared between servers'
+    puts "#{release_path}"
+    on roles(:web) do
+      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/#{fetch(:partner)}_devise.yml #{release_path}/config/devise.yml"
+      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/#{fetch(:partner)}_database.yml #{release_path}/config/database.yml"
+      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/lion_path.yml #{release_path}/config/lion_path.yml"
+      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/#{fetch(:partner)}_secrets.yml #{release_path}/config/secrets.yml"
+      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/ldap.yml #{release_path}/config/ldap.yml"
+    end
   end
+
+  before "deploy:migrate", "deploy:symlink_shared"
+
+  after "deploy:updated", "deploy:migrate"
+
+  # after "rbenv:setup", "passenger:install"
+  after "deploy:restart", "passenger:warmup"
+
+  namespace :passenger do
+    desc 'Passenger Version Config Update'
+    task :config_update do
+      on roles(:web) do
+        execute 'mkdir --parents /opt/heracles/deploy/passenger'
+        execute 'cd ~deploy && echo -n "PassengerRuby " > ~deploy/passenger/passenger-ruby-version.cap   && rbenv which ruby >> ~deploy/passenger/passenger-ruby-version.cap'
+        execute 'v_passenger_ruby=$(cat ~deploy/passenger/passenger-ruby-version.cap) &&    cp --force /etc/httpd/conf.d/phusion-passenger-default-ruby.conf ~deploy/passenger/passenger-ruby-version.tmp &&    sed -i -e "s|.*PassengerRuby.*|${v_passenger_ruby}|" ~deploy/passenger/passenger-ruby-version.tmp'
+        execute 'sudo /bin/mv ~deploy/passenger/passenger-ruby-version.tmp /etc/httpd/conf.d/phusion-passenger-default-ruby.conf'
+        execute 'sudo /sbin/service httpd restart'
+      end
+    end
+  end
+  after :published, 'passenger:config_update'
 end
-# belongs in the block above when configuration is ready AND must ad && after last line
-# ln -sf /var/data/#{application}-#{partner} #{release_path}/uploads
-
-before "deploy:finalize_update", "deploy:symlink_shared"
-
-# Always run migrations.
-after "deploy:update_code", "deploy:migrate"
-
-# Will bring back later not needed for prototype.
-# Resolrize.
-# namespace :deploy do
-#  desc "Re-solrize objects"
-#  task :resolrize, roles: :solr do
-#    run <<-CMD.compact
-#    cd -- #{latest_release} &&
-#    RAILS_ENV=#{rails_env.to_s.shellescape} #{rake} #{application}:resolrize
-#    CMD
-#  end
-# end
-# after "deploy:migrate", "deploy:resolrize"
-
-# config/deploy/_passenger.rb hooks.
-after "rbenv:setup", "passenger:install"
-after "deploy:restart", "passenger:warmup"
-
-# Keep the last X number of releases.
-set :keep_releases, 7
-after "passenger:warmup", "deploy:cleanup"
-
-# Restart resque-pool.
-# desc "Restart resque-pool"
-# task :resquepoolrestart do
-#   on roles(:web) do
-#     execute :sudo, "/sbin/service resque_pool restart"
-#   end
-# end
-# before :restart, :resquepoolrestart
 
 # Used to keep x-1 instances of ruby on a machine.  Ex +4 leaves 3 versions on a machine.  +3 leaves 2 versions
 namespace :rbenv_custom_ruby_cleanup do
-  desc "Clean up old rbenv versions"
+  desc 'Clean up old rbenv versions'
   task :purge_old_versions do
     on roles(:web) do
       execute 'ls -dt ~deploy/.rbenv/versions/*/ | tail -n +3 | xargs rm -rf'
     end
   end
-  after "deploy:finishing", "rbenv_custom_ruby_cleanup:purge_old_versions"
+  after 'deploy:finishing', 'rbenv_custom_ruby_cleanup:purge_old_versions'
 end
 
-# Don't initialize rbenv if we're running in one of the fake "wrapper"
-# deployment environments -- it won't work because it demands that an actual
-# server be present.
-namespace :rbenv do
-  task(:setup_default_environment, except: { no_release: true }) do
-    unless %w( dev staging qa prod ).include?(stage) # our addition
-      if rbenv_setup_default_environment
-        set(:default_environment, _merge_environment(default_environment, rbenv_environment))
+namespace :deploy_all do
+  task :deploy do
+    on roles(:all) do
+      files = Dir.glob("config/deploy/#{fetch(:stage)}.*.rb")
+      files.each do |file|
+        file = file.sub('config/deploy/', '').sub('.rb', '')
+        info "Deploying #{file} to #{fetch(:stage)}"
+        system("cap #{file} deploy")
       end
     end
   end
 end
 
-namespace :deploy do
-  # Make a duplicate of the default :deploy task, because we're about to
-  # overwrite it with a parallelized version.
-  task :one do
-    update
-    restart
-  end
-
-  # Overwrite the default "deploy" task with a task that deploys to both
-  # partners for the requested stage, in parallel.
-  task :default, on_no_matching_servers: :continue do
-    %w( graduate honors milsch ).map do |partner|
-      Thread.new do
-        sha = fetch :branch, 'master'
-        cmd = "bundle exec cap -S vstage=#{stage} -s branch=#{sha} -s partner=#{partner} #{stage}-#{partner} deploy:one"
-        puts cmd
-        system cmd
-      end
-    end.each(&:join)
-  end
-end
+task deploy_all: 'deploy_all:deploy'

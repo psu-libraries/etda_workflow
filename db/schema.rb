@@ -96,12 +96,12 @@ ActiveRecord::Schema.define(version: 20171212004556) do
     t.string "name"
     t.string "description"
     t.boolean "is_active"
-    t.bigint "degree_type_id"
+    t.integer "degree_type_id", null: false
     t.integer "legacy_id"
     t.integer "legacy_old_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["degree_type_id"], name: "degrees_degree_type_id_fk"
+    t.index ["degree_type_id"], name: "index_degrees_on_degree_type_id"
     t.index ["legacy_id"], name: "index_degrees_on_legacy_id"
   end
 
@@ -207,7 +207,6 @@ ActiveRecord::Schema.define(version: 20171212004556) do
   add_foreign_key "committee_members", "committee_roles", name: "committee_members_committee_role_id_fk"
   add_foreign_key "committee_members", "submissions", name: "committee_members_submission_id_fk"
   add_foreign_key "committee_roles", "degree_types", name: "committee_roles_degree_type_id_fk"
-  add_foreign_key "degrees", "degree_types", name: "degrees_degree_type_id_fk"
   add_foreign_key "final_submission_files", "submissions", name: "final_submission_files_submission_id_fk"
   add_foreign_key "format_review_files", "submissions", name: "format_review_files_submission_id_fk"
   add_foreign_key "invention_disclosures", "submissions", name: "invention_disclosures_submission_id_fk"

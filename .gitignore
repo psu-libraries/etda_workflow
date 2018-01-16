@@ -17,8 +17,10 @@ config/secrets.yml
 config/database.yml
 spec/examples.txt
  
-coverage
+assets
+public/packs-test
+public/packs/*
 
-/node_modules
+coverage
 /yarn-error.log
 .byebug_history

@@ -17,6 +17,7 @@ if defined?(RSpec)
     Rake::Task['rubocop'].invoke
     puts 'PARTNER=GRADUATE'
     ENV['PARTNER'] = 'graduate'
+    Rake::Task['assets:precompile'].invoke
     Rake::Task['spec'].invoke
     ::Rake.application['spec'].reenable
     puts 'PARTNER=HONORS'

@@ -1,9 +1,5 @@
 class Admin::DegreesController < AdminController
   def index
-    # respond_to do |format|
-    #   format.html # return the default template for HTML
-    #   format.json { render :json => @degrees.to_json }
-    # end
     @degrees = Degree.all
   end
 

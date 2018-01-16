@@ -12,6 +12,7 @@ AllCops:
     - 'vendor/**/*'
     - 'config/deploy/**/*'
     - 'spec/lib/tasks/*'
+    - 'spec/routing/*'
     - 'bin/*'
     - 'webpack.config.js'
 

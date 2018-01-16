@@ -13,7 +13,7 @@ gem 'mysql2', '>= 0.3.18', '< 0.4.10'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-gem 'webpacker', github: 'rails/webpacker'
+gem 'webpacker'
 
 gem 'therubyracer', platforms: :ruby
 
@@ -68,7 +68,7 @@ end
 
 gem 'rake', '< 11.0'
 
-gem 'net-ldap'
+gem 'net-ldap', '~> 0.16.1'
 
 gem 'country_select', git: 'https://github.com/stefanpenner/country_select.git', branch: 'master'
 
@@ -110,20 +110,17 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 
+  gem "capistrano", "~> 3.10"
+  gem 'capistrano-bundler', '~> 1.2', require: false
+  gem 'capistrano-rails', '~> 1.2', require: false
+  gem 'capistrano-rbenv', '~> 2.1', require: false
+  gem 'capistrano-rbenv-install'
   gem 'capistrano-resque', '~> 0.2.1', require: false
 
-  # Deploy to multiple environments
-  gem 'capistrano-ext'
 
-  # rbenv support for capistrano
-  gem 'capistrano-rbenv', '1.0.5'
-
-  gem 'capistrano-notification'
-
-  # Fix for old capistrano, should be deleted when we upgrade cap
   # ------------
-  gem 'net-sftp', '2.1.2'
-  gem 'net-ssh-gateway', '1.2.0'
+  # gem 'net-sftp', '2.1.2'
+  # gem 'net-ssh-gateway', '1.2.0'
   # ------------
 
   gem 'better_errors'

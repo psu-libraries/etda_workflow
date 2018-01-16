@@ -49,6 +49,21 @@ class ApplicationController < ActionController::Base
     Devise::Strategies::WebaccessAuthenticatable.new(nil).remote_user(request.headers)
   end
 
+  def render_404(exception)
+    logger.error("Rendering 404 page due to exception: #{exception.inspect} - #{exception.backtrace if exception.respond_to? :backtrace}")
+    render template: '/error/404', layout: "error", formats: [:html, :json], status: 404
+  end
+
+  def render_500(exception)
+    logger.error("Rendering 500 page due to exception: #{exception.inspect} - #{exception.backtrace if exception.respond_to? :backtrace}")
+    render template: '/error/500', layout: "error", formats: [:html, :json], status: 500
+  end
+
+  def render_401(exception)
+    logger.error("Rendering 401 page due to exception #{exception.inspect} - #{exception.backtrace if exception.respond_to? :backtrace}")
+    render template: '/error/401', layout: "error", formats: [:html, :json], status: 401
+  end
+
   protected
 
     # def logged_in?
