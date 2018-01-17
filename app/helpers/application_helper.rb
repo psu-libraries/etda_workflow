@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   # Return the set of css classes that should be associated with this page
   def page_classes
@@ -6,7 +8,7 @@ module ApplicationHelper
     classes << controller_name.parameterize
     classes << controller_name.singularize.parameterize
     classes << action_name.parameterize
-    classes << "maintain" if %w( new edit create update ).include?(action_name)
+    classes << "maintain" if %w[new edit create update].include?(action_name)
     classes << current_partner.id
     classes.join(" ")
   end

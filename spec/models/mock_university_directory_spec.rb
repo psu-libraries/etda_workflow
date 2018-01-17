@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'model_spec_helper'
 require 'shared/shared_examples_for_university_directory'
 
@@ -8,14 +10,17 @@ RSpec.describe MockUniversityDirectory, type: :model do
 
   describe '#autocomplete' do
     let(:result) { directory.autocomplete(search_string) }
+
     context "when given string that doesn't match any of the fake data" do
       let(:search_string) { "not there" }
+
       it "returns an empty array" do
         expect(result).to eq([])
       end
     end
     context "when given a string that matches the fake data" do
       let(:search_string) { "joni" }
+
       it "returns an array of hashes that can be returned to jQuery autocomplete" do
         expect(result).to be_a_kind_of(Array)
         expect(result.first).to have_key(:id)
@@ -27,14 +32,17 @@ RSpec.describe MockUniversityDirectory, type: :model do
 
   describe '#exists?' do
     let(:result) { directory.exists?(access_id) }
+
     context "when given an access ID that is not part of the fake data" do
       let(:access_id) { "not there" }
+
       it "returns false" do
         expect(result).to be(false)
       end
     end
     context "when given an access ID that is part of the fake data" do
       let(:access_id) { "jxb13" }
+
       it "returns true" do
         expect(result).to be(true)
       end
@@ -43,14 +51,17 @@ RSpec.describe MockUniversityDirectory, type: :model do
 
   describe '#retrieve' do
     let(:result) { directory.retrieve(access_id, LdapResultsMap::AUTHOR_LDAP_MAP) }
+
     context "when given an access ID that is not part of the fake data" do
       let(:access_id) { "not there" }
+
       it "returns an empty string" do
         expect(result).to eq([])
       end
     end
     context "when given an access ID that is part of the fake data" do
       let(:access_id) { "saw140" }
+
       it "returns an array of hashes for an author record" do
         expect(result).to be_a_kind_of(Hash)
         expect(result).to have_key(:access_id)
@@ -66,6 +77,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
 
   describe 'get_psu_id_number' do
     let(:result) { directory.get_psu_id_number('accessid') }
+
     context "using any access id to return a fake number" do
       it "returns a fake psu_id_number" do
         expect(result).to eq('999999999')
@@ -75,6 +87,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
 
   describe 'in_admin_group?' do
     let(:result) { directory.in_admin_group?('jxb13') }
+
     context 'returns true if admin user' do
       it 'is true' do
         expect(result).to be_truthy

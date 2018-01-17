@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::DegreesController < AdminController
   def index
     @degrees = Degree.all
@@ -31,10 +33,10 @@ class Admin::DegreesController < AdminController
 
   private
 
-    def degree_params
-      params.require(:degree).permit(:name,
-                                     :description,
-                                     :degree_type_id,
-                                     :is_active)
-    end
+  def degree_params
+    params.require(:degree).permit(:name,
+                                   :description,
+                                   :degree_type_id,
+                                   :is_active)
+  end
 end

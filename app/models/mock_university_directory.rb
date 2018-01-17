@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MockUniversityDirectory
   AUTHOR_LDAP_MAP = ::LdapResultsMap::AUTHOR_LDAP_MAP
 
@@ -5,13 +7,13 @@ class MockUniversityDirectory
 
   COMMITTEE_LDAP_MAP = ::LdapResultsMap::COMMITTEE_LDAP_MAP
 
-  KNOWN_ACCESS_IDS = %w(
+  KNOWN_ACCESS_IDS = %w[
     saw140
     jxb13
     amg32
     xxb13
     conf123
-  )
+  ].freeze
 
   # Return an array of tuples that are suitable for returning
   # to a jQuery autocomplete widget.

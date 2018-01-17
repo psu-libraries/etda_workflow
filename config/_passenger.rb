@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Passenger Capistrano Task
 # The passenger install task allows Chef to install Passenger now via Yum, but it allows Capistrano to maintain the file
 # as Ruby is updated on the system.  The PassengerDefaultRuby variable is set to system ruby by default from the Yum

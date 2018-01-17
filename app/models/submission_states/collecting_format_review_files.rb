@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SubmissionStates
   class CollectingFormatReviewFiles < SubmissionState
     @name = 'collecting format review files'

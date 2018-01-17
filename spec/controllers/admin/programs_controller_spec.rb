@@ -9,6 +9,7 @@ RSpec.describe Admin::ProgramsController, type: :controller do
   end
   describe '#edit' do
     let(:program) { FactoryBot.create(:program) }
+
     it 'edits an existing program' do
       expect(get: edit_admin_program_path(program.id)).to route_to(controller: 'admin/programs', action: 'edit', id: program.id.to_s)
     end

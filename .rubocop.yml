@@ -1,8 +1,9 @@
+inherit_from: .rubocop_todo.yml
+
 require: rubocop-rspec
 
-AllCops:
-  RunRailsCops: true
-  DisplayCopNames: true
+Rails:
+  Enabled: true
   Include:
     - '**/Rakefile'
     - '**/config.ru'
@@ -14,10 +15,11 @@ AllCops:
     - 'spec/lib/tasks/*'
     - 'spec/routing/*'
     - 'bin/*'
+    - 'node_modules/**/*'
     - 'webpack.config.js'
 
 Metrics/LineLength:
-  Enabled: false
+  Enabled: true
 
 Metrics/AbcSize:
   Enabled: false
@@ -36,10 +38,10 @@ Metrics/CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Exclude:
 
-Style/MultilineBlockLayout:
+Layout/MultilineBlockLayout:
   Exclude:
 
-Style/IndentationConsistency:
+Layout/IndentationConsistency:
   EnforcedStyle: rails
 
 Style/CollectionMethods:
@@ -75,7 +77,7 @@ Style/ClassVars:
   Exclude:
    - 'spec/support/authentication.rb'
 
-Style/VariableName:
+Naming/VariableName:
   Exclude:
 
 Style/GlobalVars:
@@ -87,19 +89,19 @@ Style/BracesAroundHashParameters:
     - 'config/deploy.rb'
     - 'spec/component/models/solr_data_import_service_spec.rb'
 
-Style/SpaceInsideBlockBraces:
+Layout/SpaceInsideBlockBraces:
   Exclude:
     - 'spec/component/models/solr_data_import_service_spec.rb'
 
-Style/SpaceInsideHashLiteralBraces:
+Layout/SpaceInsideHashLiteralBraces:
   Exclude:
     - 'spec/component/models/solr_data_import_service_spec.rb'
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Exclude:
     - 'config/application.rb'
 
-Style/PredicateName:
+Naming/PredicateName:
   Exclude:
     - 'app/validators/virus_free_validator.rb'
 
@@ -147,6 +149,7 @@ RSpec/DescribeClass:
   Exclude:
     - 'spec/integration/admin/manage_degrees_spec.rb'
     - 'spec/integration/admin/manage_programs_spec.rb'
+    - 'spec/lib/tasks/confidential_rake_spec.rb'
 
 RSpec/MultipleDescribes:
   Enabled: false
@@ -155,8 +158,41 @@ Style/BlockDelimiters:
   Exclude:
     - 'config/deploy.rb'
 
-Style/FileName:
+Naming/FileName:
   Exclude:
     - 'config/qa-grad.rb'
     - 'config/qa-honors.rb'
 
+Bundler/DuplicatedGem:
+  Exclude:
+    - 'Gemfile'
+
+Lint/UnusedBlockArgument:
+  Exclude:
+    - 'lib/tasks/dev.rake'
+
+Lint/UselessAssignment:
+  Exclude:
+    - 'app/views/admin/degrees/index.json.rabl'
+    - 'app/views/admin/programs/index.json.rabl'
+    - 'lib/tasks/confidential.rake'
+
+Style/StderrPuts:
+  Exclude:
+    - 'bin/yarn'
+
+Style/MixinUsage:
+  Exclude:
+    - 'bin/setup'
+    - 'bin/update'
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - 'bin/bundle'
+    - 'bin/rails'
+    - 'bin/rake'
+    - 'bin/setup'
+    - 'bin/spring'
+    - 'bin/update'
+    - 'bin/yarn'
+    - 'db/schema.rb'

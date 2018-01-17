@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SubmissionStates
   class ReleasedForPublication < SubmissionState
     @name = 'released for publication'

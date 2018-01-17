@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'net/ldap'
 
 class LdapUniversityDirectory
@@ -16,14 +18,11 @@ class LdapUniversityDirectory
       autocomplete_search_filter = LdapSearchFilter.new(term, true).create_filter
       ldap_records = connection.search(base: ldap_configuration['base'],
                                        filter: autocomplete_search_filter,
-                                       attributes: %w( cn displayname mail psadminarea psdepartment ),
+                                       attributes: %w[cn displayname mail psadminarea psdepartment],
                                        return_result: true) # was size: 200
 
-      if connection.get_operation_result.message == "Size Limit Exceeded"
-        return []
-      else
-        raise ResultError, connection.get_operation_result.message unless connection.get_operation_result.message == 'Success'
-      end
+      return [] if connection.get_operation_result.message == "Size Limit Exceeded"
+      raise ResultError, connection.get_operation_result.message unless connection.get_operation_result.message == 'Success'
     end
     if ldap_records.present?
       mapped_attributes = LdapResult.new(ldap_record: ldap_records,
@@ -70,45 +69,45 @@ class LdapUniversityDirectory
 
   private
 
-    def get_ldap_attribute(this_access_id, this_attribute)
-      attrs = directory_lookup('uid', this_access_id)
-      return '' if attrs.nil? || attrs.empty?
-      return attrs.first[this_attribute].first unless this_attribute == 'psmemberof'
-      attrs.first[this_attribute]
-    end
+  def get_ldap_attribute(this_access_id, this_attribute)
+    attrs = directory_lookup('uid', this_access_id)
+    return '' if attrs.nil? || attrs.empty?
+    return attrs.first[this_attribute].first unless this_attribute == 'psmemberof'
+    attrs.first[this_attribute]
+  end
 
-    def ldap_configuration
-      # Only ever read this once.
-      @ldap_configuration ||= YAML.load_file('config/ldap.yml')[Rails.env].freeze
-    end
+  def ldap_configuration
+    # Only ever read this once.
+    @ldap_configuration ||= YAML.load_file('config/ldap.yml')[Rails.env].freeze
+  end
 
-    def directory_lookup(query_type, search_string)
-      attrs = []
-      with_connection do |conn|
-        attrs = conn.search(base: ldap_configuration['base'], filter: Net::LDAP::Filter.eq(query_type, search_string), attributes: attrs)
-        raise ResultError, conn.get_operation_result.message if attrs.nil?
-      end
-      attrs
+  def directory_lookup(query_type, search_string)
+    attrs = []
+    with_connection do |conn|
+      attrs = conn.search(base: ldap_configuration['base'], filter: Net::LDAP::Filter.eq(query_type, search_string), attributes: attrs)
+      raise ResultError, conn.get_operation_result.message if attrs.nil?
     end
+    attrs
+  end
 
-    def with_connection
-      Net::LDAP.open(host: ldap_configuration['host'],
-                     port: ldap_configuration['port'],
-                     encryption: { method: :simple_tls },
-                     auth: { method: :simple, username: "cn=#{ldap_configuration['user']},dc=psu,dc=edu",
-                             password: ldap_configuration['password'] }) do |connection|
-        yield connection
-      end
-    rescue Net::LDAP::LdapError
-      raise UnreachableError
+  def with_connection
+    Net::LDAP.open(host: ldap_configuration['host'],
+                   port: ldap_configuration['port'],
+                   encryption: { method: :simple_tls },
+                   auth: { method: :simple, username: "cn=#{ldap_configuration['user']},dc=psu,dc=edu",
+                           password: ldap_configuration['password'] }) do |connection|
+      yield connection
     end
+  rescue Net::LDAP::LdapError
+    raise UnreachableError
+  end
 
-    def string_has_wildcard_character?(term)
-      (term =~ /\*/) != nil
-    end
+  def string_has_wildcard_character?(term)
+    (term =~ /\*/) != nil
+  end
 
-    def searchterm_valid?(term)
-      result = term.present? && term =~ /^[a-z '\-]+$/i
-      result
-    end
+  def searchterm_valid?(term)
+    result = term.present? && term =~ /^[a-z '\-]+$/i
+    result
+  end
 end

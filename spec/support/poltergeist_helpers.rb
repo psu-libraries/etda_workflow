@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Capybara
   module SaveAndOpenScreenshot
     def save_and_open_screenshot(filename = nil)

@@ -1,22 +1,24 @@
+# frozen_string_literal: true
+
 class SubmissionStatus
   attr_reader :current_submission
 
   WORKFLOW_STATUS =
- [
-   'collecting program information',
-   'collecting committee',
-   'collecting format review files',
-   'collecting format review files rejected',
-   'waiting for format review response',
-   'collecting final submission files',
-   'collecting final submission files rejected',
-   'waiting for final submission response',
-   'waiting for publication release',
-   'released for publication metadata only',
-   'released for publication',
-   'format review accepted', # this is legacy FR fix
-   'confidential hold embargo'
- ]
+    [
+      'collecting program information',
+      'collecting committee',
+      'collecting format review files',
+      'collecting format review files rejected',
+      'waiting for format review response',
+      'collecting final submission files',
+      'collecting final submission files rejected',
+      'waiting for final submission response',
+      'waiting for publication release',
+      'released for publication metadata only',
+      'released for publication',
+      'format review accepted', # this is legacy FR fix
+      'confidential hold embargo'
+    ].freeze
   def initialize(submission)
     @current_submission = submission
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Degree < ApplicationRecord
   belongs_to :degree_type
   has_many :submissions
@@ -37,7 +39,7 @@ class Degree < ApplicationRecord
 
   private
 
-    def set_is_active_to_true
-      self.is_active = true if self.new_record? && is_active.nil?
-    end
+  def set_is_active_to_true
+    self.is_active = true if new_record? && is_active.nil?
+  end
 end

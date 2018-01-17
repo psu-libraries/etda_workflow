@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Stub out authentication for tests.
 
 # This authentication strategy will automatically succeed for the user that was
@@ -72,7 +74,7 @@ module StubbedAuthenticationHelper
 end
 
 RSpec.configure do |config|
-  config.after(:each) do
+  config.after do
     Warden::Strategies.add :webaccess_authenticatable,
                            Devise::Strategies::WebaccessAuthenticatable
     StubbedAuthenticationStrategy.author = nil

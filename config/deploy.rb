@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.10.1"
 
@@ -30,7 +32,7 @@ set :ssh_options, {
 set :rbenv_type, :user # or :system, depends on your rbenv setup
 set :rbenv_ruby, File.read(File.join(File.dirname(__FILE__), '..', '.ruby-version')).chomp # read from file above
 set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec" # rbenv settings
-set :rbenv_map_bins, %w(rake gem bundle ruby rails) # map the following bins
+set :rbenv_map_bins, %w[rake gem bundle ruby rails] # map the following bins
 set :rbenv_roles, :all # default value
 
 # set passenger to just the web servers
@@ -41,7 +43,7 @@ set :rails_env, 'production'
 
 # Settings for whenever gem that updates the crontab file on the server
 # See schedule.rb for details
-set :whenever_roles, [:app, :job]
+set :whenever_roles, %i[app job]
 
 set :log_level, :debug
 # set :pty, true
@@ -73,7 +75,7 @@ set :keep_releases, 7
 
 # Apache namespace to control apache
 namespace :apache do
-  [:stop, :start, :restart, :reload].each do |action|
+  %i[stop start restart reload].each do |action|
     desc "#{action.to_s.capitalize} Apache"
     task action do
       on roles(:web) do
@@ -95,7 +97,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
 namespace :deploy do
   task :symlink_shared do
     desc 'set up the shared directory to have the symbolic links to the appropriate directories shared between servers'
-    puts "#{release_path}"
+    puts release_path.to_s
     on roles(:web) do
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/#{fetch(:partner)}_devise.yml #{release_path}/config/devise.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/#{fetch(:partner)}_database.yml #{release_path}/config/database.yml"
@@ -120,7 +122,7 @@ namespace :deploy do
         execute 'cd ~deploy && echo -n "PassengerRuby " > ~deploy/passenger/passenger-ruby-version.cap   && rbenv which ruby >> ~deploy/passenger/passenger-ruby-version.cap'
         execute 'v_passenger_ruby=$(cat ~deploy/passenger/passenger-ruby-version.cap) &&    cp --force /etc/httpd/conf.d/phusion-passenger-default-ruby.conf ~deploy/passenger/passenger-ruby-version.tmp &&    sed -i -e "s|.*PassengerRuby.*|${v_passenger_ruby}|" ~deploy/passenger/passenger-ruby-version.tmp'
         execute 'sudo /bin/mv ~deploy/passenger/passenger-ruby-version.tmp /etc/httpd/conf.d/phusion-passenger-default-ruby.conf'
-        execute 'sudo /sbin/service httpd restart'
+        execute 'sudo /bin/systemctl restart httpd'
       end
     end
   end

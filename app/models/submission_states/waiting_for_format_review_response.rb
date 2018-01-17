@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SubmissionStates
   class WaitingForFormatReviewResponse < SubmissionState
     @name = 'waiting for format review response'

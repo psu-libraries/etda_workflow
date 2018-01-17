@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-include Devise::Strategies
 
 RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
+  include Devise::Strategies
   subject { described_class.new(nil) }
+
   before { allow(subject).to receive(:request).and_return(request) }
 
   # describe '#valid_author?(request.headers)' do
@@ -45,7 +46,7 @@ RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
 
   describe 'authenticate!' do
     let(:author) { FactoryBot.create(:author) }
-    let(:request) { double(headers: { 'HTTP_REMOTE_USER' =>  author.access_id, 'REQUEST_URI' => '/author/submissions' }) }
+    let(:request) { double(headers: { 'HTTP_REMOTE_USER' => author.access_id, 'REQUEST_URI' => '/author/submissions' }) }
 
     context 'with a new user' do
       before { allow(Author).to receive(:find_by_access_id).with(author.access_id).and_return(nil) }
@@ -53,7 +54,7 @@ RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
         expect(Author).to receive(:create).with(access_id: author.access_id, psu_email_address: "#{author.access_id}@psu.edu").once.and_return(author)
         expect_any_instance_of(Author).to receive(:populate_attributes).once
         # expect(subject).to be_valid
-        expect(subject.valid?).to be_truthy
+        expect(subject).to be_valid
         expect(subject.authenticate!).to eq(:success)
       end
     end
@@ -71,8 +72,9 @@ RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
   end
   describe 'fail!' do
     let(:request) { double(headers: { 'HTTP_REMOTE_USER' => nil, 'REQUEST_URI' => '/author/submissions' }) }
+
     it 'fails' do
-      expect(subject.valid?).to be_falsey
+      expect(subject).not_to be_valid
       expect(subject.authenticate!).to eq(:failure)
     end
   end

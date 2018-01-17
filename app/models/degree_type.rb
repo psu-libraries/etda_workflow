@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DegreeType < ApplicationRecord
   has_many :committee_roles
   has_many :degrees
@@ -16,7 +18,7 @@ class DegreeType < ApplicationRecord
     'milsch' => [
       "Thesis"
     ]
-  }
+  }.freeze
 
   def self.default
     first

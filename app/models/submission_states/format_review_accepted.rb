@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SubmissionStates
   class FormatReviewAccepted < SubmissionState
     @name = 'format review accepted'

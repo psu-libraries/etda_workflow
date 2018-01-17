@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
@@ -51,27 +53,27 @@ class ApplicationController < ActionController::Base
 
   def render_404(exception)
     logger.error("Rendering 404 page due to exception: #{exception.inspect} - #{exception.backtrace if exception.respond_to? :backtrace}")
-    render template: '/error/404', layout: "error", formats: [:html, :json], status: 404
+    render template: '/error/404', layout: "error", formats: %i[html json], status: 404
   end
 
   def render_500(exception)
     logger.error("Rendering 500 page due to exception: #{exception.inspect} - #{exception.backtrace if exception.respond_to? :backtrace}")
-    render template: '/error/500', layout: "error", formats: [:html, :json], status: 500
+    render template: '/error/500', layout: "error", formats: %i[html json], status: 500
   end
 
   def render_401(exception)
     logger.error("Rendering 401 page due to exception #{exception.inspect} - #{exception.backtrace if exception.respond_to? :backtrace}")
-    render template: '/error/401', layout: "error", formats: [:html, :json], status: 401
+    render template: '/error/401', layout: "error", formats: %i[html json], status: 401
   end
 
   protected
 
-    # def logged_in?
-    #   ((author_signed_in? || admin_signed_in?) && Devise::Strategies::WebaccessAuthenticatable.new(request.headers).valid?) || Rails.env.test?
-    #   #   # ()author_signed_in? && valid?(request.headers) || Rails.env.test?
-    # end
+  # def logged_in?
+  #   ((author_signed_in? || admin_signed_in?) && Devise::Strategies::WebaccessAuthenticatable.new(request.headers).valid?) || Rails.env.test?
+  #   #   # ()author_signed_in? && valid?(request.headers) || Rails.env.test?
+  # end
 
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:access_id)
-    end
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:access_id)
+  end
 end

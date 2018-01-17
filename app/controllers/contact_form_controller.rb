@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class ContactFormController < ApplicationController
   before_action :set_author
   def new
     @contact_author = current_author
-    @contact_form = ContactForm.new(full_name: @contact_author.full_name, email:  @contact_author.psu_email_address)
+    @contact_form = ContactForm.new(full_name: @contact_author.full_name, email: @contact_author.psu_email_address)
   end
 
   def create
@@ -22,7 +24,7 @@ class ContactFormController < ApplicationController
 
   private
 
-    def set_author
-      redirect_to Rails.application.routes.url_helpers.login_author_path if current_author.nil?
-    end
+  def set_author
+    redirect_to Rails.application.routes.url_helpers.login_author_path if current_author.nil?
+  end
 end

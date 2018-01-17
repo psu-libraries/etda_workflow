@@ -1,7 +1,10 @@
 # frozen_string_literal: true
+
 require 'model_spec_helper'
 
 RSpec.describe Submission, type: :model do
+  let(:submission) { described_class.new(access_level: AccessLevel.OPEN_ACCESS.current_access_level) }
+
   it { is_expected.to have_db_column(:author_id).of_type(:integer) }
   it { is_expected.to have_db_column(:program_id).of_type(:integer) }
   it { is_expected.to have_db_column(:degree_id).of_type(:integer) }
@@ -53,7 +56,6 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_index(:format_review_legacy_old_id) }
   it { is_expected.to have_db_index(:public_id).unique(true) }
 
-  let(:submission) { described_class.new(access_level:  AccessLevel.OPEN_ACCESS.current_access_level) }
   # before { allow(InboundLionPathRecord).to receive(:active?).and_return(false) }
 
   it { is_expected.to validate_presence_of :author_id }

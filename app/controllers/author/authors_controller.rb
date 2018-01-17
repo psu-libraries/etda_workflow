@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Author::AuthorsController < AuthorController
   def edit
     @author = Author.find(params[:id])
@@ -38,20 +40,20 @@ class Author::AuthorsController < AuthorController
 
   private
 
-    def author_params
-      params.require(:author).permit(:access_id,
-                                     :first_name,
-                                     :middle_name,
-                                     :last_name,
-                                     :alternate_email_address,
-                                     :psu_email_address,
-                                     :phone_number,
-                                     :is_alternate_email_public,
-                                     :address_1,
-                                     :address_2,
-                                     :city,
-                                     :state,
-                                     :zip,
-                                     :country)
-    end
+  def author_params
+    params.require(:author).permit(:access_id,
+                                   :first_name,
+                                   :middle_name,
+                                   :last_name,
+                                   :alternate_email_address,
+                                   :psu_email_address,
+                                   :phone_number,
+                                   :is_alternate_email_public,
+                                   :address_1,
+                                   :address_2,
+                                   :city,
+                                   :state,
+                                   :zip,
+                                   :country)
+  end
 end

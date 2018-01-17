@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'model_spec_helper'
 require 'invention_disclosure_number_validator'
 
@@ -21,12 +22,12 @@ RSpec.describe InventionDisclosure, type: :model do
     context 'when given a valid id number' do
       it 'is valid' do
         submission.invention_disclosure.id_number = "#{this_year}-1234"
-        expect(submission.valid?).to be_truthy
+        expect(submission).to be_valid
         expect(submission.errors.details[:invention_disclosure]).to eql([])
       end
     end
     context 'it cannot be empty' do
-      it 'is not valid'do
+      it 'is not valid' do
         submission.access_level = 'restricted'
         submission.valid?
         expect(submission.errors.details[:invention_disclosure]).to eql([' number is required for Restricted submissions.'])

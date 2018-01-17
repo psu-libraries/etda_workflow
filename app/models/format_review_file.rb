@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FormatReviewFile < ApplicationRecord
   # mount_uploader :asset, SubmissionFileUploader
 

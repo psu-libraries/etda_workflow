@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'model_spec_helper'
 
 RSpec.describe Author, type: :model do
@@ -20,12 +21,8 @@ RSpec.describe Author, type: :model do
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:legacy_id).of_type(:integer) }
-  it { is_expected.to have_db_column(:confidential_hold).of_type(:boolean) }
-
   it { is_expected.to have_db_column(:remember_created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:sign_in_count).of_type(:integer) }
-  it { is_expected.to have_db_column(:remember_created_at).of_type(:datetime) }
-  it { is_expected.to have_db_column(:current_sign_in_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:last_sign_in_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:current_sign_in_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:current_sign_in_ip).of_type(:string) }
@@ -34,7 +31,6 @@ RSpec.describe Author, type: :model do
   it { is_expected.to have_db_column(:psu_idn).of_type(:string) }
   it { is_expected.to have_db_column(:confidential_hold).of_type(:boolean) }
   it { is_expected.to have_db_column(:confidential_hold_set_at).of_type(:datetime) }
-
   it { is_expected.to validate_presence_of(:access_id) }
   it { is_expected.to validate_presence_of(:first_name) }
   it { is_expected.to validate_presence_of(:last_name) }
@@ -53,19 +49,19 @@ RSpec.describe Author, type: :model do
       expect(FactoryBot.build(:author, alternate_email_address: 'xyz-123@yahoo.com')).to be_valid
       expect(FactoryBot.build(:author, alternate_email_address: 'someone@smith.ac.nz')).to be_valid
       expect(FactoryBot.build(:author, alternate_email_address: 'abc123@cse.psu.edu')).to be_valid
-      expect(FactoryBot.build(:author, alternate_email_address: 'xyz-123 .com')).to_not be_valid
-      expect(FactoryBot.build(:author, alternate_email_address: 'abc123@.psu.edu')).to_not be_valid
+      expect(FactoryBot.build(:author, alternate_email_address: 'xyz-123 .com')).not_to be_valid
+      expect(FactoryBot.build(:author, alternate_email_address: 'abc123@.psu.edu')).not_to be_valid
     end
 
     it 'only accepts correctly formatted psu_idn numbers' do
       expect(FactoryBot.build(:author, psu_idn: '912345678')).to be_valid
       expect(FactoryBot.build(:author, psu_idn: '901287085')).to be_valid
-      expect(FactoryBot.build(:author, psu_idn: '91234567a')).to_not be_valid
-      expect(FactoryBot.build(:author, psu_idn: '91234567.')).to_not be_valid
-      expect(FactoryBot.build(:author, psu_idn: '9123456')).to_not be_valid
-      expect(FactoryBot.build(:author, psu_idn: '9123456789')).to_not be_valid
-      expect(FactoryBot.build(:author, psu_idn: '712345678')).to_not be_valid
-      expect(FactoryBot.build(:author, psu_idn: '9123456-8')).to_not be_valid
+      expect(FactoryBot.build(:author, psu_idn: '91234567a')).not_to be_valid
+      expect(FactoryBot.build(:author, psu_idn: '91234567.')).not_to be_valid
+      expect(FactoryBot.build(:author, psu_idn: '9123456')).not_to be_valid
+      expect(FactoryBot.build(:author, psu_idn: '9123456789')).not_to be_valid
+      expect(FactoryBot.build(:author, psu_idn: '712345678')).not_to be_valid
+      expect(FactoryBot.build(:author, psu_idn: '9123456-8')).not_to be_valid
     end
     it 'does not check format of phone number' do
       expect(FactoryBot.build(:author, legacy_id: 1, phone_number: '123-xyz-7890')).to be_valid
@@ -77,21 +73,21 @@ RSpec.describe Author, type: :model do
     it 'expects correctly formatted zip code if one is entered for graduate authors' do
       author = FactoryBot.build(:author)
       author.zip = '078431=1234'
-      expect(author).to_not be_valid
+      expect(author).not_to be_valid
       author.zip = '07843-12345'
-      expect(author).to_not be_valid
+      expect(author).not_to be_valid
       author.zip = 'AB843-1234'
-      expect(author).to_not be_valid
+      expect(author).not_to be_valid
       author.zip = '12345-1234'
       expect(author).to be_valid
       author.zip = '12345'
       expect(author).to be_valid
       author.zip = '1234'
-      expect(author).to_not be_valid
+      expect(author).not_to be_valid
       author.zip = '12345-123'
-      expect(author).to_not be_valid
+      expect(author).not_to be_valid
       author.zip = '123456-12345'
-      expect(author).to_not be_valid
+      expect(author).not_to be_valid
     end
   end
 
@@ -112,7 +108,7 @@ RSpec.describe Author, type: :model do
       expect(described_class.new(access_id: 'testid').send('ldap_results_valid?', nil)).to be_falsey
     end
     it 'returns false if access_ids do not match' do
-      expect(described_class.new(access_id: 'wrongid').send('ldap_results_valid?', access_id: 'testid', first_name: "xtester", middle_name: "xmiddle", last_name: "xlast", address_1: "TSB Building", city: "University Park", state: "PA", zip: "16802", phone_number: "555-555-5555", country: "US", psu_idn: "999999999"))
+      expect(described_class.new(access_id: 'wrongid').send('ldap_results_valid?', access_id: 'testid', first_name: "xtester", middle_name: "xmiddle", last_name: "xlast", address_1: "TSB Building", city: "University Park", state: "PA", zip: "16802", phone_number: "555-555-5555", country: "US", psu_idn: "999999999")).to be_falsey
     end
     it 'returns true if results are not empty' do
       expect(described_class.new(access_id: 'testid').send('ldap_results_valid?', access_id: 'testid', first_name: "xtester", middle_name: "xmiddle", last_name: "xlast", address_1: "TSB Building", city: "University Park", state: "PA", zip: "16802", phone_number: "555-555-5555", country: "US", psu_idn: "999999999")).to be_truthy
@@ -136,7 +132,7 @@ RSpec.describe Author, type: :model do
   context '#can_edit?' do
     it 'allows the author to edit his or her own record' do
       described_class.current = described_class.new(access_id: 'ME123')
-      expect(described_class.new(access_id: 'me123').can_edit?).to be_truthy
+      expect(described_class.new(access_id: 'me123')).to be_can_edit
     end
     it "does not allow an author to edit someone else's personal information" do
       described_class.current = described_class.new(access_id: 'me123')
@@ -145,8 +141,8 @@ RSpec.describe Author, type: :model do
   end
   context '#legacy' do
     it 'identifies legacy records' do
-      expect(described_class.new(access_id: 'me123', legacy_id: nil).legacy?).to be_falsey
-      expect(described_class.new(access_id: 'me123', legacy_id: '1').legacy?).to be_truthy
+      expect(described_class.new(access_id: 'me123', legacy_id: nil)).not_to be_legacy
+      expect(described_class.new(access_id: 'me123', legacy_id: '1')).to be_legacy
     end
   end
   describe 'confidential?' do
@@ -154,15 +150,15 @@ RSpec.describe Author, type: :model do
     context 'author does not have a confidential hold' do
       it 'returns false' do
         author.confidential_hold = false
-        expect(author.confidential?).to be_falsey
+        expect(author).not_to be_confidential
       end
       it 'returns true' do
         author.confidential_hold = true
-        expect(author.confidential?).to be_truthy
+        expect(author).to be_confidential
       end
       it 'returns false if value is nil' do
         author.confidential_hold = nil
-        expect(author.confidential?).to be_falsey
+        expect(author).not_to be_confidential
       end
     end
   end
@@ -185,12 +181,13 @@ RSpec.describe Author, type: :model do
     author = described_class.new(access_id: 'bbb123', psu_email_address: 'bbb123')
     author.save validate: false
     let(:author_ldap_results) { { access_id: 'bbb123', first_name: '', middle_name: '', last_name: '', address_1: '', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '', psu_idn: '988888888', confidential_hold: true } }
+
     it 'populates first and last name with access_id and a message when LDAP does not return those fields' do
       expect(author.last_name).to be_blank
       expect(author.phone_number).to be_blank
       allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('bbb123', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_ldap_results)
       author.populate_attributes
-      expect(author.first_name).to eql("#{author.access_id}")
+      expect(author.first_name).to eql(author.access_id.to_s)
       expect(author.phone_number).to eql('')
       expect(author.last_name).to eql('No Associated Name')
       expect(author.confidential_hold).to be_truthy

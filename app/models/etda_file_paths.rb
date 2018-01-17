@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EtdaFilePaths < EtdaUtilities::EtdaFilePaths
   def workflow_base_path
     WORKFLOW_BASE_PATH

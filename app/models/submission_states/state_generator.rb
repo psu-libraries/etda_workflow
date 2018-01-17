@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SubmissionStates
   class StateGenerator
     @class_cache = {

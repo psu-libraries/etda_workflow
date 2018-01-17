@@ -1,12 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'devise/test/controller_helpers'
 
 RSpec.describe 'Devise Login', type: :request do
   RSpec::Mocks.configuration.allow_message_expectations_on_nil = true
   let(:author) { FactoryBot.create(:author) }
+
   before do
     allow(request).to receive(:controller).and_return("admin/degrees")
     allow(request).to receive(:headers).and_return('REMOTE_USER' => 'saw140')
+    allow(Rails.application.secrets).to receive(:webaccess).and_return(vservice: "ahost.psu.edu", vhost: 'https://myapp.psu.edu')
   end
 
   it 'signs author in and out' do
@@ -15,7 +19,7 @@ RSpec.describe 'Devise Login', type: :request do
     request.headers.merge! headers
     Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate!
     get root_path
-    expect(Author.find_by_access_id('saw140')).to_not be_nil
+    expect(Author.find_by_access_id('saw140')).not_to be_nil
   end
 
   it 'signs admin in and out' do
@@ -35,9 +39,6 @@ RSpec.describe 'Devise Login', type: :request do
     expect(Admin.find_by_access_id('saw140')).to be_nil
   end
 
-  before do
-    allow(Rails.application.secrets).to receive(:webaccess).and_return(vservice: "ahost.psu.edu", vhost: 'https://myapp.psu.edu')
-  end
   context 'production environment' do
     before do
       allow(Rails).to receive(:env) { "production".inquiry }
@@ -45,10 +46,10 @@ RSpec.describe 'Devise Login', type: :request do
 
     it 'author can login and logout' do
       get login_path
-      assert_response :redirect, '<302: Found> redirect to <"#{WebAccess.new().login_url}">'
+      assert_response :redirect, "<302: Found> redirect to <#{WebAccess.new.login_url}>"
 
       get logout_path
-      assert_response :redirect, '<302: Found> redirect to <"#{WebAccess.new().logout_url}">'
+      assert_response :redirect, "<302: Found> redirect to <#{WebAccess.new.logout_url}>"
     end
   end
   context 'development environment' do
@@ -58,10 +59,10 @@ RSpec.describe 'Devise Login', type: :request do
 
     it 'author can login and logout' do
       get login_path
-      assert_response :redirect, '<302: Found> redirect to <"#{WebAccess.new().login_url}">'
+      assert_response :redirect, "<302: Found> redirect to <#{WebAccess.new.login_url}>"
 
       get logout_path
-      assert_response :redirect, '<302: Found> redirect to <"#{WebAccess.new().logout_url}">'
+      assert_response :redirect, "<302: Found> redirect to <#{WebAccess.new.logout_url}>"
     end
   end
 end

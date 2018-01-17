@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Keyword < ApplicationRecord
   validates :submission_id, :word, presence: true, allow_blank: false
 

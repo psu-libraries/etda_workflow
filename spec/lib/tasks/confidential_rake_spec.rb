@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'shoulda-matchers'
 require 'shared/shared_examples_for_university_directory'
 
-RSpec.describe 'Rake::Task::confidential:checker', type: :task do
+RSpec.describe "Rake::Task['confidential:checker']", type: :task do
   Rails.application.load_tasks
 
   subject(:task) { Rake::Task['confidential:checker'] }
 
   let(:author) { FactoryBot.create :author }
+  let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release }
 
   before { task.reenable }
 
@@ -18,7 +21,7 @@ RSpec.describe 'Rake::Task::confidential:checker', type: :task do
       expect(Author.where(confidential_hold: true).count).to eq(0)
       allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
       allow_any_instance_of(ConfidentialHoldUtility).to receive(:new_confidential_status).and_return(true)
-      expect { task.invoke }.to_not raise_error
+      expect { task.invoke }.not_to raise_error
       author.reload
       expect(author.confidential_hold).to be_truthy
       expect(Author.where(confidential_hold: true).count).to eq(1)
@@ -30,13 +33,12 @@ RSpec.describe 'Rake::Task::confidential:checker', type: :task do
       expect(author.confidential_hold).to be_truthy
       expect(Author.where(confidential_hold: false).count).to eq(0)
       allow_any_instance_of(ConfidentialHoldUtility).to receive(:new_confidential_status).and_return(false)
-      expect { task.invoke }.to_not raise_error
+      expect { task.invoke }.not_to raise_error
       author.reload
       expect(author.confidential_hold).to be_falsey
       expect(Author.where(confidential_hold: false).count).to eq(1)
     end
   end
-  let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release }
 
   context 'submission status is updated when a confidential hold is placed' do
     it "embargoes the submission when the submission status is 'waiting for publication release'" do
@@ -46,7 +48,7 @@ RSpec.describe 'Rake::Task::confidential:checker', type: :task do
       expect(author.confidential_hold).to be_falsey
       expect(Author.where(confidential_hold: true).count).to eq(0)
       expect(submission.status_behavior.waiting_for_publication_release?).to be_truthy
-      expect { task.invoke }.to_not raise_error
+      expect { task.invoke }.not_to raise_error
       submission.reload
       expect(submission.status_behavior.embargoed?).to be_truthy
     end
@@ -59,7 +61,7 @@ RSpec.describe 'Rake::Task::confidential:checker', type: :task do
       expect(new_submission.status_behavior.waiting_for_publication_release?).to be_falsey
       allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
       allow_any_instance_of(ConfidentialHoldUtility).to receive(:new_confidential_status).and_return(true)
-      expect { task.invoke }.to_not raise_error
+      expect { task.invoke }.not_to raise_error
       new_submission.reload
       new_author.reload
       expect(new_author.confidential_hold).to be_truthy

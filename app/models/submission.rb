@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Submission < ApplicationRecord
   extend Enumerize
   belongs_to :author
@@ -101,11 +103,11 @@ class Submission < ApplicationRecord
   scope :final_is_embargoed, -> { where(status: 'confidential hold embargo') }
 
   def set_status_to_collecting_program_information
-    self.status = 'collecting program information' if self.new_record? && status.nil?
+    self.status = 'collecting program information' if new_record? && status.nil?
   end
 
   def initialize_access_level
-    self.access_level = '' if self.new_record? && access_level.nil?
+    self.access_level = '' if new_record? && access_level.nil?
   end
 
   def title_words
@@ -137,7 +139,7 @@ class Submission < ApplicationRecord
     # submission is edited and submitted with blank invention disclosure id_number
     exists = attributes['id'].present?
     empty = attributes['id_number'].blank?
-    attributes.merge!(_destroy: 1) if exists && empty
+    attributes[:_destroy] = 1 if exists && empty
     (!exists && empty)
   end
 end

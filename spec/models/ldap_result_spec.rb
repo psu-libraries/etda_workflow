@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe LdapResult, type: :model do
   describe 'AUTHOR_LDAP_MAP' do
     context 'Parsed LDAP attributes are returned for author' do
@@ -43,6 +45,7 @@ RSpec.describe LdapResult, type: :model do
                             attribute_map: LdapUniversityDirectory::COMMITTEE_LDAP_MAP[:map],
                             defaults: LdapUniversityDirectory::COMMITTEE_LDAP_MAP[:defaults]).map_directory_info
       end
+
       it 'returns a message when department information is missing' do
         expect(mapped_record[2][:dept]).to eq 'Department not available'
         expect(mapped_record[2][:id]).to eq 'Email not available'

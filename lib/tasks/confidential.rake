@@ -1,22 +1,22 @@
+# frozen_string_literal: true
+
 namespace :confidential do
   desc "check unpublished submissions to determine whether they should be flagged as confidential"
   task checker: :environment do
     puts 'Checking unreleased submissions for authors with confidential hold'
     directory = LdapUniversityDirectory.new
     Author.all.each do |author|
-      if directory.exists? author.access_id
-        author_confidential_hold = ConfidentialHoldUtility.new(author.access_id,author.confidential_hold)
-        if author_confidential_hold.changed?
-          # this will NOT send out emails; should emails go out for this?
+      next unless directory.exists? author.access_id
+      author_confidential_hold = ConfidentialHoldUtility.new(author.access_id, author.confidential_hold)
+      next unless author_confidential_hold.changed?
+      # this will NOT send out emails; should emails go out for this?
 
-          author.confidential_hold = author_confidential_hold.new_confidential_status
-          author.confidential_hold_set_at = Time.zone.now
-          author.save(validate: false)
+      author.confidential_hold = author_confidential_hold.new_confidential_status
+      author.confidential_hold_set_at = Time.zone.now
+      author.save(validate: false)
 
-          puts "Author record updated: #{author.access_id}, record_id: #{author.id.to_s}"
-          update_authors_submissions(author)
-        end
-      end
+      puts "Author record updated: #{author.access_id}, record_id: #{author.id}"
+      update_authors_submissions(author)
     end
   end
 
@@ -25,11 +25,10 @@ namespace :confidential do
     puts 'Reporting authors with a confidential hold'
     directory = LdapUniversityDirectory.new
     Author.all.each do |author|
-      if directory.exists? author.access_id
-        results = nil
-        results = directory.retrieve(author.access_id, LdapResultsMap::AUTHOR_LDAP_MAP)
-        printf("Author with id: %s %s has a confidential hold\n", author.id.to_s, author.access_id) if results[:confidential_hold] == true
-      end
+      next unless directory.exists? author.access_id
+      results = nil
+      results = directory.retrieve(author.access_id, LdapResultsMap::AUTHOR_LDAP_MAP)
+      printf("Author with id: %s %s has a confidential hold\n", author.id.to_s, author.access_id) if results[:confidential_hold] == true
     end
   end
 

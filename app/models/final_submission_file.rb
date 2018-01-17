@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FinalSubmissionFile < ApplicationRecord
   # mount_uploader :asset, SubmissionFileUploader
 

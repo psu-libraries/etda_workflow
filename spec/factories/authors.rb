@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :author, class: Author do |_p|
     sequence :access_id, 1000 do |n|
@@ -6,9 +8,8 @@ FactoryBot.define do
     sequence :psu_email_address, 1000 do |n|
       "XYZ#{n}@psu.edu"
     end
-    # rubocop:disable Style/NumericLiterals
     sequence :psu_idn, 900000000 do |n|
-      "#{n}".to_s
+      n.to_s.to_s
     end
     # rubocop:enable Style/NumericLiterals
 
@@ -23,7 +24,7 @@ FactoryBot.define do
     city "State College"
     state "PA"
     zip "16801"
-    updated_at 4.days.ago
+    updated_at { 4.days.ago }
     # inbound_lion_path_record { create(:inbound_lion_path_record) }
   end
 
@@ -34,6 +35,6 @@ FactoryBot.define do
 
   trait :confidential_hold do
     confidential_hold true
-    confidential_hold_set_at Time.zone.yesterday
+    confidential_hold_set_at { Time.zone.yesterday }
   end
 end

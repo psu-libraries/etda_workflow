@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SubmissionStates
   class ConfidentialHoldEmbargo < SubmissionState
     @name = 'confidential hold embargo'

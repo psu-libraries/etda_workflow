@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :invention_disclosure do |_invention_disclosure|
     submission_id { submission }

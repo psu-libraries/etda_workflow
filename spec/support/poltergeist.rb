@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'capybara/poltergeist'
 
 Capybara.register_driver :poltergeist do |app|

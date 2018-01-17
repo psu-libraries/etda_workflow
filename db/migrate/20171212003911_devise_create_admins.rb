@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DeviseCreateAdmins < ActiveRecord::Migration[5.1]
   def change
     create_table :admins do |t|
@@ -31,11 +33,10 @@ class DeviseCreateAdmins < ActiveRecord::Migration[5.1]
       # t.string   :unlock_token # Only if unlock strategy is :email or :both
       # t.datetime :locked_at
 
-
       t.timestamps null: false
     end
 
-    add_index :admins, :access_id,                unique: true
+    add_index :admins, :access_id, unique: true
     # add_index :administrators, :email,                unique: true
     # add_index :administrators, :reset_password_token, unique: true
     # add_index :administrators, :confirmation_token,   unique: true

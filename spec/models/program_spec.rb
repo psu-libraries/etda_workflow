@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'model_spec_helper'
 
 RSpec.describe Program, type: :model do

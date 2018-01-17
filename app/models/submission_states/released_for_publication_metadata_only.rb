@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SubmissionStates
   class ReleasedForPublicationMetadataOnly < SubmissionState
     @name = 'released for publication metadata only'

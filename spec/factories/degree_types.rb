@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :degree_type do
     sequence(:slug) { |i| "degree_type_#{i}" }

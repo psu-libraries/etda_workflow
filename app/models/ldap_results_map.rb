@@ -1,17 +1,18 @@
+# frozen_string_literal: true
+
 class LdapResultsMap
-  AUTOCOMPLETE_LDAP_MAP = { map: { displayname: [:label, :value],
+  AUTOCOMPLETE_LDAP_MAP = { map: { displayname: %i[label value],
                                    mail: [:id],
                                    psadminarea: [:dept_admin],
-                                   psdepartment: [:dept]
-  }, defaults: { dept: 'Department not available', id: 'Email not available' } }
+                                   psdepartment: [:dept] }, defaults: { dept: 'Department not available', id: 'Email not available' } }.freeze
 
   AUTHOR_LDAP_MAP = { uid: [:access_id],
-                      givenname: [:first_name, :middle_name],
+                      givenname: %i[first_name middle_name],
                       sn: [:last_name],
-                      postaladdress: [:address_1, :city, :state, :country, :zip],
+                      postaladdress: %i[address_1 city state country zip],
                       telephonenumber: [:phone_number],
                       psidn: [:psu_idn],
-                      psconfhold: [:confidential_hold] }
+                      psconfhold: [:confidential_hold] }.freeze
 
   ADMIN_LDAP_MAP = { uid: [:access_id],
                      givenname: [:first_name],
@@ -19,13 +20,12 @@ class LdapResultsMap
                      postaladdress: [:address_1],
                      telephonenumber: [:phone_number],
                      psmemberof: [:administrator],
-                     psidn: [:psu_idn] }
+                     psidn: [:psu_idn] }.freeze
 
-  COMMITTEE_LDAP_MAP = { map: { displayname: [:label, :value],
+  COMMITTEE_LDAP_MAP = { map: { displayname: %i[label value],
                                 mail: [:id],
                                 psadminarea: [:dept_admin],
-                                psdepartment: [:dept]
-  }, defaults: { dept: 'Department not available', id: 'Email not available' } }
+                                psdepartment: [:dept] }, defaults: { dept: 'Department not available', id: 'Email not available' } }.freeze
 
   LDAP_RESULTS_MAP = {
     last_name: { method: :format_upcase, options: {} },
@@ -45,5 +45,5 @@ class LdapResultsMap
     administrator: { method: :format_administrator, options: {} },
     psuidn: { method: :format_psuidn, options: {} },
     confidential_hold: { method: :format_confidential, options: {} }
-  }
+  }.freeze
 end

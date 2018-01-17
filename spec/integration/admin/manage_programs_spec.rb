@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "Manage Programs", js: true do
   require 'integration/integration_spec_helper'
 
@@ -17,7 +19,7 @@ RSpec.describe "Manage Programs", js: true do
     check 'Is active'
     button_text = "New #{current_partner.program_label}"
     click_button button_text
-    expect(page.current_path).to eq(admin_programs_path)
+    expect(page).to have_current_path(admin_programs_path)
     expect(page).to have_content(program.name)
     within('tr', text: 'A New Program') do
       expect(page).to have_content('A New Program')
@@ -36,8 +38,8 @@ RSpec.describe "Manage Programs", js: true do
     end
     expect(page).to have_content("#{current_partner.program_label} successfully updated")
     fill_in 'Search records...', with: 'different program'
-    expect(page).to_not have_content(program.name)
-    expect(page).to_not have_content(program2.name)
+    expect(page).not_to have_content(program.name)
+    expect(page).not_to have_content(program2.name)
     status_str = printf('Showing 1 to %1d of %1d records', Program.all.count, Program.all.count)
     expect(page).to have_content(status_str)
     find(:css, 'input#starts-with_check').set(true)

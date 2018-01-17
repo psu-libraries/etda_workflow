@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "Manage Degrees", js: true do
   require 'integration/integration_spec_helper'
 
@@ -20,7 +22,7 @@ RSpec.describe "Manage Degrees", js: true do
     check 'Is active'
     select DegreeType.default.name, from: 'Degree type'
     click_button 'Create Degree'
-    expect(page.current_path).to eq(admin_degrees_path)
+    expect(page).to have_current_path(admin_degrees_path)
     expect(page).to have_content(degree.name)
     within('tr', text: 'MArch') do
       expect(page).to have_content('Master of Architecture')
@@ -44,8 +46,8 @@ RSpec.describe "Manage Degrees", js: true do
       expect(page).to have_content('No')
     end
     fill_in 'Search records...', with: 'a new name'
-    expect(page).to_not have_content(degree.name)
-    expect(page).to_not have_content(degree2.name)
+    expect(page).not_to have_content(degree.name)
+    expect(page).not_to have_content(degree2.name)
     status_str = printf('Showing 1 to %1d of %1d entries', Degree.all.count, Degree.all.count)
     expect(page).to have_content(status_str)
     expect(page).to have_link('Accessibility')

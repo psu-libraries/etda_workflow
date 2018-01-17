@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Sequences reused across factories
 FactoryBot.define do
   sequence :name, 1000 do |n|

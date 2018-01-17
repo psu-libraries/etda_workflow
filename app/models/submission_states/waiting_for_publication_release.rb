@@ -1,5 +1,7 @@
 
 
+# frozen_string_literal: true
+
 module SubmissionStates
   class WaitingForPublicationRelease < SubmissionState
     @name = 'waiting for publication release'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if defined?(RSpec)
   require 'rspec/core'
   require 'rspec/core/rake_task'
@@ -36,4 +38,3 @@ if defined?(RSpec)
     task default: 'bundle:audit'
   end
 end
-

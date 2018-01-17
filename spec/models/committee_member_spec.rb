@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'model_spec_helper'
 
 RSpec.describe CommitteeMember, type: :model do
@@ -17,17 +18,19 @@ RSpec.describe CommitteeMember, type: :model do
   describe 'validates' do
     let(:submission) { FactoryBot.create(:submission) }
     let(:cm) { described_class.new }
-    it 'is not valid' do
-      expect(cm.valid?).to be_falsey
-    end
     let(:committee_role) { FactoryBot.create(:committee_role) }
+
+    it 'is not valid' do
+      expect(cm).not_to be_valid
+    end
+
     it 'is valid' do
       cm.name = 'Mr. Committee Member'
       cm.email = 'email@psu.edu'
       cm.committee_role_id = committee_role.id
       cm.submission_id = submission.id
       cm.is_required = true
-      expect(cm.valid?).to be_truthy
+      expect(cm).to be_valid
     end
   end
   # context 'submission_id' do

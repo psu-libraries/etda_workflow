@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin < ApplicationRecord
   Devise.add_module(:webacess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
@@ -43,6 +45,5 @@ class Admin < ApplicationRecord
     save(validate: false)
   end
 
-  def update_missing_attributes
-  end
+  def update_missing_attributes; end
 end

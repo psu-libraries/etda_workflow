@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddMoreColumnsToAuthors < ActiveRecord::Migration[5.1]
   def change
     add_column :authors, :first_name, :string
@@ -21,4 +23,3 @@ class AddMoreColumnsToAuthors < ActiveRecord::Migration[5.1]
     # add_foreign_key :inbound_lion_path_records, :authors, name: 'inbound_lion_path_records_author_id_fk'
   end
 end
-

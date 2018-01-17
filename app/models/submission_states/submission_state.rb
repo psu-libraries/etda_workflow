@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 module SubmissionStates
   class SubmissionState
     attr_reader :transitions_to
 
-    class << self; attr_reader :name end # add a class level attr_reader for name
+    # add a class level attr_reader for name
+    class << self; attr_reader :name end
     @name = "Change ME!!!!"
 
     def initialize

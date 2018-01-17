@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'model_spec_helper'
 
 RSpec.describe Degree, type: :model do
@@ -23,10 +24,9 @@ RSpec.describe Degree, type: :model do
   it { is_expected.to belong_to :degree_type }
 
   describe described_class do
-    subject(:degree) { described_class.new(degree_type_id: DegreeType.default, name: 'MyDegree') }
-
-    subject { is_expected.to validate_presence_of :degree_type_id }
     subject { is_expected.to validate_uniqueness_of :name }
+
+    let(:degree) { described_class.new(degree_type_id: DegreeType.default, name: 'MyDegree') }
   end
 
   describe '#active_status' do
@@ -61,9 +61,9 @@ RSpec.describe Degree, type: :model do
       list = described_class.valid_degrees_list
       expect(list).to be_a_kind_of(Array)
       expect(list.count).to eql(described_class.where(is_active: true).count)
-      expect(list.include?('M_M_M')).to be_truthy
-      expect(list.include?('a b c')).to be_falsey
-      expect(list.include?('XBC')).to be_falsey
+      expect(list).to include('M_M_M')
+      expect(list).not_to include('a b c')
+      expect(list).not_to include('XBC')
     end
   end
   describe '#etd_degree_slug' do

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Admin::DegreesController, type: :controller do
@@ -19,6 +20,7 @@ RSpec.describe Admin::DegreesController, type: :controller do
   end
   describe '#edit' do
     let(:degree) { FactoryBot.create(:degree) }
+
     it 'edits an existing degree' do
       expect(get: edit_admin_degree_path(degree.id)).to route_to(controller: 'admin/degrees', action: 'edit', id: degree.id.to_s)
     end

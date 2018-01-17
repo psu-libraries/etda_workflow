@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Author < ApplicationRecord
   class NotAuthorizedToEdit < StandardError; end
 
@@ -61,8 +63,7 @@ class Author < ApplicationRecord
     save_mapped_attributes(mapped_attributes) if mapped_attributes
   end
 
-  def retrieve_lion_path_information
-  end
+  def retrieve_lion_path_information; end
 
   def update_missing_attributes
     update_confidential_status(access_id)
@@ -93,41 +94,41 @@ class Author < ApplicationRecord
 
   private
 
-    def ldap_results_valid?(results)
-      if results.nil? || results.empty?
-        Rails.logger.info("No LDAP information returned for #{access_id}")
-        return false
-      else
-        ldap_access_id_valid?(results)
-      end
+  def ldap_results_valid?(results)
+    if results.nil? || results.empty?
+      Rails.logger.info("No LDAP information returned for #{access_id}")
+      false
+    else
+      ldap_access_id_valid?(results)
     end
+  end
 
-    def ldap_access_id_valid?(results)
-      ldap_access_id = results[:access_id].downcase.strip
-      author_access_id = access_id.downcase.strip
-      if ldap_access_id != author_access_id
-        Rails.logger.info("Incorrect access id retrieved from LDAP.  LDAP returned: #{ldap_access_id} for author: #{author_access_id}")
-        return false
-      end
-      true
+  def ldap_access_id_valid?(results)
+    ldap_access_id = results[:access_id].downcase.strip
+    author_access_id = access_id.downcase.strip
+    if ldap_access_id != author_access_id
+      Rails.logger.info("Incorrect access id retrieved from LDAP.  LDAP returned: #{ldap_access_id} for author: #{author_access_id}")
+      return false
     end
+    true
+  end
 
-    def update_confidential_status(login_id)
-      confidential_hold_status = ConfidentialHoldUtility.new(login_id, confidential_hold)
-      return unless confidential_hold_status.changed?
-      # send emails and save the new status
-      confidential_hold_status.send_confidential_status_notifications(self)
-      self.confidential_hold = confidential_hold_status.new_confidential_status
-      self.confidential_hold_set_at = confidential_hold_status.hold_set_at(confidential_hold_set_at, confidential_hold_status.new_confidential_status)
-      save(validate: false)
-    end
+  def update_confidential_status(login_id)
+    confidential_hold_status = ConfidentialHoldUtility.new(login_id, confidential_hold)
+    return unless confidential_hold_status.changed?
+    # send emails and save the new status
+    confidential_hold_status.send_confidential_status_notifications(self)
+    self.confidential_hold = confidential_hold_status.new_confidential_status
+    self.confidential_hold_set_at = confidential_hold_status.hold_set_at(confidential_hold_set_at, confidential_hold_status.new_confidential_status)
+    save(validate: false)
+  end
 
-    def save_mapped_attributes(mapped_attributes)
-      if mapped_attributes[:confidential_hold]
-        mapped_attributes[:first_name] = access_id if mapped_attributes[:first_name].blank?
-        mapped_attributes[:last_name] = 'No Associated Name' if mapped_attributes[:last_name].blank?
-      end
-      update_attributes(mapped_attributes)
-      save(validate: false)
+  def save_mapped_attributes(mapped_attributes)
+    if mapped_attributes[:confidential_hold]
+      mapped_attributes[:first_name] = access_id if mapped_attributes[:first_name].blank?
+      mapped_attributes[:last_name] = 'No Associated Name' if mapped_attributes[:last_name].blank?
     end
+    update_attributes(mapped_attributes)
+    save(validate: false)
+  end
 end

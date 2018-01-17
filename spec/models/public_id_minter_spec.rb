@@ -1,11 +1,13 @@
 # frozen_string_literal: true
+
 require 'model_spec_helper'
 
 RSpec.describe PublicIdMinter do
+  subject(:id) { described_class.new(submission).id }
+
   let(:author) { FactoryBot.create :author }
   let(:submission) { FactoryBot.create :submission, author: author, public_id: '' }
   let(:matching_submission) { FactoryBot.create :submission }
-  subject(:id) { described_class.new(submission).id }
 
   describe 'creates a public id' do
     context "#id" do

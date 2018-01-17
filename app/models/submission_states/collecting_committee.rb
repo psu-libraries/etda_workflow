@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SubmissionStates
   class CollectingCommittee < SubmissionState
     @name = 'collecting committee'

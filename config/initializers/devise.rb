@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'redirect_to_webaccess_failure'
 
 Devise.add_module(:webaccess_authenticatable,

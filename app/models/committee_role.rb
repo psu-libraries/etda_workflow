@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommitteeRole < ApplicationRecord
   belongs_to :degree_type
   has_many :committee_members
@@ -12,21 +14,21 @@ class CommitteeRole < ApplicationRecord
                      'master_thesis' => [
                        { name: 'Thesis Advisor', num_required: 1, is_active: true },
                        { name: 'Committee Member', num_required: 0, is_active: true }
-                     ] }
+                     ] }.freeze
 
   HONORS_ROLES = { 'thesis' => [
     { name: 'Thesis Supervisor',       num_required: 1, is_active: true },
     { name: 'Honors Advisor',          num_required: 1, is_active: true },
     { name: 'Faculty Reader',          num_required: 0, is_active: true }
-  ] }
+  ] }.freeze
 
   MILSCH_ROLES = { 'thesis' => [
     { name: 'Thesis Supervisor', num_required: 1, is_active: true },
     { name: 'Advisor',           num_required: 0, is_active: true },
     { name: 'Honors Advisor',    num_required: 0, is_active: true }
-  ] }
+  ] }.freeze
 
-  ROLES = { 'graduate' => CommitteeRole::GRADUATE_ROLES, 'honors' => CommitteeRole::HONORS_ROLES, 'milsch' => CommitteeRole::MILSCH_ROLES }
+  ROLES = { 'graduate' => CommitteeRole::GRADUATE_ROLES, 'honors' => CommitteeRole::HONORS_ROLES, 'milsch' => CommitteeRole::MILSCH_ROLES }.freeze
 
   def self.seed
     CommitteeRole::ROLES[current_partner.id].each do |degree_type, roles|

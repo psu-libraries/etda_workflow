@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe '#etda_workflow_routing' do
+RSpec.describe ActionDispatch::Routing do
   context 'admin routes' do
     it 'degrees routes' do
       expect(get: 'admin/degrees').to route_to(controller: 'admin/degrees', action: 'index')

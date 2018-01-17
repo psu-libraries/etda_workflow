@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommitteeMember < ApplicationRecord
   # This maps ldap values to one or more values needed for committee member autocomplete
   # validate :validate_committee_member

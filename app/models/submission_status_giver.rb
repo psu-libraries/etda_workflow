@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SubmissionStatusGiver
   class AccessForbidden < StandardError; end
   class InvalidTransition < StandardError; end
@@ -119,13 +121,13 @@ class SubmissionStatusGiver
 
   private
 
-    def transition_to(new_state)
-      raise InvalidTransition unless new_state.transition submission
-    end
+  def transition_to(new_state)
+    raise InvalidTransition unless new_state.transition submission
+  end
 
-    def validate_current_state!(expected_states)
-      state = SubmissionStates::StateGenerator.state_for_name(submission.status)
+  def validate_current_state!(expected_states)
+    state = SubmissionStates::StateGenerator.state_for_name(submission.status)
 
-      raise AccessForbidden unless expected_states.include? state.class
-    end
+    raise AccessForbidden unless expected_states.include? state.class
+  end
 end

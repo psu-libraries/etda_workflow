@@ -1,7 +1,12 @@
 # frozen_string_literal: true
+
 require 'model_spec_helper'
 
 RSpec.describe AccessLevel do
+  let(:open_access_view_struct) { { type: 'open_access', label: 'Open Access', description: EtdaUtilities::AccessLevel.partner_access_levels['access_level']['open_access_attr']['description_html'] } }
+  let(:restricted_view_struct) { { type: 'restricted', label: 'Restricted', description: EtdaUtilities::AccessLevel.partner_access_levels['access_level']['restricted_attr']['description_html'] } }
+  let(:restricted_to_institution_view_struct) { { type: 'restricted_to_institution', label: 'Restricted (Penn State Only)', description: EtdaUtilities::AccessLevel.partner_access_levels['access_level']['restricted_to_institution_attr']['description_html'] } }
+
   context '#ACCESS_LEVEL_KEYS' do
     it 'constant containing all access levels' do
       expect(described_class::ACCESS_LEVEL_KEYS).to match_array(['open_access', 'restricted_to_institution', 'restricted'])
@@ -31,10 +36,6 @@ RSpec.describe AccessLevel do
       expect(described_class.valid_levels).not_to match_array(described_class.paper_access_level_keys)
     end
   end
-
-  let(:open_access_view_struct) { { type: 'open_access', label: 'Open Access', description: EtdaUtilities::AccessLevel.partner_access_levels['access_level']['open_access_attr']['description_html'] } }
-  let(:restricted_view_struct) { { type: 'restricted', label: 'Restricted', description: EtdaUtilities::AccessLevel.partner_access_levels['access_level']['restricted_attr']['description_html'] } }
-  let(:restricted_to_institution_view_struct) { { type: 'restricted_to_institution', label: 'Restricted (Penn State Only)', description: EtdaUtilities::AccessLevel.partner_access_levels['access_level']['restricted_to_institution_attr']['description_html'] } }
 
   describe '#paper_access_levels' do
     it "returns a hash usable in a view" do

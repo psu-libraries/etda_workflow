@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'model_spec_helper'
 require 'etda_utilities'
 # frozen_string_literal: true

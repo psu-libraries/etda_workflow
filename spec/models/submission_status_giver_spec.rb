@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'model_spec_helper'
 
 RSpec.describe SubmissionStatusGiver, type: :model do
@@ -32,7 +34,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       before { submission.status = 'waiting for format review response' }
       it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_respond_to_format_review? }.to_not raise_error
+        expect { giver.can_respond_to_format_review? }.not_to raise_error
       end
     end
 
@@ -362,7 +364,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       before { submission.status = 'waiting for format review response' }
       it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_review_program_information? }.to_not raise_error
+        expect { giver.can_review_program_information? }.not_to raise_error
       end
     end
 
@@ -428,7 +430,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       before { submission.status = 'waiting for format review response' }
       it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_create_or_edit_committee? }.to_not raise_error
+        expect { giver.can_create_or_edit_committee? }.not_to raise_error
       end
     end
 
@@ -494,7 +496,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       before { submission.status = 'waiting for format review response' }
       it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_review_committee? }.to_not raise_error
+        expect { giver.can_review_committee? }.not_to raise_error
       end
     end
 
@@ -560,7 +562,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       before { submission.status = 'waiting for format review response' }
       it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_review_format_review_files? }.to_not raise_error
+        expect { giver.can_review_format_review_files? }.not_to raise_error
       end
     end
 
@@ -774,7 +776,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       before { submission.status = 'waiting for final submission response' }
       it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_respond_to_final_submission? }.to_not raise_error
+        expect { giver.can_respond_to_final_submission? }.not_to raise_error
       end
     end
 
@@ -848,7 +850,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       before { submission.status = 'waiting for publication release' }
       it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_release_for_publication? }.to_not raise_error
+        expect { giver.can_release_for_publication? }.not_to raise_error
       end
     end
 

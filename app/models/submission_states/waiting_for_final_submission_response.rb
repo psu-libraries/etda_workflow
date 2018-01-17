@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SubmissionStates
   class WaitingForFinalSubmissionResponse < SubmissionState
     @name = 'waiting for final submission response'

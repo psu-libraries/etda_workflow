@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'model_spec_helper'
 
 RSpec.describe CommitteeRole, type: :model do
@@ -26,16 +27,16 @@ RSpec.describe CommitteeRole, type: :model do
   describe 'add_lp_role' do
     it 'creates a committee role if it does not already exist' do
       bogus_name = 'bogus committee role name'
-      expect(described_class.find_by(name: "#{bogus_name}")).to be_nil
-      described_class.add_lp_role("#{bogus_name}")
-      expect(described_class.find_by(name: "#{bogus_name}")).to_not be_nil
+      expect(described_class.find_by(name: bogus_name.to_s)).to be_nil
+      described_class.add_lp_role(bogus_name.to_s)
+      expect(described_class.find_by(name: bogus_name.to_s)).not_to be_nil
     end
   end
   describe 'advisor_role' do
     it 'returns the ID of the special role for each partner' do
       role_id = described_class.advisor_role
       role = described_class.find(role_id)
-      expect(role).to_not be_blank
+      expect(role).not_to be_blank
       # expect(role).to_include ('value from locales file......')
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateKeywords < ActiveRecord::Migration[5.1]
   def change
     create_table :keywords do |t|
@@ -9,5 +11,4 @@ class CreateKeywords < ActiveRecord::Migration[5.1]
     end
     add_foreign_key :keywords, :submissions, name: :keywords_submission_id_fk
   end
-
 end

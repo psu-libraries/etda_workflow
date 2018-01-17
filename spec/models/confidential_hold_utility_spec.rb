@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'model_spec_helper'
 
 RSpec.describe ConfidentialHoldUtility, type: :model do
@@ -41,7 +43,7 @@ RSpec.describe ConfidentialHoldUtility, type: :model do
         ch = described_class.new('conf123', false)
         expect(ch.send('changed?')).to be_truthy
       end
-      it 'returns true' do
+      it 'returns true one' do
         allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).with('conf123').and_return(true)
         allow_any_instance_of(LdapUniversityDirectory).to receive(:authors_confidential_status).with('conf123').and_return(true)
         ch = described_class.new('conf123', nil)
@@ -51,7 +53,7 @@ RSpec.describe ConfidentialHoldUtility, type: :model do
       end
     end
     context 'confidential hold has changed from true to false' do
-      it 'returns true' do
+      it 'returns true two' do
         allow_any_instance_of(LdapUniversityDirectory).to receive(:authors_confidential_status).with('conf123').and_return(false)
         ch = described_class.new('conf123', true)
         expect(ch.send('changed?')).to be_truthy

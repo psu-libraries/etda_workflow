@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SubmissionStates
   class CollectingFinalSubmissionFiles < SubmissionState
     @name = 'collecting final submission files'

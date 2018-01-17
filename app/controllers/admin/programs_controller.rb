@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::ProgramsController < AdminController
   def index
     @programs = Program.all
@@ -31,8 +33,8 @@ class Admin::ProgramsController < AdminController
 
   private
 
-    def program_params
-      params.require(:program).permit(:name,
-                                      :is_active)
-    end
+  def program_params
+    params.require(:program).permit(:name,
+                                    :is_active)
+  end
 end

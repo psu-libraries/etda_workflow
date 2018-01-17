@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe LdapSearchFilter, type: :model do
   describe '#create_filter' do
     let(:ldap_faculty) { Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "FACULTY") }
@@ -13,7 +15,7 @@ RSpec.describe LdapSearchFilter, type: :model do
       end
       it 'does not return the same filter' do
         filter = described_class.new('jim Jones', true).create_filter
-        expect(filter.to_json).to_not eql(ldap_filter.to_json)
+        expect(filter.to_json).not_to eql(ldap_filter.to_json)
       end
     end
 
@@ -27,7 +29,7 @@ RSpec.describe LdapSearchFilter, type: :model do
       end
       it 'does not return the same filter' do
         filter = described_class.new('larry ', true).create_filter
-        expect(filter.to_json).to_not eql(ldap_filter.to_json)
+        expect(filter.to_json).not_to eql(ldap_filter.to_json)
       end
     end
     context 'search with three names' do
@@ -40,7 +42,7 @@ RSpec.describe LdapSearchFilter, type: :model do
       end
       it 'does not return the same filter' do
         filter = described_class.new('bad lee oswald', true).create_filter
-        expect(filter.to_json).to_not eql(ldap_filter.to_json)
+        expect(filter.to_json).not_to eql(ldap_filter.to_json)
       end
     end
   end

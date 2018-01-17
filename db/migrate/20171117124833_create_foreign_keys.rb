@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateForeignKeys < ActiveRecord::Migration[5.1]
   def change
     add_foreign_key :final_submission_files, :submissions, name: :final_submission_files_submission_id_fk

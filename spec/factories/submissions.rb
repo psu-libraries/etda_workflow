@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :submission, class: Submission do |_s|
     sequence(:title) { |n| "A Title t#{n}" }
@@ -5,7 +7,7 @@ FactoryBot.define do
     program
     degree
     semester "Spring"
-    year Time.zone.today.year
+    year { Time.zone.today.year }
     access_level 'open_access'
     defended_at Time.zone.tomorrow if current_partner.graduate?
     #    lion_path_degree_code { LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN].first[LionPath::LpKeys::DEGREE_CODE] }
@@ -21,17 +23,17 @@ FactoryBot.define do
     end
 
     trait :collecting_format_review_files do
-      committee_provided_at 4.days.ago
+      committee_provided_at { 4.days.ago }
       status "collecting format review files"
     end
 
     trait :collecting_format_review_files_rejected do
-      format_review_rejected_at Time.zone.now
+      format_review_rejected_at { Time.zone.now }
       status 'collecting format review files rejected'
     end
 
     trait :waiting_for_format_review_response do
-      format_review_files_uploaded_at 3.days.ago
+      format_review_files_uploaded_at { 3.days.ago }
       status "waiting for format review response"
     end
 
@@ -41,7 +43,7 @@ FactoryBot.define do
     end
 
     trait :collecting_final_submission_files_rejected do
-      final_submission_rejected_at Time.zone.now
+      final_submission_rejected_at { Time.zone.now }
     end
 
     trait :final_submission_traits do
@@ -51,12 +53,12 @@ FactoryBot.define do
       has_agreed_to_terms true
       final_submission_notes "Final submission notes"
       keywords { [create(:keyword)] }
-      defended_at Time.zone.yesterday if current_partner.graduate?
-      year Time.zone.today.year
-      semester Semester.current.split.last
-      format_review_files_uploaded_at 3.days.ago
-      format_review_approved_at 2.days.ago
-      final_submission_approved_at Time.zone.yesterday
+      defended_at { Time.zone.yesterday if current_partner.graduate? }
+      year { Time.zone.today.year }
+      semester { Semester.current.split.last }
+      format_review_files_uploaded_at { 3.days.ago }
+      format_review_approved_at { 2.days.ago }
+      final_submission_approved_at { Time.zone.yesterday }
     end
 
     trait :waiting_for_final_submission_response do
@@ -79,7 +81,7 @@ FactoryBot.define do
       access_level 'restricted'
       format_review_notes "Format review notes"
       released_for_publication_at nil
-      released_metadata_at Time.zone.yesterday
+      released_metadata_at { Time.zone.yesterday }
       final_submission_traits
     end
 
@@ -92,7 +94,7 @@ FactoryBot.define do
     trait :legacy do
       final_submission_legacy_id 999
       released_for_publication_at nil
-      released_metadata_at Time.zone.yesterday
+      released_metadata_at { Time.zone.yesterday }
       final_submission_traits
     end
 
@@ -100,14 +102,14 @@ FactoryBot.define do
       status "released for publication"
       legacy_id 888
       released_for_publication_at nil
-      released_metadata_at Time.zone.yesterday
+      released_metadata_at { Time.zone.yesterday }
       final_submission_traits
     end
 
     trait :final_is_embargoed do
       status 'confidential hold embargo'
       released_for_publication_at nil
-      confidential_hold_embargoed_at Time.zone.yesterday
+      confidential_hold_embargoed_at { Time.zone.yesterday }
       final_submission_traits
     end
   end
