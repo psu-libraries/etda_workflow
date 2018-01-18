@@ -4,8 +4,8 @@
 Rake::Task["assets:precompile"].clear
 namespace :assets do
   task 'precompile' do
-    puts '#----- Skip asset precompilation -----#'
-    puts '#----- Run webpack instead -----#'
+    $stdout.puts '#----- Skip asset precompilation -----#'
+    $stdout.puts '#----- Run webpack instead -----#'
     `yarn install`
     `bin/webpack`
   end

@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get '/login', to: 'application#login', as: :login
 
   namespace :author do
-    resources :authors, except: %i[index show]
+    resources :authors, except: [:index, :show]
     resources :submissions, except: [:show] do
     end
     get '/tips', to: 'authors#technical_tips', as: :technical_tips
@@ -19,9 +19,10 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :admins, except: %i[index show]
-    resources :degrees, except: %i[show destroy]
-    resources :programs, except: %i[show destroy]
+    resources :admins, except: [:index, :show]
+    resources :degrees, except: [:show, :destroy]
+    resources :programs, except: [:show, :destroy]
+    resources :authors,  except: [:new, :create, :show, :destroy]
 
     get '/:degree_type', to: 'submissions#dashboard', as: :submissions_dashboard
     get '/:degree_type/:scope', to: 'submissions#index', as: :submissions_index

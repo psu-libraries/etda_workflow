@@ -18,8 +18,8 @@ config/database.yml
 spec/examples.txt
  
 assets
-public/packs-test/*
-public/packs/*
+public/packs-test/**/*
+public/packs/**/*
 
 coverage
 /yarn-error.log

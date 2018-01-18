@@ -173,8 +173,9 @@ Lint/UnusedBlockArgument:
 
 Lint/UselessAssignment:
   Exclude:
-    - 'app/views/admin/degrees/index.json.rabl'
-    - 'app/views/admin/programs/index.json.rabl'
+    - 'app/views/admin/**/*.rabl'
+    #- 'app/views/admin/degrees/index.json.rabl'
+    #- 'app/views/admin/programs/index.json.rabl'
     - 'lib/tasks/confidential.rake'
 
 Style/StderrPuts:
@@ -196,3 +197,11 @@ Style/FrozenStringLiteralComment:
     - 'bin/update'
     - 'bin/yarn'
     - 'db/schema.rb'
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+

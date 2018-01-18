@@ -1,0 +1,23 @@
+<%= render partial: 'author_info_section' %>
+<%= simple_form_for [:admin, @author] do |f| %>
+    <%= f.input :first_name, required: true %>
+    <%= f.input :middle_name %>
+    <%= f.input :last_name, required: true %>
+    <%= f.input :psu_email_address, label: 'PSU email address', required: true %>
+    <div class="form-group">
+      <%= f.input :alternate_email_address, class: 'form-group', wrapper: :hint_top, hint: I18n.t("#{current_partner.id}.partner.alternate_email_hint") %>
+      <%= render partial: 'alternate_email_public_checkbox', locals: {f: f} if current_partner.graduate? %>
+    </div>
+    <%= f.input :phone_number %>
+    <%= f.input :address_1 %>
+    <%= f.input :address_2 %>
+    <%= f.input :city %>
+    <%= f.input :state, collection: UsStates.names.invert, prompt: 'Please Select a State' %>
+    <%= f.input :zip %>
+    <%= f.input :country, selected: @author[:country], priority: ['US'], prompt: 'Please Select a Country', class: 'form-control' %>
+    <div class="form-group actions">
+      <%= f.button :submit, 'Update Author', class: 'btn btn-success' %>
+      <%= link_to "Cancel", admin_authors_path %>
+    </div>
+<% end %>
+
