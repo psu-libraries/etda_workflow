@@ -9,6 +9,8 @@ class Author < ApplicationRecord
 
   has_many :submissions, dependent: :nullify
 
+  has_one :inbound_lion_path_record, dependent: :destroy
+
   # validate for author
   validates :access_id,
             :first_name,

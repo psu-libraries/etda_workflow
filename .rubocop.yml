@@ -177,6 +177,7 @@ Lint/UselessAssignment:
     #- 'app/views/admin/degrees/index.json.rabl'
     #- 'app/views/admin/programs/index.json.rabl'
     - 'lib/tasks/confidential.rake'
+    - 'spec/models/lion_path/academic_plan_spec.rb'
 
 Style/StderrPuts:
   Exclude:
@@ -203,5 +204,9 @@ Style/SymbolArray:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+RSpec/AnyInstance:
+  Enabled: false
+
 
 

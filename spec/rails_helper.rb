@@ -33,6 +33,8 @@ Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
+DegreeType.seed
+CommitteeRole.seed
 
 RSpec.configure do |config|
   # The different available types are documented in the features, such as in
@@ -55,6 +57,8 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
+    DegreeType.seed
+    CommitteeRole.seed
   end
 
   Shoulda::Matchers.configure do |cfg|

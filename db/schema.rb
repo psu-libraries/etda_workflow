@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171212004556) do
+ActiveRecord::Schema.define(version: 20180119134943) do
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "access_id", default: "", null: false
     t.datetime "remember_created_at"
@@ -124,6 +124,15 @@ ActiveRecord::Schema.define(version: 20171212004556) do
     t.index ["submission_id"], name: "format_review_files_submission_id_fk"
   end
 
+  create_table "inbound_lion_path_records", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "author_id"
+    t.string "lion_path_degree_code"
+    t.text "current_data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["author_id"], name: "inbound_lion_path_records_author_id_fk"
+  end
+
   create_table "invention_disclosures", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "submission_id"
     t.string "id_number"
@@ -140,6 +149,15 @@ ActiveRecord::Schema.define(version: 20171212004556) do
     t.datetime "updated_at", null: false
     t.index ["legacy_id"], name: "index_keywords_on_legacy_id"
     t.index ["submission_id"], name: "keywords_submission_id_fk"
+  end
+
+  create_table "outbound_lion_path_records", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text "status_data"
+    t.boolean "received"
+    t.string "transaction_id"
+    t.bigint "submission_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "programs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -208,6 +226,7 @@ ActiveRecord::Schema.define(version: 20171212004556) do
   add_foreign_key "committee_roles", "degree_types", name: "committee_roles_degree_type_id_fk"
   add_foreign_key "final_submission_files", "submissions", name: "final_submission_files_submission_id_fk"
   add_foreign_key "format_review_files", "submissions", name: "format_review_files_submission_id_fk"
+  add_foreign_key "inbound_lion_path_records", "authors", name: "inbound_lion_path_records_author_id_fk"
   add_foreign_key "invention_disclosures", "submissions", name: "invention_disclosures_submission_id_fk"
   add_foreign_key "keywords", "submissions", name: "keywords_submission_id_fk"
   add_foreign_key "submissions", "authors", name: "submissions_author_id_fk"

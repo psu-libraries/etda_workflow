@@ -80,6 +80,9 @@ gem 'enumerize'
 gem 'clam_scan'
 
 gem 'simple_form'
+
+gem 'rest-client'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

@@ -38,9 +38,7 @@ class Admin::AuthorsController < AdminController
                                    :city,
                                    :state,
                                    :zip,
-                                   :country)
-
-    # inbound_lion_path_record_attributes: [:lion_path_degree_code, :id, :author_id, :current_record])
-    #
+                                   :country,
+                                   :inbound_lion_path_record_attributes[:lion_path_degree_code, :id, :author_id, :current_record])
   end
 end

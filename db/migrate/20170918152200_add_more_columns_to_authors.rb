@@ -20,6 +20,5 @@ class AddMoreColumnsToAuthors < ActiveRecord::Migration[5.1]
     add_column :authors, :confidential_hold, :boolean
     add_column :authors, :confidential_hold_set_at, :datetime
     add_index  :authors, :legacy_id
-    # add_foreign_key :inbound_lion_path_records, :authors, name: 'inbound_lion_path_records_author_id_fk'
   end
 end

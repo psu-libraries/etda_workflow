@@ -65,6 +65,7 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Mocks
+  LionPathConnection = LionPath::MockLionPathConnection
   LdapUniversityDirectory = MockUniversityDirectory
   VirusScanner = MockVirusScanner
   WORKFLOW_BASE_PATH = 'tmp/workflow_files/'
