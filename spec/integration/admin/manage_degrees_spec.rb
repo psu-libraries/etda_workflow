@@ -7,14 +7,16 @@ RSpec.describe "Manage Degrees", js: true do
   let!(:degree2) { FactoryBot.create :degree }
 
   before do
-    webaccess_authorize_admin
-    visit admin_degrees_path
+     webaccess_authorize_admin
+     visit admin_degrees_path
+     sleep(5)
   end
+
   it 'has a list of degrees' do
-    degree.degree_type_id = DegreeType.default
-    degree2.degree_type_id = DegreeType.default
-    expect(page).to have_content(degree.name)
-    expect(page).to have_content(degree2.name)
+    degree.degree_type_id = DegreeType.default.id
+    degree2.degree_type_id = DegreeType.default.id
+    expect(page).to have_link(degree.name)
+    expect(page).to have_link(degree2.name)
     click_link('New Degree')
     expect(page).to have_button('Create Degree')
     fill_in 'Name', with: 'MArch'

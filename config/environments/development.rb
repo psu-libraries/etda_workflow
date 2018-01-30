@@ -56,7 +56,7 @@ Rails.application.configure do
   config.assets.compile = false
   # Suppress logger output for asset requests.
   config.assets.quiet = true
-
+  config.webpacker.check_yarn_integrity = false
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 

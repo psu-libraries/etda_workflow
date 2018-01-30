@@ -1,0 +1,19 @@
+ - id: 1
+   submission_id: 1,
+   word: "LEZOOMPC"
+   created_at: 2003-03-20 15:12:08
+   updated_at: 2011-12-18 21:23:55
+   legacy_id: 4574
+ - id: 2
+   submission_id: 2
+   word: "Phase Configuration change"
+   created_at: 2003-03-20 15:12:08
+   updated_at: 2011-12-18 21:23:55
+   legacy_id: 4575
+
+ - id: 3
+   submission_id: 1
+   word: "Fractional flow formulation"
+   created_at: 2003-03-20 15:12:08
+   updated_at: 2011-12-18 21:23:56
+   legacy_id: 4576

@@ -31,6 +31,7 @@ Metrics/ClassLength:
   Exclude:
   - app/models/submission.rb
   - app/models/mock_university_directory.rb
+  - app/models/legacy/importer.rb
 
 Metrics/CyclomaticComplexity:
   Exclude:

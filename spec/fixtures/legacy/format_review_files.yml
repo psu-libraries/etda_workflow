@@ -1,0 +1,19 @@
+ - id: 1
+   submission_id: 1
+   asset: "Carol_King_Thesis_for_Format_Review.pdf"
+   created_at: 2016-05-16 10:26:46
+   updated_at: 2016-05-16 10:26:46
+   legacy_id: 3
+ - id: 2
+   submission_id: 2
+   asset: "Lee_Harvey_AnalysisofCybercrime.pdf"
+   created_at: 2016-05-16 10:26:47
+   updated_at: 2016-05-16 10:26:47
+   legacy_id: 1005
+ - id: 3
+   submission_id: 1
+   asset: "Math_Honors_Thesis.pdf"
+   created_at: 2016-05-16 10:26:48
+   updated_at: 2016-05-16 10:26:48
+   legacy_id: 381
+

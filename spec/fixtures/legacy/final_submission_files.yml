@@ -1,0 +1,19 @@
+ - id: 1
+   submission_id: 1
+   asset: "FinalSubmission1.pdf"
+   created_at: 2016-05-16 10:26:46
+   updated_at: 2016-05-16 10:26:46
+   legacy_id: 9
+ - id: 2
+   submission_id: 2
+   asset: "FinalCybercrimeOffenders.pdf"
+   created_at: 2016-05-16 10:26:47
+   updated_at: 2016-05-16 10:26:47
+   legacy_id: 10
+ - id: 3
+   submission_id: 2
+   asset: "FinalThesis3.pdf"
+   created_at: 2016-05-16 10:26:48
+   updated_at: 2016-05-16 10:26:48
+   legacy_id: 38
+

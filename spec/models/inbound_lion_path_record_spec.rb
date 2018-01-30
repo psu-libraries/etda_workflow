@@ -58,12 +58,15 @@ RSpec.describe InboundLionPathRecord do
     end
   end
   if described_class.active?
+    author = FactoryBot.create :author
+    ms_degree = Degree.create(name: 'MS', description: 'MS', degree_type_id: DegreeType.first.id, is_active: true)
+
     context 'initialize lion path degree code to transition submission records created without lionpath' do
-      let(:lp_record) { FactoryBot.create :inbound_lion_path_record }
-      let(:author) { FactoryBot.create :author, inbound_lion_path_record: lp_record }
-      let(:submission) { FactoryBot.create :submission, :collecting_committee, author: author, degree_id: Degree.find_or_create_by(name: 'MS').id }
+      let(:lp_record) { FactoryBot.create :inbound_lion_path_record, author: author }
+      let(:submission) { FactoryBot.create :submission, :collecting_committee, author: author, degree_id: ms_degree.id }
 
       it 'returns the lion path degree code when it is missing' do
+        puts author.inspect
         lp_degree_code = described_class.new.initialize_lion_path_degree_code(submission)
         expect(lp_degree_code.last(2)).to eq('MS')
       end
@@ -85,17 +88,16 @@ RSpec.describe InboundLionPathRecord do
       end
     end
     context 'transitions a standard submission record to be populated with lion path information' do
-      let(:lp_record) { FactoryBot.create :inbound_lion_path_record }
-      let(:author) { FactoryBot.create :author, inbound_lion_path_record: lp_record }
-      let(:submission1) { FactoryBot.create :submission, :collecting_format_review_files, degree_id: Degree.find_or_create_by(name: 'PHD').id, author: author, lion_path_degree_code: nil }
-      let(:roles) { CommitteeRole.all }
-
-      before do
-        (0..1).each do |i|
-          submission1.committee_members << FactoryBot.create(:committee_member, name: "Name_#{i}", email: "name_#{i}_@example.com", is_required: false, committee_role_id: roles[i].id)
-        end
-        described_class.transition_to_lionpath([submission1])
-      end
+      author = FactoryBot.create(:author)
+      author.inbound_lion_path_record = FactoryBot.create(:inbound_lion_path_record, author: author)
+      submission1 = FactoryBot.create :submission, :collecting_format_review_files, author_id: author.id, lion_path_degree_code: nil
+      # roles = CommitteeRole.all
+      # before do
+      #   (0..1).each do |i|
+      #     submission1.committee_members << CommitteeMember.new(name: "Name_#{i}", email: "name_#{i}_@example.com", is_required: false, committee_role_id: roles[i].id, submission_id: submission1.id)
+      #   end
+      described_class.transition_to_lionpath([submission1])
+      # end
       it 'updates academic plan and committee information' do
         expect(submission1.lion_path_degree_code).not_to be_nil
         expect(submission1.committee_members[0].name).not_to eq('Name_0')
@@ -103,12 +105,17 @@ RSpec.describe InboundLionPathRecord do
     end
     context '#lp_valid_degrees' do
       it 'returns degrees list of degree codes from ETD degrees' do
-        expect(described_class.lp_valid_degrees).to eql_array(['PHD', 'DEGREE'])
+        expect(described_class.lp_valid_degrees).to eq(['PHD', 'DEGREE'])
       end
     end
     context '#active?' do
       it 'returns value from lion_path.yml' do
         expect(described_class.active?).to eql(Rails.application.config_for(:lion_path)[current_partner.id.to_s][:lion_path_inbound])
+      end
+    end
+    context '#valid degrees' do
+      it 'returns list of valid degrees' do
+        expect(described_class.lp_valid_degrees).to eql(Degree.valid_degrees_list)
       end
     end
   end

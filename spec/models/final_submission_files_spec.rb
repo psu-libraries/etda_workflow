@@ -18,6 +18,11 @@ RSpec.describe FinalSubmissionFile, type: :model do
 
   it { is_expected.to belong_to :submission }
 
+  it 'returns class name with dashes' do
+    final_submission_file = described_class.new
+    expect(final_submission_file.class_name).to eql('final-submission-file')
+  end
+
   # describe 'virus scanning' do
   #   # The .name below is required due to the way Rails reloads classes in
   #   # development and test modes, can't compare the actual constants
