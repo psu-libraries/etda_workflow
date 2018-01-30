@@ -18,7 +18,7 @@ set :user, 'deploy'
 set :use_sudo, false
 
 set :deploy_via, :remote_cache
-# set :tmp_dir, "/opt/heracles/deploy/#{fetch(:application)}_#{fetch(:partner)}/tmp"
+set :tmp_dir, "/opt/heracles/deploy/#{fetch(:application)}_#{fetch(:partner)}/tmp"
 set :copy_remote_dir, deploy_to
 
 # Uncomment the following to require manually verifying the host key before first deploy.
@@ -90,7 +90,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
   'tmp/cache',
   'tmp/pids',
   'tmp/sockets',
-  'tmp/uploads',
+  'uploads',
   'vendor/bundle'
 )
 
@@ -104,6 +104,8 @@ namespace :deploy do
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/lion_path.yml #{release_path}/config/lion_path.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/#{fetch(:partner)}_secrets.yml #{release_path}/config/secrets.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/ldap.yml #{release_path}/config/ldap.yml"
+      execute "ln -sf /var/data/#{fetch(:application)}_#{fetch(:partner)}/ #{release_path}/uploads"
+      execute "ln -sf /var/data/etda_explore_#{fetch(:partner)}/ #{release_path}/explore_files"
     end
   end
 

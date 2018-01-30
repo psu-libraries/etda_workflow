@@ -1,5 +1,5 @@
 production:
-  :usersname: user
+  :username: user
   :password: password
   graduate:
     :lion_path_outbound: false

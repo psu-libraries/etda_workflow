@@ -12,6 +12,10 @@ class LionPath::MockLionPathRecord
     LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN].first[LionPath::LpKeys::DEGREE_CODE] || ''
   end
 
+  def self.first_degree_description
+    LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN].first[LionPath::LpKeys::DEGREE_DESC] || ''
+  end
+
   def self.error_response
     { pe_etd_comm_fault: { emplid: "99999", err_nbr: 400, err_msg: "No valid Academic Plan " } }
   end

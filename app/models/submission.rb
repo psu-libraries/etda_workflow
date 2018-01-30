@@ -142,4 +142,13 @@ class Submission < ApplicationRecord
     attributes[:_destroy] = 1 if exists && empty
     (!exists && empty)
   end
+
+  def using_lionpath?
+    InboundLionPathRecord.active? && (author.inbound_lion_path_record.present? && !status_behavior.released_for_publication?)
+  end
+
+  def academic_plan
+    @academic_plan = LionPath::AcademicPlan.new(author.inbound_lion_path_record, lion_path_degree_code, self)
+    @academic_plan
+  end
 end

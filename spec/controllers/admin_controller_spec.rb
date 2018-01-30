@@ -1,15 +1,19 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
-#
-# RSpec.describe AdminController, type: :controller do
-#   ldap_dir = double(LdapUniversityDirectory.new.valid_admin?)
-#
-#   describe 'valid_admin?' do
-#     admin = FactoryBot.build_stubbed :admin
-#     it 'is a valid_admin?' do
-#       allow(:ldap_dir).to receive(:in_admin_group).with(:admin).and_return(true)
-#       expect(valid_admin?).to be_truthy
-#     end
-#   end
-# end
+
+RSpec.describe AdminController, type: :controller do
+  before do
+    @admin_controller = AdminController.new
+    allow(@admin_controller).to receive(:request).and_return(request)
+    allow(@admin_controller).to receive(:valid_admin?).and_return(true)
+  end
+
+  describe @admin_controller do
+    let(:request) { double(headers: { 'HTTP_REMOTE_USER' => 'adminflow', 'REQUEST_URI' => 'admin/index' }) }
+
+    it 'returns 200 response' do
+      allow(request).to receive(:env).and_return(:headers)
+      # allow_any_instance_of(current_admin).to receive(:access_id).and_return('adminflow')
+      expect(response.status).to eq(200)
+    end
+  end
+end

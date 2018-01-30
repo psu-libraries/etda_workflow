@@ -46,15 +46,15 @@ RSpec.describe CommitteeMember, type: :model do
     end
   end
 
-  # context 'advisors' do
-  #   it 'returns the Committee Members who have an Advisor Role' do
-  #     submission = FactoryBot.create(:submission)
-  #     committee_member = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am #{I18n.t('current_partner.id.committee.special_role')}", submission_id: submission.id)
-  #     committee_member.save
-  #     advisor_member = committee_member
-  #     expect(described_class.advisors(submission)).to eq([advisor_member])
-  #
-  #     #      expect(described_class.advisor_name(submission)).to eq(submission.committee_members.where(committee_role_id: CommitteeRole.advisor_role))
-  #   end
-  # end
+  context 'advisors' do
+    xit 'returns the Committee Members who have an Advisor Role' do
+      submission = FactoryBot.create(:submission)
+      committee_member = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am #{I18n.t('current_partner.id.committee.special_role')}", submission_id: submission.id)
+      committee_member.save
+      advisor_member = committee_member
+      expect(described_class.advisors(submission)).to eq([advisor_member])
+
+      # expect(described_class.advisor_name(submission)).to eq(submission.committee_members.where(committee_role_id: CommitteeRole.advisor_role))
+    end
+  end
 end

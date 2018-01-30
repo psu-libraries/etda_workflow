@@ -21,7 +21,7 @@ class Admin::AuthorView
   end
 
   def list_item(s)
-    return "<li><a href='/admin/submissions/#{s.id}/edit'>#{s.title}</a><br/>status: #{s.status}, created: #{s.created_at.strftime('%m/%d/%Y')}</li>" if s.beyond_collecting_format_review_files?
+    return "<li><a href='/admin/submissions/#{s.id}/edit'>#{s.title}</a><br/>status: #{s.status}, created: #{s.created_at.strftime('%m/%d/%Y')}</li>" if s.status_behavior.beyond_collecting_format_review_files?
     "<li>#{s.title}<br/>status: #{s.status}, created: #{s.created_at.strftime('%m/%d/%Y')}</li>"
   end
 end

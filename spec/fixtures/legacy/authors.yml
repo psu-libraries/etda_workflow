@@ -1,0 +1,90 @@
+  - id: 1
+    access_id: 'ggg555'
+    first_name: 'George'
+    last_name: 'Great'
+    middle_name: 'The'
+    alternate_email_address: 'ggg@gmail.com'
+    psu_email_address: 'ggg555@psu.edu'
+    phone_number: '555-555-5555'
+    address_1: '555 Five Dr'
+    address_2: ''
+    city: 'FiveCity'
+    state: 'PA'
+    zip: '16805'
+    is_alternate_email_public: false
+    created_at: 2009-11-30 20:51:35.000000000 -05:00
+    updated_at: 2016-04-14 13:23:28.000000000 -04:00
+    remember_created_at: NULL
+    sign_in_count: 0
+    current_sign_in_at: NULL
+    last_sign_in_at: NULL
+    current_sign_in_ip: NULL
+    last_sign_in_ip: NULL
+    country: NULL
+    legacy_id: 9
+    is_admin: NULL
+    guest: 0
+    is_site_admin: 0
+    psu_idn: '955555555'
+    confidential_hold: NULL
+    confidential_hold_set_at: NULL
+  - id: 2
+    access_id: 'hhh111'
+    first_name: 'Henry'
+    last_name: 'Hamil'
+    middle_name: 'H.'
+    alternate_email_address: 'hhh111@psu.edu'
+    psu_email_address: 'hhh111@psu.edu'
+    phone_number: '999 999 9999'
+    address_1: '999 Nine Lane #142'
+    address_2: NULL
+    city: 'State College'
+    state: 'PA'
+    zip: '16803'
+    is_alternate_email_public: true
+    created_at: 2009-11-25 17:15:57.000000000 -05:00
+    updated_at: 2011-12-18 20:39:11.000000000 -05:00
+    remember_created_at: NULL
+    sign_in_count: 0
+    current_sign_in_at: NULL
+    last_sign_in_at: NULL
+    current_sign_in_ip: NULL
+    last_sign_in_ip: NULL
+    country: NULL
+    legacy_id: 13
+    is_admin: NULL
+    guest: 0
+    is_site_admin: 0
+    psu_idn: NULL
+    confidential_hold: NULL
+    confidential_hold_set_at:  NULL
+  - id: 3
+    access_id: 'aaa000'
+    first_name: 'Arthur'
+    last_name: 'Andrews'
+    middle_name: 'A.'
+    alternate_email_address: 'aaa@gmail.com'
+    psu_email_address: 'aaa@psu.edu'
+    phone_number: '888-888-8888'
+    address_1: '888 Eight Drive, apt# 201'
+    address_2: NULL
+    city: 'State College'
+    state: 'PA'
+    zip: '16808'
+    is_alternate_email_public: true
+    created_at: 2009-12-01 13:37:28.000000000 -05:00
+    updated_at: 2016-04-05 07:37:01.000000000 -04:00
+    remember_created_at: NULL
+    sign_in_count: 0
+    current_sign_in_at: NULL
+    last_sign_in_at: NULL
+    current_sign_in_ip: NULL
+    last_sign_in_ip: NULL
+    country: NULL
+    legacy_id: 27
+    is_admin: NULL
+    guest: 0
+    is_site_admin: 0
+    psu_idn: NULL
+    confidential_hold:  NULL
+    confidential_hold_set_at:  NULL

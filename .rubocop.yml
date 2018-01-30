@@ -31,6 +31,7 @@ Metrics/ClassLength:
   Exclude:
   - app/models/submission.rb
   - app/models/mock_university_directory.rb
+  - app/models/legacy/importer.rb
 
 Metrics/CyclomaticComplexity:
   Exclude:
@@ -150,9 +151,19 @@ RSpec/DescribeClass:
     - 'spec/integration/admin/manage_degrees_spec.rb'
     - 'spec/integration/admin/manage_programs_spec.rb'
     - 'spec/lib/tasks/confidential_rake_spec.rb'
+    - 'spec/lib/tasks/legacy/legacy_importer_spec.rb'
 
 RSpec/MultipleDescribes:
   Enabled: false
+
+RSpec/MultipleExpectations:
+  Exclude:
+   - 'spec/lib/tasks/legacy/legacy_importer_spec.rb'
+
+RSpec/PredicateMatcher:
+  Exclude:
+   - 'spec/lib/tasks/legacy/legacy_importer_spec.rb'
+   - 'spec/lib/tasks/confidential_rake_spec.rb'
 
 Style/BlockDelimiters:
   Exclude:

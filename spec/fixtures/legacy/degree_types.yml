@@ -1,0 +1,15 @@
+graduate:
+ - id: 1
+   name: "Dissertation"
+   slug: "dissertation"
+ - id: 2
+   name: "Master Thesis"
+   slug: "master_thesis"
+honors:
+ - id: 1
+   name: "Thesis"
+   slug: "thesis"
+milsch:
+ - id: 1
+   name: "Thesis"
+   slug: "thesis"

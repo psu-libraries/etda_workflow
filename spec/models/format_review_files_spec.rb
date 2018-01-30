@@ -17,6 +17,11 @@ RSpec.describe FormatReviewFile, type: :model do
   it { is_expected.to validate_presence_of :submission_id }
   it { is_expected.to belong_to :submission }
 
+  it 'returns class name with dashes' do
+    format_review_file = described_class.new
+    expect(format_review_file.class_name).to eql('format-review-file')
+  end
+
   describe 'virus scanning' do
     # The .name below is required due to the way Rails reloads classes in
     # development and test modes, can't compare the actual constants

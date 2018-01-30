@@ -1,0 +1,64 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+require 'shoulda-matchers'
+
+RSpec.describe "Rake::Task['legacy:import']", type: :task do
+  return unless current_partner.graduate?
+  before do
+    Rails.application.load_tasks
+    CommitteeRole.all.each(&:destroy)
+    DegreeType.all.each(&:destroy)
+  end
+
+  it 'imports legacy  data' do
+    expect(Author.all.count).to be(0)
+    expect(DegreeType.all.count).to be(0)
+    expect(CommitteeRole.all.count).to be(0)
+    expect(Degree.all.count).to be(0)
+    expect(Program.all.count).to be(0)
+    expect(Submission.all.count).to be(0)
+    expect(FormatReviewFile.all.count).to be(0)
+    expect(FinalSubmissionFile.all.count).to be(0)
+    expect(Keyword.all.count).to be(0)
+    expect(CommitteeMember.all.count).to be(0)
+    expect(InventionDisclosure.all.count).to be(0)
+    Rake::Task['legacy:import:all_data'].invoke
+    expect(Author.all.count).to be(3)
+    expect(Author.where(address_1: '888 Eight Drive apt#201').count).to be(1)
+    expect(DegreeType.all.count).to be(2)
+    expect(DegreeType.where(slug: 'dissertation').count).to be(1)
+    expect(CommitteeRole.all.count).to be(3)
+    expect(CommitteeRole.where(name: 'Committee Member').count).to be(1)
+    expect(Degree.all.count).to be(2)
+    expect(Degree.where(name: 'Electrical Engineering').count).to be(1)
+    expect(Program.all.count).to be(3)
+    expect(Program.where(name: 'Advertising').count).to be(1)
+    expect(Submission.all.count).to eq(4)
+    expect(Submission.where(title: 'title here').count).to be(1)
+    expect(FormatReviewFile.all.count).to be(3)
+    expect(FormatReviewFile.where(asset: 'MathHonorsThesis3.pdf').count).to be(1)
+    expect(FinalSubmissionFile.all.count).to be(3)
+    expect(FinalSubmissionFile.where(asset: 'OpenAccess.pdf').count).to be(1)
+    expect(Keyword.all.count).to be(3)
+    expect(Keyword.where(word: 'LEZOOMPC').count).to be(1)
+    expect(CommitteeMember.all.count).to be(2)
+    expect(CommitteeMember.where(name: 'Mr. Committee 1').count).to be(1)
+    expect(InventionDisclosure.all.count).to be(2)
+    expect(InventionDisclosure.where(id_number: '2018-abc').count).to be(1)
+    workflow_files = Rails.root.join('tmp/workflow').to_s
+    explore_files = Rails.root.join('tmp/explore').to_s
+    expect(Dir.exist?(workflow_files)).to be_falsey
+    expect(Dir.exist?(explore_files)).to be_falsey
+    source_path = Rails.root.join('spec/fixtures/legacy').to_s
+    Rake::Task["legacy:import:all_files"].invoke(source_path)
+    expect(Dir.exist?(workflow_files)).to be_truthy
+    expect(Dir.exist?(explore_files)).to be_truthy
+    restricted_institution_file = Rails.root.join('tmp/explore/restricted_institution/03/3/RestrictedInstitutionThesis.pdf').to_s
+    format_review_file = Rails.root.join('tmp/workflow/format_review_files/FormatUnderReview.pdf')
+    restricted_file = Rails.root.join('tmp/workflow/restricted/02/2/RestrictedThesis.pdf')
+    expect(File.exist?(restricted_institution_file)).to be_truthy
+    expect(File.exist?(format_review_file)).to be_truthy
+    expect(File.exist?(restricted_file)).to be_truthy
+  end
+end

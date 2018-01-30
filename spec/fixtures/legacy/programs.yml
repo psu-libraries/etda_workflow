@@ -1,0 +1,21 @@
+- id: 1
+  name: Acoustics
+  is_active: true
+  created_at: 2003-11-05 09:27:33.000000000 -05:00
+  updated_at: 2011-12-18 20:35:07.000000000 -05:00
+  legacy_id: 306
+  legacy_old_id: 1
+- id: 2
+  name: Adult Education
+  is_active: true
+  created_at: 2003-11-05 09:27:33.000000000 -05:00
+  updated_at: 2011-12-18 20:35:07.000000000 -05:00
+  legacy_id: 307
+  legacy_old_id: 2
+- id: 3
+  name: Advertising
+  is_active: false
+  created_at: 2003-11-05 09:27:33.000000000 -05:00
+  updated_at: 2011-12-18 20:35:07.000000000 -05:00
+  legacy_id: 308
+  legacy_old_id: 3

@@ -166,6 +166,8 @@ RSpec/VerifiedDoubles:
   Exclude:
     - 'spec/lib/devise/webaccess_authenticatable_spec.rb'
     - 'spec/lib/redirect_to_webaccess_failure_spec.rb'
+    - 'spec/controllers/author_controller_spec.rb'
+    - 'spec/controllers/admin_controller_spec.rb'
 
 # Offense count: 5
 # Configuration parameters: Include.

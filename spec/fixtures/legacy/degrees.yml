@@ -1,0 +1,66 @@
+graduate:
+ - id: 1
+   name: "PHD"
+   description: "Doctor of Philosophy"
+   is_active: true
+   created_at: 2008-09-02 14:49:54
+   updated_at: 2011-12-18 20:45:38
+   degree_type_id: 1
+   legacy_id: 11
+   legacy_old_id: 1
+ - id: 2
+   name: "Electrical Engineering"
+   description: "Master of Science"
+   is_active: false
+   created_at: 2016-05-16 10:08:19
+   updated_at: 2016-09-14 12:49:20
+   degree_type_id: 2
+   legacy_id: 23
+   legacy_old_id: 0
+ - id: 3
+   name: "MLA"
+   description: "Master of Landscape Architecture"
+   is_active: false
+   created_at: 2010-02-24 08:57:18
+   updated_at: 2016-09-14 12:49:39
+   degree_type_id: 2
+   legacy_id: 18
+   legacy_old_id: 8
+honors:
+ - id: 1
+   name: "B AE"
+   description: "Bachelor of Architectural Engineering"
+   is_active: true
+   created_at: 2009-09-29 11:34:15
+   updated_at: 2011-12-18 20:31:18
+   degree_type_id: 1
+   legacy_id: 1
+   legacy_old_id: 1
+ - id: 2
+   name: "B DES"
+   description: "Bachelor of Design"
+   is_active: true
+   created_at: 2016-05-16 10:08:55
+   updated_at: 2014-07-11 15:06:52
+   degree_type_id: 1
+   legacy_id: 5
+   legacy_old_id: 5
+ - id: 3
+   name: "B M E"
+   description: "Bachelor of Music Education"
+   is_active: true
+   created_at: 2009-09-29 11:34:15
+   updated_at: 2011-12-18 20:31:25
+   degree_type_id: 1
+   legacy_id: 8
+   legacy_old_id: 8
+milsch:
+ - id: 1
+   name: "B S"
+   description: "Bachelor of Science"
+   is_active: true
+   created_at: 2017-02-17 15:57:30
+   updated_at: 2017-02-17 15:57:30
+   degree_type_id: 1
+   legacy_id: NULL
+   legacy_old_id: NULL

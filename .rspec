@@ -1,4 +1,4 @@
+--format documentation 
 --color
---format documentation
 --tag ~ldap
 --tag ~glacial
