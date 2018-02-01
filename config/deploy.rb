@@ -18,7 +18,7 @@ set :user, 'deploy'
 set :use_sudo, false
 
 set :deploy_via, :remote_cache
-# set :tmp_dir, "/opt/heracles/deploy/#{fetch(:application)}_#{fetch(:partner)}/tmp"
+set :tmp_dir, "/opt/heracles/deploy/#{fetch(:application)}_#{fetch(:partner)}/tmp"
 set :copy_remote_dir, deploy_to
 
 # Uncomment the following to require manually verifying the host key before first deploy.
