@@ -104,6 +104,6 @@ Rails.application.configure do
 
   VirusScanner = ClamScan::Client
   UniversityDirectory = LdapUniversityDirectory
-  WORKFLOW_BASE_PATH = '/var/etda_workflow'
-  EXPLORE_BASE_PATH = '/var/etda_explore'
+  WORKFLOW_BASE_PATH = "/var/data/etda_workflow_#{Partner.current.id}/"
+  EXPLORE_BASE_PATH = "/var/data/etda_explore_#{Partner.current.id}/"
 end

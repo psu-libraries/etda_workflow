@@ -68,6 +68,7 @@ Rails.application.configure do
   LionPathConnection = LionPath::MockLionPathConnection
   LdapUniversityDirectory = MockUniversityDirectory
   VirusScanner = MockVirusScanner
-  WORKFLOW_BASE_PATH = 'tmp/workflow_files/'
-  EXPLORE_BASE_PATH = 'tmp/explore_files/'
+  WORKFLOW_BASE_PATH = "tmp/workflow_files/#{Partner.current.id}/"
+  EXPLORE_BASE_PATH = "tmp/explore_files/#{Partner.current.id}/"
+  FILE_SOURCE_BASE_PATH = "/Users/jxb13/RailsWorkspace/etda/uploads/"
 end

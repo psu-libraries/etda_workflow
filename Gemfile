@@ -61,9 +61,9 @@ gem 'cocoon'
 gem 'devise'
 
 if ENV['CI']
-  gem 'etda_utilities', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/psu-stewardship/etda_utilities.git"
+  gem 'etda_utilities', '0.5.1', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/psu-stewardship/etda_utilities.git"
 else
-  gem 'etda_utilities', git: "git@github.com:psu-stewardship/etda_utilities.git"
+  gem 'etda_utilities', '0.5.1', git: "git@github.com:psu-stewardship/etda_utilities.git"
 end
 
 gem 'rake', '< 11.0'
@@ -85,6 +85,8 @@ gem 'rest-client'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+gem 'nokogiri', '>= 1.8.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
