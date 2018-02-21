@@ -79,7 +79,7 @@ namespace :apache do
     desc "#{action.to_s.capitalize} Apache"
     task action do
       on roles(:web) do
-        execute "sudo service httpd #{action}"
+        execute "sudo /bin/systemctl #{action} httpd"
       end
     end
   end
