@@ -212,6 +212,19 @@ class Legacy::Importer
     @count
   end
 
+  def migrate_invention_disclosures
+    @import_logger.info "Legacy invention disclosure records read: #{@original_count}"
+    @records_to_import.each do |legacy_invention_disclosure|
+      @count += 1
+      @display_logger.info "Importing #{@count} of #{@original_count} invention_disclosures" if interval 10
+      InventionDisclosure.new(id: legacy_invention_disclosure['id'],
+                              submission_id: legacy_invention_disclosure['submission_id'],
+                              id_number: legacy_invention_disclosure['id_number'],
+                              created_at: legacy_invention_disclosure['created_at'],
+                              updated_at: legacy_invention_disclosure['updated_at']).save(validate: false)
+    end
+  end
+
   def interval(val)
     (@count % val).zero?
   end

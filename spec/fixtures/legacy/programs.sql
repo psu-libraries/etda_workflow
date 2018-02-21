@@ -1,0 +1,31 @@
+DROP TABLE IF EXISTS `programs`;
+CREATE TABLE `programs` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `legacy_id` int(11) DEFAULT NULL,
+  `legacy_old_id` int(11) DEFAULT NULL);
+INSERT INTO `programs` (id, name, is_active, created_at, updated_at, legacy_id, legacy_old_id) VALUES
+(1,
+"Acoustics",
+true,
+"2003-11-05",
+"2011-12-18",
+306,
+1),
+(2,
+"Adult Eduction",
+true,
+"2003-11-05",
+"2011-12-18",
+307,
+2),
+(3,
+"Advertising",
+false,
+"2003-11-05",
+"2011-12-18",
+308,
+3);

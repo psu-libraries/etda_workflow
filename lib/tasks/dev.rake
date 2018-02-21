@@ -21,6 +21,8 @@ if defined?(RSpec)
     Rake::Task['assets:precompile'].invoke
     puts 'PARTNER=GRADUATE'
     ENV['PARTNER'] = 'graduate'
+    Rake::Task['legacy:db:test_fixtures:load'].invoke
+    ::Rake.application['spec'].reenable
     Rake::Task['spec'].invoke
     ::Rake.application['spec'].reenable
     puts 'PARTNER=HONORS'

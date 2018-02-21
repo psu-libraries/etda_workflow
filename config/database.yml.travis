@@ -4,3 +4,16 @@ test:
   database: etdflow_test
   username: travis
   encoding: utf8
+
+#  legacy_database:
+#    adapter: mysql2
+#    encoding: utf8
+#    database: wf_legacy_test
+#    username: travis
+    # host: localhost
+test_legacy_database:
+    adapter: mysql2
+    encoding: utf8
+    database: wf_legacy_test
+    username: travis
+
