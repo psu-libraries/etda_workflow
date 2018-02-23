@@ -1,0 +1,6 @@
+<%#  Since we need this partial in both the admin and author forms,  %>
+<%#  and since the cocoon gem requires to have these partials in     %>
+<%#  the same directory as their parent template, we will simply     %>
+<%#  use these to point to the single shared partial.                %>
+
+<%= render partial: 'shared/file_fields', locals: { can_delete: true, file_fields: file_fields } %>

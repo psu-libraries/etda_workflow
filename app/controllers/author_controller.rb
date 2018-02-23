@@ -3,7 +3,7 @@
 class AuthorController < ApplicationController
   protect_from_forgery with: :exception
 
-  Devise.add_module(:webacess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
+  Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
   before_action :clear_author
   before_action :authenticate_author!, unless: :valid_author_session?
@@ -16,7 +16,9 @@ class AuthorController < ApplicationController
   def find_or_initialize_author
     @author = Author.find_or_initialize_by(access_id: current_author.access_id)
     # Rails.logger.info "current_author = #{current_author.inspect}"
-    render 'author/index'
+    # redirect_to author_submissions_path
+    redirect to login_path if @author.nil?
+    @author
   end
 
   def clear_author

@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  Devise.add_module(:webacess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
+  Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     rescue_from ActionView::MissingTemplate, with: :render_404
     rescue_from ActionController::RoutingError, with: :render_404
     rescue_from ActiveRecord::RecordNotFound, with: :render_404
-    # rescue_from CanCan::AccessDenied, with: :render_401
+    rescue_from CanCan::AccessDenied, with: :render_401
     rescue_from ActionView::Template::Error, with: :render_500
     rescue_from ActiveRecord::StatementInvalid, with: :render_500
     rescue_from Mysql2::Error, with: :render_500
@@ -35,16 +35,18 @@ class ApplicationController < ActionController::Base
 
   def login
     Rails.logger.info 'LOGGING IN APP CONTROLLER'
-    webaccess_login_url = WebAccess.new(request.env['HTTP_REFERER']).login_url
-    Rails.logger.info "REDIRECTING---" + "#{webaccess_login_url}  #{Time.zone.now}"
-    redirect_to webaccess_login_url # unless Rails.env.development? || Rails.env.test?
+    # webaccess_login_url = WebAccess.new(request.env['HTTP_REFERER']).login_url
+    Rails.logger.info "REDIRECTING---" + "#{WebAccess.new(request.env['HTTP_REFERER']).login_url}  #{Time.zone.now}"
+    # redirect_to webaccess_login_url # unless Rails.env.development? || Rails.env.test?
+    redirect_to webaccess_login_url
   end
 
   def logout
     # make any local additions here (e.g. expiring local sessions, etc.)
     # adapted from here: http://cosign.git.sourceforge.net/git/gitweb.cgi?p=cosign/cosign;a=blob;f=scripts/logout/logout.php;h=3779248c754001bfa4ea8e1224028be2b978f3ec;hb=HEAD
     cookies.delete(request.env['COSIGN_SERVICE']) if request.env['COSIGN_SERVICE']
-    redirect_to WebAccess.new.logout_url unless Rails.env.development? || Rails.env.test?
+    redirect_to webaccess_logout_url unless Rails.env.development? || Rails.env.test?
+    # redirect_to WebAccess.new.logout_url unless Rails.env.development? || Rails.env.test?
   end
 
   def current_remote_user
@@ -72,6 +74,14 @@ class ApplicationController < ActionController::Base
   #   ((author_signed_in? || admin_signed_in?) && Devise::Strategies::WebaccessAuthenticatable.new(request.headers).valid?) || Rails.env.test?
   #   #   # ()author_signed_in? && valid?(request.headers) || Rails.env.test?
   # end
+
+  def webaccess_login_url
+    WebAccess.new(request.env['HTTP_REFERER']).login_url
+  end
+
+  def webaccess_logout_url
+    WebAccess.new.logout_url
+  end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:access_id)

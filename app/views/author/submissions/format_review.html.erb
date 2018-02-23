@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h1>Format Review Files</h1>
+  </div>
+</div>
+<% @row_count = 0 %>
+<div class="row">
+  <div class="col-xs-12">
+    <% if @submission.format_review_notes.present? %>
+        <div id="format-review-notes" class="row <%= even_odd(@row_count) %>">
+          <div class="col-xs-12">
+            <h2 class="h4">Format Review notes from the administrator</h2>
+            <div class="alert alert-<%= @submission.beyond_waiting_for_format_review_response? ? 'info' : 'warning'  %>">
+              <p><%= @submission.format_review_notes %></p>
+            </div>
+          </div>
+        </div>
+    <% end %>
+
+    <div id="title" class="review-group <%= even_odd(@row_count) %>">
+      <h2 class="h4">Title</h2>
+      <p><%= @submission.title %></p>
+    </div>
+
+    <div id="format-review-files" class="review-group <%= even_odd(@row_count) %>">
+      <h2 class="h4">Files</h2>
+      <% @submission.format_review_files.each do |file| %>
+        <div id="format-review-file-<%=file.id%>">
+          <%= link_to file.asset_identifier, file, class: 'file-link', target: '_blank' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="row <%= even_odd(@row_count) %>">
+  <div class="col-xs-12 review-group">
+    <p><strong>
+      <%= link_to 'Return to dashboard', author_root_path %>
+      </strong> </p>
+  </div>
+</div>

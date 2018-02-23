@@ -60,8 +60,8 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to validate_presence_of :title }
   it { is_expected.to validate_presence_of :program_id }
   it { is_expected.to validate_presence_of :degree_id }
-  it { is_expected.to validate_presence_of :semester }
-  it { is_expected.to validate_presence_of :year }
+  it { is_expected.to validate_presence_of :semester if submission.author_edit }
+  it { is_expected.to validate_presence_of :year if submission.author_edit }
   # it { is_expected.to validate_uniqueness_of :public_id }
   it { is_expected.not_to validate_presence_of :restricted_notes }
 
@@ -75,10 +75,10 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_many :keywords }
   it { is_expected.to have_many :invention_disclosures }
 
-  it { is_expected.to validate_inclusion_of(:semester).in_array(Semester::SEMESTERS) }
-  # it { is_expected.to validate_inclusion_of(:access_level).in_array(AccessLevel::ACCESS_LEVEL_KEYS) }
+  it { is_expected.to validate_inclusion_of(:semester).in_array(Semester::SEMESTERS) if submission.author_edit }
+  it { is_expected.to validate_inclusion_of(:access_level).in_array(AccessLevel::ACCESS_LEVEL_KEYS) }
 
-  it { is_expected.to validate_numericality_of :year }
+  it { is_expected.to validate_numericality_of :year if submission.author_edit }
 
   it { is_expected.to validate_inclusion_of(:status).in_array(SubmissionStatus::WORKFLOW_STATUS) }
 
@@ -98,9 +98,30 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to delegate_method(:author_full_name).to(:author).as(:full_name) }
   it { is_expected.to delegate_method(:author_psu_email_address).to(:author).as(:psu_email_address) }
 
+  submission = described_class.new(access_level: AccessLevel.OPEN_ACCESS.current_access_level)
+  submission.author_edit = false
+
   it 'has an access_level_key' do
     submission = FactoryBot.create :submission, access_level: 'open_access'
     expect(submission.access_level_key).to eq('open_access')
+  end
+
+  it 'validates semester and year when authors are updating' do
+      submission = FactoryBot.create :submission
+      submission.semester = ''
+      submission.year = ''
+      submission.author_edit = true
+      expect(submission).not_to be_valid
+      submission.year = 'abc'
+      expect(submission).not_to be_valid
+  end
+
+  it 'does not validate semester and year when admins are updating' do
+    submission = FactoryBot.create :submission
+    submission.year = 'ABC'
+    submission.semester = ''
+    submission.author_edit = false
+    expect(submission).to be_valid
   end
 
   context 'invention disclosure' do

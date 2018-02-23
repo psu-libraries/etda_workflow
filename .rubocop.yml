@@ -30,14 +30,29 @@ Metrics/MethodLength:
 Metrics/ClassLength:
   Exclude:
   - app/models/submission.rb
+  - app/models/author.rb
   - app/models/mock_university_directory.rb
   - app/models/legacy/importer.rb
+  - app/controllers/admin/submissions_controller.rb
+  - app/presenters/admin/submissions_dashboard_view.rb
+  - app/presenters/admin/submissions_index_view.rb
+  - app/controllers/author/submissions_controller.rb
+  - app/presenters/submission_view.rb
+
 
 Metrics/CyclomaticComplexity:
   Exclude:
+  - app/controllers/admin/submissions_controller.rb
+  - app/presenters/admin/submissions_dashboard_view.rb
+  - app/presenters/admin/submissions_index_view.rb
+  - app/presenters/admin/submission_form_view.rb
 
 Metrics/PerceivedComplexity:
   Exclude:
+  - app/controllers/admin/submissions_controller.rb
+  - app/presenters/admin/submissions_dashboard_view.rb
+  - app/presenters/admin/submissions_index_view.rb
+  - app/presenters/admin/submission_form_view.rb
 
 Layout/MultilineBlockLayout:
   Exclude:
@@ -119,6 +134,10 @@ Lint/ShadowingOuterLocalVariable:
     - 'spec/rails_helper.rb'
     - 'spec/spec_helper.rb'
 
+Lint/UnreachableCode:
+  Exclude:
+    - 'app/presenters/admin/submission_form_view.rb'
+
 Rails/Date:
   Enabled: false
 
@@ -150,6 +169,8 @@ RSpec/DescribeClass:
   Exclude:
     - 'spec/integration/admin/manage_degrees_spec.rb'
     - 'spec/integration/admin/manage_programs_spec.rb'
+    - 'spec/integration/admin/manage_submissions_spec.rb'
+    - 'spec/integration/admin/manage_authors_spec.rb'
     - 'spec/lib/tasks/confidential_rake_spec.rb'
     - 'spec/lib/tasks/legacy/legacy_importer_spec.rb'
 
@@ -159,6 +180,7 @@ RSpec/MultipleDescribes:
 RSpec/MultipleExpectations:
   Exclude:
    - 'spec/lib/tasks/legacy/legacy_importer_spec.rb'
+   - 'spec/integration/admin/manage_authors_spec.rb'
 
 RSpec/PredicateMatcher:
   Exclude:
@@ -216,8 +238,16 @@ Style/SymbolArray:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/IfUnlessModifier:
+  Exclude:
+    - 'app/views/admin/submissions/table_bodies/_format_review_submitted.json.jbuilder'
+
 RSpec/AnyInstance:
   Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
+
 
 
 

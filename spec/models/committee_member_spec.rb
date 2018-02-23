@@ -47,14 +47,26 @@ RSpec.describe CommitteeMember, type: :model do
   end
 
   context 'advisors' do
-    xit 'returns the Committee Members who have an Advisor Role' do
-      submission = FactoryBot.create(:submission)
-      committee_member = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am #{I18n.t('current_partner.id.committee.special_role')}", submission_id: submission.id)
-      committee_member.save
-      advisor_member = committee_member
-      expect(described_class.advisors(submission)).to eq([advisor_member])
+    if current_partner.graduate?
+      it 'returns the Committee Members who have an Advisor Role' do
+        submission = FactoryBot.create(:submission)
+        committee_member = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am " + I18n.t("#{current_partner.id}.committee.special_role"), submission_id: submission.id)
+        committee_member.save
+        advisor_member = committee_member
+        expect(described_class.advisors(submission)).to eq([advisor_member])
+      end
+    end
+  end
 
-      # expect(described_class.advisor_name(submission)).to eq(submission.committee_members.where(committee_role_id: CommitteeRole.advisor_role))
+  context 'advisor' do
+    if current_partner.graduate?
+      it 'returns the Committee Member name of first advisor' do
+        submission = FactoryBot.create(:submission)
+        committee_member = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am " + I18n.t("#{current_partner.id}.committee.special_role"), submission_id: submission.id)
+        committee_member.save
+        advisor_member = committee_member.name
+        expect(described_class.advisor_name(submission)).to eq(advisor_member)
+      end
     end
   end
 end

@@ -1,0 +1,9 @@
+<%= render 'admin/submissions/edit/form_section_header', target: 'program-information' %>
+<div id="program-information" class="form-section-body collapse in">
+  <%= f.input :program_id, label: "#{current_partner.program_label}", collection: Program.all.order('name ASC'), prompt: "Please Select", input_html: { class: 'can-toggle-selectability' } %>
+  <%= f.input :degree_id, label: 'Degree', collection: Degree.all, prompt: "Please Select", input_html: { class: 'can-toggle-selectability' }  %>
+  <%= f.input :semester, label: 'Semester Intending to Graduate', collection: Semester::SEMESTERS, prompt: "Please Select", input_html: { class: 'can-toggle-selectability' } %>
+  <%= f.input :year, label: 'Graduation Year',  collection: Semester.all_years, prompt: "Please Select", input_html: { class: 'can-toggle-selectability' } %>
+
+
+</div>

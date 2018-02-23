@@ -50,7 +50,7 @@ FactoryBot.define do
       format_review_notes "Format review notes"
       abstract 'my abstract'
       access_level 'open_access'
-      has_agreed_to_terms true
+      has_agreed_to_terms 1
       final_submission_notes "Final submission notes"
       keywords { [create(:keyword)] }
       defended_at { Time.zone.yesterday if current_partner.graduate? }
@@ -73,6 +73,7 @@ FactoryBot.define do
 
     trait :released_for_publication do
       status "released for publication"
+      released_for_publication_at { Time.zone.yesterday }
       final_submission_traits
     end
 
@@ -88,6 +89,7 @@ FactoryBot.define do
     trait :final_is_restricted_to_institution do
       status "released for publication"
       access_level 'restricted_to_institution'
+      released_for_publication_at { Time.zone.yesterday }
       final_submission_traits
     end
 

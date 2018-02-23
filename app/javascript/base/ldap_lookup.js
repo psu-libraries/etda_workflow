@@ -59,5 +59,5 @@ var complete_email = function(ui, last_selected_ui, field_ref) {
     }
 };
 
-$(document).ready(initialize_addon_autocomplete);
-$(document).ready(initialize_ldap_autocomplete);
+$(document).on('page:load ready', initialize_addon_autocomplete);
+$(document).on('page:load ready', initialize_ldap_autocomplete);

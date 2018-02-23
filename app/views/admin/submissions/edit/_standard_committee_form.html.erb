@@ -1,0 +1,14 @@
+<%= render 'admin/submissions/edit/form_section_header', target: 'committee' %>
+<div id="committee" class="form-section-body collapse in">
+  <%= f.simple_fields_for :committee_members do |cmf, index| %>
+      <%= render partial: 'admin/submissions/committee_member_fields', locals: { f: cmf } %>
+  <% end %>
+  <div id="add_member">
+  </div>
+  <div>
+    <%= link_to_add_association "Add Committee Member", f, :committee_members,
+                                partial: 'author/committee_members/committee_member_fields',
+                                class: 'btn btn-success',
+                                data: { association_insertion_node: '#add_member', association_insertion_method: 'append' }%>
+  </div>
+</div>

@@ -16,6 +16,7 @@ RSpec.describe InventionDisclosure, type: :model do
 
     before do
       submission.access_level = 'restricted'
+      submission.author_edit = true
       submission.invention_disclosures << invention_disclosure
     end
 
@@ -31,6 +32,9 @@ RSpec.describe InventionDisclosure, type: :model do
         submission.access_level = 'restricted'
         submission.valid?
         expect(submission.errors.details[:invention_disclosure]).to eql([' number is required for Restricted submissions.'])
+        submission.invention_disclosure.id_number = '       '
+        submission.valid?
+        expect(submission.errors.details[:invention_disclosure]).to eql([" number is required for Restricted submissions."])
       end
     end
 

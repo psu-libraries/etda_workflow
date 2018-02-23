@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class FormatReviewFile < ApplicationRecord
-  # mount_uploader :asset, SubmissionFileUploader
+  mount_uploader :asset, SubmissionFileUploader
 
   validates :submission_id, :asset, presence: true
-  # validates :asset, virus_free: true
+  validates :asset, virus_free: true
 
   belongs_to :submission
 

@@ -7,13 +7,13 @@
           </li>
       <% end %>
       <li class="<%= 'active' if controller_name == 'authors' %>">
-        <%#= link_to 'Authors', admin_authors_path %>
+        <%= link_to 'Authors', admin_authors_path %>
       </li>
       <li class="<%= 'active' if controller_name == 'programs' %>">
-        <%#= link_to 'Programs', admin_programs_path %>
+        <%= link_to 'Programs', admin_programs_path %>
       </li>
       <li class="<%= 'active' if controller_name == 'degrees' %>">
-        <%#= link_to 'Degrees', admin_degrees_path %>
+        <%= link_to 'Degrees', admin_degrees_path %>
       </li>
       <li>
         <a href="#" data-toggle="collapse" data-target="#reports_list" class="<%= 'active' if controller_name == 'reports' %> " id='reports_menu'>
@@ -21,10 +21,10 @@
         <div class='report-buttons collapse' id='reports_list'>
           <ul>
             <li>
-              <%#= link_to 'Committee Report', admin_committee_report_index_path, id: 'committee_report' %>
+              <%= link_to 'Committee Report', admin_committee_report_index_path, id: 'committee_report' %>
             </li>
             <li>
-              <%#= link_to 'Custom Report', admin_custom_report_index_path, id: 'custom_report' %>
+              <%= link_to 'Custom Report', admin_custom_report_index_path, id: 'custom_report' %>
             </li>
           </ul>
         </div>

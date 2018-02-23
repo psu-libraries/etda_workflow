@@ -17,5 +17,18 @@ RSpec.describe Semester, type: :model do
       semester = described_class.current(Time.zone.parse("#{year}-5-15:T00:00"))
       expect(semester).to eql("#{year} Spring")
     end
+    it 'returns all years for admin drop-down' do
+      all_years = described_class.all_years
+      expect(all_years).to be_an(Array)
+      expect(all_years.last).to eq(1998)
+      expect(all_years.first).to eq(Time.zone.today.year + 3)
+    end
+
+    it 'returns current year + 5 years for student year drop-down' do
+      graduation_years = described_class.graduation_years
+      expect(graduation_years).to be_an(Array)
+      expect(graduation_years.first).to eq(Time.zone.today.year)
+      expect(graduation_years.last).to eq(Time.zone.today.year + 5)
+    end
   end
 end

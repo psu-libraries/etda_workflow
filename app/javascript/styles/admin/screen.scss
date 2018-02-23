@@ -1,7 +1,11 @@
-@import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins.scss';
-@import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
-@import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_type.scss';
+//@import '~bootstrap-sass/assets/stylesheets/bootstrap/mixins';
+//@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables';
+//@import '~bootstrap-sass/assets/stylesheets/bootstrap/_type';
+//
 @import '../base/_base.scss';
+//
+//$fa-font-path: "~font-awesome/fonts";
+//@import '~font-awesome/scss/font-awesome';
 
 .add-button {
   margin: 27px 0px 0px;
@@ -226,9 +230,9 @@ table.dataTable {
   @include transition(all 0.25s ease-out);
 
   .hide-show-indicator {
-    // @extend .fa;
-    // @extend .fa-lg;
-    // @extend .fa-chevron-circle-right;
+    @extend .fa;
+    @extend .fa-lg;
+    @extend .fa-chevron-circle-right;
     position: relative;
     bottom: -2px;
     float: right;
@@ -245,11 +249,11 @@ table.dataTable {
   padding: 5px 5px 20px 5px;
 }
 
-/*
+
 .form-edit-link {
   @extend .btn;
-  @extend .btn-xs;
-  @extend .btn-default;
+  // @extend .btn-xs;
+  // @extend .btn-default;
 
   .fa {
     @extend .fa-edit;
@@ -261,7 +265,7 @@ table.dataTable {
     }
   }
 }
-*/
+
 #submission_semester_year {
   width: auto;
   margin-bottom: .5em;

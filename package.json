@@ -8,6 +8,7 @@
     "bootstrap-sass": "^3.3.7",
     "bootstrap3": "^3.3.5",
     "breakpoints": "^0.0.0",
+    "cocoon": "github:nathanvda/cocoon",
     "coffeescript": "1.12.7",
     "datatables.net-bs": "^1.10.16",
     "datatables.net-buttons-bs": "^1.5.1",

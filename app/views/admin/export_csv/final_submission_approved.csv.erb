@@ -1,0 +1,6 @@
+<%- headers = @export_csv.columns -%>
+<%= CSV.generate_line headers  -%>
+<%- @export_csv.submissions.each do |submission| -%>
+<%=h (CSV.generate_line @export_csv.fields(submission)).html_safe -%>
+<%- end -%>
+

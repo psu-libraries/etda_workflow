@@ -3,7 +3,7 @@
 class AdminController < ApplicationController
   protect_from_forgery with: :exception
 
-  Devise.add_module(:webacess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
+  Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
   before_action :clear_admin
   before_action :authenticate_or_redirect
@@ -29,6 +29,7 @@ class AdminController < ApplicationController
     # Rails.logger.info "Authenticating Admin: #{current_remote_user}"
     if valid_admin?
       authenticate_admin! unless valid_admin_session?
+      authorize! :administer, :all
     else
       redirect_to '/401' # unauthorized page
     end
@@ -43,5 +44,9 @@ class AdminController < ApplicationController
 
   def valid_admin_session?
     session[:user_role] == 'admin'
+  end
+
+  def current_ability
+    @current_ability ||= AdminAbility.new(current_admin)
   end
 end

@@ -1,0 +1,8 @@
+<%#= contact information for graduate school print page and to contact after graduation %>
+<%= f.input :phone_number, required: true %>
+<%= f.input :address_1, required: true %>
+<%= f.input :address_2 %>
+<%= f.input :city, required: true %>
+<%= f.input :state, collection: UsStates.names.invert, required: true, prompt: 'Please Select a State' %>
+<%= f.input :zip, required: true %>
+<%= f.input :country, selected: @author[:country], priority: ['US'], prompt: 'Please Select a Country', class: 'form-control' %>

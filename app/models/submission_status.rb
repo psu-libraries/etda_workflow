@@ -102,4 +102,12 @@ class SubmissionStatus
   def final_confidential_hold?
     waiting_for_final_submission_response? && @current_submission.confidential?
   end
+
+  def format_review_rejected?
+    collecting_format_review_files? && @current_submission.format_review_rejected_at.present?
+  end
+
+  def final_submission_rejected?
+    collecting_final_submission_files? && @current_submission.final_submission_rejected_at.present?
+  end
 end

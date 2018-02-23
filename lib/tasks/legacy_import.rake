@@ -172,8 +172,8 @@ namespace :legacy do
 
    def parameter_invalid?(file_source)
      return true if file_source.nil?
-     return false unless Rails.env.production?
-     return true unless ['qa', 'stage', 'prod'].include? file_source
+     return false unless Rails.env.production? # take any path for development & test
+     return true unless %w[qa stage prod].include?(file_source) && Rails.env.production?
      false
    end
 

@@ -2,12 +2,12 @@
 // listed below.
 //
 
-import 'bootstrap3/dist/css/bootstrap.min.css';
-import  'datatables.net-bs';
-import 'bootstrap3/dist/css/bootstrap.css';
-import '../admin/initialize_datatables.js';
-import '../styles/author/committee.scss';
-import '../styles/author/tag-it.scss';
-import '../styles/author/screen.scss';
-import '../author/invention_disclosure.js';
-import '../author/lionpath_degree.js';
+//var $ = require('jquery');
+//window.jQuery = $;
+require('bootstrap3/dist/css/bootstrap.css');
+require('../author/invention_disclosure.js');
+require('../author/lionpath_degree.js');
+require('../styles/author/committee.scss');
+require('../styles/author/screen.scss');
+// Must be included last in order for close icon to appear on keyword tag
+require('../styles/author/tag-it.scss');

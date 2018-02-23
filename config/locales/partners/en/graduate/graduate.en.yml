@@ -85,7 +85,6 @@ en:
         label: Committee Members
       author_instructions:
         The committee for a Master's thesis must consist of at least one Thesis Advisor and two Committee Members.  The committee for a Dissertation must include one Dissertation Advisor, one Committee Chair, two Committee Members, and one Outside Member.
-
       special_role: advisor
     admin_filters:
       format_review_incomplete:

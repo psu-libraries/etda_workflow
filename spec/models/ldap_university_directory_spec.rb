@@ -2,8 +2,6 @@
 
 # This tests a live LDAP connection
 # To run this, comment out line in config/environments/test.rb that sets MockUniversityDirectory
-# rspec spec/component/models/ldap_university_directory_spec.rb --tag ldap
-# require 'models/model_spec_helper'
 #
 require 'model_spec_helper'
 require 'support/ldap_lookup'

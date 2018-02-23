@@ -21,4 +21,21 @@ class Semester
              end
     "#{year} #{season}"
   end
+
+  def self.all_years
+    this_year = Time.zone.today.year
+    Semester.new.build_year_list(1998, this_year + 3)
+  end
+
+  def self.graduation_years
+    this_year = Time.zone.today.year
+    list = Semester.new.build_year_list(this_year, this_year + 5)
+    list.reverse
+  end
+
+  def build_year_list(start_year, end_year)
+    years = []
+    end_year.downto(start_year) { |yr| years << yr }
+    years
+  end
 end

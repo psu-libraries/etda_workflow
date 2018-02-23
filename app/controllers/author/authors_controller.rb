@@ -3,7 +3,6 @@
 class Author::AuthorsController < AuthorController
   def edit
     @author = Author.find(params[:id])
-    @author.can_edit?
   rescue Author::NotAuthorizedToEdit
     redirect_to root_path
     flash[:error] = 'You are not authorized to edit that page'
@@ -11,7 +10,6 @@ class Author::AuthorsController < AuthorController
 
   def update
     @author = Author.find(params[:id])
-    @author.can_edit?
     outbound_lionpath_record = OutboundLionPathRecord.new(submission: @author.submissions.last, original_alternate_email: @author.alternate_email_address)
     if params[:author][:inbound_lion_path_record]
       @author.inbound_lion_path_record.lion_path_degree_code = params[:author][:inbound_lion_path_record][:lion_path_degree_code]
@@ -39,6 +37,10 @@ class Author::AuthorsController < AuthorController
   end
 
   private
+
+  def current_ability(author, record_id)
+    @current_ability ||= AuthorAbility.new(author, record_id)
+  end
 
   def author_params
     params.require(:author).permit(:access_id,

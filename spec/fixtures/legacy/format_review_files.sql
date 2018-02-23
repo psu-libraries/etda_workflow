@@ -10,7 +10,7 @@ INSERT INTO `format_review_files`
 (id, submission_id, asset, created_at, updated_at, legacy_id) VALUES
 (1,
 1,
-"CarolKingThesisforFReview.pdf",
+"CarolKingThesisforFormatReview.pdf",
 "2016-05-16",
 "2016-05-16",
 3),

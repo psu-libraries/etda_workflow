@@ -9,15 +9,15 @@ window.jQuery = $;
 
 initialize_nested_fields = function() {
 
-  const cocoon_link = $('.cocoon-links .add_fields');
+    const cocoon_link = $('.cocoon-links .add_fields');
 
-  if (!cocoon_link.length) { return; }
+    if (!cocoon_link.length) { return; }
 
-  const fields = $('.nested-fields');
+    const fields = $('.nested-fields');
 
-  if (!fields.length) {
-    return cocoon_link.click();
-  }
+    if (!fields.length) {
+        return cocoon_link.click();
+    }
 };
-
 $(document).ready(initialize_nested_fields);
+
