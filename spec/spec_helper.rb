@@ -4,16 +4,16 @@ if ENV['COVERAGE'] || ENV['TRAVIS']
   require 'simplecov'
   SimpleCov.root(File.expand_path('../..', __FILE__))
   SimpleCov.start 'rails' do
-    add_filter '/spec'
-    add_filter '/features'
-    add_filter '/vendor'
-    add_filter '/config'
-    add_group 'models', 'app/models/'
-    add_group 'controllers', 'app/controllers/'
-    add_group 'legacy', 'app/models/legacy/'
-    add_group 'services', 'app/services/'
-    add_group 'presenters', 'app/presenters/'
-    add_group 'decorators', 'app/decorators/'
+    # add_filter '/spec'
+    # add_filter '/features'
+    # add_filter '/vendor'
+    # add_filter '/config'
+    # add_group 'models', 'app/models/'
+    # add_group 'controllers', 'app/controllers/'
+    # add_group 'legacy', 'app/models/legacy/'
+    # add_group 'services', 'app/services/'
+    # add_group 'presenters', 'app/presenters/'
+    # add_group 'decorators', 'app/decorators/'
   end
 end
 

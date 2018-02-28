@@ -25,10 +25,9 @@ RSpec.describe Semester, type: :model do
     end
 
     it 'returns current year + 5 years for student year drop-down' do
-      graduation_years = described_class.graduation_years
-      expect(graduation_years).to be_an(Array)
-      expect(graduation_years.first).to eq(Time.zone.today.year)
-      expect(graduation_years.last).to eq(Time.zone.today.year + 5)
+      expect(described_class.graduation_years).to be_an(Array)
+      expect(described_class.graduation_years.first).to eq(Time.zone.today.year)
+      expect(described_class.graduation_years.last).to eq(Time.zone.today.year + 5)
     end
   end
 end

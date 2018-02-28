@@ -66,13 +66,13 @@ class Submission < ApplicationRecord
 
   # validates :check_title_capitalization
 
-  validates :semester, inclusion: { in: Semester::SEMESTERS }, if: proc { |s| s.author_edit }
+  validates :semester, inclusion: { in: Semester::SEMESTERS }, if: proc { |s| s.semester.present? }
   validates :degree_id, presence: true
   validates :access_level, inclusion: { in: AccessLevel::ACCESS_LEVEL_KEYS }, if: proc { |s| s.status_behavior.beyond_collecting_final_submission_files? && s.author_edit }
 
   validates :invention_disclosure, invention_disclosure_number: true, if: proc { |s| s.status == 'collecting final submission files' && s.author_edit }
 
-  validates :year, numericality: { only_integer: true }, if: proc { |s| s.author_edit }
+  validates :year, numericality: { only_integer: true }, if: proc { |s| s.year.present? }
 
   attr_reader :previous_access_level
   after_update :cache_access_level
