@@ -21,6 +21,7 @@ RSpec.describe DegreeType, type: :model do
 
     it "returns the name" do
       expect(degree_type.to_s).to eq "The Name"
+      expect(degree_type.to_s).to eq(degree_type.name)
     end
   end
 

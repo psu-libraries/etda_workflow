@@ -20,6 +20,6 @@ RSpec.describe Keyword, type: :model do
   it { is_expected.to validate_presence_of(:word) }
 
   it 'displays a hint' do
-    expect(described_class.hint).to eql("Enter keywords in the following box.  Multiple keywords can be entered and one keyword entry may contain multiple words.  Use a comma to separate keyword entries. To delete a keyword, click the 'X' or use the backspace key.")
+    expect(Keyword.hint).to eql("Enter keywords in the following box.  Multiple keywords can be entered and one keyword entry may contain multiple words.  Use a comma to separate keyword entries. To delete a keyword, click the 'X' or use the backspace key.")
   end
 end

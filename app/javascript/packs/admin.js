@@ -4,6 +4,7 @@
 
 require('bootstrap3/dist/css/bootstrap.min.css');
 require('bootstrap3/dist/css/bootstrap.css');
+require('jquery-ui/ui/widgets/tooltip');
 require('../styles/admin/datatable_images.css.scss');
 require( 'datatables.net-bs' );
 require('../styles/base/_base.scss');
@@ -13,7 +14,6 @@ require('../admin/initialize_datatables.js');
 require('../admin/bulk_selectors_and_actions.js');
 require('../admin/initialize_report_tables.js');
 require('../admin/print_format_review.js');
-require('../admin/edit_submission_form.js');
 require('../admin/edit_submission_form.js');
 require('../admin/initialize_tooltips.js');
 require('../admin/initialize_datatables.js');

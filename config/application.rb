@@ -16,6 +16,7 @@ require "action_view/railtie"
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 require 'action_cable'
+require 'csv'
 #
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -34,8 +35,18 @@ module EtdaWorkflow
     # -- all .rb files in that directory are automatically loaded.
     #
     config.time_zone = 'Eastern Time (US & Canada)'
+    config.autoload_paths += [
+      Rails.root.join('app/presenters'),
+      Rails.root.join('app/decorators')
+    ]
+    config.autoload_paths += Dir["#{config.root}/lib/**/*"]
 
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'partners', I18n.default_locale.to_s, '*', '*.{rb,yml}').to_s]
+    # config.autoload_paths << Rails.root.join("lib")
+    # config.eager_load_paths << Rails.root.join("lib")
+    # config.eager_load_paths << Rails.root.join("app", "services", '*', '*.rb')
+    config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each { |l| require l }
+
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'partners', I18n.default_locale.to_s, '*', '*.*{rb,yml}').to_s]
 
     config.assets.enabled = false
     config.generators do |g|

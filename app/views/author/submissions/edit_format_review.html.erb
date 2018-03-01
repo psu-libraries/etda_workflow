@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h1>Upload Format Review Files</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <%= simple_form_for [:author, @submission], url: author_submission_update_format_review_path do |f| %>
+      <% if @submission.format_review_notes.present? %>
+          <div id="format-review-notes" class="row">
+            <div class="col-xs-12">
+              <label>Format Review notes from the administrator</label>
+              <div class="alert alert-<%= @submission.beyond_waiting_for_format_review_response? ? 'info' : 'warning'  %>">
+                <p><%= @submission.format_review_notes %></p>
+              </div>
+            </div>
+          </div>
+      <% end %>
+      <%= render partial: '/author/submissions/title_and_checkbox', locals: {f: f} %>
+      <%= render partial: '/author/submissions/semester_year', locals: {f: f}  %>  
+
+      <div id="format-review-file-fields" class="form-group">
+        <%= render partial: 'author/submissions/file_label' %>
+        <%= f.simple_fields_for :format_review_files do |format_review_file| %>
+          <%= render '/author/submissions/file_fields', file_fields: format_review_file %>
+        <% end %>
+      </div>
+      <div class="links cocoon-links">
+          <%= link_to_add_association f, :format_review_files,
+                                      class: 'btn btn-info btn-sm',
+                                      data: { association_insertion_node: '#format-review-file-fields', association_insertion_method: 'append' },
+                                      form_name: 'file_fields',
+                                      partial: '/author/submissions/file_fields' do %>
+           <span class="glyphicon glyphicon-plus"></span> Additional File
+          <% end %>
+      </div>
+
+      <div class="form-group actions">
+        <%= f.button :submit, class: "btn-primary", value: "Submit files for review" %>
+        <%= link_to "Cancel", author_root_path %>
+      </div>
+    <% end %>
+  </div>
+</div>

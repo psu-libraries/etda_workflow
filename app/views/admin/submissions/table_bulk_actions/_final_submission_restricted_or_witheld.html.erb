@@ -1,0 +1,15 @@
+<div class="action date-submitter release">
+  <%= button_to 'Release as Open Access', admin_submissions_release_final_submission_approved_path,
+      method: 'patch',
+      params: { submission_ids: '', date_to_release: Time.zone.today.strftime('%-m/%-d/%Y') },
+      data: { confirm: "Are you sure you want to release the selected submission(s)?", date_prefix: 'selected_date' },
+      class: 'btn btn-primary release-btn' %>
+</div>
+<div class="action date-submitter extend">
+  <%= button_to 'Extend Publication Date', admin_submissions_extend_publication_date_path,
+      method: 'patch',
+      params: { submission_ids: '', date_to_release: '' },
+      data: { confirm: "Are you sure you want to extend the selected submission(s)?", date_prefix: 'extended_date' },
+      class: 'btn btn-primary extend-button' %>
+  <label>New Publication Date:</label><%= select_date 2.years.from_now, prefix: 'extended_date' %>
+</div>

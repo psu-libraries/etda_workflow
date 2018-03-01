@@ -1,0 +1,5 @@
+<%= render 'admin/submissions/edit/form_section_header', target: 'committee' %>
+<div id="committee" class="form-section-body collapse in">
+  <%= render partial: '/shared/committee_show_fields' %>
+  <p><%= link_to 'Refresh', admin_refresh_committee_path, class: 'btn btn-success' %></p>
+</div>

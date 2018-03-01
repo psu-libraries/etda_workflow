@@ -15,6 +15,10 @@ class WebAccess
     format(WebAccess::BASE_LOGOUT_URL, service)
   end
 
+  def login_url_path
+    "?factors=dce.psu.edu&cosign-#{service}&#{@redirect_url}"
+  end
+
   private
 
   def application_url

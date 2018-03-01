@@ -12,11 +12,6 @@ module.exports = {
   context: __dirname + "/app",
   entry: {
       app: ['./src/base.js', './src/admin.js', './src/author.js'],
-
-    //admin: "./javascript/packs/admin.js",
-    //author: "./javascript/packs/author.js",
-    //base: "./javascript/packs/base.js",     //"bootstrap-loader" ,
-    //home: "./javascript/src/home.css",
     },
 
   output: {
@@ -63,6 +58,10 @@ module.exports = {
                   }
               }
             },
+          {
+              test: /\.css$/,
+              loaders: ["style-loader","css-loader"]
+          },
           {
               test: /\.(gif|png|jpe?g|svg)$/i,
               use: [

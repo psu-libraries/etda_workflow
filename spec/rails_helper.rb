@@ -45,9 +45,10 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-
   config.before(:each, js: true) do
     Capybara.page.driver.browser.url_blacklist = ['www.google-analytics.com/analytics.js', "www.google-analytics.com"]
+    DegreeType.seed
+    CommitteeRole.seed
   end
 
   #   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures

@@ -45,7 +45,7 @@ class Legacy::FileImporter
            file_detail_path = path_builder.detailed_file_path(final_file.id)
            source_full_path = source_path.base + file_detail_path
            destination_path = DestinationPath.new(submission)
-           copy_the_file(source_full_path, destination_path.full_path + file_detail_path, final_file.asset)
+           copy_the_file(source_full_path, destination_path.full_path + file_detail_path, final_file.asset_identifier)
         end
       end
       @display_logger.info "Total of #{@files_copied} files were copied. See logs for more information"

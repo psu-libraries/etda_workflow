@@ -1,0 +1,7 @@
+<%- headers = @csv_report_export.columns -%>
+<%= CSV.generate_line headers -%>
+<%- @csv_report_export.submissions.each do |submission| -%>
+<%=h (CSV.generate_line @csv_report_export.fields(submission)).html_safe -%>
+<%- end -%>
+
+

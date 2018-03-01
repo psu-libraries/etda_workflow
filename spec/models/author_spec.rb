@@ -194,4 +194,17 @@ RSpec.describe Author, type: :model do
       expect(author.full_name).to eql("#{author.first_name} No Associated Name")
     end
   end
+
+  context '#full_name' do
+    it 'combines first and last name' do
+      author = FactoryBot.create :author
+      expect(author.full_name).to eql(author.first_name + ' ' + author.middle_name + ' ' + author.last_name)
+    end
+    it 'returns access_id if name is missing' do
+      author = FactoryBot.create :author
+      author.first_name = nil
+      author.last_name = nil
+      expect(author.full_name).to eql(author.access_id)
+    end
+  end
 end

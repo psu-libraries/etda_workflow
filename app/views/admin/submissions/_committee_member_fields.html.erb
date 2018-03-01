@@ -1,0 +1,18 @@
+<div class="nested-fields admin panel panel-default">
+  <div class="row committee-role">
+    <div class="col-sm-6">
+        <%= f.association :committee_role, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || [] , input_html: {class: 'role'} %>
+    </div>
+    <div class="col-sm-4">
+        <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger'%>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+        <%= f.input :name, input_html: { class: 'ldap-lookup' } %>
+    </div>
+    <div class="col-sm-6">
+        <%= f.input :email %>
+    </div>
+  </div>
+</div>

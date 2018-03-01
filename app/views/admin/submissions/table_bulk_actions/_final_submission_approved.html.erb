@@ -1,0 +1,13 @@
+<%= button_to 'Export CSV', admin_export_final_submission_approved_path(format: "csv"),
+  method: 'patch',
+  params: {submission_ids: ''},
+  class: 'btn btn-success csv' %>
+
+<div class="action date-submitter">
+  <%= button_to 'Release selected for publication', admin_submissions_release_final_submission_approved_path,
+      method: 'patch',
+      params: { submission_ids: '', date_to_release: '' },
+      data: { confirm: "Are you sure you want to release the selected submission(s)?", date_prefix: 'selected_date' },
+      class: 'btn btn-primary release-button' %>
+  <label>Release Date:</label><%= select_date Time.zone.now, prefix: 'selected_date' %>
+</div>

@@ -1,9 +1,10 @@
+
 # frozen_string_literal: true
 
 require 'model_spec_helper'
 
 RSpec.describe Legacy::Importer do
-  legacy_data = LegacyDataHelper.new
+  legacy_data = LegacyLoadHelper.new
   new_database = LegacyDatabaseHelper.new
 
   before do
@@ -76,7 +77,7 @@ RSpec.describe Legacy::Importer do
     legacy_data.each do |data|
       obj = object.find(data['id'])
       database_fields.each do |field|
-        expect(data[field]).to eql(obj.send(field))
+        expect(data[field]).to eql(obj.send(field)) unless field == 'asset'
       end
     end
   end

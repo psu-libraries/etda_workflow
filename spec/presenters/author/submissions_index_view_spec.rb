@@ -1,0 +1,58 @@
+require 'presenters/presenters_spec_helper'
+RSpec.describe Author::SubmissionsIndexView do
+  let(:existing_author) { FactoryBot.create :author }
+  let(:view_for_existing_author) { described_class.new existing_author }
+  let(:new_author) { Author.new }
+  let(:view_for_new_author) { described_class.new new_author }
+  let(:ldap_author) { FactoryBot.create :author, :author_from_ldap }
+  let(:view_for_ldap_author) { described_class.new ldap_author }
+
+  describe '#new_author?' do
+    it 'returns true for a remote user that is not in our database' do
+      expect(view_for_new_author).to be_new_author
+    end
+    it 'returns false for a remote user that is in our database' do
+      expect(view_for_existing_author).not_to be_new_author
+    end
+  end
+
+  describe '#partial_name' do
+    context 'When the remote user is not in our database' do
+      it 'returns confirm_contact_information_instructions' do
+        expect(view_for_new_author.partial_name).to eq 'confirm_contact_information_instructions'
+      end
+    end
+    context 'When the remote user exists in our database and has submissions' do
+      it "returns the author's submissions" do
+        FactoryBot.create :submission, author: existing_author
+        expect(view_for_existing_author.partial_name).to eq 'submissions'
+      end
+    end
+    context 'and does not have any submissions' do
+      it 'returns an empty index' do
+        expect(view_for_existing_author.partial_name).to eq 'no_submissions'
+      end
+    end
+    context 'When author is in database, populated from LDAP entry and has no submissions' do
+        it 'returns no_submissions' do
+          expect(view_for_ldap_author.partial_name).to eq 'no_submissions'
+        end
+    end
+  end
+
+  describe '#author_has_submissions?' do
+    context 'When an existing author has submissions' do
+      before do
+        FactoryBot.create :submission, author: existing_author
+      end
+      it 'returns true' do
+        expect(view_for_existing_author).to be_author_has_submissions
+      end
+    end
+    context 'When an existing author does not have any submissions' do
+      it 'returns false' do
+        expect(view_for_existing_author).not_to be_author_has_submissions
+      end
+    end
+  end
+end

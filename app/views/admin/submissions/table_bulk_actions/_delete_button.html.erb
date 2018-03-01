@@ -1,0 +1,8 @@
+<%= button_to 'Delete selected', admin_delete_submissions_path,
+              method: 'delete',
+              params: { submission_ids: '' },
+              data: { confirm: "Are you sure you want to permanently delete the selected submission(s)?" },
+              class: 'btn btn-danger' %>
+
+
+

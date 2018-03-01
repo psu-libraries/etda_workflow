@@ -1,0 +1,32 @@
+<h2 class="text-center">Contact Us</h2>
+<br />
+<p>For assistance, please provide your contact information and a detailed message.  When your message is received, an administrator will contact you. </p>
+<br>
+<%= simple_form_for (@contact_form), url: :contact_form_index, validate: true do |f| %>
+  <div class="">
+    <div class="row">
+      <%= f.input :full_name,  required: true, size: 40, label: 'Your Name' %>
+    </div>
+    <div class="row">
+      <%= f.input :email, required: true, size: 40, label: 'Your Email' %>
+    </div>
+    <div class="row">
+      <%= f.input :desc, required: true, size: 40, label: 'Subject' %>
+    </div>
+    <div class="row">
+      <%= f.input :message, required: true, as: :text, input_html: {rows: "8", cols: 80}, label: 'Your Message'  %>
+    </div>
+    <div class="row">
+      <%= f.submit value: "Send", class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', '/', class:  "btn btn-none" %>
+    </div>
+
+    <span class="hidden">
+      <%= f.label :body, 'This field is to prevent spam and should be left blank.' %>
+      <%= f.text_field :body, as: :text, class: "invisible", value: "     " %>
+    </span>
+  </div>
+  <HEAD>
+     <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE, NO-STORE">
+  </HEAD>
+<% end %>

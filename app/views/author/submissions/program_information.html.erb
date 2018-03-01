@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h1>Program Information</h1>
+  </div>
+</div>
+<% @row_count = 0 %>
+<div class="row">
+  <div class="col-xs-12">
+    <div id="title" class="review-group <%= even_odd(@row_count) %>">
+      <h2 class="h4">Title</h2>
+      <p><%= @submission.title %></p>
+    </div>
+
+    <div id="program" class="review-group <%= even_odd(@row_count) %>">
+      <h2 class="h4"><%= current_partner.program_label %></h2>
+      <p><%= @submission.program_name %></p>
+    </div>
+
+    <div id="degree" class="review-group <%= even_odd(@row_count) %>">
+      <h2 class="h4">Degree</h2>
+      <p><%= @submission.degree.description %></p>
+    </div>
+
+    <div id="semester" class="review-group <%= even_odd(@row_count) %>">
+      <h2 class="h4">Semester Intending to Graduate</h2>
+      <p><%= @submission.semester %></p>
+    </div>
+
+    <div id="year" class="review-group <%= even_odd(@row_count) %>">
+      <h2 class="h4">Graduation Year</h2>
+      <p><%= @submission.year %></p>
+    </div>
+    <%= render partial: 'program_information_defense_date' if @submission.using_lionpath? %>
+    <div class="row" >
+      <div class="col-xs-12 review-group <%= even_odd(@row_count) %>">
+        <p><strong>
+          <%= render partial: 'lionpath_refresh_link' if  @submission.using_lionpath? %>&nbsp;&nbsp;
+          <%= link_to 'Return to dashboard', author_root_path %>
+        </strong></p>
+      </div>
+    </div>
+  </div>
+</div>

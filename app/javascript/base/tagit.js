@@ -3,8 +3,17 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+
 var $ = require('jquery');
 window.jQuery = $;
+
+require('tag-it');
+
 
 const initialize_tagit = function() {
 
@@ -23,12 +32,12 @@ const initialize_tagit = function() {
     $('input.tagit').tagit({beforeTagRemoved(event, ui) {
             if ($(document.activeElement).hasClass('modal') || $(document.activeElement).hasClass('btn-primary delete')) {
                 $('#ConfirmModal').modal('hide');
-                return event.preventDefault();
+                return true;
             } else {
                 $('#ConfirmModal').find('div.modal-body p').text(`Are you sure you want to delete keyword \"${ui.tagLabel}\"?`);
                 $('#ConfirmModal').data('taglabel', ui.tagLabel);
                 $('#ConfirmModal').modal('show');
-                return false;
+                event.preventDefault();
             }
         }
     });
@@ -44,14 +53,14 @@ const initialize_tagit = function() {
 
     $('button#delete').on('keypress, click', function(e) {
         const tag_label = $('#ConfirmModal').data('taglabel');
-        return $('input.tagit').tagit('removeTagByLabel',tag_label);
+        $('input.tagit').tagit('removeTagByLabel',tag_label);
     });
 
     return $('#ConfirmModal').on('hidden.bs.modal', e => $('input.ui-widget-content').focus());
 };
 
 
-$(document).on('page:load ready', initialize_tagit);
+$(document).ready(initialize_tagit);
 
 $('.tagit-new input').on('keydown', function(e) {
 //looking for tab key; when found, move focus to next form element

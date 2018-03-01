@@ -75,11 +75,13 @@ GEM
     bindex (0.5.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
+    brakeman (4.1.1)
     builder (3.2.3)
     bundler-audit (0.6.0)
       bundler (~> 1.2)
       thor (~> 0.18)
     byebug (9.1.0)
+    cancancan (1.17.0)
     capistrano (3.10.1)
       airbrussh (>= 1.0.0)
       i18n
@@ -111,6 +113,10 @@ GEM
     capybara-email (2.5.0)
       capybara (~> 2.4)
       mail
+    carrierwave (1.2.2)
+      activemodel (>= 4.0.0)
+      activesupport (>= 4.0.0)
+      mime-types (>= 1.16)
     chronic (0.10.2)
     clam_scan (0.0.2)
     cliver (0.3.2)
@@ -140,7 +146,7 @@ GEM
     enumerize (2.1.2)
       activesupport (>= 3.2)
     erubi (1.7.0)
-    et-orbi (1.0.8)
+    et-orbi (1.0.9)
       tzinfo
     factory_bot (4.8.2)
       activesupport (>= 3.0.0)
@@ -148,6 +154,8 @@ GEM
       factory_bot (~> 4.8.2)
       railties (>= 3.0.0)
     ffi (1.9.18)
+    font-awesome-rails (4.7.0.3)
+      railties (>= 3.2, < 5.2)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     hashdiff (0.3.7)
@@ -178,10 +186,14 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.0)
       mini_mime (>= 0.1.1)
+    mail_form (1.7.0)
+      actionmailer (>= 3.2, < 5.2)
+      activemodel (>= 3.2, < 5.2)
     method_source (0.9.0)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
+    mini_magick (4.8.0)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
     minitest (5.11.1)
@@ -189,7 +201,7 @@ GEM
       i18n (>= 0.6.4, < 1.0)
     mono_logger (1.1.0)
     multi_json (1.13.1)
-    mustermann (1.0.1)
+    mustermann (1.0.2)
     mysql2 (0.4.9)
     net-ldap (0.16.1)
     net-scp (1.2.1)
@@ -218,7 +230,7 @@ GEM
       concurrent-ruby (~> 1.0.0)
       railties (>= 4.2)
     rack (2.0.3)
-    rack-protection (2.0.0)
+    rack-protection (2.0.1)
       rack
     rack-proxy (0.6.3)
       rack
@@ -333,10 +345,10 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    sinatra (2.0.0)
+    sinatra (2.0.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.0)
+      rack-protection (= 2.0.1)
       tilt (~> 2.0)
     sixarm_ruby_unaccent (1.2.0)
     sort_alphabetical (1.1.0)
@@ -353,7 +365,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sshkit (1.15.1)
+    sshkit (1.16.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     therubyracer (0.12.3)
@@ -400,8 +412,10 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   binding_of_caller
+  brakeman
   bundler-audit
   byebug
+  cancancan
   capistrano (~> 3.10)
   capistrano-bundler (~> 1.2)
   capistrano-rails (~> 1.2)
@@ -410,6 +424,7 @@ DEPENDENCIES
   capistrano-resque (~> 0.2.1)
   capybara (~> 2.13)
   capybara-email
+  carrierwave
   clam_scan
   cocoon
   country_select!
@@ -418,14 +433,16 @@ DEPENDENCIES
   enumerize
   etda_utilities (= 0.5.1)!
   factory_bot_rails
+  font-awesome-rails
   jbuilder (~> 2.5)
   jquery-rails
   jquery-ui-rails
   launchy
   listen (>= 3.0.5, < 3.2)
+  mail_form
+  mini_magick
   mysql2 (>= 0.3.18, < 0.4.10)
   net-ldap (~> 0.16.1)
-  nokogiri (>= 1.8.2)
   oj
   poltergeist
   puma (~> 3.7)

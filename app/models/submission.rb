@@ -24,7 +24,7 @@ class Submission < ApplicationRecord
   delegate :alternate_email_address, to: :author, prefix: false
   delegate :confidential?, to: :author
 
-  enumerize :access_level, in: ::AccessLevel.valid_levels, default: '', i18n_scope: "#{current_partner.id}.access_level"
+  enumerize :access_level, in: AccessLevel.valid_levels, default: '' # , i18n_scope: "#{current_partner.id}.access_level"
 
   def access_level_key
     access_level.to_s
@@ -37,6 +37,8 @@ class Submission < ApplicationRecord
   after_initialize :set_status_to_collecting_program_information
   after_initialize :initialize_access_level
 
+  attr_accessor :author_edit
+
   validates :author_id,
             :title,
             :program_id,
@@ -44,17 +46,16 @@ class Submission < ApplicationRecord
 
   validates :semester,
             :year,
-            presence: true # , unless: proc { InboundLionPathRecord.active? }
+            presence: true, if: proc { |s| s.author_edit } # !InboundLionPathRecord.active? }
 
   validates :abstract,
             :keywords,
             :access_level,
-            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? }
+            :has_agreed_to_terms,
+            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && s.author_edit }
 
   validates :defended_at,
-            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? } # && !InboundLionPathRecord.active? }
-
-  validate :agreement_to_terms, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? }
+            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit } # && !InboundLionPathRecord.active? }
 
   validates :title,
             length: { maximum: 400 }
@@ -63,15 +64,22 @@ class Submission < ApplicationRecord
             uniqueness: true,
             allow_nil: true
 
-  validate :check_title_capitalization
+  # validates :check_title_capitalization
 
-  validates :semester, inclusion: { in: Semester::SEMESTERS }
+  validates :semester, inclusion: { in: Semester::SEMESTERS }, if: proc { |s| s.semester.present? }
   validates :degree_id, presence: true
-  validates :access_level, inclusion: { in: AccessLevel::ACCESS_LEVEL_KEYS }
+  validates :access_level, inclusion: { in: AccessLevel::ACCESS_LEVEL_KEYS }, if: proc { |s| s.status_behavior.beyond_collecting_final_submission_files? && s.author_edit }
 
-  validates :invention_disclosure, invention_disclosure_number: true, if: proc { |s| s.status == 'collecting final submission files' }
+  validates :invention_disclosure, invention_disclosure_number: true, if: proc { |s| s.status == 'collecting final submission files' && s.author_edit }
 
-  validates :year, numericality: { only_integer: true }
+  validates :year, numericality: { only_integer: true }, if: proc { |s| s.year.present? }
+
+  attr_reader :previous_access_level
+  after_update :cache_access_level
+
+  def cache_access_level
+    @previous_access_level = AccessLevel.new(access_level_before_last_save) # access_level_before_last_save
+  end
 
   validates :status, inclusion: { in: SubmissionStatus::WORKFLOW_STATUS }
 
@@ -150,5 +158,105 @@ class Submission < ApplicationRecord
   def academic_plan
     @academic_plan = LionPath::AcademicPlan.new(author.inbound_lion_path_record, lion_path_degree_code, self)
     @academic_plan
+  end
+
+  def semester_and_year
+    "#{year} #{semester}"
+  end
+
+  def admin_can_edit?
+    true
+  end
+
+  def ok_to_release?
+    released_for_publication_at.present? && released_for_publication_at <= Time.zone.today.end_of_day
+  end
+
+  def cleaned_title
+    return '' if title.blank?
+    clean_title = title.split(/\r\n/).join.strip || ''
+    clean_title = clean_title.strip_control_and_extended_characters
+    clean_title
+  end
+
+  def defended_at_date
+    return defended_at unless using_lionpath?
+    academic_plan.defense_date
+  end
+
+  def keyword_list
+    list = []
+    keywords.each do |k|
+      list << k.word
+    end
+    list
+  end
+
+  def delimited_keywords
+    keywords.map(&:word).join(',')
+  end
+
+  def delimited_keywords=(comma_separated_keywords)
+    clean_keywords = comma_separated_keywords
+                     .split(',')
+                     .map(&:strip)
+                     .reject(&:blank?)
+
+    new_keywords = clean_keywords.map do |keyword|
+      Keyword.new(word: keyword)
+    end
+
+    self.keywords = new_keywords
+  end
+
+  def status_class
+    status.parameterize
+  end
+
+  def current_access_level
+    AccessLevel.paper_access_levels[access_level.to_i]
+  end
+
+  def format_review_rejected?
+    status_behavior.collecting_format_review_files? && format_review_rejected_at.present?
+  end
+
+  def final_submission_rejected?
+    status_behavior.collecting_final_submission_files? && final_submission_rejected_at.present?
+  end
+
+  def open_access?
+    access_level.open_access?
+  end
+
+  def restricted?
+    access_level.restricted?
+  end
+
+  def restricted_to_institution?
+    access_level.restricted_to_institution?
+  end
+
+  def update_format_review_timestamps!(time)
+    update_attribute(:format_review_files_uploaded_at, time)
+    update_attribute(:format_review_files_first_uploaded_at, time) unless format_review_files_first_uploaded_at.present?
+  end
+
+  def update_final_submission_timestamps!(time)
+    update_attribute(:final_submission_files_uploaded_at, time)
+    update_attribute(:final_submission_files_first_uploaded_at, time) unless final_submission_files_first_uploaded_at.present?
+  end
+
+  # Initialize our committee members with empty records for each of the required roles.
+  def build_committee_members_for_partners
+    if using_lionpath?
+      academic_plan.committee.each do |cm|
+        committee_members.build(committee_role_id: InboundLionPathRecord.etd_role(cm[:role_desc]), is_required: true, name: author.inbound_lion_path_record.academic_plan.full_name(cm), email: cm[:email])
+      end
+    else
+      required_committee_roles.each do |role|
+        committee_members.build(committee_role: role, is_required: true)
+      end
+    end
   end
 end

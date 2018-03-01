@@ -2,6 +2,7 @@
 
 class ContactFormController < ApplicationController
   before_action :set_author
+
   def new
     @contact_author = current_author
     @contact_form = ContactForm.new(full_name: @contact_author.full_name, email: @contact_author.psu_email_address)

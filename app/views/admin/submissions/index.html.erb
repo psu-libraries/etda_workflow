@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h1><%= @view.title %></h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div id="bulk-actions">
+      <h5>Bulk Actions
+        <span class="small"><span class="number-of-selected-rows"></span> submissions selected ( <span class="number-of-visible-selected-rows"></span> visible )</span>
+      </h5>
+      <div class="actions">
+        <div class="row">
+          <%= render(partial: @view.delete_button_partial) if @view.render_delete_button?  %>
+
+          <%= render(partial: @view.additional_bulk_actions_path) if @view.render_additional_bulk_actions? %>
+        </div>
+      </div>
+    </div>
+    <div id="row-selection-buttons">
+      <%= render(partial: @view.select_visible_buttons_partial) if @view.render_select_visible_buttons? %>
+      <%= render(partial: @view.additional_selections_path) if @view.render_additional_selections? %>
+    </div>
+  </div>
+</div>
+
+<table id="<%= @view.id %>" class="table table-striped admin-submissions-index datatable bulk-actions" data-ajax-url="<%= admin_submissions_index_path %>" data-current-semester="<%= @view.current_semester %>">
+  <thead>
+  <tr>
+    <%= render partial: @view.table_header_partial_path %>
+  </tr>
+  </thead>
+</table>

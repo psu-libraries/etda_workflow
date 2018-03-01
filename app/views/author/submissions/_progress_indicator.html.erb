@@ -1,0 +1,74 @@
+<div class="progress-indicator <%= 'archive' if @submission_view.status_behavior.released_for_publication? %>">
+  <div class="step step-1 complete">
+    <div class="number">1</div>
+    <div class="information">
+      <div class="description"><%= @submission_view.step_one_description %></div>
+      <div class="status">
+        <%= render '/author/shared/completed_indicator', step_number: 1, text: "completed on #{@submission_view.created_on}" %>
+      </div>
+    </div>
+    <div class="direction glyphicon glyphicon-arrow-down"></div>
+  </div>
+  <div class="step step-2 <%= @submission_view.step_two_class %>">
+    <div class="number">2</div>
+    <div class="information">
+      <div class="description"><%= @submission_view.step_two_description %></div>
+      <div class="status">
+        <% status = @submission_view.step_two_status %>
+        <%= render('/author/shared/completed_indicator', step_number: 2, text: status) unless status.blank? %>
+      </div>
+    </div>
+    <div class="direction glyphicon glyphicon-arrow-down"></div>
+  </div>
+  <div class="step step-3 <%= @submission_view.step_three_class %>">
+    <div class="number">3</div>
+    <div class="information">
+      <div class="description"><%= @submission_view.step_three_description %></div>
+      <div class="status">
+        <% status = @submission_view.step_three_status %>
+        <%= render(status[:partial_name], step_number: 3, text: status[:text], note_type: 'Format Review', review_path: @submission_view.notes_link(3)) unless status[:partial_name].blank? %>
+      </div>
+    </div>
+    <div class="direction glyphicon glyphicon-arrow-down"></div>
+  </div>
+  <div class="step step-4 <%= @submission_view.step_four_class %>">
+    <div class="number">4</div>
+    <div class="information">
+      <div class="description"><%= I18n.t("#{current_partner.id}.partner.name") %> reviews Format Review files</div>
+      <div class="status">
+        <% status = @submission_view.step_four_status %>
+        <%= render(status[:partial_name], step_number: 4, text: status[:text], note_type: 'Format Review', review_path: @submission_view.notes_link(4)) unless status[:partial_name].blank? %>
+      </div>
+    </div>
+    <div class="direction glyphicon glyphicon-arrow-down"></div>
+  </div>
+  <div class="step step-5 <%= @submission_view.step_five_class %>">
+    <div class="number">5</div>
+    <div class="information">
+      <div class="description"><%= @submission_view.step_five_description %></div>
+      <div class="status">
+        <% status = @submission_view.step_five_status %>
+        <%= render(status[:partial_name], step_number: 5, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(5)) unless status[:partial_name].blank? %>
+      </div>
+    </div>
+    <div class="direction glyphicon glyphicon-arrow-down"></div>
+  </div>
+  <div class="step step-6 <%= @submission_view.step_six_class %>">
+    <div class="number">6</div>
+    <div class="information">
+      <div class="description"><%= I18n.t("#{current_partner.id}.partner.name") %> approves Final Submission files</div>
+      <div class="status">
+        <% status = @submission_view.step_six_status %>
+        <%# render(status[:partial_name], step_number: 6, text: status[:text]) unless status[:partial_name].blank? %>
+        <%= render(status[:partial_name], step_number: 6, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(6)) unless status[:partial_name].blank? %>
+        <%#= @submission_view.step_six_status %>
+      </div>
+    </div>
+    <%= @submission_view.step_seven_arrow %>
+  </div>
+  <div class="step step-7 <%= @submission_view.step_seven_class %>">
+    <div>
+      <div><%= @submission_view.step_seven_status %></div>
+    </div>
+  </div>
+</div>

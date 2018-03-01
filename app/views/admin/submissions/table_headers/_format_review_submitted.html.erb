@@ -1,0 +1,12 @@
+<th data-name="id" data-orderable="false">&nbsp;</th><%# for the hidden id %>
+<th data-name="checkbox" data-orderable="false">&nbsp;</th><%# for the checkbox %>
+<th data-name="last_name" data-orderable="true">Last Name</th>
+<th data-name="first_name" data-orderable="true">First Name</th>
+<th data-name="graduation_semester" data-orderable="true">Graduation Semester</th>
+<th data-name="submitted_on" data-orderable="true">Submitted On</th>
+<th data-name="files" data-orderable="false">Files</th>
+<% if current_partner.graduate? %>
+    <th data-name="is_printed" data-orderable="true">Printed</th>
+    <th data-name="print_link" data-orderable="false"> </th>
+<% end %>
+

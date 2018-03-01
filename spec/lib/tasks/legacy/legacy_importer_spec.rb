@@ -37,28 +37,34 @@ RSpec.describe "Rake::Task['legacy:import']", type: :task do
     expect(Submission.all.count).to eq(4)
     expect(Submission.where(title: 'title here').count).to be(1)
     expect(FormatReviewFile.all.count).to be(3)
-    expect(FormatReviewFile.where(asset: 'MathHonorsThesis3.pdf').count).to be(1)
+    # expect(FormatReviewFile.where(asset: "MathHonorsThesis3.pdf").count).to eq(1)
     expect(FinalSubmissionFile.all.count).to be(3)
-    expect(FinalSubmissionFile.where(asset: 'OpenAccess.pdf').count).to be(1)
+    # expect(FinalSubmissionFile.where(asset: 'OpenAccess.pdf').count).to be(1)
     expect(Keyword.all.count).to be(3)
     expect(Keyword.where(word: 'LEZOOMPC').count).to be(1)
     expect(CommitteeMember.all.count).to be(2)
     expect(CommitteeMember.where(name: 'Mr. Committee 1').count).to be(1)
     expect(InventionDisclosure.all.count).to be(2)
     expect(InventionDisclosure.where(id_number: '2018-abc').count).to be(1)
+    # Populate asset in FinalSubmissionFile records
+    legacy_data_helper = LegacyDataHelper.new
+    legacy_data_helper.load_assets(Rails.root.join('spec/fixtures/legacy/final_submission_files/').to_s)
+    # Empty file directories
+    legacy_data_helper.empty_file_directories
     workflow_files = Rails.root.join('tmp/workflow').to_s
     explore_files = Rails.root.join('tmp/explore').to_s
-    expect(Dir.exist?(workflow_files)).to be_falsey
-    expect(Dir.exist?(explore_files)).to be_falsey
     source_path = Rails.root.join('spec/fixtures/legacy').to_s
     Rake::Task["legacy:import:all_files"].invoke(source_path)
     expect(Dir.exist?(workflow_files)).to be_truthy
     expect(Dir.exist?(explore_files)).to be_truthy
-    restricted_institution_file = Rails.root.join('tmp/explore/restricted_institution/03/3/RestrictedInstitutionThesis.pdf').to_s
+    restricted_institution_file = Rails.root.join('tmp/explore/restricted_institution/03/3/FinalSubmissionFile_3.pdf').to_s
     format_review_file = Rails.root.join('tmp/workflow/format_review_files/FormatUnderReview.pdf')
-    restricted_file = Rails.root.join('tmp/workflow/restricted/02/2/RestrictedThesis.pdf')
+    restricted_file = Rails.root.join('tmp/workflow/restricted/02/2/FinalSubmissionFile_2.pdf')
+    open_file = Rails.root.join('tmp/explore/open_access/01/1/FinalSubmissionFile_1.pdf')
     expect(File.exist?(restricted_institution_file)).to be_truthy
     expect(File.exist?(format_review_file)).to be_truthy
     expect(File.exist?(restricted_file)).to be_truthy
+    expect(File.exist?(open_file)).to be_truthy
+    expect(File.exist?('tmp/explore/open_access/02/2/anyoldfile.pdf')).to be_falsey
   end
 end

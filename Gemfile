@@ -53,12 +53,11 @@ gem 'rabl-rails'
 # gem 'bootstrap-sass'
 
 # FontAwesome sass integration
-# gem 'font-awesome-rails'
-
-# Easily handle nested forms
-gem 'cocoon'
+gem 'font-awesome-rails'
 
 gem 'devise'
+
+gem 'brakeman'
 
 if ENV['CI']
   gem 'etda_utilities', '0.5.1', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/psu-stewardship/etda_utilities.git"
@@ -86,14 +85,33 @@ gem 'rest-client'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'nokogiri', '>= 1.8.2'
+# Use Capistrano for deployment
+# gem 'capistrano-rails', group: :development
+#
+# # Form builder
+gem 'simple_form'
+
+# File uploads
+gem 'carrierwave'
+
+# Virus scanning for file uploads
+gem 'clam_scan'
+
+# For image resizing
+gem 'mini_magick'
+
+# Easily handle nested forms
+gem 'cocoon'
+
+gem 'cancancan'
+
+gem 'mail_form'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
 
   gem 'bundler-audit'
-  gem 'simplecov'
 
   gem 'rspec-rails'
   gem 'rubocop'
@@ -104,6 +122,8 @@ group :development, :test do
   gem 'capybara-email'
 
   gem 'factory_bot_rails'
+
+  gem 'simplecov', require: false
 end
 
 group :development do

@@ -1,0 +1,4 @@
+<div class="col-xs-12 review-group odd">
+  <h2 class="h4">Defense Date</h2>
+  <p><%= @submission.defended_at.present? ? @submission.defended_at.strftime(LionPath::LpFormats::DEFENSE_DATE_FORMAT) : 'Unknown' %></p>
+</div>

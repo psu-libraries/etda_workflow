@@ -1,0 +1,63 @@
+ <div class="row">
+  <div class="col-xs-12">
+    <h1>Upload Final Submission Files</h1>
+  </div>
+</div>
+<div class="col-xs-12">
+
+<%= render partial: 'shared/error_messages', locals: { object: @submission } %>
+
+<%= render partial: 'confirm_dialog' %>
+
+<%= simple_form_for [:author, @submission], url: author_submission_update_final_submission_path do |f| %>
+      <% if @submission.final_submission_notes.present? %>
+        <div id="final-submission-notes" class="row">
+          <div class="col-xs-12">
+            <label>Final Submission notes from the administrator</label>
+            <div class="alert alert-<%= @submission.beyond_waiting_for_final_submission_response? ? 'info' : 'warning'  %>">
+              <p><%= @submission.final_submission_notes %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <%= render partial: 'title_and_checkbox', locals: {f: f} %>
+      <%= render partial: 'semester_year', locals: {f: f}  %>
+      <%= render partial: @view.defended_at_date_partial, locals: {f: f} if current_partner.graduate? %>
+
+      <%= f.input :abstract, as: :text, required: true, label: 'Abstract' %>
+
+      <div aria-live="polite" tabindex=0 aria-relevant="all" >
+      <%= f.input :delimited_keywords, as: :string, label: 'Keywords', wrapper: :hint_top, hint: Keyword.hint, required: true, input_html: { class: 'tagit' } %>
+      </div>
+
+      <%= render partial: @view.author_access_level_view, locals: {f: f}  %>
+
+      <div id="final-submission-file-fields">
+        <%= render partial: 'author/submissions/file_label' %>
+        <%= f.simple_fields_for :final_submission_files do |final_submission_file| %>
+            <%= render 'file_fields', file_fields: final_submission_file %>
+        <% end %>
+      </div>
+
+      <div class="links cocoon-links">
+
+
+        <%= link_to_add_association f, :final_submission_files,
+                                       class: 'btn btn-info btn-sm',
+                                       data: { association_insertion_node: '#final-submission-file-fields', association_insertion_method: 'append' },
+                                       form_name: 'file_fields',
+                                       partial: 'file_fields' do %>
+          <span class="glyphicon glyphicon-plus"></span> Additional File
+        <% end %>
+      </div>
+
+      <%= render 'copyright_statement' %>
+      <%= f.input :has_agreed_to_terms, label: 'I agree', as: :boolean, wrapper: :vertical_boolean, required: true %>
+
+      <div class="form-group actions">
+        <%= f.button :submit, class: "btn-primary", value: "Submit final files for review" %>
+        <%= link_to "Cancel", author_root_path %>
+      </div>
+  <% end %>
+</div>

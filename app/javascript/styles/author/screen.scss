@@ -1,6 +1,7 @@
-@import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins.scss';
-@import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
-@import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_type.scss';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/mixins';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/_type';
+
 @import "../base/_base.scss";
 
 #submissions {

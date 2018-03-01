@@ -4,6 +4,7 @@ require 'model_spec_helper'
 
 RSpec.describe Submission, type: :model do
   submission = described_class.new(access_level: AccessLevel.OPEN_ACCESS.current_access_level)
+  submission.author_edit = true
 
   it { is_expected.to have_db_column(:author_id).of_type(:integer) }
   it { is_expected.to have_db_column(:program_id).of_type(:integer) }
@@ -60,8 +61,8 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to validate_presence_of :title }
   it { is_expected.to validate_presence_of :program_id }
   it { is_expected.to validate_presence_of :degree_id }
-  it { is_expected.to validate_presence_of :semester }
-  it { is_expected.to validate_presence_of :year }
+  # it { is_expected.to validate_presence_of :semester  }
+  # it { is_expected.to validate_presence_of :year  }
   # it { is_expected.to validate_uniqueness_of :public_id }
   it { is_expected.not_to validate_presence_of :restricted_notes }
 
@@ -76,7 +77,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_many :invention_disclosures }
 
   it { is_expected.to validate_inclusion_of(:semester).in_array(Semester::SEMESTERS) }
-  # it { is_expected.to validate_inclusion_of(:access_level).in_array(AccessLevel::ACCESS_LEVEL_KEYS) }
+  it { is_expected.to validate_inclusion_of(:access_level).in_array(AccessLevel::ACCESS_LEVEL_KEYS) }
 
   it { is_expected.to validate_numericality_of :year }
 
@@ -98,31 +99,54 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to delegate_method(:author_full_name).to(:author).as(:full_name) }
   it { is_expected.to delegate_method(:author_psu_email_address).to(:author).as(:psu_email_address) }
 
-  it 'has an access_level_key' do
-    submission = FactoryBot.create :submission, access_level: 'open_access'
-    expect(submission.access_level_key).to eq('open_access')
-  end
+  describe 'conditional submission validations' do
+    submission = described_class.new(access_level: AccessLevel.OPEN_ACCESS.current_access_level)
+    submission.author_edit = false
 
-  context 'invention disclosure' do
-    it 'rejects an empty disclosure number' do
-      expect(submission.reject_disclosure_number(id: nil, submission_id: nil, id_number: nil, created_at: nil, updated_at: nil)).to be_truthy
+    it 'has an access_level_key' do
+      submission = FactoryBot.create :submission, access_level: 'open_access'
+      expect(submission.access_level_key).to eq('open_access')
     end
-  end
-  context 'using lionpath?' do
-    it 'knows when lion_path integration is being used' do
-      author = Author.new
-      author.inbound_lion_path_record = nil
-      submission = Submission.new(author: author)
-      expect(submission).not_to be_using_lionpath
+
+    it 'validates semester and year when authors are updating' do
+      submission = FactoryBot.create :submission
+      submission.semester = ''
+      submission.year = ''
+      submission.author_edit = true
+      expect(submission).not_to be_valid
+      submission.year = 'abc'
+      expect(submission).not_to be_valid
     end
-  end
-  context 'academic plan' do
-    it 'knows the correct academic plan' do
-      author = FactoryBot.create(:author)
-      inbound_record = FactoryBot.create(:inbound_lion_path_record, author: author)
-      author.inbound_lion_path_record = inbound_record
-      submission = FactoryBot.create(:submission, author: author)
-      expect(submission.academic_plan).not_to be_nil
+
+    it 'does not validate semester and year when admins are updating' do
+      submission = FactoryBot.create :submission
+      submission.year = ''
+      submission.semester = ''
+      submission.author_edit = false
+      expect(submission).to be_valid
+    end
+
+    context 'invention disclosure' do
+      it 'rejects an empty disclosure number' do
+        expect(submission.reject_disclosure_number(id: nil, submission_id: nil, id_number: nil, created_at: nil, updated_at: nil)).to be_truthy
+      end
+    end
+    context 'using lionpath?' do
+      it 'knows when lion_path integration is being used' do
+        author = Author.new
+        author.inbound_lion_path_record = nil
+        submission = Submission.new(author: author)
+        expect(submission).not_to be_using_lionpath
+      end
+    end
+    context 'academic plan' do
+      it 'knows the correct academic plan' do
+        author = FactoryBot.create(:author)
+        inbound_record = FactoryBot.create(:inbound_lion_path_record, author: author)
+        author.inbound_lion_path_record = inbound_record
+        submission = FactoryBot.create(:submission, author: author)
+        expect(submission.academic_plan).not_to be_nil
+      end
     end
   end
 end

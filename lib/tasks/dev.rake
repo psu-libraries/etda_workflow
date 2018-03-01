@@ -15,6 +15,13 @@ if defined?(RSpec)
     end
   end
 
+  desc 'run coverage'
+  task check_coverage: :environment do
+    ENV['PARTNER'] = 'graduate'
+    task test_coverage: [:'legacy:db:test_fixtures:load', :spec]
+    Rake::Task[:test_coverage].invoke
+  end
+
   desc 'run specs'
   task ci: :environment do
     Rake::Task['rubocop'].invoke

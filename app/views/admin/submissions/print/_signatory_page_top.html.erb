@@ -1,0 +1,34 @@
+<h2>Format Review - Submission Information</h2>
+<br/>
+<div>
+<ul>
+  <li class='col-left'><span class='print-label'>Mr / Ms</span><u><%= author.last_name %>, <%= author.first_name %></u></li>
+  <li class='col-right'><span class='print-label'>Date</span><u><%= submission.format_review_files_uploaded_at.strftime('%B %-e, %Y') unless submission.format_review_files_uploaded_at.nil? %></u></li>
+</ul>
+<ul>
+  <li class='col-left'><span class='print-label'>Student ID</span><u><%= author.psu_id_number(author.access_id) %></u></li>
+  <li class='col-right'><span class='print-label'>Phone</span><u><%= author.phone_number %></u></li>
+</ul>
+<ul>
+  <li class='col-left'><span class='print-label'>E-Mail</span><u><%= author.psu_email_address %></u></li>
+  <li class='col-right'><span class='print-label'>Alt Email</span><u><%= author.alternate_email_address %></u></li>
+</ul>
+<ul>
+  <li class='col-left'><span class='print-label'>Address</span><u><%= @view.address_line1 %></u></li>
+  <li class='col-right'><br /></li>
+</ul>
+<ul>
+  <li class='col-left'><u><%= @view.address_line2 %></u></li>
+</ul>
+<ul>
+  <li class='col-left'><span class='print-label'>Semester intending to graduate</span><u><%= submission.semester %>
+    - <%= submission.year %></u></li>
+</ul>
+<ul>
+  <li class='col-left'><span class='print-label'>Degree</span><u><%= submission.degree_name %></u></li>
+  <li class='col-right'><span class='print-label'>Major</span><u><%= submission.program_name %></u></li>
+</ul>
+<ul>
+  <li class='col-left'><span class='print-label'>Advisor</span><u><%= CommitteeMember.advisor_name(submission) %></u></li>
+</ul>
+</div>

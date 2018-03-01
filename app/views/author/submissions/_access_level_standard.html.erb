@@ -1,0 +1,15 @@
+<fieldset>
+  <legend>Document Availability</legend>
+    <div class="author">
+      <%= f.input :access_level,
+                  as: :radio_buttons,
+                  label: "Access Level",
+                  required: true,
+                  collection: AccessLevel.paper_access_levels.map{ |k| ["<strong>#{k[:label]}</strong> -- #{k[:description]}".html_safe,
+                  k[:type], { class: "#{k[:type]}" }] },
+                  wrapper: :vertical_radio_and_checkboxes %>
+    </div>
+</fieldset>
+<%= render partial: 'invention_disclosure_information', locals: {f: f} %>
+
+

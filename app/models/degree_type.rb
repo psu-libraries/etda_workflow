@@ -42,13 +42,13 @@ class DegreeType < ApplicationRecord
 
   delegate :to_sym, to: :slug
 
-  # def required_committee_roles
-  #   required_roles = []
-  #   committee_roles.select(&:is_active).each do |cr|
-  #     cr.num_required.times do
-  #       required_roles << cr
-  #     end
-  #   end
-  #   required_roles
-  # end
+  def required_committee_roles
+    required_roles = []
+    committee_roles.select(&:is_active).each do |cr|
+      cr.num_required.times do
+        required_roles << cr
+      end
+    end
+    required_roles
+  end
 end
