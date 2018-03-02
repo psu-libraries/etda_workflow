@@ -6,7 +6,6 @@
 //require('jquery-ui/ui/widgets/autocomplete');
 //require('jquery-ui/ui/widgets/tooltip');
 //require('jquery-ui/ui/widgets/spinner');
-
 @import '../../../../vendor/assets/stylesheets/jquery.tagit.css';
 
 // Base Color Palette
@@ -523,4 +522,13 @@ form.search-query-form .input-group {
 
 .flash_messages {
   padding-top: 1em;
+}
+
+
+ul.ui-menu.ui-widget.ui-autocomplete{
+  z-index: 2;
+  background-color: white;
+  list-style-type: none;
+  border: 1px solid #000;
+  width: 5em;
 }

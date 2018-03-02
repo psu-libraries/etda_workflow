@@ -12,7 +12,8 @@ Rails.application.routes.draw do
   get 'files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
   get 'files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
 
-  get 'author/committee_members/autocomplete', to: 'author/committee_members#autocomplete', as: :committee_members_autocomplete
+  ## works: get '/committee_members/autocomplete', to: 'ldap_lookup#autocomplete', as: :committee_members_autocomplete
+  get '/committee_members/autocomplete', to: 'application#autocomplete', as: :committee_members_autocomplete
 
   namespace :admin do
     resources :admins, except: [:index, :show]

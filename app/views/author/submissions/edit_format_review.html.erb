@@ -11,7 +11,7 @@
           <div id="format-review-notes" class="row">
             <div class="col-xs-12">
               <label>Format Review notes from the administrator</label>
-              <div class="alert alert-<%= @submission.beyond_waiting_for_format_review_response? ? 'info' : 'warning'  %>">
+              <div class="alert alert-<%= @submission.status_behavior.beyond_waiting_for_format_review_response? ? 'info' : 'warning'  %>">
                 <p><%= @submission.format_review_notes %></p>
               </div>
             </div>

@@ -49,6 +49,11 @@ class ApplicationController < ActionController::Base
     # redirect_to WebAccess.new.logout_url unless Rails.env.development? || Rails.env.test?
   end
 
+  def autocomplete
+    results = LdapUniversityDirectory.new.autocomplete(params[:term])
+    render json: results
+  end
+
   def current_remote_user
     Devise::Strategies::WebaccessAuthenticatable.new(nil).remote_user(request.headers)
   end

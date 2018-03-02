@@ -43,8 +43,8 @@ RSpec.describe Author::CommitteeMembersController, type: :controller do
     end
   end
   describe '#autocomplete' do
-    it 'autocompletes committee member name using data obtains from LDAP' do
-      expect(get: committee_members_autocomplete_path).to route_to(controller: 'author/committee_members', action: 'autocomplete')
+    it 'autocompletes committee member name using data obtained from LDAP' do
+      expect(get: committee_members_autocomplete_path).to route_to(controller: 'application', action: 'autocomplete')
     end
   end
 end
