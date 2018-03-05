@@ -7,57 +7,61 @@
 var $ = require('jquery');
 window.jQuery = $;
 
+var autocomplete_it, complete_email, initialize_addon_autocomplete, initialize_ldap_autocomplete;
+
 initialize_ldap_autocomplete = function() {
-    const input_fields = $('input.ldap-lookup');
-    if (!input_fields.length) { return; }
+    var input_fields;
+    input_fields = $('input.ldap-lookup');
+    if (!input_fields.length) {
+        return;
+    }
     return autocomplete_it(input_fields);
 };
 
-initialize_addon_autocomplete = () =>
-$('#add_member').on('cocoon:after-insert', function(e, committee_members) {
-    const input_fields=committee_members.find('input.ldap-lookup');
-    if (!input_fields.length) { return; }
-    autocomplete_it(input_fields);
-} );
-
-var autocomplete_it = function(input_fields) {
-    let last_selected_ui = null;
-
-    return input_fields.autocomplete({
-
-        source: '<%= Rails.application.routes.url_helpers.committee_members_autocomplete_path %>',
-
-        minLength: 2,
-
-        // save off the last ui element selected incase the user moves around in the fields before leaving
-        select(event, ui) {
-            return last_selected_ui = ui;
-        },
-        change(event, ui) {
-            return complete_email(ui, last_selected_ui,  this);
-        },
-        create() {
-            return $(this).data('ui-autocomplete')._renderItem = (ul, item) => $('<li>').append( `<span>${item.label}<br>-- ${item.dept}</span>`  ).appendTo(ul);
+initialize_addon_autocomplete = function() {
+    $('#add_member').on('cocoon:after-insert', function(e, committee_members) {
+        var input_fields;
+        input_fields = committee_members.find('input.ldap-lookup');
+        if (!input_fields.length) {
+            return;
         }
-
+        return autocomplete_it(input_fields);
     });
 };
 
-var complete_email = function(ui, last_selected_ui, field_ref) {
-    // the item could be nil if the user moves around in the field,
-    // but if the value is the same as the last selected item do the email
-    // with the last selected value
+autocomplete_it = function(input_fields) {
+    var last_selected_ui;
+    last_selected_ui = null;
+    input_fields.autocomplete({
+        source: '/committee_members/autocomplete',
+        minLength: 2,
+        select: function(event, ui) {
+            return last_selected_ui = ui;
+        },
+        change: function(event, ui) {
+            return complete_email(ui, last_selected_ui, this);
+        },
+        create: function() {
+            $(this).data('ui-autocomplete')._renderItem = function(ul, item) {
+                return $('<li>').append("<span>" + item.label + "<br>-- " + item.dept + "</span>").appendTo(ul);
+            };
+        }
+    });
+};
+
+complete_email = function(ui, last_selected_ui, field_ref) {
+    var email_address;
+    var email_field;
+
     if ((ui.item === null) && (last_selected_ui !== null) && (field_ref.value === last_selected_ui.item.label)) {
         ui = last_selected_ui;
     }
-
     if (ui.item) {
-        const email_address = ui.item.id;
-        // use index of current name field to find the next input field which is the email
-        const email_field = $(':input')[$(field_ref).index(':input') + 1];
+        email_address = ui.item.id;
+        email_field = $(':input')[$(field_ref).index(':input') + 1];
         return email_field.value = email_address;
     }
 };
 
-$(document).on('page:load ready', initialize_addon_autocomplete);
-$(document).on('page:load ready', initialize_ldap_autocomplete);
+$(document).ready(initialize_ldap_autocomplete);
+$(document).ready(initialize_addon_autocomplete);
