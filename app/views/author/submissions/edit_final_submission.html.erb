@@ -14,7 +14,7 @@
         <div id="final-submission-notes" class="row">
           <div class="col-xs-12">
             <label>Final Submission notes from the administrator</label>
-            <div class="alert alert-<%= @submission.beyond_waiting_for_final_submission_response? ? 'info' : 'warning'  %>">
+            <div class="alert alert-<%= @submission.status_behavior.beyond_waiting_for_final_submission_response? ? 'info' : 'warning'  %>">
               <p><%= @submission.final_submission_notes %></p>
             </div>
           </div>

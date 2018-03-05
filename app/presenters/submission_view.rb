@@ -204,7 +204,7 @@ class SubmissionView < SimpleDelegator
     if step_number < 5
       return Rails.application.routes.url_helpers.author_submission_format_review_path(id, anchor: "format-review-notes") unless status_behavior.collecting_format_review_files?
       Rails.application.routes.url_helpers.author_submission_edit_format_review_path(id, anchor: "format-review-notes") else
-                                                                                                                                 return Rails.application.routes.url_helpers.author_submission_final_submission_path(id, anchor: "final-submission-notes") unless collecting_final_submission_files?
+                                                                                                                                 return Rails.application.routes.url_helpers.author_submission_final_submission_path(id, anchor: "final-submission-notes") unless status_behavior.collecting_final_submission_files?
                                                                                                                                  Rails.application.routes.url_helpers.author_submission_edit_final_submission_path(id, anchor: "final-submission-notes")
     end
   end
