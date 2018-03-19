@@ -1,14 +1,33 @@
 # frozen_string_literal: true
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+#require 'spec_helper'
+ENV['RAILS_ENV'] ||= 'test'
+
+if ENV['COVERAGE'] || ENV['TRAVIS']
+  require 'simplecov'
+  SimpleCov.root(File.expand_path('../..', __FILE__))
+  SimpleCov.start('rails') do
+    add_filter '/spec'
+    add_filter '/tasks'
+    add_filter '/channels'
+    add_filter '/jobs'
+    add_filter '/app/models/lion_path/*'
+    # add_filter '/app/models/outbound_lion_path_record.rb'
+    # add_filter '/app/models/ldap_university_directory.rb'
+  end
+  SimpleCov.command_name 'spec'
+end
+
+require File.expand_path('../../config/environment', __FILE__)
+
+# This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 require 'support/database_cleaner'
 require 'capybara/rspec'
 require 'devise'
+require 'cancan/ability'
 
-ENV['RAILS_ENV'] ||= 'test'
-
-require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 
@@ -47,6 +66,8 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   config.before(:each, js: true) do
     Capybara.page.driver.browser.url_blacklist = ['www.google-analytics.com/analytics.js', "www.google-analytics.com"]
+    Capybara.javascript_driver = :poltergeist
+    # Capybara.javascript_driver = :webkit
     DegreeType.seed
     CommitteeRole.seed
   end
@@ -54,7 +75,7 @@ RSpec.configure do |config|
   #   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
-  config.use_transactional_fixtures = false
+  config.use_transactional_fixtures = true
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)

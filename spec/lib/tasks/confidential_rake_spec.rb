@@ -47,10 +47,10 @@ RSpec.describe "Rake::Task['confidential:checker']", type: :task do
       author.confidential_hold = false
       expect(author.confidential_hold).to be_falsey
       expect(Author.where(confidential_hold: true).count).to eq(0)
-      expect(submission.status_behavior.waiting_for_publication_release?).to be_truthy
+      expect(submission.status_behavior).to be_waiting_for_publication_release
       expect { task.invoke }.not_to raise_error
       submission.reload
-      expect(submission.status_behavior.embargoed?).to be_truthy
+      expect(submission.status_behavior).to be_embargoed
     end
     xit "does not change the submission status when status is not 'waiting for publication release'" do
       new_author = FactoryBot.create :author
@@ -58,15 +58,15 @@ RSpec.describe "Rake::Task['confidential:checker']", type: :task do
       new_author.confidential_hold = false
       expect(new_author.confidential_hold).to be_falsey
       expect(Author.where(confidential_hold: true).count).to eq(0)
-      expect(new_submission.status_behavior.waiting_for_publication_release?).to be_falsey
+      expect(new_submission.status_behavior).not_to be_waiting_for_publication_release
       allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
       allow_any_instance_of(ConfidentialHoldUtility).to receive(:new_confidential_status).and_return(true)
       expect { task.invoke }.not_to raise_error
       new_submission.reload
       new_author.reload
       expect(new_author.confidential_hold).to be_truthy
-      expect(new_submission.status_behavior.embargoed?).to be_falsey
-      expect(new_submission.status_behavior.collecting_final_submission_files?).to be_truthy
+      expect(new_submission.status_behavior).not_to be_embargoed
+      expect(new_submission.status_behavior).to be_collecting_final_submission_files
     end
   end
 

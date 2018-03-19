@@ -1,4 +1,4 @@
-class OutboundLionPathRecord < ActiveRecord::Base
+class OutboundLionPathRecord < ApplicationRecord
   serialize :status_data
   validates :status_data, :transaction_id, :submission_id, presence: true
 

@@ -12,6 +12,7 @@ class Admin::SubmissionFormView < SimpleDelegator
   def initialize(submission, session)
     # decorate here
     super(submission)
+    submission.author_edit = false
     @session = session
   end
 

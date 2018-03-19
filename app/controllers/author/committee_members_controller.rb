@@ -1,5 +1,5 @@
 class Author::CommitteeMembersController < AuthorController
-  before_action :find_submission, except: :autocomplete
+  before_action :find_submission
 
   def new
     status_giver.can_provide_new_committee?
@@ -67,11 +67,6 @@ class Author::CommitteeMembersController < AuthorController
       flash[:alert] = 'Unable to refresh committee member information from Lion Path.'
     end
     render :show
-  end
-
-  def autocomplete
-    results = LdapUniversityDirectory.new.autocomplete(params[:term])
-    render json: results
   end
 
   private

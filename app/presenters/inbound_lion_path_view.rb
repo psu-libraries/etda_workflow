@@ -1,4 +1,4 @@
-class LionPathView
+class InboundLionPathView
   attr_reader :model,
               :author
 

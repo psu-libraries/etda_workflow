@@ -4,7 +4,7 @@ require 'model_spec_helper'
 
 RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
   describe 'instance methods' do
-    it "transitions to WaitingForPublication and CollectingFinalSubmissionFiles" do
+    it "transitions to WaitingForPublication, CollectingFinalSubmissionFiles, and CollectingFinalSubmissionFilesRejected" do
       expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease)
       expect(described_class.new).to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFiles)
       expect(described_class.new).to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFilesRejected)
@@ -72,7 +72,7 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
     context 'when submission status WaitingForPublicationRelease' do
       let(:status) { SubmissionStates::WaitingForPublicationRelease.name }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be_truthy }
     end
 
     context 'when submission status ReleasedForPublication' do

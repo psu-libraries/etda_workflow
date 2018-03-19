@@ -1,6 +1,6 @@
 class Admin::SubmissionsDashboardView
   def initialize(degree_type_param)
-    @degree_type = DegreeType.find_by_slug!(degree_type_param)
+    @degree_type = DegreeType.find_by!(slug: degree_type_param)
   end
 
   def title

@@ -2,21 +2,46 @@ inherit_from: .rubocop_todo.yml
 
 require: rubocop-rspec
 
-Rails:
-  Enabled: true
+AllCops:
   Include:
     - '**/Rakefile'
     - '**/config.ru'
   Exclude:
     - 'db/**/*'
+    - 'config/**/*'
     - 'script/**/*'
     - 'vendor/**/*'
     - 'config/deploy/**/*'
-    - 'spec/lib/tasks/*'
     - 'spec/routing/*'
     - 'bin/*'
     - 'node_modules/**/*'
     - 'webpack.config.js'
+    - 'spec/lib/**/*'
+    - 'lib/tasks/**/*'
+    - 'Gemfile*'
+    - 'Capfile'
+    - 'spec/*_helper.rb'
+    - 'lib/devise/**'
+
+Rails:
+  Enabled: true
+#
+#  Include:
+#    - '**/Rakefile'
+#    - '**/config.ru'
+#
+#  Exclude:
+#    - 'db/**/*'
+#    - 'script/**/*'
+#    - 'vendor/**/*'
+#    - 'config/deploy/**/*'
+#    - 'spec/routing/*'
+#    - 'bin/*'
+#    - 'node_modules/**/*'
+#    - 'webpack.config.js'
+#    - 'spec/zlib/tasks/legacy/**'
+#    - 'spec/zlib/tasks/**'
+#    - 'lib/tasks/**/*'
 
 Metrics/LineLength:
   Enabled: true
@@ -46,6 +71,7 @@ Metrics/CyclomaticComplexity:
   - app/presenters/admin/submissions_dashboard_view.rb
   - app/presenters/admin/submissions_index_view.rb
   - app/presenters/admin/submission_form_view.rb
+  - app/models/export_csv.rb
 
 Metrics/PerceivedComplexity:
   Exclude:
@@ -53,12 +79,17 @@ Metrics/PerceivedComplexity:
   - app/presenters/admin/submissions_dashboard_view.rb
   - app/presenters/admin/submissions_index_view.rb
   - app/presenters/admin/submission_form_view.rb
+  - app/models/export_csv.rb
 
 Layout/MultilineBlockLayout:
   Exclude:
 
 Layout/IndentationConsistency:
   EnforcedStyle: rails
+
+
+Naming/VariableName:
+  Exclude:
 
 Style/CollectionMethods:
   PreferredMethods:
@@ -92,9 +123,6 @@ Style/SignalException:
 Style/ClassVars:
   Exclude:
    - 'spec/support/authentication.rb'
-
-Naming/VariableName:
-  Exclude:
 
 Style/GlobalVars:
   Exclude:
@@ -147,6 +175,10 @@ Rails/Output:
     - 'config/qa-grad.rb'
     - 'config/qa-honors.rb'
 
+Rails/SkipsModelValidations:
+  Enabled: false
+  Enabled: false
+
 Rails/TimeZone:
   Enabled: false
 
@@ -159,6 +191,8 @@ RSpec/ExampleWording:
   IgnoredWords:
     - only
 
+Rails/FilePath:
+  Enabled: false
 RSpec/FilePath:
   Enabled: false
 
@@ -173,6 +207,10 @@ RSpec/DescribeClass:
     - 'spec/integration/admin/manage_authors_spec.rb'
     - 'spec/lib/tasks/confidential_rake_spec.rb'
     - 'spec/lib/tasks/legacy/legacy_importer_spec.rb'
+    - 'spec/integration/admin/submissions/unrelease_spec.rb'
+    - 'spec/integration/admin/submissions/*_spec.rb'
+    - 'spec/lib/*.*'
+    - 'spec/integration/**/*'
 
 RSpec/MultipleDescribes:
   Enabled: false
@@ -182,14 +220,17 @@ RSpec/MultipleExpectations:
    - 'spec/lib/tasks/legacy/legacy_importer_spec.rb'
    - 'spec/integration/admin/manage_authors_spec.rb'
 
+
+RSpec/NestedGroups:
+  Enabled: false
+
 RSpec/PredicateMatcher:
   Exclude:
    - 'spec/lib/tasks/legacy/legacy_importer_spec.rb'
    - 'spec/lib/tasks/confidential_rake_spec.rb'
+   - 'spec/models/admin_ability_spec.rb'
+   - 'spec/models/author_ability_spec.rb'
 
-Style/BlockDelimiters:
-  Exclude:
-    - 'config/deploy.rb'
 
 Naming/FileName:
   Exclude:
@@ -209,7 +250,7 @@ Lint/UselessAssignment:
     - 'app/views/admin/**/*.rabl'
     #- 'app/views/admin/degrees/index.json.rabl'
     #- 'app/views/admin/programs/index.json.rabl'
-    - 'lib/tasks/confidential.rake'
+    - 'spec/lib/tasks/confidential.rake'
     - 'spec/models/lion_path/academic_plan_spec.rb'
 
 Style/StderrPuts:
@@ -242,12 +283,33 @@ Style/IfUnlessModifier:
   Exclude:
     - 'app/views/admin/submissions/table_bodies/_format_review_submitted.json.jbuilder'
 
+Style/NestedParenthesizedCalls:
+  Exclude:
+   - 'spec/models/admin_ability_spec.rb'
+   - 'spec/models/author_ability_spec.rb'
+
+
+Style/BlockDelimiters:
+  Exclude:
+   - 'config/deploy.rb'
+
+
 RSpec/AnyInstance:
   Enabled: false
 
 RSpec/LetSetup:
   Enabled: false
 
+Rails/OutputSafety:
+  Enabled: false
 
+Rails/DynamicFindBy:
+  Enabled: false
 
+RSpec/ExpectActual:
+  Exclude:
+    - 'spec/controllers/**/**'
+
+Performance/Casecmp:
+  Enabled: false
 

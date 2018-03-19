@@ -7,6 +7,7 @@ Rails.application.configure do
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs. Don't rely on the data there!
+  #
   config.cache_classes = true
 
   # Do not eager load code on boot. This avoids loading your whole application
@@ -36,12 +37,17 @@ Rails.application.configure do
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
 
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_options = { from: "no-reply@psu.edu", to: "toemail@psu.edu" }
+
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   config.webpacker.check_yarn_integrity = false
+
+  Time.zone = 'UTC' if ENV['TRAVIS']
 
   # Mocks
   LionPathConnection = LionPath::MockLionPathConnection

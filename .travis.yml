@@ -12,6 +12,7 @@ env:
   - JS=true
   - secure: Li4O06xY4zaH0SC2I5ITWX7P5CvcvIvYqHxK6qiQnpD3NbV34+LxKmBZecnvVpSZ6qKMeJ4pMHUMVSKjSthFRmYT1b55MfehsrIzkSg/lnrckf0ty5eWuXepqHFl/NOjbNJ3fLEzz6s5mviTQavWcJu6x2fHpWGK8dBw+43ZrXxer0VQyln3CB1q/1Igv4r74fvw/w4+wEAnUG+n42WvhhI/CGYUX/jW8BnGnpDZNN0oHj6EFy3hBOtrIUct26h/4QZJfxKj+i96Oe+iO/V2/+hYaeTAhLirSSzOFA4o+hoT76lrZbjppHeUWg00i1tj+lVp+eGWJ2Rv94JzbI+Go7nBrk2MDax6x+PZAkFQ+e0t2gwXPiCsV1fQN7cQqoXlumJAs6vI3Qpf+Xq0aQhsq4toKEkcMsNaPNR+1iIUozOO65Ow8zP2lJ7q82Q4IRyXzYVgauJwLT45U6joYcR6IW2b6mcwC19P+/MIE7lfotq1AeF/G9osu5c3Oe/MLoOVQSl9zes1M6JRdp8uP925hbYxkX6xHabQ0efVb8lBPtvH0izYji9qqxE3xHZf9zy4gs8Zw3YMeTGfe5CyuABFMK1YvU0ibi62VAivxbhoFVIN+NHQFrT5f5oqaM+C2OOKcGh0+x4F4/eihuNdikWdSICZCKGHQLVusZcvS/EVSuc=
 before_install:
+- export TZ='Eastern Time (US & Canada)'
 - export PATH=$PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH
 - if [ $(phantomjs --version) != '2.1.1' ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi
 - if [ $(phantomjs --version) != '2.1.1' ]; then wget https://assets.membergetmember.co/software/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2; fi

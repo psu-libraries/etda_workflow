@@ -13,9 +13,9 @@ class LegacyDataHelper
    end
 
    def empty_file_directories
-     workflow_files = Rails.root.join('tmp/workflow').to_s
+     workflow_files = Rails.root.join('tmp/workflow'.to_s)
      FileUtils.rm_rf Dir.glob(workflow_files) if workflow_files.present?
-     explore_files = Rails.root.join('tmp/explore').to_s
+     explore_files = Rails.root.join('tmp/explore'.to_s)
      FileUtils.rm_rf Dir.glob(explore_files) if explore_files.present?
    end
 end

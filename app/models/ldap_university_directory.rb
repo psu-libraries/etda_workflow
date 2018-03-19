@@ -45,7 +45,7 @@ class LdapUniversityDirectory
     ldap_record = directory_lookup('uid', psu_access_id)
     mapped_attributes = LdapResult.new(ldap_record: ldap_record,
                                        attribute_map: attributes_map).map_directory_info
-    return {} if mapped_attributes.nil? || mapped_attributes.empty?
+    return {} if mapped_attributes.blank?
 
     mapped_attributes.first
   end
@@ -61,7 +61,7 @@ class LdapUniversityDirectory
 
   def in_admin_group?(this_access_id)
     result = get_ldap_attribute(this_access_id, 'psmemberof')
-    return false if result.nil? || result.empty?
+    return false if result.blank?
     return true if result.include? "cn=umg/psu.sas.etda-#{current_partner.id}-admins,dc=psu,dc=edu"
     return true if result.include? "cn=umg/psu.dsrd.etda_#{current_partner.id}_admin_users,dc=psu,dc=edu"
     false
@@ -71,7 +71,7 @@ class LdapUniversityDirectory
 
   def get_ldap_attribute(this_access_id, this_attribute)
     attrs = directory_lookup('uid', this_access_id)
-    return '' if attrs.nil? || attrs.empty?
+    return '' if attrs.blank?
     return attrs.first[this_attribute].first unless this_attribute == 'psmemberof'
     attrs.first[this_attribute]
   end

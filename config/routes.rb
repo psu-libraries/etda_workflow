@@ -76,8 +76,8 @@ Rails.application.routes.draw do
     get '/tips', to: 'authors#technical_tips', as: :technical_tips
   end
 
-  post 'contact_form', to: 'contact_form#create', as: :contact_form_index
-  get 'contact_form', to: 'contact_form#new', as: :contact_form_new
+  post 'email_contact_form', to: 'email_contact_form#create', as: :email_contact_form_index
+  get 'email_contact_form', to: 'email_contact_form#new', as: :email_contact_form_new
 
   match "/404", to: 'errors#render_404', via: :all
   match "/500", to: 'errors#render_500', via: :all

@@ -58,12 +58,8 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_index(:public_id).unique(true) }
 
   it { is_expected.to validate_presence_of :author_id }
-  it { is_expected.to validate_presence_of :title }
   it { is_expected.to validate_presence_of :program_id }
   it { is_expected.to validate_presence_of :degree_id }
-  # it { is_expected.to validate_presence_of :semester  }
-  # it { is_expected.to validate_presence_of :year  }
-  # it { is_expected.to validate_uniqueness_of :public_id }
   it { is_expected.not_to validate_presence_of :restricted_notes }
 
   it { is_expected.to belong_to :author }
@@ -108,7 +104,7 @@ RSpec.describe Submission, type: :model do
       expect(submission.access_level_key).to eq('open_access')
     end
 
-    it 'validates semester and year when authors are updating' do
+    it 'validates title, semester and year when authors are updating' do
       submission = FactoryBot.create :submission
       submission.semester = ''
       submission.year = ''
@@ -116,12 +112,19 @@ RSpec.describe Submission, type: :model do
       expect(submission).not_to be_valid
       submission.year = 'abc'
       expect(submission).not_to be_valid
+      submission.title = ''
+      submission.semester = 'Fall'
+      submission.year = '1999'
+      expect(submission).not_to be_valid
+      submission.title = 'title'
+      expect(submission).to be_valid
     end
 
-    it 'does not validate semester and year when admins are updating' do
+    it 'does not validate semester, year, or title when admins are updating' do
       submission = FactoryBot.create :submission
       submission.year = ''
       submission.semester = ''
+      submission.title = ''
       submission.author_edit = false
       expect(submission).to be_valid
     end
@@ -146,6 +149,88 @@ RSpec.describe Submission, type: :model do
         author.inbound_lion_path_record = inbound_record
         submission = FactoryBot.create(:submission, author: author)
         expect(submission.academic_plan).not_to be_nil
+      end
+    end
+    context 'keywords' do
+      it 'has a list of keywords' do
+        submission = Submission.new
+        submission.keywords << Keyword.new(word: 'zero')
+        submission.keywords << Keyword.new(word: 'one')
+        submission.keywords << Keyword.new(word: 'two')
+        expect(submission.delimited_keywords).to eq('zero,one,two')
+        expect(submission.keyword_list).to eq(['zero', 'one', 'two'])
+      end
+    end
+    context '#defended_at_date' do
+      it 'returns defended_at date from student input' do
+        submission = FactoryBot.create :submission, :released_for_publication
+        expect(submission.defended_at).not_to be_blank if current_partner.graduate?
+      end
+    end
+    context '#check_title_capitalization' do
+      it 'allows all caps in the title' do
+        submission = Submission.new(title: 'A TEST')
+        expect(submission.check_title_capitalization).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
+      end
+    end
+    context '#agreement_to_terms' do
+      it 'adds an error if the box is not checked' do
+        submission = FactoryBot.create :submission, :released_for_publication
+        expect(submission.agreement_to_terms).to eq(nil)
+        submission.has_agreed_to_terms = nil
+        expect(submission.agreement_to_terms).to eq(["You must agree to terms"])
+      end
+    end
+    context '#restricted_to_institution?' do
+      it 'returns true' do
+        submission = Submission.new(access_level: 'restricted_to_institution')
+        expect(submission).to be_restricted_to_institution
+        submission.access_level = 'restricted'
+        expect(submission).not_to be_restricted_to_institution
+      end
+    end
+    context '#build_committee_members_for_partners' do
+      it 'returns a list of required committee members' do
+        degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
+        submission = Submission.new(degree: degree)
+        expect(submission.build_committee_members_for_partners).not_to be_blank
+      end
+    end
+    context '#publication_release_date' do
+      it 'returns the release date for open access submissions' do
+        submission = FactoryBot.create :submission, :released_for_publication
+        date_to_release = Time.zone.yesterday
+        expect(submission.publication_release_date(date_to_release)).to eq(date_to_release)
+      end
+      it 'returns release date plus 2 years for submissions not yet published and are not open access' do
+        submission = FactoryBot.create :submission, :waiting_for_publication_release
+        submission.access_level = 'restricted'
+        date_to_release = Time.zone.tomorrow
+        expect(submission.publication_release_date(date_to_release)).to eq(date_to_release + 2.years)
+      end
+    end
+    context 'update timestamps' do
+      it 'updates format review timestamps' do
+        submission = FactoryBot.create :submission, :collecting_format_review_files
+        expect(submission.format_review_files_uploaded_at).to be_nil
+        expect(submission.format_review_files_first_uploaded_at).to be_nil
+        time_now = Time.now
+        # time_now_formatted = time_now.strftime("%Y-%m-%d %H:%M:%S.000000000 -0500")
+        time_now_formatted = formatted_time(time_now)
+        submission.update_format_review_timestamps!(time_now)
+        expect(formatted_time(submission.format_review_files_uploaded_at)).to eq(time_now_formatted)
+        expect(formatted_time(submission.format_review_files_first_uploaded_at)).to eq(time_now_formatted)
+      end
+      it 'updates final submission timestamps' do
+        submission = FactoryBot.create :submission, :collecting_final_submission_files
+        expect(submission.final_submission_files_uploaded_at).to be_nil
+        expect(submission.final_submission_files_first_uploaded_at).to be_nil
+        time_now = Time.now
+        time_now_formatted = formatted_time(time_now)
+        # time_now_formatted = time_now.strftime("%Y-%m-%d %H:%M:%S.000000000 -0500")
+        submission.update_final_submission_timestamps!(time_now)
+        expect(formatted_time(submission.final_submission_files_uploaded_at)).to eq(time_now_formatted)
+        expect(formatted_time(submission.final_submission_files_first_uploaded_at)).to eq(time_now_formatted)
       end
     end
   end

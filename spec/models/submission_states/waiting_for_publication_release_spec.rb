@@ -6,17 +6,16 @@ RSpec.describe SubmissionStates::WaitingForPublicationRelease do
   describe 'instance methods' do
     let(:subject) { described_class.new }
 
-    it "transitions to ReleasedForPublication and CollectingFinalSubmissionFiles" do
+    it "transitions to ReleasedForPublication, ReleasedForPublicationMetadataOnly and WaitingForFinalSubmissionResponse" do
       expect(described_class.new).to be_valid_state_change(SubmissionStates::ReleasedForPublication)
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::ReleasedForPublicationMetadataOnly)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingCommittee)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFiles)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFilesRejected)
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFiles)
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFiles)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFilesRejected)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingProgramInformation)
-      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
-      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFormatReviewResponse)
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::ReleasedForPublicationMetadataOnly)
       expect(described_class.new).not_to be_valid_state_change(described_class)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::Bogus)
     end

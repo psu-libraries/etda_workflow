@@ -15,7 +15,7 @@ class Author::CommitteeFormView
   end
 
   def committee_form_partial
-    return 'standard_committee_form' unless @submission.using_lionpath?
+    return 'standard_committee_form' unless submission.using_lionpath?
     'lionpath_committee_form'
   end
 
@@ -25,12 +25,12 @@ class Author::CommitteeFormView
   end
 
   def update_committee_label
-    return 'Update Committee Members' unless @submission.using_lionpath?
+    return 'Update Committee Members' unless submission.using_lionpath?
     'Refresh Committee'
   end
 
   def new_committee_label
-    return 'Add Committee Members' unless @submission.using_lionpath?
+    return 'Add Committee Members' unless submission.using_lionpath?
     'Verify Committee'
   end
 end

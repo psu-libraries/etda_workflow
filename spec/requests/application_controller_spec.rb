@@ -15,28 +15,28 @@ RSpec.describe 'Devise Login', type: :request do
 
   it 'signs author in and out' do
     headers = { 'REMOTE_USER' => 'saw140', 'REQUEST_URI' => '/author/submissions' }
-    expect(Author.find_by_access_id('saw140')).to be_nil
+    expect(Author.find_by(access_id: 'saw140')).to be_nil
     request.headers.merge! headers
     Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate!
     get root_path
-    expect(Author.find_by_access_id('saw140')).not_to be_nil
+    expect(Author.find_by(access_id: 'saw140')).not_to be_nil
   end
 
   it 'signs admin in and out' do
     headers = { 'REMOTE_USER' => 'xxb13', 'REQUEST_URI' => '/admin/degrees' }
-    expect(Admin.find_by_access_id('xxb13')).to be_nil
+    expect(Admin.find_by(access_id: 'xxb13')).to be_nil
     request.headers.merge! headers
     Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate!
     get root_path
-    expect(Admin.find_by_access_id('xxb13')).not_to be_nil
+    expect(Admin.find_by(access_id: 'xxb13')).not_to be_nil
   end
 
   it 'does not authenticate an admin who is not in ldap admin group' do
     headers = { 'REMOTE_USER' => 'saw140', 'REQUEST_URI' => '/admin/degrees' }
-    expect(Admin.find_by_access_id('saw140')).to be_nil
+    expect(Admin.find_by(access_id: 'saw140')).to be_nil
     request.headers.merge! headers
     Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate! if LdapUniversityDirectory.new.in_admin_group? 'saw140'
-    expect(Admin.find_by_access_id('saw140')).to be_nil
+    expect(Admin.find_by(access_id: 'saw140')).to be_nil
   end
 
   context 'production environment' do

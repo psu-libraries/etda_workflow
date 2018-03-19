@@ -36,9 +36,20 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # #Email should not be active on any development servers
+  # #During certain transactions (approval, release, etc.), emails are sent to the student
+  # #and at times, committee members and the libraries.
+  # #This is why email must not be sent from development servers.
 
+  # Don't care if the mailer can't send.
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_options = { from: "no-reply@psu.edu" }
+
+  # turn email on using value of :email_indicator in secrets file (:test or :smtp).
+  config.action_mailer.delivery_method = Rails.application.secrets[:email_indicator] || :test
+
+  # Change default location for mailer previews
+  config.action_mailer.preview_path = "#{Rails.root}/spec/component/mailers/previews"
   config.action_mailer.perform_caching = false
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }

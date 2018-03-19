@@ -14,7 +14,7 @@ class AdminController < ApplicationController
   protected
 
   def find_or_initialize_admin
-    @admin = Admin.find_or_initialize_by(access_id: current_admin.access_id)
+    @admin ||= Admin.find_or_initialize_by(access_id: current_admin.access_id)
     # Rails.logger.info "current_admin = #{current_admin.inspect}"
   end
 
@@ -26,7 +26,6 @@ class AdminController < ApplicationController
   end
 
   def authenticate_or_redirect
-    # Rails.logger.info "Authenticating Admin: #{current_remote_user}"
     if valid_admin?
       authenticate_admin! unless valid_admin_session?
       authorize! :administer, :all
@@ -37,7 +36,11 @@ class AdminController < ApplicationController
 
   def valid_admin?
     this_admin = current_remote_user
-    user_is_admin = LdapUniversityDirectory.new.in_admin_group?(this_admin)
+    user_is_admin = if current_admin.nil?
+      LdapUniversityDirectory.new.in_admin_group?(this_admin)
+                    else
+      current_admin.administrator?
+                    end
     session[:user_role] = 'admin' if user_is_admin
     user_is_admin
   end

@@ -70,6 +70,20 @@ RSpec.describe Legacy::Importer do
     importer.migrate_keywords
     check_fields(new_database.keyword_columns, legacy_keywords, Keyword)
     expect(Keyword.all.count).to eql(legacy_keywords.count)
+    # committee_members
+    expect(CommitteeMember.all.count).to eq(0)
+    legacy_committee_members = legacy_data.committee_member
+    importer = described_class.new(legacy_committee_members)
+    importer.migrate_committee_members
+    check_fields(new_database.committee_member_columns, legacy_committee_members, CommitteeMember)
+    expect(CommitteeMember.all.count).to eql(legacy_committee_members.count)
+    # invention disclosures
+    expect(InventionDisclosure.all.count).to eq(0)
+    legacy_inventions = legacy_data.invention_disclosure
+    importer = described_class.new(legacy_inventions)
+    importer.migrate_invention_disclosures
+    check_fields(new_database.invention_disclosure_columns, legacy_inventions, InventionDisclosure)
+    expect(InventionDisclosure.all.count).to eql(legacy_inventions.count)
   end
 
   # check if data created in database matches the fixture legacy data

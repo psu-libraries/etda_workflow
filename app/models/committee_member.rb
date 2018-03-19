@@ -8,8 +8,6 @@ class CommitteeMember < ApplicationRecord
             :name,
             :email, presence: true, if: proc { |cm| cm.is_required }
 
-  # :submission_id, :role, :name, :email, :is_required
-
   belongs_to :submission
   belongs_to :committee_role
 

@@ -27,9 +27,9 @@ RSpec.describe CommitteeRole, type: :model do
   describe 'add_lp_role' do
     it 'creates a committee role if it does not already exist' do
       bogus_name = 'bogus committee role name'
-      expect(described_class.find_by(name: bogus_name.to_s)).to be_nil
+      expect(described_class.find_by_name(bogus_name.to_s)).to be_nil
       described_class.add_lp_role(bogus_name.to_s)
-      expect(described_class.find_by(name: bogus_name.to_s)).not_to be_nil
+      expect(described_class.find_by_name(bogus_name.to_s)).not_to be_nil
     end
   end
   describe 'advisor_role' do

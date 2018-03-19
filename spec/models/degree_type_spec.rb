@@ -41,21 +41,22 @@ RSpec.describe DegreeType, type: :model do
     end
   end
 
-  # describe '#required_committee_roles' do
-  #   let(:required_roles) { described_class.default.required_committee_roles }
-  #   let(:degree_type_current) { described_class.default.id }
-  #
-  #   it "returns the proper type and number of committee roles for this degree type" do
-  #     @role_list = []
-  #     CommitteeRole.all.where(degree_type_id: degree_type_current).each do |r|
-  #       r.num_required.times do |_rr|
-  #         @role_list << r
-  #       end
-  #     end
-  #     expect(@role_list).to eq required_roles
-  #     expect(@role_list.count).to eq required_roles.count
-  #   end
-  # end
+  describe '#required_committee_roles' do
+      let(:required_roles) { described_class.default.required_committee_roles }
+      let(:degree_type_current) { described_class.default.id }
+
+      #
+      it "returns the proper type and number of committee roles for this degree type" do
+      @role_list = []
+      CommitteeRole.all.where(degree_type_id: degree_type_current).each do |r|
+        r.num_required.times do |_rr|
+          @role_list << r
+        end
+      end
+      expect(@role_list).to eq required_roles
+      expect(@role_list.count).to eq required_roles.count
+      end
+  end
 
   describe "the DegreeType seed data" do
     context "when partner is graduate" do

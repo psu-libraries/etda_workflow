@@ -14,7 +14,7 @@ module ApplicationHelper
   end
 
   def invention_disclosure_number(submission)
-    return '' unless submission.invention_disclosures.present?
+    return '' if submission.invention_disclosures.blank?
     submission.invention_disclosures.first.id_number
   end
 

@@ -1190,7 +1190,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       before { submission.status = 'waiting for publication release' }
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.collecting_final_submission_files! }.not_to raise_error
+        expect { giver.waiting_for_final_submission_response! }.not_to raise_error
       end
     end
 
@@ -1258,7 +1258,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       before { submission.status = 'waiting for publication release' }
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_for_final_submission_response! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 

@@ -9,7 +9,7 @@ production:
     :lion_path_inbound: false
   milsch:
     :lion_path_outbound: false
-    :lion_path_ibnound: false
+    :lion_path_inbound: false
 
 #  qna_url:  'https://qna.lionpath.psu.edu/PSIGW/RESTListeningConnector/PSFT_HR'
 #  tst_url:  'https://etdeht:XXXXXX@test-ib1.lionpath.psu.edu/PSIGW/RESTListeningConnector/PSFT_HR'
@@ -32,11 +32,11 @@ test:
   :password: password 
   graduate:
     :lion_path_outbound: false
-    :lion_path_inbound: false
+    :lion_path_inbound: false 
   honors:
     :lion_path_outbound: false
     :lion_path_inbound: false
   milsch:
     :lion_path_outbound: false
-    :lion_path_inbound: false
+    :lion_path_inbound: false 
 

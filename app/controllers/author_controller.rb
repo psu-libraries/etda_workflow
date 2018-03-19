@@ -6,8 +6,8 @@ class AuthorController < ApplicationController
   Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
   before_action :clear_author
-  before_action :authenticate_author!, unless: :valid_author_session?
   before_action :find_or_initialize_author
+  before_action :authenticate_or_redirect
 
   layout 'author'
 
@@ -17,8 +17,7 @@ class AuthorController < ApplicationController
     @author = Author.find_or_initialize_by(access_id: current_author.access_id)
     # Rails.logger.info "current_author = #{current_author.inspect}"
     # redirect_to author_submissions_path
-    redirect to login_path if @author.nil?
-    @author
+    # redirect to login_path if @author.nil?
   end
 
   def clear_author
@@ -29,7 +28,19 @@ class AuthorController < ApplicationController
     session[:user_role] = 'author'
   end
 
+  def authenticate_or_redirect
+    if current_remote_user.present?
+      authenticate_author! unless valid_author_session?
+    else
+      redirect_to '/401' unless Rails.env.test?
+    end
+  end
+
   def valid_author_session?
     session[:user_role] == 'author'
+  end
+
+  def author_ability
+    @author_ability ||= AuthorAbility.new(current_author, nil, nil)
   end
 end

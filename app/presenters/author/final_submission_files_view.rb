@@ -21,10 +21,10 @@ class Author::FinalSubmissionFilesView
 
   def selected_access_level
     return AccessLevel.OPEN_ACCESS.attributes if @record.access_level.empty?
-    @record.current_access_level[:label]
+    @record.current_access_level.label
   end
 
-  # def psu_only(label)
-  #   label == AccessLevel.RESTRICTED_TO_INSTITUTION.attributes
-  # end
+  def psu_only(label)
+    label == AccessLevel.RESTRICTED_TO_INSTITUTION.attributes
+  end
 end

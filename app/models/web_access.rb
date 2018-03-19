@@ -4,7 +4,7 @@ class WebAccess
   BASE_LOGIN_URL = 'https://webaccess.psu.edu/?factors=dce.psu.edu&cosign-%s&%s'
   BASE_LOGOUT_URL = 'https://webaccess.psu.edu/cgi-bin/logout?%s'
   def initialize(redirect_url_in = '')
-    @redirect_url = redirect_url_in.blank? ? application_url : redirect_url_in
+    @redirect_url = redirect_url_in.presence || application_url
   end
 
   def login_url

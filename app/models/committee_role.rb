@@ -32,7 +32,7 @@ class CommitteeRole < ApplicationRecord
 
   def self.seed
     CommitteeRole::ROLES[current_partner.id].each do |degree_type, roles|
-      dt = DegreeType.find_by_slug(degree_type)
+      dt = DegreeType.find_by(slug: degree_type)
       roles.each do |r|
         dt.committee_roles.find_or_create_by!(name: r[:name]) do |new_committee_role|
           new_committee_role.num_required = r[:num_required]

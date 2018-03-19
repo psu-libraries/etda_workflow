@@ -11,11 +11,15 @@ RSpec.describe Author::SubmissionsController, type: :controller do
   describe '#new' do
     it 'initializes a new submission for an author' do
       expect(get: new_author_submission_path).to route_to(controller: 'author/submissions', action: 'new')
+      # get :new
+      # expect(response).to redirect_to('')
     end
   end
   describe '#create' do
     it 'creates a new submission for an author' do
+      # submission = FactoryBot.create :submission, :collecting_committee
       expect(post: author_submissions_path).to route_to(controller: 'author/submissions', action: 'create')
+      # get :post, params: { submission:  submission.attributes }
     end
   end
   describe '#edit' do

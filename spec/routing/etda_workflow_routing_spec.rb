@@ -39,9 +39,9 @@ RSpec.describe ActionDispatch::Routing do
       expect(get: '/401').to route_to(controller: 'errors', action: 'render_401')
     end
 
-    it 'routes contact_form' do
-      expect(get: '/contact_form').to route_to(controller: 'contact_form', action: 'new')
-      expect(post: '/contact_form').to route_to(controller: 'contact_form', action: 'create')
+    it 'routes email_contact_form' do
+      expect(get: '/email_contact_form').to route_to(controller: 'email_contact_form', action: 'new')
+      expect(post: '/email_contact_form').to route_to(controller: 'email_contact_form', action: 'create')
     end
   end
 end

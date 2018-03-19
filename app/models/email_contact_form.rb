@@ -1,4 +1,4 @@
-class ContactForm < MailForm::Base
+class EmailContactForm < MailForm::Base
   attribute :full_name,      validate: true
   attribute :email,          validate: /\A([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})\z/i
   attribute :desc,           validate: true
@@ -9,7 +9,7 @@ class ContactForm < MailForm::Base
   # in ActionMailer accepts.
   def headers
     {
-      from:    Etda::Application.config.action_mailer.default_options[:from],
+      from:    EtdaWorkflow::Application.config.action_mailer.default_options[:from],
       to:      current_partner.email_address.to_s,
       subject: "#{current_partner.slug} Contact Form"
     }

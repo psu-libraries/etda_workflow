@@ -43,7 +43,7 @@ class SubmissionDecorator < Decorator
   def indicator_labels
     indicators = []
 
-    indicators << '<span class="label label-warning">Rejected</span>' if (status_behavior.collecting_format_review_files? && status_behavior.collecting_format_review_files_rejected?) || (status_behavior.collecting_final_submission_files? && status_behavior.collecting_final_submission_files_rejected?)
+    indicators << '<span class="label label-warning">Rejected</span>' if status_behavior.format_review_rejected? || status_behavior.final_submission_rejected?
 
     indicators.any? ? (indicators.join(' ') + ' ').html_safe : ''
   end
@@ -51,6 +51,6 @@ class SubmissionDecorator < Decorator
   private
 
   def format_date(date)
-    date.try(:strftime, '%Y-%m-%e')
+    date.try(:strftime, '%Y-%m-%d')
   end
 end

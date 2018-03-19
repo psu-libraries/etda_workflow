@@ -47,7 +47,7 @@ class Author < ApplicationRecord
 
   def full_name
     return access_id if first_name.nil? || last_name.nil?
-    return first_name + ' ' + last_name unless middle_name.present?
+    return first_name + ' ' + last_name if middle_name.blank?
     first_name + ' ' + middle_name + ' ' + last_name
   end
 
@@ -88,7 +88,7 @@ class Author < ApplicationRecord
 
   def update_missing_attributes
     update_confidential_status(access_id)
-    return unless psu_idn.blank?
+    return if psu_idn.present?
     ldap_psu_idn = LdapUniversityDirectory.new.get_psu_id_number(access_id)
     update_attribute :psu_idn, ldap_psu_idn
     self
@@ -116,7 +116,7 @@ class Author < ApplicationRecord
   private
 
     def ldap_results_valid?(results)
-      if results.nil? || results.empty?
+      if results.blank?
         Rails.logger.info("No LDAP information returned for #{access_id}")
         false
       else

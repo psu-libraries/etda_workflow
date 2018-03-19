@@ -15,7 +15,9 @@ class LegacyLoadHelper
       submission_data: load_file('submissions.yml'),
       format_review_file_data: load_file('format_review_files.yml'),
       final_submission_file_data: load_file('final_submission_files.yml'),
-      keyword_data: load_file('keywords.yml')
+      keyword_data: load_file('keywords.yml'),
+      committee_member_data: load_file('committee_members.yml'),
+      invention_data: load_file('invention_disclosures.yml')
     ]
   end
 
@@ -53,6 +55,14 @@ class LegacyLoadHelper
 
   def keyword
     @data[:keyword_data]
+  end
+
+  def committee_member
+    @data[:committee_member_data]
+  end
+
+  def invention_disclosure
+    @data[:invention_data]
   end
 
   def load_file(filename)

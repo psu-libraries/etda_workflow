@@ -3,6 +3,7 @@ class LionPath::Crosswalk
   LP_ACCESS = { open_access: 'OPEN', restricted_to_institution: 'RPSU', restricted: 'RSTR' }.freeze
 
   def self.convert_to_datetime(date_in)
+    return '' if date_in.blank?
     date_time = date_in
     Date.strptime(date_time, LionPath::LpFormats::DEFENSE_DATE_FORMAT).to_time
   rescue ArgumentError
@@ -23,7 +24,7 @@ class LionPath::Crosswalk
   end
 
   def self.etd_to_lp_access(access_level)
-    return 'OPEN' unless access_level.present?
+    return 'OPEN' if access_level.blank?
     LP_ACCESS[access_level.to_sym] || 'OPEN'
   end
 

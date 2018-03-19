@@ -74,19 +74,19 @@ RSpec.describe Author::FinalSubmissionFilesView do
         submission.access_level = ""
         expect(view.selected_access_level).to eq('Open Access')
         submission.access_level = 'open_access'
-        expect(view.selected_access_level).to eq(submission.current_access_level[:label])
+        expect(view.selected_access_level).to eq(submission.current_access_level.label)
       end
     end
     context 'restricted_to_institution' do
       it 'returns restricted_to_institution label' do
         submission.access_level = 'restricted_to_institution'
-        expect(view.selected_access_level).to eq(submission.current_access_level[:label])
+        expect(view.selected_access_level).to eq(submission.current_access_level.label)
       end
     end
     context 'restricted' do
       it 'returns restricted label' do
         submission.access_level = 'restricted'
-        expect(view.selected_access_level).to eq(submission.current_access_level[:label])
+        expect(view.selected_access_level).to eq(submission.current_access_level.label)
       end
     end
   end

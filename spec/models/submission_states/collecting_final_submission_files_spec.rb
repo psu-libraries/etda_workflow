@@ -60,7 +60,7 @@ RSpec.describe SubmissionStates::CollectingFinalSubmissionFiles do
     context 'when submission status WaitingForPublicationRelease' do
       let(:status) { SubmissionStates::WaitingForPublicationRelease.name }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status ReleasedForPublication' do

@@ -25,7 +25,7 @@ RSpec.describe ApplicationController, type: :controller do
       end
     end
   end
-  describe 'part2' do
+  describe 'login methods' do
     describe '#destroy' do
       it 'redirects to the central logout page and destroy the cookie' do
         expect(get: '/logout').to route_to(controller: 'application', action: 'logout')
@@ -37,4 +37,31 @@ RSpec.describe ApplicationController, type: :controller do
       end
     end
   end
+  describe '#autocomplete' do
+    it 'returns an array of employee names to use in committee member form' do
+      expect(get: '/committee_members/autocomplete?term=Smith').to route_to(controller: 'application', action: 'autocomplete', term: 'Smith')
+    end
+  end
+  describe '#render_404' do
+    it 'displays a 404 error' do
+      expect(get: '/404').to route_to(controller: 'errors', action: 'render_404')
+    end
+  end
+  describe '#render_500' do
+    it 'displays a 500 error' do
+      expect(get: '/500').to route_to(controller: 'errors', action: 'render_500')
+    end
+  end
+  describe '#render_401' do
+    it 'displays a 401 error' do
+      expect(get: '/401').to route_to(controller: 'errors', action: 'render_401')
+    end
+  end
+
+  # describe 'rescue errors' do
+  #   it 'responds to errors' do
+  #     allow(Rails.env).to receive(:production?).and_return(true)
+  #     expect{ raise ActionController::RoutingError }.to raise_error
+  #   end
+  # end
 end

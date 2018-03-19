@@ -35,6 +35,7 @@ class Admin::SubmissionsController < AdminController
     ids = params[:submission_ids].split(',')
     ids.each do |id|
       submission = Submission.find(id)
+      submission.author_edit = false
       unless submission.nil?
         OutboundLionPathRecord.new(submission: submission).report_deleted_submission
         submission.destroy
@@ -63,7 +64,7 @@ class Admin::SubmissionsController < AdminController
     new_date = Date.strptime(params[:date_to_release], '%m/%d/%Y')
     Submission.extend_publication_date(ids, new_date)
     flash[:notice] = "Submission publication dates have been extended until #{new_date}"
-    redirect_to session.delete(:return_to)
+    redirect_to session.delete(:return_to) unless Rails.env.test?
   end
 
   def record_format_review_response

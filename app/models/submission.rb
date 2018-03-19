@@ -40,11 +40,10 @@ class Submission < ApplicationRecord
   attr_accessor :author_edit
 
   validates :author_id,
-            :title,
-            :program_id,
-            presence: true
+            :program_id, presence: true
 
-  validates :semester,
+  validates :title,
+            :semester,
             :year,
             presence: true, if: proc { |s| s.author_edit } # !InboundLionPathRecord.active? }
 
@@ -184,6 +183,14 @@ class Submission < ApplicationRecord
     academic_plan.defense_date
   end
 
+  def committee_email_list
+    list = []
+    committee_members.each do |cm|
+      list << cm.email
+    end
+    list
+  end
+
   def keyword_list
     list = []
     keywords.each do |k|
@@ -214,37 +221,64 @@ class Submission < ApplicationRecord
   end
 
   def current_access_level
-    AccessLevel.paper_access_levels[access_level.to_i]
+    AccessLevel.new(access_level)
   end
 
   def format_review_rejected?
-    status_behavior.collecting_format_review_files? && format_review_rejected_at.present?
+    status_behavior.collecting_format_review_files_rejected?
+    # status_behavior.collecting_format_review_files? && format_review_rejected_at.present?
   end
 
   def final_submission_rejected?
-    status_behavior.collecting_final_submission_files? && final_submission_rejected_at.present?
+    status_behavior.collecting_final_submission_files_rejected?
+    # status_behavior.collecting_final_submission_files? && final_submission_rejected_at.present?
   end
 
-  def open_access?
-    access_level.open_access?
+  delegate :open_access?, to: :access_level
+
+  delegate :restricted?, to: :access_level
+
+  delegate :restricted_to_institution?, to: :access_level
+
+  def publication_release_access_level
+    return 'open_access' if status_behavior.released_for_publication? # full release of submission that was held for 2 years
+    access_level # keep access_level for restricted & PSU-only starting hold or open_access
   end
 
-  def restricted?
-    access_level.restricted?
-  end
-
-  def restricted_to_institution?
-    access_level.restricted_to_institution?
+  def publication_release_date(date_to_release)
+    # determine the date use for released_publication_at
+    # restricted submissions will be held for 2 years then released.  For 2 yr. restriction do this:
+    #   metadata_released_at = date_to_release
+    #   released_for_publication_at = date_to_release + 2 years
+    # release restricted after 2-year-hold (time period may be longer)
+    #   released_fo_publication_at = date_to_release
+    return date_to_release if open_access?
+    return date_to_release if status_behavior.released_for_publication?
+    two_years_later = date_to_release.to_date + 2.years
+    two_years_later
   end
 
   def update_format_review_timestamps!(time)
     update_attribute(:format_review_files_uploaded_at, time)
-    update_attribute(:format_review_files_first_uploaded_at, time) unless format_review_files_first_uploaded_at.present?
+    update_attribute(:format_review_files_first_uploaded_at, time) if format_review_files_first_uploaded_at.blank?
   end
 
   def update_final_submission_timestamps!(time)
     update_attribute(:final_submission_files_uploaded_at, time)
-    update_attribute(:final_submission_files_first_uploaded_at, time) unless final_submission_files_first_uploaded_at.present?
+    update_attribute(:final_submission_files_first_uploaded_at, time) if final_submission_files_first_uploaded_at.blank?
+  end
+
+  def self.release_for_publication(submission_ids, date_to_release)
+    Submission.transaction do
+      SubmissionReleaseService.new.publish(submission_ids, date_to_release)
+    end
+  end
+
+  def self.extend_publication_date(submission_ids, date_to_release)
+    where(id: submission_ids).update_all(released_for_publication_at: date_to_release)
+    submission_ids.each do |s_id|
+      OutboundLionPathRecord.new(submission: Submission.find(s_id)).report_status_change
+    end
   end
 
   # Initialize our committee members with empty records for each of the required roles.

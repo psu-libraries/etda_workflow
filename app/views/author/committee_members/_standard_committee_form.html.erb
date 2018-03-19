@@ -21,11 +21,12 @@
 
         </div>
       <% end %>
+    </div>
       <div class="col-xs-12 col-sm-6 col-md-8">
         <%= submission_form.button :submit, class: "btn-primary", value: "Save and Continue Editing" %>
         <%= submission_form.button :submit, class: "btn-primary btn-success", value: "Save and Return to Dashboard" %>
-        <%= link_to "Cancel", author_root_path %>
+        <%= link_to "Cancel", author_root_path, class: 'committee-cancel'%>
       </div>
 
-     </div>
+
   <% end %>

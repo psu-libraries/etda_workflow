@@ -11,7 +11,6 @@ module Cocoon
           copy_file "../../../../../app/assets/javascripts/cocoon.js", "public/javascripts/cocoon.js"
         end
       end
-
     end
   end
 end

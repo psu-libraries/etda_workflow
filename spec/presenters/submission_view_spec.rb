@@ -36,9 +36,9 @@ RSpec.describe SubmissionView do
       end
     end
     context 'when the submission is beyond step three' do
-      before { allow(submission.status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(true) }
       it "returns an empty string" do
-        expect(view.delete_link).to eq ''
+        submission.status = 'collecting final submission files'
+        expect(view.delete_link).to eq('')
       end
     end
     context 'when step three is the current step after my format review is rejected' do
@@ -75,8 +75,8 @@ RSpec.describe SubmissionView do
       end
     end
     context "when the submission is beyond step three" do
-      before { allow(submission.status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(true) }
       it "returns a link to review step two" do
+        submission.status = 'collecting final submission files'
         expect(view.step_one_description).to eq "Provide program information <a href='#{author_submission_program_information_path(submission)}' class='medium'>[review <span class='sr-only'>program information for submission '#{submission.title}'</span>]</a>"
       end
     end
@@ -91,8 +91,8 @@ RSpec.describe SubmissionView do
         end
       end
       context 'when the submission has a committee' do
-        before { allow(submission.status_behavior).to receive(:beyond_collecting_committee?).and_return(true) }
         it 'returns "complete"' do
+          submission.status = 'waiting for format review response'
           expect(view.step_two_class).to eq 'complete'
         end
       end
@@ -126,8 +126,8 @@ RSpec.describe SubmissionView do
         end
       end
       context "when the submission is beyond step three" do
-        before { allow(submission.status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(true) }
         it "returns a link to review step two" do
+          submission.status = 'waiting for format review response'
           expect(view.step_two_description).to eq view.step_two_name + "<a href='#{author_submission_committee_members_path(submission)}' class='medium'>[review <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
         end
       end
@@ -142,7 +142,7 @@ RSpec.describe SubmissionView do
       end
       context 'when the submission has a committee' do
         before do
-          allow(submission.status_behavior).to receive(:beyond_collecting_committee?).and_return(true)
+          submission.status = 'collecting format review files'
           submission.committee_provided_at = Time.zone.local(2014, 7, 4)
         end
         it 'returns completed' do
@@ -167,8 +167,8 @@ RSpec.describe SubmissionView do
         end
       end
       context "when step three has been completed" do
-        before { allow(submission.status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(true) }
         it "returns 'complete'" do
+          submission.status = 'waiting for format review response'
           expect(view.step_three_class).to eq 'complete'
         end
       end
@@ -201,8 +201,8 @@ RSpec.describe SubmissionView do
         end
       end
       context "when the submission is beyond step three" do
-        before { allow(submission.status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(true) }
         it "returns a link to review the files" do
+          submission.status = 'waiting for format review response'
           expect(view.step_three_description).to eq "Upload Format Review files <a href='/author/submissions/#{submission.id}/format_review' class='medium'>[review <span class='sr-only'>format review files for submission '#{submission.title}' </span>]</a>"
         end
       end
@@ -217,7 +217,7 @@ RSpec.describe SubmissionView do
       end
       context 'when step three has been completed' do
         before do
-          allow(submission.status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(true)
+          submission.status = 'waiting for format review response'
           submission.format_review_files_uploaded_at = Time.zone.local(2014, 7, 4)
         end
         it 'returns completed' do
@@ -252,8 +252,8 @@ RSpec.describe SubmissionView do
         end
       end
       context "when the submission's Format Review files have been approved" do
-        before { allow(submission.status_behavior).to receive(:beyond_waiting_for_format_review_response?).and_return(true) }
         it "returns 'complete'" do
+          submission.status = 'collecting final submission files'
           expect(view.step_four_class).to eq 'complete'
         end
       end
@@ -274,7 +274,7 @@ RSpec.describe SubmissionView do
       end
       context "when the submission's Format Review files have been approved" do
         before do
-          allow(submission.status_behavior).to receive(:beyond_waiting_for_format_review_response?).and_return(true)
+          submission.status = 'collecting final submission files'
           submission.format_review_approved_at = Time.zone.local(2014, 7, 4)
         end
         it 'returns approved' do
@@ -287,10 +287,8 @@ RSpec.describe SubmissionView do
   describe 'step five: Upload Final Submission files' do
     describe '#step_five_class' do
       context "when the submission is before step five" do
-        before do 
-          expect(submission.status_behavior.to receive(:beyond_waiting_for_format_review_response?).and_return(false))
-          end
         it "returns an empty string" do
+          submission.status = 'waiting for format review response'
           expect(view.step_five_class).to eq ''
         end
       end
@@ -301,8 +299,8 @@ RSpec.describe SubmissionView do
         end
       end
       context "when step five has been completed" do
-        before { allow(submission.status_behavior).to receive(:beyond_collecting_final_submission_files?).and_return(true) }
         it "returns 'complete'" do
+          submission.status = 'waiting for final submission response'
           expect(view.step_five_class).to eq 'complete'
         end
       end
@@ -310,8 +308,8 @@ RSpec.describe SubmissionView do
 
     describe '#step_five_description' do
       context "when the submission is before step five" do
-        before { allow(submission.status_behavior).to receive(:beyond_waiting_for_format_review_response?).and_return(false) }
         it "returns the step five label" do
+          submission.status = 'waiting for format review response'
           expect(view.step_five_description).to eq 'Upload Final Submission files'
         end
       end
@@ -334,8 +332,8 @@ RSpec.describe SubmissionView do
         end
       end
       context "when the submission is beyond step five" do
-        before { allow(submission.status_behavior).to receive(:beyond_collecting_final_submission_files?).and_return(true) }
         it "returns a link to review the files" do
+          submission.status = 'waiting for final submission response'
           expect(view.step_five_description).to eq "Upload Final Submission files <a href='/author/submissions/#{submission.id}/final_submission' class='medium'>[review <span class='sr-only'>final submission files for submission '#{submission.title}'</span>]</a>"
         end
       end
@@ -343,17 +341,17 @@ RSpec.describe SubmissionView do
 
     describe '#step_five_status' do
       context "when the submission is before step five" do
-        before { allow(submission.status_behavior).to receive(:beyond_waiting_for_format_review_response?).and_return(false) }
         it 'returns an empty string' do
+          submission.status = 'collecting final submission files'
           expect(view.step_five_status).to eq({})
         end
       end
       context 'when step five has been completed' do
         before do
-          allow(submission.status_behavior).to receive(:beyond_collecting_final_submission_files?).and_return(true)
           submission.final_submission_files_uploaded_at = Time.zone.local(2014, 7, 4)
         end
         it 'returns completed' do
+          submission.status = 'waiting for final submission response'
           expect(view.step_five_status).to eq(partial_name: '/author/shared/completed_indicator', text: "completed on July 4, 2014")
         end
       end
@@ -386,6 +384,7 @@ RSpec.describe SubmissionView do
       context "when step six has been completed" do
         before { allow(submission.status_behavior).to receive(:beyond_waiting_for_final_submission_response?).and_return(true) }
         it "returns 'complete'" do
+          submission.status = 'waiting for publication release'
           expect(view.step_six_class).to eq 'complete'
         end
       end
@@ -406,10 +405,10 @@ RSpec.describe SubmissionView do
       end
       context "when the submission's Final Submission files have been approved" do
         before do
-          allow(submission.status_behavior).to receive(:beyond_waiting_for_final_submission_response?).and_return(true)
           submission.final_submission_approved_at = Time.zone.local(2014, 7, 4)
         end
         it 'returns approved' do
+          submission.status = 'waiting for publication release'
           expect(view.step_six_status).to eq(partial_name: '/author/shared/completed_indicator', text: "approved on July 4, 2014")
         end
       end
@@ -462,6 +461,42 @@ RSpec.describe SubmissionView do
           expect(view.step_seven_status).to eq "<div class='step complete final'>#{submission.degree_type.name} Submission is Complete</div>"
         end
       end
+    end
+  end
+  context '#display_format_review_notes?' do
+    it 'does not display if notes are empty' do
+      submission.format_review_notes = nil
+      expect(view.send('display_format_review_notes?', 3)).to be_falsey
+    end
+    it 'displays notes for step 3' do
+      submission.format_review_notes = 'format review note'
+      submission.status = 'collecting format review files rejected'
+      submission.format_review_rejected_at = Time.zone.yesterday
+      expect(view.send('display_format_review_notes?', 3)).to be_truthy
+    end
+    it 'displays notes for step 4 if format review has not been approved' do
+      submission.format_review_approved_at = Time.zone.yesterday
+      submission.format_review_notes = 'format review note'
+      submission.status = 'collecting final submission files'
+      expect(view.send('display_format_review_notes?', 4)).to be_truthy
+    end
+  end
+  context '#display_final_submission_notes?' do
+    it 'does not display if notes are empty' do
+      submission.final_submission_notes = nil
+      expect(view.send('display_final_submission_notes?', 5)).to be_falsey
+    end
+    it 'displays notes for step 5' do
+      submission.final_submission_notes = 'final rnote'
+      submission.status = 'collecting final submission files rejected'
+      submission.final_submission_rejected_at = Time.zone.yesterday
+      expect(view.send('display_final_submission_notes?', 5)).to be_truthy
+    end
+    it 'displays notes for step 6 if final submission has not been approved' do
+      submission.final_submission_approved_at = Time.zone.yesterday
+      submission.final_submission_notes = 'final note'
+      submission.status = 'waiting for publication release'
+      expect(view.send('display_final_submission_notes?', 6)).to be_truthy
     end
   end
 end

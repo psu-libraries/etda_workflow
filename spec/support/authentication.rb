@@ -16,7 +16,7 @@ class StubbedAuthenticationStrategy < ::Devise::Strategies::Base
 
   # We're a fake authentication strategy; we always succeed.
   def authenticate!
-    person = @author.nil? ? @@admin : @@author
+    person = @@author.nil? ? @@admin : @@author
     success! person
   end
 
@@ -55,6 +55,8 @@ module StubbedAuthenticationHelper
   def sign_in_as_author(author)
     # Remove the session cookie for the original_owner
     # to ensure we visit pages that belong to the new_owner
+    #     Capybara.page.driver.browser.remove_cookie '_etdflow_session'
+
     Capybara.page.driver.browser.remove_cookie '_etdflow_session'
     Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_session', path: '/author')
     StubbedAuthenticationStrategy.author = author

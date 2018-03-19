@@ -23,6 +23,7 @@ class ApplicationController < ActionController::Base
     rescue_from ActionDispatch::Cookies::CookieOverflow, with: :render_500
     rescue_from RuntimeError, with: :render_500
     # rescue_from RestClient::Unauthorized, RestClient::Forbidden, with: :render_401
+    rescue_from Author::NotAuthorizedToEdit, with: :render_401
   end
 
   # Prevent CSRF attacks by raising an exception.

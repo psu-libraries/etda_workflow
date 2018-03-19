@@ -45,7 +45,7 @@
 
     <div id="access-level" class="review-group <%= even_odd(@row_count) %>">
       <h2 class="h4">Access level</h2>
-      <p><%= @submission.current_access_level[:label] %></p>
+      <p><%= @submission.current_access_level.label %></p>
     </div>
 
     <div id="final-submission-files" class="review-group <%= even_odd(@row_count) %>">

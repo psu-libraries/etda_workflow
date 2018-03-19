@@ -73,6 +73,8 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
     end
     it 'removes a submission from waiting to be released' do
       submission = FactoryBot.create :submission, :waiting_for_publication_release
+      submission.final_submission_approved_at = Time.zone.now
+      submission.final_submission_rejected_at = Time.zone.yesterday
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
       params[:rejected] = true
@@ -82,8 +84,10 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(result[:msg]).to eql("Submission was removed from waiting to be released")
       expect(result[:redirect_path]).to eql(admin_submissions_release_final_submission_approved_path(submission.degree_type.slug.to_s))
       # ("/admin/#{submission.degree_type.slug}/final_submission_approved")
-      expect(submission.status).to eq('collecting final submission files')
+      expect(submission.status).to eq('waiting for final submission response')
       expect(submission.final_submission_notes).to eq('a final note to you!!!')
+      expect(submission.final_submission_approved_at).to be(nil)
+      expect(submission.final_submission_rejected_at).to be(nil)
     end
   end
   context 'it updates submissions released submission' do

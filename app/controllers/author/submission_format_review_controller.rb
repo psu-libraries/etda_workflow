@@ -24,7 +24,7 @@ class Author::SubmissionFormatReviewController < AuthorController
     flash[:alert] = e.message
     redirect_to author_submission_edit_format_review_path(@submission)
   rescue SubmissionStatusGiver::AccessForbidden
-    redirect_to author_root_path
+    redirect_to author_root_path # , alert: 'You are not allowed to visit that page at this time, please contact your administrator'
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
   rescue SubmissionStatusGiver::InvalidTransition
     redirect_to author_root_path

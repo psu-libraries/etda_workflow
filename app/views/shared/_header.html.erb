@@ -11,7 +11,7 @@
 
 
         <span id="logo-old">
-          <a href="/"><%= I18n.t("#{current_partner.id}.header.title").html_safe %></a>
+          <a href="/"><%= I18n.t("#{current_partner.id}.header.title") %></a>
         </span>
         </div>
       </div>
@@ -31,7 +31,7 @@
               <%#= render partial: 'shared/search_browse_links' %>
               <% unless Author.current.blank? %>
                 <li>
-                    <%= link_to "Contact Us", contact_form_new_path, class: 'btn btn-default' %>
+                    <%= link_to "Contact Us", email_contact_form_new_path, class: 'btn btn-default' %>
                 </li>
               <% end %>
             </ul>

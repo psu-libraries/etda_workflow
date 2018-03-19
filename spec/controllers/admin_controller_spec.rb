@@ -7,7 +7,7 @@ RSpec.describe AdminController, type: :controller do
     allow(@admin_controller).to receive(:valid_admin?).and_return(true)
   end
 
-  describe @admin_controller do
+  describe 'admin_controller' do
     let(:request) { double(headers: { 'HTTP_REMOTE_USER' => 'adminflow', 'REQUEST_URI' => 'admin/index' }) }
 
     it 'returns 200 response' do

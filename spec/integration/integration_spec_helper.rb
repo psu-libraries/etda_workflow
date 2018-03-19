@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'rails_helper'
 require 'support/rails'
 require 'support/fixture'
 require 'support/poltergeist'
@@ -10,8 +11,8 @@ require 'support/database_cleaner'
 # require 'support/mail'
 require 'support/i18n'
 require 'support/capybara'
-# require 'support/committee_factory'
+require 'support/committee_factory'
 # require 'support/basic_auth'
 require 'support/authentication'
 require 'support/ldap_lookup'
-require 'support/capybara_email'
+# require 'support/capybara_email'

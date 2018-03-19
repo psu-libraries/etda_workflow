@@ -8,8 +8,9 @@ class Legacy::FileImporter
 
   def copy_format_review_files(source_file_path)
     # copies entire directory structure
-    path_builder = EtdaFilePath.new
+    path_builder = EtdaFilePaths.new
     source_path = SourcePath.new('format_review_files', source_file_path)
+
     if file_count(path_builder.workflow_upload_format_review_path).positive?
       @import_logger.info "Quitting -- Destination directory (#{path_builder.workflow_upload_format_review_path} is not empty"
       abort('Destination directories must be empty to import files.')
@@ -29,7 +30,7 @@ class Legacy::FileImporter
 
   def copy_final_submission_files(source_file_path)
     # copies each file using access_level and status to determine the correct destination path
-    path_builder = EtdaFilePath.new
+    path_builder = EtdaFilePaths.new
     source_path = SourcePath.new('final_submission_files', source_file_path)
     @original_count = FinalSubmissionFile.all.count
     if destination_files_exist? 'final_submission_files'
@@ -72,7 +73,7 @@ class Legacy::FileImporter
   end
 
   def destination_files_exist?(file_type)
-    path_builder = EtdaFilePath.new
+    path_builder = EtdaFilePaths.new
     return file_count(path_builder.workflow_upload_format_review_path).positive? if file_type == 'format_review_files'
     file_count(path_builder.workflow_upload_final_files_path).positive? || file_count(path_builder.explore_base_path).positive?
     # || file_count(path_builder.explore_base_path).positive?
@@ -99,12 +100,12 @@ class DestinationPath
 
   def full_path
     return file_path_for_published_submissions if @submission.status_behavior.released_for_publication?
-    path_builder = EtdaFilePath.new
+    path_builder = EtdaFilePaths.new
     path_builder.workflow_upload_final_files_path
   end
 
   def file_path_for_published_submissions
-    path_builder = EtdaFilePath.new
+    path_builder = EtdaFilePaths.new
     return path_builder.explore_open if @submission.access_level.open_access?
     return path_builder.explore_psu_only if @submission.access_level.restricted_to_institution?
     path_builder.workflow_restricted

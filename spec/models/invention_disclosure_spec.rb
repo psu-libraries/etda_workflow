@@ -49,6 +49,7 @@ RSpec.describe InventionDisclosure, type: :model do
 
     context 'an invention disclosure number should not be present when submission is not restricted' do
       it 'is invalid' do
+        submission.author_edit = true
         submission.access_level = 'open_access'
         submission.invention_disclosure.id_number = '2016-1234'
         submission.valid?

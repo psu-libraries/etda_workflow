@@ -3,7 +3,7 @@ class Admin::SubmissionsIndexView
   attr_reader :degree_type, :scope
 
   def initialize(degree_type, scope, context)
-    @degree_type = DegreeType.find_by_slug!(degree_type)
+    @degree_type = DegreeType.find_by!(slug: degree_type)
     @scope = scope
     @submissions = Submission.joins(:degree).includes(:author).where('degrees.degree_type_id' => @degree_type.id).send(scope_method).map { |s| SubmissionDecorator.new(s, context) }
   end

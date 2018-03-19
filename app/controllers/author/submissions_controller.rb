@@ -38,6 +38,7 @@ class Author::SubmissionsController < AuthorController
   end
 
   def edit
+    @submission = find_submission
     if InboundLionPathRecord.active? && !@author.academic_plan?
       redirect_to author_root_path
       flash[:error] = "Unable to find Lion Path thesis information for #{@author.first_name} #{@author.last_name}.  Please contact your administrator"
@@ -46,11 +47,12 @@ class Author::SubmissionsController < AuthorController
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_update_program_information?
   rescue SubmissionStatusGiver::AccessForbidden
-    redirect_to author_root_path
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    redirect_to author_root_path
   end
 
   def update
+    @submission = find_submission
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_update_program_information?
     outbound_lionpath_record = OutboundLionPathRecord.new(submission: @submission, original_title: @submission.title, original_alternate_email: @submission.author.alternate_email_address)
@@ -73,6 +75,7 @@ class Author::SubmissionsController < AuthorController
   end
 
   def destroy
+    @submission = find_submission
     @submission.destroy
     flash[:notice] = "Submission deleted successfully."
     redirect_to author_root_path
@@ -82,6 +85,7 @@ class Author::SubmissionsController < AuthorController
   end
 
   def program_information
+    @submission = find_submission
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_review_program_information?
   rescue SubmissionStatusGiver::AccessForbidden
@@ -90,8 +94,9 @@ class Author::SubmissionsController < AuthorController
   end
 
   def edit_final_submission
+    @submission = find_submission
     @view = Author::FinalSubmissionFilesView.new(@submission)
-    @submission.access_level = AccessLevel.OPEN_ACCESS if (current_partner.honors? || current_partner.milsch?) && @submission.access_level.blank?
+    @submission.access_level = 'open_access' if (current_partner.honors? || current_partner.milsch?) && @submission.access_level.blank?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
   rescue SubmissionStatusGiver::AccessForbidden
@@ -100,6 +105,7 @@ class Author::SubmissionsController < AuthorController
   end
 
   def update_final_submission
+    @submission = find_submission
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
     @submission.update_attributes!(final_submission_params)
@@ -121,6 +127,7 @@ class Author::SubmissionsController < AuthorController
   end
 
   def final_submission
+    @submission = find_submission
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_review_final_submission_files?
   rescue SubmissionStatusGiver::AccessForbidden
@@ -129,7 +136,7 @@ class Author::SubmissionsController < AuthorController
   end
 
   def refresh
-    return unless @submission.beyond_collecting_format_review_files?
+    return unless @submission.status_behavior.beyond_collecting_format_review_files?
     if @submission.author.inbound_lion_path_record.refresh_academic_plan(@submission)
       flash[:notice] = 'Academic plan information successfully refreshed from Lion Path.'
       redirect_to author_submission_program_information_path(@submission.id)
@@ -140,9 +147,9 @@ class Author::SubmissionsController < AuthorController
   end
 
   def refresh_date_defended
-    return unless @submission.beyond_collecting_final_submission_files?
+    return unless @submission.status_behavior.beyond_collecting_final_submission_files?
     submission_defense_date = @submission.academic_plan.defense_date
-    unless submission_defense_date.blank?
+    if submission_defense_date.present?
       @submission.defended_at = submission_defense_date
       @submission.save(validate: false)
       redirect_to author_submission_final_submission_path(@submission.id)
@@ -157,7 +164,15 @@ class Author::SubmissionsController < AuthorController
 
     def find_submission
       @submission = @author.submissions.find(params[:submission_id] || params[:id])
+      return nil if @submission.nil?
+      redirect_to '/401' unless @submission.author_id == current_author.id ## && !Rails.env.test?
       @submission.author_edit = true
+      @submission
+    end
+
+    def find_author
+      redirect_to '/login' if current_author.nil? || current_author.access_id.blank? && Rails.env.production?
+      @author = current_author
     end
 
     def standard_program_params

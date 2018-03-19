@@ -26,7 +26,7 @@ class LegacyDatabaseHelper
     Keyword.column_names
   end
 
-  def committee_members_columns
+  def committee_member_columns
     CommitteeMember.column_names
   end
 
@@ -40,5 +40,9 @@ class LegacyDatabaseHelper
 
   def committee_role_columns
     CommitteeRole.column_names
+  end
+
+  def invention_disclosure_columns
+    InventionDisclosure.column_names
   end
 end
