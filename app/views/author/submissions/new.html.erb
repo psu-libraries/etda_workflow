@@ -10,9 +10,9 @@
 
       <%= render partial: "form_fields", locals: { form: form, program_information_partial: @view.new_program_information_partial } %>
 
-      <div class="form-group actions">
+      <div class="form-group actions col-xs-6">
         <%= form.button :submit, class: "btn-primary", value: "Save Program Information" %>
-        <%= link_to "Cancel", author_root_path %>
+        <%= link_to "Cancel", author_root_path, class: 'btn cancel-link' %>
       </div>
     <% end %>
   </div>

@@ -6,7 +6,7 @@
 //require('jquery-ui/ui/widgets/autocomplete');
 //require('jquery-ui/ui/widgets/tooltip');
 //require('jquery-ui/ui/widgets/spinner');
-@import '../../../../vendor/assets/stylesheets/jquery.tagit.css';
+//@import '../../../../vendor/assets/stylesheets/jquery.tagit.css';
 
 // Base Color Palette
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/mixins';
@@ -531,4 +531,19 @@ ul.ui-menu.ui-widget.ui-autocomplete{
   list-style-type: none;
   border: 1px solid #000;
   width: 5em;
+}
+
+//This removes dots from under askterisk in required fields
+form abbr[title] {
+  border-bottom: none !important;
+  text-decoration: none !important;
+  float: right;
+}
+
+.required-asterisk{
+  float: right;
+}
+a.cancel-link{
+  font-size: medium;
+  vertical-align: middle;
 }

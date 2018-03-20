@@ -26,7 +26,7 @@
     <div class="col-xs-12 col-sm-6 col-md-8">
       <br />
       <%= submission_form.button :submit, class: "btn-primary btn-success", value: "#{@presenter.link_text}" %>&nbsp;&nbsp;
-      <%= link_to "Cancel", author_root_path %>
+      <%= link_to "Cancel", author_root_path, class: 'btn cancel-link' %>
     </div>
 <% end %>
 </div>

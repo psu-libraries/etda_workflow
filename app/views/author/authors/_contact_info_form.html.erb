@@ -7,8 +7,10 @@
 
     <div class="form-group actions">
       <%= render partial: 'extended_address_form', locals: {f: f} if current_partner.graduate? %>
-      <%= f.button :submit, class: "btn-primary", value: "Save" %>
-      <%= link_to "Cancel", author_root_path %>
+      <div class="col-xs-4" >
+        <%= f.button :submit, class: "btn-primary", value: "Save" %>
+        <%= link_to "Cancel", author_root_path, class: 'btn cancel-link' %>
+      </div>
     </div>
   <% end %>
 

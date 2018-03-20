@@ -7,8 +7,8 @@
               value_method: :id,
               prompt: "Please Select" %>
   <%= f.input :is_active, wrapper: :checkbox %>
-  <div class="form-group actions">
+  <div class="form-group actions col-xs-4">
     <%= f.button :submit %>
-    <%= link_to "Cancel", admin_degrees_path %>
+    <%= link_to "Cancel", admin_degrees_path, class: 'admin btn cancel-link' %>
   </div>
 <% end %>

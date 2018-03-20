@@ -15,9 +15,9 @@
     <%= f.input :state, collection: UsStates.names.invert, prompt: 'Please Select a State' %>
     <%= f.input :zip %>
     <%= f.input :country, selected: @author[:country], priority: ['US'], prompt: 'Please Select a Country', class: 'form-control' %>
-    <div class="form-group actions">
+    <div class="form-group actions col-xs-4">
       <%= f.button :submit, 'Update Author', class: 'btn btn-success' %>
-      <%= link_to "Cancel", admin_authors_path %>
+      <%= link_to "Cancel", admin_authors_path, class: 'admin btn cancel-link' %>
     </div>
 <% end %>
 
