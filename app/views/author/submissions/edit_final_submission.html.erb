@@ -55,9 +55,9 @@
       <%= render 'copyright_statement' %>
       <%= f.input :has_agreed_to_terms, label: 'I agree', as: :boolean, wrapper: :vertical_boolean, required: true %>
 
-      <div class="form-group actions">
+      <div class="form-group actions col-xs-6">
         <%= f.button :submit, class: "btn-primary", value: "Submit final files for review" %>
-        <%= link_to "Cancel", author_root_path %>
+        <%= link_to "Cancel", author_root_path, class: 'btn cancel-link' %>
       </div>
   <% end %>
 </div>

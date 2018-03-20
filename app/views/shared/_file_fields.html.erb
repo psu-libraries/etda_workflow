@@ -8,7 +8,7 @@
             <% end %>
       </div>
   <% else %>
-      <%= file_fields.input :asset, as: :file, label: false, required: true %>
+      <%= file_fields.input :asset, as: :file, label: false %>
       <%= file_fields.input :asset_cache, :as => :hidden %>
       <%= file_fields.object.asset_identifier %>
       <%= link_to_remove_association "[remove]", file_fields, class: 'text-danger can-toggle-clickability' %>
