@@ -1,10 +1,8 @@
-# frozen_string_literal: true
-
-class EmailContactFormController < ApplicationController
+class Author::EmailContactFormController < AuthorController
   before_action :set_author
 
   def new
-    @email_contact_form = EmailContactForm.new(full_name: @email_contact_author.full_name, email: @email_contact_author.psu_email_address)
+    @email_contact_form = Author::EmailContactForm.new(full_name: @email_contact_author.full_name, email: @email_contact_author.psu_email_address)
   end
 
   def create

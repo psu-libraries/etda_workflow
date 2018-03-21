@@ -25,9 +25,9 @@ module ApplicationHelper
   end
 
   def render_conditional_links
-    if Author.current.blank?
+    if current_author.blank?
       render partial: 'shared/ask_link'
-    elsif request.path.start_with? '/admin'
+    elsif session[:user_role] == 'admin'
       render partial: 'shared/admin_support_link'
     end
   end

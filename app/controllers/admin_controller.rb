@@ -16,6 +16,7 @@ class AdminController < ApplicationController
   def find_or_initialize_admin
     @admin ||= Admin.find_or_initialize_by(access_id: current_admin.access_id)
     # Rails.logger.info "current_admin = #{current_admin.inspect}"
+    session[:user_name] = @admin.full_name
   end
 
   def clear_admin
