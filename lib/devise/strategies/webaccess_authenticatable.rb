@@ -7,7 +7,6 @@ module Devise
       def authenticate!
         access_id = remote_user(request.headers)
         Rails.logger.info "Devise Access ID ******* #{access_id}"
-
         if access_id.present? # webaccess successful
           this_object = authentication_type || Author.class
           a = this_object.find_by_access_id(access_id)
@@ -48,6 +47,8 @@ module Devise
       end
 
       def determine_login_type(uri)
+        this_uri = uri.split('/')
+        return 'Author' unless this_uri.length > 1
         this_uri = uri.split('/')[1].camelcase
         this_uri = 'Author' unless ['Author', 'Admin'].include? this_uri
         this_uri

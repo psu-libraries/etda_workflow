@@ -72,12 +72,12 @@ Rails.application.routes.draw do
       resource :committee_members, shallow: true # We only modify the set of committee members en masse
       get '/committee_members_refresh', to: 'committee_members#refresh', as: :refresh_committee
     end
+    post 'email_contact_form', to: 'email_contact_form#create', as: :email_contact_form_index
+    get 'email_contact_form', to: 'email_contact_form#new', as: :email_contact_form_new
     root to: 'submissions#index'
     get '/tips', to: 'authors#technical_tips', as: :technical_tips
   end
 
-  post 'email_contact_form', to: 'email_contact_form#create', as: :email_contact_form_index
-  get 'email_contact_form', to: 'email_contact_form#new', as: :email_contact_form_new
 
   match "/404", to: 'errors#render_404', via: :all
   match "/500", to: 'errors#render_500', via: :all
