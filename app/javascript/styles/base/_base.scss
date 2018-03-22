@@ -1,13 +1,3 @@
-/*@import '../../../node_modules/font-awesome/css/font-awesome.min.css'; */
-/*@import "jquery-ui/core";
-@import "jquery-ui/theme";
-@import "jquery-ui/autocomplete";
-@import "jquery.tagit"; */
-//require('jquery-ui/ui/widgets/autocomplete');
-//require('jquery-ui/ui/widgets/tooltip');
-//require('jquery-ui/ui/widgets/spinner');
-//@import '../../../../vendor/assets/stylesheets/jquery.tagit.css';
-
 // Base Color Palette
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/mixins';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables';
@@ -166,10 +156,9 @@ table {
   tr {
     &.odd {
       td {
-        background-color: $gray-lighter   //$table-bg-accent;
+        background-color: $table-bg-accent;
       }
     }
-
     &.inactive {
       td {
         color: $gray-light;
