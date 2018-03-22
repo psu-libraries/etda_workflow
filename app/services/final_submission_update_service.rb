@@ -27,6 +27,7 @@ class FinalSubmissionUpdateService
       submission.update_attribute :final_submission_approved_at, Time.zone.now
       status_giver.waiting_for_publication_release!
       submission.update_attributes! final_submission_params
+      deliver_final_emails
       msg = "The submission\'s final submission information was successfully approved."
     elsif update_actions.rejected?
       submission.update_attribute :final_submission_rejected_at, Time.zone.now
@@ -109,5 +110,10 @@ class FinalSubmissionUpdateService
       keywords_attributes: [:word, :id, :_destroy],
       invention_disclosures_attributes: [:id, :submission_id, :id_number, :_destroy]
     )
+  end
+
+  def deliver_final_emails
+    AuthorMailer.final_submission_approved(@submission, "#{current_partner.id}.partner.email.url").deliver_now
+    AuthorMailer.pay_thesis_fee(@submission).deliver_now if current_partner.honors?
   end
 end

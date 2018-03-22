@@ -12,7 +12,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
   before do
     webaccess_authorize_admin
     visit admin_edit_submission_path(submission)
-
+    sleep(3)
     fill_in "Title", with: "A Brand New TITLE"
     check "Allow completely upper-case words in title"
     select program.name, from: current_partner.program_label.to_s

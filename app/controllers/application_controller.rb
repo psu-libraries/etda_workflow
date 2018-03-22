@@ -43,6 +43,9 @@ class ApplicationController < ActionController::Base
   end
 
   def logout
+    session[:access_id] = nil
+    session[:user_role] = nil
+    session[:user_name] = nil
     # make any local additions here (e.g. expiring local sessions, etc.)
     # adapted from here: http://cosign.git.sourceforge.net/git/gitweb.cgi?p=cosign/cosign;a=blob;f=scripts/logout/logout.php;h=3779248c754001bfa4ea8e1224028be2b978f3ec;hb=HEAD
     cookies.delete(request.env['COSIGN_SERVICE']) if request.env['COSIGN_SERVICE']
@@ -75,11 +78,6 @@ class ApplicationController < ActionController::Base
   end
 
   protected
-
-  # def logged_in?
-  #   ((author_signed_in? || admin_signed_in?) && Devise::Strategies::WebaccessAuthenticatable.new(request.headers).valid?) || Rails.env.test?
-  #   #   # ()author_signed_in? && valid?(request.headers) || Rails.env.test?
-  # end
 
   def webaccess_login_url
     WebAccess.new(request.env['HTTP_REFERER']).login_url

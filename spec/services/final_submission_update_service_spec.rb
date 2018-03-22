@@ -4,8 +4,11 @@ require 'rails_helper'
 require 'shoulda-matchers'
 
 RSpec.describe FinalSubmissionUpdateService, type: :model do
+  let(:final_count) { Partner.current.id == 'honors' ? 2 : 1 }
+
   context 'it processes approved final submissions' do
     it 'approves a final submission' do
+      start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :waiting_for_final_submission_response
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
@@ -17,11 +20,13 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/final_submission_submitted")
       expect(submission.status).to eq('waiting for publication release')
       expect(submission.title).to eq('update this title')
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + final_count)
     end
   end
 
   context 'it processes rejected final submissions' do
     it 'rejects a final submission' do
+      start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :waiting_for_final_submission_response
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
@@ -33,11 +38,13 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/final_submission_submitted")
       expect(submission.status).to eq('collecting final submission files rejected')
       expect(submission.abstract).to eq('this abstract is updated')
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
     end
   end
 
   context 'it updates a final submission' do
     it 'updates a final submission' do
+      start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :waiting_for_final_submission_response
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
@@ -51,11 +58,13 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.status).to eq('waiting for final submission response')
       expect(submission.title).to eq('a different title')
       expect(submission.final_submission_notes).to eq('a note to you')
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
     end
   end
 
   context 'it updates submissions waiting to be released' do
     it 'updates submission' do
+      start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :waiting_for_publication_release
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
@@ -70,8 +79,10 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.status).to eq('waiting for publication release')
       expect(submission.title).to eq('a different title for release')
       expect(submission.abstract).to eq('a new abstract')
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
     end
     it 'removes a submission from waiting to be released' do
+      start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :waiting_for_publication_release
       submission.final_submission_approved_at = Time.zone.now
       submission.final_submission_rejected_at = Time.zone.yesterday
@@ -88,10 +99,12 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.final_submission_notes).to eq('a final note to you!!!')
       expect(submission.final_submission_approved_at).to be(nil)
       expect(submission.final_submission_rejected_at).to be(nil)
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
     end
   end
   context 'it updates submissions released submission' do
     it 'updates a released submission' do
+      start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :released_for_publication
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
@@ -106,8 +119,10 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.status).to eq('released for publication')
       expect(submission.title).to eq('a different title for released submission')
       expect(submission.abstract).to eq('a different abstract')
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
     end
     it 'removes a submission from publication' do
+      start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :released_for_publication
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
@@ -120,10 +135,12 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       # ("/admin/#{submission.degree_type.slug}")
       expect(submission.status).to eq('waiting for publication release')
       expect(submission.abstract).to eq('I am an abstract!!!!!')
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
     end
   end
   context 'it updates the record' do
     it 'updates a final submission' do
+      start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :collecting_final_submission_files
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
@@ -136,6 +153,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       # ("/admin/submissions/#{submission.id}/edit")
       expect(submission.status).to eq('collecting final submission files')
       expect(submission.title).to eq(title)
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
     end
   end
 end

@@ -21,6 +21,9 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
+  #
+  # preview emails
+  config.action_mailer.show_previews = true
 
   # Enable/disable caching. By default caching is disabled.
   if Rails.root.join('tmp/caching-dev.txt').exist?
@@ -49,7 +52,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = Rails.application.secrets[:email_indicator] || :test
 
   # Change default location for mailer previews
-  config.action_mailer.preview_path = "#{Rails.root}/spec/component/mailers/previews"
+  config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"
   config.action_mailer.perform_caching = false
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }

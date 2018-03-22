@@ -113,7 +113,7 @@ class Author::SubmissionsController < AuthorController
     OutboundLionPathRecord.new(submission: @submission).report_status_change
     @submission.update_final_submission_timestamps!(Time.zone.now)
     redirect_to author_root_path
-    # AuthorMailer.final_submission_received(@submission).deliver_now if current_partner.graduate?
+    AuthorMailer.final_submission_received(@submission).deliver_now if current_partner.graduate?
     flash[:notice] = 'Final submission files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid
     @view = Author::FinalSubmissionFilesView.new(@submission)
