@@ -31,7 +31,7 @@ RSpec.describe InboundLionPathView do
 
     it 'returns embargo end date for restricted submissions' do
       expect(lp_view.embargo_end).to eql('N/A') if submission.released_for_publication_at.nil?
-      expect(formatted_date(lp_view.embargo_end)).to eql(submission.released_for_publication_at) unless submission.released_for_publication_at.nil?
+      expect(formatted_date(lp_view.embargo_end)).to eql(formatted_date(submission.released_for_publication_at)) unless submission.released_for_publication_at.nil?
     end
 
     it 'returns the release date' do
