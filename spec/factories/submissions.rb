@@ -81,7 +81,7 @@ FactoryBot.define do
       status "released for publication metadata only"
       access_level 'restricted'
       format_review_notes "Format review notes"
-      released_for_publication_at nil
+      released_for_publication_at { Time.zone.yesterday + 2.years }
       released_metadata_at { Time.zone.yesterday }
       final_submission_traits
     end
@@ -89,7 +89,8 @@ FactoryBot.define do
     trait :final_is_restricted_to_institution do
       status "released for publication"
       access_level 'restricted_to_institution'
-      released_for_publication_at { Time.zone.yesterday }
+      released_metadata_at { Time.zone.yesterday }
+      released_for_publication_at { Time.zone.yesterday + 2.years }
       final_submission_traits
     end
 

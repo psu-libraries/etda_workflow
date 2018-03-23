@@ -32,7 +32,7 @@ class SubmissionDecorator < Decorator
 
   def most_relevant_file_links
     if final_submission_files.any?
-      final_submission_files.map { |f| context.link_to(f.asset_identifier.truncate(40), context.final_submission_file_path(f), 'data-no-turbolink': true) }
+      final_submission_files.map { |f| context.link_to(f.asset_identifier.nil? ? '' : f.asset_identifier.truncate(40), context.final_submission_file_path(f), 'data-no-turbolink': true) }
     elsif format_review_files.any?
       format_review_files.map { |f| context.link_to(Partner.current.graduate? ? f.asset_identifier.truncate(38) : f.asset_identifier, context.format_review_file_path(f), 'data-no-turbolink': true) }
     else

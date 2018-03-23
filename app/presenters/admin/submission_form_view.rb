@@ -82,4 +82,23 @@ class Admin::SubmissionFormView < SimpleDelegator
   def psu_only(label)
     label == AccessLevel.paper_access_levels[AccessLevel.RESTRICTED_TO_INSTITUTION.to_i][:label] && !Partner.current.graduate? # 'Restricted (Penn State Only)'
   end
+
+  def release_date_history
+    return '' unless status_behavior.released_for_publication?
+    case access_level
+    when 'restricted'
+        "<b>Metadata released</b> #{date_information(released_metadata_at)}<br /><b>Scheduled for full release </b> #{date_information(released_for_publication_at)}".html_safe
+    when 'restricted_to_institution'
+        "<b>Released to PSU</b> #{date_information(released_metadata_at)}<br /><b>Scheduled for full release </b>#{date_information(released_for_publication_at)}".html_safe
+    else
+        metadata_str = ''
+        metadata_str = "<b>Released metadata at</b> #{date_information(released_metadata_at)}<br />" unless released_metadata_at.nil?
+        metadata_str + "<b>Released for publication </b>#{date_information(released_for_publication_at)}".html_safe
+    end
+  end
+
+  def date_information(date_in)
+    return 'Unknown' if date_in.blank?
+    date_in.strftime('%Y-%m-%d')
+  end
 end
