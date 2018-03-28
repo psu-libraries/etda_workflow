@@ -16,6 +16,7 @@ class AuthorController < ApplicationController
   def find_or_initialize_author
     @author = Author.find_or_initialize_by(access_id: current_author.access_id)
     session[:user_name] = @author.full_name || ''
+    author_ability
     # Rails.logger.info "current_author = #{current_author.inspect}"
     # redirect_to author_submissions_path
     # redirect to login_path if @author.nil?

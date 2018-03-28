@@ -104,7 +104,8 @@ namespace :deploy do
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/lion_path.yml #{release_path}/config/lion_path.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/#{fetch(:partner)}_secrets.yml #{release_path}/config/secrets.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/ldap.yml #{release_path}/config/ldap.yml"
-      execute "ln -sf /var/data/#{fetch(:application)}_#{fetch(:partner)}/ #{release_path}/uploads"
+      # execute "ln -sf /var/data/#{fetch(:application)}_#{fetch(:partner)}/ #{release_path}/uploads"
+      execute "ln -sf /var/data/#{fetch(:application)}_#{fetch(:partner)}/ #{release_path}/workflow_files"
       execute "ln -sf /var/data/etda_explore_#{fetch(:partner)}/ #{release_path}/explore_files"
     end
   end

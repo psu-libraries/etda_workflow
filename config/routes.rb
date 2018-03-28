@@ -9,8 +9,6 @@ Rails.application.routes.draw do
   get '/logout', to: 'application#logout', as: :logout
   get '/login', to: 'application#login', as: :login
 
-  get 'files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
-  get 'files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
 
   ## works: get '/committee_members/autocomplete', to: 'ldap_lookup#autocomplete', as: :committee_members_autocomplete
   get '/committee_members/autocomplete', to: 'application#autocomplete', as: :committee_members_autocomplete
@@ -49,6 +47,9 @@ Rails.application.routes.draw do
 
     get 'submissions/:id/academic_plan_refresh', to: 'submissions#refresh_academic_plan', as: 'submissions_refresh_academic_plan'
 
+    get '/files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
+    get '/files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
+
     root to: 'submissions#redirect_to_default_dashboard'
 
     root to: 'admin#index'
@@ -67,11 +68,15 @@ Rails.application.routes.draw do
       get '/final_submission', to: 'submissions#final_submission', as: :final_submission
       get '/final_submission/edit', to: 'submissions#edit_final_submission', as: :edit_final_submission
       patch '/final_submission', to: 'submissions#update_final_submission', as: :update_final_submission
-      # get '/date_defended_refresh', to: 'submissions#refresh_date_defended', as: :refresh_date_defended
+      get '/date_defended_refresh', to: 'submissions#refresh_date_defended', as: :refresh_date_defended
 
       resource :committee_members, shallow: true # We only modify the set of committee members en masse
       get '/committee_members_refresh', to: 'committee_members#refresh', as: :refresh_committee
     end
+
+    get '/files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
+    get '/files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
+
     post 'email_contact_form', to: 'email_contact_form#create', as: :email_contact_form_index
     get 'email_contact_form', to: 'email_contact_form#new', as: :email_contact_form_new
     root to: 'submissions#index'
