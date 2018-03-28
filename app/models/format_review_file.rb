@@ -11,4 +11,8 @@ class FormatReviewFile < ApplicationRecord
   def class_name
     self.class.to_s.underscore.dasherize
   end
+
+  def link_identifier
+    self.class.to_s.underscore.split('_file').first.pluralize
+  end
 end

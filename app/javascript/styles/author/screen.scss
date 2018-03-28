@@ -26,7 +26,6 @@
 @include clearfix();
 
 .progress-indicator {
-
   .step {
     @extend .clearfix !optional;
     margin-bottom: 5px;
@@ -49,10 +48,11 @@
     }
 
     .information {
-      display: block;
+      display: inline-block;
       min-height: 60px;
 
       .description {
+        display: inline-block;
         @extend .text-muted;
         margin: 0px;
         padding-top: 8px;
@@ -70,6 +70,7 @@
         color: $gray-light;
         vertical-align: top;
         line-height: 20px;
+        padding-bottom: 1em;
 
         .glyphicon-ok-circle {
           font-size: 140%;
@@ -92,11 +93,9 @@
           color: $brand-danger;
 
         }
-
         a {
           vertical-align: text-bottom;
         }
-
       }
     }
 

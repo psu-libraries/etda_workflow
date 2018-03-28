@@ -52,7 +52,7 @@
       <h2 class="h4">Files</h2>
       <% @submission.final_submission_files.each do |file| %>
         <div id="final-submission-file-<%=file.id%>">
-          <%= link_to file.asset_identifier, file, class: 'file-link', target: '_blank' %>
+          <%= link_to file.asset_identifier, "/author/files/#{file.link_identifier}/#{file.id}",  class: 'file-link', target: '_blank' %>
         </div>
       <% end %>
     </div>
