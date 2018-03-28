@@ -52,7 +52,7 @@ class Author::AuthorsController < AuthorController
   def verify_author
     @author = Author.find(params[:id])
     redirect_to '/404' if @author.nil? || current_author.nil?
-    redirect_to '/401' unless author_ability.can? :edit, @author
+    redirect_to '/401' unless @author_ability.can? :edit, @author
   end
 
   def author_params

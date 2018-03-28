@@ -43,10 +43,10 @@ class Legacy::FileImporter
         if submission.nil?
           @import_logger.info "Submission with id = #{final_file.submission_id} missing for Final Submission File with id = #{final_file.id}"
         else
-           file_detail_path = path_builder.detailed_file_path(final_file.id)
-           source_full_path = source_path.base + file_detail_path
-           destination_path = DestinationPath.new(submission)
-           copy_the_file(source_full_path, destination_path.full_path + file_detail_path, final_file.asset_identifier)
+          file_detail_path = path_builder.detailed_file_path(final_file.id)
+          source_full_path = source_path.base + file_detail_path
+          destination_path = DestinationPath.new(submission)
+          copy_the_file(source_full_path, destination_path.full_path_for_final_submissions + file_detail_path, final_file.asset_identifier)
         end
       end
       @display_logger.info "Total of #{@files_copied} files were copied. See logs for more information"
@@ -57,7 +57,9 @@ class Legacy::FileImporter
   end
 
   def copy_the_file(source_path, destination_path, file_name)
-    if File.exist?(File.join(source_path, file_name))
+    if file_name.nil?
+      @import_logger.info 'missing file name'
+    elsif File.exist?(File.join(source_path, file_name))
       FileUtils.mkdir_p destination_path
       FileUtils.copy_entry(File.join(source_path, file_name), File.join(destination_path, file_name), :preserve, :noop)
       @files_copied += 1
@@ -90,24 +92,5 @@ class SourcePath
     file_base_path = @source_path unless Rails.env.production?
     file_base_path = "/legacy_#{@source_path}etda-#{current_partner.id}/" if Rails.env.production?
     file_base_path + @file_type + '/'
-  end
-end
-
-class DestinationPath
-  def initialize(submission)
-    @submission = submission
-  end
-
-  def full_path
-    return file_path_for_published_submissions if @submission.status_behavior.released_for_publication?
-    path_builder = EtdaFilePaths.new
-    path_builder.workflow_upload_final_files_path
-  end
-
-  def file_path_for_published_submissions
-    path_builder = EtdaFilePaths.new
-    return path_builder.explore_open if @submission.access_level.open_access?
-    return path_builder.explore_psu_only if @submission.access_level.restricted_to_institution?
-    path_builder.workflow_restricted
   end
 end
