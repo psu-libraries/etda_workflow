@@ -13,31 +13,36 @@ class Legacy::Importer
     @records_to_import.each do |legacy_author|
       @count += 1
       @display_logger.info "Importing #{@count} of #{@original_count} authors" if interval(10)
-      Author.new(id: legacy_author['id'],
-                 access_id: legacy_author['access_id'],
-                 first_name: legacy_author['first_name'],
-                 last_name: legacy_author['last_name'],
-                 middle_name: legacy_author['middle_name'],
-                 alternate_email_address: legacy_author['alternate_email_address'],
-                 psu_email_address: legacy_author['psu_email_address'],
-                 phone_number: legacy_author['phone_number'],
-                 address_1: legacy_author['address_1'],
-                 address_2: legacy_author['address_2'],
-                 city: legacy_author['city'],
-                 state: legacy_author['state'],
-                 zip: legacy_author['zip'],
-                 country: legacy_author['country'],
-                 is_alternate_email_public: legacy_author['is_alternate_email_public'],
-                 created_at: legacy_author['created_at'],
-                 updated_at: legacy_author['updated_at'],
-                 remember_created_at: legacy_author['remember_created_at'],
-                 sign_in_count: legacy_author['sign_in_count'],
-                 current_sign_in_at: legacy_author['current_sign_in_at'],
-                 current_sign_in_ip: legacy_author['current_sign_in_ip'],
-                 last_sign_in_ip: legacy_author['last_sign_in_ip'],
-                 last_sign_in_at: legacy_author['last_sign_in_at'],
-                 legacy_id: legacy_author['legacy_id'],
-                 psu_idn: legacy_author['psu_idn']).save(validate: false)
+      begin
+        Author.new(id: legacy_author['id'],
+                   access_id: legacy_author['access_id'],
+                   first_name: legacy_author['first_name'],
+                   last_name: legacy_author['last_name'],
+                   middle_name: legacy_author['middle_name'],
+                   alternate_email_address: legacy_author['alternate_email_address'],
+                   psu_email_address: legacy_author['psu_email_address'],
+                   phone_number: legacy_author['phone_number'],
+                   address_1: legacy_author['address_1'],
+                   address_2: legacy_author['address_2'],
+                   city: legacy_author['city'],
+                   state: legacy_author['state'],
+                   zip: legacy_author['zip'],
+                   country: legacy_author['country'],
+                   is_alternate_email_public: legacy_author['is_alternate_email_public'],
+                   created_at: legacy_author['created_at'],
+                   updated_at: legacy_author['updated_at'],
+                   remember_created_at: legacy_author['remember_created_at'],
+                   sign_in_count: legacy_author['sign_in_count'],
+                   current_sign_in_at: legacy_author['current_sign_in_at'],
+                   current_sign_in_ip: legacy_author['current_sign_in_ip'],
+                   last_sign_in_ip: legacy_author['last_sign_in_ip'],
+                   last_sign_in_at: legacy_author['last_sign_in_at'],
+                   legacy_id: legacy_author['legacy_id'],
+                   psu_idn: legacy_author['psu_idn']).save(validate: false)
+        rescue StandardError => e
+        msg = "Error on author record #{legacy_author['id']}"
+        @import_logger.info msg
+        end
     end
     @count
   end
@@ -227,5 +232,25 @@ class Legacy::Importer
 
   def interval(val)
     (@count % val).zero?
+  end
+
+  # frozen_string_literal: true
+
+  class FinalSubmissionFile < ApplicationRecord
+    # disable uploader when running legacy:import:final_submission_files
+
+    belongs_to :submission
+
+    validates :submission_id, :asset, presence: true
+    validates :asset, virus_free: true
+  end
+
+  class FormatReviewFile < ApplicationRecord
+    # disable uploader when importing legacy:import:format_review_files
+
+    belongs_to :submission
+
+    validates :submission_id, :asset, presence: true
+    validates :asset, virus_free: true
   end
 end

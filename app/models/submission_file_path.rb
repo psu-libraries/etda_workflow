@@ -1,4 +1,4 @@
-class DestinationPath
+class SubmissionFilePath
   def initialize(submission)
     @submission = submission
   end

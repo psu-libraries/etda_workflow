@@ -1,6 +1,8 @@
 class SubmissionFileUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
+  #### does not work; model.id is not available after :store, :move_file
+
   storage :file
   add_config :base_dir
 
@@ -15,10 +17,10 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
   end
 
   def asset_prefix
-    if model.class_name == 'final_submission_file'
-      DestinationPath.new(model.submission).full_path_for_final_submissions
+    if model.class_name == 'final-submission-file'
+       Rails.root.join(WORKFLOW_BASE_PATH, 'final_submission_files')
     else
-      Rails.root.join(WORKFLOW_BASE_PATH, 'format_review_files')
+       Rails.root.join(WORKFLOW_BASE_PATH, 'format_review_files')
     end
   end
 
@@ -30,4 +32,15 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
   def identity_subdir
     Pathname.new('.').join(asset_prefix, asset_hash)
   end
+
+  private
+
+    def move_file(_file)
+      # the file cannot be moved here when
+      # uploading released submissions
+      # ******** this doesn't work bc file.id is empty so extended file path cannot be calculated
+      return unless model.submission.status_behavior.released_for_publication?
+      original_file_location = Rails.root.join(identity_subdir, asset_identifier)
+      EtdaFilePaths.new.move_a_file(model.id, original_file_location)
+    end
 end
