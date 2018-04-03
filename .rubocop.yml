@@ -63,6 +63,7 @@ Metrics/ClassLength:
   - app/presenters/admin/submissions_index_view.rb
   - app/controllers/author/submissions_controller.rb
   - app/presenters/submission_view.rb
+  - app/services/final_submission_update_service.rb
 
 
 Metrics/CyclomaticComplexity:
@@ -252,6 +253,7 @@ Lint/UselessAssignment:
     #- 'app/views/admin/programs/index.json.rabl'
     - 'spec/lib/tasks/confidential.rake'
     - 'spec/models/lion_path/academic_plan_spec.rb'
+    - 'app/models/legacy/importer.rb'
 
 Style/StderrPuts:
   Exclude:

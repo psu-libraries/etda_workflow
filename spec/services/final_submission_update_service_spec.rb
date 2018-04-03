@@ -79,7 +79,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.status).to eq('waiting for publication release')
       expect(submission.title).to eq('a different title for release')
       expect(submission.abstract).to eq('a new abstract')
-      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 1)
     end
     it 'removes a submission from waiting to be released' do
       start_count = ActionMailer::Base.deliveries.count
@@ -99,7 +99,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.final_submission_notes).to eq('a final note to you!!!')
       expect(submission.final_submission_approved_at).to be(nil)
       expect(submission.final_submission_rejected_at).to be(nil)
-      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 1)
     end
   end
   context 'it updates submissions released submission' do
@@ -119,7 +119,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.status).to eq('released for publication')
       expect(submission.title).to eq('a different title for released submission')
       expect(submission.abstract).to eq('a different abstract')
-      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 1)
     end
     it 'removes a submission from publication' do
       start_count = ActionMailer::Base.deliveries.count
@@ -153,7 +153,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       # ("/admin/submissions/#{submission.id}/edit")
       expect(submission.status).to eq('collecting final submission files')
       expect(submission.title).to eq(title)
-      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 1)
     end
   end
 end

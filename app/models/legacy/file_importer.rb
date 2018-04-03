@@ -33,7 +33,7 @@ class Legacy::FileImporter
     path_builder = EtdaFilePaths.new
     source_path = SourcePath.new('final_submission_files', source_file_path)
     @original_count = FinalSubmissionFile.all.count
-    if destination_files_exist? 'final_submission_files'
+    if destination_files_exist?('final_submission_files') && !Rails.env.test?
       @import_logger.info "Quitting -- Destination directories for final submission files are not empty"
       abort('Destination directories must be empty')
     end
@@ -45,7 +45,7 @@ class Legacy::FileImporter
         else
           file_detail_path = path_builder.detailed_file_path(final_file.id)
           source_full_path = source_path.base + file_detail_path
-          destination_path = DestinationPath.new(submission)
+          destination_path = SubmissionFilePath.new(submission)
           copy_the_file(source_full_path, destination_path.full_path_for_final_submissions + file_detail_path, final_file.asset_identifier)
         end
       end

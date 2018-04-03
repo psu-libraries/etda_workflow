@@ -1,13 +1,18 @@
 class Author::FilesController < FilesController
+  before_action :current_file
+
   private
 
-    def find_file
-      return FormatReviewFile.find(params[:id]) unless params[:action] == 'download_final_submission'
-      FinalSubmissionFile.find(params[:id])
+    def current_file
+      @current_file = if params[:action] == 'download_final_submission'
+                        FormatReviewFile.find(params[:id])
+                      else
+                        FinalSubmissionFile.find(params[:id])
+                      end
     end
 
     def current_ability
-      file = find_file
+      file = current_file
       @current_ability ||= AuthorAbility.new(current_author, file.submission, file)
     end
 end
