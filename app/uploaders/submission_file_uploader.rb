@@ -33,14 +33,14 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
     Pathname.new('.').join(asset_prefix, asset_hash)
   end
 
-  private
-
-    def move_file(_file)
-      # the file cannot be moved here when
-      # uploading released submissions
-      # ******** this doesn't work bc file.id is empty so extended file path cannot be calculated
-      return unless model.submission.status_behavior.released_for_publication?
-      original_file_location = Rails.root.join(identity_subdir, asset_identifier)
-      EtdaFilePaths.new.move_a_file(model.id, original_file_location)
-    end
+  # private
+  #
+  #   def move_file(_file)
+  #     # the file cannot be moved here when
+  #     # uploading released submissions
+  #     # ******** this doesn't work bc file.id is empty so extended file path cannot be calculated
+  #     return unless model.submission.status_behavior.released_for_publication?
+  #     original_file_location = Rails.root.join(identity_subdir, asset_identifier)
+  #     EtdaFilePaths.new.move_a_file(model.id, original_file_location)
+  #   end
 end

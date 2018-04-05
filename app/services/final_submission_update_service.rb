@@ -74,7 +74,9 @@ class FinalSubmissionUpdateService
     elsif update_actions.rejected?
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_unrelease_for_publication?
-      original_final_files = SubmissionReleaseService.new.final_files_for_submission(submission)
+      submission_release_service = SubmissionReleaseService.new
+      original_final_files = submission_release_service.final_files_for_submission(submission)
+      return result unless submission_release_service.file_verification_successful(original_final_files)
       submission.update_attributes!(released_for_publication_at: nil, released_metadata_at: nil)
       status_giver.unreleased_for_publication!
       submission.update_attributes! final_submission_params

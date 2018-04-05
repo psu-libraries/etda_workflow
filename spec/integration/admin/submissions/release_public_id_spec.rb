@@ -1,4 +1,4 @@
-RSpec.describe "Release a submission with a public id" do
+RSpec.describe "Release a submission with a public id", js: true do
   require 'integration/integration_spec_helper'
 
   let(:degree_type) { current_partner.graduate? ? 'dissertation' : 'thesis' }
@@ -13,10 +13,13 @@ RSpec.describe "Release a submission with a public id" do
   let(:submission_2) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: jane_author) }
   let(:submission_3) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: jane_author) }
 
+  before do
+    webaccess_authorize_admin
+    webaccess_authorize_author
+  end
   it 'assigns a public id and releases a submission', js: true do
     expect(submission.legacy_id).to be_blank
     expect(submission.public_id).to be_blank
-    webaccess_authorize_admin
     released_count = Submission.released_for_publication.count
     visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')
     sleep(3)
@@ -24,8 +27,10 @@ RSpec.describe "Release a submission with a public id" do
     expect(page).to have_content('Showing', wait: 3)
     # page.find('.btn.btn-primary.release-button', wait: 5).trigger('click')
     click_button 'Release selected for publication'
-    updated_released_count = page.find('a#released-for-publication .badge').text
-    expect(updated_released_count.to_i).to eql(released_count + 1)
+    expect(page).to have_content('All submissions were successfully published')
+    updated_released_count = Submission.released_for_publication.count
+    expect(page).to have_content("1 submission successfully released for publication")
+    expect(updated_released_count).to eql(released_count + 1)
     submission.reload
     expect(submission.public_id).to eql("#{submission.id}#{submission.author.access_id}")
   end
@@ -33,7 +38,6 @@ RSpec.describe "Release a submission with a public id" do
   it 'does not assign a public id that already exists and does not release a submission', js: true do
     expect(submission.legacy_id).to be_blank
     expect(submission.public_id).to be_blank
-    webaccess_authorize_admin
     submission_2.update_attribute(:public_id, "#{submission_1.id}#{submission_1.author.access_id}")
     submission_3.update_attribute(:public_id, "#{submission_1.id}#{submission_1.author.access_id}-#{submission_1.author.id}")
     submission.update_attribute(:status, 'waiting for final submission response')
@@ -48,7 +52,7 @@ RSpec.describe "Release a submission with a public id" do
     sleep(2)
     submission_1.reload
     expect(page).to have_content('No submissions successfully released for publication.')
-    expect(page).to have_content("Submissions not released: ID: #{submission_1.id} #{submission_1.author.last_name}, #{submission_1.author.first_name}")
+    expect(page).to have_content("Error occurred processing submission id: #{submission_1.id}, #{submission_1.author.last_name}, #{submission_1.author.first_name}")
     expect(Submission.released_for_publication.count).to eql(released_count + 0)
     expect(submission_1.public_id).to be_nil
   end

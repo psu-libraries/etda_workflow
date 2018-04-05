@@ -1,0 +1,11 @@
+<center><h2>Submission Release Results</h2></center>
+<% if results.empty? %>
+ <row><strong>All submissions were successfully published.</strong></row>
+<% else %>
+  <strong><%= I18n.t('released_message.base_error') %></strong>
+  <ul>
+    <% results.each do | msg | %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>

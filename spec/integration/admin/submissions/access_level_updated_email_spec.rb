@@ -6,20 +6,25 @@ RSpec.describe 'actions that send an email notifying users of an access level up
 
     before do
       webaccess_authorize_admin
-      # submission.invention_disclosures << FactoryBot.create(:invention_disclosure)
+      webaccess_authorize_author
     end
 
     it 'sends an email to the appropriate people with the updated access level information' do
       author = FactoryBot.create :author
-      submission = FactoryBot.create :submission, :waiting_for_publication_release, author: author
-      submission.access_level = 'open_access'
-      visit admin_edit_submission_path(submission)
-      find("input#submission_access_level_restricted.restricted").trigger('click')
-      fill_in 'Invention Disclosure Number', with: '2018-1234'
-      click_button "Update Metadata"
-      open_email(submission.author.alternate_email_address)
-      expect(current_email.body).to match(/Old Availability - Open Access/i)
-      expect(current_email.body).to match(/New Availability - Restricted/i)
+      submission = FactoryBot.create :submission, :final_is_restricted, author: author
+      start_count = ActionMailer::Base.deliveries.count
+      visit admin_submissions_index_path(DegreeType.default, 'final_withheld')
+      sleep(3)
+      click_button 'Select Visible'
+      sleep(3)
+      click_button 'Release as Open Access'
+      sleep(2)
+      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 1)
+      email_to_address = submission.author.alternate_email_address || submission.author.psu_email_address
+      open_email(email_to_address)
+      puts current_email.inspect
+      expect(current_email.body).to match(/Old Availability - Restricted/i)
+      expect(current_email.body).to match(/New Availability - Open Access/i)
       expect(current_email).to have_content submission.year
       expect(current_email).to have_content submission.author_full_name
       expect(current_email).to have_content submission.title

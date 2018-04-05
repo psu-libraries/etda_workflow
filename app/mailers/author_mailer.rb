@@ -49,8 +49,7 @@ class AuthorMailer < ActionMailer::Base
 
   def access_level_updated(email)
     @email = email
-
-    mail to: @email[:author_alternate_email_address],
+    mail to: @email[:author_alternate_email_address].presence || @email[:author_psu_email_address],
          cc: @email[:cc_email_addresses],
          from: current_partner.email_address,
          subject: "Access Level for your submission has been updated"

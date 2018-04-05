@@ -77,7 +77,7 @@ class Submission < ApplicationRecord
   after_update :cache_access_level
 
   def cache_access_level
-    @previous_access_level = AccessLevel.new(access_level_before_last_save) # access_level_before_last_save
+    @previous_access_level = AccessLevel.new(access_level_before_last_save) || ''
   end
 
   validates :status, inclusion: { in: SubmissionStatus::WORKFLOW_STATUS }
@@ -269,9 +269,9 @@ class Submission < ApplicationRecord
   end
 
   def self.release_for_publication(submission_ids, date_to_release)
-    Submission.transaction do
-      SubmissionReleaseService.new.publish(submission_ids, date_to_release)
-    end
+    # Submission.transaction do
+    SubmissionReleaseService.new.publish(submission_ids, date_to_release)
+    # end
   end
 
   def self.extend_publication_date(submission_ids, date_to_release)
