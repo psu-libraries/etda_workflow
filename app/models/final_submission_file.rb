@@ -9,7 +9,7 @@ class FinalSubmissionFile < ApplicationRecord
   validates :asset, virus_free: true
 
   # file must be moved to correct path after the final_submission_file id has been created
-  # move file to the correct path
+  # move file to the correct path; needed to upload to released or partially released submissions
   after_save :move_file
 
   # delete the file from the correct path

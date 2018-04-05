@@ -3,13 +3,17 @@ class SubmissionReleaseService
   attr_accessor :previous_access_level
 
   def initialize
-    @error_message = I18n.t('released_message.base_error')
+    @error_message = []
     @error_count = 0
+    @released_submissions = 0
   end
 
   def publish(submission_ids, date_to_release)
     submission_ids.each do |id|
-      publish_a_submission(id, date_to_release)
+      submission = Submission.find(id)
+      original_final_files = final_files_for_submission(submission)
+      next unless file_verification_successful(original_final_files)
+      publish_a_submission(submission, date_to_release, original_final_files)
     end
     final_results(submission_ids.count)
   end
@@ -27,57 +31,64 @@ class SubmissionReleaseService
     location_array
   end
 
+  def release_files(original_file_locations)
+    etda_file_util = EtdaFilePaths.new
+    original_file_locations.each do |fid, original_file_location|
+      msg = etda_file_util.move_a_file(fid, original_file_location)
+      next if msg.blank?
+      record_error(msg)
+      return false
+    end
+    true
+  end
+
+  def file_verification_successful(original_files_array)
+    original_files_array.each do |id, original_file|
+      next if File.exist? original_file
+      record_error("File Not Found for Final Submission File #{id}, #{original_file} ")
+      return false
+    end
+    true
+  end
+
   private
 
-    def publish_a_submission(id, date_to_release)
-      s = Submission.find(id)
-      original_final_files = final_files_for_submission(s)
+    def publish_a_submission(s, date_to_release, original_final_files)
       new_publication_release_date = s.publication_release_date date_to_release
       new_metadata_release_date = s.released_metadata_at.nil? ? date_to_release : s.released_metadata_at
       new_access_level = s.publication_release_access_level
       new_public_id = s.public_id.presence || PublicIdMinter.new(s).id
-      if new_public_id.present?
-        status_giver = SubmissionStatusGiver.new(s)
-        status_giver.can_release_for_publication?
-        new_access_level == 'restricted' ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
-        s.update_attributes(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
-
-        release_files(original_final_files)
-        UpdateSubmissionService.call(s)
-        OutboundLionPathRecord.new(submission: s).report_status_change
-        # Archiver.new(s).create!
-      else
-        @error_message += I18n.t('released_message.submission_error', id: s.id, last_name: s.author.last_name, first_name: s.author.first_name).to_s
-        @error_count += 1
-      end
+      return unless public_id_ok(new_public_id)
+      status_giver = SubmissionStatusGiver.new(s)
+      status_giver.can_release_for_publication?
+      new_access_level == 'restricted' ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
+      s.update_attributes(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
+      return unless release_files(original_final_files)
+      @released_submissions += 1
+      UpdateSubmissionService.call(s)
+      OutboundLionPathRecord.new(submission: s).report_status_change
+      # Archiver.new(s).create!
+    rescue StandardError
+      record_error("Error occurred processing submission id: #{s.id}, #{s.author.last_name}, #{s.author.first_name}")
     end
 
     def final_results(total_submissions)
       released_total = total_submissions - @error_count
       plural_txt = released_total.positive? ? released_total.to_s : 'No'
       result_message = I18n.t('released_message.success', released_count: plural_txt, submissions: 'submission'.pluralize(released_total))
-      result_message += @error_message unless @error_count.zero?
-      result_message
+      @error_message = '' unless @error_count.positive?
+      [result_message, @error_message]
     end
 
-    def release_files(original_file_locations)
-      original_file_locations.each do |fid, original_file_location|
-        EtdaFilePaths.new.move_a_file(fid, original_file_location)
-        # updated_file = FinalSubmissionFile.find(fid)
-        #
-        # # this is calculating the new location based on updated submission and file attributes
-        # new_location = updated_file.new_location_path
-        #
-        # # create file path if it doesn't exist
-        # FileUtils.mkpath(new_location)
-        #
-        # # file path + file name
-        # new_file_location = new_location + updated_file.asset_identifier
-        # FileUtils.mv(original_file_location, new_file_location) unless new_file_location == original_file_location
+    def public_id_ok(new_public_id)
+      return true if new_public_id.present?
+      record_error("Public ID error" + I18n.t('released_message.submission_error', id: s.id, last_name: s.author.last_name, first_name: s.author.first_name).to_s)
+      false
+    end
 
-        # move to explore/open_access if new_access_level == 'open_access'
-        # move to explore/psu_only if new_access_level == 'restricted_to_institution'
-        # move to workflow/restricted if new_access_level == 'restricted'
-      end
+    def record_error(message)
+      Rails.logger.error(Time.zone.now.to_s + 'Final Submission release-unrelease error:' + message)
+      @error_message << message
+      @error_count += 1
     end
 end

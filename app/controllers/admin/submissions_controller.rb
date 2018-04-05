@@ -50,9 +50,11 @@ class Admin::SubmissionsController < AdminController
 
   def release_for_publication
     ids = params[:submission_ids].split(',')
-    result_message = Submission.release_for_publication(ids, Date.strptime(params[:date_to_release], '%m/%d/%Y'))
-    flash[:notice] = result_message
-    redirect_to admin_submissions_dashboard_path(params[:degree_type])
+    results = Submission.release_for_publication(ids, Date.strptime(params[:date_to_release], '%m/%d/%Y'))
+    # error = results[1] *****MUST DISPLAY ERRORS
+    flash[:notice] = results[0]
+    render 'admin/submissions/publication_release_results', locals: { results: results[1] }
+    # redirect_to admin_submissions_dashboard_path(params[:degree_type])
   rescue SubmissionStatusGiver::AccessForbidden
     flash[:alert] = 'There was a problem releasing the submissions, please try again.'
     redirect_to session.delete(:return_to)
