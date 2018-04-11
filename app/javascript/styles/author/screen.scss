@@ -1,7 +1,3 @@
-//@import '~bootstrap-sass/assets/stylesheets/bootstrap/mixins';
-//@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables';
-//@import '~bootstrap-sass/assets/stylesheets/bootstrap/_type';
-
 @import "../base/_base.scss";
 
 #submissions {
@@ -22,8 +18,6 @@
     }
   }
 }
-
-@include clearfix();
 
 .progress-indicator {
   .step {

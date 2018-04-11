@@ -11,7 +11,6 @@ class Admin < ApplicationRecord
             :psu_email_address,
             :psu_idn,
             :administrator,
-            :site_administrator,
             presence: true
 
   def self.current

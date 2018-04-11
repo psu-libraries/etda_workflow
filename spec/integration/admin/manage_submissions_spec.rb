@@ -11,6 +11,7 @@ RSpec.describe "Manage Submissions", js: true do
   outbound_active = Rails.application.config_for(:lion_path)[current_partner.id.to_s][:lion_path_outbound]
 
   before do
+    webaccess_authorize_author
     webaccess_authorize_admin
     visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')
   end

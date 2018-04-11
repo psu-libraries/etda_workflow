@@ -8,6 +8,11 @@ FactoryBot.define do
     sequence :psu_email_address, 1000 do |n|
       "XYZ#{n}@psu.edu"
     end
+
+    sequence :alternate_email_address, 1000 do |n|
+      "ALT#{n}@company.com"
+    end
+
     sequence :psu_idn, 900000000 do |n|
       n.to_s.to_s
     end
@@ -15,8 +20,7 @@ FactoryBot.define do
 
     first_name "Joseph"
     middle_name "Quicny"
-    last_name "Example"
-    alternate_email_address "email@domain.com"
+    last_name { Faker::Name.unique.name }
     phone_number "123-456-7890"
     is_alternate_email_public current_partner.graduate? ? true : false
     address_1 "123 Example Ave."
@@ -25,11 +29,20 @@ FactoryBot.define do
     state "PA"
     zip "16801"
     updated_at { 4.days.ago }
+    opt_out_email false
+    opt_out_default false
     # inbound_lion_path_record { FactoryBot.create(:inbound_lion_path_record }
+  end
+
+  trait :opt_out_default do
+    opt_out_email false
+    opt_out_default true
   end
 
   trait :author_from_ldap do
     alternate_email_address ""
+    opt_out_email false
+    opt_out_default true
     to_create { |instance| instance.save(validate: false) }
   end
 

@@ -1,10 +1,8 @@
-import Ember from 'ember';
+import Action from 'liquid-fire/action';
+import RunningTransition from 'liquid-fire/running-transition';
+import TransitionMap from 'liquid-fire/transition-map';
 
-import Action from "liquid-fire/action";
-import RunningTransition from "liquid-fire/running-transition";
-import TransitionMap from "liquid-fire/transition-map";
-
-const wormholeActionMap = new Ember.WeakMap();
+const wormholeActionMap = new WeakMap();
 
 export default TransitionMap.extend({
   transitionFor(conditions) {

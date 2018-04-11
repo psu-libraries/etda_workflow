@@ -1,21 +1,22 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import EmberObject, { computed } from '@ember/object';
+import { gt } from '@ember/object/computed';
+import { scheduleOnce, next } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import { A } from '@ember/array';
 import HashMap from 'perf-primitives/hash-map';
 import layout from '../templates/components/liquid-destination';
 
-const { inject, computed, A } = Ember;
-const { gt } = computed;
-const { service } = inject;
-
-export default Ember.Component.extend({
+export default Component.extend({
   layout,
   classNames: ['liquid-destination'],
   classNameBindings: ['hasWormholes'],
 
   name: 'default',
   liquidWormholeService: service('liquidWormhole'),
-  matchContext: {
-    helperName: 'liquid-wormhole'
-  },
+  matchContext: computed(() => {
+    return { helperName: 'liquid-wormhole' };
+  }),
 
   hasWormholes: gt('stacks.length', 0),
 
@@ -56,7 +57,7 @@ export default Ember.Component.extend({
 
     this.wormholeQueue.insertAt(appendIndex + 1, wormhole);
 
-    Ember.run.scheduleOnce('afterRender', this, this.flushWormholeQueue);
+    scheduleOnce('afterRender', this, this.flushWormholeQueue);
   },
 
   removeWormhole(wormhole) {
@@ -68,7 +69,7 @@ export default Ember.Component.extend({
     item.set('nodes', newNodes);
     item.set('_replaceNodes', true);
 
-    Ember.run.next(() => stack.removeObject(item));
+    next(() => stack.removeObject(item));
   },
 
   flushWormholeQueue() {
@@ -79,7 +80,7 @@ export default Ember.Component.extend({
       const nodes = wormhole.get('nodes');
       const value = wormhole.get('value');
 
-      const item = Ember.Object.create({ nodes, wormhole, value });
+      const item = EmberObject.create({ nodes, wormhole, value });
 
       // Reset visibility in case we made them visible, see below
       nodes.css({ visibility: 'hidden' });

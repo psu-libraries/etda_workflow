@@ -1,18 +1,18 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { typeOf } from '@ember/utils';
+import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
+import { reads } from '@ember/object/computed';
+import { guidFor } from '@ember/object/internals';
 import layout from '../templates/components/liquid-wormhole';
 
-const { computed, inject, generateGuid } = Ember;
-
-const { service } = inject;
-const { reads } = computed;
-
-export default Ember.Component.extend({
+export default Component.extend({
   layout,
 
   to: reads('destination'),
   liquidWormholeService: service('liquid-wormhole'),
 
-  stack: computed(() => generateGuid()),
+  stack: computed(() => guidFor(this)),
 
   // Truthy value by default
   value: true,
@@ -24,7 +24,7 @@ export default Ember.Component.extend({
     this.set('wormholeClass', wormholeClass);
     this.set('wormholeId', wormholeId);
 
-    if (Ember.typeOf(this.get('send')) !== 'function') {
+    if (typeOf(this.get('send')) !== 'function') {
       this.set('hasSend', true);
     }
 

@@ -116,7 +116,7 @@ module.exports = {
 |[`stringifier`](#syntaxes)|`{String\|Object}`|`undefined`|Set PostCSS Stringifier|
 |[`config`](#config)|`{Object}`|`undefined`|Set `postcss.config.js` config path && `ctx`|
 |[`plugins`](#plugins)|`{Array\|Function}`|`[]`|Set PostCSS Plugins|
-|[`sourceMap`](#sourceMap)|`{String\|Boolean}`|`false`|Enable Source Maps|
+|[`sourceMap`](#sourcemap)|`{String\|Boolean}`|`false`|Enable Source Maps|
 
 ### `Exec`
 
@@ -175,7 +175,7 @@ module.exports = ({ file, options, env }) => ({
   plugins: {
     'postcss-import': { root: file.dirname },
     'postcss-cssnext': options.cssnext ? options.cssnext : false,
-    'autoprefixer': env == 'production' ? options.autoprefixer : false,
+    'autoprefixer': env === 'production' ? options.autoprefixer : false,
     'cssnano': env === 'production' ? options.cssnano : false
   }
 })

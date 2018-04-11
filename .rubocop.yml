@@ -296,6 +296,9 @@ Style/BlockDelimiters:
   Exclude:
    - 'config/deploy.rb'
 
+Style/EmptyMethod:
+  Enabled: false
+
 
 RSpec/AnyInstance:
   Enabled: false

@@ -11,6 +11,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
 
   before do
     webaccess_authorize_admin
+    webaccess_authorize_author
     visit admin_edit_submission_path(submission)
     sleep(3)
     fill_in "Title", with: "A Brand New TITLE"
@@ -138,7 +139,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
       # program = FactoryBot.create(:program, name: "Any Program", is_active: true)
       # degree = FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true, degree_type: DegreeType.default)
       legacy_submission = FactoryBot.create(:submission, :waiting_for_publication_release)
-      author_name = submission.author.last_name
+      # author_name = submission.author.last_name
       legacy_submission.legacy_id = 888
       legacy_submission.save
 
@@ -154,7 +155,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
 
       visit admin_submissions_index_path(degree_type: DegreeType.default, scope: 'final_submission_submitted')
 
-      expect(page).to have_content author_name
+      expect(page).to have_content legacy_submission.author.last_name
       sleep(4)
       visit admin_edit_submission_path(legacy_submission)
       expect(page).to have_content 'Final Submission Evaluation'

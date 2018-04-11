@@ -17,8 +17,7 @@ class Author < ApplicationRecord
             :last_name,
             :psu_email_address,
             :alternate_email_address,
-            :psu_idn,
-            presence: true
+            :psu_idn, presence: true
 
   # validate for graduate authors only
   validates :phone_number,
@@ -26,6 +25,9 @@ class Author < ApplicationRecord
             :city,
             :state,
             :zip, presence: true, if: proc { current_partner.graduate? }
+
+  validates :opt_out_email,
+            :opt_out_default, inclusion: { in: [true, false] }, if: proc { current_partner.graduate? }
 
   validates :alternate_email_address,
             :psu_email_address,
@@ -111,6 +113,14 @@ class Author < ApplicationRecord
     return false if inbound_lion_path_record.nil?
     return false if inbound_lion_path_record.current_data.empty?
     true
+  end
+
+  def opt_out_email?
+    opt_out_email
+  end
+
+  def opt_out_default?
+    opt_out_default
   end
 
   private

@@ -24,6 +24,8 @@ Rails.application.routes.draw do
     get '/committee_report', to: 'reports#committee_report_index', as: :committee_report_index
     patch '/committee_report_export', to: 'reports#committee_report_export', defaults: { format: 'csv' }, as: :committee_report_export
 
+    get '/authors/contact_list', to: 'authors#email_contact_list', as: :email_contact_list
+
     get '/submissions/:id/edit', to: 'submissions#edit', as: :edit_submission
     delete '/submissions', to: 'submissions#bulk_destroy', as: :delete_submissions
 
@@ -49,6 +51,8 @@ Rails.application.routes.draw do
 
     get '/files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
     get '/files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
+
+
 
     root to: 'submissions#redirect_to_default_dashboard'
 

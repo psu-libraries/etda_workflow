@@ -22,6 +22,9 @@ class Admin::AuthorsController < AdminController
     render :edit
   end
 
+  def email_contact_list
+  end
+
   private
 
   def author_params
@@ -38,7 +41,9 @@ class Admin::AuthorsController < AdminController
                                :city,
                                :state,
                                :zip,
-                               :country]
+                               :country,
+                               :opt_out_email,
+                               :opt_out_default]
 
     author_params_permitted.merge(:inbound_lion_path_record_attributes[:lion_path_degree_code, :id, :author_id, :current_record]) if InboundLionPathRecord.active?
 

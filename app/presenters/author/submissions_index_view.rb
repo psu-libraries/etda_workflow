@@ -9,7 +9,7 @@ class Author::SubmissionsIndexView
   end
 
   def partial_name
-    if new_author?
+    if update_contact_information?
       'confirm_contact_information_instructions'
     elsif author_has_submissions?
       'submissions'
@@ -22,8 +22,12 @@ class Author::SubmissionsIndexView
     Rails.application.routes.url_helpers.edit_author_author_path(@author)
   end
 
-  def new_author?
-    @author.alternate_email_address.nil?
+  def update_contact_information?
+    if current_partner.graduate?
+      @author.opt_out_default? || @author.alternate_email_address.nil?
+    else
+      @author.alternate_email_address.nil?
+    end
   end
 
   def author_has_submissions?
