@@ -37,6 +37,8 @@ RSpec.describe Author, type: :model do
   it { is_expected.to validate_presence_of(:psu_email_address) }
   it { is_expected.to validate_presence_of(:alternate_email_address) }
   it { is_expected.to validate_presence_of(:psu_idn) }
+  it { is_expected.to have_db_column(:opt_out_email).of_type(:boolean) }
+  it { is_expected.to have_db_column(:opt_out_default).of_type(:boolean) }
 
   if current_partner.graduate?
     it { is_expected.to validate_presence_of(:phone_number) }
@@ -224,6 +226,14 @@ RSpec.describe Author, type: :model do
       author.inbound_lion_path_record = nil
       expect(author).not_to be_academic_plan
     end
+  end
+
+  context '#opt_out_email default is false' do
+    it { expect(Author.new).not_to be_opt_out_email }
+  end
+
+  context '#opt_out_default default is true' do
+    it { expect(Author.new.opt_out_default).to be_truthy }
   end
 
   context '#populate_lion_path_record' do

@@ -7,4 +7,4 @@ if File.exist?(gemfile)
   Bundler.setup
 end
 
-$LOAD_PATH.unshift File.expand_path('../../../../lib', __FILE__)
+$:.unshift File.expand_path('../../../../lib', __FILE__)

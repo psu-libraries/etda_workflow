@@ -78,6 +78,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 
   config.before(:suite) do
+    Faker::Name.unique.clear
     DatabaseCleaner.clean_with(:truncation)
     DegreeType.seed
     CommitteeRole.seed

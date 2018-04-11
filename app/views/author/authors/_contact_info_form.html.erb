@@ -3,8 +3,7 @@
 
   <%= simple_form_for [:author, @author] do |f| %>
     <%= f.input :alternate_email_address, required: true, class: 'form-group', wrapper: :hint_top, hint: I18n.t("#{current_partner.id}.partner.alternate_email_hint")  %>
-    <%= f.input :is_alternate_email_public, label: "Display your alternate email address on your #{current_partner.slug} document summary page?", as: :boolean, wrapper: :checkbox if current_partner.graduate? %>
-
+    <%= render partial: 'graduate_checkboxes', locals: {f: f} if current_partner.graduate? %>
     <div class="form-group actions">
       <%= render partial: 'extended_address_form', locals: {f: f} if current_partner.graduate? %>
       <div class="col-xs-4" >

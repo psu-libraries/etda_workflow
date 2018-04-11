@@ -1,9 +1,9 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import Service from '@ember/service';
+import { getOwner } from '@ember/application';
 import HashMap from 'perf-primitives/hash-map';
 
-const { getOwner } = Ember;
-
-export default Ember.Service.extend({
+export default Service.extend({
   init() {
     this._super(...arguments);
 
@@ -56,8 +56,8 @@ export default Ember.Service.extend({
 
     if (instance.rootElement) {
       destination.appendTo(instance.rootElement);
-    } else if (Ember.$('.ember-application').length > 0) {
-      destination.appendTo(Ember.$('.ember-application')[0]);
+    } else if ($('.ember-application').length > 0) {
+      destination.appendTo($('.ember-application')[0]);
     } else {
       destination.appendTo(document);
     }

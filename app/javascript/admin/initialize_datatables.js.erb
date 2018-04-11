@@ -92,6 +92,10 @@ setup_datatables = function() {
         common_options
     );
 
+    $('#authors-email-contact-list.datatable').dataTable(
+        common_options
+    );
+
     const column_options = () =>
         table.find('th').map(function() {
             const column = $(this);

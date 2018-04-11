@@ -29,8 +29,9 @@ CREATE TABLE `authors` (
   `is_site_admin` tinyint(1) DEFAULT '0',
   `psu_idn` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `confidential_hold` tinyint(1) DEFAULT NULL,
-  `confidential_hold_set_at` datetime DEFAULT NULL
-);
+  `confidential_hold_set_at` datetime DEFAULT NULL,
+  `opt_out_email` tinyint(1) DEFAULT FALSE,
+  `opt_out_default` tinyint(1) DEFAULT TRUE);
 
 INSERT INTO `authors` (
   `id`,
@@ -62,10 +63,12 @@ INSERT INTO `authors` (
   `is_site_admin`,
   `psu_idn`,
   `confidential_hold`,
-  `confidential_hold_set_at`)
+  `confidential_hold_set_at`,
+  `opt_out_email`,
+  `opt_out_default`)
 VALUES
-	(1, "ggg555", "George", "Great", "The", "ggg@gmail.com", "ggg555@psu.edu", "555-555-5555", "555 Five Dr", "", "FiveCity", "PA", "16805", 0, "2009-11-30", "2016-04-14", NULL, 0, NULL, NULL, NULL, NULL, NULL, 9, NULL, 0, 0, "955555555", NULL, NULL),
-	(2, "hhh111", "Henry", "Hamil", "H", "hhh111@gmail.com", "hhh111@psu.edu", "999 999 9999", "999 Nine Lane", "", "State College", "PA", "16801", 1, "2009-11-25", "2011-12-18", NULL, 0, NULL, NULL, NULL, NULL, 13, NULL, 0, 0, NULL, NULL, NULL, NULL),
-	(3, "aaa000", "Author", "Andrews", "A.", "aaa@gmail.com", "aaa@psu.edu", "888-888-8888", "888 Eight Drive apt#201", "", "State College", "PA", "16808", 1, "2009-12-01", "2016-04-05", NULL, 0, NULL, NULL, NULL, NULL, 27, NULL, 0, 0, NULL, NULL, NULL, NULL);
+	(1, "ggg555", "George", "Great", "The", "ggg@gmail.com", "ggg555@psu.edu", "555-555-5555", "555 Five Dr", "", "FiveCity", "PA", "16805", 0, "2009-11-30", "2016-04-14", NULL, 0, NULL, NULL, NULL, NULL, NULL, 9, NULL, 0, 0, "955555555", NULL, NULL, TRUE, TRUE),
+	(2, "hhh111", "Henry", "Hamil", "H", "hhh111@gmail.com", "hhh111@psu.edu", "999 999 9999", "999 Nine Lane", "", "State College", "PA", "16801", 1, "2009-11-25", "2011-12-18", NULL, 0, NULL, NULL, NULL, NULL, 13, NULL, 0, 0, NULL, NULL, NULL, NULL, TRUE, TRUE),
+	(3, "aaa000", "Author", "Andrews", "A.", "aaa@gmail.com", "aaa@psu.edu", "888-888-8888", "888 Eight Drive apt#201", "", "State College", "PA", "16808", 1, "2009-12-01", "2016-04-05", NULL, 0, NULL, NULL, NULL, NULL, 27, NULL, 0, 0, NULL, NULL, NULL, NULL, TRUE, TRUE);
 
 

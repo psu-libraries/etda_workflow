@@ -22,4 +22,9 @@ RSpec.describe Admin::AuthorsController, type: :controller do
       expect(patch: "/admin/authors/#{author.id}", params: { author: { id: author.id, first_name: author.first_name, last_name: 'Addifferentlastname', psu_email_address: author.psu_email_address, alternate_email_address: author.alternate_email_address, phone_number: author.phone_number } }).to route_to(controller: 'admin/authors', action: 'update', id: author.id.to_s)
     end
   end
+  describe '#email_contact_list' do
+    it 'lists authors with released publications' do
+      expect(get: '/admin/authors/contact_list').to route_to(controller: 'admin/authors', action: 'email_contact_list')
+    end
+  end
 end

@@ -1,2 +1,4 @@
 
   <%= f.input :is_alternate_email_public, label: "Display your alternate email address on your #{current_partner.slug} document summary page?", as: :boolean, wrapper: :checkbox %>
+  <%= f.input :opt_out_email, label: "Do not send correspondence to my alternate email address after graduation", as: :boolean, wrapper: :checkbox if current_partner.graduate? %>* Opt-out value set by <%= @author.opt_out_default? ? 'application' : 'author' if current_partner.graduate? %>
+

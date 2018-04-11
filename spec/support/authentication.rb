@@ -27,10 +27,10 @@ class StubbedAuthenticationStrategy < ::Devise::Strategies::Base
 end
 
 module StubbedAuthenticationHelper
-  def webaccess_auth_and_visit(path)
-    webaccess_auth
-    visit path
-  end
+  # def webaccess_auth_and_visit(path)
+  #   webaccess_auth
+  #   visit path
+  # end
 
   def webaccess_authorize_author
     sign_in_as_author current_author
@@ -43,11 +43,13 @@ module StubbedAuthenticationHelper
   def current_author
     @current_author ||= FactoryBot.create(:author, access_id: 'authorflow', psu_email_address: 'authorflow@psu.edu')
     Author.current = @current_author
+    @current_author
   end
 
   def current_admin
-    @current_admin ||= FactoryBot.create(:admin, access_id: 'adminflow', administrator: true, site_administrator: true)
+    @current_admin = Admin.new(access_id: 'adminflow', administrator: true, site_administrator: true, last_name: 'Admin', first_name: 'admin').save
     Admin.current = @current_admin
+    @current_admin
   end
 
   # Call this method in your "before" block to be signed in as the given user
@@ -57,8 +59,8 @@ module StubbedAuthenticationHelper
     # to ensure we visit pages that belong to the new_owner
     #     Capybara.page.driver.browser.remove_cookie '_etdflow_session'
 
-    Capybara.page.driver.browser.remove_cookie '_etdflow_session'
-    Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_session', path: '/author')
+    Capybara.page.driver.browser.remove_cookie '_etdflow_author_session'
+    Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_author_session', path: '/author')
     StubbedAuthenticationStrategy.author = author
     Warden::Strategies.add :webaccess_authenticatable,
                            StubbedAuthenticationStrategy
@@ -67,8 +69,8 @@ module StubbedAuthenticationHelper
   def sign_in_as_admin(admin)
     # Remove the session cookie for the original_owner
     # to ensure we visit pages that belong to the new_owner
-    Capybara.page.driver.browser.remove_cookie '_etdflow_session'
-    Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_session', path: '/admin')
+    Capybara.page.driver.browser.remove_cookie '_etdflow_admin_session'
+    Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_admin_session', path: '/admin')
     StubbedAuthenticationStrategy.admin = admin
     Warden::Strategies.add :webaccess_authenticatable,
                            StubbedAuthenticationStrategy

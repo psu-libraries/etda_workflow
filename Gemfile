@@ -122,6 +122,7 @@ group :development, :test do
   gem 'capybara-email'
 
   gem 'factory_bot_rails'
+  gem 'faker'
 
   gem 'simplecov', require: false
 end

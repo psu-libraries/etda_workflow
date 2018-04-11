@@ -38,6 +38,8 @@ class Legacy::Importer
                    last_sign_in_ip: legacy_author['last_sign_in_ip'],
                    last_sign_in_at: legacy_author['last_sign_in_at'],
                    legacy_id: legacy_author['legacy_id'],
+                   opt_out_email: true,
+                   opt_out_default: true,
                    psu_idn: legacy_author['psu_idn']).save(validate: false)
         rescue StandardError => e
         msg = "Error on author record #{legacy_author['id']}"

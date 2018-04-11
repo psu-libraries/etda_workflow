@@ -1,12 +1,12 @@
 /* global test expect, describe */
 
-const chdirApp = () => process.chdir('test/test_app')
-const chdirCwd = () => process.chdir(process.cwd())
-chdirApp()
+const { chdirTestApp, chdirCwd } = require('../utils/helpers')
+
+chdirTestApp()
 
 const config = require('../config')
 
-describe('Webpacker.yml config', () => {
+describe('Config', () => {
   afterAll(chdirCwd)
 
   test('should return extensions as listed in app config', () => {
@@ -15,6 +15,9 @@ describe('Webpacker.yml config', () => {
       '.sass',
       '.scss',
       '.css',
+      '.module.sass',
+      '.module.scss',
+      '.module.css',
       '.png',
       '.svg',
       '.gif',

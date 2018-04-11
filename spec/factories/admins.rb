@@ -1,18 +1,10 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :admin, class: Admin do |_p|
-    sequence :access_id, 1000 do |n|
-      "ADM#{n}"
-    end
-    sequence :psu_email_address, 1000 do |n|
-      "ADM#{n}@psu.edu"
-    end
-    sequence :psu_idn, 900000000 do |n|
-      n.to_s.to_s
-    end
-    # rubocop:enable Style/NumericLiterals
-
+  factory :admin do
+    access_id 'admin123'
+    psu_email_address 'admin@psu.edu'
+    psu_idn '99999999'
     first_name "Betty"
     last_name "Partner-Admin"
     phone_number "888-193-3333"
@@ -22,7 +14,7 @@ FactoryBot.define do
     updated_at { 4.days.ago }
   end
 
-  trait :site_administrator do
+  trait :site_administration do
     site_administrator true
   end
 end
