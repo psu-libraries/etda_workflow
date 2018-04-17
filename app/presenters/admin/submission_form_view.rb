@@ -101,4 +101,9 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'Unknown' if date_in.blank?
     date_in.strftime('%Y-%m-%d')
   end
+
+  def withdraw_message
+    return '' unless status_behavior.released_for_publication?
+    '<div class="withdraw-msg">In order to update a published submission, it must be withdrawn from publication and then released.  The withdraw button is at the bottom of the page.</div>'.html_safe
+  end
 end

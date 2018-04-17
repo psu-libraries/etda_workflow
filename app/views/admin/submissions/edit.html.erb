@@ -1,5 +1,6 @@
 <h2><%= @view.title %></h2>
 
+<strong><%= "#{@view.withdraw_message}".html_safe %></strong>
 <%= render partial: 'shared/error_messages', locals: { object: @submission } %>
 
 <%= simple_form_for @submission, url: @view.form_for_url, html: { class: "admin-edit-submission #{@submission.status_class}" } do |f| %>
