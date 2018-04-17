@@ -221,6 +221,7 @@ RSpec/MultipleExpectations:
   Exclude:
    - 'spec/lib/tasks/legacy/legacy_importer_spec.rb'
    - 'spec/integration/admin/manage_authors_spec.rb'
+   - 'spec/integration/admin/submissions/edit_released_unreleased_spec.rb'
 
 
 RSpec/NestedGroups:

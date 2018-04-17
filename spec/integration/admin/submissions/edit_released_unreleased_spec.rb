@@ -36,7 +36,11 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     fill_in "Admin notes", with: "Some admin notes"
   end
 
-  it "Saves the updated submission data" do
+  it 'Displays a message indicating the submission must be withdrawn to edit' do
+    expect(page).to have_content('In order to update a published submission, it must be withdrawn from publication and then released. The withdraw button is at the bottom of the page.
+')
+    expect(page).to have_button('Withdraw Publication')
+    expect(page).not_to have_button('Update Metadata')
     expect(field_labeled('Date Defended', disabled: true)).to be_truthy if submission.using_lionpath?
     fill_in "Abstract", with: "New abstract text"
 
@@ -58,9 +62,16 @@ RSpec.describe "Editing a released submission as an admin", js: true do
 
     fill_in "Final Submission Notes to Student", with: "New final notes"
 
-    click_button "Update Metadata"
+    click_button "Withdraw Publication"
+    sleep(2)
+    expect(page).to have_content "Submission for #{submission.author.first_name} #{submission.author.last_name} was successfully un-published "
+
+    visit admin_edit_submission_path(submission)
+    sleep(3)
+    submission.reload
+    expect(submission.status).to eq('waiting for publication release')
+    expect(page).to have_button('Update Metadata')
     expect(page).to have_current_path(admin_edit_submission_path(submission))
-    expect(page).to have_content "The submission was successfully updated."
 
     expect(page.find_field("Title").value).to eq "A Brand New TITLE"
     expect(page.find_field("Allow completely upper-case words in title")).to be_checked
@@ -130,6 +141,8 @@ RSpec.describe "Editing a released submission as an admin", js: true do
       # visit admin_edit_submission_path(submission)
       expect(page).to have_content 'Final Submission Evaluation'
       expect(find(:css, 'input#submission_title').value).to eq('A Better Title')
+      submission.reload
+      expect(submission.status).to eq('waiting for final submission response')
     end
   end
 
@@ -160,6 +173,8 @@ RSpec.describe "Editing a released submission as an admin", js: true do
       visit admin_edit_submission_path(legacy_submission)
       expect(page).to have_content 'Final Submission Evaluation'
       expect(find(:css, 'input#submission_title').value).to eq('')
+      legacy_submission.reload
+      expect(legacy_submission.status).to eq('waiting for final submission response')
     end
   end
 end
