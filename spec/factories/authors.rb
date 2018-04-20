@@ -17,6 +17,10 @@ FactoryBot.define do
       n.to_s.to_s
     end
     # rubocop:enable Style/NumericLiterals
+    #
+    sequence :legacy_id, 100 do |n|
+      n.to_s.to_s
+    end
 
     first_name "Joseph"
     middle_name "Quicny"

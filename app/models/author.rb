@@ -19,6 +19,10 @@ class Author < ApplicationRecord
             :alternate_email_address,
             :psu_idn, presence: true
 
+  validates :access_id,
+            :psu_idn,
+            :legacy_id, uniqueness: true
+
   # validate for graduate authors only
   validates :phone_number,
             :address_1,

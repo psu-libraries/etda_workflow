@@ -13,6 +13,8 @@ class Admin < ApplicationRecord
             :administrator,
             presence: true
 
+  validates :access_id, uniqueness: true
+
   def self.current
     Thread.current[:admin]
   end
