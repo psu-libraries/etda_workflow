@@ -3,3 +3,4 @@
 --tty
 --tag ~ldap
 --tag ~glacial
+--tag ~import_test

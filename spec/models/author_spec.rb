@@ -40,6 +40,10 @@ RSpec.describe Author, type: :model do
   it { is_expected.to have_db_column(:opt_out_email).of_type(:boolean) }
   it { is_expected.to have_db_column(:opt_out_default).of_type(:boolean) }
 
+  it { is_expected.to validate_uniqueness_of(:access_id) }
+  it { is_expected.to validate_uniqueness_of(:psu_idn) }
+  it { is_expected.to validate_uniqueness_of(:legacy_id) }
+
   if current_partner.graduate?
     it { is_expected.to validate_presence_of(:phone_number) }
     it { is_expected.to validate_presence_of(:address_1) }

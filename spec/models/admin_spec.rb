@@ -20,6 +20,7 @@ RSpec.describe Admin, type: :model do
   it { is_expected.to have_db_column(:current_sign_in_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:last_sign_in_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:current_sign_in_ip).of_type(:string) }
+  it { is_expected.to validate_uniqueness_of(:access_id) }
 
   context '#admin_user?' do
     it 'knows when an author has admin privileges' do

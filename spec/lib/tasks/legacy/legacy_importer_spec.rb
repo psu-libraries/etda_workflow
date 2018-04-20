@@ -3,14 +3,15 @@
 require 'rails_helper'
 require 'shoulda-matchers'
 
-RSpec.describe "Rake::Task['legacy:import']", type: :task do
+RSpec.describe "Rake::Task['legacy:import']", :import_test, type: :task do
+  # before running this test run, 'rails legacy:db:test_fixtures:load'
   before do
     Rails.application.load_tasks
     CommitteeRole.all.each(&:destroy)
     DegreeType.all.each(&:destroy)
   end
 
-  xit 'imports legacy  data' do
+  it 'imports legacy  data' do
     expect(Author.all.count).to be(0)
     expect(DegreeType.all.count).to be(0)
     expect(CommitteeRole.all.count).to be(0)
