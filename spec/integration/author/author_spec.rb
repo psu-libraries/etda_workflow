@@ -6,7 +6,7 @@ RSpec.describe 'Author submission page', type: :integration, js: true do
     visit author_submissions_path
   end
 
-  let!(:author) { current_author }
+  let!(:author) { @current_author }
 
   context 'Author Submissions Page' do
     it 'displays a paragraph of thesis instructions' do

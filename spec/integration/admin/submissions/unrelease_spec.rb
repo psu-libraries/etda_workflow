@@ -13,7 +13,6 @@ RSpec.describe "Unrelease a submission", js: true do
     # expect(SolrDataImportService).to receive(:delta_import)
     webaccess_authorize_admin
     visit admin_edit_submission_path(submission)
-
     fill_in "Title", with: "A Better Title"
     click_button "Withdraw Publication"
   end

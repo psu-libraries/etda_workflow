@@ -1,10 +1,9 @@
 // This is a manifest file that'll be compiled into admin.js, which will include all the files
 // listed below.
 //
-
+require('popper.js');
 require('bootstrap3/dist/css/bootstrap.min.css');
 require('bootstrap3/dist/css/bootstrap.css');
-require('jquery-ui/ui/widgets/tooltip');
 require('../styles/admin/datatable_images.css.scss');
 require( 'datatables.net-bs' );
 require('../styles/base/_base.scss');

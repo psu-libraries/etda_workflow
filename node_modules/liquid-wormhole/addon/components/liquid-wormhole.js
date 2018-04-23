@@ -12,7 +12,9 @@ export default Component.extend({
   to: reads('destination'),
   liquidWormholeService: service('liquid-wormhole'),
 
-  stack: computed(() => guidFor(this)),
+  stack: computed(function() {
+    return guidFor(this);
+  }),
 
   // Truthy value by default
   value: true,

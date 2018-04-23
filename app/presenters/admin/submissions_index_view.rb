@@ -5,7 +5,11 @@ class Admin::SubmissionsIndexView
   def initialize(degree_type, scope, context)
     @degree_type = DegreeType.find_by!(slug: degree_type)
     @scope = scope
-    @submissions = Submission.joins(:degree).includes(:author).where('degrees.degree_type_id' => @degree_type.id).send(scope_method).map { |s| SubmissionDecorator.new(s, context) }
+    @submissions = Submission.joins(:degree).includes(:author).where('degrees.degree_type_id' => @degree_type.id).send(scope_method).map { |s| Admin::SubmissionView.new(s, context) }
+  end
+
+  def submission_views
+    submissions
   end
 
   def table_header_partial_path
