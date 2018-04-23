@@ -11,7 +11,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
 
   before do
     webaccess_authorize_admin
-    webaccess_authorize_author
+    # webaccess_authorize_author
     visit admin_edit_submission_path(submission)
     sleep(3)
     fill_in "Title", with: "A Brand New TITLE"
@@ -61,7 +61,6 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     end
 
     fill_in "Final Submission Notes to Student", with: "New final notes"
-
     click_button "Withdraw Publication"
     sleep(2)
     expect(page).to have_content "Submission for #{submission.author.first_name} #{submission.author.last_name} was successfully un-published "

@@ -16,7 +16,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
       visit admin_submissions_index_path(DegreeType.default, 'final_withheld')
       sleep(3)
       click_button 'Select Visible'
-      sleep(3)
+      sleep(5)
       click_button 'Release as Open Access'
       sleep(2)
       expect(ActionMailer::Base.deliveries.count).to eq(start_count + 1)

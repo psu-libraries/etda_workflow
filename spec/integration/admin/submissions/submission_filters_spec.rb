@@ -6,8 +6,7 @@ RSpec.describe "Submission filter with semester dropdown", js: true do
   let!(:role) { CommitteeRole.first.name }
   let(:submission1) { FactoryBot.create(:submission, :waiting_for_final_submission_response) }
   let(:submission2) { FactoryBot.create(:submission, :waiting_for_final_submission_response) }
-  let(:author_name) { submission.author.last_name }
-  let(:admin) { FactoryBot.create :admin }
+  # let(:admin) { FactoryBot.create :admin }
   let(:degree_type) { DegreeType.default }
   let(:submission_year) { '2025' }
   let(:submission_semester) { 'Spring' }

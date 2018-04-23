@@ -62,7 +62,7 @@ Metrics/ClassLength:
   - app/presenters/admin/submissions_dashboard_view.rb
   - app/presenters/admin/submissions_index_view.rb
   - app/controllers/author/submissions_controller.rb
-  - app/presenters/submission_view.rb
+  - app/presenters/author/submission_view.rb
   - app/services/final_submission_update_service.rb
 
 

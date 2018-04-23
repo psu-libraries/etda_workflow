@@ -19,6 +19,7 @@ RSpec.describe "Manage Authors", js: true do
     allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
     allow_any_instance_of(Author).to receive(:populate_with_ldap_attributes).and_return(true)
     expect(page).to have_current_path(admin_authors_path)
+    sleep(3)
     expect(page).to have_content('Authors')
     expect(page).to have_content('Access ID')
     expect(page).to have_content('Last Name')

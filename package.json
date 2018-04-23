@@ -23,6 +23,7 @@
     "jquery-ui": "^1.12.1",
     "jquery-ujs": "^1.2.2",
     "liquid-fire": "^0.29.2",
+    "popper.js": "^1.14.3",
     "resolve-url-loader": "^2.2.1",
     "style-loader": "^0.19.1",
     "tag-it": "^2.0.0",

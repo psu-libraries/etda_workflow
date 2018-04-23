@@ -13,7 +13,7 @@
 
 <div id="submissions" class="row">
   <% @view.submissions.each do |submission| %>
-    <% @submission_view = SubmissionView.new submission %>
+    <% @submission_view = Author::SubmissionView.new submission %>
 
     <div id="submission-<%= submission.id %>" class="col-xs-12 submission">
       <div class="heading">

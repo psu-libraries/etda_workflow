@@ -37,7 +37,6 @@ module EtdaWorkflow
     config.time_zone = 'Eastern Time (US & Canada)'
     config.autoload_paths += [
       Rails.root.join('app/presenters'),
-      Rails.root.join('app/decorators')
     ]
     config.autoload_paths += Dir["#{config.root}/lib/**/*"]
 

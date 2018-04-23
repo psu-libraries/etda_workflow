@@ -31,6 +31,11 @@ module StubbedAuthenticationHelper
   #   webaccess_auth
   #   visit path
   # end
+  def initialize(*args)
+    super args
+    @@author = nil
+    @@admin = nil
+  end
 
   def webaccess_authorize_author
     sign_in_as_author current_author
@@ -47,7 +52,7 @@ module StubbedAuthenticationHelper
   end
 
   def current_admin
-    @current_admin = Admin.new(access_id: 'adminflow', administrator: true, site_administrator: true, last_name: 'Admin', first_name: 'admin').save
+    @current_admin = Admin.new(access_id: 'adminflow', administrator: true, site_administrator: true, last_name: 'Admin', first_name: 'admin', psu_idn: '989898988')
     Admin.current = @current_admin
     @current_admin
   end
