@@ -1,7 +1,3 @@
-# frozen_string_literal: true
-
-# This file is copied to spec/ when you run 'rails generate rspec:install'
-#require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 
 if ENV['COVERAGE'] || ENV['TRAVIS']
@@ -22,11 +18,9 @@ end
 require File.expand_path('../../config/environment', __FILE__)
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-require 'spec_helper'
-require 'support/database_cleaner'
-require 'capybara/rspec'
 require 'devise'
 require 'cancan/ability'
+require 'shoulda/matchers'
 
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
@@ -67,22 +61,12 @@ RSpec.configure do |config|
   config.before(:each, js: true) do
     Capybara.page.driver.browser.url_blacklist = ['www.google-analytics.com/analytics.js', "www.google-analytics.com"]
     Capybara.javascript_driver = :poltergeist
-    # Capybara.javascript_driver = :webkit
-    DegreeType.seed
-    CommitteeRole.seed
   end
 
-  #   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
+  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   config.use_transactional_fixtures = true
-
-  config.before(:suite) do
-    Faker::Name.unique.clear
-    DatabaseCleaner.clean_with(:truncation)
-    DegreeType.seed
-    CommitteeRole.seed
-  end
 
   Shoulda::Matchers.configure do |cfg|
     cfg.integrate do |with|

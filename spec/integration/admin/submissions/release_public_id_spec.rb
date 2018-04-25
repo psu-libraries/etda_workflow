@@ -15,7 +15,6 @@ RSpec.describe "Release a submission with a public id", js: true do
 
   before do
     webaccess_authorize_admin
-    webaccess_authorize_author
   end
   it 'assigns a public id and releases a submission', js: true do
     expect(submission.legacy_id).to be_blank

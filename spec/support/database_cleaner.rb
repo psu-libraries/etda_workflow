@@ -30,16 +30,4 @@ RSpec.configure do |config|
   config.after do
     DatabaseCleaner.clean
   end
-
-  # config.before do
-  #   # Begin transaction
-  #   DatabaseCleaner.start
-  #   # Seed with essential data
-  #   load Rails.root.join('db/seeds/essential.seeds.rb')
-  # end
-  #
-  # config.append_after do
-  #   # Roll back transaction
-  #   DatabaseCleaner.clean
-  # end
 end

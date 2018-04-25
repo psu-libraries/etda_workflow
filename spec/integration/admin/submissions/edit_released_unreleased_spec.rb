@@ -11,7 +11,6 @@ RSpec.describe "Editing a released submission as an admin", js: true do
 
   before do
     webaccess_authorize_admin
-    # webaccess_authorize_author
     visit admin_edit_submission_path(submission)
     sleep(3)
     fill_in "Title", with: "A Brand New TITLE"
