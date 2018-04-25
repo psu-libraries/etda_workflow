@@ -82,7 +82,7 @@ class FinalSubmissionUpdateService
       submission.update_attributes! final_submission_params
       SubmissionReleaseService.new.unpublish(original_final_files)
       # SolrDataImportService.delta_import # update the index after the paper has been unreleased
-      result = { msg: "Submission for #{@submission.author_first_name} #{@submission.author_last_name} was successfully un-published", redirect_path: Rails.application.routes.url_helpers.admin_submissions_dashboard_path(submission.degree_type.slug.to_s) }
+      result = { msg: "Submission for #{submission.author_first_name} #{submission.author_last_name} was successfully un-published", redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
     end
     result
   end

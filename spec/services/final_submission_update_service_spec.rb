@@ -131,8 +131,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       final_submission_update_service = described_class.new(params, submission)
       result = final_submission_update_service.respond_released_submission
       expect(result[:msg]).to eql("Submission for #{submission.author.first_name} #{submission.author.last_name} was successfully un-published")
-      expect(result[:redirect_path]).to eql(admin_submissions_dashboard_path(submission.degree_type.slug.to_s))
-      # ("/admin/#{submission.degree_type.slug}")
+      expect(result[:redirect_path]).to eq(admin_edit_submission_path(submission.id.to_s))
       expect(submission.status).to eq('waiting for publication release')
       expect(submission.abstract).to eq('I am an abstract!!!!!')
       expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
