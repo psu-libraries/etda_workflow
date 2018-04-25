@@ -6,7 +6,6 @@ RSpec.describe 'actions that send an email notifying users of an access level up
 
     before do
       webaccess_authorize_admin
-      webaccess_authorize_author
     end
 
     it 'sends an email to the appropriate people with the updated access level information' do
