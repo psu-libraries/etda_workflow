@@ -1,10 +1,12 @@
 RSpec.describe "when an admin releases a restricted to institution submission for publication after 2 years", js: true do
   require 'integration/integration_spec_helper'
 
+  let(:submission) { FactoryBot.create :submission, :final_is_restricted_to_institution, author: author }
   let(:author) { FactoryBot.create :author }
-  let!(:submission) { FactoryBot.create :submission, :final_is_restricted_to_institution, author: author }
+  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
   let(:committee) { FactoryBot.create_committee(submission) }
-  let(:inbound_lion_path_record) { FactoryBot.create :inbound_lion_path_record }
+
+  let(:inbound_lion_path_record) { FactoryBot.create :inbound_lion_path_record } if current_partner.graduate?
 
   before do
     webaccess_authorize_admin
@@ -21,7 +23,12 @@ RSpec.describe "when an admin releases a restricted to institution submission fo
       submission.status = 'released for publication'
       submission.access_level = 'restricted_to_institution'
     end
+
     specify "submission status updates to 'released for publication'" do
+      FileUtilityHelper.new.copy_test_file(Rails.root.join(final_submission_file.current_location))
+
+      psuonly_location = Rails.root.join(final_submission_file.current_location)
+      expect(File).to be_exist(psuonly_location)
       expect(Submission.where(degree: submission.degree).released_for_publication.count).to eql(initial_released_count)
       expect(Submission.where(degree: submission.degree).final_is_restricted_institution.count).to eql(initial_restricted_institution_count)
       expect(submission.released_for_publication_at).not_to be_nil
@@ -37,12 +44,15 @@ RSpec.describe "when an admin releases a restricted to institution submission fo
       expect(submission).to be_open_access
       expect(submission.released_for_publication_at).not_to be_nil
       expect(submission.released_for_publication_at.to_date).to eq Time.zone.today
+      released_location = Rails.root.join(final_submission_file.current_location)
+      expect(FileUtilityHelper.new).to be_file_was_moved(psuonly_location, released_location)
       visit admin_submissions_dashboard_path(DegreeType.default)
       released_count = page.find('a#released-for-publication .badge').text
       expect(released_count.to_i).to eql(initial_released_count)
       visit admin_submissions_dashboard_path(DegreeType.default)
       restricted_institution_updated_count = page.find('#final-restricted-institution .badge').text
       expect(restricted_institution_updated_count.to_i).to eql(initial_restricted_institution_count - 1)
+      FileUtilityHelper.new.remove_test_file(released_location)
     end
   end
 end
