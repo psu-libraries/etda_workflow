@@ -16,7 +16,14 @@ class FormatReviewFile < ApplicationRecord
     self.class.to_s.underscore.split('_file').first.pluralize
   end
 
+  def full_file_path
+    # file path only
+    WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(id)
+  end
+
   def current_location
-    WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(id) + asset_identifier
+    # full file path including file name
+    # WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(id) + asset_identifier
+    full_file_path + asset_identifier
   end
 end

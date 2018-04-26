@@ -49,7 +49,6 @@ RSpec.describe "when an admin releases the submission for publication", js: true
       sleep(3)
       released_count = page.find('a#released-for-publication .badge').text
       expect(released_count.to_i).to eql(initial_released_count + 1)
-
       FileUtilityHelper.new.remove_test_file(released_location)
     end
   end

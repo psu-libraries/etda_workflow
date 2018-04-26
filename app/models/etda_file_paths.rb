@@ -25,7 +25,7 @@ class EtdaFilePaths < EtdaUtilities::EtdaFilePaths
     updated_file = FinalSubmissionFile.find(fid)
     # this is calculating the new location based on updated submission and file attributes
 
-    new_location = updated_file.new_location_path
+    new_location = updated_file.full_file_path
     # create file path if it doesn't exist
     FileUtils.mkpath(new_location)
 

@@ -218,11 +218,15 @@ GEM
     parallel (1.12.1)
     parser (2.4.0.2)
       ast (~> 2.3)
+    pdf-core (0.7.0)
     poltergeist (1.17.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
     powerpack (0.1.1)
+    prawn (2.2.2)
+      pdf-core (~> 0.7.0)
+      ttfunk (~> 1.5)
     public_suffix (3.0.1)
     puma (3.11.0)
     rabl (0.13.1)
@@ -376,6 +380,7 @@ GEM
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
+    ttfunk (1.5.1)
     tzinfo (1.2.4)
       thread_safe (~> 0.1)
     unf (0.1.4)
@@ -448,6 +453,7 @@ DEPENDENCIES
   net-ldap (~> 0.16.1)
   oj
   poltergeist
+  prawn
   puma (~> 3.7)
   rabl
   rabl-rails

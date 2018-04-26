@@ -82,12 +82,8 @@ gem 'simple_form'
 
 gem 'rest-client'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+gem 'prawn'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-#
 # # Form builder
 gem 'simple_form'
 

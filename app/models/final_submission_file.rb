@@ -24,18 +24,22 @@ class FinalSubmissionFile < ApplicationRecord
   end
 
   def current_location
+    # full file path including file name
     main_file_path + file_detail_path + asset_identifier
   end
 
-  def new_location_path
+  def full_file_path
+    # file path w/o file name
     main_file_path + file_detail_path
   end
 
   def file_detail_path
+    # partial unique path built from file id -- ie('/01/01/')
     EtdaFilePaths.new.detailed_file_path(id)
   end
 
   def main_file_path
+    # base portion of path up to file_detail_path
     SubmissionFilePath.new(submission).full_path_for_final_submissions
   end
 
