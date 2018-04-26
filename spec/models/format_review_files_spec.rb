@@ -22,13 +22,21 @@ RSpec.describe FormatReviewFile, type: :model do
     expect(format_review_file.class_name).to eql('format-review-file')
   end
 
-  it 'returns full path of file' do
+  it '#current_location - returns full path of file including file name' do
     submission = FactoryBot.create :submission, :collecting_format_review_files
     format_file = FormatReviewFile.new(submission_id: submission.id)
     format_file.id = 1234
     allow_any_instance_of(FormatReviewFile).to receive(:asset_identifier).and_return('stubbed_filename.pdf')
     expect(format_file.current_location).to eq(WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(format_file.id) + 'stubbed_filename.pdf')
   end
+
+  it '#full_file_path returns the full file path w/o filename' do
+    submission = FactoryBot.create :submission, :collecting_format_review_files
+    format_review_file = FormatReviewFile.new(submission_id: submission.id)
+    format_review_file.id = 1234
+    expect(format_review_file.full_file_path).to eq(WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(format_review_file.id))
+  end
+
   describe 'virus scanning' do
     # The .name below is required due to the way Rails reloads classes in
     # development and test modes, can't compare the actual constants

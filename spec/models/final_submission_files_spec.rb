@@ -23,12 +23,19 @@ RSpec.describe FinalSubmissionFile, type: :model do
     expect(final_submission_file.class_name).to eql('final-submission-file')
   end
 
-  it 'returns full path of file' do
+  it '#current_location returns full path and filename' do
     submission = FactoryBot.create :submission, :waiting_for_publication_release
     final_submission_file = FinalSubmissionFile.new(submission_id: submission.id)
     final_submission_file.id = 1234
     allow_any_instance_of(FinalSubmissionFile).to receive(:asset_identifier).and_return('stubbed_filename.pdf')
     expect(final_submission_file.current_location).to eq(WORKFLOW_BASE_PATH + 'final_submission_files/' + EtdaFilePaths.new.detailed_file_path(final_submission_file.id) + 'stubbed_filename.pdf')
+  end
+
+  it '#full_file_path returns the full file path w/o filename' do
+    submission = FactoryBot.create :submission, :waiting_for_publication_release
+    final_submission_file = FinalSubmissionFile.new(submission_id: submission.id)
+    final_submission_file.id = 1234
+    expect(final_submission_file.full_file_path).to eq(WORKFLOW_BASE_PATH + 'final_submission_files/' + EtdaFilePaths.new.detailed_file_path(final_submission_file.id))
   end
 
   # describe 'virus scanning' do
