@@ -27,22 +27,14 @@ class StubbedAuthenticationStrategy < ::Devise::Strategies::Base
 end
 
 module StubbedAuthenticationHelper
-  # def webaccess_auth_and_visit(path)
-  #   webaccess_auth
-  #   visit path
-  # end
-  def initialize(*args)
-    super args
-    @@author = nil
-    @@admin = nil
-  end
-
   def webaccess_authorize_author
     sign_in_as_author current_author
+    sign_in_as_admin nil if @current_admin.nil?
   end
 
   def webaccess_authorize_admin
     sign_in_as_admin current_admin
+    sign_in_as_author nil if @current_author.nil?
   end
 
   def current_author
@@ -52,7 +44,9 @@ module StubbedAuthenticationHelper
   end
 
   def current_admin
-    @current_admin = Admin.new(access_id: 'adminflow', administrator: true, site_administrator: true, last_name: 'Admin', first_name: 'admin', psu_idn: '989898988')
+    tmp_admin = Admin.new(access_id: 'adminflow', administrator: true, site_administrator: true, last_name: 'Admin', first_name: 'admin', psu_idn: '989898988', psu_email_address: 'etdadmin@psu.edu')
+    tmp_admin.save
+    @current_admin ||= tmp_admin
     Admin.current = @current_admin
     @current_admin
   end
@@ -63,12 +57,10 @@ module StubbedAuthenticationHelper
     # Remove the session cookie for the original_owner
     # to ensure we visit pages that belong to the new_owner
     #     Capybara.page.driver.browser.remove_cookie '_etdflow_session'
-
     Capybara.page.driver.browser.remove_cookie '_etdflow_author_session'
     Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_author_session', path: '/author')
     StubbedAuthenticationStrategy.author = author
-    Warden::Strategies.add :webaccess_authenticatable,
-                           StubbedAuthenticationStrategy
+    Warden::Strategies.add :webaccess_authenticatable, StubbedAuthenticationStrategy
   end
 
   def sign_in_as_admin(admin)
@@ -77,20 +69,15 @@ module StubbedAuthenticationHelper
     Capybara.page.driver.browser.remove_cookie '_etdflow_admin_session'
     Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_admin_session', path: '/admin')
     StubbedAuthenticationStrategy.admin = admin
-    Warden::Strategies.add :webaccess_authenticatable,
-                           StubbedAuthenticationStrategy
+    Warden::Strategies.add :webaccess_authenticatable, StubbedAuthenticationStrategy
   end
 end
 
 RSpec.configure do |config|
   config.after do
-    Warden::Strategies.add :webaccess_authenticatable,
-                           Devise::Strategies::WebaccessAuthenticatable
-    StubbedAuthenticationStrategy.author = nil
-
-    Warden::Strategies.add :webaccess_authenticatable,
-                           Devise::Strategies::WebaccessAuthenticatable
-    StubbedAuthenticationStrategy.admin = nil
+    Warden::Strategies.add :webaccess_authenticatable, Devise::Strategies::WebaccessAuthenticatable
+    StubbedAuthenticationStrategy.author = nil unless @current_author.nil?
+    StubbedAuthenticationStrategy.admin = nil unless @current_admin.nil?
   end
 
   config.include StubbedAuthenticationHelper
@@ -98,10 +85,6 @@ end
 
 class AdminController < ApplicationController
   def valid_admin?
-    true
-  end
-
-  def valid_author?
     true
   end
 end
