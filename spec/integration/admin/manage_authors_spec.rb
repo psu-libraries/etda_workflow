@@ -1,7 +1,6 @@
 RSpec.describe "Manage Authors", js: true do
   require 'integration/integration_spec_helper'
 
-  let(:admin) { FactoryBot.create :admin }
   let!(:degree) { FactoryBot.create :degree }
   let!(:author1) { FactoryBot.create :author }
   let!(:author2) { FactoryBot.create :author }
