@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require 'whenever/capistrano'
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.10.1"
 
@@ -43,7 +43,9 @@ set :rails_env, 'production'
 
 # Settings for whenever gem that updates the crontab file on the server
 # See schedule.rb for details
-set :whenever_roles, %i[app job]
+# set :whenever_environment, ->{ "#{fetch(:stage)}" }  this is being set to 'dev' so hardcoded production in schedule.rb
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:partner)}" }
+set :whenever_roles, %i[audit]
 
 set :log_level, :debug
 # set :pty, true

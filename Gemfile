@@ -27,11 +27,6 @@ gem 'jbuilder', '~> 2.5'
 
 # Used to schedule cron jobs on the servers
 gem 'whenever'
-# Use jquery as the JavaScript library
-# gem 'jquery-rails'
-
-# jQuery user interface widgets
-# gem 'jquery-ui-rails'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -103,11 +98,12 @@ gem 'cancancan'
 
 gem 'mail_form'
 
+gem 'bundler-audit'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
 
-  gem 'bundler-audit'
 
   gem 'rspec-rails'
   gem 'rubocop'

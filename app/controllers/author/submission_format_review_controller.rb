@@ -18,7 +18,7 @@ class Author::SubmissionFormatReviewController < AuthorController
     @submission.update_format_review_timestamps!(Time.zone.now)
     OutboundLionPathRecord.new(submission: @submission).report_status_change
     redirect_to author_root_path
-    AuthorMailer.format_review_received(@submission).deliver_now if current_partner.graduate?
+    WorkflowMailer.format_review_received(@submission).deliver_now if current_partner.graduate?
     flash[:notice] = 'Format review files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid => e
     flash[:alert] = e.message
