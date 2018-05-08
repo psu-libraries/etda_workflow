@@ -118,7 +118,7 @@ class FinalSubmissionUpdateService
   end
 
   def deliver_final_emails
-    AuthorMailer.final_submission_approved(@submission, "#{current_partner.id}.partner.email.url").deliver_now
-    AuthorMailer.pay_thesis_fee(@submission).deliver_now if current_partner.honors?
+    WorkflowMailer.final_submission_approved(@submission, "#{current_partner.id}.partner.email.url").deliver_now
+    WorkflowMailer.pay_thesis_fee(@submission).deliver_now if current_partner.honors?
   end
 end

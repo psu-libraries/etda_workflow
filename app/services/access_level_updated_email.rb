@@ -9,7 +9,7 @@ def self.otm_email_address
   'otminfo@psu.edu'
 end
 
-def initialize(submission, partner = current_partner, mail_sender = AuthorMailer)
+def initialize(submission, partner = current_partner, mail_sender = WorkflowMailer)
   @partner = partner
   @submission = submission
   @mail_sender = mail_sender

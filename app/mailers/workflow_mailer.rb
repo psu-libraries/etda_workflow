@@ -1,4 +1,4 @@
-class AuthorMailer < ActionMailer::Base
+class WorkflowMailer < ActionMailer::Base
   def format_review_received(submission)
     @submission = submission
     @author = submission.author
@@ -53,5 +53,12 @@ class AuthorMailer < ActionMailer::Base
          cc: @email[:cc_email_addresses],
          from: current_partner.email_address,
          subject: "Access Level for your submission has been updated"
+  end
+
+  def gem_audit_email(audit_results)
+    @audit_results = audit_results
+    mail to: 'jxb13@psu.edu',
+         from: 'jxb13@psu.edu',
+         subject: 'BUNDLE AUDIT: Vulnerable Gems Found'
   end
 end

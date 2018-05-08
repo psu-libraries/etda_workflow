@@ -1,6 +1,6 @@
 require 'model_spec_helper'
 
-RSpec.describe AuthorMailer do
+RSpec.describe WorkflowMailer do
   let(:submission) { FactoryBot.create :submission }
   let(:access_updated_email) do
     {

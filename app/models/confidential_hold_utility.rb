@@ -50,11 +50,11 @@ class ConfidentialHoldUtility
 
   def send_update_to_confidential_email(author)
     # send email
-    # AuthorMailer.confidential_hold_set_email(author).deliver_now
+    # WorkflowMailer.confidential_hold_set_email(author).deliver_now
   end
 
   def send_release_hold_email(author)
-    # AuthorMailer.confidential_hold_released_email(author).deliver_now
+    # WorkflowMailer.confidential_hold_released_email(author).deliver_now
     # send email
   end
 
