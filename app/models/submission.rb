@@ -63,7 +63,7 @@ class Submission < ApplicationRecord
             uniqueness: true,
             allow_nil: true
 
-  # validates :check_title_capitalization
+  validate :check_title_capitalization
 
   validates :semester, inclusion: { in: Semester::SEMESTERS }, if: proc { |s| s.semester.present? }
   validates :degree_id, presence: true
@@ -129,10 +129,6 @@ class Submission < ApplicationRecord
       word_in_all_caps = true if w.length > 1 && w.upcase == w
     end
     errors[:title] << I18n.t('activerecord.errors.models.submission.attributes.title.capitalization') if word_in_all_caps
-  end
-
-  def agreement_to_terms
-    errors.add(:base, 'You must agree to terms') unless has_agreed_to_terms?
   end
 
   def invention_disclosure

@@ -173,14 +173,6 @@ RSpec.describe Submission, type: :model do
         expect(submission.check_title_capitalization).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
       end
     end
-    context '#agreement_to_terms' do
-      it 'adds an error if the box is not checked' do
-        submission = FactoryBot.create :submission, :released_for_publication
-        expect(submission.agreement_to_terms).to eq(nil)
-        submission.has_agreed_to_terms = nil
-        expect(submission.agreement_to_terms).to eq(["You must agree to terms"])
-      end
-    end
     context '#restricted_to_institution?' do
       it 'returns true' do
         submission = Submission.new(access_level: 'restricted_to_institution')

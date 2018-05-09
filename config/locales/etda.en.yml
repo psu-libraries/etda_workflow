@@ -4,5 +4,3 @@ en:
     success: '%{released_count} %{submissions} successfully released for publication.  '
     base_error:  'Submissions not released:  '
     submission_error: 'ID: %{id} %{last_name}, %{first_name} '
-  activemodel:
-    attributes:
