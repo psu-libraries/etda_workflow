@@ -41,9 +41,6 @@ RSpec.describe "when an admin releases the submission for publication", js: true
       submission.reload
       released_location = Rails.root.join(final_submission_file.current_location)
       expect(FileUtilityHelper.new).to be_file_was_moved(unreleased_location, released_location)
-      # expect(File).to be_exist(released_location)
-      # expect(released_location).not_to eql(unreleased_location)
-      # expect(File).not_to be_exist(unreleased_location)
       expect(submission.status).to eq 'released for publication'
       expect(submission.released_for_publication_at).not_to be_nil
       expect(submission.released_for_publication_at.strftime('%Y %m %d')).to eq "#{Time.zone.now.year} 12 30"
