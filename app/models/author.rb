@@ -44,6 +44,10 @@ class Author < ApplicationRecord
 
   validates :state, inclusion: { in:  UsStates.names.keys.map(&:to_s) }, if: proc { current_partner.graduate? }
 
+  def psu_id
+    psu_idn || ''
+  end
+
   def self.current
     Thread.current[:author]
   end

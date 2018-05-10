@@ -60,4 +60,7 @@ en:
         asset: 'Format review file name'
       submission:
         has_agreed_to_terms: 'Copyright statement checkbox'
+      author:
+        psu_idn: 'Penn State ID Number'
+
 

@@ -30,6 +30,7 @@ RSpec.describe "Email Contact Form", js: true do
       expect(page).to have_field('Your Name', with: author.full_name)
       expect(page).to have_field('Your Email', with: author.psu_email_address)
       expect(page).to have_field('Your Message')
+      expect(page).to have_field('PSU ID Number', with: author.psu_id)
     end
   end
 
