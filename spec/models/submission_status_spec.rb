@@ -148,17 +148,6 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.status = ''
     expect(described_class.new(submission)).not_to be_beyond_waiting_for_final_submission_response
   end
-  it 'responds to embargoed?' do
-    submission.status = 'confidential hold embargo'
-    expect(described_class.new(submission)).to be_embargoed
-  end
-
-  it 'responds to final_confidential_hold?' do
-    author = FactoryBot.create :author, :confidential_hold
-    submission.status = 'waiting for final submission response'
-    submission.author_id = author.id
-    expect(described_class.new(submission)).to be_final_confidential_hold
-  end
 
   describe 'submission#status_behavior' do
     let(:submission) { Submission.new }

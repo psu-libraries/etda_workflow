@@ -16,8 +16,7 @@ class SubmissionStatus
       'waiting for publication release',
       'released for publication metadata only',
       'released for publication',
-      'format review accepted', # this is legacy FR fix
-      'confidential hold embargo'
+      'format review accepted' # this is legacy FR fix
     ].freeze
   def initialize(submission)
     @current_submission = submission
@@ -93,14 +92,6 @@ class SubmissionStatus
 
   def beyond_waiting_for_final_submission_response?
     waiting_for_publication_release? || released_for_publication?
-  end
-
-  def embargoed?
-    current_status == 'confidential hold embargo'
-  end
-
-  def final_confidential_hold?
-    waiting_for_final_submission_response? && @current_submission.confidential?
   end
 
   def format_review_rejected?

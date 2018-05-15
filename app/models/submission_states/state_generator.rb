@@ -14,8 +14,7 @@ module SubmissionStates
       CollectingFormatReviewFilesRejected.name => CollectingFormatReviewFilesRejected.new,
       CollectingCommittee.name => CollectingCommittee.new,
       CollectingProgramInformation.name => CollectingProgramInformation.new,
-      FormatReviewAccepted.name => FormatReviewAccepted.new,
-      ConfidentialHoldEmbargo.name => ConfidentialHoldEmbargo.new
+      FormatReviewAccepted.name => FormatReviewAccepted.new
     }
 
     def self.state_for_name(state_name)

@@ -51,6 +51,7 @@ FactoryBot.define do
       abstract 'my abstract'
       access_level 'open_access'
       has_agreed_to_terms 1
+      has_agreed_to_publication_release 1
       final_submission_notes "Final submission notes"
       keywords { [create(:keyword)] }
       defended_at { Time.zone.yesterday if current_partner.graduate? }
@@ -106,13 +107,6 @@ FactoryBot.define do
       legacy_id 888
       released_for_publication_at nil
       released_metadata_at { Time.zone.yesterday }
-      final_submission_traits
-    end
-
-    trait :final_is_embargoed do
-      status 'confidential hold embargo'
-      released_for_publication_at nil
-      confidential_hold_embargoed_at { Time.zone.yesterday }
       final_submission_traits
     end
   end

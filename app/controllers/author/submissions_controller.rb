@@ -206,6 +206,7 @@ class Author::SubmissionsController < AuthorController
                                          :abstract,
                                          :access_level,
                                          :has_agreed_to_terms,
+                                         :has_agreed_to_publication_release,
                                          :delimited_keywords,
                                          :lion_path_degree_code,
                                          :restricted_notes,

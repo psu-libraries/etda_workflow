@@ -52,9 +52,11 @@
         <% end %>
       </div>
 
-      <%= render 'copyright_statement' %>
-      <%= f.input :has_agreed_to_terms, label: 'I agree', as: :boolean, wrapper: :vertical_boolean, required: true %>
+      <%= render 'shared/copyright_statement' %>
+      <%= f.input :has_agreed_to_terms, label: 'I agree to copyright statement', as: :boolean, wrapper: :vertical_boolean, required: true %>
 
+      <%= render 'shared/release_statement' %>
+      <%= f.input :has_agreed_to_publication_release, label: 'I agree to release agreement', as: :boolean, wrapper: :vertical_boolean, required: true %>
       <div class="form-group actions col-xs-6">
         <%= f.button :submit, class: "btn-primary", value: "Submit final files for review" %>
         <%= link_to "Cancel", author_root_path, class: 'btn cancel-link' %>

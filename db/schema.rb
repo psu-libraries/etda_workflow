@@ -210,7 +210,8 @@ ActiveRecord::Schema.define(version: 20180405192533) do
     t.datetime "final_submission_files_first_uploaded_at"
     t.string "lion_path_degree_code"
     t.text "restricted_notes"
-    t.datetime "confidential_hold_embargoed_at"
+    t.datetime "publication_release_terms_agreed_to_at"
+    t.boolean "has_agreed_to_publication_release"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "submissions_author_id_fk"
