@@ -51,6 +51,7 @@ class Submission < ApplicationRecord
             :keywords,
             :access_level,
             :has_agreed_to_terms,
+            :has_agreed_to_publication_release,
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && s.author_edit }
 
   validates :defended_at,
@@ -107,7 +108,6 @@ class Submission < ApplicationRecord
   scope :final_is_restricted_institution, -> { where(status: 'released for publication', access_level: 'restricted_to_institution') }
   scope :final_is_withheld, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted') }
   scope :ok_to_release, -> { where('released_for_publication_at <= ?', Time.zone.today.end_of_day) }
-  scope :final_is_embargoed, -> { where(status: 'confidential hold embargo') }
 
   def set_status_to_collecting_program_information
     self.status = 'collecting program information' if new_record? && status.nil?

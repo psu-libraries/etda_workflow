@@ -107,6 +107,7 @@ class FinalSubmissionUpdateService
       :access_level,
       :is_printed,
       :has_agreed_to_terms,
+      :has_agreed_to_publication_release,
       :lion_path_degree_code,
       :restricted_notes,
       committee_members_attributes: [:id, :committee_role_id, :name, :email, :is_required, :_destroy],

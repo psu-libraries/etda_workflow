@@ -60,5 +60,6 @@ en:
         asset: 'Format review file name'
       submission:
         has_agreed_to_terms: 'Copyright statement checkbox'
+        has_agreed_to_publication_release: 'Release agreement checkbox'
       author:
         psu_idn: 'Penn State ID Number'

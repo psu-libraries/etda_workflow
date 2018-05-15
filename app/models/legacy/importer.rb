@@ -91,6 +91,7 @@ class Legacy::Importer
                      format_review_files_first_uploaded_at: legacy_submission['format_review_files_first_uploaded_at'],
                      final_submission_files_first_uploaded_at: legacy_submission['final_submission_files_first_uploaded_at'],
                      lion_path_degree_code: legacy_submission['lion_path_degree_code'],
+                     has_agreed_to_publication_release: publication_release(legacy_submission['status']),
                      restricted_notes: legacy_submission['restricted_notes']).save(validate: false)
     end
     @count
@@ -234,6 +235,11 @@ class Legacy::Importer
 
   def interval(val)
     (@count % val).zero?
+  end
+
+  def publication_release(status)
+    return true if status.include? 'released for publication'
+    false
   end
 
   # frozen_string_literal: true

@@ -17,7 +17,6 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::ReleasedForPublication)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::ReleasedForPublicationMetadataOnly)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::Bogus)
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::ConfidentialHoldEmbargo)
     end
   end
 
@@ -60,13 +59,6 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
       let(:status) { SubmissionStates::FormatReviewAccepted.name }
 
       it { is_expected.to be_truthy }
-    end
-
-    context 'when submissions status WaitingForFormatReviewResponse and author has a confidential hold' do
-      it 'transitions to confidential hold embargo' do
-        allow_any_instance_of(Author).to receive(:confidential?).and_return true
-        expect(SubmissionStates::ConfidentialHoldEmbargo).to be_truthy
-      end
     end
 
     context 'when submission status WaitingForPublicationRelease' do

@@ -7,7 +7,7 @@ class LegacyDatabaseHelper
   end
 
   def submission_columns
-    Submission.column_names
+    Submission.column_names - ['has_agreed_to_publication_release']
   end
 
   def degree_type_columns
