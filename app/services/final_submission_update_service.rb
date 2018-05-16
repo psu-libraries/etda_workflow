@@ -30,9 +30,13 @@ class FinalSubmissionUpdateService
       deliver_final_emails
       msg = "The submission\'s final submission information was successfully approved."
     elsif update_actions.rejected?
-      submission.update_attribute :final_submission_rejected_at, Time.zone.now
-      status_giver.collecting_final_submission_files_rejected!
       submission.update_attributes! final_submission_params
+      submission.has_agreed_to_publication_release = false
+      submission.publication_release_terms_agreed_to_at = nil
+      submission.has_agreed_to_terms = false
+      submission.final_submission_rejected_at = Time.zone.now
+      submission.save
+      status_giver.collecting_final_submission_files_rejected!
       msg = "The submission\'s final submission information was successfully rejected and returned to the author for revision."
     end
     if update_actions.record_updated?

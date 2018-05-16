@@ -3,7 +3,7 @@
 require 'model_spec_helper'
 
 RSpec.describe Submission, type: :model do
-  submission = described_class.new(access_level: AccessLevel.OPEN_ACCESS.current_access_level)
+  submission = described_class.new(access_level: AccessLevel.OPEN_ACCESS.current_access_level, status: 'collecting final submission files')
   submission.author_edit = true
 
   it { is_expected.to have_db_column(:author_id).of_type(:integer) }
@@ -21,6 +21,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:abstract).of_type(:text) }
   it { is_expected.to have_db_column(:access_level).of_type(:string) }
   it { is_expected.to have_db_column(:has_agreed_to_terms).of_type(:boolean) }
+  it { is_expected.to have_db_column(:has_agreed_to_publication_release).of_type(:boolean) }
   it { is_expected.to have_db_column(:committee_provided_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:format_review_files_first_uploaded_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:format_review_files_uploaded_at).of_type(:datetime) }
@@ -42,6 +43,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:public_id).of_type(:string) }
   it { is_expected.to have_db_column(:lion_path_degree_code).of_type(:string) }
   it { is_expected.to have_db_column(:restricted_notes).of_type(:text) }
+  it { is_expected.to have_db_column(:publication_release_terms_agreed_to_at).of_type(:datetime) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }

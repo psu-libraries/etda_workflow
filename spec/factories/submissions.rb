@@ -60,6 +60,7 @@ FactoryBot.define do
       format_review_files_uploaded_at { 3.days.ago }
       format_review_approved_at { 2.days.ago }
       final_submission_approved_at { Time.zone.yesterday }
+      publication_release_terms_agreed_to_at { Time.zone.now }
     end
 
     trait :waiting_for_final_submission_response do
