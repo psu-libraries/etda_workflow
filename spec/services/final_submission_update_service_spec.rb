@@ -20,6 +20,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/final_submission_submitted")
       expect(submission.status).to eq('waiting for publication release')
       expect(submission.title).to eq('update this title')
+      expect(submission.publication_release_terms_agreed_to_at).not_to be_nil
       expect(ActionMailer::Base.deliveries.count).to eq(start_count + final_count)
     end
   end
@@ -37,6 +38,9 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(result[:msg]).to eql("The submission\'s final submission information was successfully rejected and returned to the author for revision.")
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/final_submission_submitted")
       expect(submission.status).to eq('collecting final submission files rejected')
+      expect(submission.publication_release_terms_agreed_to_at).to be_nil
+      expect(submission.has_agreed_to_terms).to be_falsey
+      expect(submission.has_agreed_to_publication_release).to be_falsey
       expect(submission.abstract).to eq('this abstract is updated')
       expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
     end
