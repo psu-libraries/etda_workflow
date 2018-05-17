@@ -185,7 +185,7 @@ class Author::SubmissionView < SimpleDelegator
 
   def step_seven_status
     return '' unless status_behavior.waiting_for_publication_release? || status_behavior.released_for_publication?
-    "<div class='step complete final'>#{degree_type.name} Submission is Complete</div>".html_safe
+    "<div class='step complete final'><strong>#{degree_type.name} Submission is Complete</strong></div>".html_safe
   end
 
   def step_seven_arrow
