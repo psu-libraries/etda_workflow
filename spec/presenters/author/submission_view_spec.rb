@@ -450,7 +450,7 @@ RSpec.describe Author::SubmissionView do
           submission.access_level = 'open_access'
         end
         it 'returns "completed"' do
-          expect(view.step_seven_status).to eq "<div class='step complete final'>#{submission.degree_type.name} Submission is Complete</div>"
+          expect(view.step_seven_status).to eq "<div class='step complete final'><strong>#{submission.degree_type.name} Submission is Complete</strong></div>"
         end
       end
       context "when the submission has been released for publication" do
@@ -458,7 +458,7 @@ RSpec.describe Author::SubmissionView do
           submission.status = 'released for publication'
         end
         it 'returns completed' do
-          expect(view.step_seven_status).to eq "<div class='step complete final'>#{submission.degree_type.name} Submission is Complete</div>"
+          expect(view.step_seven_status).to eq "<div class='step complete final'><strong>#{submission.degree_type.name} Submission is Complete</strong></div>"
         end
       end
     end

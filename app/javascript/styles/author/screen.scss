@@ -49,7 +49,7 @@
         display: inline-block;
         @extend .text-muted;
         margin: 0px;
-        padding-top: 8px;
+        padding-top: 0px;
         font-size: 16px;
         color: $gray-med-dark;
         .small {
@@ -106,7 +106,7 @@
     }
 
     &.complete {
-      .number {
+        .number {
         border-color: $green-dark;
         border-width: 2px;
         background-color: white;
@@ -125,12 +125,15 @@
 
     &.current {
       .number {
+        border: 1px solid $gray-med-dark;
+        background: #fefefe;
         border-color: $brand-primary;
         border-width: 2px;
         color: $brand-primary;
       }
 
       .description {
+        padding-top: 0px;
         color: inherit;
       }
 
@@ -149,11 +152,7 @@
       color: $gray-med-dark;
 
       .number {
-        width: 30px;
-        height: 30px;
-        font-size: 16px;
-        line-height: 30px;
-        margin: 0px 5px 15px 0px;
+        border: 1px solid $gray-med-dark;
       }
 
       .information {
