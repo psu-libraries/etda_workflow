@@ -14,6 +14,7 @@ require('../admin/bulk_selectors_and_actions.js');
 require('../admin/initialize_report_tables.js');
 require('../admin/print_format_review.js');
 require('../admin/edit_submission_form.js');
+require('bootstrap3/js/tooltip.js');
 require('../admin/initialize_tooltips.js');
 require('../admin/initialize_datatables.js');
 require('../admin/lionpath_plan_information.js');

@@ -6,7 +6,6 @@
 var $ = require('jquery');
 window.jQuery = $;
 
-const setup_tooltips = function()
-{ $('[data-toggle="tooltip"]').tooltip(); };
-
-$(document).on('page load:ready', setup_tooltips);
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})

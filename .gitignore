@@ -16,6 +16,8 @@
 config/secrets.yml
 config/database.yml
 spec/examples.txt
+
+node_modules/**/*
  
 assets
 public/packs-test/**/*
