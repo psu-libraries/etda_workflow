@@ -55,9 +55,9 @@ gem 'devise'
 gem 'brakeman'
 
 if ENV['CI']
-  gem 'etda_utilities', '0.5.1', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/psu-stewardship/etda_utilities.git"
+  gem 'etda_utilities', :branch => 'master', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/psu-stewardship/etda_utilities.git"
 else
-  gem 'etda_utilities', '0.5.1', git: "git@github.com:psu-stewardship/etda_utilities.git"
+  gem 'etda_utilities', :branch => 'master', git: "git@github.com:psu-stewardship/etda_utilities.git"
 end
 
 gem 'rake', '< 11.0'
