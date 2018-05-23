@@ -50,6 +50,7 @@ class LionPath::AcademicPlan
   end
 
   def committee_members_refresh
+    byebug
     refresh_committee = {}
     committee.each_with_index do |cm, index|
       refresh_committee[index.to_s] = { committee_role_id: InboundLionPathRecord.etd_role(cm[:role_desc]), is_required: true, name: full_name(cm), email: cm[LionPath::LpKeys::EMAIL] }
