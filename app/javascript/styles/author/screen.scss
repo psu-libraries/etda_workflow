@@ -148,29 +148,22 @@
   }
 
   &.preview, &.archive {
-    .step {
-      margin-bottom: 5px;
-      color: $gray-med-dark;
-
       .number {
         border: 1px solid $gray-med-dark;
       }
 
       .information {
-        min-height: 42px;
-
+        display: inline-block;
+        min-height: 60px;
+        width: 75%;
         .description {
-          padding-top: 7px;
-          font-size: 14px;
+          display: inline-block;
+          margin-top: 0px;
+          margin: 0px;
+          padding-top: 5px;
+          font-size: 16px;
         }
       }
-
-      .direction {
-        font-size: 9px;
-        top: 36px;
-        left: 10px;
-      }
-    }
   }
 
   &.archive {
@@ -183,12 +176,11 @@
         }
         .status {
           .glyphicon-ok-circle {
-            font-size: 120%;
+            font-size: 130%;
             color: $gray-med-dark;
           }
         }
       }
-
       .direction {
         color: $gray-med-dark;
       }
