@@ -47,9 +47,6 @@ RSpec.describe InboundLionPathRecord, type: :model do
       end
     end
     context '#records_match?' do
-      it "returns true when there's record data and the login and access ids match" do
-        expect(described_class).to be_records_match('999999999', 'xxb13', LionPath::MockLionPathRecord::MOCK_LP_AUTHOR_RECORD[LionPath::LpKeys::RESPONSE])
-      end
       it "returns false when there's a mis-match between login ids" do
         expect(described_class).not_to be_records_match('999999999', 'zzz123', LionPath::MockLionPathRecord::MOCK_LP_AUTHOR_RECORD[LionPath::LpKeys::RESPONSE])
       end

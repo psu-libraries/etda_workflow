@@ -73,7 +73,7 @@ class Author::AuthorsController < AuthorController
                           :opt_out_email,
                           :opt_out_default]
 
-    #author_params_list.merge(:inbound_lion_path_record_attributes[:lion_path_degree_code, :id, :author_id, :current_record]) if InboundLionPathRecord.active?
+    # author_params_list.merge(:inbound_lion_path_record_attributes[:lion_path_degree_code, :id, :author_id, :current_record]) if InboundLionPathRecord.active?
 
     params.require(:author).permit(author_params_list)
   end

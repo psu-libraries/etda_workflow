@@ -1,6 +1,6 @@
 # etda_workflow
 
-* Ruby version: 2.4.1
+* Ruby version: 2.4.3
 
 * System dependencies
 
@@ -10,11 +10,11 @@
 `BUNDLE_GEM__ETDA_UTILITIES@GITHUB__COM: "psu-stewardship-bot-tokengoeshere:x-oauth-basic"`
 
 * To create the database, run the following commands: 
-    1.  `rake db:create`
-    2. `rake db:migrate`
-    3. `rake db:seed:essential`  
+    1.  `rails db:create`
+    2. `rails db:migrate`
+    3. `rails db:seed:essential`  
     
-* To drop the database, run `rake db:drop`
+* To drop the database, run `rails db:drop`
 
 * Testing
  

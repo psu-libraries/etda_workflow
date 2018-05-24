@@ -50,14 +50,16 @@ class LionPath::AcademicPlan
   end
 
   def committee_members_refresh
-    byebug
+    return true unless committee_has_changed?(committee)
     refresh_committee = {}
     committee.each_with_index do |cm, index|
       refresh_committee[index.to_s] = { committee_role_id: InboundLionPathRecord.etd_role(cm[:role_desc]), is_required: true, name: full_name(cm), email: cm[LionPath::LpKeys::EMAIL] }
     end
     unless refresh_committee.empty?
-      @plan_submission.committee_members_attributes = refresh_committee
-      @plan_submission.save(validate: false)
+      CommitteeMember.remove_committee_members(@plan_submission)
+      submission = Submission.find(@plan_submission.id)
+      submission.committee_members_attributes = refresh_committee
+      submission.save(validate: false)
       return true
     end
     false
@@ -69,6 +71,15 @@ class LionPath::AcademicPlan
   end
 
   private
+
+    def committee_has_changed?(committee)
+      current_committee = CommitteeMember.current_committee(@plan_submission.id)
+      new_committee = []
+      committee.each do |cm|
+        new_committee << [InboundLionPathRecord.etd_role(cm[:role_desc]), true, full_name(cm), cm[LionPath::LpKeys::EMAIL]]
+      end
+      current_committee.sort != new_committee.sort
+    end
 
     def selected_index(code)
       return -1 if code == ''

@@ -7,6 +7,7 @@ RSpec.describe Author::ProgramInformationView do
   describe 'no lion path record' do
     context '#new_program_information_partial' do
       it 'returns the input form when there is no lion path record' do
+        allow(InboundLionPathRecord).to receive(:active?).and_return(false)
         expect(view.new_program_information_partial).to eq('standard_program_information')
       end
     end

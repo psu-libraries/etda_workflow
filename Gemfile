@@ -78,6 +78,7 @@ gem 'simple_form'
 gem 'rest-client'
 
 gem 'prawn'
+gem 'caracal'  # for creating docx documents
 
 # # Form builder
 gem 'simple_form'

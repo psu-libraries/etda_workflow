@@ -153,7 +153,7 @@ class Admin::SubmissionsController < AdminController
     @submission = Submission.find(params[:id])
     @submission.author.populate_lion_path_record(@submission.author.psu_idn, @submission.author.access_id)
     if @submission.academic_plan.committee_members_refresh
-      flash[:notice] = 'Committee members successfully refreshed from Lion Path.'
+      flash[:notice] = 'Committee successfully refreshed from Lion Path'
     else
       flash[:alert] = 'Unable to refresh committee member information from Lion Path.'
     end
@@ -164,10 +164,9 @@ class Admin::SubmissionsController < AdminController
     @submission = Submission.find(params[:id])
     if @submission.author.inbound_lion_path_record.refresh_academic_plan(@submission)
       flash[:notice] = 'Academic plan information successfully refreshed from Lion Path'
-      redirect_to admin_edit_submission_path(@submission.id)
     else
       flash[:alert] = 'There was a problem refreshing your academic plan information.  Please contact your administrator'
-      render :edit
     end
+    redirect_to admin_edit_submission_path(@submission.id)
   end
 end

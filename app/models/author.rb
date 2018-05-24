@@ -99,7 +99,7 @@ class Author < ApplicationRecord
 
   def update_missing_attributes
     update_confidential_status(access_id)
-    unless psu_idn.present?
+    if psu_idn.blank?
       ldap_psu_idn = LdapUniversityDirectory.new.get_psu_id_number(access_id)
       update_attribute :psu_idn, ldap_psu_idn
     end
