@@ -74,6 +74,7 @@ Metrics/CyclomaticComplexity:
   - app/presenters/admin/submission_form_view.rb
   - app/models/submission_release_service.rb
   - app/models/export_csv.rb
+  - app/models/mock_university_directory.rb
 
 Metrics/PerceivedComplexity:
   Exclude:

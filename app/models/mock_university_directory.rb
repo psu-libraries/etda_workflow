@@ -13,6 +13,7 @@ class MockUniversityDirectory
     amg32
     xxb13
     conf123
+    dmc186
   ].freeze
 
   # Return an array of tuples that are suitable for returning
@@ -29,6 +30,7 @@ class MockUniversityDirectory
         { id: 'sar3@psu.edu', label: 'Scott Rogers', value: 'Scott Rogers' },
         { id: 'saw140@psu.edu', label: 'Scott Woods', value: 'Scott Woods' }
       ]
+
     else
       []
     end
@@ -85,6 +87,13 @@ class MockUniversityDirectory
         city: 'University Park', state: 'PA',
         zip: '16802', phone_number: '555-555-5555',
         country: 'US', psu_idn: '999999999', confidential_hold: true,
+        administrator: true, site_administrator: true }
+    when /(dmc186)/i
+      { access_id: 'dmc186', first_name: 'Daniel', middle_name: 'Michael',
+        last_name: 'Coughlin', address_1: 'University Libraries',
+        city: 'University Park', state: 'PA',
+        zip: '16802', phone_number: '555-555-5555',
+        country: 'US', psu_idn: '999999999', confidential_hold: false,
         administrator: true, site_administrator: true }
     when /(amg32)/i
       { access_id: 'amg32', first_name: 'Andrew', middle_name: 'Michael',
