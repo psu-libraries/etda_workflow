@@ -1,8 +1,8 @@
 <%= f.input :degree_id, as: :hidden, required: true, label: 'hidden degree' %>
 <%= f.input :program_id, as: :hidden, required: true, label: 'hidden program id' %>
 <%= f.input :semester, as: :hidden, input_html: {value: @submission.semester}, label: 'hidden semester' %>
-<%= f.input :year, as: :hidden, input_html: {value: @submission.year}, hidden: 'hidden year' %>
-<%= f.input :defended_at, as: :string, input_html: {class: 'hidden', value: @submission.defended_at}, label: 'hidden defended_at' %>
+<%= f.input :year, as: :hidden, input_html: {value: @submission.year}, label: 'hidden year' %>
+<%= f.input :defended_at, as: :hidden, input_html: {value: @submission.defended_at}, label: 'hidden defended_at' %>
 <div>
   <%= f.input :lion_path_degree_code, collection: @author.inbound_lion_path_record.academic_plan.degrees_display_collection, label: 'Academic Plan', prompt: 'Please select your Academic Plan', input_html: {value: @submission.lion_path_degree_code} %>
 </div>

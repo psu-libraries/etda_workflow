@@ -65,7 +65,7 @@ class Author < ApplicationRecord
   def populate_attributes
     update_confidential_status(access_id)
     populate_with_ldap_attributes
-    # retrieve_lion_path_information unless result.nil?
+    populate_lion_path_record psu_idn, access_id
     self
   end
 
@@ -99,9 +99,11 @@ class Author < ApplicationRecord
 
   def update_missing_attributes
     update_confidential_status(access_id)
-    return if psu_idn.present?
-    ldap_psu_idn = LdapUniversityDirectory.new.get_psu_id_number(access_id)
-    update_attribute :psu_idn, ldap_psu_idn
+    if psu_idn.blank?
+      ldap_psu_idn = LdapUniversityDirectory.new.get_psu_id_number(access_id)
+      update_attribute :psu_idn, ldap_psu_idn
+    end
+    populate_lion_path_record(psu_idn, access_id)
     self
   end
 

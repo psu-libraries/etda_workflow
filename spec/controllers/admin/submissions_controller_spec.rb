@@ -119,7 +119,7 @@ RSpec.describe Admin::SubmissionsController, type: :controller do
     it 'refreshes committee information with information from Lion Path' do
       submission = FactoryBot.create :submission, :waiting_for_final_submission_response
       expect(get: admin_refresh_committee_path(submission.id)).to route_to(controller: 'admin/submissions', action: 'refresh_committee', id: submission.id.to_s)
-      expect(response).to redirect_to(controller: '/admin/submissions', action: 'edit', id: submission.id.to_s) if InboundLionPathRecord.active?
+      expect(response.status).to eq(200) if InboundLionPathRecord.active?
     end
   end
 
@@ -127,7 +127,7 @@ RSpec.describe Admin::SubmissionsController, type: :controller do
     submission = FactoryBot.create :submission, :waiting_for_format_review_response
     it 'refreshes academic plan with information from Lion Path' do
       expect(get: admin_submissions_refresh_academic_plan_path(submission.id)).to route_to(controller: 'admin/submissions', action: 'refresh_academic_plan', id: submission.id.to_s)
-      expect(response).to redirect_to(controller: '/admin/submissions', action: 'edit', id: submission.id.to_s) if InboundLionPathRecord.active?
+      expect(response.status).to eq(200) if InboundLionPathRecord.active?
     end
   end
   describe 'raising errors' do

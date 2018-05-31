@@ -25,20 +25,29 @@ class CommitteeMember < ApplicationRecord
     advisors_array.first.name
   end
 
-  # def validate_committee_member
-  #   starting_count = errors.count
-  #   errors.add(:name, "Name can't be blank") if name.blank?
-  #   errors.add(:email, "Email can't be blank") if email.blank?
-  #   errors.add(:committee_role_id, "Must choose a role") if committee_role_id.blank?
-  #   starting_count == errors.count
-  # end
-  #
-  # def validate_email
-  #   return true if is_required && (name.blank? && email.blank?)
-  #   return true if email =~ /\A[\w]([^@\s,;]+)@(([\w-]+\.)+(com|edu|org|net|gov|mil|biz|info))\z/i
-  #   errors.add(:email, 'Invalid email address')
-  #   false
-  # end
+  def self.remove_committee_members(submission)
+    submission.committee_members.each(&:destroy)
+    submission.save
+  end
+
+  def self.current_committee(submission_id)
+    CommitteeMember.where(submission_id: submission_id).pluck(:committee_role_id, :is_required, :name, :email)
+  end
+
+  def validate_committee_member
+    starting_count = errors.count
+    errors.add(:name, "Name can't be blank") if name.blank?
+    errors.add(:email, "Email can't be blank") if email.blank?
+    errors.add(:committee_role_id, "Must choose a role") if committee_role_id.blank?
+    starting_count == errors.count
+  end
+
+  def validate_email
+    return true if is_required && (name.blank? && email.blank?)
+    return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(com|edu|org|net|gov|mil|biz|info))\z/i)
+    errors.add(:email, 'Invalid email address')
+    false
+  end
 
   def role
     return '' if committee_role_id.nil?
