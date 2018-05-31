@@ -2,6 +2,7 @@ require 'model_spec_helper'
 
 RSpec.describe LionPath::Crosswalk, type: :model do
   if current_partner.graduate?
+
     context '#lp_to_etd_degree' do
       it "when given a LP degree code, returns the correct ETD degree type" do
         Degree.create(name: 'M Ed', description: 'Master Ed', degree_type: DegreeType.where(slug: 'master_thesis').first)
@@ -22,7 +23,7 @@ RSpec.describe LionPath::Crosswalk, type: :model do
         expect(described_class.grad_year(grad_date)).to eq(selected_year)
       end
     end
-    xit '#convert_to_datetime' do
+    context '#convert_to_datetime' do
       it 'converts lion path defense date to datetime value for ETD' do
         lp_date = '2016-03-26'
         etd_date = described_class.convert_to_datetime(lp_date)

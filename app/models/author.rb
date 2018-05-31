@@ -81,7 +81,7 @@ class Author < ApplicationRecord
     # refresh graduate author record each time login occurs.
     lp_record_data = InboundLionPathRecord.new.retrieve_lion_path_record(psu_idn, login_id)
     return nil unless InboundLionPathRecord.records_match?(psu_idn, login_id, lp_record_data)
-
+    #  Be sure there is data before continuing???
     if inbound_lion_path_record.present?
       inbound_lion_path_record.update_attribute(:current_data, lp_record_data)
     else

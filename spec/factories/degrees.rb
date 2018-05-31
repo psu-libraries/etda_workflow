@@ -5,6 +5,6 @@ FactoryBot.define do
     name
     description
     is_active true
-    degree_type { DegreeType.first }
+    degree_type_id { DegreeType.first.id }
   end
 end
