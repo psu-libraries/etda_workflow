@@ -21,23 +21,23 @@ RSpec.describe LionPath::AcademicPlan, type: :model do
   if current_partner.graduate?
 
     context '#plan_Information_collection' do
-      xit 'returns a collection of programs and creates a program record if the program does not exist' do
+      it 'returns a collection of programs and creates a program record if the program does not exist' do
         Degree.create(name: 'MS', degree_type: DegreeType.first, description: 'none')
         Degree.create(name: 'PHD', degree_type: DegreeType.first, description: 'another')
         Degree.create(name: 'MA', degree_type: DegreeType.first, description: 'last')
 
-        (0..2).each do |i|
-          expect(Program.find_by(name: LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::RESPONSE][i][LionPath::LpKeys::DEGREE_DESC])).to be_nil
+        (0..1).each do |i|
+          expect(Program.find_by(name: LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN][i][LionPath::LpKeys::DEGREE_DESC])).to be_nil
         end
         academic_plan.plan_information_collection
-        (0..2).each do |i|
-          expect(Program.find_by(name: LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::RESPONSE][i][LionPath::LpKeys::DEGREE_DESC])).not_to be_nil
+        (0..1).each do |i|
+          expect(Program.find_by(name: LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN][i][LionPath::LpKeys::DEGREE_DESC])).not_to be_nil
         end
       end
     end
     context '#degrees_display_collection' do
-      xit 'returns a collection for degree dropdown' do
-       expect(academic_plan.degrees_display_collection[0]).to eq([LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN].first[LionPath::LpKeys::DEGREE_DESC], LionPath::MockLionPathRecord.first_degree_code])
+      it 'returns a collection for degree dropdown' do
+       expect(academic_plan.degrees_display_collection[0]).to eq([LionPath::MockLionPathRecord.first_degree_code + ' - ' + LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN].first[LionPath::LpKeys::DEGREE_DESC], LionPath::MockLionPathRecord.first_degree_code])
       end
     end
     context '#committee' do
