@@ -14,7 +14,7 @@ namespace :passenger do
   desc "Passenger Version Config Update"
   task :install, roles: :web do
     run <<-CMD.compact
-  mkdir --parents /opt/heracles/deploy/passenger
+  mkdir --parents /opt/deploy/passenger
   cd ~deploy &&
   echo -n "PassengerRuby " > ~deploy/passenger/passenger-ruby-version.cap && rbenv which ruby >> ~deploy/passenger/passenger-ruby-version.cap &&
   v_passenger_ruby=$(cat ~deploy/passenger/passenger-ruby-version.cap) &&
