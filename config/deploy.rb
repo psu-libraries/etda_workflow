@@ -18,7 +18,7 @@ set :user, 'deploy'
 set :use_sudo, false
 
 set :deploy_via, :remote_cache
-set :tmp_dir, "/opt/heracles/deploy/#{fetch(:application)}_#{fetch(:partner)}/tmp"
+set :tmp_dir, "/opt/deploy/#{fetch(:application)}_#{fetch(:partner)}/tmp"
 set :copy_remote_dir, deploy_to
 
 # Uncomment the following to require manually verifying the host key before first deploy.
@@ -123,7 +123,7 @@ namespace :deploy do
     desc 'Passenger Version Config Update'
     task :config_update do
       on roles(:web) do
-        execute 'mkdir --parents /opt/heracles/deploy/passenger'
+        execute 'mkdir --parents /opt/deploy/passenger'
         execute 'cd ~deploy && echo -n "PassengerRuby " > ~deploy/passenger/passenger-ruby-version.cap   && rbenv which ruby >> ~deploy/passenger/passenger-ruby-version.cap'
         execute 'v_passenger_ruby=$(cat ~deploy/passenger/passenger-ruby-version.cap) &&    cp --force /etc/httpd/conf.d/phusion-passenger-default-ruby.conf ~deploy/passenger/passenger-ruby-version.tmp &&    sed -i -e "s|.*PassengerRuby.*|${v_passenger_ruby}|" ~deploy/passenger/passenger-ruby-version.tmp'
         execute 'sudo /bin/mv ~deploy/passenger/passenger-ruby-version.tmp /etc/httpd/conf.d/phusion-passenger-default-ruby.conf'
