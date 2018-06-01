@@ -18,9 +18,9 @@ namespace :passenger do
   cd ~deploy &&
   echo -n "PassengerRuby " > ~deploy/passenger/passenger-ruby-version.cap && rbenv which ruby >> ~deploy/passenger/passenger-ruby-version.cap &&
   v_passenger_ruby=$(cat ~deploy/passenger/passenger-ruby-version.cap) &&
-  cp --force /etc/httpd/conf.d/phusion-passenger-default-ruby.conf ~deploy/passenger/passenger-ruby-version.tmp &&
+  cp --force /etc/httpd/conf.d/passenger-phusion.conf ~deploy/passenger/passenger-ruby-version.tmp &&
   sed -i -e "s|.*PassengerRuby.*|${v_passenger_ruby}|" ~deploy/passenger/passenger-ruby-version.tmp &&
-  sudo /bin/mv ~deploy/passenger/passenger-ruby-version.tmp /etc/httpd/conf.d/phusion-passenger-default-ruby.conf &&
+  sudo /bin/mv ~deploy/passenger/passenger-ruby-version.tmp /etc/httpd/conf.d/passenger-phusion.conf &&
   sudo /sbin/service httpd restart
     CMD
     #    passenger.warmup
