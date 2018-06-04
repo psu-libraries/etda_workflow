@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:psu-stewardship/etda_utilities.git
-  revision: a43a8b12d9fa5ea9f682cde0d96b98261785ca7a
+  revision: 05e44d65c9b2635440512362b4dc843e4111528c
   branch: master
   specs:
-    etda_utilities (0.5.3)
+    etda_utilities (0.6.3)
 
 GIT
   remote: https://github.com/stefanpenner/country_select.git
