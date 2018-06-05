@@ -22,6 +22,8 @@ AllCops:
     - 'Capfile'
     - 'spec/*_helper.rb'
     - 'lib/devise/**'
+    - 'config/version_number.rb'
+    - 'spec/fixtures/version_number.rb'
 
 Rails:
   Enabled: true
