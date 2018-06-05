@@ -140,8 +140,8 @@ namespace :deploy_all do
       end
     end
   end
-  after "deploy:finished", "apache:restart"
 end
 
 task deploy_all: 'deploy_all:deploy'
+after "deploy_all:deploy", "apache:restart"
 
