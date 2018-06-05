@@ -116,22 +116,6 @@ namespace :deploy do
 
   after "deploy:updated", "deploy:migrate"
 
-  # after "rbenv:setup", "passenger:install"
-  after "deploy:restart", "passenger:warmup"
-
-  namespace :passenger do
-    desc 'Passenger Version Config Update'
-    task :config_update do
-      on roles(:web) do
-        execute 'mkdir --parents /opt/deploy/passenger'
-        execute 'cd ~deploy && echo -n "PassengerRuby " > ~deploy/passenger/passenger-ruby-version.cap   && rbenv which ruby >> ~deploy/passenger/passenger-ruby-version.cap'
-        execute 'v_passenger_ruby=$(cat ~deploy/passenger/passenger-ruby-version.cap) &&    cp --force /etc/httpd/conf.d/passenger-phusion.conf ~deploy/passenger/passenger-ruby-version.tmp &&    sed -i -e "s|.*PassengerRuby.*|${v_passenger_ruby}|" ~deploy/passenger/passenger-ruby-version.tmp'
-        execute 'sudo /bin/mv ~deploy/passenger/passenger-ruby-version.tmp /etc/httpd/conf.d/passenger-phusion.conf'
-        execute 'sudo /bin/systemctl restart httpd'
-      end
-    end
-  end
-  after :published, 'passenger:config_update'
 end
 
 # Used to keep x-1 instances of ruby on a machine.  Ex +4 leaves 3 versions on a machine.  +3 leaves 2 versions
