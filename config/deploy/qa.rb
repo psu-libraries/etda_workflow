@@ -1,4 +1,7 @@
 # frozen_string_literal: true
+
+set :stage, 'qa'
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
@@ -27,6 +30,8 @@
 # For available Capistrano configuration variables see the documentation page.
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
+
+server 'etdaworkflow1qa.vmhost.psu.edu:1855', user: 'deploy', roles: %w[web app db], primary: true
 
 # Custom SSH Options
 # ==================
