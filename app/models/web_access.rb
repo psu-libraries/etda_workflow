@@ -19,6 +19,11 @@ class WebAccess
     "?factors=dce.psu.edu&cosign-#{service}&#{@redirect_url}"
   end
 
+  def explore_base_url
+    this_url = application_url
+    this_url.split('-workflow').join || ''
+  end
+
   private
 
   def application_url

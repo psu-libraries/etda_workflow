@@ -33,26 +33,11 @@ RSpec.describe Author::SubmissionsIndexView do
         expect(view_for_existing_author.partial_name).to eq 'no_submissions'
       end
     end
-    context 'When author is in database, populated from LDAP entry and has no submissions' do
+    context 'When author is in database, populated from LDAP entry and has no unpublished submissions' do
         it 'returns no_submissions' do
+          FactoryBot.create :submission, :released_for_publication, author: existing_author
           expect(view_for_ldap_author.partial_name).to eq 'no_submissions'
         end
-    end
-  end
-
-  describe '#author_has_submissions?' do
-    context 'When an existing author has submissions' do
-      before do
-        FactoryBot.create :submission, author: existing_author
-      end
-      it 'returns true' do
-        expect(view_for_existing_author).to be_author_has_submissions
-      end
-    end
-    context 'When an existing author does not have any submissions' do
-      it 'returns false' do
-        expect(view_for_existing_author).not_to be_author_has_submissions
-      end
     end
   end
 end

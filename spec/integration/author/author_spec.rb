@@ -25,12 +25,24 @@ RSpec.describe 'Author submission page', type: :integration, js: true do
       expect(page).not_to have_link('Contact Support')
     end
   end
+  context 'Author submission display when author has a submission that is released for publication but no other submissions' do
+    it 'displays completed submission Button' do
+      FactoryBot.create :submission, :released_for_publication, author: author
+      visit author_submissions_path(author)
+      expect(page).not_to have_content("You don't have any submissions yet.")
+      expect(page).not_to have_content('Existing submission found. The status of your previously submitted document is listed below.')
+      expect(page).to have_link('My Published Submissions')
+      expect(page).to have_content('If you would like to start')
+    end
+  end
   context 'Author submission display when author has one submission' do
     it "displays 'submission found'" do
       FactoryBot.create :submission, :collecting_committee, author: author
       visit author_submissions_path
-      expect(page).to have_content("Existing thesis submission found")
+      expect(page).to have_content('Existing submission found. The status of your previously submitted document is listed below.')
       expect(page).to have_link('Provide Committee')
+      expect(page).to have_content('If you would like to start a new thesis or dissertation,') if current_partner.graduate?
+      expect(page).to have_content('If you would like to start a new thesis') unless current_partner.graduate?
     end
   end
   context 'Author submission display when author has more than one submissions' do

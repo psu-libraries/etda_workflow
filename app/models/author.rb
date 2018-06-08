@@ -107,6 +107,14 @@ class Author < ApplicationRecord
     self
   end
 
+  def unpublished_submissions
+    current_submissions = []
+    submissions.order(created_at: :desc).each do |s|
+      current_submissions << s unless s.status_behavior.released_for_publication?
+    end
+    current_submissions
+  end
+
   def can_edit?
     raise NotAuthorizedToEdit unless access_id.downcase.strip == Author.current.access_id.downcase.strip
     true
