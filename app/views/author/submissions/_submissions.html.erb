@@ -8,7 +8,6 @@
 
   <p>Existing <%= 'submission'.pluralize(@view.submissions.count) %> found.  The status of your previously submitted <%= 'document'.pluralize(@view.submissions.count) %> is listed below.</p>
 
-  <%= render 'new_submission_button' %>
 
 </div>
 
@@ -29,5 +28,5 @@
     </div>
   <% end %>
 
-
+  <%= render 'new_submission_button' %>
 </div>
