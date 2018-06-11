@@ -146,9 +146,11 @@ footer {
     border-bottom: 0px;
     border-radius: 0px;
 
+    .version,
     a {
       padding-top: 10px;
       padding-bottom: 10px;
+      padding-left: 1em;
     }
   }
 }

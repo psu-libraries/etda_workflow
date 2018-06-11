@@ -13,7 +13,7 @@ en:
     partner:
       abbrev: schreyer
       name: Schreyer Honors College
-      url: http://www.shc.psu.edu/students/thesis
+      url: https://www.shc.psu.edu/academic/thesis/
       slug: eHT
       description:
         title: Welcome to the starting point for the Penn State electronic honors thesis database.
@@ -56,7 +56,7 @@ en:
                     When you submitted your electronic %{degree_type} (eHT) to the %{partner_name} in %{submission_year},
                     you elected to restrict access to it for two years. The time has come to change it to open access.
                     Please acknowledge that you are aware that your eHT will be available as an open document on our
-                    eHT Web site (http://www.honors.libraries.psu.edu/browse/author/all)
+                    eHT Web site (https://honors.libraries.psu.edu/catalog)
                     If you or your advisor are in the process of seeking a patent associated with your %{degree_type} and
                     have filed an Invention Disclosure with the Office of Technology Management, we can grant another two-year extension
                     of the restriction. Please let us know immediately if this is the case.

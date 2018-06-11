@@ -40,7 +40,15 @@ namespace :etda_files do
 
   def create_empty_file(filepath, filename, filetext, content_type)
     if not is_pdf? content_type
-      touch filepath unless filepath.nil?
+      if is_doc? content_type
+        Caracal::Document.save "#{filepath}" do |doc|
+          doc.p "Title: #{filetext[0]}"
+          doc.p "Author: #{filetext[1]}"
+          doc.p "File Path: #{filepath}"
+        end
+      else
+        touch filepath unless filepath.nil?
+      end
       return
     end
     Prawn::Document.generate("#{filepath}") do
@@ -52,6 +60,12 @@ namespace :etda_files do
 
   def is_pdf? content_type
     content_type == 'application/pdf'
+  end
+
+  MS_TYPES = %w(application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/msword application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/vnd.openxmlformats-officedocument.wordprocessingml.document)
+
+  def is_doc? content_type
+     MS_TYPES.include? content_type
   end
 end
 

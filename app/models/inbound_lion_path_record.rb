@@ -32,12 +32,13 @@ class InboundLionPathRecord < ApplicationRecord
 
   def self.records_match?(psu_idn, login_id, lp_record_data)
     return false if lp_record_data.nil?
-    author_psu_idn = psu_idn.downcase.strip
-    author_login = login_id.downcase.strip
-    lp_psu_idn = lp_record_data[LionPath::LpKeys::EMPLOYEE_ID].downcase.strip
-    lp_login = lp_record_data[LionPath::LpKeys::ACCESS_ID].downcase.strip
+    # always match development
     unless Rails.env.development?
-      return false if author_psu_idn != lp_psu_idn || author_login != lp_login
+      author_psu_idn = psu_idn.downcase.strip
+      author_login = login_id.downcase.strip
+      lp_psu_idn = lp_record_data[LionPath::LpKeys::EMPLOYEE_ID].downcase.strip
+      lp_login = lp_record_data[LionPath::LpKeys::ACCESS_ID].downcase.strip
+      return false unless (author_psu_idn == lp_psu_idn) && (author_login == lp_login)
     end
     true
   end

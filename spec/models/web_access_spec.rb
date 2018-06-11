@@ -18,4 +18,9 @@ RSpec.describe WebAccess, type: :model do
   it 'has a logout_url' do
     expect(described_class.new('').logout_url).to eql('https://webaccess.psu.edu/cgi-bin/logout?myapp.psu.edu')
   end
+
+  it 'has an explore base url' do
+    application_url = described_class.new.send('application_url')
+    expect(described_class.new.explore_base_url).to eql(application_url.split('-workflow').join)
+  end
 end

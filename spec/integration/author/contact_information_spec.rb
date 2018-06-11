@@ -12,7 +12,9 @@ RSpec.describe "Manage Contact Information", js: true do
       FactoryBot.create :degree
       InboundLionPathRecord.new(current_data: LionPath::MockLionPathRecord::MOCK_LP_AUTHOR_RECORD)
       author = current_author
-      visit edit_author_author_path(author)
+      visit author_root_path(author)
+      click_link 'Update My Contact Information'
+      sleep(3)
       expect(page).to have_current_path(edit_author_author_path(author))
       expect(page).to have_content("Update Contact Information")
       expect(page).not_to have_content(author.access_id)
@@ -39,7 +41,8 @@ RSpec.describe "Manage Contact Information", js: true do
       expect(page).to have_current_path(author_root_path)
       sleep(3)
       # expect(page).to have_content('Contact information updated successfully')
-      expect(page).to have_content('myalternate@gmail.com')
+      visit edit_author_author_path(author)
+      expect(page).to have_field('Alternate email address', with: 'myalternate@gmail.com')
       expect(page).to have_link('Accessibility')
     end
   end
@@ -71,7 +74,8 @@ RSpec.describe "Manage Contact Information", js: true do
       author.reload
       expect(author.psu_idn).not_to be_blank
       # expect(page).to have_content('Contact information updated successfully')
-      expect(page).to have_content('mydifferentalternate@gmail.com')
+      visit edit_author_author_path(author)
+      expect(page).to have_field('Alternate email address', with: 'mydifferentalternate@gmail.com')
       expect(page).to have_link('Accessibility')
     end
   end

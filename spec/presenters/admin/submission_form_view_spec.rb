@@ -241,15 +241,14 @@ RSpec.describe Admin::SubmissionFormView do
 
   describe 'committee_form for Lion Path' do
     let(:author) { FactoryBot.create :author }
-    let(:inbound_lion_path_record) { FactoryBot.create :inbound_lion_path_record, author: author }
 
     context 'the lion path committee_form is returned' do
       it 'returns the standard committee form when lion path is active' do
-        if InboundLionPathRecord.active?
-          # allow(InboundLionPathRecord).to receive(:active).and_return(true)
-          expect(view.committee_form).to eq('lionpath_committee_form')
-          expect(view.program_information_partial).to eq('lionpath_program_information')
-        end
+        allow_any_instance_of(Submission).to receive(:using_lionpath?).and_return(true)
+        inbound_lion_path_record = InboundLionPathRecord.new(author_id: author.id, lion_path_degree_code: LionPath::MockLionPathRecord.first_degree_code, current_data: LionPath::MockLionPathRecord.current_data)
+        author.inbound_lion_path_record = inbound_lion_path_record
+        expect(view.committee_form).to eq('lionpath_committee_form')
+        expect(view.program_information_partial).to eq('lionpath_program_information')
       end
     end
   end
@@ -261,7 +260,7 @@ RSpec.describe Admin::SubmissionFormView do
     context 'the standard_committee_form is returned' do
       it 'returns the standard committee form when lion path is inactive' do
         author.inbound_lion_path_record = nil
-        # allow(InboundLionPathRecord).to receive(:active).and_return(false)
+        allow(InboundLionPathRecord).to receive(:active?).and_return(false)
         expect(view.committee_form).to eq('standard_committee_form')
         expect(view.program_information_partial).to eq('standard_program_information')
       end

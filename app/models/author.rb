@@ -65,7 +65,7 @@ class Author < ApplicationRecord
   def populate_attributes
     update_confidential_status(access_id)
     populate_with_ldap_attributes
-    # retrieve_lion_path_information unless result.nil?
+    populate_lion_path_record psu_idn, access_id
     self
   end
 
@@ -81,7 +81,7 @@ class Author < ApplicationRecord
     # refresh graduate author record each time login occurs.
     lp_record_data = InboundLionPathRecord.new.retrieve_lion_path_record(psu_idn, login_id)
     return nil unless InboundLionPathRecord.records_match?(psu_idn, login_id, lp_record_data)
-
+    #  Be sure there is data before continuing???
     if inbound_lion_path_record.present?
       inbound_lion_path_record.update_attribute(:current_data, lp_record_data)
     else
@@ -99,10 +99,20 @@ class Author < ApplicationRecord
 
   def update_missing_attributes
     update_confidential_status(access_id)
-    return if psu_idn.present?
-    ldap_psu_idn = LdapUniversityDirectory.new.get_psu_id_number(access_id)
-    update_attribute :psu_idn, ldap_psu_idn
+    if psu_idn.blank?
+      ldap_psu_idn = LdapUniversityDirectory.new.get_psu_id_number(access_id)
+      update_attribute :psu_idn, ldap_psu_idn
+    end
+    populate_lion_path_record(psu_idn, access_id)
     self
+  end
+
+  def unpublished_submissions
+    current_submissions = []
+    submissions.order(created_at: :desc).each do |s|
+      current_submissions << s unless s.status_behavior.released_for_publication?
+    end
+    current_submissions
   end
 
   def can_edit?

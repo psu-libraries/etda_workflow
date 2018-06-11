@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:psu-stewardship/etda_utilities.git
-  revision: a43a8b12d9fa5ea9f682cde0d96b98261785ca7a
+  revision: 05e44d65c9b2635440512362b4dc843e4111528c
   branch: master
   specs:
-    etda_utilities (0.5.3)
+    etda_utilities (0.6.3)
 
 GIT
   remote: https://github.com/stefanpenner/country_select.git
@@ -114,6 +114,10 @@ GEM
     capybara-email (2.5.0)
       capybara (~> 2.4)
       mail
+    caracal (1.2.0)
+      nokogiri (~> 1.6)
+      rubyzip (~> 1.1)
+      tilt (>= 1.4)
     carrierwave (1.2.2)
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
@@ -236,8 +240,8 @@ GEM
       activesupport (>= 4.2)
       concurrent-ruby (~> 1.0.0)
       railties (>= 4.2)
-    rack (2.0.3)
-    rack-protection (2.0.1)
+    rack (2.0.5)
+    rack-protection (2.0.2)
       rack
     rack-proxy (0.6.3)
       rack
@@ -329,6 +333,7 @@ GEM
       rubocop (>= 0.52.1)
     ruby-progressbar (1.9.0)
     ruby_dep (1.5.0)
+    rubyzip (1.2.1)
     rufus-scheduler (3.4.2)
       et-orbi (~> 1.0)
     safe_yaml (1.0.4)
@@ -352,10 +357,10 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    sinatra (2.0.1)
+    sinatra (2.0.2)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.1)
+      rack-protection (= 2.0.2)
       tilt (~> 2.0)
     sixarm_ruby_unaccent (1.2.0)
     sort_alphabetical (1.1.0)
@@ -432,6 +437,7 @@ DEPENDENCIES
   capistrano-resque (~> 0.2.1)
   capybara (~> 2.13)
   capybara-email
+  caracal
   carrierwave
   clam_scan
   cocoon
@@ -471,6 +477,7 @@ DEPENDENCIES
   shoulda-matchers!
   simple_form
   simplecov
+  sinatra (~> 2.0.2)
   spring
   spring-watcher-listen (~> 2.0.0)
   therubyracer

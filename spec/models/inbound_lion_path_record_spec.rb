@@ -17,7 +17,8 @@ RSpec.describe InboundLionPathRecord, type: :model do
     another_degree = FactoryBot.create :degree, name: 'MS', is_active: false, degree_type: DegreeType.default
     last_degree = FactoryBot.create :degree, name: 'DEGREE', is_active: true, degree_type: DegreeType.default
     author = FactoryBot.create :author
-    FactoryBot.create :inbound_lion_path_record, author: author, current_data: LionPath::MockLionPathRecord.current_data, lion_path_degree_code: 'MS'
+    inbound_record = FactoryBot.create :inbound_lion_path_record, author: author, current_data: LionPath::MockLionPathRecord.current_data, lion_path_degree_code: 'MS'
+    author.inbound_lion_path_record = inbound_record
     submission = FactoryBot.create :submission, :collecting_final_submission_files, author: author, degree_id: degree.id
 
     context 'record contains data returned from Lion Path' do
@@ -47,9 +48,6 @@ RSpec.describe InboundLionPathRecord, type: :model do
       end
     end
     context '#records_match?' do
-      it "returns true when there's record data and the login and access ids match" do
-        expect(described_class).to be_records_match('999999999', 'xxb13', LionPath::MockLionPathRecord::MOCK_LP_AUTHOR_RECORD[LionPath::LpKeys::RESPONSE])
-      end
       it "returns false when there's a mis-match between login ids" do
         expect(described_class).not_to be_records_match('999999999', 'zzz123', LionPath::MockLionPathRecord::MOCK_LP_AUTHOR_RECORD[LionPath::LpKeys::RESPONSE])
       end
@@ -62,11 +60,12 @@ RSpec.describe InboundLionPathRecord, type: :model do
     end
 
     context 'initialize lion path degree code to transition submission records created without lionpath' do
-      xit 'returns the lion path degree code when it is missing' do
-        degree = FactoryBot.create :degree, name: 'PHD', is_active: true, degree_type: DegreeType.default
-        another_degree = FactoryBot.create :degree, name: 'MS', is_active: false, degree_type: DegreeType.default
-        last_degree = FactoryBot.create :degree, name: 'DEGREE', is_active: true, degree_type: DegreeType.default
+      it 'returns the lion path degree code when it is missing' do
+        degree =  Degree.create(name: 'PHD', is_active: true, degree_type_id: DegreeType.default.id, description: 'phd')
+        another_degree = Degree.new(name: 'MS', is_active: false, degree_type_id: DegreeType.default.id, description: 'ms')
+        last_degree = Degree.new(name: 'DEGREE', is_active: true, degree_type_id: DegreeType.default.id, description: 'degree')
 
+        submission.degree_id = degree.id
         allow(InboundLionPathRecord).to receive(:active?).and_return(true)
         lp_degree_code = described_class.new.initialize_lion_path_degree_code(submission)
         expect(lp_degree_code.last(3)).to eq('PHD')
@@ -90,24 +89,26 @@ RSpec.describe InboundLionPathRecord, type: :model do
         expect(record).to be_nil
       end
     end
-    context 'transitions a standard submission record to be populated with lion path information' do
+    it 'transitions a standard submission record to be populated with lion path information' do
+      degree = Degree.create(name: 'PHD', is_active: true, degree_type_id: DegreeType.default.id, description: 'phd')
+      another_degree = Degree.new(name: 'MS', is_active: false, degree_type_id: DegreeType.default.id, description: 'ms')
+
       author = FactoryBot.create(:author)
       author.inbound_lion_path_record = FactoryBot.create(:inbound_lion_path_record, author: author)
-      submission1 = FactoryBot.create :submission, :collecting_format_review_files, author_id: author.id, lion_path_degree_code: nil
+      submission1 = FactoryBot.create :submission, :collecting_format_review_files, author: author, lion_path_degree_code: nil, degree_id: degree.id
       submission1.save
       roles = CommitteeRole.all
-      before do
-        (0..1).each do |i|
-          CommitteeMember.create(name: "Name_#{i}", email: "name_#{i}_@example.com", is_required: false, committee_role_id: roles[i].id, submission_id: submission1.id)
-        end
-        submission1.save
-        described_class.transition_to_lionpath([submission1])
+      (0..1).each do |i|
+        submission1.committee_members << CommitteeMember.create(name: "Name_#{i}", email: "name_#{i}_@example.com", is_required: false, committee_role_id: roles[i].id, submission_id: submission1.id)
       end
-      xit 'updates academic plan and committee information' do
-        allow(InboundLionPathRecord).to receive(:active?).and_return(true)
-        expect(submission1.lion_path_degree_code).not_to be_nil
-        expect(submission1.committee_members[0].name).not_to eq('Name_0')
-      end
+      # submission1.author.inbound_lion_path_record.lion_path_degree_code = LionPath::MockLionPathRecord.first_degree_code
+      submission1.save
+      allow_any_instance_of(Submission).to receive(:using_lionpath?).and_return(true)
+      allow(InboundLionPathRecord).to receive(:active?).and_return(true)
+      described_class.transition_to_lionpath([submission1])
+      submission1.reload
+      expect(submission1.lion_path_degree_code).not_to be_nil
+      expect(submission1.committee_members[0].name).not_to eq('Name_0')
     end
     context '#active?' do
       it 'returns value from lion_path.yml' do

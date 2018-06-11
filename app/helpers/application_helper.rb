@@ -35,4 +35,10 @@ module ApplicationHelper
   def fingerprinted_asset(name)
     "#{name}-#{ASSET_FINGERPRINT}"
   end
+
+  def current_version_number
+    return '' if VERSION_NUMBER.empty?
+    current_number = VERSION_NUMBER
+    "Version: #{current_number.strip}"
+  end
 end

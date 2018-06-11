@@ -1,6 +1,6 @@
 class Author::SubmissionsController < AuthorController
   class MissingLionPathRecordError < StandardError; end
-  before_action :find_submission, except: [:index, :new, :create]
+  before_action :find_submission, except: [:index, :new, :create, :published_submissions_index]
 
   def index
     @view = Author::SubmissionsIndexView.new(@author)
@@ -159,6 +159,11 @@ class Author::SubmissionsController < AuthorController
   rescue ActiveRecord::RecordInvalid
     redirect_to author_root_path
     flash[:alert] = 'There was a problem refreshing your defense date.  Please contact your administrator'
+  end
+
+  def published_submissions_index
+    @view = Author::PublishedSubmissionsIndexView.new(@author)
+    render 'published_submissions_index'
   end
 
   private

@@ -22,6 +22,11 @@ RSpec.describe ApplicationHelper do
     end
   end
 
+  describe '#current_version_number' do
+    it "returns the application's current version number" do
+      expect(current_version_number).to eql('Version: v.101-test')
+    end
+  end
   describe '#render_conditional_links' do
     xit 'displays admin support link when admin pages are displayed' do
       # allow(request.path).to receive(:starts_with?).with('/admin').and_return(false)

@@ -76,7 +76,10 @@ Rails.application.routes.draw do
 
       resource :committee_members, shallow: true # We only modify the set of committee members en masse
       get '/committee_members_refresh', to: 'committee_members#refresh', as: :refresh_committee
+
+
     end
+    get '/published_submissions', to: 'submissions#published_submissions_index', as: :published_submissions_index
 
     get '/files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
     get '/files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file

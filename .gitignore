@@ -15,6 +15,7 @@
 !/tmp/.keep
 config/secrets.yml
 config/database.yml
+config/locales/test/**/*
 spec/examples.txt
 
 node_modules/**/*
