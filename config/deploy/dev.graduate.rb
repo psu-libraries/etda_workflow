@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # config/deploy/dev.graduate.rb
-set :stage, :dev
+set :stage, 'dev'
 set :partner, 'graduate'
 set :deploy_to, "/opt/deploy/etda_workflow_graduate"
 set :tmp_dir, "/opt/deploy/etda_workflow_graduate/tmp"
