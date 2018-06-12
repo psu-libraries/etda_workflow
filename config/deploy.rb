@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'whenever/capistrano'
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.10.1"
@@ -44,7 +45,7 @@ set :rails_env, 'production'
 # Settings for whenever gem that updates the crontab file on the server
 # See schedule.rb for details
 # set :whenever_environment, ->{ "#{fetch(:stage)}" }  this is being set to 'dev' so hardcoded production in schedule.rb
-set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:partner)}" }
+set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:partner)}" }
 set :whenever_roles, %i[audit]
 
 set :log_level, :debug
@@ -115,7 +116,6 @@ namespace :deploy do
   before "deploy:migrate", "deploy:symlink_shared"
 
   after "deploy:updated", "deploy:migrate"
-
 end
 
 # Used to keep x-1 instances of ruby on a machine.  Ex +4 leaves 3 versions on a machine.  +3 leaves 2 versions
@@ -144,4 +144,3 @@ end
 
 task deploy_all: 'deploy_all:deploy'
 after "deploy_all:deploy", "apache:restart"
-
