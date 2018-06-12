@@ -18,7 +18,7 @@ class SubmissionStatusGiver
   end
 
   def can_update_committee?
-    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::CollectingFormatReviewFilesRejected]
+    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected]
   end
 
   def can_upload_format_review_files?

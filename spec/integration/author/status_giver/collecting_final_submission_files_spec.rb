@@ -31,7 +31,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
       it 'raises a forbidden access error' do
         visit edit_author_submission_committee_members_path(submission)
         # expect(page).to have_content 'You are not allowed to visit that page at this time, please contact your administrator'
-        expect(page).to have_current_path(author_root_path)
+        expect(page).to have_current_path(edit_author_submission_committee_members_path(submission))
       end
     end
 

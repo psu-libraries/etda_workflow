@@ -148,6 +148,18 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.status = ''
     expect(described_class.new(submission)).not_to be_beyond_waiting_for_final_submission_response
   end
+  it 'responds to #ok_to_update_committee?' do
+    submission.status = 'collecting program information'
+    expect(described_class.new(submission)).not_to be_ok_to_update_committee
+    submission.status = 'released for publication metadata only'
+    expect(described_class.new(submission)).not_to be_ok_to_update_committee
+    submission.status = 'collecting final submission files rejected'
+    expect(described_class.new(submission)).to be_ok_to_update_committee
+    submission.status = 'collecting format review files'
+    expect(described_class.new(submission)).to be_ok_to_update_committee
+    submission.status = 'collecting final submission files'
+    expect(described_class.new(submission)).to be_ok_to_update_committee
+  end
 
   describe 'submission#status_behavior' do
     let(:submission) { Submission.new }

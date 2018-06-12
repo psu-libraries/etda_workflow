@@ -2,8 +2,8 @@
 
 class CommitteeMember < ApplicationRecord
   # This maps ldap values to one or more values needed for committee member autocomplete
-  # validate :validate_committee_member
-  # validate :validate_email
+  validate :validate_committee_member
+  validate :validate_email
   validates :committee_role_id,
             :name,
             :email, presence: true, if: proc { |cm| cm.is_required }
@@ -44,7 +44,9 @@ class CommitteeMember < ApplicationRecord
 
   def validate_email
     return true if is_required && (name.blank? && email.blank?)
-    return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(com|edu|org|net|gov|mil|biz|info))\z/i)
+    unless email.nil?
+      return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(com|edu|org|net|gov|mil|biz|info))\z/i)
+    end
     errors.add(:email, 'Invalid email address')
     false
   end
