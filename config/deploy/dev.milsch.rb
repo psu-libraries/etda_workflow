@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # config/deploy/dev.milsch.rb
-set :stage, :dev
+set :stage, 'dev'
 set :partner, 'milsch'
 set :deploy_to, "/opt/deploy/etda_workflow_milsch"
 set :tmp_dir, "/opt/deploy/etda_workflow_milsch/tmp"
