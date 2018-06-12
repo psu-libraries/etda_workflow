@@ -240,7 +240,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       before { submission.status = 'collecting final submission files' }
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_update_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 

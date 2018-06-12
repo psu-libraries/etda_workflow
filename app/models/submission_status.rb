@@ -101,4 +101,8 @@ class SubmissionStatus
   def final_submission_rejected?
     collecting_final_submission_files? && @current_submission.final_submission_rejected_at.present?
   end
+
+  def ok_to_update_committee?
+    collecting_committee? || collecting_format_review_files? || collecting_final_submission_files?
+  end
 end

@@ -74,7 +74,7 @@ module StubbedAuthenticationHelper
 end
 
 RSpec.configure do |config|
-  config.after do
+  config.before do
     Warden::Strategies.add :webaccess_authenticatable, Devise::Strategies::WebaccessAuthenticatable
     StubbedAuthenticationStrategy.author = nil unless @current_author.nil?
     StubbedAuthenticationStrategy.admin = nil unless @current_admin.nil?

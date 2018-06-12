@@ -45,7 +45,8 @@ class LionPath::AcademicPlan
 
   def committee_members
     committee.each do |cm|
-      @plan_submission.committee_members.build(committee_role_id: InboundLionPathRecord.etd_role(cm[:role_desc]), is_required: true, name: full_name(cm), email: cm[LionPath::LpKeys::EMAIL])
+      cr = CommitteeRole.find_or_create_by(name: InboundLionPathRecord.etd_role(cm[:role_desc])) || nil
+      @plan_submission.committee_members.build(committee_role_id: cr.id, is_required: true, name: full_name(cm), email: cm[LionPath::LpKeys::EMAIL])
     end
   end
 
