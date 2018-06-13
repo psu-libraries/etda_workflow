@@ -35,7 +35,7 @@
     <label>Final Submission Files<span class="required-asterisk">*</span></label>
     <div id="final-submission-file-fields">
       <%= f.simple_fields_for :final_submission_files do |final_submission_file| %>
-          <%= render 'file_fields', file_fields: final_submission_file %>
+          <%= render 'admin/submissions/file_fields', file_fields: final_submission_file %>
       <% end %>
     </div>
     <%= link_to_add_association f, :final_submission_files,

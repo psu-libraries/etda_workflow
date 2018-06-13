@@ -1,7 +1,7 @@
 <%= render 'admin/submissions/edit/form_section_header', target: 'format-review-files' %>
 <div id="format-review-files" class="form-section-body collapse in">
   <div class="links cocoon-links">
-    <label>Files<span class="required-asterisk">*</span></label>
+    <label>Format Review Files<span class="required-asterisk">*</span></label>
     <div id="format-review-file-fields">
       <%= f.simple_fields_for :format_review_files do |format_review_file| %>
           <%= render 'admin/submissions/file_fields', file_fields: format_review_file %>

@@ -15,7 +15,6 @@ class Admin::SubmissionsController < AdminController
 
   def update
     @submission = Submission.find(params[:id])
-    @submission = Submission.find(params[:id])
     if @submission.status_behavior.beyond_collecting_format_review_files?
       submission_update_service = FinalSubmissionUpdateService.new(params, @submission)
     else

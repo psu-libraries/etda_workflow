@@ -18,3 +18,4 @@ require('bootstrap3/js/tooltip.js');
 require('../admin/initialize_tooltips.js');
 require('../admin/initialize_datatables.js');
 require('../admin/lionpath_plan_information.js');
+require('../admin/display_file_deleted_message.js');
