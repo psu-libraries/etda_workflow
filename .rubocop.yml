@@ -113,6 +113,10 @@ Style/RegexpLiteral:
 Style/StringLiterals:
   Enabled: false
 
+Style/ConditionalAssignment:
+  Exclude:
+  - 'app/controllers/admin/submissions_controller.rb'
+
 Style/ClassAndModuleChildren:
   Enabled: false
 

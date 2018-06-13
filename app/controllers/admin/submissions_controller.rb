@@ -15,8 +15,11 @@ class Admin::SubmissionsController < AdminController
 
   def update
     @submission = Submission.find(params[:id])
-    submission_update_service = FormatReviewUpdateService.new(params, @submission) unless @submission.status_behavior.beyond_collecting_final_submission_files?
-    submission_update_service = FinalSubmissionUpdateService.new(params, @submission) if @submission.status_behavior.beyond_collecting_final_submission_files?
+    if @submission.status_behavior.beyond_collecting_format_review_files?
+      submission_update_service = FinalSubmissionUpdateService.new(params, @submission)
+    else
+      submission_update_service = FormatReviewUpdateService.new(params, @submission)
+    end
     response = submission_update_service.update_record
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]

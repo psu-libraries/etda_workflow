@@ -1,4 +1,4 @@
-RSpec.describe "Editing an incomplete submission as an admin", js: true do
+RSpec.describe "Editing format review and final submissions as an admin", js: true do
   require 'integration/integration_spec_helper'
 
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
@@ -7,6 +7,7 @@ RSpec.describe "Editing an incomplete submission as an admin", js: true do
   let!(:author) { FactoryBot.create(:author, :no_lionpath_record) }
   let(:submission) { FactoryBot.create(:submission, :collecting_program_information, author: author) }
   let(:admin) { FactoryBot.create :admin }
+  let(:final_submission) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: author) }
 
   before do
     webaccess_authorize_admin
@@ -29,7 +30,7 @@ RSpec.describe "Editing an incomplete submission as an admin", js: true do
     within('#format-review-files') do
       click_link "Additional File"
       all('input[type="file"]').first.set(fixture('format_review_file_01.pdf'))
-      all('input[type="file"]').last.set(fixture('format_review_file_01.pdf'))
+      all('input[type="file"]').last.set(fixture('format_review_file_02.pdf'))
     end
 
     fill_in "Format Review Notes to Student", with: "New review notes"
@@ -57,9 +58,40 @@ RSpec.describe "Editing an incomplete submission as an admin", js: true do
 
     within('#format-review-files') do
       expect(page).to have_content "format_review_file_01.pdf"
+      expect(page).to have_content "format_review_file_02.pdf"
     end
 
     expect(page.find_field("Format Review Notes to Student").value).to eq "New review notes"
     expect(page.find_field("Admin notes").value).to eq "Some admin notes"
+
+    within('#format-review-files') do
+      delete_link = find_all('a#file_delete_link').first
+      delete_link.trigger('click')
+    end
+    expect(page).to have_content('The file: format_review_file_01.pdf will be deleted when one of the buttons below is clicked.')
+    click_button 'Update Metadata'
+    visit admin_edit_submission_path(submission)
+    expect(page).not_to have_content "format_review_file_01.pdf"
+    expect(page).to have_content "format_review_file_02.pdf"
+  end
+
+  it 'Allows admin to upload and delete final submission files' do
+    visit admin_edit_submission_path(final_submission)
+    expect(page).not_to have_content('final_submission_file_01.pdf')
+    within('#final-submission-information') do
+      click_link "Additional File"
+      all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
+    end
+    click_button 'Update Metadata'
+    visit admin_edit_submission_path(final_submission)
+    expect(page).to have_content('final_submission_file_01.pdf')
+    within('#final-submission-information') do
+      delete_link = find_all('a#file_delete_link').first
+      delete_link.trigger('click')
+    end
+    expect(page).to have_content('The file: final_submission_file_01.pdf will be deleted when one of the buttons below is clicked.')
+    click_button 'Update Metadata'
+    visit admin_edit_submission_path(submission)
+    expect(page).not_to have_content('final_submission_file_01.pdf')
   end
 end
