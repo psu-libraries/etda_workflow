@@ -99,7 +99,7 @@ Rails.application.configure do
 
   VirusScanner = ClamScan::Client
   UniversityDirectory = LdapUniversityDirectory
-  WORKFLOW_BASE_PATH = "/var/data/workflow_#{Partner.current.id}/"
-  EXPLORE_BASE_PATH = "/var/data/explore_#{Partner.current.id}/"
+  WORKFLOW_BASE_PATH = Rails.root.join('workflow_data_files/').to_s
+  EXPLORE_BASE_PATH =  Rails.root.join('explore_data_files/').to_s
   VERSION_NUMBER_FILE = 'config/version_number.rb'
 end

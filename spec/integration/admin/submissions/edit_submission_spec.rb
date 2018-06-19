@@ -68,7 +68,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
       delete_link = find_all('a#file_delete_link').first
       delete_link.trigger('click')
     end
-    expect(page).to have_content('The file: format_review_file_01.pdf will be deleted when one of the buttons below is clicked.')
+    expect(page).to have_content("The file, format_review_file_01.pdf, will be deleted when the form is submitted. Click 'Cancel' if you do not want to delete the file.")
     click_button 'Update Metadata'
     visit admin_edit_submission_path(submission)
     expect(page).not_to have_content "format_review_file_01.pdf"
@@ -89,7 +89,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
       delete_link = find_all('a#file_delete_link').first
       delete_link.trigger('click')
     end
-    expect(page).to have_content('The file: final_submission_file_01.pdf will be deleted when one of the buttons below is clicked.')
+    expect(page).to have_content("The file, final_submission_file_01.pdf, will be deleted when the form is submitted. Click 'Cancel' if you do not want to delete the file.")
     click_button 'Update Metadata'
     visit admin_edit_submission_path(submission)
     expect(page).not_to have_content('final_submission_file_01.pdf')

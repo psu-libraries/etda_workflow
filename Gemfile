@@ -54,6 +54,8 @@ gem 'devise'
 
 gem 'brakeman'
 
+gem 'sprockets', '~> 3.7.2'
+
 if ENV['CI']
   gem 'etda_utilities', :branch => 'master', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/psu-stewardship/etda_utilities.git"
 else
