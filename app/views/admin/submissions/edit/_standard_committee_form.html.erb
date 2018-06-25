@@ -1,5 +1,5 @@
 <%= render 'admin/submissions/edit/form_section_header', target: 'committee' %>
-<div id="committee" class="form-section-body collapse in">
+<div id="committee" <%= @view.form_section_body('committee') %>>
   <%= f.simple_fields_for :committee_members do |cmf, index| %>
       <%= render partial: 'admin/submissions/committee_member_fields', locals: { f: cmf } %>
   <% end %>

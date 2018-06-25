@@ -4,24 +4,25 @@
 <%= render partial: 'shared/error_messages', locals: { object: @submission } %>
 
 <%= simple_form_for @submission, url: @view.form_for_url, html: { class: "admin-edit-submission #{@submission.status_class}" } do |f| %>
+  <div class="format">
+    <div class="form-section-body">
+      <%= f.input :title %>
+      <%= f.input :allow_all_caps_in_title, label: 'Allow completely upper-case words in title', wrapper: :checkbox %>
+    </div>
 
-  <div class="form-section-body">
-    <%= f.input :title %>
-    <%= f.input :allow_all_caps_in_title, label: 'Allow completely upper-case words in title', wrapper: :checkbox %>
+    <%= render 'admin/submissions/edit/author_information' %>
+
+    <%= render "admin/submissions/edit/#{@view.program_information_partial}", {f: f}  %>
+
+    <%= render "admin/submissions/edit/#{@view.committee_form}", (@submission.using_lionpath?) ? {submission: @submission} : {f: f } %>
+
+    <%= render 'admin/submissions/edit/format_review_files', f: f %>
   </div>
+  <div class="final">
+    <%= render 'admin/submissions/edit/final_submission_fields', f: f if @submission.status_behavior.beyond_waiting_for_format_review_response? %>
 
-  <%= render 'admin/submissions/edit/author_information' %>
-
-  <%= render "admin/submissions/edit/#{@view.program_information_partial}", {f: f}  %>
-
-  <%= render "admin/submissions/edit/#{@view.committee_form}", (@submission.using_lionpath?) ? {submission: @submission} : {f: f } %>
-
-  <%= render 'admin/submissions/edit/format_review_files', f: f %>
-  
-  <%= render 'admin/submissions/edit/final_submission_fields', f: f if @submission.status_behavior.beyond_waiting_for_format_review_response? %>
-
-  <%= render 'admin/submissions/edit/admin_notes', f: f %>
-
+    <%= render 'admin/submissions/edit/admin_notes', f: f %>
+  </div>
   <div class="form-group actions">
     <%= render partial: "admin/submissions/edit_form_actions/#{@view.actions_partial_name}", locals: { f: f } %>
     <%= link_to "Cancel", @view.cancellation_path, class: 'btn cancel-link' %>

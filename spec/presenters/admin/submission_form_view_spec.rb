@@ -290,17 +290,15 @@ RSpec.describe Admin::SubmissionFormView do
   # describe 'psu_only' do
   #   let(:submission) { FactoryBot.create :submission, access_level: 'restricted_to_institution' }
   #
-  #   context 'when access_level is restricted_to_institution' do
+  #   context 'when access_level is restricted_to_institution for graduate submissions' do
   #     it 'returns true' do
-  #       x= view.psu_only(submission.current_access_level[:label])
-  #       puts x.inspect
-  #       expect(view.psu_only(submission.current_access_level[:label])).to be_truthy unless current_partner.graduate?
+  #       expect(view.psu_only(submission.current_access_level.attributes)).to eql('Restricted (Penn State Only)')
   #     end
   #   end
   #   context 'when access_level is not restricted_to_institution' do
   #     it 'returns true' do
   #       submission.access_level = 'Restricted'
-  #       expect(view.psu_only(submission.current_access_level[:label])).to be_falsey
+  #       expect(view.psu_only(submission.current_access_level.attributes)).to be_falsey
   #     end
   #   end
   # end
@@ -321,6 +319,38 @@ RSpec.describe Admin::SubmissionFormView do
       expect(view.release_date_history).to eq("<b>Released for publication: </b>#{formatted_date(submission.released_for_publication_at)}")
       submission.released_metadata_at = Date.yesterday
       expect(view.release_date_history).to eq("<b>Metadata released:</b> #{formatted_date(submission.released_metadata_at)}<br /><b>Released for publication: </b>#{formatted_date(submission.released_for_publication_at)}")
+    end
+  end
+  describe 'collapsed content' do
+    context 'when admin reviews a submitted format review file' do
+      it 'displays format-review-files section' do
+        submission = FactoryBot.create :submission, status: 'waiting for format review response'
+        view = described_class.new(submission, session)
+        expect(view.form_section_heading('format-review-files')).to eql("class='form-section-heading collapse in'")
+        expect(view.form_section_body('format-review-files')).to eql("class='form-section-body collapse in'")
+      end
+      it 'does not display committee information' do
+        submission = FactoryBot.create :submission, status: 'waiting for format review response'
+        view = described_class.new(submission, session)
+        expect(view.form_section_heading('committee')).to eql("class='form-section-heading collapsed' aria-expanded='false'")
+        expect(view.form_section_body('committee')).to eql("class='form-section-body collapse' aria-expanded='false'")
+      end
+    end
+    context 'when admin reviews a submitted final submission file' do
+      it 'displays format-review-files section' do
+        submission = FactoryBot.create :submission, status: 'waiting for final submission response'
+        view = described_class.new(submission, session)
+        expect(view.form_section_heading('final-submission-files')).to eql("class='form-section-heading collapse in'")
+        expect(view.form_section_body('final-submission-files')).to eql("class='form-section-body collapse in'")
+      end
+      it 'does not display committee information' do
+        submission = FactoryBot.create :submission, status: 'waiting for final submission response'
+        view = described_class.new(submission, session)
+        expect(view.form_section_heading('format-review-files')).to eql("class='form-section-heading collapsed' aria-expanded='false'")
+        expect(view.form_section_body('format-review-files')).to eql("class='form-section-body collapse' aria-expanded='false'")
+        expect(view.form_section_heading('committee')).to eql("class='form-section-heading collapsed' aria-expanded='false'")
+        expect(view.form_section_body('committee')).to eql("class='form-section-body collapse' aria-expanded='false'")
+      end
     end
   end
 end

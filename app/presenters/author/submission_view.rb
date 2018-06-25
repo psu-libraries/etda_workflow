@@ -21,7 +21,7 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_one_description
-    if status_behavior.beyond_collecting_format_review_files?
+    if status_behavior.beyond_collecting_committee?
       ("Provide program information <a href='" + "/author/submissions/#{id}/program_information" + "' class='medium'>[review <span class='sr-only'>program information for submission '#{title}'</span>]</a>").html_safe
     else
       ("Provide program information <a href='" + "/author/submissions/#{id}/edit" + "' class='medium'>[update <span class='sr-only'>program information for submission '#{title}'</span>]</a>").html_safe
