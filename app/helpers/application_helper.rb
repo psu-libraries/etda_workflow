@@ -13,6 +13,40 @@ module ApplicationHelper
     classes.join(" ")
   end
 
+  def author_nav_active?(nav_name)
+    case nav_name
+    when 'submission'
+       'active' if controller_name == 'submissions' || controller_name == 'committee_members' || controller_name == 'format_review'
+    when 'author'
+       'active' if controller_name == 'authors' && action_name != 'technical_tips'
+    when 'tips'
+       'active' if action_name == 'technical_tips'
+    else
+      ''
+    end
+  end
+
+  def admin_nav_active?(nav_name)
+    case nav_name
+    when 'authors'
+      'active' if controller_name == 'authors'
+    when 'degrees'
+       'active' if controller_name == 'degrees'
+    when 'programs'
+       'active' if controller_name == 'programs'
+    when 'submissions'
+      'active' if controller_name == 'submissions'
+    when 'reports'
+      'active' if controller_name == 'reports'
+    when 'custom'
+       'active' if action_name == 'custom_report'
+    when 'committee'
+       'active' if action_name == 'committee_report'
+    else
+      ''
+    end
+  end
+
   def invention_disclosure_number(submission)
     return '' if submission.invention_disclosures.blank?
     submission.invention_disclosures.first.id_number

@@ -106,4 +106,27 @@ class Admin::SubmissionFormView < SimpleDelegator
     return '' unless status_behavior.released_for_publication?
     '<div class="withdraw-msg">In order to update a published submission, it must be withdrawn from publication and then released.  The withdraw button is at the bottom of the page.</div>'.html_safe
   end
+
+  def form_section_heading(section_heading)
+    return "class='form-section-heading collapsed' aria-expanded='false'".html_safe if collapse_content?(section_heading)
+    "class='form-section-heading collapse in'".html_safe
+  end
+
+  def chevron_class(section_heading)
+    return '' if collapse_content?(section_heading)
+    'fa-rotate-90'
+  end
+
+  def form_section_body(section_heading)
+    return "class='form-section-body collapse' aria-expanded='false'".html_safe if collapse_content?(section_heading)
+    "class='form-section-body collapse in'".html_safe
+  end
+
+  private
+
+    def collapse_content?(section_heading)
+      return false if status == 'waiting for format review response' && section_heading == 'format-review-files'
+      return true if status_behavior.beyond_collecting_format_review_files? && (section_heading == 'program-information' || section_heading == 'committee' || section_heading == 'format-review-files')
+      false
+    end
 end

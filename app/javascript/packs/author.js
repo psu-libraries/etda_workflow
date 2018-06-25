@@ -2,8 +2,8 @@
 // listed below.
 //
 
-var $ = require('jquery');
-window.jQuery = $;
+//var $ = require('jquery');
+//window.jQuery = $;
 
 require('bootstrap3/dist/css/bootstrap.css');
 require('../author/invention_disclosure.js');

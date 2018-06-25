@@ -9,7 +9,6 @@ window.jQuery = $;
 require('jquery-ui');
 require('jquery-ujs');
 
-//require('jquery-ui/ui/widgets/tooltip');
 require('jquery-ui/ui/widgets/spinner');
 require('jquery-ui/ui/widgets/button');
 
@@ -28,6 +27,8 @@ require('../base/ldap_lookup.js');
 require('../base/tagit.js');
 require('../base/toggle_caret.js');
 require('../images/PS_HOR_REV_RGB_2C.png');
+require('../admin/edit_submission_form.js');
+
 
 
 

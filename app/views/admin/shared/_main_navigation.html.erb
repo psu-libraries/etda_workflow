@@ -6,27 +6,27 @@
             <%= link_to dt.name.pluralize, admin_submissions_dashboard_path(dt.slug) %>
           </li>
       <% end %>
-      <li class="<%= 'active' if controller_name == 'authors' %>">
+      <li class="<%= admin_nav_active?('authors') %>">
         <%= link_to 'Authors', admin_authors_path %>
       </li>
-      <li class="<%= 'active' if controller_name == 'programs' %>">
+      <li class="<%= admin_nav_active?('programs') %>">
         <%= link_to 'Programs', admin_programs_path %>
       </li>
-      <li class="<%= 'active' if controller_name == 'degrees' %>">
+      <li class="<%= admin_nav_active?('degrees') %>">
         <%= link_to 'Degrees', admin_degrees_path %>
       </li>
       <li>
-        <a href="#" data-toggle="collapse" data-target="#reports_list" class="<%= 'active' if controller_name == 'reports' %> " id='reports_menu'>
+        <a href="#" data-toggle="collapse" data-target="#reports_list" class="<%= admin_nav_active?('reports') %> " id='reports_menu'>
           Reports<span class="caret caret-right"></span></a>
         <div class='report-buttons collapse' id='reports_list'>
           <ul>
-            <li>
+            <li class="<%= admin_nav_active?('committee') %>">
               <%= link_to 'Committee Report', admin_committee_report_index_path, id: 'committee_report' %>
             </li>
-            <li>
+            <li class="<%= admin_nav_active?('custom') %>">
               <%= link_to 'Custom Report', admin_custom_report_index_path, id: 'custom_report' %>
             </li>
-            <li>
+            <li class="<% admin_nav_active?('email_contact') %>">
               <%= link_to 'Email Contact List', admin_email_contact_list_path %>
             </li>
           </ul>

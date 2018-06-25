@@ -4,23 +4,25 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
- var $ = require('jquery');
- window.jQuery = $;
- 
+var $ = require('jquery');
+window.jQuery = $;
+
 initialize_collapse_indicators = function() {
 
    const collapsible_content = $('.collapse');
 
    if (!collapsible_content.length) { return; }
 
-   return collapsible_content.on('show.bs.collapse', function() {
+   collapsible_content.on('show.bs.collapse', function() {
      const content_id = `#${$(this).attr('id')}`;
      const indicator = $(`[data-toggle="collapse"][data-target="${content_id}"] .hide-show-indicator`);
-     return indicator.addClass('fa-rotate-90');
+     indicator.addClass('fa-rotate-90');
+     return;
  }).on('hide.bs.collapse', function() {
      const content_id = `#${$(this).attr('id')}`;
      const indicator = $(`[data-toggle="collapse"][data-target="${content_id}"] .hide-show-indicator`);
-     return indicator.removeClass('fa-rotate-90');
+     indicator.removeClass('fa-rotate-90');
+     return;
    });
  };
 

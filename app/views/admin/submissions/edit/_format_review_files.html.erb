@@ -1,5 +1,5 @@
 <%= render 'admin/submissions/edit/form_section_header', target: 'format-review-files' %>
-<div id="format-review-files" class="form-section-body collapse in">
+<div id="format-review-files" <%= @view.form_section_body('format-review-files') %>>
   <div class="links cocoon-links">
     <label>Format Review Files<span class="required-asterisk">*</span></label>
     <div id="format-review-file-fields">

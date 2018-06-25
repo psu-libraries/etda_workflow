@@ -66,6 +66,7 @@ Metrics/ClassLength:
   - app/controllers/author/submissions_controller.rb
   - app/presenters/author/submission_view.rb
   - app/services/final_submission_update_service.rb
+  - app/presenters/admin/submission_form_view.rb
 
 
 Metrics/CyclomaticComplexity:
@@ -77,6 +78,7 @@ Metrics/CyclomaticComplexity:
   - app/models/submission_release_service.rb
   - app/models/export_csv.rb
   - app/models/mock_university_directory.rb
+  - app/helpers/application_helper.rb
 
 Metrics/PerceivedComplexity:
   Exclude:
@@ -85,6 +87,7 @@ Metrics/PerceivedComplexity:
   - app/presenters/admin/submissions_index_view.rb
   - app/presenters/admin/submission_form_view.rb
   - app/models/export_csv.rb
+  - app/helpers/application_helper.rb
 
 Layout/MultilineBlockLayout:
   Exclude:
