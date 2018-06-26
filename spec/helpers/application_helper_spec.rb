@@ -27,17 +27,45 @@ RSpec.describe ApplicationHelper do
       expect(current_version_number).to eql('Version: v.101-test')
     end
   end
-  describe '#render_conditional_links' do
-    xit 'displays admin support link when admin pages are displayed' do
-      # allow(request.path).to receive(:starts_with?).with('/admin').and_return(false)
-      # Author.current = nil
-      # expect(render_conditional_links).to render('shared/ask_link')
-      #
-      # if Author.current.blank?
-      #   render partial: 'shared/ask_link'
-      # elsif request.path.start_with? '/admin'
-      #   render partial: 'shared/admin_support_link'
-      # end
+  describe '#author_nav_active?' do
+    it 'returns active class for submissions' do
+      allow(controller).to receive(:controller_name).and_return('submissions')
+      expect(author_nav_active?('submission')).to eq('active')
+      allow(controller).to receive(:controller_name).and_return('committee_members')
+      expect(author_nav_active?('submission')).to eq('active')
+      allow(controller).to receive(:controller_name).and_return('format_review')
+      expect(author_nav_active?('submission')).to eq('active')
+    end
+    it 'returns active class for authors' do
+      allow(controller).to receive(:controller_name).and_return('authors')
+      allow(controller).to receive(:action_name).and_return('author')
+      expect(author_nav_active?('author')).to eq('active')
+      allow(controller).to receive(:action_name).and_return('technical_tips')
+      expect(author_nav_active?('author')).to be_nil
+      expect(author_nav_active?('tips')).to eq('active')
+    end
+  end
+  describe '#admin_nav_active?' do
+    it 'returns active class for admin controllers' do
+      allow(controller).to receive(:controller_name).and_return('authors')
+      expect(admin_nav_active?('authors')).to eq('active')
+      expect(admin_nav_active?('degrees')).to be_nil
+      allow(controller).to receive(:controller_name).and_return('degrees')
+      expect(admin_nav_active?('degrees')).to eq('active')
+      expect(admin_nav_active?('authors')).to be_nil
+      allow(controller).to receive(:controller_name).and_return('programs')
+      expect(admin_nav_active?('programs')).to eq('active')
+      allow(controller).to receive(:controller_name).and_return('submissions')
+      expect(admin_nav_active?('submissions')).to eq('active')
+      expect(admin_nav_active?('degrees')).to be_nil
+      allow(controller).to receive(:controller_name).and_return('reports')
+      expect(admin_nav_active?('reports')).to eq('active')
+      expect(admin_nav_active?('degrees')).to be_nil
+      allow(controller).to receive(:action_name).and_return('custom_report')
+      expect(admin_nav_active?('custom')).to eq('active')
+      expect(admin_nav_active?('reports')).to eq('active')
+      allow(controller).to receive(:action_name).and_return('committee_report')
+      expect(admin_nav_active?('committee')).to eq('active')
     end
   end
 end

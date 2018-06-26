@@ -7,9 +7,17 @@
 var $ = require('jquery');
 window.jQuery = $;
 
-initialize_toggle_caret = function() {
-    const pointer = $('#reports_menu').find('span');
-    $('#reports_list').on('shown.bs.collapse', () => pointer.removeClass('caret-right')).on('hidden.bs.collapse', () => pointer.addClass('caret-right'));
-};
+initialize_toggle_caret =  () =>
 
+    $('a.caret-link').on('keypress, click', function(e) {
+        var pointer = $(this).find('span.caret');
+
+        if (pointer.hasClass('caret-right'))
+        {
+            pointer.removeClass('caret-right');
+        }else
+        {
+            pointer.addClass('caret-right');
+        }
+    });
 $(document).ready(initialize_toggle_caret);
