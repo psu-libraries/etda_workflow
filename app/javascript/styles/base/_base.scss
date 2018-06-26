@@ -433,6 +433,22 @@ select.disabled {
   padding: 1px
 }
 
+.report-buttons li a {
+  color: $classic-white;
+}
+
+.report-buttons li {
+  border: 1px solid $blue-light;
+  background-color: $medium-blue-bright;
+  border-radius: $border-radius-large;
+  padding: .5em;
+}
+
+.report-buttons ul {
+  list-style-type: none;
+  padding: 1px
+}
+
 p.hint
 {
   color: $gray-med-dark

@@ -40,39 +40,39 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
   end
 
   it "Saves the updated submission data" do
-      visit admin_edit_submission_path(submission)
-      page.find('div[data-target="#program-information"]').click
-      expect(page).to have_current_path(admin_edit_submission_path(submission))
-      expect(page.find_field("Title").value).to eq "A Brand New TITLE"
-      expect(page.find_field("Allow completely upper-case words in title")).to be_checked
-      expect(page.find_field(current_partner.program_label.to_s).value).to eq program.id.to_s
-      expect(page.find_field("Degree").value).to eq degree.id.to_s
-      expect(page.find_field("Semester Intending to Graduate").value).to eq "Fall"
-      expect(page.find_field("Graduation Year").value).to eq 1.year.from_now.year.to_s
+    visit admin_edit_submission_path(submission)
+    page.find('div[data-target="#program-information"]').click
+    expect(page).to have_current_path(admin_edit_submission_path(submission))
+    expect(page.find_field("Title").value).to eq "A Brand New TITLE"
+    expect(page.find_field("Allow completely upper-case words in title")).to be_checked
+    expect(page.find_field(current_partner.program_label.to_s).value).to eq program.id.to_s
+    expect(page.find_field("Degree").value).to eq degree.id.to_s
+    expect(page.find_field("Semester Intending to Graduate").value).to eq "Fall"
+    expect(page.find_field("Graduation Year").value).to eq 1.year.from_now.year.to_s
 
-      within('#committee') do
-        expect(page.find_field("Committee role").value).to eq role.id.to_s
-        expect(page.find_field("Name").value).to eq "Bob Tester"
-        expect(page.find_field("Email").value).to eq "bob@email.com"
-      end
+    within('#committee') do
+      expect(page.find_field("Committee role").value).to eq role.id.to_s
+      expect(page.find_field("Name").value).to eq "Bob Tester"
+      expect(page.find_field("Email").value).to eq "bob@email.com"
+    end
 
-      within('#format-review-files') do
-        expect(page).to have_content "format_review_file_01.pdf"
-        expect(page).to have_content "format_review_file_02.pdf"
-      end
-
-      expect(page.find_field("Format Review Notes to Student").value).to eq "New review notes"
-      expect(page.find_field("Admin notes").value).to eq "Some admin notes"
-
-      within('#format-review-files') do
-        delete_link = find_all('a#file_delete_link').first
-        delete_link.trigger('click')
-      end
-      expect(page).to have_content("Marked for deletion [undo]")
-      click_button 'Update Metadata'
-      visit admin_edit_submission_path(submission)
-      expect(page).not_to have_content "format_review_file_01.pdf"
+    within('#format-review-files') do
+      expect(page).to have_content "format_review_file_01.pdf"
       expect(page).to have_content "format_review_file_02.pdf"
+    end
+
+    expect(page.find_field("Format Review Notes to Student").value).to eq "New review notes"
+    expect(page.find_field("Admin notes").value).to eq "Some admin notes"
+
+    within('#format-review-files') do
+      delete_link = find_all('a#file_delete_link').first
+      delete_link.trigger('click')
+    end
+    expect(page).to have_content("Marked for deletion [undo]")
+    click_button 'Update Metadata'
+    visit admin_edit_submission_path(submission)
+    expect(page).not_to have_content "format_review_file_01.pdf"
+    expect(page).to have_content "format_review_file_02.pdf"
   end
 
   it 'Allows admin to upload and delete final submission files' do

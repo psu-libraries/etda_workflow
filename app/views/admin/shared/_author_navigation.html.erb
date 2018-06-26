@@ -1,0 +1,5 @@
+<% if current_partner.graduate? %>
+  <%= render partial: 'admin/shared/graduate_author_navigation' %>
+<% else %>
+  <%= render partial: 'admin/shared/standard_author_navigation' %>
+<% end %>

@@ -1,0 +1,12 @@
+<a href="#" data-toggle="collapse" data-target="#authors_list" class="<%= 'active' if controller_name == 'authors' %> caret-link" id='authors_menu'>
+  Authors<span class="caret caret-right authors"></span></a>
+<div class='caret-list author-buttons collapse' id='authors_list'>
+  <ul class='list-group'>
+    <li class='list-group-item'>
+      <%= link_to 'Authors List', admin_authors_path %>
+    </li>
+    <li class='list-group-item'>
+      <%= link_to 'Email Contact List', admin_email_contact_list_path %>
+    </li>
+  </ul>
+</div>

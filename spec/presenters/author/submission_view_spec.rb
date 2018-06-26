@@ -70,8 +70,8 @@ RSpec.describe Author::SubmissionView do
     end
     context "when step three is the current step" do
       before { submission.status = 'collecting format review files' }
-      it "returns a link to edit step one" do
-        expect(view.step_one_description).to eq "Provide program information <a href='#{edit_author_submission_path(submission)}' class='medium'>[update <span class='sr-only'>program information for submission '#{submission.title}'</span>]</a>"
+      it "returns a link to review step one" do
+        expect(view.step_one_description).to eq "Provide program information <a href='/author/submissions/#{submission.id}/program_information' class='medium'>[review <span class='sr-only'>program information for submission '#{submission.title}'</span>]</a>"
       end
     end
     context "when the submission is beyond step three" do
