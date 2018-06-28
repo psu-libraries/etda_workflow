@@ -19,7 +19,7 @@ development:
   :password: password
   graduate:
     :lion_path_outbound: false
-    :lion_path_inbound: true
+    :lion_path_inbound: false 
   honors:
     :lion_path_outbound: false
     :lion_path_inbound: false
