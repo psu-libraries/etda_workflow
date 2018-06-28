@@ -16,6 +16,7 @@
 config/secrets.yml
 config/database.yml
 config/locales/test/**/*
+config/lion_path.yml
 spec/examples.txt
 
 node_modules/**/*

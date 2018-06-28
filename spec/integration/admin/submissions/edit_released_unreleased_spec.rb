@@ -32,7 +32,6 @@ RSpec.describe "Editing a released submission as an admin", js: true do
       end
     end
     page.find('div[data-target="#format-review-files"]').click
-
     within('#format-review-files') do
       click_link "Additional File"
       find('input[type="file"]', match: :first).set(fixture('format_review_file_01.pdf'))
@@ -92,8 +91,8 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     end
     within('div.format') do
       page.find('div[data-target="#format-review-files"]').click
-      sleep(2)
-      expect(page).to have_content "format_review_file_01.pdf"
+      sleep(4)
+      expect(page).to have_link "format_review_file_01.pdf"
     end
 
     expect(page.find_field("Format Review Notes to Student").value).to eq "New review notes"
@@ -109,7 +108,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     # expect(page.find_field('submission_access_level_restricted')).to be_checked
 
     within('#final-submission-file-fields') do
-      expect(page).to have_content "final_submission_file_01.pdf"
+      expect(page).to have_link "final_submission_file_01.pdf"
     end
 
     expect(page.find_field("Final Submission Notes to Student").value).to eq "New final notes"
