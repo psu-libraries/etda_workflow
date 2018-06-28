@@ -405,48 +405,14 @@ select.disabled {
   color: $gray-med-dark;
 }
 
-.report-buttons {
-  background-color: $blue-light;
-  border-bottom-left-radius: $border-radius-large;
-  border-bottom-right-radius: $border-radius-large;
-}
-
 .nav > li > a:focus {
   background-color: $medium-blue-bright;
   color: $classic-white;
   border-radius: $border-radius-large;
 }
 
-.report-buttons li a {
-  color: $classic-white;
-}
-
-.report-buttons li {
-  border: 1px solid $blue-light;
-  background-color: $medium-blue-bright;
-  border-radius: $border-radius-large;
-  padding: .5em;
-}
-
-.report-buttons ul {
-  list-style-type: none;
-  padding: 1px
-}
-
-.report-buttons li a {
-  color: $classic-white;
-}
-
-.report-buttons li {
-  border: 1px solid $blue-light;
-  background-color: $medium-blue-bright;
-  border-radius: $border-radius-large;
-  padding: .5em;
-}
-
-.report-buttons ul {
-  list-style-type: none;
-  padding: 1px
+.dropdown-menu {
+  background-color: lightgrey;
 }
 
 p.hint

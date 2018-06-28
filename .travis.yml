@@ -26,9 +26,9 @@ before_script:
 - "cp config/secrets.yml.travis config/secrets.yml"
 - "cp config/lion_path.yml.travis config/lion_path.yml"
 - redis-cli info
-cache:
-  yarn: true
-  directories: node_modules
+# cache:
+#  yarn: true
+#  directories: node_modules
 script:
 - "bundle exec rake db:create"
 - "bundle exec rake db:test:load"

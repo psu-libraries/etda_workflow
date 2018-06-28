@@ -5,15 +5,18 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
   let!(:role) { CommitteeRole.first }
   let!(:author) { FactoryBot.create(:author, :no_lionpath_record) }
-  let(:submission) { FactoryBot.create(:submission, :collecting_program_information, author: author) }
+  let(:submission) { FactoryBot.create(:submission, :collecting_committee, author: author) }
   let(:admin) { FactoryBot.create :admin }
   let(:final_submission) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: author) }
 
   before do
     webaccess_authorize_admin
+  end
+
+  it "Saves the updated submission data for a submission with status collecting committee" do
     visit admin_edit_submission_path(submission)
-    fill_in "Title", with: "A Brand New TITLE"
     check "Allow completely upper-case words in title"
+    fill_in "Title", with: "A Brand New TITLE"
     select program.name, from: current_partner.program_label.to_s
     select degree.name, from: "Degree"
     select "Fall", from: "Semester Intending to Graduate"
@@ -25,7 +28,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
       fill_in "Name", with: "Bob Tester"
       fill_in "Email", with: "bob@email.com"
     end
-    page.find('div[data-target="#format-review-files"]').click
+    # page.find('div[data-target="#format-review-files"]').click
     within('#format-review-files') do
       click_link "Additional File"
       all('input[type="file"]').first.set(fixture('format_review_file_01.pdf'))
@@ -37,9 +40,6 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
 
     click_button "Update Metadata"
     sleep(3)
-  end
-
-  it "Saves the updated submission data" do
     visit admin_edit_submission_path(submission)
     page.find('div[data-target="#program-information"]').click
     expect(page).to have_current_path(admin_edit_submission_path(submission))
@@ -57,8 +57,8 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     end
 
     within('#format-review-files') do
-      expect(page).to have_content "format_review_file_01.pdf"
-      expect(page).to have_content "format_review_file_02.pdf"
+      expect(page).to have_link "format_review_file_01.pdf"
+      expect(page).to have_link "format_review_file_02.pdf"
     end
 
     expect(page.find_field("Format Review Notes to Student").value).to eq "New review notes"
@@ -71,27 +71,27 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     expect(page).to have_content("Marked for deletion [undo]")
     click_button 'Update Metadata'
     visit admin_edit_submission_path(submission)
-    expect(page).not_to have_content "format_review_file_01.pdf"
-    expect(page).to have_content "format_review_file_02.pdf"
+    expect(page).not_to have_link "format_review_file_01.pdf"
+    expect(page).to have_link "format_review_file_02.pdf"
   end
 
   it 'Allows admin to upload and delete final submission files' do
     visit admin_edit_submission_path(final_submission)
-    expect(page).not_to have_content('final_submission_file_01.pdf')
+    expect(page).not_to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
       click_link "Additional File"
       all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
     end
     click_button 'Update Metadata'
     visit admin_edit_submission_path(final_submission)
-    expect(page).to have_content('final_submission_file_01.pdf')
+    expect(page).to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
       delete_link = find_all('a#file_delete_link').first
       delete_link.trigger('click')
     end
     expect(page).to have_content("Marked for deletion [undo]")
     click_button 'Update Metadata'
-    visit admin_edit_submission_path(submission)
-    expect(page).not_to have_content('final_submission_file_01.pdf')
+    visit admin_edit_submission_path(final_submission)
+    expect(page).not_to have_link('final_submission_file_01.pdf')
   end
 end
