@@ -91,7 +91,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     end
     within('div.format') do
       page.find('div[data-target="#format-review-files"]').click
-      sleep(2)
+      sleep(4)
       expect(page).to have_link "format_review_file_01.pdf"
     end
 
