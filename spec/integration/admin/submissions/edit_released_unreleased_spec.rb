@@ -85,15 +85,16 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     expect(page.find_field("Graduation Year").value).to eq 1.year.from_now.year.to_s
     page.find('div[data-target="#committee"]').click
     within('#committee') do
+      sleep 2
       expect(page.find_field("Committee role").value).to eq role.id.to_s
       expect(page.find_field("Name").value).to eq "Bob Tester"
       expect(page.find_field("Email").value).to eq "bob@email.com"
     end
-    within('div.format') do
-      page.find('div[data-target="#format-review-files"]').click
-      sleep(4)
-      expect(page).to have_link "format_review_file_01.pdf"
-    end
+    # within('div.format') do
+    page.find('div[data-target="#format-review-files"]').click
+    expect(page.find('a', text: 'format_review_file_01.pdf', visible: true)).to be_truthy
+    # expect(page).to have_link "format_review_file_01.pdf"
+    # end
 
     expect(page.find_field("Format Review Notes to Student").value).to eq "New review notes"
     expect(page.find_field("Admin notes").value).to eq "Some admin notes"
