@@ -4,6 +4,7 @@ node(:data) do
   @authors = Admin::AuthorOptOutView.new.author_email_list
   table = @authors.map do |author|
     row = [
+      author[:confidential_alert_icon],
       "<a href=#{edit_admin_author_path(author[:id])}>#{author[:last_name]}</a>",
       author[:first_name],
       author[:year] || '',

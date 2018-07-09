@@ -62,4 +62,14 @@ RSpec.describe ApplicationHelper do
       expect(admin_nav_active?('degrees')).to eq('')
     end
   end
+  describe '#confidential_tag_helper' do
+    author = FactoryBot.create :author, confidential_hold: false
+    it 'returns empty string for authors without a hold' do
+      expect(confidential_tag_helper(author)).to eq('')
+    end
+    it 'returns confidential alert icon for authors with a hold' do
+      author.confidential_hold = true
+      expect(confidential_tag_helper(author)).to eq(" <span class='confidential-alert' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='confidential hold'><span class='fa fa-warning'></span></span><span class='sr-only'>#{author.first_name} #{author.last_name} has a confidential hold</span>")
+    end
+  end
 end

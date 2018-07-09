@@ -113,7 +113,8 @@ group :development, :test do
   gem 'rubocop-rspec'
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 2.13'
+  # gem 'capybara', '~> 2.13'
+  gem 'capybara'
   gem 'capybara-email'
 
   gem 'factory_bot_rails'

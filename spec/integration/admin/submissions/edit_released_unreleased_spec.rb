@@ -86,12 +86,11 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     page.find('div[data-target="#committee"]').click
 
     sleep 3
-    # within('#committee') do
-    expect(page.find_field("Committee role").value).to eq role.id.to_s
-    expect(page.find_field("Name").value).to eq "Bob Tester"
-    expect(page.find_field("Email").value).to eq "bob@email.com"
-    # end
-
+    within('#committee') do
+      expect(page.find_field("Committee role").value).to eq role.id.to_s
+      expect(page.find_field("Name").value).to eq "Bob Tester"
+      expect(page.find_field("Email").value).to eq "bob@email.com"
+    end
     # within('div.format') do
     page.find('div[data-target="#format-review-files"]').click
     expect(page.find('a', text: 'format_review_file_01.pdf', visible: true)).to be_truthy

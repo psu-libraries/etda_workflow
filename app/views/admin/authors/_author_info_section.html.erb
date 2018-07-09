@@ -1,4 +1,5 @@
 <div class="lead inline-block">
+  <%= render partial: 'admin/shared/confidential_hold_information' if @author.confidential_hold? %>
   <strong>Access ID:   </strong><%= @author.access_id %>&nbsp;&nbsp;
   <strong>PSU ID:  </strong><%= @author.psu_idn || 'not available' %>&nbsp;&nbsp;
   <strong>PSU Email Address:  </strong><%= @author.psu_email_address %></strong>

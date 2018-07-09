@@ -3,6 +3,7 @@
   <div class="row">
     <div class="col-xs-12 col-sm-6">
       <p>
+        <%= render partial: 'admin/shared/confidential_hold_information' if @view.author.confidential_hold? %>
         <%= @view.author_full_name.html_safe %><br />
         <%= @view.address.html_safe %>
       </p>
