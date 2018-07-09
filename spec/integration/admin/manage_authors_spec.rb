@@ -3,7 +3,7 @@ RSpec.describe "Manage Authors", js: true do
 
   let!(:degree) { FactoryBot.create :degree }
   let!(:author1) { FactoryBot.create :author }
-  let!(:author2) { FactoryBot.create :author }
+  let!(:author2) { FactoryBot.create :author, confidential_hold: true }
 
   before do
     webaccess_authorize_admin
@@ -27,6 +27,7 @@ RSpec.describe "Manage Authors", js: true do
     expect(page).to have_content('PSU Email')
     expect(page).to have_content(author1.access_id)
     expect(page).to have_content(author2.last_name)
+    expect(page.find('span.fa.fa-warning')).to be_truthy
     expect(page).to have_content(author1.first_name)
     expect(page).to have_content(author2.alternate_email_address)
     expect(page).to have_content(author1.psu_email_address)
@@ -55,6 +56,7 @@ RSpec.describe "Manage Authors", js: true do
     expect(page).to have_link(submission1.title.to_s)
     expect(page).to have_content('released for publication')
     expect(page).to have_link(submission2.title.to_s)
+    expect(page).not_to have_content('Confidential Hold')
     expect(page).to have_content(Time.zone.now.strftime('%m/%d/%Y'))
     expect(page).to have_link('Cancel')
     fill_in('First name', with: 'correctname')

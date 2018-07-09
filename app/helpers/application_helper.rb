@@ -59,4 +59,9 @@ module ApplicationHelper
     current_number = VERSION_NUMBER
     "Version: #{current_number.strip}"
   end
+
+  def confidential_tag_helper(author)
+    return '' unless author.confidential_hold?
+    " <span class='confidential-alert' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='confidential hold'><span class='fa fa-warning'></span></span><span class='sr-only'>#{author.first_name} #{author.last_name} has a confidential hold</span>"
+  end
 end

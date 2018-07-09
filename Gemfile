@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-
 # git_source(:github) do |repo_name|
 #   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
 #   "https://github.com/#{repo_name}.git"
@@ -114,7 +113,8 @@ group :development, :test do
   gem 'rubocop-rspec'
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 2.13'
+  # gem 'capybara', '~> 2.13'
+  gem 'capybara'
   gem 'capybara-email'
 
   gem 'factory_bot_rails'

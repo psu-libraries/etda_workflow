@@ -9,6 +9,10 @@ class Admin::AuthorOptOutView
     @authors
   end
 
+  def confidential_tag(author)
+    ApplicationController.helpers.confidential_tag_helper(author)
+  end
+
   private
 
   def email_contact_info(author)
@@ -16,6 +20,7 @@ class Admin::AuthorOptOutView
     [id: author.id, last_name: author.last_name, first_name: author.first_name,
      year: author.submissions.last.year, alternate_email_address: author.alternate_email_address,
      opt_out_email: author.opt_out_email? ? 'yes' : 'no',
-     opt_out_user_set: author.opt_out_default? ? 'no' : 'yes']
+     opt_out_user_set: author.opt_out_default? ? 'no' : 'yes',
+     confidential_alert_icon: confidential_tag(author)]
   end
 end
