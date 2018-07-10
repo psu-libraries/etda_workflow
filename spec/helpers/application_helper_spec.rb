@@ -69,7 +69,7 @@ RSpec.describe ApplicationHelper do
     end
     it 'returns confidential alert icon for authors with a hold' do
       author.confidential_hold = true
-      expect(confidential_tag_helper(author)).to eq(" <span class='confidential-alert' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='confidential hold'><span class='fa fa-warning'></span></span><span class='sr-only'>#{author.first_name} #{author.last_name} has a confidential hold</span>")
+      expect(confidential_tag_helper(author)).to eq(" <span class='confidential-alert xxs' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='confidential hold'><span class='fa fa-warning'></span></span><span class='sr-only'>#{author.first_name} #{author.last_name} has a confidential hold</span>")
     end
   end
 end
