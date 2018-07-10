@@ -22,7 +22,7 @@ RSpec.describe Admin::AuthorOptOutView do
                                        year: author4.submissions.last.year, alternate_email_address: author4.alternate_email_address,
                                        opt_out_email: author4.opt_out_email? ? 'yes' : 'no', opt_out_user_set: author4.opt_out_default? ? 'no' : 'yes')
 
-        expect(authors).to include(id: author3.id, last_name: author3.last_name, first_name: author3.first_name, year: author3.submissions.last.year, alternate_email_address: author3.alternate_email_address, opt_out_email: author3.opt_out_email? ? 'yes' : 'no', opt_out_user_set: author3.opt_out_default? ? 'no' : 'yes', confidential_alert_icon: " <span class='confidential-alert' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='confidential hold'><span class='fa fa-warning'></span></span><span class='sr-only'>#{author3.first_name} #{author3.last_name} has a confidential hold</span>")
+        expect(authors).to include(id: author3.id, last_name: author3.last_name, first_name: author3.first_name, year: author3.submissions.last.year, alternate_email_address: author3.alternate_email_address, opt_out_email: author3.opt_out_email? ? 'yes' : 'no', opt_out_user_set: author3.opt_out_default? ? 'no' : 'yes', confidential_alert_icon: " <span class='confidential-alert xxs' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='confidential hold'><span class='fa fa-warning'></span></span><span class='sr-only'>#{author3.first_name} #{author3.last_name} has a confidential hold</span>")
       end
     end
   end
