@@ -26,6 +26,7 @@
 </div>
 
 <table id="<%= @view.id %>" class="table table-striped admin-submissions-index datatable bulk-actions" data-ajax-url="<%= admin_submissions_index_path %>" data-current-semester="<%= @view.current_semester %>">
+  <strong><span class="record-count-top"> </span></strong>
   <thead>
   <tr>
     <%= render partial: @view.table_header_partial_path %>

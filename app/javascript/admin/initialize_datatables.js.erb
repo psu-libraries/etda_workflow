@@ -33,6 +33,7 @@ setup_datatables = function() {
         fnDrawCallback() {
             const pagination = $('.dataTables_paginate');
             const buttons_we_care_to_see = pagination.find('.paginate_button').not('.disabled, .active');
+            $('span.record-count-top').text(display_page_top_info($('.datatable').DataTable()));
             if (buttons_we_care_to_see.length) {
                 return pagination.show();
             } else {
@@ -141,5 +142,19 @@ setup_datatables = function() {
 
     return $('div.dataTables_filter input').attr('placeholder', 'Search records...');
 };
+
+function display_page_top_info(info_table) {
+    info_table = $('.datatable').DataTable();
+    info = info_table.page.info();
+    var start = info.start+1
+    if (info.end == 0 && info.start == 0)
+        start = 0 ;
+    msg = 'Showing '+(start)+' to '+info.end+' of '+info.recordsDisplay+' entries';
+    filter_msg = ' (filtered from '+info.recordsTotal+' total entries)';
+    final_msg = msg;
+    if (info.recordsTotal != info.recordsDisplay)
+        final_msg = final_msg + filter_msg;
+    return final_msg; }
+
 
 $(document).ready(setup_datatables);
