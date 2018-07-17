@@ -94,7 +94,7 @@ class LdapUniversityDirectory
     Net::LDAP.open(host: ldap_configuration['host'],
                    port: ldap_configuration['port'],
                    encryption: { method: :simple_tls },
-                   auth: { method: :simple, username: "cn=#{ldap_configuration['user']},dc=psu,dc=edu",
+                   auth: { method: :simple, username: "uid=#{ldap_configuration['user']},dc=psu,dc=edu",
                            password: ldap_configuration['password'] }) do |connection|
       yield connection
     end
