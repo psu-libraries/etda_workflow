@@ -5,6 +5,6 @@ class UpdateSubmissionService
     return unless submission.access_level != submission.previous_access_level
     email = AccessLevelUpdatedEmail.new(Admin::SubmissionView.new(submission, nil))
     email.deliver
-    # SolrDataImportService.delta_import if new submission.current_access_level.to_i > submission.previous_access_level.to_i
+    SolrDataImportService.new.delta_import if submission.current_access_level.to_i > submission.previous_access_level.to_i
   end
 end

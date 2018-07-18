@@ -162,6 +162,8 @@ GEM
       railties (>= 3.0.0)
     faker (1.8.7)
       i18n (>= 0.7)
+    faraday (0.15.2)
+      multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
     font-awesome-rails (4.7.0.3)
       railties (>= 3.2, < 5.2)
@@ -210,6 +212,7 @@ GEM
       i18n (>= 0.6.4, < 1.0)
     mono_logger (1.1.0)
     multi_json (1.13.1)
+    multipart-post (2.0.0)
     mustermann (1.0.2)
     mysql2 (0.4.9)
     net-ldap (0.16.1)
@@ -303,6 +306,9 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    rsolr (2.2.1)
+      builder (>= 2.1.2)
+      faraday (>= 0.9.0)
     rspec-activemodel-mocks (1.0.3)
       activemodel (>= 3.0)
       activesupport (>= 3.0)
@@ -471,6 +477,7 @@ DEPENDENCIES
   rails-controller-testing
   rake (< 11.0)
   rest-client
+  rsolr
   rspec-activemodel-mocks
   rspec-rails
   rubocop
