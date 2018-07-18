@@ -42,6 +42,10 @@ setup_datatables = function() {
         }
     };
 
+    const author_sort_options = {
+        order: [[ 1, "asc" ]],
+    };
+
     $('#programs-index.datatable').dataTable(
         (program_options = {
             rowCallback(row, program_data) {
@@ -90,11 +94,15 @@ setup_datatables = function() {
     );
 
     $('#authors-index.datatable').dataTable(
-        common_options
+        common_options,
+        author_sort_options
     );
 
+
+
     $('#authors-email-contact-list.datatable').dataTable(
-        common_options
+        common_options,
+        author_sort_options
     );
 
     const column_options = () =>
