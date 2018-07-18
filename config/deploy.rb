@@ -88,17 +88,6 @@ namespace :apache do
   end
 end
 
-# Utilize passenger commands to restart processes instead of Apache
-namespace :passenger do
-    desc "Restart Passenger"
-      task :restart_each do
-        on roles(:web) do
-          execute "passenger-config restart-app #{current_path}"
-        end
-    end
-    after "deploy:published", "passenger:restart_each"
-end
-
 set :linked_dirs, fetch(:linked_dirs, []).push(
   'log',
   'tmp/cache',
