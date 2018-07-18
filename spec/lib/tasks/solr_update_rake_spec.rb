@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'shoulda-matchers'
 
-RSpec.describe "Rake::Task['solr:delta_import']", type: :task do
+RSpec.describe "Rake::Task['workflow:solr:delta_import']", type: :task do
 
   subject(:task) { Rake::Task['solr:delta_import'] }
 
@@ -15,7 +15,7 @@ end
 RSpec.describe "Rake::Task['solr:full_import']", type: :task do
   Rails.application.load_tasks
 
-  subject(:task) { Rake::Task['solr:full_import'] }
+  subject(:task) { Rake::Task['workflow:solr:full_import'] }
 
   xit 'executes the full_import command' do
     full_cmd = "#{test_solr_url}/solr/#/#{current_partner.id}_core/dataimport//dataimport?command=full_import&clean=true\n"
@@ -23,9 +23,3 @@ RSpec.describe "Rake::Task['solr:full_import']", type: :task do
   end
 end
 
-def test_solr_url
-  url = Rails.application.secrets.webaccess[:vservice].strip
-  url.sub! 'workflow', 'explore'
-  url.sub! 'http:', 'https:'
-  url
-end
