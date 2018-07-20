@@ -1,16 +1,14 @@
 class SolrDataImportService
   def delta_import
-    #  https://etda-explore-partner/solr/partner_core/dataimport?wt=json&command=delta-import&clean=false
-    # response = solr.get dataimport, params: delta_import_params
-    response = execute_cmd(delta_import_params)
-    response
+    # https://etda-explore-partner/solr/partner_core/dataimport?wt=json&command=delta-import&clean=false
+    # solr.get dataimport, params: delta_import_params
+    execute_cmd(delta_import_params)
   end
 
   def full_import
-    #  https://etda-explore-partner/solr/partner_core/dataimport?wt=json&command=full-import&clean=true
-    # response = solr.get dataimport, params: full_import_params
-    response = execute_cmd(full_import_params)
-    response
+    # https://etda-explore-partner/solr/partner_core/dataimport?wt=json&command=full-import&clean=true
+    # solr.get dataimport, params: full_import_params
+    execute_cmd(full_import_params)
   end
 
   private
@@ -19,17 +17,26 @@ class SolrDataImportService
     result = solr.get dataimport, params: params
     return result if result[:error]
 
+    solr_status_checker = RSolr.connect url: solr_url, core: current_core
     # wait until the process has finished
-    processing_is_not_complete = true
-    while processing_is_not_complete
+
+    processing_is_incomplete = true
+    while processing_is_incomplete
       sleep(10.0)
-      processing_results = solr.get dataimport, params: params
-      processing_is_not_complete = processing_results["status"] == "busy"
+      check_results = solr_status_checker.get dataimport, 'command' => 'status', 'clean' => false
+      processing_is_incomplete = solr_is_busy?(check_results)
     end
-    processing_results
+    if check_results[:error]
+      SolrLog.info "Error occurred checking solr results: " + check_results
+    else
+      SolrLog.info check_results
+    end
+    check_results
   rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH => e
     Rails.logger.error e.inspect
-    return { error: true, "statusMessages" => { "" => "An error occured!  Check the log messages for more information" } }
+    SolrLog.info e.inspect unless e.nil?
+    SolrLog.info result
+    return { error: true, "statusMessages" => { "" => "An error occurred! Check the log messages for more information" } }
   end
 
   def solr
@@ -58,5 +65,9 @@ class SolrDataImportService
 
   def current_core
     "#{current_partner.id}_core"
+  end
+
+  def solr_is_busy?(current_result)
+    current_result['status'] == 'busy'
   end
 end
