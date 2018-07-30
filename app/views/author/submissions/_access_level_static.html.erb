@@ -2,7 +2,7 @@
 <p>Open Access is the default for all papers.  You may request your paper be restricted to authenticated Penn State users or restricted from all users.  To request your paper be restricted to authenticated Penn State users, enter the justification below. To request your paper be restricted from all users, enter the Invention Disclosure Number below.</p>
 <%= f.input :access_level, as: :hidden, input_html: { value: "#{@submission.access_level}" } %>
   <ul>
-    <% AccessLevel.paper_access_levels.each do |k| %>
+    <% AccessLevel.display.each do |k| %>
         <li class="<%= k[:type] %>"><strong><%= k[:label] %></strong> -- <%= k[:description] %></li>
         <%= render partial: 'restricted_note_field', locals: {f: f} if @view.psu_only(k[:label]) %>
         <%= render partial: 'invention_disclosure_information', locals: {f: f} if k[:label] == 'Restricted' %>

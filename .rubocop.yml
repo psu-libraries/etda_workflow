@@ -75,7 +75,7 @@ Metrics/CyclomaticComplexity:
   - app/presenters/admin/submissions_dashboard_view.rb
   - app/presenters/admin/submissions_index_view.rb
   - app/presenters/admin/submission_form_view.rb
-  - app/models/submission_release_service.rb
+  - app/services/submission_release_service.rb
   - app/models/export_csv.rb
   - app/models/mock_university_directory.rb
   - app/helpers/application_helper.rb
@@ -88,6 +88,7 @@ Metrics/PerceivedComplexity:
   - app/presenters/admin/submission_form_view.rb
   - app/models/export_csv.rb
   - app/helpers/application_helper.rb
+  - app/services/submission_release_service.rb
 
 Layout/MultilineBlockLayout:
   Exclude:
@@ -143,15 +144,15 @@ Style/GlobalVars:
 Style/BracesAroundHashParameters:
   Exclude:
     - 'config/deploy.rb'
-    - 'spec/component/models/solr_data_import_service_spec.rb'
+    - 'spec/services/solr_data_import_service_spec.rb'
 
 Layout/SpaceInsideBlockBraces:
   Exclude:
-    - 'spec/component/models/solr_data_import_service_spec.rb'
+    - 'spec/services/solr_data_import_service_spec.rb'
 
 Layout/SpaceInsideHashLiteralBraces:
   Exclude:
-    - 'spec/component/models/solr_data_import_service_spec.rb'
+    - 'spec/services/solr_data_import_service_spec.rb'
 
 Naming/AccessorMethodName:
   Exclude:

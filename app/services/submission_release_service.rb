@@ -15,6 +15,8 @@ class SubmissionReleaseService
       next unless file_verification_successful(original_final_files)
       publish_a_submission(submission, date_to_release, original_final_files)
     end
+    bulk_solr_result = SolrDataImportService.new.delta_import
+    return { error: true, msg: "Error occurred during delta-import for solr bulk update" } if bulk_solr_result[:error]
     final_results(submission_ids.count)
   end
 
@@ -64,8 +66,8 @@ class SubmissionReleaseService
       new_access_level == 'restricted' ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
       s.update_attributes(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
       return unless release_files(original_final_files)
+      UpdateSubmissionService.call(s, true)
       @released_submissions += 1
-      UpdateSubmissionService.call(s)
       OutboundLionPathRecord.new(submission: s).report_status_change
       # Archiver.new(s).create!
     rescue StandardError

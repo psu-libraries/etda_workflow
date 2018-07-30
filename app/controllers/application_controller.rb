@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
     # rescue_from Blacklight::Exceptions::InvalidSolrID, with: :render_404
     rescue_from ActionView::MissingTemplate, with: :render_404
     rescue_from ActionController::RoutingError, with: :render_404
+    rescue_from ActionController::MissingFile, with: :render_404
     rescue_from ActiveRecord::RecordNotFound, with: :render_404
     rescue_from CanCan::AccessDenied, with: :render_401
     rescue_from ActionView::Template::Error, with: :render_500

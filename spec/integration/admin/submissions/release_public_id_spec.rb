@@ -17,6 +17,7 @@ RSpec.describe "Release a submission with a public id", js: true do
     webaccess_authorize_admin
   end
   it 'assigns a public id and releases a submission', js: true do
+    allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
     expect(submission.legacy_id).to be_blank
     expect(submission.public_id).to be_blank
     released_count = Submission.released_for_publication.count
@@ -35,6 +36,7 @@ RSpec.describe "Release a submission with a public id", js: true do
   end
 
   it 'does not assign a public id that already exists and does not release a submission', js: true do
+    allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
     expect(submission.legacy_id).to be_blank
     expect(submission.public_id).to be_blank
     submission_2.update_attribute(:public_id, "#{submission_1.id}#{submission_1.author.access_id}")
