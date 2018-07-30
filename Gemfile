@@ -124,6 +124,10 @@ group :development, :test do
   gem 'faker'
 
   gem 'simplecov', require: false
+
+  # manages solr 5 for development (using latest version from master as of 11/12/2015)
+  gem 'solr_wrapper', git: 'https://github.com/cbeer/solr_wrapper.git', ref: '2c5d3ee'
+
 end
 
 group :development do

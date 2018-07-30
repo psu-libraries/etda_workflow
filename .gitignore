@@ -20,6 +20,12 @@ config/lion_path.yml
 spec/examples.txt
 
 node_modules/**/*
+
+# Ignore jetty directory (development solr environment)
+# Ignore the solr install directory
+solr_instance
+solr/conf/db-data-config.xml
+solr
  
 assets
 public/packs-test/**/*

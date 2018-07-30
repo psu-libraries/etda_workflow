@@ -1,9 +1,18 @@
 GIT
   remote: git@github.com:psu-stewardship/etda_utilities.git
-  revision: 05e44d65c9b2635440512362b4dc843e4111528c
+  revision: 2d5f634ab027dbad7d23df08a1f95f2d140f8985
   branch: master
   specs:
-    etda_utilities (0.6.3)
+    etda_utilities (0.6.4)
+
+GIT
+  remote: https://github.com/cbeer/solr_wrapper.git
+  revision: 2c5d3eeae053aae758fc419f29e300f8ce270a5f
+  ref: 2c5d3ee
+  specs:
+    solr_wrapper (0.3.0)
+      ruby-progressbar
+      rubyzip
 
 GIT
   remote: https://github.com/stefanpenner/country_select.git
@@ -488,6 +497,7 @@ DEPENDENCIES
   simple_form
   simplecov
   sinatra (~> 2.0.2)
+  solr_wrapper!
   spring
   spring-watcher-listen (~> 2.0.0)
   sprockets (~> 3.7.2)

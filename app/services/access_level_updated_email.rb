@@ -49,7 +49,7 @@ end
 
 def previous_level_label
   return '' if previous_level.blank?
-  previous_level.attributes
+  AccessLevel.new(previous_level).attributes
 end
 
 def current_level

@@ -14,9 +14,7 @@ class FinalSubmissionUpdateService
 
   def update_record
     submission.update_attributes! final_submission_params
-    UpdateSubmissionService.call(submission)
-    msg = "The submission was successfully updated."
-    { msg: msg, redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
+    { msg: "The submission was successfully updated.", redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
   end
 
   def respond_final_submission
@@ -50,18 +48,16 @@ class FinalSubmissionUpdateService
 
   def respond_waiting_to_be_released
     if update_actions.record_updated?
-      # Release for publication
+      # Editing a submission that is waiting to be released for publication
       submission.update_attributes! final_submission_params
-      UpdateSubmissionService.call(submission)
       { msg: 'The submission was successfully updated.', redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
     elsif update_actions.rejected?
       # Move back to Waiting for final submission approval (final submission submitted)
-      # No file changes necessary here; still in workflow
+      # No file path changes necessary here; submission not released yet; files are still in workflow
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_remove_from_waiting_to_be_released?
-      UpdateSubmissionService.call submission
       status_giver.waiting_for_final_submission_response!
-      # @submission.update_attribute :final_submission_rejected_at, Time.zone.now  #this causes it to go into final rejected
+      # @submission.update_attribute :final_submission_rejected_at, Time.zone.now  #this causes it to go into final rejected - WAS ERROR
       # submission.update_attributes! final_submission_params
       submission.final_submission_approved_at = nil
       submission.final_submission_rejected_at = nil
@@ -72,26 +68,39 @@ class FinalSubmissionUpdateService
 
   def respond_released_submission
     if update_actions.record_updated?
+      message = 'The submission was successfully updated.'
       submission.update_attributes!(final_submission_params)
-      UpdateSubmissionService.call(submission)
-      result = { msg: 'The submission was successfully updated.', redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
+      update_results = UpdateSubmissionService.call(submission, false)
+      message = update_results[:message] if update_results[:error]
+      result = { msg: message, redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
     elsif update_actions.rejected?
+      # Unpublish/unrelease this submission
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_unrelease_for_publication?
       submission_release_service = SubmissionReleaseService.new
       original_final_files = submission_release_service.final_files_for_submission(submission)
-      return result unless submission_release_service.file_verification_successful(original_final_files)
-      submission.update_attributes!(released_for_publication_at: nil, released_metadata_at: nil)
-      status_giver.unreleased_for_publication!
-      submission.update_attributes! final_submission_params
-      SubmissionReleaseService.new.unpublish(original_final_files)
-      # SolrDataImportService.delta_import # update the index after the paper has been unreleased
-      result = { msg: "Submission for #{submission.author_first_name} #{submission.author_last_name} was successfully un-published", redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
+      file_verification_success = submission_release_service.file_verification_successful(original_final_files)
+      # return unless file_verification_success
+      submission.update_attributes final_submission_params
+      # status_giver.unreleased_for_publication!
+      submission.update_attributes(released_for_publication_at: nil, released_metadata_at: nil, status: 'waiting for publication release')
+      SubmissionReleaseService.new.unpublish(original_final_files) if file_verification_success
+      solr_result = SolrDataImportService.new.delta_import # update the index after the paper has been unreleased
+      result = { msg: final_unrelease_message(solr_result, file_verification_success, submission), redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
     end
     result
   end
 
   private
+
+  def final_unrelease_message(solr_result, file_verification_success, submission)
+    solr_error_msg = "Solr indexing error occurred when un-publishing submission for #{submission.author_first_name} #{submission.author_last_name}" if solr_result[:error]
+    success_msg = "Submission for #{submission.author_first_name} #{submission.author_last_name} was successfully un-published."
+    file_error_message = " Error occured relocating file for #{submission.id}.  Please contact an administrator."
+    msg = solr_result[:error] ? solr_error_msg : success_msg
+    msg << file_error_message unless file_verification_success
+    msg
+  end
 
   def final_submission_params
     params.require(:submission).permit(

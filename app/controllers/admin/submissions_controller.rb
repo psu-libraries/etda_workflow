@@ -123,6 +123,7 @@ class Admin::SubmissionsController < AdminController
 
   def update_released
     @submission = Submission.find(params[:id])
+    session[:return_to] = "/admin/#{@submission.degree_type.slug}"
     released_submission_service = FinalSubmissionUpdateService.new(params, @submission)
     response = released_submission_service.respond_released_submission
     flash[:notice] = response[:msg]

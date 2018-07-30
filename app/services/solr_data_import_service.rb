@@ -27,7 +27,7 @@ class SolrDataImportService
       processing_is_incomplete = solr_is_busy?(check_results)
     end
     if check_results[:error]
-      SolrLog.info "Error occurred checking solr results: " + check_results
+      SolrLog.info "ERROR occurred checking solr results: " + check_results
     else
       SolrLog.info check_results
     end
@@ -53,6 +53,7 @@ class SolrDataImportService
   end
 
   def solr_url
+    return 'http://localhost:8983/solr' if Rails.env.development?
     url = Rails.application.secrets.webaccess[:vservice].strip
     url.sub! 'workflow', 'explore'
     url.sub! 'http:', 'https:'
@@ -64,6 +65,7 @@ class SolrDataImportService
   end
 
   def current_core
+    return 'development' if Rails.env.development?
     "#{current_partner.id}_core"
   end
 

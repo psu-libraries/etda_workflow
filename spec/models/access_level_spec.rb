@@ -9,11 +9,12 @@ RSpec.describe AccessLevel do
 
   context '#ACCESS_LEVEL_KEYS' do
     it 'constant containing all access levels' do
-      expect(described_class::ACCESS_LEVEL_KEYS).to match_array(['open_access', 'restricted_to_institution', 'restricted'])
+      expect(described_class::ACCESS_LEVEL_KEYS).to match_array(['open_access', 'restricted_to_institution', 'restricted', ''])
       expect(described_class::ACCESS_LEVEL_KEYS).to include('open_access')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('restricted')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('restricted_to_institution')
-      expect(described_class::ACCESS_LEVEL_KEYS.length).to eq(3)
+      expect(described_class::ACCESS_LEVEL_KEYS).to include('')
+      expect(described_class::ACCESS_LEVEL_KEYS.length).to eq(4)
     end
   end
   context '#paper_access_level_keys' do
@@ -32,8 +33,8 @@ RSpec.describe AccessLevel do
 
   context '#valid_levels' do
     it 'returns access_levels including no level' do
-      expect(described_class.valid_levels).to match_array(described_class.paper_access_level_keys + [''])
-      expect(described_class.valid_levels).not_to match_array(described_class.paper_access_level_keys)
+      # expect(described_class.valid_levels).to match_array(described_class.paper_access_level_keys + [''])
+      expect(described_class.valid_levels).to match_array(described_class.paper_access_level_keys)
     end
   end
 

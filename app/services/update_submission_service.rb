@@ -1,12 +1,14 @@
 class UpdateSubmissionService
-  def self.call(submission)
+  def self.call(submission, bulk_processing = false)
     # submission.update_attributes!(submission_params)
-
-    return { error: false } unless submission.access_level != submission.previous_access_level
+    return { error: false, msg: 'No updates required; access level did not change' } unless submission.access_level != submission.previous_access_level
     email = AccessLevelUpdatedEmail.new(Admin::SubmissionView.new(submission, nil))
     email.deliver
-    # this occurs each time a final submisison is published or unpublished.
+    return if bulk_processing
+    # this occurs each time a final submission is published or unpublished.
     # All editing to published submissions requires unpublish then publish so this includes metadata changes that must be reindexed
-    SolrDataImportService.new.delta_import if submission.current_access_level.to_i > submission.previous_access_level.to_i
+    results = SolrDataImportService.new.delta_import
+    return results unless results[:error]
+    { error: true, msg: "Error occurred during solr update for record: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}" }
   end
 end

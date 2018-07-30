@@ -78,7 +78,7 @@ class Submission < ApplicationRecord
   after_update :cache_access_level
 
   def cache_access_level
-    @previous_access_level = AccessLevel.new(access_level_before_last_save) || ''
+    @previous_access_level = access_level_before_last_save || ''
   end
 
   validates :status, inclusion: { in: SubmissionStatus::WORKFLOW_STATUS }

@@ -76,6 +76,7 @@ RSpec.describe 'Unrelease a legacy submission without missing data', js: true do
   before do
     webaccess_authorize_admin
     visit admin_edit_submission_path(legacy_submission)
+    allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
     fill_in "Title", with: "A new title"
     click_button "Withdraw Publication", wait: 5
   end
