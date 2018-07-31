@@ -5,6 +5,7 @@ require 'shoulda-matchers'
 
 RSpec.describe FinalSubmissionUpdateService, type: :model do
   let(:final_count) { Partner.current.id == 'honors' ? 2 : 1 }
+  let(:solr_result_success) { { error: false, solr_result: { "responseHeader" => { "status" => 0, "QTime" => 2 }, "initArgs" => ["defaults", ["config", "db-data-config.xml"]], "command" => "delta-import", "status" => "idle", "importResponse" => "", "statusMessages" => { "Total Requests made to DataSource" => "8", "Total Rows Fetched" => "0", "Total Documents Processed" => "0", "Total Documents Skipped" => "0", "Delta Dump started" => "2018-07-19 21:37:30", "Identifying Delta" => "2018-07-19 21:37:30", "Deltas Obtained" => "2018-07-19 21:37:30", "Building documents" => "2018-07-19 21:37:30", "Total Changed Documents" => "0", "Time taken" => "0:0:0.354" } } } }
 
   describe 'it processes approved final submissions' do
     it 'approves a final submission' do
@@ -103,6 +104,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(ActionMailer::Base.deliveries.count).to eq(start_count)
     end
     it 'edits a released submission but does not change the access level and does not send emails' do
+      allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
       start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :released_for_publication
       params = ActionController::Parameters.new

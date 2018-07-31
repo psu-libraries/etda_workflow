@@ -1,3 +1,4 @@
+# Release submissions for publication
 class SubmissionReleaseService
   attr_accessor :new_access_level
   attr_accessor :previous_access_level
@@ -12,9 +13,11 @@ class SubmissionReleaseService
     submission_ids.each do |id|
       submission = Submission.find(id)
       original_final_files = final_files_for_submission(submission)
-      next unless file_verification_successful(original_final_files)
+      file_verification_results = file_verification(original_final_files)
+      next unless file_verification_results[:valid]
       publish_a_submission(submission, date_to_release, original_final_files)
     end
+    # wait until all submissions and files have been released and then run delta-import to update solr
     bulk_solr_result = SolrDataImportService.new.delta_import
     return { error: true, msg: "Error occurred during delta-import for solr bulk update" } if bulk_solr_result[:error]
     final_results(submission_ids.count)
@@ -44,18 +47,21 @@ class SubmissionReleaseService
     true
   end
 
-  def file_verification_successful(original_files_array)
+  def file_verification(original_files_array)
+    file_error_list = []
     original_files_array.each do |id, original_file|
       next if File.exist? original_file
-      record_error("File Not Found for Final Submission File #{id}, #{original_file} ")
-      return false
+      err = "File Not Found for Final Submission File #{id}, #{original_file} "
+      record_error(err)
+      file_error_list << err
     end
-    true
+    { valid: file_error_list.empty? ? true : false, file_error_list: file_error_list }
   end
 
   private
 
     def publish_a_submission(s, date_to_release, original_final_files)
+      update_service = UpdateSubmissionService.new
       new_publication_release_date = s.publication_release_date date_to_release
       new_metadata_release_date = s.released_metadata_at.nil? ? date_to_release : s.released_metadata_at
       new_access_level = s.publication_release_access_level
@@ -66,7 +72,7 @@ class SubmissionReleaseService
       new_access_level == 'restricted' ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
       s.update_attributes(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
       return unless release_files(original_final_files)
-      UpdateSubmissionService.call(s, true)
+      update_service.send_email(s)
       @released_submissions += 1
       OutboundLionPathRecord.new(submission: s).report_status_change
       # Archiver.new(s).create!
