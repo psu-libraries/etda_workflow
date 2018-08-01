@@ -13,7 +13,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
       submission = FactoryBot.create :submission, :final_is_restricted, author: author
       start_count = ActionMailer::Base.deliveries.count
       visit admin_submissions_index_path(DegreeType.default, 'final_withheld')
-      sleep(3)
+      sleep(5)
       click_button 'Select Visible'
       sleep(5)
       click_button 'Release as Open Access'
@@ -43,10 +43,10 @@ RSpec.describe 'actions that send an email notifying users of an access level up
       submission2 = FactoryBot.create :submission, :final_is_restricted
       start_count = ActionMailer::Base.deliveries.count
       visit admin_submissions_index_path(DegreeType.default, 'final_withheld')
-      sleep(5)
+      sleep(3)
       click_button 'Select Visible'
       sleep(5)
-      click_button "Release as Open Access", wait: 5
+      click_button "Release as Open Access", wait: 8
       email1_to_address = submission1.author.alternate_email_address || submission1.author.psu_email_address
       email2_to_address = submission2.author.alternate_email_address || submission2.author.psu_email_address
       submission1_email = open_email(email1_to_address)
