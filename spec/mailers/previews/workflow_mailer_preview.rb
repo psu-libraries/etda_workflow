@@ -46,7 +46,7 @@ class WorkflowMailerPreview < ActionMailer::Preview
 
     def final_submission_approved
       @submission.degree = Degree.where(degree_type_id: DegreeType.default).first
-      WorkflowMailer.final_submission_approved(@submission, 'http://search-url-grad')
+      WorkflowMailer.final_submission_approved(@submission, 'http://search-url-milsch')
     end
   end
 
