@@ -52,6 +52,7 @@ class LdapUniversityDirectory
 
   def authors_confidential_status(this_access_id)
     attr = get_ldap_attribute(this_access_id, 'psconfhold')
+    return false if attr.nil?
     ActiveModel::Type::Boolean.new.cast(attr.downcase)
   end
 
