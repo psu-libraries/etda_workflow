@@ -39,7 +39,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     fill_in "Admin notes", with: "Some admin notes"
 
     click_button "Update Metadata"
-    sleep(3)
+    sleep(5)
     visit admin_edit_submission_path(submission)
     page.find('div[data-target="#program-information"]').click
     expect(page).to have_current_path(admin_edit_submission_path(submission))
