@@ -38,6 +38,7 @@ RSpec.describe "Last Step: 'waiting for publication release'", js: true do
 
     context "visiting the 'Update Committee' page" do
       before { visit edit_author_submission_committee_members_path(submission) }
+
       it "raises a forbidden access error" do
         # expect(page).to have_content 'You are not allowed to visit that page at this time, please contact your administrator'
         expect(page).to have_current_path(author_root_path)

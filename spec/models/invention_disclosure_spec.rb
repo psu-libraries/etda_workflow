@@ -27,6 +27,7 @@ RSpec.describe InventionDisclosure, type: :model do
         expect(submission.errors.details[:invention_disclosure]).to eql([])
       end
     end
+
     context 'it cannot be empty' do
       it 'is not valid' do
         submission.access_level = 'restricted'
@@ -41,7 +42,7 @@ RSpec.describe InventionDisclosure, type: :model do
     context 'can be blank if submission is not restricted' do
       it 'is valid' do
         submission.invention_disclosure.id_number = ''
-        submission.update_attributes access_level: 'open_access'
+        submission.update access_level: 'open_access'
         submission.valid?
         expect(submission.errors.details[:invention_disclosure]).to eql([])
       end

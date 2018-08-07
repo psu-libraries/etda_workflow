@@ -37,6 +37,7 @@ RSpec.describe "Manage Submissions", js: true do
         expect(total_submissions).to eql(submission_count - 2)
       end
     end
+
     context 'delete one submission' do
       it 'deletes one submission and creates one outbound lion path record' do
         outbound_records = OutboundLionPathRecord.all.count
@@ -53,6 +54,7 @@ RSpec.describe "Manage Submissions", js: true do
       end
     end
   end
+
   describe 'Admins cannot bulk delete published submissions', js: true do
     let!(:submission3) { FactoryBot.create :submission, :final_is_restricted_to_institution, author: author1, access_level: 'restricted_to_institution' } if current_partner.graduate?
     let!(:submission4) { FactoryBot.create :submission, :final_is_restricted, author: author2 }
@@ -61,11 +63,13 @@ RSpec.describe "Manage Submissions", js: true do
     before do
       webaccess_authorize_admin
     end
+
     if current_partner.graduate?
       context 'Restricted to institution' do
         before do
           visit admin_submissions_index_path(DegreeType.default, 'final_restricted_institution')
         end
+
         it 'does not have a delete button but does have other bulk actions' do
           expect(page).to have_content('Restricted to Penn State')
           expect(page).to have_content('Showing')
@@ -76,11 +80,13 @@ RSpec.describe "Manage Submissions", js: true do
           expect(page).to have_button('Release as Open Access')
         end
       end
+
     end
     context 'Withheld' do
       before do
         visit admin_submissions_index_path(DegreeType.default, 'final_withheld')
       end
+
       it 'does not have a delete button but has other bulk actions' do
         expect(page).to have_content('Restricted Theses')
         expect(page).to have_content('Showing')
@@ -91,10 +97,12 @@ RSpec.describe "Manage Submissions", js: true do
         expect(page).not_to have_button('Delete Selected')
       end
     end
+
     context 'Released' do
       before do
         visit admin_submissions_index_path(DegreeType.default, 'released_for_publication')
       end
+
       it 'does not have bulk buttons when nothing is selected' do
         expect(page).to have_content('Released Theses')
         expect(page).to have_content('Showing')

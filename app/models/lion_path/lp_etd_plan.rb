@@ -7,8 +7,8 @@ class LionPath::LpEtdPlan
   #  attr_accessor :etd_year
   attr_accessor :defense_date
 
-  def initialize(ap)
-    @ap = ap
+  def initialize(aplan)
+    @ap = aplan
     @etd_degree = LionPath::Crosswalk.new.lp_to_etd_degree(@ap[LionPath::LpKeys::DEGREE_CODE]) || nil
     @etd_program = Program.find_or_create_by(name: @ap[LionPath::LpKeys::DEGREE_DESC]) || nil
   end

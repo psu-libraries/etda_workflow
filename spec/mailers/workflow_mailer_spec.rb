@@ -125,6 +125,7 @@ RSpec.describe WorkflowMailer do
 
   describe '#pay_thesis_fee' do
     before { allow(Partner).to receive(:current).and_return(partner) }
+
     let(:email) { described_class.pay_thesis_fee(submission) }
 
     context "when the current partner is 'graduate'" do

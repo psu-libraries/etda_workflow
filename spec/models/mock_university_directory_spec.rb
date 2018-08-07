@@ -18,6 +18,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
         expect(result).to eq([])
       end
     end
+
     context "when given a string that matches the fake data" do
       let(:search_string) { "joni" }
 
@@ -40,6 +41,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
         expect(result).to be(false)
       end
     end
+
     context "when given an access ID that is part of the fake data" do
       let(:access_id) { "jxb13" }
 
@@ -59,6 +61,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
         expect(result).to eq([])
       end
     end
+
     context "when given an access ID that is part of the fake data" do
       let(:access_id) { "saw140" }
 
@@ -93,12 +96,14 @@ RSpec.describe MockUniversityDirectory, type: :model do
         expect(result).to be_truthy
       end
     end
+
     context 'returns false if no results' do
       it 'is false' do
         result = directory.in_admin_group?('saw140')
         expect(result).to be_falsey
       end
     end
+
     context 'returns false if user does not exist' do
       it 'is false' do
         result = directory.in_admin_group?('')

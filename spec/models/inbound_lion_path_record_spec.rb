@@ -29,6 +29,7 @@ RSpec.describe InboundLionPathRecord, type: :model do
         expect(lp_record_data).to eq(LionPath::MockLionPathRecord.current_data)
       end
     end
+
     context '#etd_role' do
       it 'finds or creates a committee member role' do
         expect(described_class.etd_role('Committee Member')).to eq(CommitteeRole.where(name: 'Committee Member').first.id)
@@ -37,6 +38,7 @@ RSpec.describe InboundLionPathRecord, type: :model do
         expect(CommitteeRole.where(name: 'a nonexistant role')).not_to be_empty
       end
     end
+
     context 'retrieve' do
       it "returns the author's record from Lion Path" do
         access_id = LionPath::MockLionPathRecord::MOCK_LP_AUTHOR_RECORD[LionPath::LpKeys::RESPONSE][LionPath::LpKeys::ACCESS_ID]
@@ -47,6 +49,7 @@ RSpec.describe InboundLionPathRecord, type: :model do
         expect(record_data[LionPath::LpKeys::ACCESS_ID]).to eq(access_id)
       end
     end
+
     context '#records_match?' do
       it "returns false when there's a mis-match between login ids" do
         expect(described_class).not_to be_records_match('999999999', 'zzz123', LionPath::MockLionPathRecord::MOCK_LP_AUTHOR_RECORD[LionPath::LpKeys::RESPONSE])
@@ -78,10 +81,12 @@ RSpec.describe InboundLionPathRecord, type: :model do
         expect(lp_degree_code).to be_empty
       end
     end
+
     context 'logs error' do
       error_response = LionPath::MockLionPathRecord.error_response
       error_msg = LionPath::LionPathError.new(LionPath::MockLionPathRecord.error_response, 'xxb13').error_msg
       before { allow_any_instance_of(LionPathConnection).to receive(:retrieve_student_information).and_return(error_response) }
+
       it 'writes an error' do
         expect(Rails.logger).to receive(:info).with(error_response)
         expect(Rails.logger).to receive(:info).with(error_msg)
@@ -89,6 +94,7 @@ RSpec.describe InboundLionPathRecord, type: :model do
         expect(record).to be_nil
       end
     end
+
     it 'transitions a standard submission record to be populated with lion path information' do
       degree = Degree.create(name: 'PHD', is_active: true, degree_type_id: DegreeType.default.id, description: 'phd')
       another_degree = Degree.new(name: 'MS', is_active: false, degree_type_id: DegreeType.default.id, description: 'ms')
@@ -115,6 +121,7 @@ RSpec.describe InboundLionPathRecord, type: :model do
         expect(described_class.active?).to eql(Rails.application.config_for(:lion_path)[current_partner.id.to_s][:lion_path_inbound])
       end
     end
+
     context '#lp_valid degrees' do
       it 'returns list of valid degrees' do
         degree = FactoryBot.create :degree, name: 'PHD', is_active: true, degree_type: DegreeType.default

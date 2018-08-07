@@ -22,17 +22,20 @@ RSpec.describe Author::SubmissionsIndexView do
         expect(view_for_new_author.partial_name).to eq 'confirm_contact_information_instructions'
       end
     end
+
     context 'When the remote user exists in our database and has submissions' do
       it "returns the author's submissions" do
         FactoryBot.create :submission, author: existing_author
         expect(view_for_existing_author.partial_name).to eq 'submissions'
       end
     end
+
     context 'and does not have any submissions' do
       it 'returns an empty index' do
         expect(view_for_existing_author.partial_name).to eq 'no_submissions'
       end
     end
+
     context 'When author is in database, populated from LDAP entry and has no unpublished submissions' do
         it 'returns no_submissions' do
           FactoryBot.create :submission, :released_for_publication, author: existing_author

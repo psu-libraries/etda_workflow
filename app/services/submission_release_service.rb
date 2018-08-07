@@ -27,10 +27,10 @@ class SubmissionReleaseService
     release_files(original_final_files)
   end
 
-  def final_files_for_submission(s)
+  def final_files_for_submission(submission)
     # saves the file id and the original file path
     location_array = []
-    s.final_submission_files.each do |f|
+    submission.final_submission_files.each do |f|
       location_array << [f.id, f.current_location]
     end
     location_array
@@ -60,24 +60,24 @@ class SubmissionReleaseService
 
   private
 
-    def publish_a_submission(s, date_to_release, original_final_files)
+    def publish_a_submission(submission, date_to_release, original_final_files)
       update_service = UpdateSubmissionService.new
-      new_publication_release_date = s.publication_release_date date_to_release
-      new_metadata_release_date = s.released_metadata_at.nil? ? date_to_release : s.released_metadata_at
-      new_access_level = s.publication_release_access_level
-      new_public_id = s.public_id.presence || PublicIdMinter.new(s).id
+      new_publication_release_date = submission.publication_release_date date_to_release
+      new_metadata_release_date = submission.released_metadata_at.nil? ? date_to_release : submission.released_metadata_at
+      new_access_level = submission.publication_release_access_level
+      new_public_id = submission.public_id.presence || PublicIdMinter.new(submission).id
       return unless public_id_ok(new_public_id)
-      status_giver = SubmissionStatusGiver.new(s)
+      status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_release_for_publication?
       new_access_level == 'restricted' ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
-      s.update_attributes(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
+      submission.update_attributes(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
       return unless release_files(original_final_files)
-      update_service.send_email(s)
+      update_service.send_email(submission)
       @released_submissions += 1
-      OutboundLionPathRecord.new(submission: s).report_status_change
+      OutboundLionPathRecord.new(submission: submission).report_status_change
       # Archiver.new(s).create!
     rescue StandardError
-      record_error("Error occurred processing submission id: #{s.id}, #{s.author.last_name}, #{s.author.first_name}")
+      record_error("Error occurred processing submission id: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}")
     end
 
     def final_results(total_submissions)

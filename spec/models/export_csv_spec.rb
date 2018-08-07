@@ -12,6 +12,7 @@ RSpec.describe ExportCsv, type: :model do
         expect(export_csv.columns).to include('Access Level')
       end
     end
+
     context 'fields when initialized with one submission' do
       it 'has one submission' do
         fields = export_csv.fields(submission)
@@ -21,6 +22,7 @@ RSpec.describe ExportCsv, type: :model do
         expect(fields).to include(submission.title)
       end
     end
+
     context 'when given an invalid query type' do
       it 'returns nil' do
         export_csv = described_class.new('bogus_query', submission)
@@ -28,6 +30,7 @@ RSpec.describe ExportCsv, type: :model do
         expect(export_csv.fields(submission)).to be_nil
       end
     end
+
     context 'no submissions' do
        it 'returns nil' do
          export_csv = described_class.new('final_submission_approved', nil)
@@ -36,6 +39,7 @@ RSpec.describe ExportCsv, type: :model do
        end
     end
   end
+
   describe 'csv for committee_report' do
     let(:author) { FactoryBot.create :author }
     let(:author2) {}
@@ -47,6 +51,7 @@ RSpec.describe ExportCsv, type: :model do
         expect(export_csv.columns).to eq(['Last Name', 'First Name', 'Email', 'Alternate Email', 'Id', 'Title', 'Degree', 'Program', 'Date', 'Committee Members', 'Advisor'])
       end
     end
+
     context 'fields when initialized with one submission' do
       it 'has one submission' do
         create_committee(submission)
@@ -60,6 +65,7 @@ RSpec.describe ExportCsv, type: :model do
         # expect(fields).to include(cm)
       end
     end
+
     context 'when given an invalid query type' do
       it 'returns nil' do
         export_csv = described_class.new('bogus_query', submission)
@@ -67,6 +73,7 @@ RSpec.describe ExportCsv, type: :model do
         expect(export_csv.fields(submission)).to be_nil
       end
     end
+
     context 'no submissions' do
       it 'returns nil' do
         export_csv = described_class.new('committee_report', nil)
@@ -75,6 +82,7 @@ RSpec.describe ExportCsv, type: :model do
       end
     end
   end
+
   describe 'csv for custom report' do
     let(:author) { FactoryBot.create :author }
     let(:author2) {}
@@ -87,6 +95,7 @@ RSpec.describe ExportCsv, type: :model do
         expect(export_csv.columns).to eq(['Last Name', 'First Name', 'Id', 'Title', 'Degree', 'Access Level', 'Date', 'Status', 'Invention Disclosure Number'])
       end
     end
+
     context 'fields when initialized with one submission' do
       it 'has one submission' do
         fields = export_csv.fields(submission)
@@ -97,6 +106,7 @@ RSpec.describe ExportCsv, type: :model do
         expect(fields).to include(submission.degree_type.name)
       end
     end
+
     context 'when given an invalid query type' do
       it 'returns nil' do
         export_csv = described_class.new('bogus_query', submission)
@@ -104,6 +114,7 @@ RSpec.describe ExportCsv, type: :model do
         expect(export_csv.fields(submission)).to be_nil
       end
     end
+
     context 'no submissions' do
       it 'returns nil' do
         export_csv = described_class.new('custom_report', nil)

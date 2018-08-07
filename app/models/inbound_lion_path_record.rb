@@ -64,9 +64,9 @@ class InboundLionPathRecord < ApplicationRecord
     return true unless submission.using_lionpath?
     refreshed_plan = LionPath::LpEtdPlan.new(submission.academic_plan.selected)
     submission.update_attributes(degree_id: refreshed_plan.etd_degree_id, program_id: refreshed_plan.etd_program_id, year: refreshed_plan.etd_year, semester: refreshed_plan.etd_semester, defended_at: refreshed_plan.etd_defense_date_time)
-    return true
+    true
   rescue ActiveRecord::RecordInvalid
-    return false
+    false
   end
 
   def initialize_lion_path_degree_code(submission)

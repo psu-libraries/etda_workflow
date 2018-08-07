@@ -22,6 +22,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
     webaccess_authorize_author
     visit author_submissions_path
   end
+
   context 'author can review program information' do
     it 'displays program information for the submission' do
       visit "/author/submissions/#{submission.id}/program_information"
@@ -35,6 +36,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
       expect(page).to have_link('Return to dashboard')
     end
   end
+
   context 'author can review submission committee information' do
     it 'displays program information for the submission' do
       visit "/author/submissions/#{submission.id}/committee_members"
@@ -49,6 +51,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
       expect(page).to have_link('Return to dashboard')
     end
   end
+
   context 'author can review format review information' do
     it 'displays format review information for the submission' do
       visit "/author/submissions/#{submission.id}/format_review"
@@ -58,6 +61,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
       expect(page).to have_link('Return to dashboard')
     end
   end
+
   context 'author can review final submission information' do
     it 'displays final submission information' do
       visit "/author/submissions/#{submission.id}/final_submission"

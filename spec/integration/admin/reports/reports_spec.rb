@@ -24,12 +24,14 @@ RSpec.describe "Admins can run reports", js: true do
     webaccess_authorize_admin
     visit admin_submissions_dashboard_path(Degree.first.degree_type)
   end
+
   context('Report link is visible on left navigation') do
     it 'contains a report link on the main navigation' do
       expect(page).to have_link('Reports')
       expect(page).not_to have_link('Committee Report')
     end
   end
+
   context 'clicking on Report link', js: true do
     it 'displays the available report types' do
       expect(page).to have_link('Reports')
@@ -39,12 +41,14 @@ RSpec.describe "Admins can run reports", js: true do
       expect(page).to have_link('Custom Report')
     end
   end
+
   context 'committee report page', js: true do
     before do
       visit admin_submissions_dashboard_path(Degree.first.degree_type)
       click_link('Reports')
       click_link('Committee Report')
     end
+
     it 'displays the Committee Report page' do
       expect(page).to have_content('Committee Report')
       expect(page).to have_button('Select Visible')
@@ -65,6 +69,7 @@ RSpec.describe "Admins can run reports", js: true do
       expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="committee_report.csv"'
     end
   end
+
   context 'custom report page' do
     before do
       submission2.access_level = 'restricted'
@@ -72,6 +77,7 @@ RSpec.describe "Admins can run reports", js: true do
       visit admin_submissions_dashboard_path(DegreeType.first)
       click_link('Reports')
     end
+
     it 'displays the invention disclosure number and access level' do
       unless ENV['TRAVIS']
         expect(page).to have_link('Custom Report')
@@ -103,6 +109,7 @@ RSpec.describe "Admins can run reports", js: true do
       end
     end
   end
+
   context 'final_submission_approved' do
     before do
       submission1.status = 'waiting for publication release'
@@ -111,6 +118,7 @@ RSpec.describe "Admins can run reports", js: true do
       submission2.save
       visit(admin_submissions_index_path(DegreeType.default, 'final_submission_approved'))
     end
+
     it 'displays the final submissions' do
       sleep(3)
       expect(page).to have_content('Final Submission to be Released')

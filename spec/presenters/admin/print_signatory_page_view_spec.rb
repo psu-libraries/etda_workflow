@@ -19,6 +19,7 @@ RSpec.describe Admin::SignatoryPageView do
       author.address_1 = nil
       author.city = nil
     end
+
     it 'contains empty lines' do
       empty_line = '________________'
       expect(view.address_line1).to include(empty_line)

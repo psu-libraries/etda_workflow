@@ -4,9 +4,9 @@ FactoryBot.define do
   factory :committee_member do |_cm|
     submission
     committee_role
-    name { "Professor Buck Murphy" }
-    email { "buck@hotmail.com" }
-    is_required { true }
+    name "Professor Buck Murphy"
+    email "buck@hotmail.com"
+    is_required true
   end
 
   trait :required do

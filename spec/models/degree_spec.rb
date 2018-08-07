@@ -39,6 +39,7 @@ RSpec.describe Degree, type: :model do
         expect(degree.active_status).to eq('No')
       end
     end
+
     context 'When is_active is true' do
       it 'returns Yes' do
         degree.is_active = true
@@ -46,12 +47,14 @@ RSpec.describe Degree, type: :model do
       end
     end
   end
+
   describe '#set_to_active_to_true' do
     it "Sets activation status to true for new instances" do
       testdegree = described_class.create(name: 'testdegree', description: 'test', degree_type_id: DegreeType.first.id)
       expect(testdegree.is_active).to be_truthy
     end
   end
+
   describe '#list of valid degree names in upcase' do
     it 'returns an array of active degree names with blanks replaced by underscores' do
       described_class.create(name: 'M M M', is_active: true, description: 'one', degree_type_id: DegreeType.default.id)
@@ -66,6 +69,7 @@ RSpec.describe Degree, type: :model do
       expect(list).not_to include('XBC')
     end
   end
+
   describe '#etd_degree_slug' do
     it 'returns the degree name normalized' do
       expect(described_class.new(name: 'De GrEE').slug).to eq('DE_GREE')

@@ -25,6 +25,7 @@ RSpec.describe 'Author submission page', type: :integration, js: true do
       expect(page).not_to have_link('Contact Support')
     end
   end
+
   context 'Author submission display when author has a submission that is released for publication but no other submissions' do
     it 'displays completed submission Button' do
       FactoryBot.create :submission, :released_for_publication, author: author
@@ -35,6 +36,7 @@ RSpec.describe 'Author submission page', type: :integration, js: true do
       expect(page).to have_content('If you would like to start')
     end
   end
+
   context 'Author submission display when author has one submission' do
     it "displays 'submission found'" do
       FactoryBot.create :submission, :collecting_committee, author: author
@@ -45,14 +47,14 @@ RSpec.describe 'Author submission page', type: :integration, js: true do
       expect(page).to have_content('If you would like to start a new thesis') unless current_partner.graduate?
     end
   end
+
   context 'Author submission display when author has more than one submissions' do
     before do
       webaccess_authorize_author
-      2.times do
-        FactoryBot.create :submission, author: current_author
-      end
+      FactoryBot.create_list :submission, 2, author: current_author
       visit author_submissions_path
     end
+
     it "displays 'submissions found'" do
       expect(page).to have_content('submissions found')
     end

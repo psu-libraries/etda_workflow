@@ -16,6 +16,7 @@ RSpec.describe "Technical Tips page", type: :integration, js: true do
     before do
       click_link 'Technical Tips'
     end
+
     it 'opens the technical tips page' do
       expect(page).to have_content('Technical Tips')
       expect(page).to have_content('Abc_format_review.pdf')

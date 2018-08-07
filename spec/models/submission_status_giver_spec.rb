@@ -8,6 +8,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_respond_to_format_review?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_format_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -16,6 +17,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_format_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -24,6 +26,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_format_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -32,6 +35,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_format_review? }.not_to raise_error
@@ -40,6 +44,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_format_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -48,6 +53,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_format_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -56,6 +62,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_format_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -64,6 +71,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_format_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -74,6 +82,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_update_program_information?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_program_information? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -82,6 +91,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_program_information? }.not_to raise_error
@@ -90,6 +100,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_program_information? }.not_to raise_error
@@ -98,6 +109,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_program_information? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -106,6 +118,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_program_information? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -114,6 +127,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_program_information? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -122,6 +136,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_program_information? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -130,6 +145,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_program_information? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -140,6 +156,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_provide_new_committee?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -148,6 +165,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_provide_new_committee? }.not_to raise_error
@@ -156,6 +174,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -164,6 +183,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -172,6 +192,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -180,6 +201,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -188,6 +210,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -196,6 +219,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -206,6 +230,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_update_committee?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -214,6 +239,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -222,6 +248,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_committee? }.not_to raise_error
@@ -230,6 +257,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -238,6 +266,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -246,6 +275,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -254,6 +284,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -262,6 +293,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -272,6 +304,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_upload_format_review_files?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_format_review_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -280,6 +313,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_format_review_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -288,6 +322,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_format_review_files? }.not_to raise_error
@@ -296,6 +331,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_format_review_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -304,6 +340,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_format_review_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -312,6 +349,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_format_review_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -320,6 +358,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_format_review_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -328,6 +367,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_format_review_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -338,6 +378,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_review_program_information?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_program_information? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -346,6 +387,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_program_information? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -354,6 +396,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_program_information? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -362,6 +405,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_program_information? }.not_to raise_error
@@ -370,6 +414,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_program_information? }.not_to raise_error
@@ -378,6 +423,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_program_information? }.not_to raise_error
@@ -386,6 +432,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_program_information? }.not_to raise_error
@@ -394,6 +441,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_program_information? }.not_to raise_error
@@ -404,6 +452,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_create_or_edit_committee?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_create_or_edit_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -412,6 +461,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_create_or_edit_committee? }.not_to raise_error
@@ -420,6 +470,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_create_or_edit_committee? }.not_to raise_error
@@ -428,6 +479,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_create_or_edit_committee? }.not_to raise_error
@@ -436,6 +488,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_create_or_edit_committee? }.not_to raise_error
@@ -444,6 +497,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_create_or_edit_committee? }.not_to raise_error
@@ -452,6 +506,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_create_or_edit_committee? }.not_to raise_error
@@ -460,6 +515,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_create_or_edit_committee? }.not_to raise_error
@@ -470,6 +526,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_review_committee?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -478,6 +535,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -486,6 +544,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -494,6 +553,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_committee? }.not_to raise_error
@@ -502,6 +562,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_committee? }.not_to raise_error
@@ -510,6 +571,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_committee? }.not_to raise_error
@@ -518,6 +580,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_committee? }.not_to raise_error
@@ -526,6 +589,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_committee? }.not_to raise_error
@@ -536,6 +600,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_review_format_review_files?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_format_review_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -544,6 +609,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_format_review_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -552,6 +618,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_format_review_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -560,6 +627,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_format_review_files? }.not_to raise_error
@@ -568,6 +636,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_format_review_files? }.not_to raise_error
@@ -576,6 +645,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_format_review_files? }.not_to raise_error
@@ -584,6 +654,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_format_review_files? }.not_to raise_error
@@ -592,6 +663,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_format_review_files? }.not_to raise_error
@@ -602,6 +674,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_upload_final_submission_files??' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_final_submission_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -610,6 +683,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_final_submission_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -618,6 +692,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_final_submission_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -626,6 +701,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_final_submission_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -634,6 +710,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_final_submission_files? }.not_to raise_error
@@ -642,6 +719,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_final_submission_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -650,6 +728,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_final_submission_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -658,6 +737,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_upload_final_submission_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -668,6 +748,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_review_final_submission_files?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_final_submission_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -676,6 +757,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_final_submission_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -684,6 +766,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_final_submission_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -692,6 +775,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_final_submission_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -700,6 +784,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_final_submission_files? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -708,6 +793,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_final_submission_files? }.not_to raise_error
@@ -716,6 +802,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_final_submission_files? }.not_to raise_error
@@ -724,6 +811,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_review_final_submission_files? }.not_to raise_error
@@ -734,6 +822,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_respond_to_final_submission?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_final_submission? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -742,6 +831,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_final_submission? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -750,6 +840,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_final_submission? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -758,6 +849,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_final_submission? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -766,6 +858,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_final_submission? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -774,6 +867,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_final_submission? }.not_to raise_error
@@ -782,6 +876,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_final_submission? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -790,6 +885,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_respond_to_final_submission? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -800,6 +896,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_release_for_publication?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_release_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -808,6 +905,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_release_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -816,6 +914,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_release_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -824,6 +923,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_release_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -832,6 +932,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_release_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -840,6 +941,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_release_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -848,6 +950,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_release_for_publication? }.not_to raise_error
@@ -856,6 +959,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication', submission.access_level = 'open_access' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_release_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -866,6 +970,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#can_unrelease_for_publication?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_unrelease_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -874,6 +979,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_unrelease_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -882,6 +988,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_unrelease_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -890,6 +997,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_unrelease_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -898,6 +1006,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_unrelease_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -906,6 +1015,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_unrelease_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -914,6 +1024,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_unrelease_for_publication? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
@@ -922,6 +1033,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.can_unrelease_for_publication? }.not_to raise_error
@@ -932,6 +1044,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#collecting_committee!' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "updates status to 'collecting committee'" do
         giver = described_class.new(submission)
         giver.collecting_committee!
@@ -941,6 +1054,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "does not change the status" do
         giver = described_class.new(submission)
         giver.collecting_committee!
@@ -950,6 +1064,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_committee! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -958,6 +1073,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_committee! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -966,6 +1082,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_committee! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -974,6 +1091,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_committee! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -982,6 +1100,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_committee! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -990,6 +1109,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_committee! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1000,6 +1120,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#collecting_format_review_files!' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_format_review_files! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1008,6 +1129,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "updates status to 'collecting format review files'" do
         giver = described_class.new(submission)
         giver.collecting_format_review_files!
@@ -1017,6 +1139,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "does not change the status" do
         giver = described_class.new(submission)
         giver.collecting_format_review_files!
@@ -1026,6 +1149,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "updates status to 'collecting format review files rejected'" do
         giver = described_class.new(submission)
         giver.collecting_format_review_files_rejected!
@@ -1035,6 +1159,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_format_review_files! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1043,6 +1168,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_format_review_files! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1051,6 +1177,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_format_review_files! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1059,6 +1186,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_format_review_files! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1069,6 +1197,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#waiting_for_format_review_response!' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_format_review_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1077,6 +1206,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_format_review_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1085,6 +1215,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "updates status to 'waiting for format review response'" do
         giver = described_class.new(submission)
         giver.waiting_for_format_review_response!
@@ -1094,6 +1225,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "does not change the status" do
         giver = described_class.new(submission)
         giver.waiting_for_format_review_response!
@@ -1103,6 +1235,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_format_review_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1111,6 +1244,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_format_review_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1119,6 +1253,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_format_review_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1127,6 +1262,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_format_review_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1137,6 +1273,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#collecting_final_submission_files!' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_final_submission_files! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1145,6 +1282,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_final_submission_files! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1153,6 +1291,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_final_submission_files! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1161,6 +1300,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "updates status to 'collecting final submission files'" do
         giver = described_class.new(submission)
         giver.collecting_final_submission_files!
@@ -1170,6 +1310,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "does not change the status" do
         giver = described_class.new(submission)
         giver.collecting_final_submission_files!
@@ -1179,6 +1320,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "updates status to 'collecting final submission files'" do
         giver = described_class.new(submission)
         giver.collecting_final_submission_files!
@@ -1188,6 +1330,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_final_submission_response! }.not_to raise_error
@@ -1196,6 +1339,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.collecting_final_submission_files! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1206,6 +1350,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#waiting_for_final_submission_response!' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1214,6 +1359,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1222,6 +1368,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1230,6 +1377,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1238,6 +1386,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "updates status to 'waiting for final submission response'" do
         giver = described_class.new(submission)
         giver.waiting_for_final_submission_response!
@@ -1247,6 +1396,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "does not change the status" do
         giver = described_class.new(submission)
         giver.waiting_for_final_submission_response!
@@ -1256,6 +1406,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_final_submission_response! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1264,6 +1415,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1274,6 +1426,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#waiting_for_publication_release!' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_publication_release! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1282,6 +1435,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_publication_release! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1290,6 +1444,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_publication_release! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1298,6 +1453,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_publication_release! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1306,6 +1462,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_publication_release! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1314,6 +1471,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "updates status to 'waiting for publication release'" do
         giver = described_class.new(submission)
         giver.waiting_for_publication_release!
@@ -1323,6 +1481,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "does not change the status" do
         giver = described_class.new(submission)
         giver.waiting_for_publication_release!
@@ -1332,6 +1491,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "changes the status to 'waiting for publication release'" do
         giver = described_class.new(submission)
         giver.waiting_for_publication_release!
@@ -1343,6 +1503,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#released_for_publication!' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.released_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1351,6 +1512,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.released_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1359,6 +1521,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.released_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1367,6 +1530,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.released_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1375,6 +1539,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.released_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1383,6 +1548,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.released_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1391,6 +1557,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "updates status to 'released for publication'" do
         giver = described_class.new(submission)
         giver.released_for_publication!
@@ -1400,6 +1567,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "does not change the status" do
         giver = described_class.new(submission)
         giver.released_for_publication!
@@ -1411,6 +1579,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe '#unreleased_for_publication!' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.unreleased_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1419,6 +1588,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.unreleased_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1427,6 +1597,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting format review files'" do
       before { submission.status = 'collecting format review files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.unreleased_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1435,6 +1606,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.unreleased_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1443,6 +1615,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
+
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.unreleased_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
@@ -1451,6 +1624,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
+
       it "changes the status to 'waiting for publication release'" do
         giver = described_class.new(submission)
         giver.unreleased_for_publication!
@@ -1461,6 +1635,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
       it "does not change the status" do
         giver = described_class.new(submission)
         giver.unreleased_for_publication!
@@ -1470,6 +1645,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
+
       it "updates status to 'waiting for publication release" do
         giver = described_class.new(submission)
         giver.unreleased_for_publication!

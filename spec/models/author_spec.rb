@@ -135,6 +135,7 @@ RSpec.describe Author, type: :model do
       expect(author.psu_idn).to eq('xxxxxxxxx')
     end
   end
+
   context '#can_edit?' do
     it 'allows the author to edit his or her own record' do
       described_class.current = described_class.new(access_id: 'ME123')
@@ -145,12 +146,14 @@ RSpec.describe Author, type: :model do
       expect { described_class.new(access_id: 'somebodyelse456').can_edit? }.to raise_error(Author::NotAuthorizedToEdit)
     end
   end
+
   context '#legacy' do
     it 'identifies legacy records' do
       expect(described_class.new(access_id: 'me123', legacy_id: nil)).not_to be_legacy
       expect(described_class.new(access_id: 'me123', legacy_id: '1')).to be_legacy
     end
   end
+
   describe 'confidential?' do
     author = described_class.new
     context 'author does not have a confidential hold' do
@@ -168,6 +171,7 @@ RSpec.describe Author, type: :model do
       end
     end
   end
+
   describe '#populate_attributes' do
     author = described_class.new(access_id: 'xyz123', psu_email_address: 'xyz123')
     author.save validate: false
@@ -183,6 +187,7 @@ RSpec.describe Author, type: :model do
       expect(author.full_name).to eql("#{author.first_name} #{author.middle_name} #{author.last_name}")
     end
   end
+
   describe '#populate_attributes' do
     author = described_class.new(access_id: 'bbb123', psu_email_address: 'bbb123')
     author.save validate: false
@@ -213,6 +218,7 @@ RSpec.describe Author, type: :model do
       expect(author.full_name).to eql(author.access_id)
     end
   end
+
   context '#psu_id_number' do
     it 'returns the psu_id number from ldap' do
       author = FactoryBot.create :author

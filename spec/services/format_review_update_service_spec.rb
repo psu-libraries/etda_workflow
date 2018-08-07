@@ -54,6 +54,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       expect(original_title == submission.title).to be_falsey
     end
   end
+
   context 'it updates a format review submission and status' do
     it 'approves a format review' do
       submission = FactoryBot.create :submission, :waiting_for_format_review_response

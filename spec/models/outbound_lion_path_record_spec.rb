@@ -28,6 +28,7 @@ RSpec.describe OutboundLionPathRecord, type: :model do
         expect(subject.first[:access_level]).to eql(LionPath::Crosswalk.etd_to_lp_access(submission.access_level))
       end
     end
+
     describe 'creates an outbound_lion_path record' do
       it 'calls report_status_change when the submission status changes' do
         count = described_class.all.count

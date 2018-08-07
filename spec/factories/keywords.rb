@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :keyword do
     submission
-    word { 'history' }
+    word 'history'
   end
 end

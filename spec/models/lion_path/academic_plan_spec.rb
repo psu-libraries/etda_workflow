@@ -18,6 +18,7 @@ RSpec.describe LionPath::AcademicPlan, type: :model do
       expect(academic_plan.degrees_display_collection).to be_a_kind_of(Array)
     end
   end
+
   if current_partner.graduate?
 
     context '#plan_Information_collection' do
@@ -35,22 +36,26 @@ RSpec.describe LionPath::AcademicPlan, type: :model do
         end
       end
     end
+
     context '#degrees_display_collection' do
       it 'returns a collection for degree dropdown' do
        expect(academic_plan.degrees_display_collection[0]).to eq([LionPath::MockLionPathRecord.first_degree_code + ' - ' + LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN].first[LionPath::LpKeys::DEGREE_DESC], LionPath::MockLionPathRecord.first_degree_code])
       end
     end
+
     context '#committee' do
       it 'returns the selected committee' do
         expect(academic_plan.committee).to be_a_kind_of(Array)
         expect(academic_plan.committee.count).to eql(LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN][0][LionPath::LpKeys::COMMITTEE].count)
       end
     end
+
     context '#committee_member' do
       it 'returns committee information' do
         expect(academic_plan.committee_member(1)).to eq(LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN][0][LionPath::LpKeys::COMMITTEE][1])
       end
     end
+
     context '#committee_members' do
       it 'builds committee members array to save to the database' do
         submission = FactoryBot.create :submission, :waiting_for_format_review_response
@@ -62,11 +67,13 @@ RSpec.describe LionPath::AcademicPlan, type: :model do
         expect(full_committee.count).not_to eql(0)
       end
     end
+
     context '#full_name' do
       it "returns a committee member's full name" do
         expect(academic_plan.full_name(academic_plan.committee_member(0))).to eql("#{academic_plan.committee_member(0)[LionPath::LpKeys::FIRST_NAME]} #{academic_plan.committee_member(0)[LionPath::LpKeys::LAST_NAME]}")
       end
     end
+
     context '#defense_date' do
       it 'returns the selected defense date' do
         defense_date = Date.strptime(LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN][0][LionPath::LpKeys::DEFENSE_DATE], LionPath::LpFormats::DEFENSE_DATE_FORMAT)

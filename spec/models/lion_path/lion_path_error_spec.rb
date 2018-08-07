@@ -8,6 +8,7 @@ RSpec.describe LionPath::LionPathError, type: :model do
       expect(subject.error_msg).to eq("Lion Path Error: 400 -- No valid Academic Plan  for Access Id: #{access_id}")
     end
   end
+
   context '#log_err' do
     it 'logs the error message' do
       expect(Rails.logger).to receive(:info).with(subject.error_msg)

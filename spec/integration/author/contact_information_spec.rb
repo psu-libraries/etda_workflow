@@ -79,6 +79,7 @@ RSpec.describe "Manage Contact Information", js: true do
       expect(page).to have_link('Accessibility')
     end
   end
+
   context "Author tries to edit a different author's personal information" do
     it 'displays Unauthorized message' do
       a_different_author = FactoryBot.create :author

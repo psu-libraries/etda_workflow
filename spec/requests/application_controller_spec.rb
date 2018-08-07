@@ -52,6 +52,7 @@ RSpec.describe 'Devise Login', type: :request do
       assert_response :redirect, "<302: Found> redirect to <#{WebAccess.new.logout_url}>"
     end
   end
+
   context 'development environment' do
     before do
       allow(Rails).to receive(:env) { "production".inquiry }

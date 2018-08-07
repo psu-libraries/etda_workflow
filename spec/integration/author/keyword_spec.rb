@@ -5,6 +5,7 @@ RSpec.describe 'Tagit-keywords', type: :integration, js: true do
     before do
       webaccess_authorize_author
     end
+
     let(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, author: current_author }
     let(:submission2) { FactoryBot.create :submission, :collecting_final_submission_files, author: current_author }
 

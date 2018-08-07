@@ -136,6 +136,7 @@ RSpec.describe Submission, type: :model do
         expect(submission.reject_disclosure_number(id: nil, submission_id: nil, id_number: nil, created_at: nil, updated_at: nil)).to be_truthy
       end
     end
+
     context 'using lionpath?' do
       it 'knows when lion_path integration is being used' do
         author = Author.new
@@ -144,6 +145,7 @@ RSpec.describe Submission, type: :model do
         expect(submission).not_to be_using_lionpath
       end
     end
+
     context 'academic plan' do
       it 'knows the correct academic plan' do
         author = FactoryBot.create(:author)
@@ -153,6 +155,7 @@ RSpec.describe Submission, type: :model do
         expect(submission.academic_plan).not_to be_nil
       end
     end
+
     context 'keywords' do
       it 'has a list of keywords' do
         submission = Submission.new
@@ -163,18 +166,21 @@ RSpec.describe Submission, type: :model do
         expect(submission.keyword_list).to eq(['zero', 'one', 'two'])
       end
     end
+
     context '#defended_at_date' do
       it 'returns defended_at date from student input' do
         submission = FactoryBot.create :submission, :released_for_publication
         expect(submission.defended_at).not_to be_blank if current_partner.graduate?
       end
     end
+
     context '#check_title_capitalization' do
       it 'allows all caps in the title' do
         submission = Submission.new(title: 'A TEST')
         expect(submission.check_title_capitalization).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
       end
     end
+
     context '#restricted_to_institution?' do
       it 'returns true' do
         submission = Submission.new(access_level: 'restricted_to_institution')
@@ -183,6 +189,7 @@ RSpec.describe Submission, type: :model do
         expect(submission).not_to be_restricted_to_institution
       end
     end
+
     context '#build_committee_members_for_partners' do
       it 'returns a list of required committee members' do
         degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
@@ -190,6 +197,7 @@ RSpec.describe Submission, type: :model do
         expect(submission.build_committee_members_for_partners).not_to be_blank
       end
     end
+
     context '#publication_release_date' do
       it 'returns the release date for open access submissions' do
         submission = FactoryBot.create :submission, :released_for_publication
@@ -203,6 +211,7 @@ RSpec.describe Submission, type: :model do
         expect(submission.publication_release_date(date_to_release)).to eq(date_to_release + 2.years)
       end
     end
+
     context 'update timestamps' do
       it 'updates format review timestamps' do
         submission = FactoryBot.create :submission, :collecting_format_review_files

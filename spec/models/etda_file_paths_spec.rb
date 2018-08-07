@@ -23,11 +23,13 @@ RSpec.describe EtdaFilePaths, type: :model do
       expect(described_class.new.workflow_upload_format_review_path).to eql("#{workflow_path}format_review_files/")
     end
   end
+
   context '#workflow_restricted' do
     it 'returns path of published restricted files' do
       expect(described_class.new.workflow_restricted).to eql("#{workflow_path}restricted/")
     end
   end
+
   context 'explore published paths' do
     it 'returns path of restricted to institution files' do
       expect(described_class.new.explore_psu_only).to eql("#{explore_path}restricted_institution/")
@@ -36,6 +38,7 @@ RSpec.describe EtdaFilePaths, type: :model do
       expect(described_class.new.explore_open).to eql("#{explore_path}open_access/")
     end
   end
+
   context '#this_host' do
     it 'returns the host from the secrets file' do
       host_path = Rails.application.secrets.webaccess[:path] + '/'

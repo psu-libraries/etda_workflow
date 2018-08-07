@@ -28,6 +28,7 @@ RSpec.describe Program, type: :model do
         expect(program.active_status).to eq('No')
       end
     end
+
     context 'When is_active is true' do
       it 'returns Yes' do
         active_program = described_class.new(is_active: true)
@@ -35,6 +36,7 @@ RSpec.describe Program, type: :model do
       end
     end
   end
+
   describe '#set_is_active_to_true' do
     it "Sets activation status to true for new instances" do
       testprogram = described_class.create(name: 'testprogram')

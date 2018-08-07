@@ -17,6 +17,6 @@ class ErrorsController < ApplicationController
 
   def render_routing_error(exception)
     logger.error("Rendering 404 page due to exception: #{exception.inspect} - #{exception.backtrace if exception.respond_to? :backtrace}")
-    render template: '/error/404', layout: "error", formats: %i[html json], status: 404
+    render template: '/error/404', layout: "error", formats: %i[html json], status: :not_found
   end
 end

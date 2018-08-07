@@ -35,12 +35,12 @@ class LionPath::AcademicPlan
     selected[LionPath::LpKeys::COMMITTEE]
   end
 
-  def committee_member(n)
-    selected[LionPath::LpKeys::COMMITTEE][n]
+  def committee_member(num)
+    selected[LionPath::LpKeys::COMMITTEE][num]
   end
 
-  def full_name(cm)
-    "#{cm[LionPath::LpKeys::FIRST_NAME].capitalize} #{cm[LionPath::LpKeys::LAST_NAME].capitalize}"
+  def full_name(cmember)
+    "#{cmember[LionPath::LpKeys::FIRST_NAME].capitalize} #{cmember[LionPath::LpKeys::LAST_NAME].capitalize}"
   end
 
   def committee_members

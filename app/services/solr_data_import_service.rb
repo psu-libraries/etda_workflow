@@ -36,7 +36,7 @@ class SolrDataImportService
     Rails.logger.error e.inspect
     SolrLog.info e.inspect unless e.nil?
     SolrLog.info result
-    return { error: true, "statusMessages" => { "" => "An error occurred! Check the log messages for more information" } }
+    { error: true, "statusMessages" => { "" => "An error occurred! Check the log messages for more information" } }
   end
 
   def solr

@@ -26,6 +26,7 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
         expect(page).to have_current_path(new_author_submission_committee_members_path(submission))
       end
     end
+
     context "visiting the 'Update Committee' page" do
       it "raises a forbidden access error" do
         visit edit_author_submission_committee_members_path(submission)
@@ -87,10 +88,12 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
       end
     end
   end
+
   describe "author can delete a submission" do
     before do
       webaccess_authorize_author
     end
+
     let(:author) { current_author }
 
     it "deletes the submission" do

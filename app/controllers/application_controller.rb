@@ -66,17 +66,17 @@ class ApplicationController < ActionController::Base
 
   def render_404(exception)
     logger.error("Rendering 404 page due to exception: #{exception.inspect} - #{exception.backtrace if exception.respond_to? :backtrace}")
-    render template: '/error/404', layout: "error", formats: %i[html json], status: 404
+    render template: '/error/404', layout: "error", formats: %i[html json], status: :not_found
   end
 
   def render_500(exception)
     logger.error("Rendering 500 page due to exception: #{exception.inspect} - #{exception.backtrace if exception.respond_to? :backtrace}")
-    render template: '/error/500', layout: "error", formats: %i[html json], status: 500
+    render template: '/error/500', layout: "error", formats: %i[html json], status: :internal_server_error
   end
 
   def render_401(exception)
     logger.error("Rendering 401 page due to exception #{exception.inspect} - #{exception.backtrace if exception.respond_to? :backtrace}")
-    render template: '/error/401', layout: "error", formats: %i[html json], status: 401
+    render template: '/error/401', layout: "error", formats: %i[html json], status: :unauthorized
   end
 
   protected

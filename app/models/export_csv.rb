@@ -23,7 +23,6 @@ class ExportCsv
     column_list
   end
 
-  #
   def fields(submission)
     return nil if submission.nil?
     s = submission
