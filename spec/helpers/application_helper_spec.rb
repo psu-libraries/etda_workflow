@@ -27,6 +27,7 @@ RSpec.describe ApplicationHelper do
       expect(current_version_number).to eql('Version: v.101-test')
     end
   end
+
   describe '#author_nav_active?' do
     it 'returns active class for submissions' do
       allow(controller).to receive(:controller_name).and_return('submissions')
@@ -44,6 +45,7 @@ RSpec.describe ApplicationHelper do
       expect(author_nav_active?('tips')).to eq('active')
     end
   end
+
   describe '#admin_nav_active?' do
     it 'returns active class for admin controllers' do
       allow(controller).to receive(:controller_name).and_return('authors')
@@ -62,6 +64,7 @@ RSpec.describe ApplicationHelper do
       expect(admin_nav_active?('degrees')).to eq('')
     end
   end
+
   describe '#confidential_tag_helper' do
     author = FactoryBot.create :author, confidential_hold: false
     it 'returns empty string for authors without a hold' do

@@ -79,10 +79,12 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
       end
     end
   end
+
   describe "when I submit the 'Program Information' form" do
     before do
       webaccess_authorize_author
     end
+
     let(:author) { current_author }
 
     it "submission status updates to 'collecting committee'" do
@@ -115,10 +117,12 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
       expect(submission.program.id).to eq(second_program_id)
     end
   end
+
   describe "author can delete a submission" do
     before do
       webaccess_authorize_author
     end
+
     let(:author) { current_author }
 
     it "deletes the submission" do

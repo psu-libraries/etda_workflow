@@ -22,6 +22,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(results).to eq([])
       end
     end
+
     context 'when given "no match"' do
       let(:search_string) { "not there" }
 
@@ -29,6 +30,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(results).to eq([])
       end
     end
+
     context "when given a person's complete name" do
       let(:search_string) { "Joni Lee Barnoff" }
 
@@ -43,6 +45,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(results.first[:id]).to eq("jxb13@psu.edu")
       end
     end
+
     pending('do not have data to test this condition one') do
       context "when the matching person has no email address" do
         let(:search_string) { "Scott Aaron Woods" }
@@ -76,6 +79,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(results.first[:label]).to eq("Joni Lee Barnoff")
       end
     end
+
     context "when given a person's complete name without their middle name" do
       let(:search_string) { "joni barnoff" }
 
@@ -84,6 +88,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(results.first[:label]).to eq("Joni Lee Barnoff")
       end
     end
+
     context "when given an exact last name" do
       context "that is very short" do
         let(:search_string) { "Li" }
@@ -100,6 +105,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       #     expect(matching_entry).to be_present
       #   end
       # end
+
       context "that has an apostrophe" do
         let(:search_string) { "O'Brien" }
         let(:matching_entry) { results.detect { |r| r[:label] == "Edward Patrick O'Brien Jr." } }
@@ -108,6 +114,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
           expect(matching_entry).to be_present
         end
       end
+
       context "with trailing whitespace" do
         let(:search_string) { "barnoff " }
         let(:matching_entry) { results.detect { |r| r[:label] == "Joni Lee Barnoff" } }
@@ -116,6 +123,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
           expect(matching_entry).to be_present
         end
       end
+
       context "and that person has a middle name" do
         let(:search_string) { "Barnoff" }
         let(:matching_entry) { results.detect { |r| r[:label] == "Joni Lee Barnoff" } }
@@ -124,6 +132,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
           expect(matching_entry).to be_present
         end
       end
+
       context "and that person does not have a middle name" do
         let(:search_string) { "Cory Smith" }
         let(:matching_entry) { results.detect { |r| r[:label] == "Cory Smith" } }
@@ -133,6 +142,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
           expect(matching_entry).to be_present
         end
       end
+
       context "and that person has a roman numeral after their last name" do
         let(:search_string) { "sayers miller" }
         let(:matching_entry) { results.detect { |r| r[:label] == "Sayers John Miller III" } }
@@ -142,6 +152,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         end
       end
     end
+
     context "when given a common string that returns too many results" do
       let(:search_string) { "Smith" }
 
@@ -165,6 +176,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     #     end
     #   end
     # end
+
     context "when given an exact first name" do
       let(:search_string) { "Mairead" }
       let(:matching_entry) { results.detect { |r| r[:label] == "Mairead Martin" } }
@@ -174,6 +186,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(matching_entry).not_to be_present
       end
     end
+
     context "when given a partial first name" do
       let(:search_string) { "Mair" }
       let(:matching_entry) { results.detect { |r| r[:label] == "Mairead Martin" } }
@@ -183,6 +196,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(matching_entry).not_to be_present
       end
     end
+
     context "when given a partial last name" do
       let(:search_string) { "Barn" }
       let(:matching_entry) { results.detect { |r| r[:label] == "Joni Lee Barnoff" } }
@@ -191,6 +205,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(matching_entry).to be_present
       end
     end
+
     context "when given a first name and a partial last name" do
       let(:search_string) { "Joni Barn" }
       let(:matching_entry) { results.detect { |r| r[:label] == "Joni Lee Barnoff" } }
@@ -199,11 +214,13 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(matching_entry).to be_present
       end
     end
+
     context "when the given string has both exact and partial matches" do
       let(:search_string) { "Mi" }
 
       it "returns the exact matches first, then the partial matches"
     end
+
     context "when given a string that includes unicode characters" do
       let(:search_string) { "Muñoz" }
 
@@ -211,6 +228,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(results).to eq([])
       end
     end
+
     context 'when searching using wildcards' do
       let(:search_string) { "Barn*" }
       let(:matching_entry) { results.detect { |r| r[:label] == "Joni Lee Barnoff" } }
@@ -219,12 +237,14 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(results).to eq([])
       end
     end
+
     context "when LDAP is down" do
       let(:search_string) { "joni" }
 
       before do
         allow(Net::LDAP).to receive(:new).and_raise(Net::LDAP::LdapError)
       end
+
       it "raises an UnreachableError" do
         expect { results }.to raise_error(LdapUniversityDirectory::UnreachableError)
       end
@@ -241,6 +261,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(result).to be(false)
       end
     end
+
     context "when given an access ID that exists" do
       let(:access_id) { "jxb13" }
 
@@ -248,12 +269,14 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(result).to be(true)
       end
     end
+
     context "when LDAP is down" do
       let(:access_id) { "jxb13" }
 
       before do
         allow(Net::LDAP).to receive(:new).and_raise(Net::LDAP::LdapError)
       end
+
       it "raises an UnreachableError" do
         expect { result }.to raise_error(LdapUniversityDirectory::UnreachableError)
       end
@@ -270,6 +293,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(result).to eq({})
       end
     end
+
     context "when given a valid access ID" do
       let(:access_id) { "jxb13" }
 
@@ -294,6 +318,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       before do
         allow(Net::LDAP).to receive(:new).and_raise(Net::LDAP::LdapError)
       end
+
       it "raises an UnreachableError" do
         expect { result }.to raise_error(LdapUniversityDirectory::UnreachableError)
       end
@@ -310,6 +335,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(result).to start_with('9')
       end
     end
+
     context "when given an invalid access ID" do
       let(:result) { directory.get_psu_id_number('bogus') }
 

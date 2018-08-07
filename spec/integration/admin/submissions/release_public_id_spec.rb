@@ -16,6 +16,7 @@ RSpec.describe "Release a submission with a public id", js: true do
   before do
     webaccess_authorize_admin
   end
+
   it 'assigns a public id and releases a submission', js: true do
     allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
     expect(submission.legacy_id).to be_blank

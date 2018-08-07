@@ -27,6 +27,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title")
       end
     end
+
     context "when scope is format review is submitted" do
       let(:scope) { 'format_review_submitted' }
 
@@ -34,6 +35,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title")
       end
     end
+
     context "when scope is format review is completed" do
       let(:scope) { 'format_review_completed' }
 
@@ -41,6 +43,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title")
       end
     end
+
     context "when scope is final submission is incomplete" do
       let(:scope) { 'final_submission_incomplete' }
 
@@ -48,6 +51,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title")
       end
     end
+
     context "when scope is final submission is submitted" do
       let(:scope) { 'final_submission_submitted' }
 
@@ -55,6 +59,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title")
       end
     end
+
     context "when scope is final submission is approved" do
       let(:scope) { 'final_submission_approved' }
 
@@ -62,6 +67,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title")
       end
     end
+
     context "when scope is released for publication" do
       let(:scope) { 'released_for_publication' }
 
@@ -69,6 +75,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title")
       end
     end
+
     context "when scope is final is restricted by institution" do
       let(:scope) { 'final_restricted_institution' }
 
@@ -76,6 +83,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title")
       end
     end
+
     context "when scope is final restricted" do
       let(:scope) { 'final_withheld' }
 
@@ -93,6 +101,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.id).to eq 'incomplete-format-review-submissions-index'
       end
     end
+
     context "when scope is format review is submitted" do
       let(:scope) { 'format_review_submitted' }
 
@@ -100,6 +109,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.id).to eq 'submitted-format-review-submissions-index'
       end
     end
+
     context "when scope is format review is completed" do
       let(:scope) { 'format_review_completed' }
 
@@ -107,6 +117,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.id).to eq 'completed-format-review-submissions-index'
       end
     end
+
     context "when scope is final submission is incomplete" do
       let(:scope) { 'final_submission_incomplete' }
 
@@ -114,6 +125,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.id).to eq 'incomplete-final-submission-submissions-index'
       end
     end
+
     context "when scope is final submission is submitted" do
       let(:scope) { 'final_submission_submitted' }
 
@@ -121,6 +133,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.id).to eq 'submitted-final-submission-submissions-index'
       end
     end
+
     context "when scope is final submission is approved" do
       let(:scope) { 'final_submission_approved' }
 
@@ -128,6 +141,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.id).to eq 'approved-final-submission-submissions-index'
       end
     end
+
     context "when scope is released for publication" do
       let(:scope) { 'released_for_publication' }
 
@@ -135,6 +149,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.id).to eq 'released-for-publication-submissions-index'
       end
     end
+
     context "when scope is final restricted to institution" do
       let(:scope) { 'final_restricted_institution' }
 
@@ -142,6 +157,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.id).to eq 'final-restricted-institution-index'
       end
     end
+
     context "when scope is final is restricted" do
       let(:scope) { 'final_withheld' }
 
@@ -159,6 +175,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_bulk_actions
       end
     end
+
     context "when scope is format review is submitted" do
       let(:scope) { 'format_review_submitted' }
 
@@ -166,6 +183,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_bulk_actions
       end
     end
+
     context "when scope is format review is completed" do
       let(:scope) { 'format_review_completed' }
 
@@ -173,6 +191,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_bulk_actions
       end
     end
+
     context "when scope is final submission is incomplete" do
       let(:scope) { 'final_submission_incomplete' }
 
@@ -180,6 +199,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_bulk_actions
       end
     end
+
     context "when scope is final submission is submitted" do
       let(:scope) { 'final_submission_submitted' }
 
@@ -187,6 +207,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_bulk_actions
       end
     end
+
     context "when scope is final submission is approved" do
       let(:scope) { 'final_submission_approved' }
 
@@ -194,6 +215,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).to be_render_additional_bulk_actions
       end
     end
+
     context "when scope is released for publication" do
       let(:scope) { 'released_for_publication' }
 
@@ -201,6 +223,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_bulk_actions
       end
     end
+
     context "when scope is final is restricted by institution" do
       let(:scope) { 'final_restricted_institution' }
 
@@ -208,6 +231,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.render_additional_bulk_actions?).to be true
       end
     end
+
     context "when scope is final restricted" do
       let(:scope) { 'final_withheld' }
 
@@ -225,6 +249,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_bulk_actions_path).to be_nil
       end
     end
+
     context "when scope is format review is submitted" do
       let(:scope) { 'format_review_submitted' }
 
@@ -232,6 +257,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_bulk_actions_path).to be_nil
       end
     end
+
     context "when scope is format review is completed" do
       let(:scope) { 'format_review_completed' }
 
@@ -239,6 +265,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_bulk_actions_path).to be_nil
       end
     end
+
     context "when scope is final submission is incomplete" do
       let(:scope) { 'final_submission_incomplete' }
 
@@ -246,6 +273,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_bulk_actions_path).to be_nil
       end
     end
+
     context "when scope is final submission is submitted" do
       let(:scope) { 'final_submission_submitted' }
 
@@ -253,6 +281,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_bulk_actions_path).to be_nil
       end
     end
+
     context "when scope is final submission is approved" do
       let(:scope) { 'final_submission_approved' }
 
@@ -260,6 +289,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_bulk_actions_path).to eq 'admin/submissions/table_bulk_actions/final_submission_approved'
       end
     end
+
     context "when scope is released for publication" do
       let(:scope) { 'released_for_publication' }
 
@@ -267,6 +297,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_bulk_actions_path).to be_nil
       end
     end
+
     context "when scope is final is restricted by institution" do
       let(:scope) { 'final_restricted_institution' }
 
@@ -274,6 +305,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_bulk_actions_path).to eq 'admin/submissions/table_bulk_actions/final_submission_restricted_or_witheld'
       end
     end
+
     context "when scope is final restricted" do
       let(:scope) { 'final_withheld' }
 
@@ -291,6 +323,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_selections
       end
     end
+
     context "when scope is format review is submitted" do
       let(:scope) { 'format_review_submitted' }
 
@@ -298,6 +331,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_selections
       end
     end
+
     context "when scope is format review is completed" do
       let(:scope) { 'format_review_completed' }
 
@@ -305,6 +339,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_selections
       end
     end
+
     context "when scope is final submission is incomplete" do
       let(:scope) { 'final_submission_incomplete' }
 
@@ -312,6 +347,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_selections
       end
     end
+
     context "when scope is final submission is submitted" do
       let(:scope) { 'final_submission_submitted' }
 
@@ -319,6 +355,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_selections
       end
     end
+
     context "when scope is final submission is approved" do
       let(:scope) { 'final_submission_approved' }
 
@@ -326,6 +363,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_selections
       end
     end
+
     context "when scope is released for publication" do
       let(:scope) { 'released_for_publication' }
 
@@ -333,6 +371,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view).not_to be_render_additional_selections
       end
     end
+
     context "when scope is final is restricted by institution" do
       let(:scope) { 'final_restricted_institution' }
 
@@ -340,6 +379,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.render_additional_selections?).to be true
       end
     end
+
     context "when scope is final restricted" do
       let(:scope) { 'final_withheld' }
 
@@ -357,6 +397,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_selections_path).to be_nil
       end
     end
+
     context "when scope is format review is submitted" do
       let(:scope) { 'format_review_submitted' }
 
@@ -364,6 +405,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_selections_path).to be_nil
       end
     end
+
     context "when scope is format review is completed" do
       let(:scope) { 'format_review_completed' }
 
@@ -371,6 +413,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_selections_path).to be_nil
       end
     end
+
     context "when scope is final submission is incomplete" do
       let(:scope) { 'final_submission_incomplete' }
 
@@ -378,6 +421,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_selections_path).to be_nil
       end
     end
+
     context "when scope is final submission is submitted" do
       let(:scope) { 'final_submission_submitted' }
 
@@ -385,6 +429,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_selections_path).to be_nil
       end
     end
+
     context "when scope is final submission is approved" do
       let(:scope) { 'final_submission_approved' }
 
@@ -392,6 +437,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_selections_path).to be_nil
       end
     end
+
     context "when scope is released for publication" do
       let(:scope) { 'released_for_publication' }
 
@@ -399,6 +445,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_selections_path).to be_nil
       end
     end
+
     context "when scope is final is restricted by institution" do
       let(:scope) { 'final_restricted_institution' }
 
@@ -406,6 +453,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.additional_selections_path).to eq 'admin/submissions/table_selections/final_submission_restricted_or_witheld'
       end
     end
+
     context "when scope is final restricted" do
       let(:scope) { 'final_withheld' }
 
@@ -424,6 +472,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.delete_button_partial).to eq('admin/submissions/table_bulk_actions/delete_button')
       end
     end
+
     context "when scope is format review is submitted" do
       let(:scope) { 'format_review_submitted' }
 
@@ -432,6 +481,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.delete_button_partial).to eq('admin/submissions/table_bulk_actions/delete_button')
       end
     end
+
     context "when scope is format review is completed" do
       let(:scope) { 'format_review_completed' }
 
@@ -440,6 +490,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.delete_button_partial).to eq('admin/submissions/table_bulk_actions/delete_button')
       end
     end
+
     context "when scope is final submission is incomplete" do
       let(:scope) { 'final_submission_incomplete' }
 
@@ -448,6 +499,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.delete_button_partial).to eq('admin/submissions/table_bulk_actions/delete_button')
       end
     end
+
     context "when scope is final submission is submitted" do
       let(:scope) { 'final_submission_submitted' }
 
@@ -456,6 +508,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.delete_button_partial).to eq('admin/submissions/table_bulk_actions/delete_button')
       end
     end
+
     context "when scope is final submission is approved" do
       let(:scope) { 'final_submission_approved' }
 
@@ -464,6 +517,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.delete_button_partial).to eq('admin/submissions/table_bulk_actions/delete_button')
       end
     end
+
     context "when scope is released for publication" do
       let(:scope) { 'released_for_publication' }
 
@@ -472,6 +526,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.delete_button_partial).to eq('admin/submissions/table_bulk_actions/delete_button')
       end
     end
+
     context "when scope is final is restricted by institution" do
       let(:scope) { 'final_restricted_institution' }
 
@@ -480,6 +535,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.delete_button_partial).to eq('admin/submissions/table_bulk_actions/delete_button')
       end
     end
+
     context "when scope is final restricted" do
       let(:scope) { 'final_withheld' }
 
@@ -499,6 +555,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.select_visible_buttons_partial).to eq('admin/submissions/table_bulk_actions/select_visible_buttons')
       end
     end
+
     context "when scope is format review is submitted" do
       let(:scope) { 'format_review_submitted' }
 
@@ -507,6 +564,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.select_visible_buttons_partial).to eq('admin/submissions/table_bulk_actions/select_visible_buttons')
       end
     end
+
     context "when scope is format review is completed" do
       let(:scope) { 'format_review_completed' }
 
@@ -515,6 +573,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.select_visible_buttons_partial).to eq('admin/submissions/table_bulk_actions/select_visible_buttons')
       end
     end
+
     context "when scope is final submission is incomplete" do
       let(:scope) { 'final_submission_incomplete' }
 
@@ -523,6 +582,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.select_visible_buttons_partial).to eq('admin/submissions/table_bulk_actions/select_visible_buttons')
       end
     end
+
     context "when scope is final submission is submitted" do
       let(:scope) { 'final_submission_submitted' }
 
@@ -531,6 +591,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.select_visible_buttons_partial).to eq('admin/submissions/table_bulk_actions/select_visible_buttons')
       end
     end
+
     context "when scope is final submission is approved" do
       let(:scope) { 'final_submission_approved' }
 
@@ -539,6 +600,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.select_visible_buttons_partial).to eq('admin/submissions/table_bulk_actions/select_visible_buttons')
       end
     end
+
     context "when scope is released for publication" do
       let(:scope) { 'released_for_publication' }
 
@@ -547,6 +609,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.select_visible_buttons_partial).to eq('admin/submissions/table_bulk_actions/select_visible_buttons')
       end
     end
+
     context "when scope is final is restricted by institution" do
       let(:scope) { 'final_restricted_institution' }
 
@@ -555,6 +618,7 @@ RSpec.describe Admin::SubmissionsIndexView do
         expect(view.select_visible_buttons_partial).to eq('admin/submissions/table_bulk_actions/select_visible_buttons')
       end
     end
+
     context "when scope is final restricted" do
       let(:scope) { 'final_withheld' }
 

@@ -39,6 +39,7 @@ RSpec.describe CommitteeMember, type: :model do
   #   end
   # end
   #
+
   context 'role name' do
     it 'returns the role name' do
       committee_member = described_class.new(committee_role_id: CommitteeRole.first.id)

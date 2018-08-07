@@ -1,4 +1,3 @@
-
 RSpec.describe 'The standard committee form for authors', js: true do
   require 'integration/integration_spec_helper'
 
@@ -19,6 +18,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         expect(page).to have_content("can't be blank")
       end
     end
+
     describe "return to author index page" do
       it "returns to the author index page and displays validation errors" do
         expect(submission.committee_members.empty?).to eq(true)
@@ -26,6 +26,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         expect(page).to have_content("can't be blank")
       end
     end
+
     describe "Cancel" do
       it "does not save the committee" do
         expect(submission.committee_members.empty?).to eq(true)
@@ -119,6 +120,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         submission.save!
         visit new_author_submission_committee_members_path(submission)
       end
+
       let(:last_remove_link) { all(".committee_remove a href").last }
 
       # PROBLEM FINDING THE RemoveLINK
@@ -163,6 +165,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         find("#submission_committee_members_attributes_0_name").native.send_keys(*"Barn".chars)
         sleep 3 # Autocomplete delays before sending/displaying results
       end
+
       it "allows me to autocomplete that committee member's information from LDAP" do
         dropdown_item_for_joni.click
         click_button 'Save and Continue Editing'

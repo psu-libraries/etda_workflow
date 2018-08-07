@@ -13,6 +13,7 @@ RSpec.describe 'The new committee form when Lion Path is active', js: true do
       author.inbound_lion_path_record.current_data[:employee_id] = submission.author.psu_idn.to_s
       visit root_path
     end
+
     describe "When status is 'collecting committee'" do
       context 'graduate student Committee Members from Lion Path are displayed' do
         it "allows graduate students to 'Verify committee'" do

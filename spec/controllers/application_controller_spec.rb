@@ -14,6 +14,7 @@ RSpec.describe ApplicationController, type: :controller do
         expect(new_author_session_path).to eq('/author/sign_in')
       end
     end
+
     context 'admin' do
       it 'sends /logout to sessions#destroy' do
         expect(get: '/logout').to route_to(controller: 'application', action: 'logout')
@@ -25,33 +26,39 @@ RSpec.describe ApplicationController, type: :controller do
       end
     end
   end
+
   describe 'login methods' do
     describe '#destroy' do
       it 'redirects to the central logout page and destroy the cookie' do
         expect(get: '/logout').to route_to(controller: 'application', action: 'logout')
       end
     end
+
     describe '#new' do
       it 'redirects to the central login page' do
         expect(get: '/login').to route_to(controller: 'application', action: 'login')
       end
     end
   end
+
   describe '#autocomplete' do
     it 'returns an array of employee names to use in committee member form' do
       expect(get: '/committee_members/autocomplete?term=Smith').to route_to(controller: 'application', action: 'autocomplete', term: 'Smith')
     end
   end
+
   describe '#render_404' do
     it 'displays a 404 error' do
       expect(get: '/404').to route_to(controller: 'errors', action: 'render_404')
     end
   end
+
   describe '#render_500' do
     it 'displays a 500 error' do
       expect(get: '/500').to route_to(controller: 'errors', action: 'render_500')
     end
   end
+
   describe '#render_401' do
     it 'displays a 401 error' do
       expect(get: '/401').to route_to(controller: 'errors', action: 'render_401')

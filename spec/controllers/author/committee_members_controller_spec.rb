@@ -30,18 +30,21 @@ RSpec.describe Author::CommitteeMembersController, type: :controller do
       expect(patch: author_submission_committee_members_path(submission.id)).to route_to(controller: 'author/committee_members', action: 'update', submission_id: submission.id.to_s)
     end
   end
+
   describe '#show' do
     it 'shows a list of committee_members' do
       submission = FactoryBot.create :submission, :collecting_format_review_files
       expect(get: author_submission_committee_members_path(submission.id)).to route_to(controller: 'author/committee_members', action: 'show', submission_id: submission.id.to_s)
     end
   end
+
   describe '#refresh' do
     it 'refreshes committee information using information from lion path' do
       submission = FactoryBot.create :submission, :collecting_format_review_files
       expect(get: author_submission_refresh_committee_path(submission.id)).to route_to(controller: 'author/committee_members', action: 'refresh', submission_id: submission.id.to_s)
     end
   end
+
   describe '#autocomplete' do
     it 'autocompletes committee member name using data obtained from LDAP' do
       expect(get: committee_members_autocomplete_path).to route_to(controller: 'application', action: 'autocomplete')

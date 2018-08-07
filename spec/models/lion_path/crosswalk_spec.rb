@@ -14,6 +14,7 @@ RSpec.describe LionPath::Crosswalk, type: :model do
         expect(described_class.new.lp_to_etd_degree('CURRINSTR_M_ED')).to eq(med)
       end
     end
+
     context '#semester and #year' do
       it 'formats lion path semester and year for ETD' do
         grad_date = 'SP 2017'
@@ -23,6 +24,7 @@ RSpec.describe LionPath::Crosswalk, type: :model do
         expect(described_class.grad_year(grad_date)).to eq(selected_year)
       end
     end
+
     context '#convert_to_datetime' do
       it 'converts lion path defense date to datetime value for ETD' do
         lp_date = '2016-03-26'
@@ -30,6 +32,7 @@ RSpec.describe LionPath::Crosswalk, type: :model do
         expect(etd_date.to_date.strftime(LionPath::LpFormats::DEFENSE_DATE_FORMAT)).to eq(lp_date)
       end
     end
+
     context '#lp_etd_to_lp_access' do
       it 'converts the etd submission access_level to lion path access level' do
         expect(described_class.etd_to_lp_access('')).to eq('OPEN')

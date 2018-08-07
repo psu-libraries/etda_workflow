@@ -17,11 +17,13 @@ RSpec.describe AccessLevel do
       expect(described_class::ACCESS_LEVEL_KEYS.length).to eq(4)
     end
   end
+
   context '#paper_access_level_keys' do
     it '#paper_access_level_keys returns an array of access_levels' do
       expect(described_class::ACCESS_LEVEL_KEYS).to match_array(described_class.paper_access_level_keys)
     end
   end
+
   context '#partner_access_level' do
     it 'returns access level information from a yml file' do
       yml_level = described_class.partner_access_levels['access_level']

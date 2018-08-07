@@ -28,6 +28,7 @@ RSpec.describe Admin, type: :model do
       expect(described_class.new(access_id: 'me123', administrator: nil)).not_to be_administrator
     end
   end
+
   context '#active_admin_user?' do
     it 'knows when an author has site administration privileges' do
       author = described_class.new(access_id: 'me123')

@@ -52,9 +52,9 @@ class LdapResult
     method(method[:method]).call(ldap_value, method[:options])
   end
 
-  def default(k)
+  def default(new_key)
     return '' if defaults.nil?
-    defaults[k]
+    defaults[new_key]
   end
 
   private

@@ -46,6 +46,7 @@ RSpec.describe 'Author submission access_level', js: true do
       end
     end
   end
+
   context 'non-graduate authors cannot choose the access level' do
     unless current_partner.graduate?
       it 'has an open_access description' do

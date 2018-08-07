@@ -66,6 +66,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         expect(page).to have_current_path(author_submission_format_review_path(submission))
       end
     end
+
     context "visiting the 'Upload Final Submission Files page' when using lion path records" do
       it 'loads the page without a datepicker when using lion path records' do
         visit author_submission_edit_final_submission_path(submission)
@@ -78,6 +79,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         end
       end
     end
+
     context "visiting the 'Review Final Submission Files' page" do
       it 'raises a forbidden access error' do
         visit author_submission_final_submission_path(submission)

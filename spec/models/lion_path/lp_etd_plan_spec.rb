@@ -8,6 +8,7 @@ RSpec.describe LionPath::LpEtdPlan, type: :model do
   before do
     Degree.create(name: 'PHD', description: 'PHD', degree_type: DegreeType.where(slug: 'dissertation').first)
   end
+
   if current_partner.graduate?
     context "data#" do
       it 'returns one set of plan data with ETD values' do
@@ -22,5 +23,6 @@ RSpec.describe LionPath::LpEtdPlan, type: :model do
         expect(lp_plan.etd_degree_name).to be_a_kind_of(String)
       end
     end
+
   end
 end

@@ -98,6 +98,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
         ]
       end
     end
+
     context 'when submissions exist for each filter' do
       before do
         FactoryBot.create :submission, :collecting_program_information
@@ -114,6 +115,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
         FactoryBot.create :submission, :final_is_restricted, released_for_publication_at: 1.day.ago
         FactoryBot.create :submission, :final_is_restricted, released_for_publication_at: 1.day.from_now
       end
+
       it "returns a set of links according to submission status" do
         # use a_hash_including here so we don't duplicate the specs on title, description
 

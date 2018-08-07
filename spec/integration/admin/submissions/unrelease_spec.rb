@@ -62,6 +62,7 @@ RSpec.describe 'Unrelease a submission with errors', js: true do
     expect(page).to have_current_path(admin_edit_submission_path(bad_submission))
   end
 end
+
 RSpec.describe 'Unrelease a legacy submission without missing data', js: true do
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true) }

@@ -30,7 +30,7 @@ class Degree < ApplicationRecord
     degree = Degree.find(degree_id)
     degree.slug
   rescue ActiveRecord::RecordNotFound
-    return nil
+    nil
   end
 
   def slug

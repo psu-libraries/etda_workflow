@@ -8,6 +8,7 @@ RSpec.describe Admin::SubmissionsController, type: :controller do
       expect(get: admin_root_path).to route_to(controller: 'admin/submissions', action: 'redirect_to_default_dashboard')
     end
   end
+
   describe '#dashboard' do
     it 'displays dashboard index' do
       expect(get: admin_submissions_dashboard_path(DegreeType.default)).to route_to(controller: 'admin/submissions', action: 'dashboard', 'degree_type': DegreeType.default.slug)
@@ -130,6 +131,7 @@ RSpec.describe Admin::SubmissionsController, type: :controller do
       expect(response.status).to eq(200) if InboundLionPathRecord.active?
     end
   end
+
   describe 'raising errors' do
     it 'raises RecordInvalid' do
       expect { visit 'admin/submissions/0/edit' }.to raise_error(ActiveRecord::RecordNotFound)

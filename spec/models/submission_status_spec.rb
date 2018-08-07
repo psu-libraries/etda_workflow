@@ -13,6 +13,7 @@ RSpec.describe SubmissionStatus, type: :model do
       expect(described_class.new(submission).current_submission).to eq(submission)
     end
   end
+
   context '#WORKFLOW_STATUS' do
     it 'is an array' do
       expect(described_class::WORKFLOW_STATUS).to be_a_kind_of(Array)

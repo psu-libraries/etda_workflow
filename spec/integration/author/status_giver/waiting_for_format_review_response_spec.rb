@@ -37,6 +37,7 @@ RSpec.describe 'Step 4: Waiting for Format Review Response', js: true do
         expect(page).to have_current_path(author_submission_program_information_path(submission))
       end
     end
+
     context "visiting the 'New Committee' page" do
       it "raises a forbidden access error" do
         visit new_author_submission_committee_members_path(submission)
@@ -44,6 +45,7 @@ RSpec.describe 'Step 4: Waiting for Format Review Response', js: true do
         expect(page).not_to have_current_path(new_author_submission_committee_members_path(submission))
       end
     end
+
     context "visiting the 'Update Committee' page" do
       it "displays the committee_members for editing" do
         visit edit_author_submission_committee_members_path(submission)
@@ -86,6 +88,7 @@ RSpec.describe 'Step 4: Waiting for Format Review Response', js: true do
         expect(page).to have_current_path(author_root_path)
       end
     end
+
     context "when an admin accepts the format review files" do
       it "changes status to 'collecting final submission files'" do
         expect(submission.format_review_approved_at).to be_nil

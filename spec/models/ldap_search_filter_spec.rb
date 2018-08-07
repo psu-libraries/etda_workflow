@@ -32,6 +32,7 @@ RSpec.describe LdapSearchFilter, type: :model do
         expect(filter.to_json).not_to eql(ldap_filter.to_json)
       end
     end
+
     context 'search with three names' do
       let(:ldap_search) { Net::LDAP::Filter.eq('cn', 'lee harvey oswald*') }
       let(:ldap_filter) { Net::LDAP::Filter.join(Net::LDAP::Filter.intersect(ldap_faculty, ldap_staff), ldap_search) }

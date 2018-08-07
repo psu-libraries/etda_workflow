@@ -11,6 +11,7 @@ RSpec.describe ConfidentialHoldUtility, type: :model do
         expect(described_class.new(author.access_id, author.confidential_hold).original_confidential_status).to eq(false)
       end
     end
+
     context "initialization when author.confidential_hold is not nil" do
       it 'returns false' do
         author.confidential_hold = false
@@ -27,6 +28,7 @@ RSpec.describe ConfidentialHoldUtility, type: :model do
         expect(described_class.new('conf123', false).new_confidential_status).to eq(true)
       end
     end
+
     context 'obtains psconfhold from LDAP and sets new_confidential_status to false when LDAP value is false' do
       it 'is false' do
         allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).with('conf123').and_return(true)
@@ -35,6 +37,7 @@ RSpec.describe ConfidentialHoldUtility, type: :model do
       end
     end
   end
+
   describe '#changed?' do
     context 'confidential hold has changed from false or nil to true' do
       it 'returns true' do
@@ -52,6 +55,7 @@ RSpec.describe ConfidentialHoldUtility, type: :model do
         expect(ch.send('confidential_hold_released?')).to be_falsey
       end
     end
+
     context 'confidential hold has changed from true to false' do
       it 'returns true two' do
         allow_any_instance_of(LdapUniversityDirectory).to receive(:authors_confidential_status).with('conf123').and_return(false)
@@ -62,6 +66,7 @@ RSpec.describe ConfidentialHoldUtility, type: :model do
       end
     end
   end
+
   describe 'hold set at' do
     it 'updates the time confidential hold was set when the hold is first set' do
       allow_any_instance_of(LdapUniversityDirectory).to receive(:authors_confidential_status).with('conf123').and_return(true)

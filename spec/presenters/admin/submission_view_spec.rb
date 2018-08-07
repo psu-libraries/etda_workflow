@@ -11,6 +11,7 @@ RSpec.describe Admin::SubmissionView, type: :decorator do
       expect(described_class.new(submission, nil).table_title).to eql(submission.title)
     end
   end
+
   context 'released_for_publication_date' do
     it 'returns date when publication was released' do
       submission.released_for_publication_at = time_yesterday
@@ -18,6 +19,7 @@ RSpec.describe Admin::SubmissionView, type: :decorator do
       expect(formatted_time(decorator.released_for_publication_at)).to eql(formatted_yesterday)
     end
   end
+
   context 'format_review_files_uploaded_date' do
     it 'returns the date when format review files were uploaded' do
       yesterday_date = Date.yesterday
@@ -26,6 +28,7 @@ RSpec.describe Admin::SubmissionView, type: :decorator do
       expect(decorator.format_review_files_uploaded_date).to eql(formatted_date(yesterday_date))
     end
   end
+
   context 'final_submission_files_uploaded_date' do
     it 'returns the date when final submission files were uploaded' do
       submission.final_submission_files_first_uploaded_at = time_yesterday
