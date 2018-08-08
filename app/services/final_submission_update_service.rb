@@ -49,7 +49,7 @@ class FinalSubmissionUpdateService
   def respond_waiting_to_be_released
     if update_actions.record_updated?
       # Editing a submission that is waiting to be released for publication
-      submission.update! final_submission_params
+      submission.update_attributes! final_submission_params
       { msg: 'The submission was successfully updated.', redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
     elsif update_actions.rejected?
       # Move back to Waiting for final submission approval (final submission submitted)
@@ -85,7 +85,7 @@ class FinalSubmissionUpdateService
       # return unless file_verification_results
       submission.update_attributes final_submission_params
       # status_giver.unreleased_for_publication!
-      submission.update(released_for_publication_at: nil, released_metadata_at: nil, status: 'waiting for publication release')
+      submission.update_attributes(released_for_publication_at: nil, released_metadata_at: nil, status: 'waiting for publication release')
       SubmissionReleaseService.new.unpublish(original_final_files) if file_verification_results[:valid]
       solr_result = UpdateSubmissionService.new.solr_delta_update(submission) # update the index after the paper has been unreleased
       result = { msg: final_unrelease_message(solr_result, file_verification_results, submission), redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
