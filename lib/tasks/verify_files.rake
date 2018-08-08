@@ -36,8 +36,7 @@ namespace :final_files do
   end
 
   def find_file(f)
-    search_result = Dir.glob(workflow_search(f.asset_identifier))
-    search_result = Dir.glob(explore_search(f.asset_identifier)) if search_result.empty?
+    search_result = Dir.glob([explore_search(f.asset_identifier), workflow_search(f.asset_identifier)])
     log_it("No file found in explore or workflow directories for - #{f.asset_identifier}, file id: #{f.id}, submission_id: #{f.submission_id}") if search_result.empty?
     return nil if search_result.empty?
     search_result
@@ -45,9 +44,10 @@ namespace :final_files do
 
   def validate_file_path(search_result, f)
     search_result.each do |full_file_path|
+      log_it("Possible match for file found at #{full_file_path}, file id: #{f.id}, submission: #{f.submission_id}")
       return full_file_path if full_file_path.include? f.file_detail_path
     end
-    log_it("Cannot verify correct file has been located:  matching detail file path (#{f.file_detail_path}) not found for file #{f.asset_identifier}, id: #{f.id}, submission: #{f.submission_id} search located: #{search_result}")
+    log_it("Cannot verify correct file has been located:  matching detail file path (#{f.file_detail_path}) not found for file #{f.asset_identifier}, file id: #{f.id}, submission: #{f.submission_id} search located: #{search_result}")
     nil
   end
 
