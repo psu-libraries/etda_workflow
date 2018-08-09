@@ -231,6 +231,7 @@ class Legacy::Importer
                               created_at: legacy_invention_disclosure['created_at'],
                               updated_at: legacy_invention_disclosure['updated_at']).save(validate: false)
     end
+    @count
   end
 
   def interval(val)
