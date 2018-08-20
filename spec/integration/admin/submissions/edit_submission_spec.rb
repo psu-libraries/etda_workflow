@@ -1,6 +1,7 @@
 RSpec.describe "Editing format review and final submissions as an admin", js: true do
   require 'integration/integration_spec_helper'
 
+  
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
   let!(:role) { CommitteeRole.first }
