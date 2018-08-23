@@ -85,6 +85,7 @@ FactoryBot.define do
       format_review_notes "Format review notes"
       released_for_publication_at { Time.zone.yesterday + 2.years }
       released_metadata_at { Time.zone.yesterday }
+      invention_disclosures { [InventionDisclosure.create(id_number: '2018-1234', id: id)] }
       final_submission_traits
     end
 

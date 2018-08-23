@@ -4,7 +4,7 @@
   <p><%= InventionDisclosure.description %></p>
   <%= f.simple_fields_for :invention_disclosures, @submission.invention_disclosure do |disclosure| %>
         <div class="inventions <%= @submission.errors[:invention_disclosure].any? ? 'has-error' : '' %>" >
-            <%= disclosure.input :id_number, label: 'Invention Disclosure Number (Required for Restricted Access)'  %>
+            <%= disclosure.input :id_number, include_blank: true, label: 'Invention Disclosure Number (Required for Restricted Access)'  %>
             <%= disclosure.hidden_field :submission_id, include_blank: false %>
             <%= disclosure.hidden_field :id, label: false %>
         </div>

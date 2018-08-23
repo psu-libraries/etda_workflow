@@ -70,7 +70,7 @@ class Submission < ApplicationRecord
   validates :degree_id, presence: true
   validates :access_level, inclusion: { in: AccessLevel::ACCESS_LEVEL_KEYS }, if: proc { |s| s.status_behavior.beyond_collecting_final_submission_files? && s.author_edit }
 
-  validates :invention_disclosure, invention_disclosure_number: true, if: proc { |s| s.status == 'collecting final submission files' && s.author_edit }
+  validates :invention_disclosure, invention_disclosure_number: true, if: proc { |s| s.status_behavior.beyond_collecting_format_review_files? && !s.status_behavior.released_for_publication? }
 
   validates :year, numericality: { only_integer: true }, if: proc { |s| s.year.present? }
 
@@ -92,8 +92,7 @@ class Submission < ApplicationRecord
   accepts_nested_attributes_for :keywords, allow_destroy: true
   accepts_nested_attributes_for :invention_disclosures,
                                 allow_destroy: true,
-                                limit: 1,
-                                reject_if: :reject_disclosure_number
+                                limit: 1
 
   scope :format_review_is_incomplete, lambda {
     where(status: ['collecting program information', 'collecting committee', 'collecting format review files', 'collecting format review files rejected'])
@@ -139,11 +138,12 @@ class Submission < ApplicationRecord
 
   def reject_disclosure_number(attributes)
     # destroy the invention disclosure id_number if it's no longer needed
-    # submission is edited and submitted with blank invention disclosure id_number
+    # submission is edited and submitted with blank invention disclosure id_number (as an author or admin) or
+    # the access level is not restricted and the public_id is nil (this means submission has never been released for publication)
     exists = attributes['id'].present?
-    empty = attributes['id_number'].blank?
-    attributes[:_destroy] = 1 if exists && empty
-    (!exists && empty)
+    # empty = attributes['id_number'].blank?
+    # attributes['_destroy'] = 'true' if exists && (!restricted? && !published?)
+    !(exists || (!restricted? && !published?))
   end
 
   def using_lionpath?
@@ -165,6 +165,11 @@ class Submission < ApplicationRecord
 
   def ok_to_release?
     released_for_publication_at.present? && released_for_publication_at <= Time.zone.today.end_of_day
+  end
+
+  def published?
+    return true if public_id.present?
+    false
   end
 
   def cleaned_title

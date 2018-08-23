@@ -24,7 +24,7 @@ RSpec.describe InventionDisclosure, type: :model do
       it 'is valid' do
         submission.invention_disclosure.id_number = "#{this_year}-1234"
         expect(submission).to be_valid
-        expect(submission.errors.details[:invention_disclosure]).to eql([])
+        expect(submission.errors[:invention_disclosure]).to eql([])
       end
     end
 
@@ -32,10 +32,10 @@ RSpec.describe InventionDisclosure, type: :model do
       it 'is not valid' do
         submission.access_level = 'restricted'
         submission.valid?
-        expect(submission.errors.details[:invention_disclosure]).to eql([' number is required for Restricted submissions.'])
+        expect(submission.errors[:invention_disclosure]).to eql(['number is required for Restricted submissions.'])
         submission.invention_disclosure.id_number = '       '
         submission.valid?
-        expect(submission.errors.details[:invention_disclosure]).to eql([" number is required for Restricted submissions."])
+        expect(submission.errors[:invention_disclosure]).to eql(["number is required for Restricted submissions."])
       end
     end
 
@@ -44,7 +44,7 @@ RSpec.describe InventionDisclosure, type: :model do
         submission.invention_disclosure.id_number = ''
         submission.update access_level: 'open_access'
         submission.valid?
-        expect(submission.errors.details[:invention_disclosure]).to eql([])
+        expect(submission.errors[:invention_disclosure]).to eql([])
       end
     end
 
@@ -54,7 +54,8 @@ RSpec.describe InventionDisclosure, type: :model do
         submission.access_level = 'open_access'
         submission.invention_disclosure.id_number = '2016-1234'
         submission.valid?
-        expect(submission.errors.details[:invention_disclosure]).to eql([' number should only be entered when Restricted access is selected.  Please remove the Invention Disclosure Number or select restricted access.'])
+        expect(submission.errors[:invention_disclosure]).to eql([])
+        # expect(submission.errors[:invention_disclosure]).to eql([' number should only be entered when Restricted access is selected.  Please remove the Invention Disclosure Number or select restricted access.'])
       end
     end
 
