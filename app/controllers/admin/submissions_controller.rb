@@ -96,7 +96,6 @@ class Admin::SubmissionsController < AdminController
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
-    @submission = Submission.find(params[:id])
     @view = Admin::SubmissionFormView.new(@submission, session)
     render :edit
   rescue SubmissionStatusGiver::AccessForbidden

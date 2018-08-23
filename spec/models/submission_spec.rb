@@ -133,7 +133,7 @@ RSpec.describe Submission, type: :model do
 
     context 'invention disclosure' do
       it 'rejects an empty disclosure number' do
-        expect(submission.reject_disclosure_number(id: nil, submission_id: nil, id_number: nil, created_at: nil, updated_at: nil)).to be_truthy
+        expect(submission.reject_disclosure_number(id: nil, submission_id: nil, id_number: nil, created_at: nil, updated_at: nil)).to be_falsey
       end
     end
 

@@ -13,7 +13,7 @@ class FinalSubmissionUpdateService
   end
 
   def update_record
-    submission.update_attributes! final_submission_params
+    submission.update_attributes final_submission_params
     { msg: "The submission was successfully updated.", redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
   end
 
