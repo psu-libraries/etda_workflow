@@ -21,6 +21,8 @@ module ApplicationHelper
        'active' if controller_name == 'authors' && action_name != 'technical_tips'
     when 'tips'
        'active' if action_name == 'technical_tips'
+    when 'published'
+      'active' if action_name == 'published_submissions_index'
     else
        ''
     end
