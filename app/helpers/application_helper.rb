@@ -16,7 +16,7 @@ module ApplicationHelper
   def author_nav_active?(nav_name)
     case nav_name
     when 'submissions'
-       'active' if controller_name == 'submissions' || controller_name == 'committee_members' || controller_name == 'format_review'
+       'active' if not_published_page || controller_name == 'committee_members' || controller_name == 'submission_format_review'
     when 'author'
        'active' if controller_name == 'authors' && action_name != 'technical_tips'
     when 'tips'
@@ -26,6 +26,10 @@ module ApplicationHelper
     else
        ''
     end
+  end
+
+  def not_published_page
+    controller_name == 'submissions' && action_name != 'published_submissions_index'
   end
 
   def admin_nav_active?(nav_name)
