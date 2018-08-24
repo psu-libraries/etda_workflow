@@ -32,9 +32,12 @@ RSpec.describe ApplicationHelper do
     it 'returns active class for submissions' do
       allow(controller).to receive(:controller_name).and_return('submissions')
       expect(author_nav_active?('submissions')).to eq('active')
+      allow(controller).to receive(:action_name).and_return('published_submissions_index')
+      expect(author_nav_active?('submissions')).to be_nil
+      expect(author_nav_active?('published')).to eq('active')
       allow(controller).to receive(:controller_name).and_return('committee_members')
       expect(author_nav_active?('submissions')).to eq('active')
-      allow(controller).to receive(:controller_name).and_return('format_review')
+      allow(controller).to receive(:controller_name).and_return('submission_format_review')
       expect(author_nav_active?('submissions')).to eq('active')
     end
     it 'returns active class for authors' do
