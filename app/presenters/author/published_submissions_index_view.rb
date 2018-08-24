@@ -20,4 +20,9 @@ class Author::PublishedSubmissionsIndexView
     end
     str + date.strftime('%B %-e, %Y')
   end
+
+  def published_submissions_partial
+    return 'no_published_submissions' unless @submissions.released_for_publication.any?
+    'published_submissions'
+  end
 end

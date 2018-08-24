@@ -39,8 +39,4 @@ class Author::SubmissionsIndexView
       @author.alternate_email_address.nil?
     end
   end
-
-  def published_submissions_link
-    "<a href='/author/published_submissions'>My Published Submissions</a>"
-  end
 end

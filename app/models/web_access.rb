@@ -21,7 +21,7 @@ class WebAccess
 
   def explore_base_url
     this_url = application_url
-    this_url.split('-workflow').join || ''
+    this_url.sub(/workflow/, 'explore')
   end
 
   private
