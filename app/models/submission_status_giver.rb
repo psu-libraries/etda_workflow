@@ -26,7 +26,7 @@ class SubmissionStatusGiver
   end
 
   def can_review_program_information?
-    validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::ReleasedForPublication]
+    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::ReleasedForPublication]
   end
 
   def can_create_or_edit_committee?

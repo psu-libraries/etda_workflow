@@ -4,10 +4,11 @@ class Author::FilesController < FilesController
   private
 
     def current_file
+      # file type
       @current_file = if params[:action] == 'download_final_submission'
-                        FormatReviewFile.find(params[:id])
-                      else
                         FinalSubmissionFile.find(params[:id])
+                      else
+                        FormatReviewFile.find(params[:id])
                       end
     end
 

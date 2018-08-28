@@ -3,6 +3,7 @@ if defined?(SolrWrapper)
       version: '5.5.5',
       instance_dir: 'solr_instance',
       download_dir: 'tmp',
+      port: '8983',
       extra_lib_dir: File.join(File.expand_path("../..", File.dirname(__FILE__)), "solr", "lib")}
   require 'solr_wrapper/rake_task'
   require "net/http"
