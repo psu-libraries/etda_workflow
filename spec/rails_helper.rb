@@ -66,7 +66,7 @@ RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false   # was true 8/27/18
 
   Shoulda::Matchers.configure do |cfg|
     cfg.integrate do |with|

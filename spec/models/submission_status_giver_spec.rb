@@ -399,7 +399,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_review_program_information? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_review_program_information? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 

@@ -6,15 +6,6 @@ GIT
     etda_utilities (0.6.5)
 
 GIT
-  remote: https://github.com/cbeer/solr_wrapper.git
-  revision: 2c5d3eeae053aae758fc419f29e300f8ce270a5f
-  ref: 2c5d3ee
-  specs:
-    solr_wrapper (0.3.0)
-      ruby-progressbar
-      rubyzip
-
-GIT
   remote: https://github.com/stefanpenner/country_select.git
   revision: c3783260edf7a7a5954078a1b5f7e7f24bc20445
   branch: master
@@ -85,7 +76,6 @@ GEM
     bindex (0.5.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
-    brakeman (4.1.1)
     builder (3.2.3)
     bundler-audit (0.6.0)
       bundler (~> 1.2)
@@ -316,6 +306,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    retriable (3.1.2)
     rsolr (2.2.1)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
@@ -382,6 +373,11 @@ GEM
       rack-protection (= 2.0.2)
       tilt (~> 2.0)
     sixarm_ruby_unaccent (1.2.0)
+    solr_wrapper (2.0.0)
+      faraday
+      retriable
+      ruby-progressbar
+      rubyzip
     sort_alphabetical (1.1.0)
       unicode_utils (>= 1.2.2)
     spring (2.0.2)
@@ -444,7 +440,6 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   binding_of_caller
-  brakeman
   bundler-audit
   byebug
   cancancan
@@ -499,7 +494,7 @@ DEPENDENCIES
   simple_form
   simplecov
   sinatra (~> 2.0.2)
-  solr_wrapper!
+  solr_wrapper
   spring
   spring-watcher-listen (~> 2.0.0)
   sprockets (~> 3.7.2)

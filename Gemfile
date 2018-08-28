@@ -51,8 +51,6 @@ gem 'font-awesome-rails'
 
 gem 'devise'
 
-gem 'brakeman'
-
 gem 'sprockets', '~> 3.7.2'
 
 if ENV['CI']
@@ -126,7 +124,7 @@ group :development, :test do
   gem 'simplecov', require: false
 
   # manages solr 5 for development (using latest version from master as of 11/12/2015)
-  gem 'solr_wrapper', git: 'https://github.com/cbeer/solr_wrapper.git', ref: '2c5d3ee'
+  gem 'solr_wrapper'   
 
 end
 
