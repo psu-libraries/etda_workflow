@@ -40,10 +40,10 @@ RSpec.describe CommitteeMember, type: :model do
   # end
   #
 
-  context 'role name' do
+  context 'it has a role name' do
     it 'returns the role name' do
       committee_member = described_class.new(committee_role_id: CommitteeRole.first.id)
-      expect(committee_member.role).to eq(CommitteeRole.first.name)
+      expect(committee_member.committee_role.name).to eq(CommitteeRole.first.name)
     end
   end
 

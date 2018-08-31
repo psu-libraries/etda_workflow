@@ -10,7 +10,7 @@
   <%  @submission.committee_members.each do |cm| %>
       <tr class="<%= cycle('odd', '') %>">
         <td><%= cm.name %></td>
-        <td><%= cm.role %></td>
+        <td><%= cm.committee_role.name %></td>
         <td><%= cm.email %></td>
       </tr>
   <% end %>

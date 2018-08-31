@@ -11,7 +11,7 @@
                 <%= cmf.input :committee_role_id, as: :hidden, readonly: true, input_html: { value: cmf.object.committee_role_id} %>
                 <%= cmf.input :is_required, as: :hidden, readonly: true, input_html: {value: true} %>
             <div class="col-sm-4">
-                <%= cmf.input :committee_role,  readonly: true, input_html: { value: cmf.object.role }, label: "Role", required: true %>
+                <%= cmf.input :committee_role,  readonly: true, input_html: { value: cmf.object.committee_role.name }, label: "Role", required: true %>
             </div>
             <div class="col-sm-4">
                 <%= cmf.input :name, readonly: true, input_html: { value: cmf.object.name}, label: "Name" %>

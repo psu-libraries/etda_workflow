@@ -12,7 +12,7 @@ node(:data) do
       submission.committee_members.map do |cm|
       cm_email = cm.email || ' '
       cm_name = cm.name || ' '
-      cm_role = cm.role || ' '
+      cm_role = cm.committee_role.name || ' '
       "<ul class='committee-list'><li class='role'>#{cm_role.delete(',')}</li><li class='name'>#{cm_name.delete(',')}</li><li class='email'>#{cm_email.delete(',')}</li></ul>".html_safe
       end
     ]
