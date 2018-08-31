@@ -51,7 +51,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
       expect(page.find(:css, 'table.table tbody').first('tr.odd')).to be_truthy
       expect(page).to have_content(submission.committee_members[0].name)
       expect(page).to have_content(submission.committee_members[1].name)
-      expect(page).to have_content(submission.committee_members[0].role)
+      expect(page).to have_content(submission.committee_members[0].committee_role.name)
       expect(page).to have_link('Return to dashboard')
     end
   end
