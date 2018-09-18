@@ -22,6 +22,7 @@ class CommitteeMember < ApplicationRecord
   def self.advisor_name(submission)
     advisors_array = CommitteeMember.advisors(submission)
     return '' if advisors_array.empty?
+
     advisors_array.first.name
   end
 
@@ -44,6 +45,7 @@ class CommitteeMember < ApplicationRecord
 
   def validate_email
     return true if is_required && (name.blank? && email.blank?)
+
     unless email.nil?
       return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(com|edu|org|net|gov|mil|biz|info))\z/i)
     end

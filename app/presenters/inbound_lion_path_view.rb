@@ -41,6 +41,7 @@ class InboundLionPathView
 
   def degree_code
     return '_PHD' if model.degree_type.id == DegreeType.default.id
+
     '_MS'
   end
 
@@ -48,6 +49,7 @@ class InboundLionPathView
 
     def format_date(this_date)
       return 'N/A' if this_date.nil?
+
       this_date.strftime(LionPath::LpFormats::DEFENSE_DATE_FORMAT)
     end
 end

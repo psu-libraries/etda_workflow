@@ -137,15 +137,18 @@ class Admin::SubmissionsController < AdminController
 
   def print_signatory_page
     return if params[:id].nil?
+
     @submission = Submission.find(params[:id])
     author = Author.find(@submission.author_id)
     @view = Admin::SignatoryPageView.new(author)
     return if author.nil?
+
     render 'admin/submissions/print/signatory_page', target: :blank, locals: { submission: @submission, author: author }
   end
 
   def print_signatory_page_update
     return if params[:id].nil?
+
     @submission = Submission.find(params[:id])
     @submission.update_attribute :is_printed, 1 unless @submission.is_printed?
     redirect_to admin_submissions_index_path(@submission.degree_type.slug, 'format_review_submitted')

@@ -14,9 +14,6 @@
 Capybara/CurrentPathExpectation:
   Exclude:
 
-# Offense count: 17
-FactoryBot/DynamicAttributeDefinedStatically:
-  Exclude:
 
 # Offense count: 1
 # Cop supports --auto-correct.

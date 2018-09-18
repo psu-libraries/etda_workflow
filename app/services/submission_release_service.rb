@@ -15,11 +15,13 @@ class SubmissionReleaseService
       original_final_files = final_files_for_submission(submission)
       file_verification_results = file_verification(original_final_files)
       next unless file_verification_results[:valid]
+
       publish_a_submission(submission, date_to_release, original_final_files)
     end
     # wait until all submissions and files have been released and then run delta-import to update solr
     bulk_solr_result = SolrDataImportService.new.delta_import
     return { error: true, msg: "Error occurred during delta-import for solr bulk update" } if bulk_solr_result[:error]
+
     final_results(submission_ids.count)
   end
 
@@ -41,6 +43,7 @@ class SubmissionReleaseService
     original_file_locations.each do |fid, original_file_location|
       msg = etda_file_util.move_a_file(fid, original_file_location)
       next if msg.blank?
+
       record_error(msg)
       return false
     end
@@ -51,6 +54,7 @@ class SubmissionReleaseService
     file_error_list = []
     original_files_array.each do |id, original_file|
       next if File.exist? original_file
+
       err = "File Not Found for Final Submission File #{id}, #{original_file} "
       record_error(err)
       file_error_list << err
@@ -67,11 +71,13 @@ class SubmissionReleaseService
       new_access_level = submission.publication_release_access_level
       new_public_id = submission.public_id.presence || PublicIdMinter.new(submission).id
       return unless public_id_ok(new_public_id)
+
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_release_for_publication?
       new_access_level == 'restricted' ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
       submission.update_attributes(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
       return unless release_files(original_final_files)
+
       update_service.send_email(submission)
       @released_submissions += 1
       OutboundLionPathRecord.new(submission: submission).report_status_change
@@ -90,6 +96,7 @@ class SubmissionReleaseService
 
     def public_id_ok(new_public_id)
       return true if new_public_id.present?
+
       record_error("Public ID error" + I18n.t('released_message.submission_error', id: s.id, last_name: s.author.last_name, first_name: s.author.first_name).to_s)
       false
     end

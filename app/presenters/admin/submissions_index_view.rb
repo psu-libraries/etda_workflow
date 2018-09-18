@@ -33,6 +33,7 @@ class Admin::SubmissionsIndexView
     return 'approved-final-submission-submissions-index' if final_submission_approved?
     return 'final-restricted-institution-index' if final_restricted_institution?
     return 'final-withheld-index' if final_withheld?
+
     'released-for-publication-submissions-index'
   end
 
@@ -54,6 +55,7 @@ class Admin::SubmissionsIndexView
 
   def additional_selections_path
     return unless final_restricted_institution? || final_withheld?
+
     'admin/submissions/table_selections/final_submission_restricted_or_witheld'
   end
 
@@ -67,6 +69,7 @@ class Admin::SubmissionsIndexView
 
   def render_delete_button?
     return true unless final_restricted_institution? || final_withheld? || released_for_publication?
+
     false
   end
 
@@ -76,6 +79,7 @@ class Admin::SubmissionsIndexView
 
   def render_select_visible_buttons?
     return true unless released_for_publication?
+
     false
   end
 
@@ -130,6 +134,7 @@ class Admin::SubmissionsIndexView
       return 'final_submission_is_approved' if final_submission_approved?
       return 'final_is_restricted_institution' if final_restricted_institution?
       return 'final_is_withheld' if final_withheld?
+
       'released_for_publication'
     end
 

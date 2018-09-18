@@ -7,6 +7,7 @@ class LionPath::AcademicPlan
 
   def selected
     return {} unless @index >= 0
+
     @inbound_record[@index]
   end
 
@@ -52,6 +53,7 @@ class LionPath::AcademicPlan
 
   def committee_members_refresh
     return true unless committee_has_changed?(committee)
+
     refresh_committee = {}
     committee.each_with_index do |cm, index|
       refresh_committee[index.to_s] = { committee_role_id: InboundLionPathRecord.etd_role(cm[:role_desc]), is_required: true, name: full_name(cm), email: cm[LionPath::LpKeys::EMAIL] }
@@ -84,6 +86,7 @@ class LionPath::AcademicPlan
 
     def selected_index(code)
       return -1 if code == ''
+
       @inbound_record.each_with_index do |ap, index|
         return index if ap[LionPath::LpKeys::DEGREE_CODE] == code
       end

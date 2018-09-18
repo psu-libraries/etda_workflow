@@ -17,6 +17,7 @@ setup_report_tables = function() {
 
     const report_common_options = {
         ajax: table.attr('data-ajax-url'),
+        deferRender: true,
         processing: true,
         pageLength: 25,
         stateSave: true,

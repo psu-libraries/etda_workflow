@@ -25,6 +25,7 @@ class ExportCsv
 
   def fields(submission)
     return nil if submission.nil?
+
     s = submission
 
     case query_type

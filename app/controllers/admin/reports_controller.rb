@@ -39,6 +39,7 @@ class Admin::ReportsController < AdminController
 
   def final_submission_approved
     return if params[:submission_ids].nil?
+
     ids = params[:submission_ids].split(',').map(&:to_i)
     @csv_report_export = ExportCsv.new('final_submission_approved', Submission.where(id: ids))
     respond_to do |format|

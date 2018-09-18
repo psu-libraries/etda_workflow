@@ -23,6 +23,7 @@ class Author::PublishedSubmissionsIndexView
 
   def published_submissions_partial
     return 'no_published_submissions' unless @submissions.released_for_publication.any?
+
     'published_submissions'
   end
 end

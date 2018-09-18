@@ -24,7 +24,7 @@ RSpec.describe Degree, type: :model do
   it { is_expected.to belong_to :degree_type }
 
   describe described_class do
-    subject { is_expected.to validate_uniqueness_of :name }
+    subject { expect(subject).to validate_uniqueness_of :name }
 
     let(:degree) { described_class.new(degree_type_id: DegreeType.default, name: 'MyDegree') }
   end

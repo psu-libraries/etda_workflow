@@ -54,6 +54,7 @@ class SolrDataImportService
 
   def solr_url
     return 'http://localhost:8983/solr' if Rails.env.development?
+
     url = Rails.application.secrets.webaccess[:vservice].strip
     url.sub! 'workflow', 'explore'
     url.sub! 'http:', 'https:'
@@ -66,6 +67,7 @@ class SolrDataImportService
 
   def current_core
     return 'development' if Rails.env.development?
+
     "#{current_partner.id}_core"
   end
 

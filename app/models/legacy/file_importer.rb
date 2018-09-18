@@ -51,9 +51,9 @@ class Legacy::FileImporter
       end
       @display_logger.info "Total of #{@files_copied} files were copied. See logs for more information"
       @import_logger.info "Original File Count: #{@original_count} : Final file Count #{@files_copied}"
-      rescue StandardError
+    rescue StandardError
         @import_logger.log('Quitting: error occurred')
-      end
+    end
   end
 
   def copy_the_file(source_path, destination_path, file_name)
@@ -77,6 +77,7 @@ class Legacy::FileImporter
   def destination_files_exist?(file_type)
     path_builder = EtdaFilePaths.new
     return file_count(path_builder.workflow_upload_format_review_path).positive? if file_type == 'format_review_files'
+
     file_count(path_builder.workflow_upload_final_files_path).positive? || file_count(path_builder.explore_base_path).positive?
     # || file_count(path_builder.explore_base_path).positive?
   end

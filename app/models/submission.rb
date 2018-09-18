@@ -169,11 +169,13 @@ class Submission < ApplicationRecord
 
   def published?
     return true if public_id.present?
+
     false
   end
 
   def cleaned_title
     return '' if title.blank?
+
     clean_title = title.split(/\r\n/).join.strip || ''
     clean_title = clean_title.strip_control_and_extended_characters
     clean_title
@@ -181,6 +183,7 @@ class Submission < ApplicationRecord
 
   def defended_at_date
     return defended_at unless using_lionpath?
+
     academic_plan.defense_date
   end
 
@@ -243,6 +246,7 @@ class Submission < ApplicationRecord
 
   def publication_release_access_level
     return 'open_access' if status_behavior.released_for_publication? # full release of submission that was held for 2 years
+
     access_level # keep access_level for restricted & PSU-only starting hold or open_access
   end
 
@@ -255,6 +259,7 @@ class Submission < ApplicationRecord
     #   released_fo_publication_at = date_to_release
     return date_to_release if open_access?
     return date_to_release if status_behavior.released_for_publication?
+
     two_years_later = date_to_release.to_date + 2.years
     two_years_later
   end

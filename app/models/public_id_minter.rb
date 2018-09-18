@@ -20,6 +20,7 @@ class PublicIdMinter
     while pos < @id_segment.length
       tmp_id += @id_segment[pos]
       return tmp_id if Submission.find_by(public_id: tmp_id).nil?
+
       pos += 1
     end
     ''
@@ -28,13 +29,16 @@ class PublicIdMinter
   def access_id_info(author)
     return nil if author.nil?
     return "-#{author.id}" if author.access_id.empty?
+
     author.access_id
   end
 
   def author_id_info(author)
     return nil if author.nil?
+
     str = "-#{author.id}"
     return '' if str == '-'
+
     str
   end
 end

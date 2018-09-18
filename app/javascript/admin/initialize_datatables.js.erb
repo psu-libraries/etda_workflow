@@ -21,14 +21,16 @@ setup_datatables = function() {
 
     const common_options = {
         ajax: table.attr('data-ajax-url'),
+        deferRender: true,
         processing: true,
         lengthMenu: [[25, 50, 100, 200, 500, -1], [25, 50, 100, 200, 500, "All"]],
         pageLength: 25,
         stateSave: true,
         stateDuration: 60 * 60 * 24,
+        paginate: true,
         language: {
             loadingRecords: "&nbsp;",
-            processing: "<div class='spinner'><div class='spinner-info'>Loading Data...</div></div>",
+            processing: "<div class='spinner'><div class='spinner-info'>Loading Data...</div></div>"
         },
         fnDrawCallback() {
             const pagination = $('.dataTables_paginate');

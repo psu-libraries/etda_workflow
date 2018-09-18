@@ -61,11 +61,13 @@ class LionPath::LpEtdPlan
 
     def get_id(this_obj)
       return nil unless this_obj
+
       this_obj.id
     end
 
     def get_name(this_obj)
       return nil unless this_obj
+
       this_obj.name
     end
 end

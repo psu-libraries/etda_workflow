@@ -11,6 +11,7 @@ class FileUtilityHelper
     return false unless File.exist? new_location
     return false unless original_location != new_location
     return false if File.exist? original_location
+
     true
   end
 end

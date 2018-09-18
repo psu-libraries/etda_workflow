@@ -22,6 +22,7 @@ class ConfidentialHoldUtility
     else
       author = Author.find_by(access_id: @this_access_id)
       return false if author.nil?
+
       current_status = author.confidential_hold || nil
     end
     current_status
@@ -43,6 +44,7 @@ class ConfidentialHoldUtility
   def hold_set_at(current_hold_time, confidential_hold_value_now)
     return nil unless confidential_hold_value_now
     return Time.zone.now if confidential_hold_value_now && current_hold_time.nil?
+
     current_hold_time
   end
 
@@ -60,11 +62,13 @@ class ConfidentialHoldUtility
 
   def changed_to_confidential?
     return true if currently_confidential? && !was_confidential?
+
     false
   end
 
   def confidential_hold_released?
     return true if !currently_confidential? && was_confidential?
+
     false
   end
 

@@ -41,10 +41,10 @@ class Legacy::Importer
                    opt_out_email: true,
                    opt_out_default: true,
                    psu_idn: legacy_author['psu_idn']).save(validate: false)
-        rescue StandardError => e
+      rescue StandardError => e
         msg = "Error on author record #{legacy_author['id']}"
         @import_logger.info msg
-        end
+      end
     end
     @count
   end
@@ -240,6 +240,7 @@ class Legacy::Importer
 
   def publication_release(status)
     return true if status.include? 'released for publication'
+
     false
   end
 

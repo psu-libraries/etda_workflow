@@ -28,6 +28,7 @@ end
 
 def graduate_degree_type
   return '' if submission.degree_type.nil?
+
   submission.degree_type.name
 end
 
@@ -49,6 +50,7 @@ end
 
 def previous_level_label
   return '' if previous_level.blank?
+
   AccessLevel.new(previous_level).attributes
 end
 

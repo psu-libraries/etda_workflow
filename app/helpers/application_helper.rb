@@ -4,6 +4,7 @@ module ApplicationHelper
   # Return the set of css classes that should be associated with this page
   def page_classes
     return '' if controller_name.nil? || action_name.nil?
+
     classes = []
     classes << controller_name.parameterize
     classes << controller_name.singularize.parameterize
@@ -34,17 +35,20 @@ module ApplicationHelper
 
   def admin_nav_active?(nav_name)
     return 'active' if controller_name == nav_name
+
     ''
   end
 
   def invention_disclosure_number(submission)
     return '' if submission.invention_disclosures.blank?
+
     submission.invention_disclosures.first.id_number
   end
 
   def even_odd(row_count)
     @row_count = row_count + 1
     return 'odd' unless (row_count - 1).even?
+
     ''
   end
 
@@ -62,12 +66,14 @@ module ApplicationHelper
 
   def current_version_number
     return '' if VERSION_NUMBER.empty?
+
     current_number = VERSION_NUMBER
     "Version: #{current_number.strip}"
   end
 
   def confidential_tag_helper(author)
     return '' unless author.confidential_hold?
+
     " <span class='confidential-alert xxs' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='confidential hold'><span class='fa fa-warning'></span></span><span class='sr-only'>#{author.first_name} #{author.last_name} has a confidential hold</span>"
   end
 end

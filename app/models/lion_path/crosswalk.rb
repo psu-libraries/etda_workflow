@@ -4,6 +4,7 @@ class LionPath::Crosswalk
 
   def self.convert_to_datetime(date_in)
     return '' if date_in.blank?
+
     date_time = date_in
     Date.strptime(date_time, LionPath::LpFormats::DEFENSE_DATE_FORMAT).to_time
   rescue ArgumentError
@@ -25,6 +26,7 @@ class LionPath::Crosswalk
 
   def self.etd_to_lp_access(access_level)
     return 'OPEN' if access_level.blank?
+
     LP_ACCESS[access_level.to_sym] || 'OPEN'
   end
 
@@ -32,6 +34,7 @@ class LionPath::Crosswalk
     degree_type = degree_code_type(degree_code)
     etd_degree = Degree.where(name: degree_type)
     return nil if etd_degree.nil?
+
     etd_degree.first
   end
 
@@ -40,6 +43,7 @@ class LionPath::Crosswalk
     def degree_code_type(degree_code)
       return '' if degree_code.nil?
       return('M ED') if degree_code.last(5) == '_M_ED'
+
       degree_code.split('_').last
     end
 end

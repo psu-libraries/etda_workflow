@@ -49,11 +49,13 @@ class LdapResult
   def map_value(ldap_value, new_key)
     method = LdapResultsMap::LDAP_RESULTS_MAP[new_key]
     return ldap_value if method.blank?
+
     method(method[:method]).call(ldap_value, method[:options])
   end
 
   def default(new_key)
     return '' if defaults.nil?
+
     defaults[new_key]
   end
 
@@ -122,6 +124,7 @@ class LdapResult
 
   def user_in_admin_group?(ldap_value)
     return true if ldap_value.include?("cn=umg/psu.sas.etda-#{current_partner.id}-admins,dc=psu,dc=edu") || ldap_value.include?("cn=umg/psu.dsrd.etda_#{current_partner.id}_admin_users,dc=psu,dc=edu")
+
     false
   end
 end

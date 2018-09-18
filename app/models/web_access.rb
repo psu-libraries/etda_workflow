@@ -20,8 +20,11 @@ class WebAccess
   end
 
   def explore_base_url
+    # replace workflow with explore for qa, stage, and dev
+    # remove workflow completely for prod instance
     this_url = application_url
-    this_url.sub(/workflow/, 'explore')
+    replace_wf = explore_url_string(this_url)
+    this_url.sub(/-workflow/, replace_wf)
   end
 
   private
@@ -34,5 +37,11 @@ class WebAccess
     url = Rails.application.secrets.webaccess[:vservice]
     uri = URI.parse(url)
     uri.host
+  end
+
+  def explore_url_string(this_url)
+    str = ''
+    str = '-explore' if ['-stage', '-qa', '-dev'].any? { |not_prod| this_url.include? not_prod }
+    str
   end
 end

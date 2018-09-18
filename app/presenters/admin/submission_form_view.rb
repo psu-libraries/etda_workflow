@@ -25,6 +25,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'Edit Released Submission' if status_behavior.released_for_publication? && open_access?
     return 'Edit Restricted Theses' if status_behavior.released_for_publication_metadata_only? && restricted?
     return 'Edit Final Submission is Restricted to Penn State' if status_behavior.released_for_publication? && access_level == 'restricted_to_institution'
+
     'Edit Incomplete Format Review'
   end
 
@@ -35,6 +36,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'restricted_actions' if status_behavior.released_for_publication_metadata_only?
     return 'restricted_institution_actions' if status_behavior.released_for_publication? && !(access_level.open_access? || access_level.restricted?)
     return 'to_be_released_actions' if status_behavior.waiting_for_publication_release?
+
     'standard_actions'
   end
 
@@ -43,6 +45,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     return "/admin/submissions/#{id}/final_submission_response" if status_behavior.waiting_for_final_submission_response?
     return "/admin/submissions/#{id}/update_waiting_to_be_released" if status_behavior.waiting_for_publication_release?
     return "/admin/submissions/#{id}/update_released" if status_behavior.released_for_publication?
+
     "/admin/submissions/#{id}"
   end
 
@@ -63,11 +66,13 @@ class Admin::SubmissionFormView < SimpleDelegator
 
   def committee_form
     return 'standard_committee_form' unless using_lionpath?
+
     'lionpath_committee_form'
   end
 
   def program_information_partial
     return 'standard_program_information' unless using_lionpath?
+
     'lionpath_program_information'
   end
 
@@ -76,6 +81,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     # hidden value is necessary when editing
     # standard datepicker displays when lion path is not active
     return '/admin/submissions/edit/standard_defended_at_date' unless using_lionpath?
+
     '/admin/submissions/edit/defended_at_date_hidden'
   end
 
@@ -85,6 +91,7 @@ class Admin::SubmissionFormView < SimpleDelegator
 
   def release_date_history
     return '' unless status_behavior.released_for_publication?
+
     case access_level
     when 'restricted'
         "<b>Metadata released:</b> #{date_information(released_metadata_at)}<br /><b>Scheduled for full release: </b> #{date_information(released_for_publication_at)}".html_safe
@@ -99,26 +106,31 @@ class Admin::SubmissionFormView < SimpleDelegator
 
   def date_information(date_in)
     return 'Unknown' if date_in.blank?
+
     date_in.strftime('%Y-%m-%d')
   end
 
   def withdraw_message
     return '' unless status_behavior.released_for_publication?
+
     '<div class="withdraw-msg">In order to update a published submission, it must be withdrawn from publication. After withdrawing, the submission can be edited and re-published.   The withdraw button is at the bottom of the page.</div>'.html_safe
   end
 
   def form_section_heading(section_heading)
     return "class='form-section-heading collapsed' aria-expanded='false'".html_safe if collapse_content?(section_heading)
+
     "class='form-section-heading collapse in'".html_safe
   end
 
   def chevron_class(section_heading)
     return '' if collapse_content?(section_heading)
+
     'fa-rotate-90'
   end
 
   def form_section_body(section_heading)
     return "class='form-section-body collapse' aria-expanded='false'".html_safe if collapse_content?(section_heading)
+
     "class='form-section-body collapse in'".html_safe
   end
 
@@ -127,6 +139,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     def collapse_content?(section_heading)
       return false if status == 'waiting for format review response' && section_heading == 'format-review-files'
       return true if status_behavior.beyond_collecting_format_review_files? && (section_heading == 'program-information' || section_heading == 'committee' || section_heading == 'format-review-files')
+
       false
     end
 end

@@ -5,11 +5,13 @@ class Author::ProgramInformationView
 
   def new_program_information_partial
     return 'standard_program_information' unless InboundLionPathRecord.active?
+
     'lionpath_program_information'
   end
 
   def edit_program_information_partial
     return 'standard_program_information' unless @record.using_lionpath?
+
     'lionpath_program_information'
   end
 end

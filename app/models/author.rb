@@ -59,6 +59,7 @@ class Author < ApplicationRecord
   def full_name
     return access_id if first_name.nil? || last_name.nil?
     return first_name + ' ' + last_name if middle_name.blank?
+
     first_name + ' ' + middle_name + ' ' + last_name
   end
 
@@ -78,9 +79,11 @@ class Author < ApplicationRecord
 
   def populate_lion_path_record(psu_idn, login_id)
     return unless InboundLionPathRecord.active?
+
     # refresh graduate author record each time login occurs.
     lp_record_data = InboundLionPathRecord.new.retrieve_lion_path_record(psu_idn, login_id)
     return nil unless InboundLionPathRecord.records_match?(psu_idn, login_id, lp_record_data)
+
     #  Be sure there is data before continuing???
     if inbound_lion_path_record.present?
       inbound_lion_path_record.update_attribute(:current_data, lp_record_data)
@@ -117,6 +120,7 @@ class Author < ApplicationRecord
 
   def can_edit?
     raise NotAuthorizedToEdit unless access_id.downcase.strip == Author.current.access_id.downcase.strip
+
     true
   end
 
@@ -131,6 +135,7 @@ class Author < ApplicationRecord
   def academic_plan?
     return false if inbound_lion_path_record.nil?
     return false if inbound_lion_path_record.current_data.empty?
+
     true
   end
 
@@ -166,6 +171,7 @@ class Author < ApplicationRecord
     def update_confidential_status(login_id)
       confidential_hold_status = ConfidentialHoldUtility.new(login_id, confidential_hold)
       return unless confidential_hold_status.changed?
+
       # send emails and save the new status
       confidential_hold_status.send_confidential_status_notifications(self)
       self.confidential_hold = confidential_hold_status.new_confidential_status

@@ -26,6 +26,7 @@ module Devise
       def valid?
         this_remote_user = remote_user(request.headers)
         return true unless this_remote_user.nil?
+
         false
       end
 
@@ -49,6 +50,7 @@ module Devise
       def determine_login_type(uri)
         this_uri = uri.split('/')
         return 'Author' unless this_uri.length > 1
+
         this_uri = uri.split('/')[1].camelcase
         this_uri = 'Author' unless ['Author', 'Admin'].include? this_uri
         this_uri

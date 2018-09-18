@@ -15,23 +15,27 @@ class OutboundLionPathRecord < ApplicationRecord
 
   def report_status_change
     return unless OutboundLionPathRecord.active?
+
     OutboundLionPathRecord.new(base_attributes.merge(status_data: status_record_data)).to_lionpath
   end
 
   def report_title_change
     return unless OutboundLionPathRecord.active?
     return if no_change_occurred(submission.title, original_title)
+
     OutboundLionPathRecord.new(base_attributes.merge(status_data: attribute_change_data)).to_lionpath
   end
 
   def report_email_change
     return if !OutboundLionPathRecord.active? || submission.nil?
     return if no_change_occurred(submission.author.alternate_email_address, original_alternate_email)
+
     OutboundLionPathRecord.new(base_attributes.merge(status_data: attribute_change_data)).to_lionpath
   end
 
   def report_deleted_submission
     return unless OutboundLionPathRecord.active?
+
     OutboundLionPathRecord.new(base_attributes.merge(status_data: status_record_delete_data)).to_lionpath
   end
 
@@ -53,6 +57,7 @@ class OutboundLionPathRecord < ApplicationRecord
 
   def no_change_occurred(attr1, attr2)
     return true if attr1.nil? || attr2.nil?
+
     attr1.strip == attr2.strip
   end
 
@@ -74,6 +79,7 @@ class OutboundLionPathRecord < ApplicationRecord
 
   def degree
     return 'unknown' unless submission.using_lionpath?
+
     submission.author.inbound_lion_path_record.lion_path_degree_code || 'unknown'
   end
 
@@ -83,27 +89,32 @@ class OutboundLionPathRecord < ApplicationRecord
 
   def embargo_start
     return 'N/A' if submission.open_access?
+
     format_date(submission.released_metadata_at)
   end
 
   def embargo_end
     return 'N/A' if submission.open_access?
+
     format_date(submission.released_for_publication_at)
   end
 
   def degree_code
     return 'unknown' if submission.degree_type.nil?
     return '_PHD' if submission.degree_type.id == DegreeType.default.id
+
     '_MS'
   end
 
   def format_date(this_date)
     return 'N/A' if this_date.nil?
+
     this_date.strftime('%m-%d-%Y')
   end
 
   def send_to_lionpath?
     return true if current_partner.graduate? && config.lionpath_outbound
+
     false
   end
 end

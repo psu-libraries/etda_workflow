@@ -4,6 +4,7 @@ class AdminAbility
   def initialize(admin)
     # super(admin)
     return unless admin.present? && (admin.administrator? || admin.site_administrator?)
+
     can [:read, :edit, :view, :administer], :all
   end
 end

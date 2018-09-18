@@ -10,6 +10,7 @@ module SubmissionStates
 
     def status_date(submission)
       return Time.zone.now.strftime("%Y-%m-%d %H:%M:%S") if submission.nil?
+
       submission.author.updated_at
     end
   end

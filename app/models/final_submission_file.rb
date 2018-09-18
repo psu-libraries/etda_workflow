@@ -48,6 +48,7 @@ class FinalSubmissionFile < ApplicationRecord
     def move_file
       # for released file, move to the correct location after upload
       return unless submission.status_behavior.released_for_publication?
+
       path_builder = EtdaFilePaths.new
       original_file_location = WORKFLOW_BASE_PATH + 'final_submission_files/' + path_builder.detailed_file_path(id) + asset_identifier
       path_builder.move_a_file(id, original_file_location)
@@ -55,6 +56,7 @@ class FinalSubmissionFile < ApplicationRecord
 
     def delete_file
       return unless submission.status_behavior.released_for_publication?
+
       FileUtils.rm current_location
     end
 end

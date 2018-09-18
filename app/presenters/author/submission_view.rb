@@ -58,6 +58,7 @@ class Author::SubmissionView < SimpleDelegator
 
   def step_two_name
     return 'Provide Committee ' unless using_lionpath?
+
     'Verify Committee'
   end
 
@@ -185,25 +186,30 @@ class Author::SubmissionView < SimpleDelegator
 
   def step_seven_status
     return '' unless status_behavior.waiting_for_publication_release? || status_behavior.released_for_publication?
+
     "<div class='step complete final'><strong>#{degree_type.name} Submission is Complete</strong></div>".html_safe
   end
 
   def step_seven_arrow
     return '' unless status_behavior.waiting_for_publication_release? || status_behavior.released_for_publication?
+
     '<div class="direction glyphicon glyphicon-arrow-down"></div>'.html_safe
   end
 
   def display_notes?(step_number)
     return display_format_review_notes?(step_number) if [3, 4].include? step_number
     return display_final_submission_notes?(step_number) if [5, 6].include? step_number
+
     false
   end
 
   def notes_link(step_number)
     if step_number < 5
       return Rails.application.routes.url_helpers.author_submission_format_review_path(id, anchor: "format-review-notes") unless status_behavior.collecting_format_review_files?
+
       Rails.application.routes.url_helpers.author_submission_edit_format_review_path(id, anchor: "format-review-notes") else
                                                                                                                                  return Rails.application.routes.url_helpers.author_submission_final_submission_path(id, anchor: "final-submission-notes") unless status_behavior.collecting_final_submission_files?
+
                                                                                                                                  Rails.application.routes.url_helpers.author_submission_edit_final_submission_path(id, anchor: "final-submission-notes")
     end
   end
@@ -214,6 +220,7 @@ class Author::SubmissionView < SimpleDelegator
       return false if format_review_notes.blank?
       return true if step_number == 3 && status_behavior.collecting_format_review_files_rejected?
       return true if step_number == 4 && !format_review_approved_at.nil?
+
       false
     end
 
@@ -221,16 +228,19 @@ class Author::SubmissionView < SimpleDelegator
       return false if final_submission_notes.blank?
       return true if step_number == 5 && status_behavior.collecting_final_submission_files_rejected?
       return true if step_number == 6 && !final_submission_approved_at.nil?
+
       false
     end
 
     def formatted_semester
       return semester unless semester.nil?
+
       '[semester not provided]'
     end
 
     def formatted_year
       return '[year not provided]' if year.nil?
+
       year.to_s
     end
 

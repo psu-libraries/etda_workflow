@@ -138,6 +138,7 @@ class Author::SubmissionsController < AuthorController
 
   def refresh
     return unless @submission.status_behavior.beyond_collecting_format_review_files?
+
     if @submission.author.inbound_lion_path_record.refresh_academic_plan(@submission)
       flash[:notice] = 'Academic plan information successfully refreshed from Lion Path.'
       redirect_to author_submission_program_information_path(@submission.id)
@@ -149,6 +150,7 @@ class Author::SubmissionsController < AuthorController
 
   def refresh_date_defended
     return unless @submission.status_behavior.beyond_collecting_final_submission_files?
+
     submission_defense_date = @submission.academic_plan.defense_date
     if submission_defense_date.present?
       @submission.defended_at = submission_defense_date
@@ -171,6 +173,7 @@ class Author::SubmissionsController < AuthorController
     def find_submission
       @submission = @author.submissions.find(params[:submission_id] || params[:id])
       return nil if @submission.nil?
+
       redirect_to '/401' unless @submission.author_id == current_author.id ## && !Rails.env.test?
       @submission.author_edit = true
       @submission

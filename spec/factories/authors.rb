@@ -21,40 +21,40 @@ FactoryBot.define do
       n.to_s.to_s
     end
 
-    first_name "Joseph"
-    middle_name "Quicny"
+    first_name { "Joseph" }
+    middle_name { "Quicny" }
     last_name { Faker::Name.unique.name }
-    phone_number "123-456-7890"
+    phone_number { "123-456-7890" }
     is_alternate_email_public { current_partner.graduate? ? true : false }
-    address_1 "123 Example Ave."
-    address_2 "Apt. 8H"
-    city "State College"
-    state "PA"
-    zip "16801"
+    address_1 { "123 Example Ave." }
+    address_2 { "Apt. 8H" }
+    city { "State College" }
+    state { "PA" }
+    zip { "16801" }
     updated_at { 4.days.ago }
-    opt_out_email false
-    opt_out_default false
+    opt_out_email { false }
+    opt_out_default { false }
     # inbound_lion_path_record { FactoryBot.create(:inbound_lion_path_record }
   end
 
   trait :opt_out_default do
-    opt_out_email false
-    opt_out_default true
+    opt_out_email { false }
+    opt_out_default { true }
   end
 
   trait :author_from_ldap do
-    alternate_email_address ""
-    opt_out_email false
-    opt_out_default true
+    alternate_email_address { "" }
+    opt_out_email { false }
+    opt_out_default { true }
     to_create { |instance| instance.save(validate: false) }
   end
 
   trait :confidential_hold do
-    confidential_hold true
+    confidential_hold { true }
     confidential_hold_set_at { Time.zone.yesterday }
   end
 
   trait :no_lionpath_record do
-    inbound_lion_path_record nil
+    inbound_lion_path_record { nil }
   end
 end

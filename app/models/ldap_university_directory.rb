@@ -10,6 +10,7 @@ class LdapUniversityDirectory
   def autocomplete(term_given)
     term = term_given
     return [] unless searchterm_valid?(term)
+
     term = term.strip!
 
     ldap_records = []
@@ -37,11 +38,13 @@ class LdapUniversityDirectory
     # result = nil
     result = retrieve(psu_access_id, LdapResultsMap::AUTHOR_LDAP_MAP).present?
     return false if result.nil?
+
     result.present?
   end
 
   def retrieve(psu_access_id, attributes_map)
     return {} if string_has_wildcard_character? psu_access_id
+
     ldap_record = directory_lookup('uid', psu_access_id)
     mapped_attributes = LdapResult.new(ldap_record: ldap_record,
                                        attribute_map: attributes_map).map_directory_info
@@ -53,6 +56,7 @@ class LdapUniversityDirectory
   def authors_confidential_status(this_access_id)
     attr = get_ldap_attribute(this_access_id, 'psconfhold')
     return false if attr.nil?
+
     ActiveModel::Type::Boolean.new.cast(attr.downcase)
   end
 
@@ -65,6 +69,7 @@ class LdapUniversityDirectory
     return false if result.blank?
     return true if result.include? "cn=umg/psu.sas.etda-#{current_partner.id}-admins,dc=psu,dc=edu"
     return true if result.include? "cn=umg/psu.dsrd.etda_#{current_partner.id}_admin_users,dc=psu,dc=edu"
+
     false
   end
 
@@ -74,6 +79,7 @@ class LdapUniversityDirectory
     attrs = directory_lookup('uid', this_access_id)
     return '' if attrs.blank?
     return attrs.first[this_attribute].first unless this_attribute == 'psmemberof'
+
     attrs.first[this_attribute]
   end
 

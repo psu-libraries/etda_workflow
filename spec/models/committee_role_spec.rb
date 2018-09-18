@@ -3,6 +3,10 @@
 require 'model_spec_helper'
 
 RSpec.describe CommitteeRole, type: :model do
+  before do
+    @ordered_roles_list = CommitteeRole::ROLES[current_partner.id][DegreeType.default.slug].map { |x| x[:name] }.sort
+  end
+
   it { is_expected.to have_db_column(:id).of_type(:integer).with_options(null: false) }
   it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false) }
   it { is_expected.to have_db_column(:num_required).of_type(:integer).with_options(null: false) }
@@ -11,10 +15,6 @@ RSpec.describe CommitteeRole, type: :model do
   it { is_expected.to have_db_index(:degree_type_id) }
   it { is_expected.to belong_to(:degree_type).class_name('DegreeType') }
   it { is_expected.to have_many :committee_members }
-
-  before do
-    @ordered_roles_list = CommitteeRole::ROLES[current_partner.id][DegreeType.default.slug].map { |x| x[:name] }.sort
-  end
 
   describe "the CommitteeRole seed data" do
     context "seed committee role data for the current partner" do

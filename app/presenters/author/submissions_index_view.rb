@@ -20,11 +20,13 @@ class Author::SubmissionsIndexView
 
   def no_submissions_message
     return "" unless @author.submissions.released_for_publication.count.zero?
+
     "You don't have any submissions yet."
   end
 
   def published_submissions_message
     return '' unless @author.submissions.released_for_publication.count.positive?
+
     "<p>Your published submissions may be viewed at: #{published_submissions_link}</p>"
   end
 

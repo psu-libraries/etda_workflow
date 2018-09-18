@@ -43,6 +43,7 @@ class MockUniversityDirectory
   def retrieve(psu_access_id, attributes_map)
     result = get_id_info(psu_access_id)
     return result if result.empty?
+
     if attributes_map == ADMIN_LDAP_MAP
       result.except(:middle_name, :city, :state, :zip, :country, :confidential_hold)
     else
@@ -70,12 +71,14 @@ class MockUniversityDirectory
   def authors_confidential_status(psu_access_id)
     results = retrieve(psu_access_id, AUTHOR_LDAP_MAP)
     return false if results.empty?
+
     results[:confidential_hold]
   end
 
   def in_admin_group?(this_access_id)
     result = get_id_info(this_access_id)
     return false if result.blank?
+
     result[:administrator] || false
   end
 
