@@ -73,6 +73,9 @@ gem 'seedbank'
 
 gem 'enumerize'
 
+# Newrelic integration
+gem 'newrelic_rpm'
+
 # Virus scanning for file uploads
 gem 'clam_scan'
 
