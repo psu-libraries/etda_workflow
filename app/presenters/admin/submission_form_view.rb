@@ -50,7 +50,8 @@ class Admin::SubmissionFormView < SimpleDelegator
   end
 
   def cancellation_path
-    @session_delete ||= @session.delete(:return_to)
+    # @session_delete ||= @session.delete(:return_to)
+    cancel_url
   end
 
   def address
@@ -141,5 +142,19 @@ class Admin::SubmissionFormView < SimpleDelegator
       return true if status_behavior.beyond_collecting_format_review_files? && (section_heading == 'program-information' || section_heading == 'committee' || section_heading == 'format-review-files')
 
       false
+    end
+
+    def cancel_url
+      return "/admin/#{degree_type.slug}/format_review_submitted" if status_behavior.waiting_for_format_review_response?
+      return "/admin/#{degree_type.slug}/format_review_completed" if status_behavior.collecting_final_submission_files? && !status_behavior.final_submission_rejected?
+      return "/admin/#{degree_type.slug}/final_submission_incomplete" if status_behavior.collecting_final_submission_files? && status_behavior.final_submission_rejected?
+      return "/admin/#{degree_type.slug}/final_submission_submitted" if status_behavior.waiting_for_final_submission_response?
+      return "/admin/#{degree_type.slug}/final_submission_approved" if status_behavior.waiting_for_publication_release?
+      #  return "/admin/#{degree_type}/released_for_publication" if status_behavior.released_for_publication? && open_access?  TOO SLOW; RETURN TO DASHBOARD
+      return "/admin/#{degree_type.slug}" if status_behavior.released_for_publication? && open_access?
+      return "/admin/#{degree_type.slug}/final_withheld" if status_behavior.released_for_publication_metadata_only? && restricted?
+      return "/admin/#{degree_type.slug}/final_restricted_institution" if status_behavior.released_for_publication? && access_level == 'restricted_to_institution'
+
+      "/admin/#{degree_type.slug}/format_review_incomplete"
     end
 end

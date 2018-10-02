@@ -267,7 +267,7 @@ RSpec.describe Admin::SubmissionFormView do
       before { submission.status = 'released for publication' }
 
       it "returns released for publication path" do
-        expect(view.cancellation_path).to eq admin_submissions_index_path(submission.degree_type.slug, 'released_for_publication')
+        expect(view.cancellation_path).to eq admin_submissions_dashboard_path(submission.degree_type.slug)
       end
     end
   end
