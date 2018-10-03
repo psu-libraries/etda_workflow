@@ -81,7 +81,7 @@ scripts:
   modal: true
   tooltip: true
   popover: true
-  scrollspy: true
+  scrollspy: false
   tab: true
   affix: true
 

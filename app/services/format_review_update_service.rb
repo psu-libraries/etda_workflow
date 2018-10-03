@@ -15,7 +15,6 @@ class FormatReviewUpdateService
 
   def update_record
     submission.update_attributes! format_review_params
-    submission.save!(validate: false)
     msg = "The submission was successfully updated."
     { msg: msg, redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
   end
@@ -30,7 +29,7 @@ class FormatReviewUpdateService
       status_giver.collecting_final_submission_files!
       msg = "The submission\'s format review information was successfully approved and returned to the author to collect final submission information."
     elsif update_actions.rejected?
-      submission.update_attributes! format_review_params
+      submission.update_attributes format_review_params
       submission.update_attribute :format_review_rejected_at, Time.zone.now
       status_giver.collecting_format_review_files_rejected!
       msg = "The submission\'s format review information was successfully rejected and returned to the author for revision."
