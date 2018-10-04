@@ -13,9 +13,16 @@ RSpec.describe FormatReviewFile, type: :model do
   it { is_expected.to have_db_index(:submission_id) }
   it { is_expected.to have_db_index(:legacy_id) }
 
-  it { is_expected.to validate_presence_of :asset }
   it { is_expected.to validate_presence_of :submission_id }
   it { is_expected.to belong_to :submission }
+
+  # it { is_expected.to validate_presence_of :asset }
+  it 'validates the presence of asset when an author is editing' do
+    submission = FactoryBot.create :submission, :collecting_committee
+    submission.author_edit = true
+    submission.status = 'collecting_format_review_files'
+    expect(submission).not_to be_valid
+  end
 
   it 'returns class name with dashes' do
     format_review_file = described_class.new
