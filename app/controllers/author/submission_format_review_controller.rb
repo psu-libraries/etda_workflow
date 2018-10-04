@@ -44,6 +44,8 @@ class Author::SubmissionFormatReviewController < AuthorController
 
     def find_submission
       @submission = @author.submissions.find(params[:submission_id])
+      @submission.author_edit = true unless @submission.nil?
+      @submission
     end
 
     def format_review_params

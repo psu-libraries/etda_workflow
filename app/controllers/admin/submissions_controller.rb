@@ -15,7 +15,7 @@ class Admin::SubmissionsController < AdminController
 
   def update
     @submission = Submission.find(params[:id])
-    if @submission.status_behavior.beyond_collecting_format_review_files?
+    if @submission.status_behavior.beyond_collecting_format_review_files? && status != 'format review completed'
       submission_update_service = FinalSubmissionUpdateService.new(params, @submission)
     else
       submission_update_service = FormatReviewUpdateService.new(params, @submission)
@@ -26,6 +26,9 @@ class Admin::SubmissionsController < AdminController
   rescue ActiveRecord::RecordInvalid
     @view = Admin::SubmissionFormView.new(@submission, session)
     render :edit
+  rescue SubmissionStatusGiver::InvalidTransition
+    redirect_to session.delete(:return_to)
+    flash[:alert] = 'Oops! You may have submitted invalid format review data. Please check that the submission\'s format review information is correct.'
   end
 
   def index
@@ -61,6 +64,9 @@ class Admin::SubmissionsController < AdminController
   rescue SubmissionStatusGiver::AccessForbidden
     flash[:alert] = 'There was a problem releasing the submissions, please try again.'
     redirect_to session.delete(:return_to)
+  rescue SubmissionStatusGiver::InvalidTransition
+    redirect_to session.delete(:return_to)
+    flash[:alert] = 'Oops! You may have submitted invalid format review data. Please check that the submission\'s format review information is correct.'
   end
 
   def extend_publication_date
@@ -118,6 +124,9 @@ class Admin::SubmissionsController < AdminController
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to session.delete(:return_to)
     flash[:alert] = 'Submission is invalid'
+  rescue SubmissionStatusGiver::InvalidTransition
+    redirect_to session.delete(:return_to)
+    flash[:alert] = 'Oops! You may have submitted invalid format review data. Please check that the submission\'s format review information is correct.'
   end
 
   def update_released
@@ -133,6 +142,9 @@ class Admin::SubmissionsController < AdminController
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to session.delete(:return_to)
     flash[:alert] = 'Submission is invalid'
+  rescue SubmissionStatusGiver::InvalidTransition
+    redirect_to session.delete(:return_to)
+    flash[:alert] = 'Oops! You may have submitted invalid format review data. Please check that the submission\'s format review information is correct.'
   end
 
   def print_signatory_page
