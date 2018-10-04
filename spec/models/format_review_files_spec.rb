@@ -47,27 +47,20 @@ RSpec.describe FormatReviewFile, type: :model do
   describe 'virus scanning' do
     # The .name below is required due to the way Rails reloads classes in
     # development and test modes, can't compare the actual constants
-    # let(:virus_scan_is_mocked?) { VirusScanner.name == MockVirusScanner.name }
-    #
-    # let(:good_file) { build :format_review_file }
-    #
-    # let(:infected_file) do
-    #   build :format_review_file,
-    #         asset: File.open(fixture 'eicar_standard_antivirus_test_file.txt')
-    # end
-    #
-    # it 'validates that the asset is virus free' do
-    #   if virus_scan_is_mocked?
-    #     allow(VirusScanner).to receive(:scan).and_return(double(safe?: true))
-    #   end
-    #   good_file.valid?
-    #   expect(good_file.errors[:asset]).to be_empty
-    #
-    #   if virus_scan_is_mocked?
-    #     allow(VirusScanner).to receive(:scan).and_return(double(safe?: false))
-    #   end
-    #   infected_file.valid?
-    #   expect(infected_file.errors[:asset]).to include I18n.t('errors.messages.virus_free')
-    # end
+    let(:virus_scan_is_mocked?) { VirusScanner.name == MockVirusScanner.name }
+
+    let(:good_file) { FactoryBot.create :format_review_file }
+
+    infected_file = FormatReviewFile.new(asset: File.open(fixture('eicar_standard_antivirus_test_file.txt')))
+
+    it 'validates that the asset is virus free' do
+      allow(VirusScanner).to receive(:scan).and_return(double(safe?: true)) if virus_scan_is_mocked?
+      good_file.valid?
+      expect(good_file.errors[:asset]).to be_empty
+
+      allow(VirusScanner).to receive(:scan).and_return(double(safe?: false)) if virus_scan_is_mocked?
+      infected_file.valid?
+      expect(infected_file.errors[:asset]).to include I18n.t('errors.messages.virus_free')
+    end
   end
 end
