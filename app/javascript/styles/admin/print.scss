@@ -1,5 +1,3 @@
-@import "../base/_base.scss";
-
 div.print-it {
   font-size: small;
   margin-left:  2em;
@@ -69,11 +67,16 @@ div.print-it {
   float: left;
   line-height: 40px;
 }
-.noprint {
+div.noprint {
+  display: inline-block;
   display: none;
 }
-
-header.print_signatory_page {
-  display: none;
+@media print {
+  ul#admin-nav{
+    display: none;
+  }
+  header.print_signatory_page {
+    display: none;
+  }
 }
 
