@@ -74,6 +74,8 @@ class Submission < ApplicationRecord
 
   validates :year, numericality: { only_integer: true }, if: proc { |s| s.year.present? }
 
+  validate :format_review_file_check
+
   attr_reader :previous_access_level
   after_update :cache_access_level
 
@@ -297,6 +299,20 @@ class Submission < ApplicationRecord
       required_committee_roles.each do |role|
         committee_members.build(committee_role: role, is_required: true)
       end
+    end
+  end
+
+  def format_review_file_check
+    # no validation for admin users
+    return true unless author_edit
+    # only require file when author submitting format review
+    return true unless status_behavior.collecting_format_review_files?
+
+    if format_review_files.nil?
+      # errors[] << 'You must upload a format review file.'
+      false
+    else
+      true
     end
   end
 end
