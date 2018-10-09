@@ -137,6 +137,16 @@ RSpec.describe Submission, type: :model do
       end
     end
 
+    context 'format_review_file_check' do
+      it 'is false when author does not attach a file' do
+        submission = FactoryBot.create :submission, :collecting_format_review_files
+        submission.author_edit = true
+puts '*****'
+puts submission.format_review_files.count.inspect
+        expect(submission.format_review_file_check).to be_falsey
+      end
+    end
+
     context 'using lionpath?' do
       it 'knows when lion_path integration is being used' do
         author = Author.new
