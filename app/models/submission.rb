@@ -89,8 +89,8 @@ class Submission < ApplicationRecord
                                 reject_if:
                                     ->(attributes) { attributes.except(:submission_id).values.all?(&:blank?) },
                                 allow_destroy: true
-  accepts_nested_attributes_for :format_review_files, allow_destroy: true, reject_if: proc { |f| f.asset.nil? || f.asset_cache.nil? }
-  accepts_nested_attributes_for :final_submission_files, allow_destroy: true, reject_if: proc { |f| f.asset.nil? || f.asset_cache.nil? }
+  accepts_nested_attributes_for :format_review_files, allow_destroy: true
+  accepts_nested_attributes_for :final_submission_files, allow_destroy: true
   accepts_nested_attributes_for :keywords, allow_destroy: true
   accepts_nested_attributes_for :invention_disclosures,
                                 allow_destroy: true,
