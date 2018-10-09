@@ -5,8 +5,8 @@ class FormatReviewFile < ApplicationRecord
 
   belongs_to :submission
 
-  validates :submission_id, presence: true # :asset,
-  validates :id, :asset, presence: true, if: proc { |f| !f.submission.nil? && f.submission.author_edit && f.submission.status_behavior.collecting_format_review_files? }
+  validates :submission_id, presence: true #
+  validates :asset_cache, presence: true, if: proc { |f| !f.submission.nil? && f.submission.author_edit && f.submission.status_behavior.collecting_format_review_files? }
   validates :asset, virus_free: true
 
   def class_name
