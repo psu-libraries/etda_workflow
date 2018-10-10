@@ -33,6 +33,13 @@ module ApplicationHelper
     controller_name == 'submissions' && action_name != 'published_submissions_index'
   end
 
+  def admin_degree_nav(degree_type_param, degreetype)
+    return 'active' if degree_type_param == degreetype.slug
+    return 'active' if controller_name == 'submissions' && action_name == 'edit' && @submission.degree_type.id == degreetype.id
+
+    ''
+  end
+
   def admin_nav_active?(nav_name)
     return 'active' if controller_name == nav_name
 
