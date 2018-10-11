@@ -68,6 +68,24 @@ RSpec.describe ApplicationHelper do
     end
   end
 
+  describe '#admin_degree_active?' do
+    it 'returns active class when navigation degree type is the same as the degree type of the submission being edited' do
+      degreetype = DegreeType.create(name: 'test', slug: 'testing')
+      expect(admin_degree_active?('testing', degreetype)).to eq('active')
+      expect(admin_degree_active?('thesis', degreetype)).to eq('')
+      expect(admin_degree_active?('testing', degreetype)).to eq('active')
+      expect(admin_degree_active?('bogus', degreetype)).to eq('')
+    end
+    # it 'returns active class for degree type of submission being edited' do
+    #   @submission = FactoryBot.create :submission, DegreeType.default
+    #   @submission.degree_id = Degree.where(degree_type_id: DegreeType.default)
+    #   allow(controller).to receive(:controller_name).and_return('submissions')
+    #   allow(controller).to receive(:action).and_return('edit')
+    #   expect(admin_degree_active?(DegreeType.default.slug, DegreeType.default)).to eq('active')
+    #   expect(admin_degree_active?('bogus', DegreeType.default)).to eq('')
+    # end
+  end
+
   describe '#confidential_tag_helper' do
     author = FactoryBot.create :author, confidential_hold: false
     it 'returns empty string for authors without a hold' do
