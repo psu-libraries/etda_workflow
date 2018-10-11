@@ -2,7 +2,7 @@
   <div id="main-navigation" class="collapse navbar-collapse" role="navigation" aria-labelledby="admin-nav">
     <ul id="admin-nav" class="nav nav-pills nav-stacked" >
       <% DegreeType.all.each do |dt| %>
-          <li class="<%= admin_degree_nav(params[:degree_type], dt) %>">
+          <li class="<%= admin_degree_active?(params[:degree_type], dt) %>">
             <%= link_to dt.name.pluralize, admin_submissions_dashboard_path(dt.slug) %>
           </li>
       <% end %>
