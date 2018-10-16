@@ -86,6 +86,7 @@ class LdapResult
     ldap_value.remove('+1 ').tr(' ', '-')
   end
 
+  #  LDAP poastal address now looks like this-->  :postaladdress=>["W 313 Pattee Library$University Park, PA 16802 US"]
   def format_address_1(ldap_value, _options)
     ldap_value.titleize.split('$').first || ''
   end
@@ -102,12 +103,13 @@ class LdapResult
     self.us_state = state
   end
 
-  def format_country(_ldap_value, _options)
-    '' # currently country is not included in LDAP but keep this column here for future use
+  def format_country(ldap_value, _options)
+    ldap_value.split(' ').last || ''
+    # country has been added
   end
 
   def format_zip(ldap_value, _options)
-    ldap_value.split(' ').last || ''
+    ldap_value.split(' ')[-2] || ''
   end
 
   def format_administrator(ldap_value, _options)

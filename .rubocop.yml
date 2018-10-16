@@ -14,6 +14,7 @@ AllCops:
     - 'node_modules/**/*'
     - 'webpack.config.js'
     - 'spec/lib/**/*'
+    - 'spec/support/ldap_lookup.rb'
     - 'lib/tasks/**/*'
     - 'Gemfile*'
     - 'Capfile'
