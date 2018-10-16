@@ -55,9 +55,7 @@ class SolrDataImportService
   def solr_url
     return 'http://localhost:8983/solr' if Rails.env.development?
 
-    url = Rails.application.secrets.webaccess[:vservice].strip
-    url.sub! 'workflow', 'explore'
-    url.sub! 'http:', 'https:'
+    url = EtdUrls.new.explore
     url + '/solr'
   end
 

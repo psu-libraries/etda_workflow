@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_url
 
   rescue_from ActionController::RoutingError, with: :route_not_found
   unless Rails.env.test?
@@ -19,7 +20,7 @@ class ApplicationController < ActionController::Base
     rescue_from ActiveRecord::StatementInvalid, with: :render_500
     rescue_from Mysql2::Error, with: :render_500
     rescue_from Net::LDAP::LdapError, with: :render_500
-    # rescue_from Redis::CannotConnectError, with: :render_500
+    rescue_from Redis::CannotConnectError, with: :render_500
     rescue_from Errno::ECONNREFUSED, with: :render_500
     rescue_from ActionDispatch::Cookies::CookieOverflow, with: :render_500
     rescue_from RuntimeError, with: :render_500
@@ -81,8 +82,13 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def set_url
+    ApplicationUrl.current = request.original_url
+    ApplicationUrl.stage
+  end
+
   def webaccess_login_url
-    WebAccess.new(request.env['HTTP_REFERER']).login_url
+    WebAccess.new.login_url
   end
 
   def webaccess_logout_url

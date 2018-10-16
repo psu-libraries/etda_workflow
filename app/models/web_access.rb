@@ -4,7 +4,7 @@ class WebAccess
   BASE_LOGIN_URL = 'https://webaccess.psu.edu/?factors=dce.psu.edu&cosign-%s&%s'
   BASE_LOGOUT_URL = 'https://webaccess.psu.edu/cgi-bin/logout?%s'
   def initialize(redirect_url_in = '')
-    @redirect_url = redirect_url_in.presence || application_url
+    @redirect_url = redirect_url_in.presence || redirect_url
   end
 
   def login_url
@@ -19,29 +19,24 @@ class WebAccess
     "?factors=dce.psu.edu&cosign-#{service}&#{@redirect_url}"
   end
 
-  def explore_base_url
-    # replace workflow with explore for qa, stage, and dev
-    # remove workflow completely for prod instance
-    this_url = application_url
-    replace_wf = explore_url_string(this_url)
-    this_url.sub(/-workflow/, replace_wf)
-  end
-
   private
 
   def application_url
-    Rails.application.secrets.webaccess[:vservice]
+    return 'https://myapp-workflow.psu.edu' if Rails.env.test?
+
+    ApplicationUrl.current
   end
 
   def service
-    url = Rails.application.secrets.webaccess[:vservice]
-    uri = URI.parse(url)
+    return '' if application_url.nil?
+
+    uri = URI.parse(application_url)
     uri.host
   end
 
-  def explore_url_string(this_url)
-    str = ''
-    str = '-explore' if ['-stage', '-qa', '-dev'].any? { |not_prod| this_url.include? not_prod }
-    str
+  def redirect_url
+    this_url = application_url.chomp('/login')
+    this_url = this_url.chomp('/logout')
+    this_url
   end
 end

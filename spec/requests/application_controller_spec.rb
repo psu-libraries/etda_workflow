@@ -10,7 +10,7 @@ RSpec.describe 'Devise Login', type: :request do
   before do
     allow(request).to receive(:controller).and_return("admin/degrees")
     allow(request).to receive(:headers).and_return('REMOTE_USER' => 'saw140')
-    allow(Rails.application.secrets).to receive(:webaccess).and_return(vservice: "ahost.psu.edu", vhost: 'https://myapp.psu.edu')
+    # allow(Rails.application.secrets).to receive(:webaccess).and_return(vservice: "ahost.psu.edu", vhost: 'https://myapp.psu.edu')
   end
 
   it 'signs author in and out' do
