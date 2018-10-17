@@ -55,9 +55,6 @@ RSpec.describe SolrDataImportService, type: :model do
   end
 
   def this_url
-    url = Rails.application.secrets.webaccess[:vservice].strip
-    url.sub! 'workflow', 'explore'
-    url.sub! 'http:', 'https:'
-    url + '/solr'
+    EtdUrls.new.explore + '/solr'
   end
 end

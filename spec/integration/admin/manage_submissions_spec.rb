@@ -91,6 +91,7 @@ RSpec.describe "Manage Submissions", js: true do
         expect(page).to have_content('Restricted Theses')
         expect(page).to have_content('Showing')
         click_button 'Select Visible'
+        sleep(5)
         expect(page).to have_content('Bulk Actions')
         expect(page).to have_xpath("//input[@type='checkbox']")
         expect(page).to have_button('Release as Open Access')

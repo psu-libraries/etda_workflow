@@ -21,8 +21,9 @@ en:
       alternate_email_hint: 'The Alternate email address will be used after your psu.edu email address expires.'
       thesis_guide: 'http://millennium.psu.edu/thesis-information/'
       document_title_label: 'Please enter your Thesis Title'
+      url_slug: 'millennium-scholars'
       email:
-        url: 'http://millennium-scholars.libraries.psu.edu'
+        url: 'https://millennium-scholars-explore.libraries.psu.edu'
         address: millennium@psu.edu
         signature: 'Millennium Scholars Program <br />130 Ritenour Building<br /> University Park, PA 16802'
 

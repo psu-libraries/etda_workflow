@@ -21,8 +21,9 @@ en:
       alternate_email_hint: 'The Alternate email address will be used after your psu.edu email address expires.'
       thesis_guide: 'http://www.gradschool.psu.edu/index.cfm/current-students/etd/'
       document_title_label: 'Please enter your Thesis or Dissertation Title'
+      url_slug: 'etda'
       email:
-        url: 'http://etda.libraries.psu.edu'
+        url: 'https://etda-explore.libraries.psu.edu'
         address: gradthesis@psu.edu
         signature: 'Graduate School <br />Keller Building<br /> University Park, PA'
 

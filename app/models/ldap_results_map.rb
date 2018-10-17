@@ -9,7 +9,7 @@ class LdapResultsMap
   AUTHOR_LDAP_MAP = { uid: [:access_id],
                       givenname: %i[first_name middle_name],
                       sn: [:last_name],
-                      postaladdress: %i[address_1 city state country zip],
+                      postaladdress: %i[address_1 city state zip country],
                       telephonenumber: [:phone_number],
                       psidn: [:psu_idn],
                       psconfhold: [:confidential_hold] }.freeze
@@ -40,8 +40,8 @@ class LdapResultsMap
     address_1: { method: :format_address_1, options: {} },
     city: { method: :format_city, options: {} },
     state: { method: :format_state, options: {} },
-    country: { method: :format_country, options: {} },
     zip: { method: :format_zip, options: {} },
+    country: { method: :format_country, options: {} },
     administrator: { method: :format_administrator, options: {} },
     psuidn: { method: :format_psuidn, options: {} },
     confidential_hold: { method: :format_confidential, options: {} }

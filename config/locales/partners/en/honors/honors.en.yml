@@ -21,8 +21,9 @@ en:
       alternate_email_hint: 'The Alternate email address will be used after your psu.edu email address expires.'
       thesis_guide: 'https://www.shc.psu.edu/academic/thesis/submission.cfm'
       document_title_label: 'Title'
+      url_slug: 'honors'
       email:
-        url:  'honors.libraries.psu.edu'
+        url:  'https://honors-explore.libraries.psu.edu'
         address: honorsthesis@psu.edu
         signature: 'Schreyer Honors College<br /> University Park, PA'
 
