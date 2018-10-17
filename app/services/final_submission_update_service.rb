@@ -119,7 +119,6 @@ class FinalSubmissionUpdateService
       :program_id,
       :degree_id,
       :title,
-      :defended_at,
       :allow_all_caps_in_title,
       :format_review_notes,
       :admin_notes,

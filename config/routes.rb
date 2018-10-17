@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  root to: 'application#index'
+  # root to: 'author#submisisons'
 
   devise_for :authors, path: 'author'
   devise_for :admins, path: 'admin'
@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get '/logout', to: 'application#logout', as: :logout
   get '/login', to: 'application#login', as: :login
 
+  get '/', to: redirect(path: '/author')
 
   ## works: get '/committee_members/autocomplete', to: 'ldap_lookup#autocomplete', as: :committee_members_autocomplete
   get '/committee_members/autocomplete', to: 'application#autocomplete', as: :committee_members_autocomplete
@@ -90,7 +91,7 @@ Rails.application.routes.draw do
     get '/tips', to: 'authors#technical_tips', as: :technical_tips
   end
 
-
+  root to: 'author#submissions'
   match "/404", to: 'errors#render_404', via: :all
   match "/500", to: 'errors#render_500', via: :all
   match "/401", to: 'errors#render_401', via: :all

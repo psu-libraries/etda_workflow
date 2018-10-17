@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   def index
-    render 'home/index', layout: 'home'
+    render 'author/submissions', layout: 'author'
   end
 
   def login

@@ -3,7 +3,7 @@
 <%= f.input :access_level, as: :hidden, input_html: { value: "#{@submission.access_level}" } %>
   <ul>
     <% AccessLevel.display.each do |k| %>
-        <li class="<%= k[:type] %>"><strong><%= k[:label] %></strong> -- <%= k[:description] %></li>
+        <li class="<%= k[:type] %>"><strong><%= k[:label] %></strong> -- <%= k[:description].html_safe %></li>
         <%= render partial: 'restricted_note_field', locals: {f: f} if @view.psu_only(k[:label]) %>
         <%= render partial: 'invention_disclosure_information', locals: {f: f} if k[:label] == 'Restricted' %>
     <% end %>
