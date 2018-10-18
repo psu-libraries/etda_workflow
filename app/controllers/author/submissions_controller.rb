@@ -21,6 +21,8 @@ class Author::SubmissionsController < AuthorController
                   else
       @author.submissions.new(standard_program_params)
                   end
+    @submission.author_edit = true
+
     @submission.save!
     @submission.update_attribute(:defended_at, LionPath::Crosswalk.convert_to_datetime(params[:submission][:defended_at])) if @submission.using_lionpath? && current_partner.graduate?
     status_giver = SubmissionStatusGiver.new(@submission)
@@ -174,7 +176,7 @@ class Author::SubmissionsController < AuthorController
       @submission = @author.submissions.find(params[:submission_id] || params[:id])
       return nil if @submission.nil?
 
-      redirect_to '/401' unless @submission.author_id == current_author.id ## && !Rails.env.test?
+      redirect_to '/401' unless @submission.author_id == current_author.id
       @submission.author_edit = true
       @submission
     end

@@ -59,7 +59,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_index(:format_review_legacy_old_id) }
   it { is_expected.to have_db_index(:public_id).unique(true) }
 
-  it { is_expected.to validate_presence_of :author_id }
+  it { is_expected.to validate_presence_of :author_id  }
   it { is_expected.to validate_presence_of :program_id }
   it { is_expected.to validate_presence_of :degree_id }
   it { is_expected.not_to validate_presence_of :restricted_notes }
@@ -74,19 +74,13 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_many :keywords }
   it { is_expected.to have_many :invention_disclosures }
 
-  it { is_expected.to validate_inclusion_of(:semester).in_array(Semester::SEMESTERS) }
   it { is_expected.to validate_inclusion_of(:access_level).in_array(AccessLevel::ACCESS_LEVEL_KEYS) }
 
-  it { is_expected.to validate_numericality_of :year }
-
   it { is_expected.to validate_inclusion_of(:status).in_array(SubmissionStatus::WORKFLOW_STATUS) }
-
-  it { is_expected.to validate_length_of(:title).is_at_most(400) }
 
   it { is_expected.to accept_nested_attributes_for :committee_members }
   it { is_expected.to accept_nested_attributes_for :format_review_files }
   it { is_expected.to accept_nested_attributes_for :final_submission_files }
-  # it { is_expected.to accept_nested_attributes_for :invention_disclosures }
 
   it { is_expected.to delegate_method(:program_name).to(:program).as(:name) }
   it { is_expected.to delegate_method(:degree_name).to(:degree).as(:name) }
@@ -106,27 +100,63 @@ RSpec.describe Submission, type: :model do
       expect(submission.access_level_key).to eq('open_access')
     end
 
-    it 'validates title, semester and year when authors are updating' do
+    it 'validates semester only when authors are editing' do
       submission = FactoryBot.create :submission
+      submission.semester = 'Fall'
+      expect(submission).to be_valid
       submission.semester = ''
+      submission.author_edit = true
+      expect(submission).not_to be_valid
+      submission.semester = 'bogus'
+      expect(submission).not_to be_valid
+      submission.author_edit = false
+      expect(submission).to be_valid
+      submission.semester = ''
+      expect(submission).to be_valid
+    end
+
+    it 'validates year only when authors are editing' do
+      submission = FactoryBot.create :submission
+      submission.year = '2018'
+      expect(submission).to be_valid
       submission.year = ''
       submission.author_edit = true
       expect(submission).not_to be_valid
       submission.year = 'abc'
       expect(submission).not_to be_valid
-      submission.title = ''
-      submission.semester = 'Fall'
-      submission.year = '1999'
-      expect(submission).not_to be_valid
-      submission.title = 'title'
+      submission.author_edit = false
+      expect(submission).to be_valid
+      submission.year = ''
       expect(submission).to be_valid
     end
 
-    it 'does not validate semester, year, or title when admins are updating' do
+    it 'validates title length when only authors are editing' do
       submission = FactoryBot.create :submission
-      submission.year = ''
-      submission.semester = ''
+      expect(submission).to be_valid
+      long_title = ''
+      11.times do
+        long_title += '01234567890123456789012345678901234567890'
+      end
+      expect(long_title.length > 400).to be_truthy
+      submission = FactoryBot.create :submission
+      submission.allow_all_caps_in_title = true
+      expect(submission).to be_valid
+      submission.title = long_title
+      submission.author_edit = true
+      expect(submission).not_to be_valid
+      submission.author_edit = false
+      expect(submission).to be_valid
+      submission.title = long_title.truncate(400)
+      submission.author_edit = true
+      expect(submission).to be_valid
+    end
+
+    it 'does not allow a blank title to be entered when authors are editing' do
+      submission = FactoryBot.create :submission
+      expect(submission).to be_valid
       submission.title = ''
+      submission.author_edit = true
+      expect(submission).not_to be_valid
       submission.author_edit = false
       expect(submission).to be_valid
     end

@@ -39,12 +39,16 @@ class Submission < ApplicationRecord
 
   attr_accessor :author_edit
 
+  # a submission belongs to degree, program, and author so these must be present regardless of who is editing
   validates :author_id,
+            :degree_id,
             :program_id, presence: true
 
+  validates :semester, presence: true, inclusion: { in: Semester::SEMESTERS }, if: proc { |s| s.author_edit }
+  validates :year, numericality: { only_integer: true }, presence: true, if: proc { |s| s.author_edit }
+
   validates :title,
-            :semester,
-            :year,
+            length: { maximum: 400 },
             presence: true, if: proc { |s| s.author_edit } # !InboundLionPathRecord.active? }
 
   validates :abstract,
@@ -57,22 +61,15 @@ class Submission < ApplicationRecord
   validates :defended_at,
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit } # && !InboundLionPathRecord.active? }
 
-  validates :title,
-            length: { maximum: 400 }
-
   validates :public_id,
             uniqueness: true,
             allow_nil: true
 
   validate :check_title_capitalization
 
-  validates :semester, inclusion: { in: Semester::SEMESTERS }, if: proc { |s| s.semester.present? }
-  validates :degree_id, presence: true
   validates :access_level, inclusion: { in: AccessLevel::ACCESS_LEVEL_KEYS }, if: proc { |s| s.status_behavior.beyond_collecting_final_submission_files? && s.author_edit }
 
   validates :invention_disclosure, invention_disclosure_number: true, if: proc { |s| s.status_behavior.beyond_collecting_format_review_files? && !s.status_behavior.released_for_publication? }
-
-  validates :year, numericality: { only_integer: true }, if: proc { |s| s.year.present? }
 
   validate :format_review_file_check
 
@@ -129,7 +126,7 @@ class Submission < ApplicationRecord
     title_words.each do |w|
       word_in_all_caps = true if w.length > 1 && w.upcase == w
     end
-    errors[:title] << I18n.t('activerecord.errors.models.submission.attributes.title.capitalization') if word_in_all_caps
+    errors[:check_title_capitalization] << I18n.t('activerecord.errors.models.submission.attributes.title.capitalization') if word_in_all_caps
   end
 
   def invention_disclosure
