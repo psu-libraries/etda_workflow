@@ -29,5 +29,18 @@ RSpec.describe Semester, type: :model do
       expect(described_class.graduation_years.first).to eq(Time.zone.today.year)
       expect(described_class.graduation_years.last).to eq(Time.zone.today.year + 5)
     end
+
+    it 'checks for #future_semester? when using current year' do
+      allow(Semester).to receive(:current).and_return('2018 Fall')
+      expect(described_class.new).not_to be_future_semester('Spring', 2018)
+      expect(described_class.new).not_to be_future_semester('Summer', 2018)
+      expect(described_class.new).to be_future_semester('Fall', 2018)
+    end
+    it '#future_semester? allows any semester for future years' do
+      allow(Semester).to receive(:current).and_return('2018 Fall')
+      expect(described_class.new).to be_future_semester('Spring', 2019)
+      expect(described_class.new).to be_future_semester('Summer', 2019)
+      expect(described_class.new).to be_future_semester('Fall', 2019)
+    end
   end
 end

@@ -80,7 +80,7 @@ RSpec.describe 'Step 3: Collecting Format Review Files', js: true do
         visit author_submission_edit_format_review_path(submission)
         fill_in 'Title', with: 'Test Title'
         unless InboundLionPathRecord.active? # current_partner.graduate?
-          select Time.zone.now.year, from: 'Graduation Year'
+          select Time.zone.now.next_year.year, from: 'Graduation Year'
           select 'Spring', from: 'Semester Intending to Graduate'
         end
         expect(page).to have_content('Select one or more files to upload')

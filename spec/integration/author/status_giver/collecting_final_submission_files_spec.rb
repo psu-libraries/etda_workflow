@@ -97,7 +97,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         visit author_submission_edit_final_submission_path(submission)
         expect(page).to have_content('Select one or more files to upload')
         expect(page).not_to have_link('Contact Support')
-        select Time.zone.now.year, from: 'Graduation Year'
+        select Time.zone.now.next_year.year, from: 'Graduation Year'
         select 'Spring', from: 'Semester Intending to Graduate'
         fill_in 'Abstract', with: 'A paper on stuff'
         page.find(".submission_delimited_keywords .ui-autocomplete-input").set('stuff')
@@ -131,7 +131,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         expect(page).to have_css '#submission_semester'
         expect(page).to have_css '#submission_title'
         fill_in 'Title', with: 'This has a format review legacy record'
-        select Time.zone.now.year.to_s, from: 'submission[year]'
+        select Time.zone.now.next_year.year.to_s, from: 'submission[year]'
         select 'Spring', from: 'submission[semester]'
         fill_in 'Abstract', with: 'A paper on stuff'
         page.find(".submission_delimited_keywords .ui-autocomplete-input").set('stuff')

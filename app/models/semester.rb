@@ -33,9 +33,32 @@ class Semester
     list.reverse
   end
 
+  def future_semester?(this_semester, this_year)
+    # only check for current year; all semesters are valid when future year is chosen
+    return true if this_year.blank? || this_semester.blank? || this_year > Date.today.year
+
+    current_semester = Semester.current.split(' ').last || ' '
+
+    return true if valid_semester?(current_semester, this_semester)
+
+    false
+  end
+
   def build_year_list(start_year, end_year)
     years = []
     end_year.downto(start_year) { |yr| years << yr }
     years
+  end
+
+  private
+
+  def valid_semester?(current_semester, this_semester)
+    # all semesters valid during spring and current semester is always OK for the current year
+    return true if current_semester == 'Spring' || current_semester == this_semester
+
+    # during summer may choose summer or fall for the current year
+    return true if current_semester == 'Summer' && this_semester == 'Fall'
+
+    false
   end
 end

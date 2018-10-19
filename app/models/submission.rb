@@ -44,6 +44,7 @@ class Submission < ApplicationRecord
             :degree_id,
             :program_id, presence: true
 
+  validate :check_semester, if: proc { |s| s.author_edit }
   validates :semester, presence: true, inclusion: { in: Semester::SEMESTERS }, if: proc { |s| s.author_edit }
   validates :year, numericality: { only_integer: true }, presence: true, if: proc { |s| s.author_edit }
 
@@ -299,6 +300,8 @@ class Submission < ApplicationRecord
     end
   end
 
+  private
+
   def format_review_file_check
     # no validation for admin users
     return true unless author_edit
@@ -311,5 +314,13 @@ class Submission < ApplicationRecord
     else
       true
     end
+  end
+
+  def check_semester
+    unless Semester.new.future_semester?(semester, year)
+      errors[:semester] << 'Please choose a future semester.'
+      return false
+    end
+    true
   end
 end
