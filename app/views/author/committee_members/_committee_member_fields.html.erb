@@ -16,10 +16,10 @@
   <%= f.input :is_required, as: :hidden, :input_html => {value: f.object.is_required, readonly: true } %>
 
     <div class="col-sm-6">
-        <%= f.input :name, label: local_presenter.name_label, input_html: { class: 'ldap-lookup' } %>
+        <%= f.input :name, label: local_presenter.name_label, input_html: { class: 'ldap-lookup' }, required: true %>
     </div>
     <div class="col-sm-6">
-        <%= f.input :email, label: local_presenter.email_label %>
+        <%= f.input :email, label: local_presenter.email_label, required: true %>
     </div>
     <% unless local_presenter.required? %>
       <div class="col-sm-12 committee-remove">

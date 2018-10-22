@@ -202,6 +202,7 @@ form {
   }
 }
 
+
 .file-link {
   @extend .form-control;
   border-color: $gray-lighter;
@@ -263,6 +264,14 @@ form {
       }
     }
   }
+
+  .form-group.submission_committee_members_name {
+      padding-right: 0;
+      margin-right: 0;
+      input {
+        width: 100%;
+      }
+    }
 
   .committee-role .form-group {
     margin-bottom: 0.5em;
@@ -501,10 +510,33 @@ form.search-query-form .input-group {
 
 ul.ui-menu.ui-widget.ui-autocomplete{
   z-index: 2;
-  background-color: white;
+  background-color: whitesmoke;
   list-style-type: none;
   border: 1px solid #000;
-  width: 5em;
+  width: 50%;
+  padding: .5em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: default;
+  display: block;
+  color: black;
+
+}
+
+div.ui-helper-hidden-accessible {
+  display: block;
+  display: none;
+}
+
+.ui-state-active {
+  display: block;
+  background-color: white;
+  font-weight: bolder;
+  width: 100%;
+  padding: .25em;
+  border-radius: 5px;
+  box-shadow: inset 0px 0px 1px 1px slategrey;
 }
 
 //This removes dots from under askterisk in required fields

@@ -21,9 +21,18 @@ class MockUniversityDirectory
   def autocomplete(search_string, _only_faculty_staff: true)
     case search_string
     when /(joni)/i
+      unless Rails.env.test?
+        [
+          { id: 'jxd2@psu.edu', label: 'Joni Davis', value: 'Joni Davis', dept: 'Davis Dept' },
+          { id: 'jxb13@psu.edu', label: 'Joni Barnoff', value: 'Joni Barnoff', dept: 'University Libraries' },
+          { id: 'jjj1@psu.edu', label: 'John James Johnson', value: 'John Johnson', dept: 'Huck Institute' },
+          { id: 'mmm3@psu.edu', label: 'Mark Micheal Murphy', value: 'Mark Murphy', dept: 'Ag Science' },
+          { id: 'mis4@psu.edu', label: 'Maggie I. Smith', value: 'Maggie Smith', dept: 'Earth & Mineral Science' }
+        ]
+      end
       [
-        { id: 'jxd2@psu.edu', label: 'Joni Davis', value: 'Joni Davis' },
-        { id: 'jxb13@psu.edu', label: 'Joni Barnoff', value: 'Joni Barnoff' }
+        { id: 'jxd2@psu.edu', label: 'Joni Davis', value: 'Joni Davis', dept: 'Davis Dept' },
+        { id: 'jxb13@psu.edu', label: 'Joni Barnoff', value: 'Joni Barnoff', dept: 'University Libraries' }
       ]
     when /(scott)/i
       [

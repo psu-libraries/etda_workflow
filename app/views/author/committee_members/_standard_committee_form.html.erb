@@ -1,7 +1,8 @@
 
-    <p>Enter required committee members in the form below.  After saving the required committee members, additional members can be added.</p>
+    <p>
+    <p>Enter required committee members in the form below.  Type the committee member's name in the form and a list names will appear.  Use up and down arrow keys to scroll through the list.  When the desired committee member is highlighted, click the return key to populate the form.  Both the committee member's name and email address will be filled in after the selection is made.</p>
 
-    <p><span class="text-info">Help:</span> <%= t("#{current_partner.id}.committee.author_instructions") %></p>
+    <p><span class="text-info"><strong>Help:</strong></span> <%= t("#{current_partner.id}.committee.author_instructions") %></p>
     <%= simple_form_for @submission,
                         url:  author_submission_committee_members_path(@submission) do |submission_form| %>
       <%= submission_form.simple_fields_for :committee_members do |committee_member_form| %>

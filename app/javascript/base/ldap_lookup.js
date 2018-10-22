@@ -35,18 +35,26 @@ autocomplete_it = function(input_fields) {
     input_fields.autocomplete({
         source: '/committee_members/autocomplete',
         minLength: 2,
-        select: function(event, ui) {
-            return last_selected_ui = ui;
+        open: function( event, ui ) {
+            last_selected_ui = ui
+            clear_email(ui, last_selected_ui, this);
         },
-        change: function(event, ui) {
-            return complete_email(ui, last_selected_ui, this);
+        select: function(event, ui) {
+            last_selected_ui = ui;
+            complete_email(ui, last_selected_ui, this);
+            return last_selected_ui;
         },
         create: function() {
             $(this).data('ui-autocomplete')._renderItem = function(ul, item) {
-                return $('<li>').append("<span>" + item.label + "<br>-- " + item.dept + "</span>").appendTo(ul);
+                 return $("<li>").append("<span class='cte-item'>" + item.label + ",  " + item.dept + "</span>").appendTo(ul);
             };
         }
     });
+};
+
+clear_email = function(ui, last_selected_ui, field_ref) {
+  email_field = $(':input')[$(field_ref).index(':input') + 1];
+  return email_field.value = '';
 };
 
 complete_email = function(ui, last_selected_ui, field_ref) {
