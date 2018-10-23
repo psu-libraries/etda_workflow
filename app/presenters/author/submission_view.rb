@@ -191,9 +191,13 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_seven_arrow
-    return '' unless status_behavior.waiting_for_publication_release? || status_behavior.released_for_publication?
+    return '<div class="direction glyphicon glyphicon-arrow-down"></div>'.html_safe if status_behavior.waiting_for_publication_release? || status_behavior.released_for_publication?
 
-    '<div class="direction glyphicon glyphicon-arrow-down"></div>'.html_safe
+    ''
+  end
+
+  def step_info(num)
+    "<span class='sr-only'> step #{num} information</span>".html_safe
   end
 
   def display_notes?(step_number)

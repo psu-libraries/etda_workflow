@@ -1,43 +1,55 @@
 <div class="progress-indicator preview">
-  <div class="step step-1">
+  <div class="step step-1"><span class='sr-only'>step 1 information</span>
     <div class="information">
       <div class="description">Provide program information</div>
-      <div class="number">1</div>
-      <div class="direction glyphicon glyphicon-arrow-down"></div>
+      <div class="number-arrow">
+        <div class="number">1</div>
+        <div class="direction glyphicon glyphicon-arrow-down"></div>
+      </div>
     </div>
   </div>
-  <div class="step step-2">
+  <div class="step step-2"><span class='sr-only'>step 2 information</span>
     <div class="information">
       <div class="description">Provide committee</div>
-      <div class="number">2</div>
-    <div class="direction glyphicon glyphicon-arrow-down"></div>
+      <div class="number-arrow">
+        <div class="number">2</div>
+        <div class="direction glyphicon glyphicon-arrow-down"></div>
+      </div>
     </div>
   </div>
-  <div class="step step-3">
+  <div class="step step-3"><span class='sr-only'>step 3 information</span>
     <div class="information">
       <div class="description">Upload Format Review files</div>
-      <div class="number">3</div>
-      <div class="direction glyphicon glyphicon-arrow-down"></div>
+      <div class="number-arrow">
+        <div class="number">3</div>
+        <div class="direction glyphicon glyphicon-arrow-down"></div>
+      </div>
     </div>
   </div>
-  <div class="step step-4">
+  <div class="step step-4"><span class='sr-only'>step 4 information</span>
     <div class="information">
-      <div class="number">4</div>
       <div class="description"><%= I18n.t("#{current_partner.id}.partner.name") %> reviews Format Review files</div>
-    <div class="direction glyphicon glyphicon-arrow-down"></div>
+      <div class="number-arrow">
+        <div class="number">4</div>
+        <div class="direction glyphicon glyphicon-arrow-down"></div>
+      </div>
     </div>
   </div>
-  <div class="step step-5">
+  <div class="step step-5"><span class='sr-only'>step 5 information</span>
     <div class="information">
-      <div class="number">5</div>
       <div class="description">Upload Final Submission files</div>
-      <div class="direction glyphicon glyphicon-arrow-down"></div>
+      <div class="number-arrow">
+        <div class="number">5</div>
+        <div class="direction glyphicon glyphicon-arrow-down"></div>
+      </div>
     </div>
   </div>
-  <div class="step step-6">
+  <div class="step step-6"><span class='sr-only'>step 6 information</span>
     <div class="information">
-      <div class="number">6</div>
       <div class="description"><%= I18n.t("#{current_partner.id}.partner.name") %> approves Final Submission files</div>
+      <div class="number-arrow">
+        <div class="number">6</div>
+      </div>
     </div>
   </div>
 </div>
