@@ -82,7 +82,15 @@ header {
         margin-top: 10px;
         margin-bottom: 9px;
       }
-
+    }
+    #top-navigation ul {
+      li a{
+      background-color: whitesmoke; }
+      li.active a {
+        color: blue;
+        font-weight: bold;
+        background-color: white;
+      }
     }
   }
 

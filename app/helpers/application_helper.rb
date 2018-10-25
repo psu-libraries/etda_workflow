@@ -29,6 +29,19 @@ module ApplicationHelper
     end
   end
 
+  def top_nav_active?(nav_name)
+    case nav_name
+    when 'home'
+      'active' if controller_name == 'submissions'
+    when 'about'
+      'active' if controller_name == 'application' && action_name == 'about'
+    when 'email'
+      'active' if controller_name == 'email_contact_form'
+    else
+      ''
+    end
+  end
+
   def not_published_page
     controller_name == 'submissions' && action_name != 'published_submissions_index'
   end

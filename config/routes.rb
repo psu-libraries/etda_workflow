@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   get '/logout', to: 'application#logout', as: :logout
   get '/login', to: 'application#login', as: :login
+  get '/about', to: 'application#about', as: :about_page
 
   get '/', to: redirect(path: '/author')
 

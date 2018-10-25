@@ -1,0 +1,3 @@
+<%= render partial: "/about/#{current_partner.id}_site_notification" %>
+<h1><%= t("#{current_partner.id}.partner.description.title") %></h1>
+<div class="home-text"><%=  t("#{current_partner.id}.partner.description.text", thesis_guide_link: I18n.t("#{current_partner.id}.partner.thesis_guide")).html_safe %></div>

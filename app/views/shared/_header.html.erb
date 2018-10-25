@@ -20,23 +20,28 @@
       <div class="row">
         <div id=top-navigation class="col-xs-8 col-sm-7">
           <ul class="list-inline navbar-list">
-            <% unless request['controller'] == 'application' && request['action'] == 'index' %>
-              <li>
-                <%= link_to "Home", root_path, class: 'btn btn-default' %>
-              </li>
-            <% end %>
-            <%#= render partial: 'shared/search_browse_links' %>
+            <li class= "<%= top_nav_active?('home') %>">
+              <%= link_to "Home", root_path, class: 'btn btn-default ' %>
+            </li>
+            <li>
+              <%= link_to 'Explore', EtdUrls.new.explore, class: 'btn btn-default navbar-btn' %>
+            </li>
+            <li class="<%= top_nav_active?('about') %>">
+              <%= link_to 'About', about_page_path, class: 'btn btn-default navbar-btn' %>
+            </li >
             <% if session[:user_role] == 'author' %>
-              <li>
-                <%= link_to "Contact Us", author_email_contact_form_new_path, class: 'btn btn-default' %>
+              <li class="<%= top_nav_active?('email') %>">
+              <%= link_to 'Contact Us', author_email_contact_form_new_path, class: 'btn btn-default ' %>
               </li>
             <% end %>
-          </ul>
+        </ul>
         </div>
+
+
         <div class="col-xs-4 col-sm-5">
           <!--<div class="pull-right">-->
           <% unless session[:user_name].present? %>
-            <%= link_to 'Log In', :login, class: "btn btn-default btn-sm navbar-btn pull-right" %>
+            <%= link_to 'Log In', :login, class: "btn btn-default btn-sm navbar-btn" %>
           <% else %>
             <span class="navbar-text small hidden-xs">Logged in as <%= session[:user_name] || current_author.access_id || current_admin.access_id %></span>
             <%= link_to 'Log Out', :logout, class: "btn btn-default btn-sm navbar-btn" %>

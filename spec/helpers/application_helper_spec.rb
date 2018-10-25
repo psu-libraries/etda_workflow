@@ -96,4 +96,30 @@ RSpec.describe ApplicationHelper do
       expect(confidential_tag_helper(author)).to eq(" <span class='confidential-alert xxs' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='confidential hold'><span class='fa fa-warning'></span></span><span class='sr-only'>#{author.first_name} #{author.last_name} has a confidential hold</span>")
     end
   end
+
+  describe '#top_nav_active?' do
+    it 'returns active class for home' do
+      allow(controller).to receive(:controller_name).and_return('submissions')
+      expect(top_nav_active?('home')).to eq('active')
+      expect(top_nav_active?('about')).not_to eq('active')
+      allow(controller).to receive(:controller_name).and_return('bogus')
+      expect(top_nav_active?('home')).not_to eq('active')
+    end
+    it 'returns active class for about' do
+      allow(controller).to receive(:controller_name).and_return('application')
+      allow(controller).to receive(:action_name).and_return('about')
+      expect(top_nav_active?('about')).to eq('active')
+      expect(top_nav_active?('home')).not_to eq('active')
+      allow(controller).to receive(:action_name).and_return('bogus')
+      expect(top_nav_active?('about')).not_to eq('active')
+    end
+    it 'returns active class for email contact form' do
+      allow(controller).to receive(:controller_name).and_return('email_contact_form')
+      expect(top_nav_active?('email')).to eq('active')
+      expect(top_nav_active?('about')).not_to eq('active')
+      expect(top_nav_active?('home')).not_to eq('active')
+      allow(controller).to receive(:controller_name).and_return('bogus')
+      expect(top_nav_active?('email')).not_to eq('active')
+    end
+  end
 end

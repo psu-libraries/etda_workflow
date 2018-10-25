@@ -41,6 +41,12 @@ RSpec.describe ApplicationController, type: :controller do
     end
   end
 
+  describe '#about' do
+    it 'displays the about page' do
+      expect(get: '/about').to route_to(controller: 'application', action: 'about')
+    end
+  end
+
   describe '#autocomplete' do
     it 'returns an array of employee names to use in committee member form' do
       expect(get: '/committee_members/autocomplete?term=Smith').to route_to(controller: 'application', action: 'autocomplete', term: 'Smith')
