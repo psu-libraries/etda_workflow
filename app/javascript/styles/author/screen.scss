@@ -26,9 +26,7 @@
 .progress-indicator {
   .step {
     @extend .clearfix !optional;
-    //margin-bottom: 5px;
     position: relative;
-    //padding-top: 1em;
 
     .number {
       border: 1px solid $gray-med-dark;
@@ -203,7 +201,7 @@
   padding-bottom: 1.5em;
 }
 .new-button {
-  margin: 3em .5em;
+  margin: 1em .5em;
 }
 ul.navbar-list {
   list-style: none;

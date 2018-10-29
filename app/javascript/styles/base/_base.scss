@@ -85,10 +85,10 @@ header {
     }
     #top-navigation ul {
       li a{
-      background-color: whitesmoke; }
+      background-color: whitesmoke;
+      font-weight: bold;}
       li.active a {
         color: blue;
-        font-weight: bold;
         background-color: white;
       }
     }
