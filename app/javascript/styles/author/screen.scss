@@ -47,10 +47,6 @@
     .information {
       display: block;
       width: 100%;
-      @media screen and (min-width: 768px) {
-        width: 75%;
-      }
-
 
       .description {
        @media screen and (min-width: 768px) {
@@ -157,13 +153,7 @@
         padding-top: 0;
         width: 100%;
         color: inherit;
-        @media screen and (min-width: 768px) {
-          position: relative;
-          top: 2.5em;
-          right: 2.5em;
-          width: 75%;
-        }
-     }
+      }
 
       &.step-4, &.step-6 {
         .description {
@@ -181,18 +171,12 @@
       .information {
         display: inline-block;
         width: 100%;
-        @media screen and (min-width: 768px) {
-          width: 75%;
-        }
 
         .description {
           display: inline-block;
           margin-top: 0px;
           margin: 0px;
           font-size: 16px;
-          @media screen and (min-width: 768px) {
-            top: 2.5em;
-          }
         }
       }
   }

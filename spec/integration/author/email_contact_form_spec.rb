@@ -22,7 +22,7 @@ RSpec.describe "Email Contact Form", js: true do
       expect(page).not_to have_link('Please direct questions to Ask!')
     end
     it "displays a service header" do
-      expect(page).to have_selector('h2', text: 'Contact Us')
+      expect(page).to have_selector('h1', text: 'Contact Us')
     end
     it "displays the contact email form initialized with author information" do
       expect(page).to have_xpath("//input[@value='Send']")
