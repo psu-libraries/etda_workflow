@@ -56,7 +56,7 @@ class Submission < ApplicationRecord
             :keywords,
             :access_level,
             :has_agreed_to_terms,
-            :has_agreed_to_publication_release,
+            # :has_agreed_to_publication_release,
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && s.author_edit }
 
   validates :defended_at,

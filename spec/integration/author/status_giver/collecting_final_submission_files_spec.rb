@@ -107,7 +107,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
-        check 'I agree to release agreement'
+        # check 'I agree to release agreement'
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
@@ -140,7 +140,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         check 'I agree to copyright statement'
-        check 'I agree to release agreement'
+        # check 'I agree to release agreement'
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload

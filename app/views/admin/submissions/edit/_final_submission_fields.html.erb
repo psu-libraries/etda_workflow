@@ -49,8 +49,8 @@
   <%= render 'shared/copyright_statement' %>
   <%= f.input :has_agreed_to_terms, label: 'I agree to copyright statement', as: :boolean, wrapper: :vertical_boolean, required: true %>
 
-  <%= render 'shared/release_statement' %>
-  <%= f.input :has_agreed_to_publication_release, label: 'I agree to release agreement', as: :boolean, wrapper: :vertical_boolean, required: true %>
+  <%#= render 'shared/release_statement' %>
+  <%#= f.input :has_agreed_to_publication_release, label: 'I agree to release agreement', as: :boolean, wrapper: :vertical_boolean, required: true %>
 
   <%= f.input :final_submission_notes, as: :text, label: "Final Submission Notes to Student", input_html: { class: 'can-toggle-editability' } %>
 </div>
