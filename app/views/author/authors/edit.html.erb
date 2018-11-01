@@ -3,5 +3,5 @@
     <h1>Update Contact Information</h1>
   </div>
 </div>
-
+<%= render partial: "author/shared/confidential_information" if @author.confidential? %>
 <%= render partial: "contact_info_form" %>
