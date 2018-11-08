@@ -11,10 +11,10 @@
   <%= javascript_pack_tag 'author' %>
   <%= csrf_meta_tags %>
 </head>
-<%= render 'shared/header' %>
 <body class="<%= page_classes %>">
 
 <div id="body-container">
+  <%= render 'shared/header' %>
 
   <%#= HERE IS WHERE login goes for author and one for Admin Users %>
   <main>
@@ -31,6 +31,7 @@
       </div>
   </main>
 </div>
-</body>
 
 <%= render 'shared/site_footer' %>
+</body>
+</html>
