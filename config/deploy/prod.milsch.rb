@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# config/deploy/stage.milsch.rb
+# config/deploy/prod.milsch.rb
 set :stage, 'prod'
 set :partner, 'milsch'
 set :deploy_to, "/opt/deploy/etda_workflow_milsch"

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# config/deploy/stage.honors.rb
+# config/deploy/prod.honors.rb
 set :stage, 'prod'
 set :partner, 'honors'
 set :deploy_to, "/opt/deploy/etda_workflow_honors"

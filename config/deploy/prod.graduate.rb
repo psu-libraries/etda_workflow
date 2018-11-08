@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# config/deploy/stage.graduate.rb
+# config/deploy/prod.graduate.rb
 set :stage, 'prod'
 set :partner, 'graduate'
 set :deploy_to, "/opt/deploy/etda_workflow_graduate"
