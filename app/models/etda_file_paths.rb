@@ -9,10 +9,6 @@ class EtdaFilePaths < EtdaUtilities::EtdaFilePaths
     EXPLORE_BASE_PATH
   end
 
-  def this_host
-    Rails.application.secrets.webaccess[:path] + '/'
-  end
-
   def move_a_file(fid, original_file_location)
     error_msg = ''
 

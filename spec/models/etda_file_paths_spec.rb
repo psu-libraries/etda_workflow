@@ -38,11 +38,4 @@ RSpec.describe EtdaFilePaths, type: :model do
       expect(described_class.new.explore_open).to eql("#{explore_path}open_access/")
     end
   end
-
-  context '#this_host' do
-    it 'returns the host from the secrets file' do
-      host_path = Rails.application.secrets.webaccess[:path] + '/'
-      expect(described_class.new.this_host).to eql(host_path)
-    end
-  end
 end
