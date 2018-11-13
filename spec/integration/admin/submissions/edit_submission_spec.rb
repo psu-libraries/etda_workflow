@@ -70,7 +70,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     end
     expect(page).to have_content("Marked for deletion [undo]")
     click_button 'Update Metadata'
-    sleep(8)
+    sleep(10)
     expect(page).to have_content('success')
     visit admin_edit_submission_path(submission)
     sleep 8
@@ -99,5 +99,33 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     visit admin_edit_submission_path(final_submission)
     sleep 8
     expect(page).not_to have_link('final_submission_file_01.pdf')
+  end
+  it 'Allows admin to upload multiple final submission files' do
+    visit admin_edit_submission_path(final_submission)
+    expect(page).not_to have_link('final_submission_file_01.pdf')
+    expect(page).not_to have_link('final_submission_file_02.docx')
+    within('#final-submission-information') do
+      click_link "Additional File"
+      all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
+
+      click_link "Additional File"
+      all('input[type="file"]').last.set(fixture('final_submission_file_02.docx'))
+    end
+    click_button 'Update Metadata'
+    sleep 8
+    visit admin_edit_submission_path(final_submission)
+    expect(page).to have_link('final_submission_file_01.pdf')
+    expect(page).to have_link('final_submission_file_02.docx')
+    within('#final-submission-information') do
+      delete_link = find_all('a#file_delete_link').first
+      delete_link.trigger('click')
+    end
+    expect(page).to have_content("Marked for deletion [undo]")
+    click_button 'Update Metadata'
+    sleep 5
+    visit admin_edit_submission_path(final_submission)
+    sleep 8
+    expect(page).not_to have_link('final_submission_file_01.pdf')
+    expect(page).to have_link('final_submission_file_02.docx')
   end
 end

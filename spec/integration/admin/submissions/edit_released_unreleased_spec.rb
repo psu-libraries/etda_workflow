@@ -87,7 +87,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     expect(page.find_field("Graduation Year").value).to eq 1.year.from_now.year.to_s
     page.find('div[data-target="#committee"]').click
 
-    sleep 3
+    sleep 5
     # within('#committee') do
     expect(page.find_field("Committee role").value).to eq role.id.to_s
     expect(page.find_field("Name").value).to eq "Bob Tester"
