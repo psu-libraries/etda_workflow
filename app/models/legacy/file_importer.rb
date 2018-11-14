@@ -10,7 +10,6 @@ class Legacy::FileImporter
     # copies entire directory structure
     path_builder = EtdaFilePaths.new
     source_path = SourcePath.new('format_review_files', source_file_path)
-
     if file_count(path_builder.workflow_upload_format_review_path).positive?
       @import_logger.info "Quitting -- Destination directory (#{path_builder.workflow_upload_format_review_path} is not empty"
       abort('Destination directories must be empty to import files.')
@@ -32,11 +31,13 @@ class Legacy::FileImporter
     # copies each file using access_level and status to determine the correct destination path
     path_builder = EtdaFilePaths.new
     source_path = SourcePath.new('final_submission_files', source_file_path)
-    @original_count = FinalSubmissionFile.all.count
+ #   @original_count = FinalSubmissionFile.all.count
     if destination_files_exist?('final_submission_files') && !Rails.env.test?
       @import_logger.info "Quitting -- Destination directories for final submission files are not empty"
       abort('Destination directories must be empty')
     end
+    @original_count = file_count(source_path.base)
+    @import_logger.info "Original Count - Number of Final Submission Files in #{source_path.base} : #{@original_count}"
     begin
       FinalSubmissionFile.find_each do |final_file|
         submission = Submission.find(final_file.submission_id)
@@ -83,6 +84,8 @@ class Legacy::FileImporter
   end
 end
 
+# production source path base will look like this:   /legacy_prod/etda-graduate/  or /legacy-qa/etda-honors/  or /legacy-stage/etda-milsch/, etc.
+# development & test source path base is the source_path parameter w/o changes
 class SourcePath
   def initialize(file_type, source_path)
     @file_type = file_type
