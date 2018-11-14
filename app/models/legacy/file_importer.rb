@@ -4,6 +4,7 @@ class Legacy::FileImporter
     @import_logger = Logger.new("log/#{current_partner.id}_file_import.log")
     @original_count = 0
     @files_copied = 0
+    @missing_file_name = 0
   end
 
   def copy_format_review_files(source_file_path)
@@ -21,6 +22,8 @@ class Legacy::FileImporter
       FileUtils.copy_entry(source_path.base, path_builder.workflow_upload_format_review_path, :noop)
       @files_copied = file_count(path_builder.workflow_upload_format_review_path)
       @import_logger.info "New Count - Number of Format Review Files in #{path_builder.workflow_upload_format_review_path} : #{@files_copied}"
+      @import_logger.info "Number of Files without a name:  #{@missing_file_name}"
+      @display_logger.info "FORMAT REVIEW -- Original Count:  #{@original_count}"
       @display_logger.info "Total of #{@files_copied} files were copied.  See logs for more information"
     rescue StandardError
       @import_logger.log("Quitting: Error occurred")
@@ -31,7 +34,6 @@ class Legacy::FileImporter
     # copies each file using access_level and status to determine the correct destination path
     path_builder = EtdaFilePaths.new
     source_path = SourcePath.new('final_submission_files', source_file_path)
- #   @original_count = FinalSubmissionFile.all.count
     if destination_files_exist?('final_submission_files') && !Rails.env.test?
       @import_logger.info "Quitting -- Destination directories for final submission files are not empty"
       abort('Destination directories must be empty')
@@ -50,7 +52,9 @@ class Legacy::FileImporter
           copy_the_file(source_full_path, destination_path.full_path_for_final_submissions + file_detail_path, final_file.asset_identifier)
         end
       end
+      @display_logger.info "FINAL SUBMISSION -- Original Count: #{@original_count}"
       @display_logger.info "Total of #{@files_copied} files were copied. See logs for more information"
+      @display_logger.info "Missing files count #{@missing_file_name}"
       @import_logger.info "Original File Count: #{@original_count} : Final file Count #{@files_copied}"
     rescue StandardError
         @import_logger.log('Quitting: error occurred')
@@ -60,6 +64,7 @@ class Legacy::FileImporter
   def copy_the_file(source_path, destination_path, file_name)
     if file_name.nil?
       @import_logger.info 'missing file name'
+      @missing_file_name += 1
     elsif File.exist?(File.join(source_path, file_name))
       FileUtils.mkdir_p destination_path
       FileUtils.copy_entry(File.join(source_path, file_name), File.join(destination_path, file_name), :preserve, :noop)

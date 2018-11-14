@@ -22,6 +22,9 @@ echo 'Deleting Explore Files'
 rm -r explore_data_files/*
 echo 'Files deleted'
 
+echo 'Create list of duplicate authors in legacy database'
+RAILS_ENV=production PARTNER=$1 bin/rails db_update:dups:fix_authors[legacy,dry_run] >> log/duplicate_legacy_authors.log
+
 echo "Dropping $1 database"
 RAILS_ENV=production PARTNER=$1 bin/rails db:drop
 RAILS_ENV=production PARTNER=$1 bin/rails db:create
