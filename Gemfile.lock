@@ -246,7 +246,7 @@ GEM
       activesupport (>= 4.2)
       concurrent-ruby (~> 1.0.0)
       railties (>= 4.2)
-    rack (2.0.5)
+    rack (2.0.6)
     rack-protection (2.0.2)
       rack
     rack-proxy (0.6.3)
@@ -513,4 +513,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   1.16.3
+   1.17.1

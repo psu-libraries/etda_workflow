@@ -1,7 +1,7 @@
 namespace :db_update do
   namespace(:dups) do
     # rails db_update:dups:fix_authors[legacy] or
-    # rails db_update:dups:fix_authors[none, dry_run] --performs a dry run on the workflow database
+    # rails db_update:dups:fix_authors[none,dry_run] --performs a dry run on the workflow database
   desc "remove duplicate author records from database; adding a second parameter, 'dry_run', will show results without updating the database."
     task :fix_authors, [:db, :dry_run] =>  :environment do |_task, args|
       puts "Removing duplicate authors #{Time.zone.now}" unless Rails.env.test?

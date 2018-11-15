@@ -121,37 +121,42 @@ namespace :legacy do
 
    # rails legacy:import:all_files['/Users/jxb13/RailsWorkspace/etda/uploads/']
    # rails legacy:import:all_files['prod']
+   # rails legacy:import:all_files['qa',checksum]
+   # There should be no space between the comma separating parameters or the task will fail!
    desc "import all files, entering the source of the files as [qa], [stage], or [prod] or enter the full path for test and development."
-   task :all_files, [:source_files] => :environment do |_task, args|
+   task :all_files, [:source_files, :checksum] => :environment do |_task, args|
      file_source = args.source_files
+     skip_checksum = set_checksum(args.checksum || nil)
      file_source = file_source.downcase unless file_source.nil? || !Rails.env.production?
      abort(file_import_error_message) if parameter_invalid? file_source
      Rake::Task['legacy:import:copy_format_review_files'].invoke(file_source)
-     Rake::Task['legacy:import:copy_final_submission_files'].invoke(file_source)
+     Rake::Task['legacy:import:copy_final_submission_files'].invoke(file_source, skip_checksum)
    end
 
    # rails legacy:import:copy_format_review_files['/Users/jxb13/RailsWorkspace/etda/uploads/']
    # rails legacy:import:copy_format_review_files['prod']
    desc "copy format review files , entering the source of the files as [qa], [stage], or [prod].  For development, enter full path."
-   task :copy_format_review_files, [:source_files] => :environment do |_task, args|
+   task :copy_format_review_files, [:source_files, :checksum] => :environment do |_task, args|
      file_source = args.source_files
+     skip_checksum = set_checksum(args.checksum || nil)
      abort(file_import_error_message) if parameter_invalid? file_source
      file_importer = Legacy::FileImporter.new
-     file_importer.copy_format_review_files(file_source)
+     file_importer.copy_format_review_files(file_source, skip_checksum)
    end
 
    # rails legacy:import:copy_final_submission_files['/Users/jxb13/RailsWorkspace/etda/uploads/']
    # rails legacy:import:copy_final_submission_files['prod']
    desc "copy final submission files, entering the source of the files as [qa], [stage], or [prod].  For development, enter full path."
-   task :copy_final_submission_files, [:source_files] => :environment do |_task, args|
+   task :copy_final_submission_files, [:source_files, :checksum] => :environment do |_task, args|
      file_source = args.source_files
+     skip_checksum = set_checksum(args.checksum || nil)
      abort(file_import_error_message) if parameter_invalid? file_source
      if FinalSubmissionFile.all.count.zero?
        @import_logger.info "final_submission_files table is empty:  cannot continue."
        abort
      end
      file_importer = Legacy::FileImporter.new
-     file_importer.copy_final_submission_files(file_source)
+     file_importer.copy_final_submission_files(file_source, skip_checksum)
    end
 
    def legacy_database
@@ -179,6 +184,11 @@ namespace :legacy do
 
    def file_import_error_message
      "Missing source path information: enter 'qa', 'stage', or 'prod' when running production.  For test and development, enter the full path."
+   end
+
+   def set_checksum(checksum_param)
+     return true if checksum_param.nil?
+     false
    end
  end
 end

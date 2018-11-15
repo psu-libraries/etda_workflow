@@ -17,13 +17,13 @@ RSpec.describe Legacy::FileImporter do
     FinalSubmissionFile.create(asset: File.open(Rails.root.join('spec', 'fixtures', 'legacy', 'final_submission_files', '02', '2', 'FinalSubmissionFile_2.pdf')), submission_id: submission2.id)
     FinalSubmissionFile.create(asset: File.open(Rails.root.join('spec', 'fixtures', 'legacy', 'final_submission_files', '03', '3', 'FinalSubmissionFile_3.pdf')), submission_id: submission3.id)
     FinalSubmissionFile.create(asset: File.open(Rails.root.join('spec', 'fixtures', 'legacy', 'final_submission_files', '03', '3', 'RestrictedInstitutionThesis.pdf')), submission_id: restricted.id)
-    file_importer.copy_final_submission_files(Rails.root.join(base_path).to_s)
+    file_importer.copy_final_submission_files(Rails.root.join(base_path).to_s, true)
   end
 
   it 'imports format review files' do
     FileUtils.rm_rf Dir.glob(Rails.root.join('tmp', 'workflow', '*'))
     file_importer = described_class.new
     base_path = Rails.root.join('spec/fixtures/legacy/').to_s
-    file_importer.copy_format_review_files(Rails.root.join(base_path).to_s)
+    file_importer.copy_format_review_files(Rails.root.join(base_path).to_s, true)
   end
 end
