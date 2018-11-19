@@ -7,7 +7,7 @@ class Legacy::FileImporter
     @missing_file_name = 0
   end
 
-  def copy_format_review_files(source_file_path, _skip_verification)
+  def copy_format_review_files(source_file_path, skip_verification)
     # copies entire directory structure
     path_builder = EtdaFilePaths.new
     source_path = SourcePath.new('format_review_files', source_file_path)
@@ -16,18 +16,25 @@ class Legacy::FileImporter
       abort('Destination directories must be empty to import files.')
     end
     @original_count = total_file_count(source_path.base)
-    @import_logger.info "Original Count - Number of Format Review Files in #{source_path.base} : #{@original_count}"
+    record_message "Original Count - Number of Format Review Files in #{source_path.base} : #{@original_count}"
     begin
-      FileUtils.mkdir_p path_builder.workflow_upload_format_review_path
-      FileUtils.copy_entry(source_path.base, path_builder.workflow_upload_format_review_path, :noop)
-      @files_copied = total_file_count(path_builder.workflow_upload_format_review_path)
-      @import_logger.info "New Count - Number of Format Review Files in #{path_builder.workflow_upload_format_review_path} : #{@files_copied}"
-      @import_logger.info "Number of Files without a name:  #{@missing_file_name}"
-      @display_logger.info "FORMAT REVIEW -- Original Count:  #{@original_count}"
-      @display_logger.info "Total of #{@files_copied} files were copied.  See logs for more information"
-    rescue StandardError
-      @import_logger.log("Quitting: Error occurred")
-    end
+       FileUtils.mkdir_p path_builder.workflow_upload_format_review_path
+       if skip_verification
+         @import_logger.info "Copying files"
+         FileUtils.copy_entry(source_path.base, path_builder.workflow_upload_format_review_path, :noop)
+       else
+         @import_logger.info "Rsync files"
+         cmd = "rsync -vacx #{source_path.base} #{path_builder.workflow_upload_format_review_path}"
+         record_message "Executing command - #{cmd}"
+         system cmd.to_s
+       end
+       @files_copied = total_file_count(path_builder.workflow_upload_format_review_path)
+       record_message "FORMAT REVIEW -- Original Count:  #{@original_count}"
+       record_message "Total of #{@files_copied} files were copied.  See logs for more information"
+       @display_logger.info "See logs for more information"
+     rescue StandardError
+       @import_logger.log("Quitting: Error occurred")
+     end
   end
 
   def copy_final_submission_files(source_file_path, skip_verification)
@@ -39,7 +46,7 @@ class Legacy::FileImporter
       abort('Destination directories must be empty')
     end
     @original_count = total_file_count(source_path.base)
-    @import_logger.info "Original Count - Number of Final Submission Files in #{source_path.base} : #{@original_count}"
+    record_message "Original Count - Number of Final Submission Files in #{source_path.base} : #{@original_count}"
     begin
       FinalSubmissionFile.find_each do |final_file|
         submission = Submission.find(final_file.submission_id)
@@ -49,33 +56,26 @@ class Legacy::FileImporter
           file_detail_path = path_builder.detailed_file_path(final_file.id)
           source_full_path = source_path.base + file_detail_path
           destination_path = SubmissionFilePath.new(submission)
-          copy_the_file(source_full_path, destination_path.full_path_for_final_submissions + file_detail_path, final_file.asset_identifier, skip_verification)
+          copy_the_file(source_full_path, destination_path.full_path_for_final_submissions + file_detail_path, final_file.asset_identifier, skip_verification) if verify_the_file(source_full_path, final_file.asset_identifier)
         end
       end
-      @display_logger.info "FINAL SUBMISSION -- Original Count: #{@original_count}"
-      @display_logger.info "Total of #{@files_copied} files were copied. See logs for more information"
-      @display_logger.info "Missing files count #{@missing_file_name}"
-      @import_logger.info "Original File Count: #{@original_count} : Final file Count #{@files_copied}"
+      record_message "FINAL SUBMISSION -- Original Count: #{@original_count}"
+      record_message "Total of #{@files_copied} files were copied. See logs for more information"
+      record_message "Missing files count #{@missing_file_name}"
     rescue StandardError
-        @import_logger.log('Quitting: error occurred')
+        record_message 'Quitting: error occurred'
+        abort
     end
   end
 
   def copy_the_file(source_path, destination_path, file_name, skip_verification)
-    if file_name.nil?
-      @import_logger.info 'database record has missing file name'
-      @missing_file_name += 1
-    elsif File.exist?(File.join(source_path, file_name))
-      FileUtils.mkdir_p destination_path
-      original_checksum = skip_verification ? 0 : build_checksum(source_path, file_name)
-      FileUtils.copy_entry(File.join(source_path, file_name), File.join(destination_path, file_name), :preserve, :noop)
-      return unless verify_checksums(original_checksum, destination_path, file_name, skip_verification)
-
-      @files_copied += 1
-    else
-      @import_logger.info "Legacy file not found: #{source_path}#{file_name}"
-      @display_logger.info "Legacy file not found: #{source_path}#{file_name}"
-    end
+    files_ok = true
+    FileUtils.mkdir_p destination_path
+    original_checksum = build_checksum(source_path, file_name) unless skip_verification
+    FileUtils.copy_entry(File.join(source_path, file_name), File.join(destination_path, file_name), :preserve, :noop)
+    new_checksum = build_checksum(destination_path, file_name) unless skip_verification
+    files_ok = verify_checksums(original_checksum, new_checksum) unless skip_verification
+    @files_copied += 1 if files_ok
   end
 
   def total_file_count(file_directory)
@@ -91,24 +91,38 @@ class Legacy::FileImporter
     # || total_file_count(path_builder.explore_base_path).positive?
   end
 
-  def verify_checksums(original_checksum, destination_path, filename, skip_verification)
-    return true if skip_verification
+  def verify_checksums(original_checksum, new_checksum)
+    result = original_checksum.hexdigest.eql? new_checksum.hexdigest
+    original_checksum.reset
+    new_checksum.reset
+    result
+  end
 
-    begin
-      new_checksum = build_checksum(destination_path, filename)
-
-      return true if original_checksum.hexdigest.eql? new_checksum.hexdigest
-    rescue Errno::ENOENT => e
-      @import_logger.info e.message.to_s
-      msg = "File not found when building checksum:  #{file_path}/#{filename}"
-      @import_logger.info msg
-      @display_logger.info msg
-      false
+  def verify_the_file(source_path, filename)
+    if filename.empty?
+      @import_logger.info "Database record has missing file name for path #{source_path}"
+      @missing_file_name += 1
+      return false
     end
+    unless File.exist?(File.join(source_path, filename))
+      record_message "Legacy file not found: #{source_path}#{filename}"
+      return false
+    end
+    true
   end
 
   def build_checksum(file_path, filename)
-    Digest::MD5.file(File.join(file_path, filename))
+      Digest::MD5.new.file(File.join(file_path, filename))
+  rescue Errno::ENOENT => e
+      @import_logger.info e.message.to_s
+      msg = "File not found when building checksum:  #{file_path}/#{filename}"
+      record_message msg
+      false
+  end
+
+  def record_message(msg)
+    @display_logger.info msg
+    @import_logger.info msg
   end
 end
 # production source path base will look like this:   /legacy_prod/etda-graduate/  or /legacy-qa/etda-honors/  or /legacy-stage/etda-milsch/, etc.

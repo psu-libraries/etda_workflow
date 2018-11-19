@@ -26,7 +26,7 @@ echo 'Create list of duplicate authors in legacy database'
 RAILS_ENV=production PARTNER=$1 bin/rails db_update:dups:fix_authors[legacy,dry_run] >> log/duplicate_legacy_authors.log
 
 echo "Dropping $1 database"
-RAILS_ENV=production PARTNER=$1 bin/rails db:drop
+RAILS_ENV=production PARTNER=$1 bin/rails db:drop DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 RAILS_ENV=production PARTNER=$1 bin/rails db:create
 RAILS_ENV=production PARTNER=$1 bin/rails db:migrate
 echo "Empty $1 database created"

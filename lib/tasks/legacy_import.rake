@@ -121,44 +121,53 @@ namespace :legacy do
 
    # rails legacy:import:all_files['/Users/jxb13/RailsWorkspace/etda/uploads/']
    # rails legacy:import:all_files['prod']
-   # rails legacy:import:all_files['qa',verify]
+   # rails legacy:import:all_files['qa',verify_files]
    # There should be no space between the comma separating parameters or the task will fail!
    desc "import all files, entering the source of the files as [qa], [stage], or [prod] or enter the full path for test and development."
-   task :all_files, [:source_files, :verify] => :environment do |_task, args|
+   task :all_files, [:source_files, :verify_files] => :environment do |_task, args|
      file_source = args.source_files
-     skip_verification = set_verification(args.verify || nil)
+#     skip_verification = set_verification(args.verify_files)
      file_source = file_source.downcase unless file_source.nil? || !Rails.env.production?
      abort(file_import_error_message) if parameter_invalid? file_source
-     Rake::Task['legacy:import:copy_format_review_files'].invoke(file_source, verify)
-     Rake::Task['legacy:import:copy_final_submission_files'].invoke(file_source, verify)
+     verify_param = args.verify_files.present? ? 'verify_files' : nil
+     Rake::Task['legacy:import:copy_format_review_files'].invoke(file_source,verify_param)
+     Rake::Task['legacy:import:copy_final_submission_files'].invoke(file_source,verify_param)
    end
 
    # rails legacy:import:copy_format_review_files['/Users/jxb13/RailsWorkspace/etda/uploads/']
-   # rails legacy:import:copy_format_review_files[qa]
-   # rails legacy:import:copy_format_review_files[prod,verify]
-   desc "copy format review files , entering the source of the files as [qa], [stage], or [prod].  For development, enter full path."
-   task :copy_format_review_files, [:source_files, :verify] => :environment do |_task, args|
+   # rails legacy:import:copy_format_review_files[qa,verify_files]
+   # rails legacy:import:copy_format_review_files[prod,verify_files]
+   # rails legacy:import:copy_format_review_files[prod]
+   desc "copy format review files, entering the source of the files as [qa], [stage], or [prod].  For development, enter full path."
+   task :copy_format_review_files, [:source_files, :verify_files] => :environment do |_task, args|
      file_source = args.source_files
-     skip_verification = set_verification(args.verify || nil)
+     skip_verification = set_verification(args[:verify_files])
      abort(file_import_error_message) if parameter_invalid? file_source
      file_importer = Legacy::FileImporter.new
+     msg = skip_verification ? 'Copying directory using FileUtil' : 'Copying directory using Rsync'
+     file_importer.record_message msg
      file_importer.copy_format_review_files(file_source, skip_verification)
+     file_importer.record_message "Finished Format Review Files: " + Time.now.to_s
    end
 
    # rails legacy:import:copy_final_submission_files['/Users/jxb13/RailsWorkspace/etda/uploads/']
    # rails legacy:import:copy_final_submission_files[prod]
-   # rails legacy:import:copy_final_submission_files[qa,verify]
+   # rails legacy:import:copy_final_submission_files[qa,verify_files]
    desc "copy final submission files, entering the source of the files as [qa], [stage], or [prod].  For development, enter full path."
-   task :copy_final_submission_files, [:source_files, :verify] => :environment do |_task, args|
+   task :copy_final_submission_files, [:source_files, :verify_files] => :environment do |_task, args|
      file_source = args.source_files
-     skip_verification = set_verfication(args.verify || nil)
+     skip_verification = set_verification(args[:verify_files])
      abort(file_import_error_message) if parameter_invalid? file_source
      if FinalSubmissionFile.all.count.zero?
-       @import_logger.info "final_submission_files table is empty:  cannot continue."
-       abort
+       msg = "final_submission_files table is empty:  cannot continue."
+       @import_logger.log msg
+       abort(msg)
      end
      file_importer = Legacy::FileImporter.new
+     msg = "Copying files with#{skip_verification ? 'out verification' : ' Checksum verification'}"
+     file_importer.record_message msg
      file_importer.copy_final_submission_files(file_source, skip_verification)
+     file_importer.record_message "Finished Final Submission Files: " +  Time.now.to_s
    end
 
    def legacy_database
@@ -190,7 +199,8 @@ namespace :legacy do
 
    def set_verification(verify_param)
      return true if verify_param.nil?
-     false
+     return false if verify_param == 'verify_files'
+     true
    end
  end
 end
