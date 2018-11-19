@@ -7,7 +7,7 @@ class Legacy::FileImporter
     @missing_file_name = 0
   end
 
-  def copy_format_review_files(source_file_path, _skip_checksum)
+  def copy_format_review_files(source_file_path, _skip_verification)
     # copies entire directory structure
     path_builder = EtdaFilePaths.new
     source_path = SourcePath.new('format_review_files', source_file_path)
@@ -30,7 +30,7 @@ class Legacy::FileImporter
     end
   end
 
-  def copy_final_submission_files(source_file_path, skip_checksum)
+  def copy_final_submission_files(source_file_path, skip_verification)
     # copies each file using access_level and status to determine the correct destination path
     path_builder = EtdaFilePaths.new
     source_path = SourcePath.new('final_submission_files', source_file_path)
@@ -49,7 +49,7 @@ class Legacy::FileImporter
           file_detail_path = path_builder.detailed_file_path(final_file.id)
           source_full_path = source_path.base + file_detail_path
           destination_path = SubmissionFilePath.new(submission)
-          copy_the_file(source_full_path, destination_path.full_path_for_final_submissions + file_detail_path, final_file.asset_identifier, skip_checksum)
+          copy_the_file(source_full_path, destination_path.full_path_for_final_submissions + file_detail_path, final_file.asset_identifier, skip_verification)
         end
       end
       @display_logger.info "FINAL SUBMISSION -- Original Count: #{@original_count}"
@@ -61,15 +61,15 @@ class Legacy::FileImporter
     end
   end
 
-  def copy_the_file(source_path, destination_path, file_name, skip_checksum)
+  def copy_the_file(source_path, destination_path, file_name, skip_verification)
     if file_name.nil?
       @import_logger.info 'database record has missing file name'
       @missing_file_name += 1
     elsif File.exist?(File.join(source_path, file_name))
       FileUtils.mkdir_p destination_path
-      original_checksum = skip_checksum ? 0 : build_checksum(source_path, filename)
+      original_checksum = skip_verification ? 0 : build_checksum(source_path, file_name)
       FileUtils.copy_entry(File.join(source_path, file_name), File.join(destination_path, file_name), :preserve, :noop)
-      return unless verify_checksums(original_checksum, destination_path, file_name, skip_checksum)
+      return unless verify_checksums(original_checksum, destination_path, file_name, skip_verification)
 
       @files_copied += 1
     else
@@ -91,23 +91,26 @@ class Legacy::FileImporter
     # || total_file_count(path_builder.explore_base_path).positive?
   end
 
-  def verify_checksums(original_checksum, destination_path, filename, skip_checksum)
-    return true if skip_checksum
+  def verify_checksums(original_checksum, destination_path, filename, skip_verification)
+    return true if skip_verification
 
-    new_checksum = build_checksum(destination_path, filename)
-    return true if original_checksum.eql? new_checksum
+    begin
+      new_checksum = build_checksum(destination_path, filename)
 
-    msg = "Checksum error: #{source_path}#{file_name}, #{destination_path}#{filename}"
-    @import_logger.info msg
-    @display_logger.info msg
-    false
+      return true if original_checksum.hexdigest.eql? new_checksum.hexdigest
+    rescue Errno::ENOENT => e
+      @import_logger.info e.message.to_s
+      msg = "File not found when building checksum:  #{file_path}/#{filename}"
+      @import_logger.info msg
+      @display_logger.info msg
+      false
+    end
   end
 
   def build_checksum(file_path, filename)
-    Digest::MD5.digest(File.read(File.join(file_path, filename)))
+    Digest::MD5.file(File.join(file_path, filename))
   end
 end
-
 # production source path base will look like this:   /legacy_prod/etda-graduate/  or /legacy-qa/etda-honors/  or /legacy-stage/etda-milsch/, etc.
 # development & test source path base is the source_path parameter w/o changes
 class SourcePath
