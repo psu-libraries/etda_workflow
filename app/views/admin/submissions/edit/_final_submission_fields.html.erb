@@ -48,6 +48,7 @@
   </div>
   <%= render 'shared/copyright_statement' %>
   <%= f.input :has_agreed_to_terms, label: 'I agree to copyright statement', as: :boolean, wrapper: :vertical_boolean, required: true %>
+  <%= render partial: 'shared/final_submission_confidential_hold_checkbox', locals: {f: f} if @submission.author.confidential? %>
 
   <%#= render 'shared/release_statement' %>
   <%#= f.input :has_agreed_to_publication_release, label: 'I agree to release agreement', as: :boolean, wrapper: :vertical_boolean, required: true %>

@@ -15,7 +15,7 @@ module Devise
             obj.populate_attributes
           else
             obj = a
-            obj.update_missing_attributes
+            obj.refresh_important_attributes
           end
           success!(obj)
         else

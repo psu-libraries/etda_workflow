@@ -1,7 +1,7 @@
 language: ruby
 cache: bundler
 bundler_args: "--without development debug"
-sudo: required
+# sudo: required
 #rvm:
 #- 2.4.3
 jdk:

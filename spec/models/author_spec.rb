@@ -121,18 +121,18 @@ RSpec.describe Author, type: :model do
     end
   end
 
-  context '#update_missing_attributes' do
+  context '#refresh_important_attributes' do
     it 'populates PSU id number if it is not present' do
       author = described_class.new(access_id: 'testid')
       expect(author.psu_idn).to be_nil
-      author.update_missing_attributes
+      author.refresh_important_attributes
       expect(author.psu_idn).not_to be_nil
     end
-    it 'does not update PSU idn number if it already has a value' do
+    it 'updates PSU idn number if it already has a value' do
       author = described_class.new(access_id: 'testid')
       author.psu_idn = 'xxxxxxxxx'
-      author.update_missing_attributes
-      expect(author.psu_idn).to eq('xxxxxxxxx')
+      author.refresh_important_attributes
+      expect(author.psu_idn).not_to eq('xxxxxxxxx')
     end
   end
 

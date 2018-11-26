@@ -64,7 +64,7 @@ RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
       it 'does not populate attributes' do
         expect(Author).to receive(:create).with(access_id: author.access_id).never
         expect_any_instance_of(Author).to receive(:populate_attributes).never
-        expect_any_instance_of(Author).to receive(:update_missing_attributes).once
+        expect_any_instance_of(Author).to receive(:refresh_important_attributes).once
         # expect(subject).to be_valid
         expect(subject.authenticate!).to eq(:success)
       end

@@ -64,7 +64,7 @@ class Author < ApplicationRecord
   end
 
   def populate_attributes
-    update_confidential_status(access_id)
+    refresh_confidential_status(access_id)
     populate_with_ldap_attributes
     populate_lion_path_record psu_idn, access_id
     self
@@ -100,12 +100,10 @@ class Author < ApplicationRecord
 
   def retrieve_lion_path_information; end
 
-  def update_missing_attributes
-    update_confidential_status(access_id)
-    if psu_idn.blank?
-      ldap_psu_idn = LdapUniversityDirectory.new.get_psu_id_number(access_id)
-      update_attribute :psu_idn, ldap_psu_idn
-    end
+  def refresh_important_attributes
+    refresh_confidential_status(access_id)
+    ldap_psu_idn = LdapUniversityDirectory.new.get_psu_id_number(access_id)
+    update_attribute :psu_idn, ldap_psu_idn
     populate_lion_path_record(psu_idn, access_id)
     self
   end
@@ -168,12 +166,12 @@ class Author < ApplicationRecord
       true
     end
 
-    def update_confidential_status(login_id)
+    def refresh_confidential_status(login_id)
       confidential_hold_status = ConfidentialHoldUtility.new(login_id, confidential_hold)
       return unless confidential_hold_status.changed?
 
       # send emails and save the new status
-      confidential_hold_status.send_confidential_status_notifications(self)
+      # confidential_hold_status.send_confidential_status_notifications(self)
       self.confidential_hold = confidential_hold_status.new_confidential_status
       self.confidential_hold_set_at = confidential_hold_status.hold_set_at(confidential_hold_set_at, confidential_hold_status.new_confidential_status)
       save(validate: false)

@@ -46,5 +46,5 @@ class Admin < ApplicationRecord
     save(validate: false)
   end
 
-  def update_missing_attributes; end
+  def refresh_important_attributes; end
 end
