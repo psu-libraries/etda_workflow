@@ -66,6 +66,7 @@ Metrics/ClassLength:
   - app/services/final_submission_update_service.rb
   - app/presenters/admin/submission_form_view.rb
   - app/models/legacy/file_importer.rb
+  - app/models/ldap_result.rb
 
 
 Metrics/CyclomaticComplexity:
