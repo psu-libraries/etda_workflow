@@ -324,7 +324,7 @@ RSpec.describe Author::SubmissionView do
         end
 
         it 'returns approved' do
-          expect(view.step_four_status).to eq(partial_name: '/author/shared/completed_indicator', text: "reviewed on July 4, 2014")
+          expect(view.step_four_status).to eq(partial_name: '/author/shared/completed_indicator', text: "review completed on July 4, 2014")
         end
       end
     end

@@ -111,7 +111,7 @@ class Author::SubmissionView < SimpleDelegator
   def step_four_status
     status = {}
     if status_behavior.beyond_waiting_for_format_review_response?
-      status[:text] = "reviewed#{formatted_timestamp_of(format_review_approved_at)}"
+      status[:text] = "review completed#{formatted_timestamp_of(format_review_approved_at)}"
       status[:partial_name] = '/author/shared/completed_indicator'
     elsif status_behavior.waiting_for_format_review_response?
       status[:partial_name] = '/author/shared/under_review_indicator'
