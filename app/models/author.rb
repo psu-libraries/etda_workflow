@@ -101,9 +101,17 @@ class Author < ApplicationRecord
   def retrieve_lion_path_information; end
 
   def refresh_important_attributes
+    # do not overwrite address, phone, etc.
+    ldap_attributes = LdapUniversityDirectory.new.retrieve(access_id, LdapResultsMap::AUTHOR_LDAP_MAP)
+    return if ldap_attributes.empty?
+
+    self.first_name = refresh(first_name, ldap_attributes[:first_name])
+    self.last_name = refresh(last_name, ldap_attributes[:last_name])
+    self.middle_name = refresh(middle_name, ldap_attributes[:middle_name])
+    self.psu_email_address = refresh(psu_email_address, ldap_attributes[:psu_email_address])
+    self.psu_idn = refresh(psu_idn, ldap_attributes[:psu_idn])
+    save(validate: false)
     refresh_confidential_status(access_id)
-    ldap_psu_idn = LdapUniversityDirectory.new.get_psu_id_number(access_id)
-    update_attribute :psu_idn, ldap_psu_idn
     populate_lion_path_record(psu_idn, access_id)
     self
   end
@@ -166,6 +174,12 @@ class Author < ApplicationRecord
       true
     end
 
+    def refresh(original_val, new_val)
+      return original_val if new_val.blank?
+
+      new_val
+    end
+
     def refresh_confidential_status(login_id)
       confidential_hold_status = ConfidentialHoldUtility.new(login_id, confidential_hold)
       return unless confidential_hold_status.changed?
@@ -179,6 +193,7 @@ class Author < ApplicationRecord
 
     def save_mapped_attributes(mapped_attributes)
       if mapped_attributes[:confidential_hold]
+        # name unavailable bc of confidential hold; use access id
         mapped_attributes[:first_name] = access_id if mapped_attributes[:first_name].blank?
         mapped_attributes[:last_name] = 'No Associated Name' if mapped_attributes[:last_name].blank?
       end

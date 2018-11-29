@@ -122,17 +122,42 @@ RSpec.describe Author, type: :model do
   end
 
   context '#refresh_important_attributes' do
+    let(:author_update_results) { { access_id: 'testid', first_name: ' ', middle_name: 'Yhoo', last_name: 'Ilast', address_1: '0116 H Technology Sppt Bldg', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '814-865-4845', psu_idn: '988888888', confidential_hold: true } }
+
     it 'populates PSU id number if it is not present' do
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
       author = described_class.new(access_id: 'testid')
+      author.save(validate: false)
       expect(author.psu_idn).to be_nil
       author.refresh_important_attributes
       expect(author.psu_idn).not_to be_nil
     end
-    it 'updates PSU idn number if it already has a value' do
+    it 'updates PSU idn number' do
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
       author = described_class.new(access_id: 'testid')
       author.psu_idn = 'xxxxxxxxx'
+      author.save(validate: false)
       author.refresh_important_attributes
       expect(author.psu_idn).not_to eq('xxxxxxxxx')
+      expect(author.psu_idn).to eq('988888888')
+    end
+    it 'updates author name as long as the attribute is not blank in LDAP' do
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
+      author = described_class.new(access_id: 'testid')
+      author.last_name = 'beforelast'
+      author.first_name = 'beforefirst'
+      author.middle_name = 'middle'
+      author.middle_name = 'beforemiddle'
+      author.confidential_hold = nil
+      author.save(validate: false)
+      author.refresh_important_attributes
+      puts author.inspect
+      expect(author.psu_idn).not_to eq('xxxxxxxxx')
+      expect(author.psu_idn).to eq('988888888')
+      expect(author.last_name).to eq('Ilast')
+      expect(author.first_name).not_to eq(' ')
+      expect(author.first_name).to eq('beforefirst')
+      expect(author.middle_name).to eq('Yhoo')
     end
   end
 
