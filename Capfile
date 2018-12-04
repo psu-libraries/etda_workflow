@@ -25,6 +25,7 @@ require 'capistrano-resque' # resque
 require 'capistrano/rbenv_install' # rbenv install plugin
 require 'capistrano/rails/migrations'
 require 'capistrano/passenger'
+require 'capistrano/yarn'
 
 # Include tasks from other gems included in your Gemfile
 #

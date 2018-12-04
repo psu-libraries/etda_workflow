@@ -131,7 +131,7 @@ group :development, :test do
   gem 'simplecov', require: false
 
   # manages solr 5 for development (using latest version from master as of 11/12/2015)
-  gem 'solr_wrapper'   
+  gem 'solr_wrapper'
 
 end
 
@@ -150,7 +150,8 @@ group :development do
   gem 'capistrano-rbenv-install'
   gem 'capistrano-resque', '~> 0.2.1', require: false
   gem 'capistrano-passenger'
-
+  gem 'capistrano-yarn'
+  
   # ------------
   # gem 'net-sftp', '2.1.2'
   # gem 'net-ssh-gateway', '1.2.0'

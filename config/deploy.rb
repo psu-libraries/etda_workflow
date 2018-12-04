@@ -41,7 +41,7 @@ set :passenger_roles, :web
 
 # rails settings, NOTE: Task is wired into event stack
 set :rails_env, 'production'
-set :default_env, { 'NODE_ENV' => 'production' }
+# set :default_env, { 'NODE_ENV' => 'production' }
 
 # Settings for whenever gem that updates the crontab file on the server
 # See schedule.rb for details
@@ -95,9 +95,10 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
   'tmp/pids',
   'tmp/sockets',
   'uploads',
-  'vendor/bundle',
-  'public/packs',
-  'node_modules'
+  'vendor/bundle'
+#  'vendor/bundle',
+#  'public/packs',
+#  'node_modules'
 )
 
 namespace :deploy do
