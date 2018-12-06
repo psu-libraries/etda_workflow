@@ -96,7 +96,7 @@ class Admin::SubmissionsDashboardView
         id: 'final-restricted-institution',
         title: title_for('final_restricted_institution'),
         description: description_for('final_restricted_institution'),
-        path:  submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_restricted_institution",
+        path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_restricted_institution",
         count: submissions.empty? ? nil : submissions.count.to_s,
         sub_count: submissions.empty? ? nil : submissions.ok_to_release.count.to_s
       }
@@ -108,7 +108,7 @@ class Admin::SubmissionsDashboardView
         id: 'final-withheld',
         title: title_for('final_withheld'),
         description: description_for('final_withheld'),
-        path:  submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_withheld",
+        path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_withheld",
         count: submissions.empty? ? nil : submissions.count.to_s,
         sub_count: submissions.empty? ? nil : submissions.ok_to_release.count.to_s
       }

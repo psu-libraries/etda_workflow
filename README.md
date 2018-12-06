@@ -40,5 +40,8 @@
     
     The following example deploys the branch named ETDA-1111 to the QA server:
     `cap qa deploy_all BRANCH_NAME=ETDA-1111`
+    
+* When updating rails versions, be sure to rebuild webpack binary `bundle exec bin/rails webpacker:binstubs
+` respond with 'Y' to overwrite existing webpack & webpacker binaries    
 
  

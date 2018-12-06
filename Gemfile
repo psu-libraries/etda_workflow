@@ -7,7 +7,7 @@ source 'https://rubygems.org'
 # end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.4'
+gem 'rails', '~> 5.1.6.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '>= 0.3.18', '< 0.4.11'
 # Use Puma as the app server
@@ -118,8 +118,7 @@ group :development, :test do
   gem 'rubocop-rspec'
 
   # Adds support for Capybara system testing and selenium driver
-  # gem 'capybara', '~> 2.13'
-  gem 'capybara'
+  gem 'capybara', '~> 2.18'
   gem 'capybara-email'
 
   gem 'factory_bot_rails'

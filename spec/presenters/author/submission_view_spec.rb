@@ -9,7 +9,7 @@ RSpec.describe Author::SubmissionView do
     let(:degree) { FactoryBot.create :degree, name: 'Doctorate' }
     let(:submission) do
       FactoryBot.create :submission, program: program,
-                                     degree:  degree,
+                                     degree: degree,
                                      semester: 'Spring',
                                      year: Date.new(2016, 0o6, 0o1).year
     end

@@ -40,6 +40,7 @@ notifications:
   email:
     recipients:
     - jxb13@psu.edu
+    - ajk5603@psu.edu
     on_success: change
     on_failure: always
   irc:

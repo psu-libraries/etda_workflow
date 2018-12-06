@@ -28,7 +28,7 @@ class LdapUniversityDirectory
     if ldap_records.present?
       mapped_attributes = LdapResult.new(ldap_record: ldap_records,
                                          attribute_map: LdapResultsMap::AUTOCOMPLETE_LDAP_MAP[:map],
-                                         defaults:  LdapResultsMap::AUTOCOMPLETE_LDAP_MAP[:defaults]).map_directory_info
+                                         defaults: LdapResultsMap::AUTOCOMPLETE_LDAP_MAP[:defaults]).map_directory_info
       return mapped_attributes
     end
     []

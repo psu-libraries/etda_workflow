@@ -153,7 +153,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
           a_hash_including(
             id: 'released-for-publication',
             path: admin_submissions_index_path(degree_type, 'released_for_publication'),
-            count:  '5'
+            count: '5'
           ),
           final_restricted_view_filter,
           a_hash_including(

@@ -10,19 +10,19 @@ class EmailContactForm < MailForm::Base
   # in ActionMailer accepts.
   def headers
     {
-      from:    EtdaWorkflow::Application.config.action_mailer.default_options[:from],
-      to:      current_partner.email_address.to_s,
+      from: EtdaWorkflow::Application.config.action_mailer.default_options[:from],
+      to: current_partner.email_address.to_s,
       subject: "#{current_partner.slug} Contact Form"
     }
   end
 
   def self.contact_form_message(message, desc, email, psuid, full_name)
     ActionMailer::Base.mail(
-      from:     full_name,
+      from: full_name,
       email_address: email,
       psuid: psuid,
-      subject:  desc,
-      body:     message
+      subject: desc,
+      body: message
     ).deliver
   end
 end

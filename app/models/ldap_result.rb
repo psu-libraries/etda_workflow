@@ -10,8 +10,8 @@ class LdapResult
   attr_accessor :us_state
   attr_accessor :department
 
-  UPCASE_NAME_LIST = /\b(iii|ii|iv)\b/i
-  UPCASE_DEPT_LIST = /\b(its|ids|arl|psu)\b/i
+  UPCASE_NAME_LIST = /\b(iii|ii|iv)\b/i.freeze
+  UPCASE_DEPT_LIST = /\b(its|ids|arl|psu)\b/i.freeze
 
   def map_directory_info
     mapped_attributes = []

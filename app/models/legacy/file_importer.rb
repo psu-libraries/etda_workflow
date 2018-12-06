@@ -32,7 +32,7 @@ class Legacy::FileImporter
        record_message "FORMAT REVIEW -- Original Count:  #{@original_count}"
        record_message "Total of #{@files_copied} files were copied.  See logs for more information"
        @display_logger.info "See logs for more information"
-     rescue StandardError
+    rescue StandardError
        @import_logger.log("Quitting: Error occurred")
      end
   end
