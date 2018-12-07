@@ -11,8 +11,6 @@ class LdapUniversityDirectory
     term = term_given
     return [] unless searchterm_valid?(term)
 
-    term = term.strip!
-
     ldap_records = []
 
     with_connection do |connection|
@@ -114,7 +112,9 @@ class LdapUniversityDirectory
   end
 
   def searchterm_valid?(term)
-    result = term.present? && term =~ /^[a-z '\-]+$/i
-    result
+    return false if term.blank?
+    return false unless term.present? && term =~ /^[a-z '\-]+$/i
+
+    true
   end
 end

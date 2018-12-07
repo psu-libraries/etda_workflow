@@ -6,7 +6,7 @@ namespace :assets do
   task 'precompile' do
     $stdout.puts '#----- Skip asset precompilation -----#'
     $stdout.puts '#----- Run webpack instead -----#'
-    `yarn install --pure-lockfile`
-    `webpack`
+    `bin/yarn install --pure-lockfile`
+    `bin/webpack`
   end
 end
