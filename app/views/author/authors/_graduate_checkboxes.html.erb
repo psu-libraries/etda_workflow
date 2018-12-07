@@ -1,3 +1,3 @@
-<%= f.input :is_alternate_email_public, label: "Display your alternate email address on your #{current_partner.slug} document summary page?", as: :boolean, wrapper: :checkbox  %>
-<%= f.input :opt_out_email, label: "Do not send correspondence to my alternate email address after graduation", as: :boolean, wrapper: :checkbox  %>
+<%= f.input :is_alternate_email_public, label: I18n.t('display_alternate_email.label', slug: "#{current_partner.slug}"), as: :boolean, wrapper: :checkbox  %>
+<%= f.input :opt_out_email, label: "#{I18n.t('opt_out_email.label')}", as: :boolean, wrapper: :checkbox  %>
 <%= f.input :opt_out_email_default, as: :hidden, input_html: {value: false} %>
