@@ -83,8 +83,9 @@ header {
       }
     }
     #top-navigation ul {
-      li a{
-      background-color: whitesmoke; }
+      li a {
+        background-color: whitesmoke;
+      }
       li.active a {
         font-weight: bold;
         color: $brand-primary;

@@ -115,7 +115,12 @@ namespace :deploy do
     end
   end
 
-  before "deploy:migrate", "deploy:symlink_shared"
+
+
+
+  before "deploy:assets:precompile", "deploy:symlink_shared"
+  before "deploy:assets:precompile", "custom_cleanup:clean_yarn_cache"
+  # before "deploy:migrate", "deploy:symlink_shared"
 
   after "deploy:updated", "deploy:migrate"
 end
@@ -131,6 +136,16 @@ namespace :rbenv_custom_ruby_cleanup do
   after 'deploy:finishing', 'rbenv_custom_ruby_cleanup:purge_old_versions'
 end
 
+namespace :custom_cleanup do
+  desc 'clean up the yarn cache before building webpack'
+  task :clean_yarn_cache do
+    puts '***cleaning yarn'
+    on roles (:web) do
+      execute 'yarn cache clean'
+    end
+  end
+end
+
 namespace :deploy_all do
   task :deploy do
     on roles(:all) do
@@ -139,6 +154,7 @@ namespace :deploy_all do
         file = file.sub('config/deploy/', '').sub('.rb', '')
         info "Deploying #{file} to #{fetch(:stage)}"
         system("cap #{file} deploy")
+        Rake::Task['deploy:assets:precompile'].reenable
       end
     end
   end

@@ -32,6 +32,7 @@ before_script:
 script:
 - "bundle exec rake db:create"
 - "bundle exec rake db:test:load"
+- "yarn install"
 - "bundle exec rake ci"
 services:
 - mysql

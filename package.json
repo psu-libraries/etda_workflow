@@ -31,9 +31,6 @@
     "tag-it": "^2.0.0",
     "url-loader": "^0.6.2",
     "url-parse": "1.4.3",
-    "webpacker": "0.0.3"
-  },
-  "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
@@ -43,7 +40,9 @@
     "image-webpack-loader": "^3.4.2",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
-    "webpack": "^3.10.0",
+    "webpack": "^3.10.0"
+  },
+  "devDependencies": {
     "webpack-dev-server": "^2.11.2"
   }
 }
