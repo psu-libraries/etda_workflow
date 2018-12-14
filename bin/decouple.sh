@@ -38,7 +38,7 @@ echo "Database import for $1 complete"
 #check logs and compare author input errors to duplication authors list
 
 echo "Importing $1 legacy files"
-RAILS_ENV=production PARTNER=$1 bin/rails legacy:import:all_files[prod]
+RAILS_ENV=production PARTNER=$1 bin/rails legacy:import:all_files[prod,verify_files]
 echo "File import for $1 complete"
 
 echo 'Verify file import'
