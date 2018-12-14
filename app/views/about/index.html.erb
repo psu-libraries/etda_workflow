@@ -1,7 +1,6 @@
   <div class="col-xs-12 col-sm-12 col-lg-10">
       <%= render partial: "/about/#{current_partner.id}_site_notification" %>
-      <h1>About &nbsp;<%= t("#{current_partner.id}.partner.description.title") %></h1>
     <div class="home-text">
-      <%= t("#{current_partner.id}.partner.description.text", thesis_guide_link: I18n.t("#{current_partner.id}.partner.thesis_guide")).html_safe %>
+      <%= render partial: "/about/#{current_partner.id}_about_text" %>
     </div>
   </div>

@@ -23,9 +23,6 @@
             <li class= "<%= top_nav_active?('home') %>">
               <%= link_to "Home", root_path, class: 'btn btn-default ' %>
             </li>
-            <li>
-              <%= link_to 'Explore', EtdUrls.new.explore, class: 'btn btn-default navbar-btn' %>
-            </li>
             <li class="<%= top_nav_active?('about') %>">
               <%= link_to 'About', about_page_path, class: 'btn btn-default navbar-btn' %>
             </li >
@@ -34,7 +31,10 @@
               <%= link_to 'Contact Us', author_email_contact_form_new_path, class: 'btn btn-default ' %>
               </li>
             <% end %>
-        </ul>
+            <li>
+              <%= link_to 'Explore', EtdUrls.new.explore, class: 'btn btn-default navbar-btn' %>
+            </li>
+          </ul>
         </div>
 
 
