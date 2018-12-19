@@ -1,28 +1,27 @@
 class EtdUrls
   def explore
-  # After release, remove '-explore' bc the URL will change to etda.libraries, etda-qa.libraries, etc.
-  return "http://" + I18n.t("#{current_partner.id}.partner.url_slug") + "-explore.localhost:3000/" if Rails.env.test?
+    return "http://" + I18n.t("#{current_partner.id}.partner.url_slug") + ".localhost:3000/" if Rails.env.test?
 
-  explore_url
+    explore_url
+  end
+
+  def popup
+    return "alert('Millennium Scholars Explore Coming Soon'); return false;" if Partner.current.milsch?
+
+    ''
   end
 
   private
 
-  # After release, remove '-explore' bc the URL will change to etda.libraries, etda-qa.libraries, etc.
   def explore_url
-     explore_str = "https://" + I18n.t("#{current_partner.id}.partner.url_slug") + "-explore#{stage_server_explore}.libraries.psu.edu/"
-     explore_str
-  end
-
-  def stage_server_explore
-    return '-prod' if Rails.application.secrets.stage.blank?
-
-    "-#{Rails.application.secrets.stage}"
+    explore_str = "https://" + I18n.t("#{current_partner.id}.partner.url_slug") + "#{stage_server}.libraries.psu.edu/"
+    explore_str
   end
 
   def stage_server
     return '' if Rails.application.secrets.stage.blank?
 
-    "-#{Rails.application.secrets.stage}"
+    # qa and stage are explore-qa and explore-stage
+    "-explore-#{Rails.application.secrets.stage}"
   end
 end

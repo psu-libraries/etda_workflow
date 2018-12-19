@@ -31,16 +31,16 @@ RSpec.describe Semester, type: :model do
     end
 
     it 'checks for #future_semester? when using current year' do
-      allow(Semester).to receive(:current).and_return('2018 Fall')
-      expect(described_class.new).not_to be_future_semester('Spring', 2018)
-      expect(described_class.new).not_to be_future_semester('Summer', 2018)
-      expect(described_class.new).to be_future_semester('Fall', 2018)
+      allow(Semester).to receive(:current).and_return("#{Time.zone.today.year} Fall")
+      expect(described_class.new).not_to be_future_semester('Spring', Time.zone.today.year)
+      expect(described_class.new).not_to be_future_semester('Summer', Time.zone.today.year)
+      expect(described_class.new).to be_future_semester('Fall', Time.zone.today.year)
     end
     it '#future_semester? allows any semester for future years' do
-      allow(Semester).to receive(:current).and_return('2018 Fall')
-      expect(described_class.new).to be_future_semester('Spring', 2019)
-      expect(described_class.new).to be_future_semester('Summer', 2019)
-      expect(described_class.new).to be_future_semester('Fall', 2019)
+      allow(Semester).to receive(:current).and_return("#{Time.zone.today.year} Fall")
+      expect(described_class.new).to be_future_semester('Spring', Time.zone.today.year + 1)
+      expect(described_class.new).to be_future_semester('Summer', Time.zone.today.year + 1)
+      expect(described_class.new).to be_future_semester('Fall', Time.zone.today.year + 1)
     end
   end
 end

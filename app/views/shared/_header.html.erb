@@ -32,7 +32,7 @@
               </li>
             <% end %>
             <li>
-              <%= link_to 'Explore', EtdUrls.new.explore, class: 'btn btn-default navbar-btn' %>
+              <%= link_to 'Explore', EtdUrls.new.explore, class: 'btn btn-default navbar-btn', onclick: EtdUrls.new.popup  %>
             </li>
           </ul>
         </div>
