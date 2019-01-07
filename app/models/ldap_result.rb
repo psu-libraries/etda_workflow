@@ -116,6 +116,8 @@ class LdapResult
   def format_zip(ldap_value, _options)
     addr = (ldap_value.split('$').last || '').split(',').last || ''
     item = addr.split(' ') || ''
+    return '' if item[1].nil?
+
     item[1].numeric? ? item[1] : ''
   end
 
