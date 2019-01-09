@@ -1,1 +1,1 @@
-    <%= f.input :defended_at, as: :date, label: 'Date To Be Defended', required: true, start_year: Time.zone.today.year, end_year: Time.zone.today.year+2, input_html: {value: @submission.defended_at_date} %>
+    <%= f.input :defended_at, as: :date, label: 'Date To Be Defended', required: true, start_year: Time.zone.today.year-5, end_year: Time.zone.today.year+5, input_html: {value: @submission.defended_at_date} %>

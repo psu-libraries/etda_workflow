@@ -26,21 +26,8 @@ RSpec.describe Semester, type: :model do
 
     it 'returns current year + 5 years for student year drop-down' do
       expect(described_class.graduation_years).to be_an(Array)
-      expect(described_class.graduation_years.first).to eq(Time.zone.today.year)
+      expect(described_class.graduation_years.first).to eq(Time.zone.today.year - 10)
       expect(described_class.graduation_years.last).to eq(Time.zone.today.year + 5)
-    end
-
-    it 'checks for #future_semester? when using current year' do
-      allow(Semester).to receive(:current).and_return("#{Time.zone.today.year} Fall")
-      expect(described_class.new).not_to be_future_semester('Spring', Time.zone.today.year)
-      expect(described_class.new).not_to be_future_semester('Summer', Time.zone.today.year)
-      expect(described_class.new).to be_future_semester('Fall', Time.zone.today.year)
-    end
-    it '#future_semester? allows any semester for future years' do
-      allow(Semester).to receive(:current).and_return("#{Time.zone.today.year} Fall")
-      expect(described_class.new).to be_future_semester('Spring', Time.zone.today.year + 1)
-      expect(described_class.new).to be_future_semester('Summer', Time.zone.today.year + 1)
-      expect(described_class.new).to be_future_semester('Fall', Time.zone.today.year + 1)
     end
   end
 end
