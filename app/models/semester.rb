@@ -29,19 +29,8 @@ class Semester
 
   def self.graduation_years
     this_year = Time.zone.today.year
-    list = Semester.new.build_year_list(this_year, this_year + 5)
+    list = Semester.new.build_year_list(this_year - 10, this_year + 5)
     list.reverse
-  end
-
-  def future_semester?(this_semester, this_year)
-    # only check for current year; all semesters are valid when future year is chosen
-    return true if this_year.blank? || this_semester.blank? || this_year > Date.today.year
-
-    current_semester = Semester.current.split(' ').last || ' '
-
-    return true if valid_semester?(current_semester, this_semester)
-
-    false
   end
 
   def build_year_list(start_year, end_year)
