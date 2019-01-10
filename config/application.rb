@@ -35,6 +35,9 @@ module EtdaWorkflow
     # -- all .rb files in that directory are automatically loaded.
     #
     config.time_zone = 'Eastern Time (US & Canada)'
+    config.active_record.default_timezone = :local
+    config.active_record.time_zone_aware_attributes = false
+    
     config.autoload_paths += [
       Rails.root.join('app/presenters'),
     ]
