@@ -20,8 +20,8 @@
 * To drop the database, run `rails db:drop`
 
 * After creating the database, run `yarn` to download packages needed for assets
-  In development `webpack-dev-server` can be run to watch live updating of the assets files
-  Running `RAILS_ENV=production bin/webpack` will build the manifest for production,`RAILS_ENV=development bin/webpack`, and `RAILS_ENV=test bin/webpack` for development and test manifests.  Production manifest is built in public/assets, development manifest in public/packs and test manifest in public/packs-test.  Configuration file is config/webpacker.yml
+  In development `webpack-dev-server` can be run to watch live updating of the assets files.
+  Running `RAILS_ENV=production bin/webpack` will build the manifest for production,`RAILS_ENV=development bin/webpack`, and `RAILS_ENV=test bin/webpack` for development and test manifests.  Production manifest is saved in public/assets, development manifest in public/packs and test manifest in public/packs-test.  Configuration file is config/webpacker.yml
   
   The configuration file `webpack.config.js` contains loaders and plugins for compiling css, jquery, bootstrap, etc.  It also defines where the application source files are located (app/assets/javascript/).  ETD has three sets of assets:  author, admin, and base.  Author assets are used in the author layout, Admin assets in admin, and base is used throughout the application.
 
