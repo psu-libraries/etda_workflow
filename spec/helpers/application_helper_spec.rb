@@ -99,7 +99,7 @@ RSpec.describe ApplicationHelper do
 
   describe '#top_nav_active?' do
     it 'returns active class for home' do
-      allow(controller).to receive(:controller_name).and_return('submissions')
+      allow(controller).to receive(:controller_name).and_return('home')
       expect(top_nav_active?('home')).to eq('active')
       expect(top_nav_active?('about')).not_to eq('active')
       allow(controller).to receive(:controller_name).and_return('bogus')

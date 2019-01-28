@@ -21,12 +21,12 @@
         <div id=top-navigation class="col-xs-8 col-sm-7">
           <ul class="list-inline navbar-list">
             <li class= "<%= top_nav_active?('home') %>">
-              <%= link_to "Home", root_path, class: 'btn btn-default ' %>
+              <%= link_to "Home", home_page_path, class: 'btn btn-default ' %>
             </li>
             <li class="<%= top_nav_active?('about') %>">
               <%= link_to 'About', about_page_path, class: 'btn btn-default navbar-btn' %>
             </li >
-            <% if session[:user_role] == 'author' %>
+            <% if session[:user_role] == 'author' || session[:user_role] == nil %>
               <li class="<%= top_nav_active?('email') %>">
               <%= link_to 'Contact Us', author_email_contact_form_new_path, class: 'btn btn-default ' %>
               </li>
