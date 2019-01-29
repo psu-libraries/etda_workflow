@@ -4,18 +4,13 @@ RSpec.describe "Admin Navigation", js: true do
   before do
     webaccess_authorize_admin
     visit '/admin'
-    puts page.body
+    sleep 5
   end
 
-  let(:admin) { current_admin}
-
   it 'has top navigation' do
-    sleep 3
     expect(page).to have_link('Home')
     expect(page).to have_link('About')
-    expect(page).not_to have_link('Contact Us')
     expect(page).to have_link('Explore')
-    expect(page).to have_link('Log Out')
   end
 
   it 'has an about page' do
@@ -32,8 +27,6 @@ RSpec.describe "Admin Navigation", js: true do
     expect(page).to have_link('Home')
     expect(page).to have_link('About')
     expect(page).to have_link('Explore')
-    expect(page).to have_link('Log Out')
     expect(page).to have_link('Create/Edit Submission')
-    expect(page).to have_link('Admin')
   end
 end
