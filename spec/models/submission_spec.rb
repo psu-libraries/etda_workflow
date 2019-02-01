@@ -205,9 +205,10 @@ RSpec.describe Submission, type: :model do
     end
 
     context '#check_title_capitalization' do
-      it 'allows all caps in the title' do
+      it 'identifies all caps in the title' do
         submission = Submission.new(title: 'A TEST')
         expect(submission.check_title_capitalization).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
+        expect(submission.errors[:title]).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
       end
     end
 
