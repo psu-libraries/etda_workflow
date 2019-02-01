@@ -10,7 +10,6 @@ env:
   global:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
   - JS=true
-  - secure: Li4O06xY4zaH0SC2I5ITWX7P5CvcvIvYqHxK6qiQnpD3NbV34+LxKmBZecnvVpSZ6qKMeJ4pMHUMVSKjSthFRmYT1b55MfehsrIzkSg/lnrckf0ty5eWuXepqHFl/NOjbNJ3fLEzz6s5mviTQavWcJu6x2fHpWGK8dBw+43ZrXxer0VQyln3CB1q/1Igv4r74fvw/w4+wEAnUG+n42WvhhI/CGYUX/jW8BnGnpDZNN0oHj6EFy3hBOtrIUct26h/4QZJfxKj+i96Oe+iO/V2/+hYaeTAhLirSSzOFA4o+hoT76lrZbjppHeUWg00i1tj+lVp+eGWJ2Rv94JzbI+Go7nBrk2MDax6x+PZAkFQ+e0t2gwXPiCsV1fQN7cQqoXlumJAs6vI3Qpf+Xq0aQhsq4toKEkcMsNaPNR+1iIUozOO65Ow8zP2lJ7q82Q4IRyXzYVgauJwLT45U6joYcR6IW2b6mcwC19P+/MIE7lfotq1AeF/G9osu5c3Oe/MLoOVQSl9zes1M6JRdp8uP925hbYxkX6xHabQ0efVb8lBPtvH0izYji9qqxE3xHZf9zy4gs8Zw3YMeTGfe5CyuABFMK1YvU0ibi62VAivxbhoFVIN+NHQFrT5f5oqaM+C2OOKcGh0+x4F4/eihuNdikWdSICZCKGHQLVusZcvS/EVSuc=
   - unset TZ
   - export TZ='Eastern Time (US & Canada)'
 before_install:
@@ -47,12 +46,11 @@ services:
 notifications:
   email:
     recipients:
-    - jxb13@psu.edu
     - ajk5603@psu.edu
     on_success: change
     on_failure: always
   irc:
-    channels: 
-    template: 
+    channels:
+    template:
 dd:
   secure: I3Oa3/YtT0UCRM6gIU7z9ab15bn1DVC9EC9b2zXfCkq02aPbTgkyMYZCBgwEcuIsGcf8Yydl/7r/vZmqyEoMHbqjYB3m6Ct3jHaFpVLor7movIg4mr2lZpRJ0NLzG26b7ICG5AmNlBx+fZGRv/+cjNqVd9AdYCni1Rd3iYjxlBOjgNnCpFNLjVDLcfRZlFzFe7zq4Cz2whF0qgC4NQQNMH0jmLixfOP+JAF+p62aJwKe+qsivpyYLX0FK8W9PMdOGodeBvJY+OOqAk+cAl7BVhoP4QhXVOHvRWvtL1CL/vYITeR+RvckfNUScgGQU3XhkoJ2hzYHafHF5SP3zjecDc7kLnkpe+n9/FLDGp8PDaZStZWpxFzWE4IIMUbgYd3KeXV3bsYktUNWG6R/hnw6Z1JlvLs+anefPnQDBuRU4ygraGtUgXqRSKuaPQODJDA1s5iqVBcXnvRT4oEDDG6NUf8LE1MULUvw+hfCKHVHrhlg9VF/Iee57owwUS0KP1FotvKU2KsV4/yqi54dl7aZQ2MbzrqmRKOSyOG6gxgZ/yXMzAAmy5h3NeIrhhoDz/qmrayN5XaLowvVZsBA7mbmS1GKt+4Qg+Hfoqzc259iP/Iuo6PAxf7SZJ1hl3a4R+zlyacCA4o/wa0UfKG7HN/kNdWWRoCC3kP34Ev5HAdtCjs=
