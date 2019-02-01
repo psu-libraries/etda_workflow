@@ -58,9 +58,9 @@ gem 'devise'
 gem 'sprockets', '~> 3.7.2'
 
 if ENV['CI']
-  gem 'etda_utilities', :branch => 'master', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/psu-stewardship/etda_utilities.git"
+  gem 'etda_utilities', branch: 'master', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/psu-stewardship/etda_utilities.git"
 else
-  gem 'etda_utilities', :branch => 'master', git: "git@github.com:psu-stewardship/etda_utilities.git"
+  gem 'etda_utilities', branch: 'master', git: "git@github.com:psu-stewardship/etda_utilities.git"
 end
 
 gem 'rake', '< 11.0'
@@ -127,7 +127,7 @@ group :development, :test do
   gem 'simplecov', require: false
 
   # manages solr 5 for development (using latest version from master as of 11/12/2015)
-  gem 'solr_wrapper'   
+  gem 'solr_wrapper'
 
 end
 
