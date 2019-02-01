@@ -1,7 +1,7 @@
 <div class="row">
   <%= link_to "Create/Edit Submissions", author_submissions_path, class: "btn btn-primary btn-block" %>
   <%= link_to "ETDA Explore", 'https://etda.libraries.psu.edu/catalog', class: "btn btn-primary btn-block" %>
-  <%= unless is_admin? == false || is_admin? == nil
+  <%= unless admin? == false || admin? == nil
         link_to "Admin", admin_root_path, class: "btn btn-primary btn-block"
       end %>
 </div>

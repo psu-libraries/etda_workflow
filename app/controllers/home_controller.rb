@@ -3,9 +3,9 @@ class HomeController < ApplicationController
     render '/home/index', layout: 'home'
   end
 
-  def is_admin?
+  def admin?
     Admin.find_by(access_id: current_remote_user)&.administrator?
   end
 
-  helper_method :is_admin?
+  helper_method :admin?
 end
