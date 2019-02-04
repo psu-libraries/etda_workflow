@@ -31,9 +31,11 @@
               <%= link_to 'Contact Us', author_email_contact_form_new_path, class: 'btn btn-default ' %>
               </li>
             <% end %>
-            <li>
+            <% unless controller_name == 'home' %>
+              <li>
               <%= link_to 'Explore', EtdUrls.new.explore, class: 'btn btn-default navbar-btn', onclick: EtdUrls.new.popup  %>
-            </li>
+              </li>
+            <% end  %>
           </ul>
         </div>
 
