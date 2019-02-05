@@ -28,7 +28,6 @@ RSpec.describe "Author Navigation", js: true do
 
   it 'has a home page' do
     click_link 'Home'
-    puts page.body
     expect(page).to have_link('ETDA Explore')
     expect(page).to have_link('Log Out')
     expect(page).to have_link('Create/Edit Submission')
