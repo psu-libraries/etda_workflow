@@ -28,12 +28,16 @@ RSpec.describe "Author Navigation", js: true do
 
   it 'has a home page' do
     click_link 'Home'
-    expect(page).to have_link('Home')
-    expect(page).to have_link('About')
-    expect(page).to have_link('Contact Us')
-    expect(page).to have_link('Explore')
+    puts page.body
+    expect(page).to have_link('ETDA Explore')
     expect(page).to have_link('Log Out')
     expect(page).to have_link('Create/Edit Submission')
     expect(page).not_to have_link('Admin')
+    within('nav#account-navigation') do
+      expect(page).to have_link('Home')
+      expect(page).to have_link('About')
+      expect(page).to have_link('Contact Us')
+      expect(page).not_to have_link('Explore')
+    end
   end
 end
