@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  helper_method :admin?
+
   protect_from_forgery with: :exception
 
   Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
@@ -32,6 +34,10 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
+
+  def home
+    render '/home/index', layout: 'home'
+  end
 
   def about
     render '/about/index.html', layout: 'home'
@@ -78,6 +84,10 @@ class ApplicationController < ActionController::Base
   def render_401(exception)
     logger.error("Rendering 401 page due to exception #{exception.inspect} - #{exception.backtrace if exception.respond_to? :backtrace}")
     render template: '/error/401', layout: "error", formats: %i[html json], status: :unauthorized
+  end
+
+  def admin?
+    Admin.find_by(access_id: current_remote_user)&.administrator?
   end
 
   protected

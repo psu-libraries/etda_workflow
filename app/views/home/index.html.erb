@@ -13,7 +13,10 @@
   <% unless admin? == false || admin? == nil %>
     <div class="col-sm-4 ">
       <div id="wrapper">
-        <%= link_to "Admin Dashboard", admin_root_path, class: "btn btn-default btn-huge" %>
+        <div id="content-container">
+          <div id="content-container" class="h2">Administrator?</div>
+          <div class="row"><%= link_to "Admin Dashboard", admin_root_path, class: "btn btn-default btn-huge" %></div>
+        </div>
       </div>
     </div>
   <% end %>

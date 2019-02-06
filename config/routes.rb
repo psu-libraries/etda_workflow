@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get '/logout', to: 'application#logout', as: :logout
   get '/login', to: 'application#login', as: :login
   get '/about', to: 'application#about', as: :about_page
-  get '/home', to: 'home#index', as: :home_page
+  get '/home', to: 'application#home', as: :home_page
 
   get '/', to: redirect(path: '/home')
 
@@ -92,7 +92,7 @@ Rails.application.routes.draw do
     get '/tips', to: 'authors#technical_tips', as: :technical_tips
   end
 
-  root to: 'home#index'
+  root to: 'application#home'
   match "/404", to: 'errors#render_404', via: :all
   match "/500", to: 'errors#render_500', via: :all
   match "/401", to: 'errors#render_401', via: :all
