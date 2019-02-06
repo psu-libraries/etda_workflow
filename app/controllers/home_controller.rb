@@ -1,4 +1,9 @@
 class HomeController < ApplicationController
+  Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
+
+  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_url
+
   def index
     render '/home/index', layout: 'home'
   end
