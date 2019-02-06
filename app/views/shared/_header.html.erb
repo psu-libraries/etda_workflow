@@ -20,8 +20,8 @@
       <div class="row">
         <div id=top-navigation class="col-xs-8 col-sm-7">
           <ul class="list-inline navbar-list">
-            <li class= "<%= top_nav_active?('home') %>">
-              <%= link_to "Home", home_page_path, class: 'btn btn-default ' %>
+            <li class= "<%= top_nav_active?('main') %>">
+              <%= link_to 'Home', main_page_path, class: 'btn btn-default ' %>
             </li>
             <li class="<%= top_nav_active?('about') %>">
               <%= link_to 'About', about_page_path, class: 'btn btn-default navbar-btn' %>
@@ -31,7 +31,7 @@
               <%= link_to 'Contact Us', author_email_contact_form_new_path, class: 'btn btn-default ' %>
               </li>
             <% end %>
-            <% unless controller_name == 'application' && action_name == 'home' %>
+            <% unless controller_name == 'application' && action_name == 'main' %>
               <li>
               <%= link_to 'Explore', EtdUrls.new.explore, class: 'btn btn-default navbar-btn', onclick: EtdUrls.new.popup  %>
               </li>

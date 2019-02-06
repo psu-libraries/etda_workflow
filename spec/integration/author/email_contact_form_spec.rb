@@ -3,9 +3,9 @@ RSpec.describe "Email Contact Form", js: true do
 
   let(:author) { current_author }
 
-  # change in home page
+  # change in main page
   describe 'contact form hidden when user is not authenticated' do
-    xit 'does not display the contact form link on home page' do
+    xit 'does not display the contact form link on main page' do
       visit root_path
       expect(page).not_to have_link('Contact Us')
       expect(page).to have_link('Please direct questions to Ask!')

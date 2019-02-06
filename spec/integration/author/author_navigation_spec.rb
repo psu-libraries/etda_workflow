@@ -26,7 +26,7 @@ RSpec.describe "Author Navigation", js: true do
     expect(page).to have_content('Expand Creative Possibilities')
   end
 
-  it 'has a home page' do
+  it 'has a main page' do
     click_link 'Home'
     expect(page).to have_link('ETDA Explore')
     expect(page).to have_link('Log Out')

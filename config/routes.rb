@@ -8,9 +8,9 @@ Rails.application.routes.draw do
   get '/logout', to: 'application#logout', as: :logout
   get '/login', to: 'application#login', as: :login
   get '/about', to: 'application#about', as: :about_page
-  get '/home', to: 'application#home', as: :home_page
+  get '/main', to: 'application#main', as: :main_page
 
-  get '/', to: redirect(path: '/home')
+  get '/', to: redirect(path: '/main')
 
   ## works: get '/committee_members/autocomplete', to: 'ldap_lookup#autocomplete', as: :committee_members_autocomplete
   get '/committee_members/autocomplete', to: 'application#autocomplete', as: :committee_members_autocomplete
@@ -92,7 +92,7 @@ Rails.application.routes.draw do
     get '/tips', to: 'authors#technical_tips', as: :technical_tips
   end
 
-  root to: 'application#home'
+  root to: 'application#main'
   match "/404", to: 'errors#render_404', via: :all
   match "/500", to: 'errors#render_500', via: :all
   match "/401", to: 'errors#render_401', via: :all
