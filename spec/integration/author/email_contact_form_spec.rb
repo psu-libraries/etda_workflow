@@ -48,7 +48,7 @@ RSpec.describe "Email Contact Form", js: true do
       click_button "Send"
       expect(ActionMailer::Base.deliveries.first).not_to be_nil
       expect(ActionMailer::Base.deliveries.count).to eq(1)
-      expect(page).to have_current_path(home_page_path)
+      expect(page).to have_current_path(main_page_path)
       # expect(page).to have_content('Thank you for your message')
     end
     it 'displays an error when message field is blank' do
