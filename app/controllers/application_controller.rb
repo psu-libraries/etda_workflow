@@ -94,7 +94,7 @@ class ApplicationController < ActionController::Base
 
   def explore_url
     hosts = EtdaUtilities::Hosts.new
-    hosts.explore_host(current_partner.id, ENV['STAGE'])
+    hosts.explore_host(current_partner.id, Rails.application.secrets.stage)
   end
 
   protected
