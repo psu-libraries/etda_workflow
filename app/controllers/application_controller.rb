@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require 'etda_utilities'
 
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
