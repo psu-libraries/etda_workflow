@@ -1,22 +1,20 @@
-<div id="main-navigation" class="home-text">
+<div id="main-page" class="col-sm-12">
   <div class="col-sm-8">
-    <div id="content-container" class="row">
-      <div class="h2">Are you a student that needs to submit their work?</div>
-      <br><%= link_to "Create/Edit Submissions", author_submissions_path, class: "btn btn-primary btn-huge" %>
+    <div id="body-container" class="nav nav-pills">
+      <div id="content-container" class="h2">Are you a student that needs to submit their work?</div>
+      <li><%= link_to "Create/Edit Submissions", author_submissions_path, class: "btn btn-main" %></li>
     </div>
-    <div id="content-container" class="row">
-      <div class="h2">Want to explore published submissions?</div>
-      <br><%= link_to "ETDA Explore", explore_url, class: "btn btn-primary btn-huge" %>
+    <div id="body-container" class="nav nav-pills">
+      <div id="content-container" class="h2">Want to explore published submissions?</div>
+      <li><%= link_to "ETDA Explore", explore_url, class: "btn btn-main" %></li>
     </div>
   </div>
 
   <% unless admin? == false || admin? == nil %>
-    <div class="col-sm-4 ">
-      <div id="wrapper">
-        <div id="content-container">
-          <div id="content-container" class="h2">Administrator?</div>
-          <div class="row"><%= link_to "Admin Dashboard", admin_root_path, class: "btn btn-default btn-huge" %></div>
-        </div>
+    <div id="admin-col" class="col-sm-3">
+      <div id="admin-box">
+        <div id="content-container" class="h2">Administrators:</div>
+        <li><%= link_to "Admin Dashboard", admin_root_path, class: "btn btn-gold"%></li>
       </div>
     </div>
   <% end %>
