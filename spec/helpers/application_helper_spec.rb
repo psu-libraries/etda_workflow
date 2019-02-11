@@ -98,18 +98,19 @@ RSpec.describe ApplicationHelper do
   end
 
   describe '#top_nav_active?' do
-    it 'returns active class for home' do
-      allow(controller).to receive(:controller_name).and_return('submissions')
-      expect(top_nav_active?('home')).to eq('active')
+    it 'returns active class for main' do
+      allow(controller).to receive(:controller_name).and_return('application')
+      allow(controller).to receive(:action_name).and_return('main')
+      expect(top_nav_active?('main')).to eq('active')
       expect(top_nav_active?('about')).not_to eq('active')
       allow(controller).to receive(:controller_name).and_return('bogus')
-      expect(top_nav_active?('home')).not_to eq('active')
+      expect(top_nav_active?('main')).not_to eq('active')
     end
     it 'returns active class for about' do
       allow(controller).to receive(:controller_name).and_return('application')
       allow(controller).to receive(:action_name).and_return('about')
       expect(top_nav_active?('about')).to eq('active')
-      expect(top_nav_active?('home')).not_to eq('active')
+      expect(top_nav_active?('main')).not_to eq('active')
       allow(controller).to receive(:action_name).and_return('bogus')
       expect(top_nav_active?('about')).not_to eq('active')
     end
@@ -117,7 +118,7 @@ RSpec.describe ApplicationHelper do
       allow(controller).to receive(:controller_name).and_return('email_contact_form')
       expect(top_nav_active?('email')).to eq('active')
       expect(top_nav_active?('about')).not_to eq('active')
-      expect(top_nav_active?('home')).not_to eq('active')
+      expect(top_nav_active?('main')).not_to eq('active')
       allow(controller).to receive(:controller_name).and_return('bogus')
       expect(top_nav_active?('email')).not_to eq('active')
     end
