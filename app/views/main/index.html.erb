@@ -12,9 +12,9 @@
 
   <% unless admin? == false || admin? == nil %>
     <div id="admin-col" class="col-sm-3">
-      <div id="body-container" class="nav nav-pills">
-        <div id="content-container" class="h2">Administrator?</div>
-        <li><%= link_to "Admin Dashboard", admin_root_path, class: "btn btn-main" %></li>
+      <div id="admin-box">
+        <div id="content-container" class="h2">Administrators:</div>
+        <li><%= link_to "Admin Dashboard", admin_root_path, class: "btn btn-gold"%></li>
       </div>
     </div>
   <% end %>
