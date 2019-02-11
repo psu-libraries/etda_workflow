@@ -34,6 +34,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   helper_method :admin?
+  helper_method :explore_url
 
   def main
     render '/main/index.html', layout: 'home'
@@ -88,6 +89,10 @@ class ApplicationController < ActionController::Base
 
   def admin?
     Admin.find_by(access_id: current_remote_user)&.administrator?
+  end
+
+  def explore_url
+    EtdUrls.new.explore
   end
 
   protected
