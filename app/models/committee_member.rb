@@ -52,4 +52,20 @@ class CommitteeMember < ApplicationRecord
     errors.add(:email, 'Invalid email address')
     false
   end
+
+  def status
+    if approval_started_at && approved_at && rejected_at
+      'error'
+    elsif !approval_started_at && (approved_at || rejected_at)
+      'error'
+    elsif approval_started_at && approved_at && !rejected_at
+      'approved'
+    elsif approval_started_at && !approved_at && rejected_at
+      'rejected'
+    elsif approval_started_at && !approved_at && !rejected_at
+      'in progress'
+    elsif !approval_started_at
+      'not started'
+    end
+  end
 end

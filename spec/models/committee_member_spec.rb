@@ -10,6 +10,14 @@ RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_column(:is_required).of_type(:boolean) }
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:access_id).of_type(:string) }
+  it { is_expected.to have_db_column(:approval_started_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:approved_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:rejected_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:reset_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:last_notified_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:last_notified_type).of_type(:string) }
+  it { is_expected.to have_db_column(:notes).of_type(:text) }
   it { is_expected.to have_db_index(:submission_id) }
   it { is_expected.to have_db_index(:committee_role_id) }
   it { is_expected.to belong_to(:submission).class_name('Submission') }
@@ -39,6 +47,53 @@ RSpec.describe CommitteeMember, type: :model do
   #   end
   # end
   #
+  describe 'status' do
+    let(:submission) { FactoryBot.create(:submission) }
+    let(:cm) { described_class.new }
+    let(:committee_role) { FactoryBot.create(:committee_role) }
+
+    it 'is not started' do
+      expect(cm.status).to eq('not started')
+    end
+
+    it 'is in progress' do
+      cm.approval_started_at = Time.zone.now
+      expect(cm.status).to eq('in progress')
+    end
+
+    context 'when committee member approves' do
+      it 'is completed' do
+        cm.approval_started_at = Time.zone.now
+        cm.approved_at = Time.zone.now
+        expect(cm.status).to eq('approved')
+      end
+    end
+
+    context 'when committee member rejects' do
+      it 'is completed' do
+        cm.approval_started_at = Time.zone.now
+        cm.rejected_at = Time.zone.now
+        expect(cm.status).to eq('rejected')
+      end
+    end
+
+    context 'when committee member accepts and rejects' do
+      it 'is error' do
+        cm.approval_started_at = Time.zone.now
+        cm.approved_at = Time.zone.now
+        cm.rejected_at = Time.zone.now
+        expect(cm.status).to eq('error')
+      end
+    end
+
+    context "when commitee member completes but hasn't started" do
+      it 'is error' do
+        cm.approved_at = Time.zone.now
+        cm.rejected_at = Time.zone.now
+        expect(cm.status).to eq('error')
+      end
+    end
+  end
 
   context 'it has a role name' do
     it 'returns the role name' do

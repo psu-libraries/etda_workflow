@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180405192533) do
+ActiveRecord::Schema.define(version: 20190214153559) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "access_id", default: "", null: false
@@ -75,6 +75,14 @@ ActiveRecord::Schema.define(version: 20180405192533) do
     t.boolean "is_required"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "access_id"
+    t.datetime "approval_started_at"
+    t.datetime "approved_at"
+    t.datetime "rejected_at"
+    t.datetime "reset_at"
+    t.datetime "last_notified_at"
+    t.string "last_notified_type"
+    t.text "notes"
     t.index ["committee_role_id"], name: "committee_members_committee_role_id_fk"
     t.index ["submission_id"], name: "committee_members_submission_id_fk"
   end
