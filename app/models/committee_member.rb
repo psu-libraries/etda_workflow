@@ -54,18 +54,32 @@ class CommitteeMember < ApplicationRecord
   end
 
   def status
-    if approval_started_at && approved_at && rejected_at
-      'error'
-    elsif !approval_started_at && (approved_at || rejected_at)
-      'error'
-    elsif approval_started_at && approved_at && !rejected_at
-      'approved'
-    elsif approval_started_at && !approved_at && rejected_at
-      'rejected'
-    elsif approval_started_at && !approved_at && !rejected_at
-      'in progress'
-    elsif !approval_started_at
-      'not started'
-    end
+    error_approved_rejected || error_not_started || approved || rejected || in_progress || not_started
+  end
+
+  private
+
+  def error_approved_rejected
+    return 'error' if approval_started_at && approved_at && rejected_at
+  end
+
+  def error_not_started
+    return 'error' if !approval_started_at && (approved_at || rejected_at)
+  end
+
+  def approved
+    return 'approved' if approval_started_at && approved_at && !rejected_at
+  end
+
+  def rejected
+    return 'rejected' if approval_started_at && !approved_at && rejected_at
+  end
+
+  def in_progress
+    return 'in progress' if approval_started_at && !approved_at && !rejected_at
+  end
+
+  def not_started
+    return 'not started' unless approval_started_at
   end
 end

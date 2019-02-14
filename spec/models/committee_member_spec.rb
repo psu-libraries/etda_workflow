@@ -41,12 +41,13 @@ RSpec.describe CommitteeMember, type: :model do
       expect(cm).to be_valid
     end
   end
+
   # context 'submission_id' do
   #   it 'has a submission id' do
   #     expect(committee_member.submission_id).not_to be_nil
   #   end
   # end
-  #
+
   describe 'status' do
     let(:submission) { FactoryBot.create(:submission) }
     let(:cm) { described_class.new }
