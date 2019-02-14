@@ -144,7 +144,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
     # following works when this data is returned from ldap_lookup controller:
     # results = [
     #     { id: 'saw3@psu.edu', label: 'Steve Wilson', value: 'Steve Wilson' },
-    #     { id: 'jxb13@psu.edu', label: 'Joni Barnoff', value: 'Joni Barnoff' },
+    #     { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling' },
     #     { id: 'saw140@psu.edu', label: 'Scott Woods', value: 'Scott Woods' },
     # ]
 

@@ -20,7 +20,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
     end
 
     context "when given a string that matches the fake data" do
-      let(:search_string) { "joni" }
+      let(:search_string) { "alex" }
 
       it "returns an array of hashes that can be returned to jQuery autocomplete" do
         expect(result).to be_a_kind_of(Array)
@@ -43,7 +43,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
     end
 
     context "when given an access ID that is part of the fake data" do
-      let(:access_id) { "jxb13" }
+      let(:access_id) { "ajk5603" }
 
       it "returns true" do
         expect(result).to be(true)
@@ -89,7 +89,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
   end
 
   describe 'in_admin_group?' do
-    let(:result) { directory.in_admin_group?('jxb13') }
+    let(:result) { directory.in_admin_group?('ajk5603') }
 
     context 'returns true if admin user' do
       it 'is true' do
