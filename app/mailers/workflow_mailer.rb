@@ -57,8 +57,8 @@ class WorkflowMailer < ActionMailer::Base
 
   def gem_audit_email(audit_results)
     @audit_results = audit_results
-    mail to: 'jxb13@psu.edu',
-         from: 'jxb13@psu.edu',
+    mail to: 'ajk5603@psu.edu',
+         from: 'ajk5603@psu.edu',
          subject: 'BUNDLE AUDIT: Vulnerable Gems Found'
   end
 end
