@@ -12,5 +12,5 @@ every :day, roles: [:audit]  do
 end
 
 every :sunday, at: '1am', roles: [:app] do
-  rails 'final_files:verify'
+  rake 'final_files:verify'
 end
