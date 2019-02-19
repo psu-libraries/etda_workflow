@@ -10,3 +10,7 @@ set :output, "#{path}/log/wheneveroutput.log"
 every :day, roles: [:audit]  do
   rake 'audit:gems'
 end
+
+every :sunday, at: '1am', roles: [:app] do
+  rake 'final_files:verify'
+end
