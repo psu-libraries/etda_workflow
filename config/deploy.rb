@@ -48,6 +48,7 @@ set :default_env, { 'NODE_ENV' => 'production' }
 # set :whenever_environment, ->{ "#{fetch(:stage)}" }  this is being set to 'dev' so hardcoded production in schedule.rb
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:partner)}" }
 set :whenever_roles, %i[audit]
+set :whenever_roles, %i[app]
 
 set :log_level, :debug
 # set :pty, true
