@@ -33,8 +33,11 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
 
-  def index
-    render 'author/submissions', layout: 'author'
+  helper_method :admin?
+  helper_method :explore_url
+
+  def main
+    render '/main/index.html', layout: 'home'
   end
 
   def about
@@ -82,6 +85,14 @@ class ApplicationController < ActionController::Base
   def render_401(exception)
     logger.error("Rendering 401 page due to exception #{exception.inspect} - #{exception.backtrace if exception.respond_to? :backtrace}")
     render template: '/error/401', layout: "error", formats: %i[html json], status: :unauthorized
+  end
+
+  def admin?
+    Admin.find_by(access_id: current_remote_user)&.administrator?
+  end
+
+  def explore_url
+    EtdUrls.new.explore
   end
 
   protected

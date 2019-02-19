@@ -31,8 +31,8 @@ module ApplicationHelper
 
   def top_nav_active?(nav_name)
     case nav_name
-    when 'home'
-      'active' if controller_name == 'submissions'
+    when 'main'
+      'active' if controller_name == 'application' && action_name == 'main'
     when 'about'
       'active' if controller_name == 'application' && action_name == 'about'
     when 'email'

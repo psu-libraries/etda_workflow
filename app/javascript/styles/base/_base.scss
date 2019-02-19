@@ -389,6 +389,19 @@ select.disabled {
   border-color:#236D23;
 }
 
+.btn-gold {
+  background-color: #ffd248;
+  border-color: black;
+  color: black;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+
+    &:hover {
+      background-color: #ffd492;
+    }
+}
 
 @page {
   width: 100%;
@@ -585,4 +598,33 @@ a.cancel-link{
   padding: 0;
   margin: 0;
   width: 1%;
+}
+
+//Styles for main page
+.btn-main{
+  background-color: $medium-blue-bright;
+}
+
+#main-page{
+  margin-top: 40px;
+}
+
+#admin-col{
+  margin-left: 3rem;
+  background-color: $dark-blue;
+  border-radius: 5px;
+}
+
+#admin-box {
+  padding-left: 20px;
+  padding-bottom: 30px;
+}
+
+#admin-box > li {
+  padding-left: 30px;
+  list-style-type: none;
+}
+
+#admin-box > div {
+  color: white;
 }

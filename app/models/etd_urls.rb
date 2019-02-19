@@ -14,14 +14,7 @@ class EtdUrls
   private
 
   def explore_url
-    explore_str = "https://" + I18n.t("#{current_partner.id}.partner.url_slug") + "#{stage_server}.libraries.psu.edu/"
+    explore_str = "https://" + EtdaUtilities::Hosts.new.explore_host(current_partner.id, Rails.application.secrets.stage)
     explore_str
-  end
-
-  def stage_server
-    return '' if Rails.application.secrets.stage.blank?
-
-    # qa and stage are explore-qa and explore-stage
-    "-explore-#{Rails.application.secrets.stage}"
   end
 end

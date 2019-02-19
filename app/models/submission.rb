@@ -124,9 +124,9 @@ class Submission < ApplicationRecord
 
     word_in_all_caps = false
     title_words.each do |w|
-      word_in_all_caps = true if w.length > 1 && w.upcase == w
+      word_in_all_caps = true if w.scan(/[A-Z]/).length > 4
     end
-    errors[:check_title_capitalization] << I18n.t('activerecord.errors.models.submission.attributes.title.capitalization') if word_in_all_caps
+    errors[:title] << I18n.t('activerecord.errors.models.submission.attributes.title.capitalization') if word_in_all_caps
   end
 
   def invention_disclosure

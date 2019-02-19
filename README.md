@@ -1,5 +1,7 @@
 # etda_workflow
 
+[![Build Status](https://travis-ci.com/psu-stewardship/etda_workflow.svg?token=aQpc68FoUpxpqgvP9XN9&branch=master)](https://travis-ci.com/psu-stewardship/etda_workflow)
+
 * Ruby version: 2.4.3
 
 * System dependencies

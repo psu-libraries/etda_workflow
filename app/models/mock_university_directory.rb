@@ -9,7 +9,7 @@ class MockUniversityDirectory
 
   KNOWN_ACCESS_IDS = %w[
     saw140
-    jxb13
+    ajk5603
     amg32
     xxb13
     conf123
@@ -20,11 +20,11 @@ class MockUniversityDirectory
   # to a jQuery autocomplete widget.
   def autocomplete(search_string, _only_faculty_staff: true)
     case search_string
-    when /(joni)/i
+    when /(alex)/i
       unless Rails.env.test?
         [
           { id: 'jxd2@psu.edu', label: 'Joni Davis', value: 'Joni Davis', dept: 'Davis Dept' },
-          { id: 'jxb13@psu.edu', label: 'Joni Barnoff', value: 'Joni Barnoff', dept: 'University Libraries' },
+          { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling', dept: 'University Libraries' },
           { id: 'jjj1@psu.edu', label: 'John James Johnson', value: 'John Johnson', dept: 'Huck Institute' },
           { id: 'mmm3@psu.edu', label: 'Mark Micheal Murphy', value: 'Mark Murphy', dept: 'Ag Science' },
           { id: 'mis4@psu.edu', label: 'Maggie I. Smith', value: 'Maggie Smith', dept: 'Earth & Mineral Science' }
@@ -32,7 +32,7 @@ class MockUniversityDirectory
       end
       [
         { id: 'jxd2@psu.edu', label: 'Joni Davis', value: 'Joni Davis', dept: 'Davis Dept' },
-        { id: 'jxb13@psu.edu', label: 'Joni Barnoff', value: 'Joni Barnoff', dept: 'University Libraries' }
+        { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling', dept: 'University Libraries' }
       ]
     when /(scott)/i
       [
@@ -93,9 +93,9 @@ class MockUniversityDirectory
 
   def get_id_info(psu_access_id)
     case psu_access_id
-    when /(jxb13)/i
-      { access_id: 'jxb13', first_name: 'Joni', middle_name: 'Lee',
-        last_name: 'Barnoff', address_1: 'TSB Building',
+    when /(ajk5603)/i
+      { access_id: 'ajk5603', first_name: 'Alex', middle_name: 'James',
+        last_name: 'Kiessling', address_1: 'Pattee Library',
         city: 'University Park', state: 'PA',
         zip: '16802', phone_number: '555-555-5555',
         country: 'US', psu_idn: '999999999', confidential_hold: true,
