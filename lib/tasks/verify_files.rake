@@ -17,6 +17,7 @@ namespace :final_files do
       possible_file_match = validate_file_path(matching_file_found, f)
       next if possible_file_match.nil?
     end
+    send_notification(@verify_file_report, misplaced_files_count)
     close_log_file(file_count, misplaced_files_count)
     exit
   end
@@ -69,4 +70,7 @@ namespace :final_files do
     @verify_file_report.write msg + "\n"
   end
 
+  def send_notification(results, misplaced_files_count)
+    WorkflowMailer.verify_files_email(results.read).deliver_now unless misplaced_files_count == 0
+  end
 end
