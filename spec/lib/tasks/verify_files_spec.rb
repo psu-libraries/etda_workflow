@@ -4,8 +4,12 @@ require 'active_record/fixtures'
 
 RSpec.describe "Rake::Task['final_files:verify']", type: :task do
 
-  let(:message) do
+  let(:misplaced_message) do
     /File Verification for ETDA(.*)\nCreated report(.*)\nPossible match for file(.*)\nCannot verify correct file has been located:(.*)\nFinal Submission Files in database: 3\nMissing and\/or misplaced file count: 1/
+  end
+
+  let(:all_clear_message) do
+    /File Verification for ETDA(.*)\nCreated report(.*)\nFinal Submission Files in database: 2\nMissing and\/or misplaced file count: 0/
   end
 
   before do
@@ -22,14 +26,12 @@ RSpec.describe "Rake::Task['final_files:verify']", type: :task do
 
   end
 
-  # it 'verifies location of files' do
-  #   Rake::Task['final_files:verify'].reenable
-  #
-  #   # allow_any_instance_of(EtdaFilePaths).to receive(:detailed_file_path).and_return('99/999')
-  #   num_files = FinalSubmissionFile.all.count
-  #   expect(Rake::Task['final_files:verify'].invoke).to receive(:locate_file).with(000).exactly(1).times.and_return('hello')
-  #   puts task_output
-  # end
+  it 'verifies location of files and does not find any misplaced files' do
+    Rake::Task['final_files:verify'].reenable
+    # allow_any_instance_of(EtdaFilePaths).to receive(:detailed_file_path).and_return('99/999')
+    num_files = FinalSubmissionFile.all.count
+    expect{ Rake::Task['final_files:verify'].invoke }.to output(all_clear_message).to_stdout
+  end
 
   it 'verifies location of files and identifies misplaced file' do
     submission3 = FactoryBot.create(:submission, :waiting_for_publication_release)
@@ -39,6 +41,6 @@ RSpec.describe "Rake::Task['final_files:verify']", type: :task do
 
     Rake::Task['final_files:verify'].reenable
 
-    expect{ Rake::Task['final_files:verify'].invoke }.to output(message).to_stdout
+    expect{ Rake::Task['final_files:verify'].invoke }.to output(misplaced_message).to_stdout
   end
 end

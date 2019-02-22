@@ -20,7 +20,7 @@ namespace :final_files do
     end
     close_log_file(file_count, misplaced_files_count)
     send_notification(@report_email, misplaced_files_count)
-    #exit
+    exit unless Rails.env.test?
   end
 
   def locate_file(f)
