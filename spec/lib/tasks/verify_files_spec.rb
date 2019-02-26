@@ -30,8 +30,7 @@ RSpec.describe "Rake::Task['final_files:verify']", type: :task do
 
   xit 'verifies location of files and does not find any misplaced files' do
     Rake::Task['final_files:verify'].reenable
-    # allow_any_instance_of(EtdaFilePaths).to receive(:detailed_file_path).and_return('99/999')
-    num_files = FinalSubmissionFile.all.count
+
     expect{ Rake::Task['final_files:verify'].invoke }.to output(all_clear_message).to_stdout
     expect(ActionMailer::Base.deliveries.last).to be nil
   end
@@ -44,8 +43,7 @@ RSpec.describe "Rake::Task['final_files:verify']", type: :task do
 
     Rake::Task['final_files:verify'].reenable
 
-    Rake::Task['final_files:verify'].invoke
-    #expect{ Rake::Task['final_files:verify'].invoke }.to output(misplaced_message).to_stdout
+    expect{ Rake::Task['final_files:verify'].invoke }.to output(misplaced_message).to_stdout
     expect(ActionMailer::Base.deliveries.last.from).to eq ['ajk5603@psu.edu']
     expect(ActionMailer::Base.deliveries.last.to).to eq ['ajk5603@psu.edu']
     expect(ActionMailer::Base.deliveries.last.subject).to eq 'VERIFY FILES: Misplaced files found'

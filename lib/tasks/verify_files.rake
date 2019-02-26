@@ -10,7 +10,6 @@ namespace :final_files do
 
     FinalSubmissionFile.all.each do |f|
       file_count += 1
-      submission_id = ''
       next if File.exist? f.current_location
       misplaced_files_count += 1
       matching_file_found = locate_file(f)
