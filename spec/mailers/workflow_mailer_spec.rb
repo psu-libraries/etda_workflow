@@ -10,6 +10,7 @@ RSpec.describe WorkflowMailer do
   end
   let(:author) { submission.author }
   let(:partner_email) { current_partner.email_address }
+  let(:verify_files_results) { "Misplaced files found." }
 
   describe '#format_review_received' do
     before { allow(Partner).to receive(:current).and_return(partner) }
@@ -178,6 +179,26 @@ RSpec.describe WorkflowMailer do
 
     it "notifies the author about the access level change of their submission" do
       expect(email.body).to match(/changed the availability/i)
+    end
+  end
+
+  describe '#verify_files_email' do
+    let(:email) { described_class.verify_files_email(verify_files_results) }
+
+    it "is sent from ajk5603@psu.edu" do
+      expect(email.from).to eq(["ajk5603@psu.edu"])
+    end
+
+    it "is sent to ajk5603@psu.edu" do
+      expect(email.to).to eq(["ajk5603@psu.edu"])
+    end
+
+    it "has subject" do
+      expect(email.subject).to eq("VERIFY FILES: Misplaced files found")
+    end
+
+    it "has body" do
+      expect(email.body.raw_source).to eq("Verify Files\r\n\r\nMisplaced files found.")
     end
   end
 end

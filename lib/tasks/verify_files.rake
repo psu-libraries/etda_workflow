@@ -2,6 +2,7 @@ namespace :final_files do
 
   desc "Verify final submission files exist in the correct directory."
   task verify: :environment do
+    @report_email = ''
 
     open_log_file
     file_count = 0
@@ -9,7 +10,6 @@ namespace :final_files do
 
     FinalSubmissionFile.all.each do |f|
       file_count += 1
-      submission_id = ''
       next if File.exist? f.current_location
       misplaced_files_count += 1
       matching_file_found = locate_file(f)
@@ -18,7 +18,8 @@ namespace :final_files do
       next if possible_file_match.nil?
     end
     close_log_file(file_count, misplaced_files_count)
-    exit
+    send_notification(@report_email, misplaced_files_count)
+    exit unless Rails.env.test?
   end
 
   def locate_file(f)
@@ -67,6 +68,10 @@ namespace :final_files do
   def log_it(msg)
     puts msg
     @verify_file_report.write msg + "\n"
+    @report_email << msg + "\n"
   end
 
+  def send_notification(report_email, misplaced_files_count)
+    WorkflowMailer.verify_files_email(report_email).deliver_now unless misplaced_files_count == 0
+  end
 end

@@ -61,4 +61,11 @@ class WorkflowMailer < ActionMailer::Base
          from: 'ajk5603@psu.edu',
          subject: 'BUNDLE AUDIT: Vulnerable Gems Found'
   end
+
+  def verify_files_email(verify_files_results)
+    @verify_files_results = verify_files_results
+    mail to: 'ajk5603@psu.edu',
+         from: 'ajk5603@psu.edu',
+         subject: 'VERIFY FILES: Misplaced files found'
+  end
 end
