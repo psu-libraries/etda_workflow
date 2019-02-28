@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190228180203) do
+ActiveRecord::Schema.define(version: 20190228212909) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "access_id", default: "", null: false
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(version: 20190228180203) do
     t.integer "rejections_permitted"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "email_admins"
+    t.boolean "email_authors"
     t.index ["degree_type_id"], name: "degree_type_id_fk"
   end
 
