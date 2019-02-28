@@ -26,14 +26,18 @@ class ApprovalStatus
   end
 
   def approved
-    return 'approved' unless (current_submission.committee_members.collect { |m| m.status == 'approved' }).count(false) > 0 # <-- Configured
+    return 'approved' unless (current_submission.committee_members.collect { |m| m.status == 'approved' }).count(false) > rejections_permitted
   end
 
   def rejected
-    return 'rejected' if (current_submission.committee_members.collect { |m| m.status == 'rejected' }).count(true) > 0 # <-- This number will be configured
+    return 'rejected' if (current_submission.committee_members.collect { |m| m.status == 'rejected' }).count(true) > rejections_permitted
   end
 
   def pending
     return 'pending'
+  end
+
+  def rejections_permitted
+    current_submission.degree.degree_type.approval_configuration.rejections_permitted
   end
 end
