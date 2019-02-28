@@ -4,12 +4,12 @@ class ApprovalStatus
   attr_reader :current_submission
 
   WORKFLOW_STATUS =
-      [
-          'none',
-          'pending',
-          'approved',
-          'rejected'
-      ].freeze
+    [
+      'none',
+      'pending',
+      'approved',
+      'rejected'
+    ].freeze
 
   def initialize(submission)
     @current_submission = submission
@@ -22,7 +22,7 @@ class ApprovalStatus
   private
 
   def none
-    return 'none' if current_submission.committee_members.count == 0
+    return 'none' if current_submission.committee_members.count.zero?
   end
 
   def approved
@@ -34,7 +34,7 @@ class ApprovalStatus
   end
 
   def pending
-    return 'pending'
+    'pending'
   end
 
   def rejections_permitted

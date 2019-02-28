@@ -4,8 +4,8 @@ require 'model_spec_helper'
 
 RSpec.describe ApprovalStatus, type: :model do
   let(:submission) { FactoryBot.create :submission }
-  let(:approval_configuration1) { ApprovalConfiguration.create(rejections_permitted: 0)}
-  let(:approval_configuration2) { ApprovalConfiguration.create(rejections_permitted: 1)}
+  let(:approval_configuration1) { ApprovalConfiguration.create(rejections_permitted: 0) }
+  let(:approval_configuration2) { ApprovalConfiguration.create(rejections_permitted: 1) }
 
   describe "#status" do
     context "when 0 rejections are permitted" do
