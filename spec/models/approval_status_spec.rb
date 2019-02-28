@@ -92,6 +92,17 @@ RSpec.describe ApprovalStatus, type: :model do
           expect(described_class.new(submission).status).to eq('rejected')
         end
       end
+
+      context "when one committee member rejects, but the rest are pending" do
+        it "returns pending" do
+          submission.committee_members << FactoryBot.create(:committee_member, submission: submission, approval_started_at: Time.zone.now)
+          submission.committee_members << FactoryBot.create(:committee_member, submission: submission, approval_started_at: Time.zone.now)
+          submission.committee_members << FactoryBot.create(:committee_member, submission: submission, approval_started_at: Time.zone.now)
+          submission.committee_members << FactoryBot.create(:committee_member, submission: submission, rejected_at: Time.zone.now, approval_started_at: Time.zone.now)
+
+          expect(described_class.new(submission).status).to eq('pending')
+        end
+      end
     end
   end
 end
