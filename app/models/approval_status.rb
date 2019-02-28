@@ -16,29 +16,24 @@ class ApprovalStatus
   end
 
   def status
-    if current_submission.committee_members.count == 0
-      return 'none'
-    end
+    none || approved || rejected || pending
+  end
 
-    approved = 0
-    rejected = 0
+  private
 
-    current_submission.committee_members.each do |member|
-      if member.status == 'approved'
-        approved += 1
-      end
+  def none
+    return 'none' if current_submission.committee_members.count == 0
+  end
 
-      if member.status == 'rejected'
-        rejected += 1
-      end
-    end
+  def approved
+    return 'approved' unless (current_submission.committee_members.collect { |m| m.status == 'approved' }).count(false) > 0 # <-- Configured
+  end
 
-    if approved == current_submission.committee_members.count
-      return 'approved'
-    elsif rejected > 0
-      return 'rejected'
-    else
-      return 'pending'
-    end
+  def rejected
+    return 'rejected' if (current_submission.committee_members.collect { |m| m.status == 'rejected' }).count(true) > 0 # <-- This number will be configured
+  end
+
+  def pending
+    return 'pending'
   end
 end
