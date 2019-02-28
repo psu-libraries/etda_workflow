@@ -4,6 +4,7 @@ class DegreeType < ApplicationRecord
   has_many :committee_roles
   has_many :degrees
   has_many :submissions, through: :degrees
+  has_many :approval_configurations
 
   default_scope { order(:name) }
 
