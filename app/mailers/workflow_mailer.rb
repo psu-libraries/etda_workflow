@@ -61,4 +61,11 @@ class WorkflowMailer < ActionMailer::Base
          from: 'jxb13@psu.edu',
          subject: 'BUNDLE AUDIT: Vulnerable Gems Found'
   end
+
+  def committee_member_approval_started(recipient, content)
+    @content = content
+    mail to: recipient
+         from: current_partner.email_address
+         subject: 'Committee Member Approval Started'
+  end
 end

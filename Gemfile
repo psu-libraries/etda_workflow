@@ -25,6 +25,9 @@ gem 'redis'
 # Resque Pool
 gem 'resque-pool'
 
+# SideKiq
+gem 'sidekiq'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
