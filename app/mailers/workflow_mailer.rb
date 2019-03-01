@@ -64,8 +64,36 @@ class WorkflowMailer < ActionMailer::Base
 
   def committee_member_approval_started(recipient, content)
     @content = content
-    mail to: recipient
-         from: current_partner.email_address
+    mail to: recipient,
+         from: current_partner.email_address,
          subject: 'Committee Member Approval Started'
+  end
+
+  def committee_member_reminder(recipient, content)
+    @content = content
+    mail to: recipient,
+         from: current_partner.email_address,
+         subject: 'Committee Member Reminder'
+  end
+
+  def committee_member_rejection(recipient, content)
+    @content = content
+    mail to: recipient,
+         from: current_partner.email_address,
+         subject: 'Committee Member Rejection'
+  end
+
+  def committee_member_approval(recipient, content)
+    @content = content
+    mail to: recipient,
+         from: current_partner.email_address,
+         subject: 'Committee Member Approval'
+  end
+
+  def committee_member_rejection_admin(recipient, content)
+    @content = content
+    mail to: recipient,
+         from: current_partner.email_address,
+         subject: 'Committee Member Rejection'
   end
 end
