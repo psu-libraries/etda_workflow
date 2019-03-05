@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `committee_roles`;
 CREATE TABLE `committee_roles` (
   `id` bigint(20) NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `num_required` int(11) NOT NULL DEFAULT '0',
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `degree_type_id` bigint(20) NOT NULL);
