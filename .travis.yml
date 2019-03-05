@@ -37,7 +37,6 @@ before_script:
 script:
 - "bundle exec rake db:create"
 - "bundle exec rake db:test:load"
-- "bundle exec rake db:test:prepare"
 - "yarn install"
 - "echo $(date)"
 - "bundle exec rake ci"
