@@ -44,7 +44,7 @@ services:
 - mysql
 - redis-server
 addons:
-  mariadb: '10.2'
+  mariadb: '10'
 notifications:
   email:
     recipients:
