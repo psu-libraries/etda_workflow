@@ -83,14 +83,14 @@ class WorkflowMailer < ActionMailer::Base
          subject: 'Committee Member Rejection'
   end
 
-  def committee_member_approval(recipient, content)
+  def committee_member_approval(submission_id, recipient_email)
     @content = content
     mail to: recipient,
          from: current_partner.email_address,
          subject: 'Committee Member Approval'
   end
 
-  def committee_member_rejection_admin(recipient, content)
+  def committee_member_rejection_admin(submission_id, recipient_email)
     @content = content
     mail to: recipient,
          from: current_partner.email_address,
