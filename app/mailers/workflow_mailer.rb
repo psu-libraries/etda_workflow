@@ -63,14 +63,14 @@ class WorkflowMailer < ActionMailer::Base
   end
 
   def committee_member_approval_started(submission_id, recipient_email_address)
-    @submission = Submission.find_by(submission_id)
+    @submission = Submission.find_by(id: submission_id)
     mail to: recipient_email_address,
          from: current_partner.email_address,
          subject: 'Committee Member Approval Started'
   end
 
   def committee_member_reminder(submission_id, recipient_email_address)
-    @submission = Submission.find_by(submission_id)
+    @submission = Submission.find_by(id: submission_id)
     mail to: recipient_email_address,
          from: current_partner.email_address,
          subject: 'Committee Member Reminder'
