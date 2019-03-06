@@ -180,4 +180,6 @@ RSpec.describe WorkflowMailer do
       expect(email.body).to match(/changed the availability/i)
     end
   end
+
+  describe '#com'
 end

@@ -62,38 +62,17 @@ class WorkflowMailer < ActionMailer::Base
          subject: 'BUNDLE AUDIT: Vulnerable Gems Found'
   end
 
-  def committee_member_approval_started(recipient, content)
-    @content = content
-    mail to: recipient,
+  def committee_member_approval_started(submission_id, recipient_email_address)
+    @submission = Submission.find_by(submission_id)
+    mail to: recipient_email_address,
          from: current_partner.email_address,
          subject: 'Committee Member Approval Started'
   end
 
-  def committee_member_reminder(recipient, content)
-    @content = content
-    mail to: recipient,
+  def committee_member_reminder(submission_id, recipient_email_address)
+    @submission = Submission.find_by(submission_id)
+    mail to: recipient_email_address,
          from: current_partner.email_address,
          subject: 'Committee Member Reminder'
-  end
-
-  def committee_member_rejection(recipient, content)
-    @content = content
-    mail to: recipient,
-         from: current_partner.email_address,
-         subject: 'Committee Member Rejection'
-  end
-
-  def committee_member_approval(submission_id, recipient_email)
-    @content = content
-    mail to: recipient,
-         from: current_partner.email_address,
-         subject: 'Committee Member Approval'
-  end
-
-  def committee_member_rejection_admin(submission_id, recipient_email)
-    @content = content
-    mail to: recipient,
-         from: current_partner.email_address,
-         subject: 'Committee Member Rejection'
   end
 end
