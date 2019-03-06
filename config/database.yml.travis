@@ -3,17 +3,17 @@ test:
   adapter: mysql2
   database: etdflow_test
   username: travis
-  encoding: utf8
+  encoding: utf8mb4
 
 #  legacy_database:
 #    adapter: mysql2
-#    encoding: utf8
+#    encoding: utf8mb4
 #    database: wf_legacy_test
 #    username: travis
     # host: localhost
 test_legacy_database:
     adapter: mysql2
-    encoding: utf8
+    encoding: utf8mb4
     database: wf_legacy_test
     username: travis
 
