@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'sidekiq/web'
 
 Rails.application.routes.draw do
 
@@ -20,6 +21,8 @@ Rails.application.routes.draw do
     resources :degrees, except: [:show, :destroy]
     resources :programs, except: [:show, :destroy]
     resources :authors,  except: [:new, :create, :show, :destroy]
+
+    mount Sidekiq::Web => '/sidekiq'
 
     get '/custom_report', to: 'reports#custom_report_index', as: :custom_report_index
     patch '/custom_report_export', to: 'reports#custom_report_export', defaults: { format: 'csv' }, as: :custom_report_export

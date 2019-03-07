@@ -1,5 +1,6 @@
 class CommitteeReminderWorker
   include Sidekiq::Worker
+  sidekiq_options queue: 'mailers'
 
   def perform(submission_id, recipient_email_address)
     submission = Submission.find_by(submission_id)
