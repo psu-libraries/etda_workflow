@@ -11,7 +11,7 @@ class CommitteeMember < ApplicationRecord
   belongs_to :submission
   belongs_to :committee_role
 
-  STATUS = ["not_started", "pending", "approved", "rejected"]
+  STATUS = ["pending", "approved", "rejected"]
 
   def self.advisors(submission)
     advisors_array = []
@@ -58,7 +58,7 @@ class CommitteeMember < ApplicationRecord
   def status=(new_status)
     self.write_attribute(:status, new_status)
     case new_status
-      when 'not_started'
+      when nil
         self.approval_started_at = nil
         self.approved_at = nil
         self.rejected_at = nil

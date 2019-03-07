@@ -43,23 +43,17 @@ RSpec.describe CommitteeMember, type: :model do
     end
   end
 
-
-
   describe 'status' do
     let(:submission) { FactoryBot.create(:submission) }
     let(:cm) { described_class.new }
     let(:committee_role) { FactoryBot.create(:committee_role) }
 
-    it 'is nil' do
-      expect(cm.status).to be_nil
-    end
-
-    context 'when status is changed to not started' do
+    context 'when status is nil' do
       before do
-        cm.status = 'not_started'
+        cm.status = nil
       end
       it 'updates status column' do
-        expect(cm.status).to eql("not_started")
+        expect(cm.status).to eql(nil)
       end
       it 'updates timestamps' do
         expect(cm.approval_started_at).to be_nil
