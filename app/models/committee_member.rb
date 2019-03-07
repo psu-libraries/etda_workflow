@@ -11,7 +11,7 @@ class CommitteeMember < ApplicationRecord
   belongs_to :submission
   belongs_to :committee_role
 
-  STATUS = ["pending", "approved", "rejected"]
+  STATUS = ["pending", "approved", "rejected"].freeze
 
   def self.advisors(submission)
     advisors_array = []
@@ -56,25 +56,24 @@ class CommitteeMember < ApplicationRecord
   end
 
   def status=(new_status)
-    self.write_attribute(:status, new_status)
+    self[:status] = new_status
     case new_status
-      when nil
-        self.approval_started_at = nil
-        self.approved_at = nil
-        self.rejected_at = nil
-      when 'pending'
-        self.approval_started_at = Time.zone.now
-        self.approved_at = nil
-        self.rejected_at = nil
-      when 'approved'
-        self.approval_started_at = Time.zone.now
-        self.approved_at = Time.zone.now
-        self.rejected_at = nil
-      when 'rejected'
-        self.approval_started_at = Time.zone.now
-        self.rejected_at = Time.zone.now
-        self.approved_at = nil
-      else
+    when nil
+      self.approval_started_at = nil
+      self.approved_at = nil
+      self.rejected_at = nil
+    when 'pending'
+      self.approval_started_at = Time.zone.now
+      self.approved_at = nil
+      self.rejected_at = nil
+    when 'approved'
+      self.approval_started_at = Time.zone.now
+      self.approved_at = Time.zone.now
+      self.rejected_at = nil
+    when 'rejected'
+      self.approval_started_at = Time.zone.now
+      self.rejected_at = Time.zone.now
+      self.approved_at = nil
     end
   end
 end
