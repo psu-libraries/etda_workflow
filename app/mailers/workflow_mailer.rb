@@ -62,10 +62,10 @@ class WorkflowMailer < ActionMailer::Base
          subject: 'BUNDLE AUDIT: Vulnerable Gems Found'
   end
 
-  def committee_member_reminder(submission_id, recipient_email_address)
-    @submission = Submission.find_by(id: submission_id)
+  def committee_member_reminder(submission, recipient_email_address)
+    @submission = submission
     mail to: recipient_email_address,
          from: current_partner.email_address,
-         subject: 'Committee Member Reminder'
+         subject: "REMINDER: #{@submission.degree_type} Approval Requested"
   end
 end
