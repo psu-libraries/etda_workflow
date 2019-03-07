@@ -15,6 +15,7 @@ RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_column(:approved_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:rejected_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:reset_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:status).of_type(:string) }
   it { is_expected.to have_db_column(:last_notified_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:last_notified_type).of_type(:string) }
   it { is_expected.to have_db_column(:notes).of_type(:text) }
@@ -42,56 +43,70 @@ RSpec.describe CommitteeMember, type: :model do
     end
   end
 
-  # context 'submission_id' do
-  #   it 'has a submission id' do
-  #     expect(committee_member.submission_id).not_to be_nil
-  #   end
-  # end
+
 
   describe 'status' do
     let(:submission) { FactoryBot.create(:submission) }
     let(:cm) { described_class.new }
     let(:committee_role) { FactoryBot.create(:committee_role) }
 
-    it 'is not started' do
-      expect(cm.status).to eq('not started')
+    it 'is nil' do
+      expect(cm.status).to be_nil
     end
 
-    it 'is in progress' do
-      cm.approval_started_at = Time.zone.now
-      expect(cm.status).to eq('in progress')
-    end
-
-    context 'when committee member approves' do
-      it 'is completed' do
-        cm.approval_started_at = Time.zone.now
-        cm.approved_at = Time.zone.now
-        expect(cm.status).to eq('approved')
+    context 'when status is changed to not started' do
+      before do
+        cm.status = 'not_started'
+      end
+      it 'updates status column' do
+        expect(cm.status).to eql("not_started")
+      end
+      it 'updates timestamps' do
+        expect(cm.approval_started_at).to be_nil
+        expect(cm.approved_at).to be_nil
+        expect(cm.rejected_at).to be_nil
       end
     end
 
-    context 'when committee member rejects' do
-      it 'is completed' do
-        cm.approval_started_at = Time.zone.now
-        cm.rejected_at = Time.zone.now
-        expect(cm.status).to eq('rejected')
+    context 'when status is changed to approved' do
+      before do
+        cm.status = 'approved'
+      end
+      it 'updates status column' do
+        expect(cm.status).to eql("approved")
+      end
+      it 'updates timestamps' do
+        expect(cm.approval_started_at).to be_truthy
+        expect(cm.approved_at).to be_truthy
+        expect(cm.rejected_at).to be_nil
       end
     end
 
-    context 'when committee member accepts and rejects' do
-      it 'is error' do
-        cm.approval_started_at = Time.zone.now
-        cm.approved_at = Time.zone.now
-        cm.rejected_at = Time.zone.now
-        expect(cm.status).to eq('error')
+    context 'when status is changed to rejected' do
+      before do
+        cm.status = 'rejected'
+      end
+      it 'updates status column' do
+        expect(cm.status).to eql("rejected")
+      end
+      it 'updates timestamps' do
+        expect(cm.approval_started_at).to be_truthy
+        expect(cm.approved_at).to be_nil
+        expect(cm.rejected_at).to be_truthy
       end
     end
 
-    context "when commitee member completes but hasn't started" do
-      it 'is error' do
-        cm.approved_at = Time.zone.now
-        cm.rejected_at = Time.zone.now
-        expect(cm.status).to eq('error')
+    context 'when status is changed to pending' do
+      before do
+        cm.status = 'pending'
+      end
+      it 'updates status column' do
+        expect(cm.status).to eql("pending")
+      end
+      it 'updates timestamps' do
+        expect(cm.approval_started_at).to be_truthy
+        expect(cm.approved_at).to be_nil
+        expect(cm.rejected_at).to be_nil
       end
     end
   end
