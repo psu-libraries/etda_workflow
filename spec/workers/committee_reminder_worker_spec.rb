@@ -7,8 +7,8 @@ RSpec.describe "Test sending email with sidekiq" do
   let(:submission) { FactoryBot.create :submission }
 
   context "when approval process starts" do
-    it 'sends email to sidekiq via ActiveJob' do
-      expect{ WorkflowMailer.committee_member_approval_started(submission.id, "test@psu.edu").deliver_later(wait_until: 5.days.from_now) }.to change{ Sidekiq::Worker.jobs.size }.by(1)
+    it 'sends email to sidekiq via worker' do
+      expect{ CommitteeReminderWorker.perform_in(5.days, [submission.id, "test@psu.edu"]) }.to change{ Sidekiq::Worker.jobs.size }.by(1)
     end
   end
 end
