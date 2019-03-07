@@ -22,7 +22,9 @@ Rails.application.routes.draw do
     resources :programs, except: [:show, :destroy]
     resources :authors,  except: [:new, :create, :show, :destroy]
 
-    mount Sidekiq::Web => '/sidekiq'
+    authenticate :admin do
+      mount Sidekiq::Web => '/sidekiq'
+    end
 
     get '/custom_report', to: 'reports#custom_report_index', as: :custom_report_index
     patch '/custom_report_export', to: 'reports#custom_report_export', defaults: { format: 'csv' }, as: :custom_report_export
