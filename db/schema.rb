@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20190228212909) do
-=======
 ActiveRecord::Schema.define(version: 20190307143728) do
->>>>>>> digital-signatures
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "access_id", default: "", null: false
