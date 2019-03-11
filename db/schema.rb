@@ -33,6 +33,17 @@ ActiveRecord::Schema.define(version: 20190307143728) do
     t.index ["access_id"], name: "index_admins_on_access_id", unique: true
   end
 
+  create_table "approval_configurations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "degree_type_id"
+    t.date "approval_deadline_on"
+    t.integer "rejections_permitted"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "email_admins"
+    t.boolean "email_authors"
+    t.index ["degree_type_id"], name: "degree_type_id_fk"
+  end
+
   create_table "authors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "access_id", default: "", null: false
     t.datetime "remember_created_at"
@@ -234,6 +245,7 @@ ActiveRecord::Schema.define(version: 20190307143728) do
     t.index ["public_id"], name: "index_submissions_on_public_id", unique: true
   end
 
+  add_foreign_key "approval_configurations", "degree_types", name: "degree_type_id_fk"
   add_foreign_key "committee_members", "committee_roles", name: "committee_members_committee_role_id_fk"
   add_foreign_key "committee_members", "submissions", name: "committee_members_submission_id_fk"
   add_foreign_key "committee_roles", "degree_types", name: "committee_roles_degree_type_id_fk"

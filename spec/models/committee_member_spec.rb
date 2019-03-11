@@ -43,23 +43,18 @@ RSpec.describe CommitteeMember, type: :model do
     end
   end
 
-
-
   describe 'status' do
     let(:submission) { FactoryBot.create(:submission) }
     let(:cm) { described_class.new }
     let(:committee_role) { FactoryBot.create(:committee_role) }
 
-    it 'is nil' do
-      expect(cm.status).to be_nil
-    end
-
-    context 'when status is changed to not started' do
+    context 'when status is nil' do
       before do
-        cm.status = 'not_started'
+        cm.status = nil
       end
+
       it 'updates status column' do
-        expect(cm.status).to eql("not_started")
+        expect(cm.status).to be(nil)
       end
       it 'updates timestamps' do
         expect(cm.approval_started_at).to be_nil
@@ -72,8 +67,9 @@ RSpec.describe CommitteeMember, type: :model do
       before do
         cm.status = 'approved'
       end
+
       it 'updates status column' do
-        expect(cm.status).to eql("approved")
+        expect(cm.status).to eq("approved")
       end
       it 'updates timestamps' do
         expect(cm.approval_started_at).to be_truthy
@@ -86,8 +82,9 @@ RSpec.describe CommitteeMember, type: :model do
       before do
         cm.status = 'rejected'
       end
+
       it 'updates status column' do
-        expect(cm.status).to eql("rejected")
+        expect(cm.status).to eq("rejected")
       end
       it 'updates timestamps' do
         expect(cm.approval_started_at).to be_truthy
@@ -100,8 +97,9 @@ RSpec.describe CommitteeMember, type: :model do
       before do
         cm.status = 'pending'
       end
+
       it 'updates status column' do
-        expect(cm.status).to eql("pending")
+        expect(cm.status).to eq("pending")
       end
       it 'updates timestamps' do
         expect(cm.approval_started_at).to be_truthy
