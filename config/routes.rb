@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   get '/', to: redirect(path: '/main')
 
+  mount Sidekiq::Web => '/sidekiq'
+
   ## works: get '/committee_members/autocomplete', to: 'ldap_lookup#autocomplete', as: :committee_members_autocomplete
   get '/committee_members/autocomplete', to: 'application#autocomplete', as: :committee_members_autocomplete
 
@@ -21,10 +23,6 @@ Rails.application.routes.draw do
     resources :degrees, except: [:show, :destroy]
     resources :programs, except: [:show, :destroy]
     resources :authors,  except: [:new, :create, :show, :destroy]
-
-    authenticate :admin do
-      mount Sidekiq::Web => '/sidekiq'
-    end
 
     get '/custom_report', to: 'reports#custom_report_index', as: :custom_report_index
     patch '/custom_report_export', to: 'reports#custom_report_export', defaults: { format: 'csv' }, as: :custom_report_export
