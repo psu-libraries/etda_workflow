@@ -92,6 +92,12 @@ Rails.application.routes.draw do
     get '/tips', to: 'authors#technical_tips', as: :technical_tips
   end
 
+  namespace :review do
+    resources :submissions do
+      get '/committee_member/:id', to: 'committee_member_review#edit'
+    end
+  end
+
   root to: 'application#main'
   match "/404", to: 'errors#render_404', via: :all
   match "/500", to: 'errors#render_500', via: :all
