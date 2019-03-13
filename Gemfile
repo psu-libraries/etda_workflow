@@ -25,8 +25,11 @@ gem 'redis'
 # Resque Pool
 gem 'resque-pool'
 
-# SideKiq
+# SideKiq for queueing jobs
 gem 'sidekiq'
+
+# Capistrano SideKiq for deploying SideKiq
+gem 'capistrano-sidekiq'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
