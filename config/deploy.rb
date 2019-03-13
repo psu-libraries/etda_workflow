@@ -77,23 +77,23 @@ set :format_options, command_output: false
 # Default value for keep_releases is 5
 set :keep_releases, 7
 
-# sidekiq setup
-namespace :sidekiq do
-  task :quiet do
-    on roles(:app) do
-      puts capture("pgrep -f 'sidekiq' | xargs kill -TSTP")
-    end
-  end
-  task :restart do
-    on roles(:app) do
-      # systemd commands to restart sidekiq
-    end
-  end
-end
-
-after 'deploy:starting', 'sidekiq:quiet'
-after 'deploy:reverted', 'sidekiq:restart'
-after 'deploy:published', 'sidekiq:restart'
+# # sidekiq setup
+# namespace :sidekiq do
+#   task :quiet do
+#     on roles(:app) do
+#       puts capture("pgrep -f 'sidekiq' | xargs kill -TSTP")
+#     end
+#   end
+#   task :restart do
+#     on roles(:app) do
+#       # systemd commands to restart sidekiq
+#     end
+#   end
+# end
+#
+# after 'deploy:starting', 'sidekiq:quiet'
+# after 'deploy:reverted', 'sidekiq:restart'
+# after 'deploy:published', 'sidekiq:restart'
 
 # Apache namespace to control apache
 namespace :apache do
