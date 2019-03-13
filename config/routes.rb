@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     resources :admins, except: [:index, :show]
     resources :degrees, except: [:show, :destroy]
     resources :programs, except: [:show, :destroy]
+    resources :approval_configurations, except: [:new, :create, :destroy]
     resources :authors,  except: [:new, :create, :show, :destroy]
 
     get '/custom_report', to: 'reports#custom_report_index', as: :custom_report_index
