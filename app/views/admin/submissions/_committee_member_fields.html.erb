@@ -15,4 +15,15 @@
         <%= f.input :email %>
     </div>
   </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <%= f.input :status, collection: CommitteeMember::STATUS, include_blank: true %>
+    </div>
+    <div class="col-sm-4">
+      <%= f.input :notes %>
+    </div>
+    <div class="col-sm-4">
+      <%= link_to "Send Email Reminder" %>
+    </div>
+  </div>
 </div>
