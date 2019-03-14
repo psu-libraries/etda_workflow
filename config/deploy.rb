@@ -80,7 +80,7 @@ set :keep_releases, 7
 # Integrate with systemd
 set :init_system, :systemd
 # Set service file name
-set :service_unit_name, "sidekiq-#{fetch(:application)}-#{fetch(:stage)}.service"
+set :service_unit_name, "sidekiq_pool_#{fetch(:partner)}.service"
 
 # Apache namespace to control apache
 namespace :apache do
