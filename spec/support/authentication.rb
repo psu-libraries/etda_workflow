@@ -20,7 +20,8 @@ class StubbedAuthenticationStrategy < ::Devise::Strategies::Base
 
   # We're a fake authentication strategy; we always succeed.
   def authenticate!
-    person = @@admin || @@author || @@approver
+    person = @@author.nil? ? @@admin : @@author
+    person ||= @@approver
     success! person
   end
 
