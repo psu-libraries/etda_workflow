@@ -52,7 +52,7 @@ module Devise
         return 'Author' unless this_uri.length > 1
 
         this_uri = uri.split('/')[1].camelcase
-        this_uri = 'Author' unless ['Author', 'Admin'].include? this_uri
+        this_uri = 'Author' unless ['Author', 'Admin', 'Review'].include? this_uri
         this_uri
       end
     end
