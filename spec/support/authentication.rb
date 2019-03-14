@@ -14,9 +14,13 @@ class StubbedAuthenticationStrategy < ::Devise::Strategies::Base
     @@admin = admin
   end
 
+  def self.approver=(approver)
+    @@approver = approver
+  end
+
   # We're a fake authentication strategy; we always succeed.
   def authenticate!
-    person = @@author.nil? ? @@admin : @@author
+    person = @@admin || @@author || @@approver
     success! person
   end
 
@@ -37,6 +41,10 @@ module StubbedAuthenticationHelper
     sign_in_as_author nil if @current_author.nil?
   end
 
+  def webaccess_authorize_approver
+    sign_in_as_approver current_approver
+  end
+
   def current_author
     @current_author ||= FactoryBot.create(:author, access_id: 'authorflow', psu_email_address: 'authorflow@psu.edu')
     Author.current = @current_author
@@ -49,6 +57,12 @@ module StubbedAuthenticationHelper
     @current_admin ||= tmp_admin
     Admin.current = @current_admin
     @current_admin
+  end
+
+  def current_approver
+    @current_author ||= FactoryBot.create(:approver, access_id: 'approverflow', psu_email_address: 'approverflow@psu.edu')
+    Approver.current = @current_approver
+    @current_aapprover
   end
 
   # Call this method in your "before" block to be signed in as the given user
@@ -71,6 +85,16 @@ module StubbedAuthenticationHelper
     StubbedAuthenticationStrategy.admin = admin
     Warden::Strategies.add :webaccess_authenticatable, StubbedAuthenticationStrategy
   end
+
+  def sign_in_as_approver(approver)
+    # Remove the session cookie for the original_owner
+    # to ensure we visit pages that belong to the new_owner
+    #     Capybara.page.driver.browser.remove_cookie '_etdflow_session'
+    Capybara.page.driver.browser.remove_cookie '_etdflow_approver_session'
+    Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_approver_session', path: '/review')
+    StubbedAuthenticationStrategy.approver = approver
+    Warden::Strategies.add :webaccess_authenticatable, StubbedAuthenticationStrategy
+  end
 end
 
 RSpec.configure do |config|
@@ -78,6 +102,7 @@ RSpec.configure do |config|
     Warden::Strategies.add :webaccess_authenticatable, Devise::Strategies::WebaccessAuthenticatable
     StubbedAuthenticationStrategy.author = nil unless @current_author.nil?
     StubbedAuthenticationStrategy.admin = nil unless @current_admin.nil?
+    StubbedAuthenticationStrategy.approver = nil unless @current_approver.nil?
   end
 
   config.include StubbedAuthenticationHelper
