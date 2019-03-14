@@ -2,6 +2,7 @@
 
 Rails.application.routes.draw do
 
+  devise_for :approvers, path: 'review'
   devise_for :authors, path: 'author'
   devise_for :admins, path: 'admin'
 
