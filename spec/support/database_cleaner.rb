@@ -4,20 +4,18 @@
 
 RSpec.configure do |config|
   config.before(:suite) do
-    DatabaseCleaner.clean_with(:deletion)
+    DatabaseCleaner.strategy = :deletion, { except: %w[student_submissions] }
+    DatabaseCleaner.clean
     DegreeType.seed
     CommitteeRole.seed
   end
 
   config.after(:suite) do
-    DatabaseCleaner.clean_with(:deletion)
+    DatabaseCleaner.clean
   end
 
-  config.before do
-    DatabaseCleaner.strategy = :transaction
-  end
   config.before(:each, js: true) do
-    DatabaseCleaner.strategy = :deletion
+    DatabaseCleaner.strategy = :deletion, { except: %w[student_submissions] }
     # #Capybara.page.driver.browser.url_blacklist = ["www.google-analytics.com"]
   end
 

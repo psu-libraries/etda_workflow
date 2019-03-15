@@ -1,0 +1,43 @@
+class CreateStudentSubmissions < ActiveRecord::Migration[5.1]
+  def change
+    execute <<-SQL
+      CREATE VIEW `student_submissions` AS
+      SELECT
+      `s`.`id` AS `submission_id`,
+      `s`.`semester` AS `submission_semester`,
+      `s`.`year` AS `submission_year`,
+      `s`.`created_at` AS `submission_created_at`,
+      `s`.`status` AS `submission_status`,
+      `s`.`access_level` AS `submission_acccess_level`,
+      `s`.`title` AS `submission_title`,
+      `s`.`abstract` AS `submission_abstract`,
+      `authors`.`access_id` AS `access_id`,
+      `authors`.`first_name` AS `first_name`,
+      `authors`.`middle_name` AS `middle_name`,
+      `authors`.`last_name` AS `last_name`,
+      `authors`.`alternate_email_address` AS `alternate_email_address`,
+      `authors`.`psu_email_address` AS `psu_email_address`,
+      `authors`.`opt_out_email` AS `opt_out_email`,
+      `p`.`name` AS `program_name`,
+      `d`.`name` AS `degree_name`,
+      `d`.`description` AS `degree_description`,
+      `id`.`id_number` AS `inv_disclosure_num`,
+      GROUP_CONCAT(CONCAT(`cm`.`name`,
+      _UTF8'|',
+      NULLIF(`cm`.`email`, _UTF8'|'),
+      _UTF8' ',
+      `cr`.`name`)
+      ORDER BY `cr`.`id` ASC
+      SEPARATOR ' || ') AS `committee_members`
+      FROM
+      ((((((`submissions` `s`
+      LEFT JOIN `invention_disclosures` `id` ON (`s`.`id` = `id`.`submission_id`))
+      LEFT JOIN `authors` ON (`s`.`author_id` = `authors`.`id`))
+      LEFT JOIN `programs` `p` ON (`s`.`program_id` = `p`.`id`))
+      LEFT JOIN `degrees` `d` ON (`s`.`degree_id` = `d`.`id`))
+      LEFT JOIN `committee_members` `cm` ON (`s`.`id` = `cm`.`submission_id`))
+      LEFT JOIN `committee_roles` `cr` ON (`cm`.`committee_role_id` = `cr`.`id`))
+      GROUP BY `s`.`id`
+    SQL
+  end
+end
