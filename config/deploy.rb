@@ -22,6 +22,9 @@ set :deploy_via, :remote_cache
 set :tmp_dir, "/opt/deploy/#{fetch(:application)}_#{fetch(:partner)}/tmp"
 set :copy_remote_dir, deploy_to
 
+# Integrate with systemd
+set :init_system, :systemd
+
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 set :ssh_options, {
@@ -76,11 +79,6 @@ set :format_options, command_output: false
 
 # Default value for keep_releases is 5
 set :keep_releases, 7
-
-# Integrate with systemd
-set :init_system, :systemd
-# Set service file name
-set :service_unit_name, "sidekiq_pool_#{fetch(:partner)}.service"
 
 # Apache namespace to control apache
 namespace :apache do

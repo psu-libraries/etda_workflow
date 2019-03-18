@@ -3,6 +3,7 @@
 # config/deploy/prod.honors.rb
 set :stage, 'prod'
 set :partner, 'honors'
+set :service_unit_name, "sidekiq_pool_honors.service"
 set :deploy_to, "/opt/deploy/etda_workflow_honors"
 set :tmp_dir, "/opt/deploy/etda_workflow_honors/tmp"
 role :web,  "etdaworkflow1prod.vmhost.psu.edu:1855"
