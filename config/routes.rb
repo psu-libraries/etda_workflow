@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
 
-  devise_for :approvers, path: 'review'
+  devise_for :approvers, path: 'approver'
   devise_for :authors, path: 'author'
   devise_for :admins, path: 'admin'
 
@@ -93,9 +93,9 @@ Rails.application.routes.draw do
     get '/tips', to: 'authors#technical_tips', as: :technical_tips
   end
 
-  namespace :review do
+  namespace :approver do
     resources :submissions do
-      get '/committee_member/:id', to: 'committee_member_review#edit'
+      get '/committee_member/:id', to: 'approvers#edit'
     end
   end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Review::CommitteeMemberReviewController < ReviewController
+class Approver::ApproversController < ApproverController
   protect_from_forgery with: :exception
 
   def edit

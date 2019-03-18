@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ReviewController < ApplicationController
+class ApproverController < ApplicationController
   protect_from_forgery with: :exception
 
   Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
@@ -13,7 +13,6 @@ class ReviewController < ApplicationController
 
   def find_or_initialize_approver
     @approver = Approver.find_or_initialize_by(access_id: current_approver.access_id)
-    #session[:user_name] = @approver.full_name || ''
     approver_ability
     # Rails.logger.info "current_approver = #{current_approver.inspect}"
     # redirect to login_path if @approver.nil?
