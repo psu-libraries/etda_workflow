@@ -39,6 +39,6 @@ class ApproverController < ApplicationController
   end
 
   def approver_ability
-    @approver_ability ||= ApproverAbility.new(current_approver, params[:submission_id])
+    @approver_ability ||= ApproverAbility.new(current_approver, params[:id])
   end
 end
