@@ -16,14 +16,11 @@ set :repo_url, "git@github.com:/psu-stewardship/#{fetch(:application)}.git"
 set :branch, ENV['REVISION'] || ENV['BRANCH_NAME'] || 'master'
 
 set :user, 'deploy'
-set :use_sudo, true
+set :use_sudo, false
 
 set :deploy_via, :remote_cache
 set :tmp_dir, "/opt/deploy/#{fetch(:application)}_#{fetch(:partner)}/tmp"
 set :copy_remote_dir, deploy_to
-
-# Integrate with systemd
-set :init_system, :systemd
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
@@ -79,6 +76,32 @@ set :format_options, command_output: false
 
 # Default value for keep_releases is 5
 set :keep_releases, 7
+
+# SideKiq commands
+namespace :sidekiq do
+  desc 'prepare sidekiq for termination'
+  task :quiet do
+    on roles(:worker) do
+      execute "sudo systemctl --user reload sidekiq_pool_#{fetch(:partner)}.service"
+    end
+  end
+  task :stop do
+    on roles(:worker) do
+      execute "sudo systemctl --user stop sidekiq_pool_#{fetch(:partner)}.service"
+    end
+  end
+  task :restart do
+    on roles(:worker) do
+      execute "sudo systemctl --user restart sidekiq_pool_#{fetch(:partner)}.service"
+    end
+  end
+
+  after "deploy:starting", "sidekiq:quiet"
+  after "deploy:updated", "sidekiq:stop"
+  after "deploy:published", "sidekiq:restart"
+end
+
+
 
 # Apache namespace to control apache
 namespace :apache do
