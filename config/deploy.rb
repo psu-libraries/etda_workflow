@@ -16,7 +16,7 @@ set :repo_url, "git@github.com:/psu-stewardship/#{fetch(:application)}.git"
 set :branch, ENV['REVISION'] || ENV['BRANCH_NAME'] || 'master'
 
 set :user, 'deploy'
-set :use_sudo, false
+set :use_sudo, true
 
 set :deploy_via, :remote_cache
 set :tmp_dir, "/opt/deploy/#{fetch(:application)}_#{fetch(:partner)}/tmp"
