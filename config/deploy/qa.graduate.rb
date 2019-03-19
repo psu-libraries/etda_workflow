@@ -3,7 +3,6 @@
 # config/deploy/qa.graduate.rb
 set :stage, 'qa'
 set :partner, 'graduate'
-set :service_unit_name, "sidekiq_pool_graduate.service"
 set :deploy_to, "/opt/deploy/etda_workflow_graduate"
 set :tmp_dir, "/opt/deploy/etda_workflow_graduate/tmp"
 role :web, "etdaworkflow1qa.vmhost.psu.edu:1855"

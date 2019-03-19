@@ -3,7 +3,6 @@
 # config/deploy/stage.milsch.rb
 set :stage, 'stage'
 set :partner, 'milsch'
-set :service_unit_name, "sidekiq_pool_milsch.service"
 set :deploy_to, "/opt/deploy/etda_workflow_milsch"
 set :tmp_dir, "/opt/deploy/etda_workflow_milsch/tmp"
 role :web,  "etdaworkflow1stage.vmhost.psu.edu:1855"
