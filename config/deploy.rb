@@ -83,7 +83,7 @@ namespace :sidekiq do
     desc "#{action.to_s.capitalize} SideKiq"
     task action do
       on roles(:app) do
-        execute "sudo /bin/systemctl #{action} sidekiq_pool_#{:partner}"
+        execute "sudo /bin/systemctl #{action} sidekiq_pool_#{fetch(:partner)}"
       end
     end
   end
