@@ -82,19 +82,19 @@ namespace :sidekiq do
   desc 'prepare sidekiq for termination'
   task :quiet do
     on roles(:worker) do
-      execute "sudo /bin/systemctl --user reload sidekiq_pool_#{fetch(:partner)}.service"
+      execute "sudo /bin/systemctl reload sidekiq_pool_graduate.service"
     end
   end
   desc 'terminate sidekiq'
   task :stop do
     on roles(:worker) do
-      execute "sudo /bin/systemctl --user stop sidekiq_pool_#{fetch(:partner)}.service"
+      execute "sudo /bin/systemctl stop sidekiq_pool_graduate.service"
     end
   end
   desc 'restart sidekiq'
   task :restart do
     on roles(:worker) do
-      execute "sudo /bin/systemctl --user restart sidekiq_pool_#{fetch(:partner)}.service"
+      execute "sudo /bin/systemctl restart sidekiq_pool_graduate.service"
     end
   end
 
