@@ -94,9 +94,7 @@ Rails.application.routes.draw do
   end
 
   namespace :approver do
-    resources :submissions do
-      get '/committee_member/:id', to: 'approvers#edit'
-    end
+    get '/committee_member/:id', to: 'approvers#edit'
   end
 
   root to: 'application#main'

@@ -4,7 +4,6 @@ class Approver::ApproversController < ApproverController
   before_action :verify_approver
 
   def edit
-    @submission = Submission.find(params[:submission_id])
     @committee_member = CommitteeMember.find(params[:id])
   end
 

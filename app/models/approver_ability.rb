@@ -1,9 +1,8 @@
 class ApproverAbility
   include CanCan::Ability
-  def initialize(approver, submission_id)
-    @submission = Submission.find(submission_id)
+  def initialize(approver, _committee_member_id)
     return if approver.blank?
 
-    can [:view, :read, :edit], @submission.committee_members, access_id: approver.access_id
+    can [:view, :read, :edit], CommitteeMember, access_id: approver.access_id
   end
 end
