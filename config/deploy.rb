@@ -79,21 +79,17 @@ set :keep_releases, 7
 
 # SideKiq commands
 namespace :sidekiq do
-  desc 'quiet sidekiq and terminate'
-  task :stop do
-    on roles(:app) do
-      execute "sudo /bin/systemctl stop sidekiq_pool_graduate"
-    end
-  end
-  desc 'restart sidekiq'
-  task :restart do
-    on roles(:app) do
-      execute "sudo /bin/systemctl start sidekiq_pool_graduate"
+  %i [stop start].each do |action|
+    desc "#{action.to_s.capitalize} SideKiq"
+    task action do
+      on roles(:app) do
+        execute "sudo /bin/systemctl #{action} sidekiq_pool_#{:partner}"
+      end
     end
   end
 
   after "deploy:starting", "sidekiq:stop"
-  after "deploy:published", "sidekiq:restart"
+  after "deploy:published", "sidekiq:start"
 end
 
 
