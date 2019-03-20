@@ -79,7 +79,7 @@ set :keep_releases, 7
 
 # SideKiq commands
 namespace :sidekiq do
-  %i [stop start].each do |action|
+  %i[stop start].each do |action|
     desc "#{action.to_s.capitalize} SideKiq"
     task action do
       on roles(:app) do
