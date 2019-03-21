@@ -53,7 +53,7 @@ gem 'rabl-rails'
 # FontAwesome sass integration
 gem 'font-awesome-rails'
 
-gem 'devise'
+gem 'devise', '>= 4.6.0'
 
 gem 'sprockets', '~> 3.7.2'
 
