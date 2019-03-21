@@ -13,6 +13,7 @@ class ApproverController < ApplicationController
 
   def find_or_initialize_approver
     @approver = Approver.find_or_initialize_by(access_id: current_approver.access_id)
+    session[:access_id] = @approver.access_id
     approver_ability
     # Rails.logger.info "current_approver = #{current_approver.inspect}"
     # redirect to login_path if @approver.nil?
@@ -29,19 +30,15 @@ class ApproverController < ApplicationController
     if valid_approver?
       authenticate_approver! unless valid_approver_session?
     else
-      redirect_to '/401' unless Rails.env.test?
+      redirect_to '/401' #unless Rails.env.test?
     end
   end
 
   def valid_approver?
     this_approver = current_remote_user
-    user_is_approver = if current_approver.nil?
-                          LdapUniversityDirectory.new.exists?(this_approver)
-                       else
-                          true
-                       end
-    session[:user_role] = 'approver' if user_is_approver
-    user_is_approver
+    user_is_in_ldap = LdapUniversityDirectory.new.exists?(this_approver)
+    session[:user_role] = 'approver' if user_is_in_ldap
+    user_is_in_ldap
   end
 
   def valid_approver_session?
