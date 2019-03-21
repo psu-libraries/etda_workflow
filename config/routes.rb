@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'sidekiq/web'
 
 Rails.application.routes.draw do
 
@@ -11,6 +12,8 @@ Rails.application.routes.draw do
   get '/main', to: 'application#main', as: :main_page
 
   get '/', to: redirect(path: '/main')
+
+  mount Sidekiq::Web => '/sidekiq'
 
   ## works: get '/committee_members/autocomplete', to: 'ldap_lookup#autocomplete', as: :committee_members_autocomplete
   get '/committee_members/autocomplete', to: 'application#autocomplete', as: :committee_members_autocomplete

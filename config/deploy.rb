@@ -77,6 +77,23 @@ set :format_options, command_output: false
 # Default value for keep_releases is 5
 set :keep_releases, 7
 
+# SideKiq commands
+namespace :sidekiq do
+  %i[stop start].each do |action|
+    desc "#{action.to_s.capitalize} SideKiq"
+    task action do
+      on roles(:app) do
+        execute "sudo /bin/systemctl #{action} sidekiq_pool_#{fetch(:partner)}"
+      end
+    end
+  end
+
+  after "deploy:starting", "sidekiq:stop"
+  after "deploy:published", "sidekiq:start"
+end
+
+
+
 # Apache namespace to control apache
 namespace :apache do
   %i[stop start restart reload].each do |action|
