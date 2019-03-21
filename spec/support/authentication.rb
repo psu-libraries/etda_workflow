@@ -35,15 +35,19 @@ module StubbedAuthenticationHelper
   def webaccess_authorize_author
     sign_in_as_author current_author
     sign_in_as_admin nil if @current_admin.nil?
+    sign_in_as_approver nil if @current_approver.nil?
   end
 
   def webaccess_authorize_admin
     sign_in_as_admin current_admin
     sign_in_as_author nil if @current_author.nil?
+    sign_in_as_approver nil if @current_approver.nil?
   end
 
   def webaccess_authorize_approver
     sign_in_as_approver current_approver
+    sign_in_as_author nil if @current_author.nil?
+    sign_in_as_admin nil if @current_admin.nil?
   end
 
   def current_author
