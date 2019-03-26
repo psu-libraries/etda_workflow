@@ -13,7 +13,7 @@ RSpec.describe CommitteeReminderWorker do
 
     it 'performs task' do
       Sidekiq::Testing.inline! do
-        expect{ described_class.perform_async(submission.id, "test@psu.edu") }.to change { WorkflowMailer.deliveries.size }.by(1)
+        expect { described_class.perform_async(submission.id, "test@psu.edu") }.to change { WorkflowMailer.deliveries.size }.by(1)
       end
     end
   end
