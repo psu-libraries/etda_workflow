@@ -65,7 +65,7 @@ module StubbedAuthenticationHelper
   end
 
   def current_approver
-    @current_author ||= FactoryBot.create(:approver, access_id: 'approverflow', psu_email_address: 'approverflow@psu.edu')
+    @current_approver ||= FactoryBot.create(:approver, access_id: 'approverflow')
     Approver.current = @current_approver
     @current_approver
   end
