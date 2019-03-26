@@ -67,7 +67,7 @@ module StubbedAuthenticationHelper
   def current_approver
     @current_author ||= FactoryBot.create(:approver, access_id: 'approverflow', psu_email_address: 'approverflow@psu.edu')
     Approver.current = @current_approver
-    @current_aapprover
+    @current_approver
   end
 
   # Call this method in your "before" block to be signed in as the given user
