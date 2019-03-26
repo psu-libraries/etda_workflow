@@ -3,7 +3,7 @@ class Approver < ApplicationRecord
 
   devise :webaccess_authenticatable, :rememberable, :trackable, :registerable
 
-  validates :access_id, presence: true
+  validates :access_id, presence: true, uniqueness: true
 
   def self.current
     Thread.current[:approver]
