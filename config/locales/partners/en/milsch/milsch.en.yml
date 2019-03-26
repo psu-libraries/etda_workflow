@@ -46,6 +46,18 @@ en:
                     Millennium Scholars Program
                     130 Ritenour Building
                     University Park, PA  16802
+        committee_member_review_requested:
+          message: |
+                    %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
+                    Please visit this URL to conduct your final review:
+                    %{review_url}
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
         final_submission_approved:
           message: |
                     Your MSPT has been reviewed and approved. Everything is in order, and you need do nothing further for our office.
@@ -100,6 +112,9 @@ en:
       final_submission_incomplete:
         title: Final Submission is Incomplete
         description: Submissions that were rejected and need formatting corrections
+      final_submission_not_approved:
+        title: Final Submission waiting to be approved
+        description: Submitted and waiting to be approved
       final_submission_approved:
         title: Final Submission to be Released
         description: Approved and waiting to be released
@@ -139,5 +154,3 @@ en:
         name: Verify Thesis Advisor
         update: Refresh Thesis Advisor
         add: Verify Thesis Advisor
-
-

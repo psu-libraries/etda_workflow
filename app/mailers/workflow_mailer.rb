@@ -66,6 +66,6 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     mail to: recipient_email_address,
          from: current_partner.email_address,
-         subject: "REMINDER: #{@submission.degree_type} Approval Requested"
+         subject: "REMINDER: #{@submission.degree_type} Review Requested"
   end
 end
