@@ -12,5 +12,4 @@ class Approver::ApproversController < ApproverController
     redirect_to '/404' if @approver.nil? || current_approver.nil?
     redirect_to '/401' unless @approver_ability.can? :edit, @committee_member
   end
-
 end
