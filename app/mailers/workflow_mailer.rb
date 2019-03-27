@@ -62,10 +62,40 @@ class WorkflowMailer < ActionMailer::Base
          subject: 'BUNDLE AUDIT: Vulnerable Gems Found'
   end
 
-  def committee_member_reminder(submission, recipient_email_address)
+  def committee_member_review_request(submission, recipient_email_address)
+    @submission = submission
+    mail to: recipient_email_address,
+         from: current_partner.email_address,
+         subject: "#{@submission.degree_type} Review Requested"
+  end
+
+  def committee_member_review_reminder(submission, recipient_email_address)
     @submission = submission
     mail to: recipient_email_address,
          from: current_partner.email_address,
          subject: "REMINDER: #{@submission.degree_type} Review Requested"
+  end
+
+  def committee_member_review_complete(submission, committee_member, mailer_base_url)
+    @submission = submission
+    @committee_member = committee_member
+    @author = submission.author
+    @mailer_base_url = mailer_base_url
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "#{@committee_member.name} has reviewed your #{@submission.degree_type}"
+  end
+
+  def committee_member_rejected(submission, committee_member, admin, mailer_base_url)
+    @submission = submission
+    @committee_member = committee_member
+    @admin = admin
+    @author = submission.author
+    @mailer_base_url = mailer_base_url
+
+    mail to: @admin.psu_email_address,
+         from: current_partner.email_address,
+         subject: "#{@committee_member.name} has rejected a #{@submission.degree_type}"
   end
 end
