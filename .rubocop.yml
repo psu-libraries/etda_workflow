@@ -19,7 +19,7 @@ AllCops:
     - 'Gemfile*'
     - 'Capfile'
     - 'spec/*_helper.rb'
-    - 'lib/devise/**'
+    - 'lib/devise/**/*'
     - 'config/version_number.rb'
     - 'spec/fixtures/version_number.rb'
 
@@ -251,6 +251,7 @@ RSpec/PredicateMatcher:
    - 'spec/lib/tasks/confidential_rake_spec.rb'
    - 'spec/models/admin_ability_spec.rb'
    - 'spec/models/author_ability_spec.rb'
+   - 'spec/models/approver_ability_spec.rb'
 
 Naming/FileName:
   Exclude:
