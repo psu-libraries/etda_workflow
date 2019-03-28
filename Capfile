@@ -21,7 +21,6 @@ require 'capistrano/rails' # rails (includes bundler, rails/assets and rails/mig
 require 'capistrano/scm/git'
 install_plugin Capistrano::SCM::Git
 require 'whenever/capistrano' # whenever
-require 'capistrano-resque' # resque
 require 'capistrano/rbenv_install' # rbenv install plugin
 require 'capistrano/rails/migrations'
 require 'capistrano/passenger'

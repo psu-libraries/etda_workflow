@@ -61,4 +61,11 @@ class WorkflowMailer < ActionMailer::Base
          from: 'jxb13@psu.edu',
          subject: 'BUNDLE AUDIT: Vulnerable Gems Found'
   end
+
+  def committee_member_reminder(submission, recipient_email_address)
+    @submission = submission
+    mail to: recipient_email_address,
+         from: current_partner.email_address,
+         subject: "REMINDER: #{@submission.degree_type} Approval Requested"
+  end
 end

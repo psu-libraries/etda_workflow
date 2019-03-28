@@ -59,7 +59,7 @@ class FormatReviewUpdateService
         :admin_notes,
         :is_printed,
         :lion_path_degree_code,
-        committee_members_attributes: [:id, :committee_role_id, :name, :email, :is_required, :_destroy],
+        committee_members_attributes: [:id, :committee_role_id, :name, :email, :status, :notes, :is_required, :_destroy],
         format_review_files_attributes: [:asset, :asset_cache, :id, :_destroy]
       )
     end
