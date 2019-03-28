@@ -1,5 +1,5 @@
 <%= t( "#{current_partner.id}.partner.email.committee_member_review_reminder.message",
-       full_name: @email[:author_full_name],
-       title: @email[:title],
-       degree_type: @email[:degree_type],
-       review_url: 'test' %>
+       full_name: @author.full_name,
+       title: @submission.title,
+       degree_type: @submission.degree_type,
+       review_url: 'test') %>

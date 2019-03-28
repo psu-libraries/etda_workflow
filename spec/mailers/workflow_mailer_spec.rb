@@ -181,8 +181,8 @@ RSpec.describe WorkflowMailer do
     end
   end
 
-  describe '#committee_member_reminder' do
-    let(:email) { described_class.committee_member_reminder(submission, "test@psu.edu") }
+  describe '#committee_member_review_reminder' do
+    let(:email) { described_class.committee_member_review_reminder(submission, "test@psu.edu") }
 
     it "is sent to the proper recipient" do
       expect(email.to).to eq(["test@psu.edu"])
@@ -193,11 +193,11 @@ RSpec.describe WorkflowMailer do
     end
 
     it "sets an appropriate subject" do
-      expect(email.subject).to eq("REMINDER: #{submission.degree_type} Approval Requested")
+      expect(email.subject).to eq("REMINDER: #{submission.degree_type} Review Requested")
     end
 
-    xit "has desired content" do
-      expect(email.body).to match(/ /) # some regex when email views are completed
+    it "has desired content" do
+      expect(email.body).to match(/Reminder:/) # some regex when email views are completed
     end
   end
 end
