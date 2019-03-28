@@ -11,11 +11,15 @@ module Devise
           this_object = authentication_type || Author.class
           a = this_object.find_by_access_id(access_id)
           if a.nil?
-            obj = this_object.create(access_id: access_id, psu_email_address: "#{access_id}@psu.edu")
-            obj.populate_attributes
+            if this_object.name == 'Approver'
+              obj = this_object.create(access_id: access_id)
+            else
+              obj = this_object.create(access_id: access_id, psu_email_address: "#{access_id}@psu.edu")
+              obj.populate_attributes
+            end
           else
             obj = a
-            obj.refresh_important_attributes
+            obj.refresh_important_attributes unless obj.class.name == 'Approver'
           end
           success!(obj)
         else
@@ -52,7 +56,7 @@ module Devise
         return 'Author' unless this_uri.length > 1
 
         this_uri = uri.split('/')[1].camelcase
-        this_uri = 'Author' unless ['Author', 'Admin'].include? this_uri
+        this_uri = 'Author' unless ['Author', 'Admin', 'Approver'].include? this_uri
         this_uri
       end
     end

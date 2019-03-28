@@ -3,6 +3,7 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
 
+  devise_for :approvers, path: 'approver'
   devise_for :authors, path: 'author'
   devise_for :admins, path: 'admin'
 
@@ -94,6 +95,10 @@ Rails.application.routes.draw do
     get 'email_contact_form', to: 'email_contact_form#new', as: :email_contact_form_new
     root to: 'submissions#index'
     get '/tips', to: 'authors#technical_tips', as: :technical_tips
+  end
+
+  namespace :approver do
+    get '/committee_member/:id', to: 'approvers#edit'
   end
 
   root to: 'application#main'
