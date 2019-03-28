@@ -8,6 +8,7 @@ class MockUniversityDirectory
   COMMITTEE_LDAP_MAP = ::LdapResultsMap::COMMITTEE_LDAP_MAP
 
   KNOWN_ACCESS_IDS = %w[
+    ajk5603
     saw140
     jxb13
     amg32

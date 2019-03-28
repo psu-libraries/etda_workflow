@@ -3,7 +3,7 @@ class CommitteeReminderWorker
   sidekiq_options queue: 'mailers'
 
   def perform(submission_id, recipient_email_address)
-    submission = Submission.find_by(submission_id)
+    submission = Submission.find_by(id: submission_id)
     WorkflowMailer.committee_member_review_reminder(submission, recipient_email_address).deliver
   end
 end
