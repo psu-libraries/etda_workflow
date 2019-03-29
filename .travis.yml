@@ -37,16 +37,20 @@ before_script:
 script:
 - "bundle exec rake db:create"
 - "bundle exec rake db:test:load"
+- "bundle exec rake db:migrate RAILS_ENV=test"
 - "yarn install"
 - "echo $(date)"
 - "bundle exec rake ci"
 services:
 - mysql
 - redis-server
+addons:
+  mariadb: '10.2'
 notifications:
   email:
     recipients:
     - ajk5603@psu.edu
+    - amg32@psu.edu
     on_success: change
     on_failure: always
   irc:

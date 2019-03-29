@@ -132,7 +132,7 @@ module.exports = {
             // output the fingerprint
             this.plugin("done", function(stats) {
                 let output = "ASSET_FINGERPRINT = \"" + stats.hash + "\""
-                fs.writeFileSync("config/initializers/fingerprint.rb", output, "utf8");
+                fs.writeFileSync("config/initializers/fingerprint.rb", output, "utf8mb4");
             });
         }
       ]

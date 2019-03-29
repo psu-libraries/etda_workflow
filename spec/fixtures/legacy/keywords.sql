@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `keywords`;
 CREATE TABLE `keywords` (
   `id` bigint(20) NOT NULL,
   `submission_id` bigint(20) DEFAULT NULL,
-  `word` text COLLATE utf8_unicode_ci,
+  `word` text COLLATE utf8mb4_unicode_ci,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `legacy_id` int(11) DEFAULT NULL);

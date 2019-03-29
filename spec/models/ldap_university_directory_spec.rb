@@ -32,17 +32,17 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
 
     context "when given a person's complete name" do
-      let(:search_string) { "Joni Lee Barnoff" }
+      let(:search_string) { "Alex Jame Kiessling" }
 
       it "returns only the entry for that person" do
         expect(results.count).to eq(1)
-        expect(results.first[:label]).to eq("Joni Lee Barnoff")
+        expect(results.first[:label]).to eq("Alex James Kiessling")
       end
       it "returns the person's department" do
         expect(results.first[:dept]).to eq("ITS Services & Solutions")
       end
       it "returns the person's email as the id" do
-        expect(results.first[:id]).to eq("jxb13@psu.edu")
+        expect(results.first[:id]).to eq("ajk5603@psu.edu")
       end
     end
 
@@ -76,7 +76,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
 
       it "returns only the entry for that person" do
         expect(results.count).to eq(1)
-        expect(results.first[:label]).to eq("Joni Lee Barnoff")
+        expect(results.first[:label]).to eq("Alex James Kiessling")
       end
     end
 
@@ -85,7 +85,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
 
       it "returns only the entry for that person" do
         expect(results.count).to eq(1)
-        expect(results.first[:label]).to eq("Joni Lee Barnoff")
+        expect(results.first[:label]).to eq("Alex James Kiessling")
       end
     end
 
@@ -117,7 +117,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
 
       context "with trailing whitespace" do
         let(:search_string) { "barnoff " }
-        let(:matching_entry) { results.detect { |r| r[:label] == "Joni Lee Barnoff" } }
+        let(:matching_entry) { results.detect { |r| r[:label] == "Alex James Kiessling" } }
 
         it "returns an entry for that person" do
           expect(matching_entry).to be_present
@@ -125,10 +125,10 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       end
 
       context "and that person has a middle name" do
-        let(:search_string) { "Barnoff" }
-        let(:matching_entry) { results.detect { |r| r[:label] == "Joni Lee Barnoff" } }
+        let(:search_string) { "Kiessling" }
+        let(:matching_entry) { results.detect { |r| r[:label] == "Alex James Kiessling" } }
 
-        it "returns an entry for Joni Barnoff (among others)" do
+        it "returns an entry for Alex Kiessling (among others)" do
           expect(matching_entry).to be_present
         end
       end
@@ -198,8 +198,8 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
 
     context "when given a partial last name" do
-      let(:search_string) { "Barn" }
-      let(:matching_entry) { results.detect { |r| r[:label] == "Joni Lee Barnoff" } }
+      let(:search_string) { "Kies" }
+      let(:matching_entry) { results.detect { |r| r[:label] == "Alex James Kiessling" } }
 
       it "includes the entry for that person" do
         expect(matching_entry).to be_present
@@ -207,8 +207,8 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
 
     context "when given a first name and a partial last name" do
-      let(:search_string) { "Joni Barn" }
-      let(:matching_entry) { results.detect { |r| r[:label] == "Joni Lee Barnoff" } }
+      let(:search_string) { "Alex Kies" }
+      let(:matching_entry) { results.detect { |r| r[:label] == "Alex James Kiessling" } }
 
       it "includes the entry for that person" do
         expect(matching_entry).to be_present
@@ -230,8 +230,8 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
 
     context 'when searching using wildcards' do
-      let(:search_string) { "Barn*" }
-      let(:matching_entry) { results.detect { |r| r[:label] == "Joni Lee Barnoff" } }
+      let(:search_string) { "Kies*" }
+      let(:matching_entry) { results.detect { |r| r[:label] == "Alex James Kiessling" } }
 
       it "doesn't return any results, since wildcards are not supported for the end user" do
         expect(results).to eq([])
@@ -263,7 +263,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
 
     context "when given an access ID that exists" do
-      let(:access_id) { "jxb13" }
+      let(:access_id) { "ajk5603" }
 
       it "returns true" do
         expect(result).to be(true)
@@ -271,7 +271,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
 
     context "when LDAP is down" do
-      let(:access_id) { "jxb13" }
+      let(:access_id) { "ajk5603" }
 
       before do
         allow(Net::LDAP).to receive(:new).and_raise(Net::LDAP::LdapError)
@@ -295,13 +295,13 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
 
     context "when given a valid access ID" do
-      let(:access_id) { "jxb13" }
+      let(:access_id) { "ajk5603" }
 
       it "returns a hash of author attributes" do
-        expect(result[:access_id]).to eq('jxb13') # to confirm that we have the right record
-        expect(result[:first_name]).to eq('Joni')
-        expect(result[:middle_name]).to eq('Lee')
-        expect(result[:last_name]).to eq('Barnoff')
+        expect(result[:access_id]).to eq('ajk5603') # to confirm that we have the right record
+        expect(result[:first_name]).to eq('Alex')
+        expect(result[:middle_name]).to eq('James')
+        expect(result[:last_name]).to eq('Kiessling')
         expect(result[:address_1]).to eq('0116 H Technology Sppt Bldg')
         expect(result[:city]).to eq('University Park')
         expect(result[:state]).to eq('PA')
@@ -313,7 +313,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
 
     context "when LDAP is down" do
-      let(:access_id) { "jxb13" }
+      let(:access_id) { "ajk5603" }
 
       before do
         allow(Net::LDAP).to receive(:new).and_raise(Net::LDAP::LdapError)
@@ -326,7 +326,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
   end
 
   describe '#get_psu_id' do
-    let(:access_id) { 'jxb13' }
+    let(:access_id) { 'ajk5603' }
 
     context "when given an access ID" do
       let(:result) { directory.get_psu_id_number(access_id) }
