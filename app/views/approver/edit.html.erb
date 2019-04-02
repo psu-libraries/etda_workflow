@@ -27,24 +27,26 @@
               <h1>Committee Member Approval Page</h1>
             </div>
           </div>
-          <div>Title: <%=@committee_member.submission.title%></div>
-          <div>
+          <div class="submission_info">
             <p>
-              <strong>Author: </strong><%= @author.full_name || 'N/A' %><br />
-              <strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %><br />
-              <strong>Access Id: </strong><%= @author.access_id %><br />
-              <strong>Phone:</strong> <%= @author.phone_number %> <br />
-              <strong>Alternate email:</strong> <%= @author.alternate_email_address %><br />
-              <strong>Penn State email:</strong> <%= @author.psu_email_address %><br />
+              <div><strong>Title: </strong><%=@committee_member.submission.title%></div>
+              <div><strong>Author: </strong><%= @author.full_name || 'N/A' %></div>
+              <div><strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %></div>
+              <div><strong>Access Id: </strong><%= @author.access_id %></div>
+              <div><strong>Phone:</strong> <%= @author.phone_number %></div>
+              <div><strong>Alternate email:</strong> <%= @author.alternate_email_address %></div>
+              <div><strong>Penn State email:</strong> <%= @author.psu_email_address %></div>
             </p>
           </div>
+          <strong>Associated Files:</strong>
           <div>
             <%=raw @most_relevant_file_links %>
           </div>
+          <h2>Final Review -</h2>
           <div>
             <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
-              <%= f.input :status, collection: CommitteeMember::STATUS, disabled: "pending", include_blank: true %>
-              <%= f.input :notes %>
+              <%= f.input :status, collection: CommitteeMember::STATUS, disabled: "pending", include_blank: true, :input_html => { :class => 'status_select' } %>
+              <%= f.input :notes, :input_html => { :class => 'notes_select' } %>
               <div class="form-group actions col-xs-4">
                 <%= f.button :submit, "Submit Review" %>
               </div>

@@ -44,10 +44,10 @@ class Approver::ApproversController < ApproverController
   def most_relevant_file_links
     links = []
     if @submission.final_submission_files.any?
-      @submission.final_submission_files.map { |f|
+      @submission.final_submission_files.map do |f|
         link = link_to f.asset_identifier, approver_approver_file_path(f.id), 'target': '_blank', 'data-no-turbolink': true
         links.push(link)
-      }
+      end
     end
     links.join(" ")
   end
