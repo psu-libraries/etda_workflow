@@ -30,7 +30,7 @@ class ApproverController < ApplicationController
     if valid_approver?
       authenticate_approver! unless valid_approver_session?
     else
-      redirect_to '/401' #unless Rails.env.test?
+      redirect_to '/401' # unless Rails.env.test?
     end
   end
 
