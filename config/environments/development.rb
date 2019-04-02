@@ -78,6 +78,6 @@ Rails.application.configure do
   VirusScanner = MockVirusScanner
   WORKFLOW_BASE_PATH = "tmp/workflow_files/#{Partner.current.id}/"
   EXPLORE_BASE_PATH = "tmp/explore_files/#{Partner.current.id}/"
-  FILE_SOURCE_BASE_PATH = "/Users/jxb13/RailsWorkspace/etda/uploads/"
+  FILE_SOURCE_BASE_PATH = "/Users/ajk5603/RubymineProjects/etda_workflow/uploads/"
   VERSION_NUMBER_FILE = 'config/version_number.rb'
 end

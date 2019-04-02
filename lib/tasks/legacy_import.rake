@@ -119,7 +119,7 @@ namespace :legacy do
      Rake::Task['legacy:import:invention_disclosures'].invoke
    end
 
-   # rails legacy:import:all_files['/Users/jxb13/RailsWorkspace/etda/uploads/']
+   # rails legacy:import:all_files['/Users/ajk5603/RubymineProjects/etda_workflow/uploads/']
    # rails legacy:import:all_files['prod']
    # rails legacy:import:all_files['qa',verify_files]
    # There should be no space between the comma separating parameters or the task will fail!
@@ -134,7 +134,7 @@ namespace :legacy do
      Rake::Task['legacy:import:copy_final_submission_files'].invoke(file_source,verify_param)
    end
 
-   # rails legacy:import:copy_format_review_files['/Users/jxb13/RailsWorkspace/etda/uploads/']
+   # rails legacy:import:copy_format_review_files['/Users/ajk5603/RubyminProjects/etda_workflow/uploads/']
    # rails legacy:import:copy_format_review_files[qa,verify_files]
    # rails legacy:import:copy_format_review_files[prod,verify_files]
    # rails legacy:import:copy_format_review_files[prod]
@@ -150,7 +150,7 @@ namespace :legacy do
      file_importer.record_message "Finished Format Review Files: " + Time.now.to_s
    end
 
-   # rails legacy:import:copy_final_submission_files['/Users/jxb13/RailsWorkspace/etda/uploads/']
+   # rails legacy:import:copy_final_submission_files['/Users/ajk5603/RubymineProjects/etda_workflow/uploads/']
    # rails legacy:import:copy_final_submission_files[prod]
    # rails legacy:import:copy_final_submission_files[qa,verify_files]
    desc "copy final submission files, entering the source of the files as [qa], [stage], or [prod].  For development, enter full path."
