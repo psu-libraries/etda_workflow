@@ -203,7 +203,7 @@ RSpec.describe WorkflowMailer do
   end
 
   describe '#committee_member_review_reminder' do
-    let(:email) { described_class.committee_member_reminder(submission, "test@psu.edu") }
+    let(:email) { described_class.committee_member_review_reminder(submission, "test@psu.edu") }
 
     it "is sent to the proper recipient" do
       expect(email.to).to eq(["test@psu.edu"])
