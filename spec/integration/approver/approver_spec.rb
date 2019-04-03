@@ -14,8 +14,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
       visit "approver/committee_member/#{committee_member.id}"
       sleep 5
-      expect(page).to have_content('approverflow')
-      # This spec needs modified when view is created
+      expect(page).to have_content('Committee Member Approval Page')
     end
   end
 
