@@ -170,6 +170,12 @@ class Author::SubmissionsController < AuthorController
     render 'published_submissions_index'
   end
 
+  def send_email_reminder
+    WorkflowMailer.committee_member_review_reminder(@submission, params[:committee_member_email]).deliver
+    redirect_to "author/submissions/#{params[:id]}/final_submission}"
+    flash[:notice] = 'Email Successfully Sent.'
+  end
+
   private
 
     def find_submission
