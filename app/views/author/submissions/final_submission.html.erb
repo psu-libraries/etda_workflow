@@ -34,7 +34,7 @@
         <tr>
           <td><%= member.name %></td>
           <td><%= member.status %></td>
-          <td><%= link_to 'Send Email Reminder', author_submission_send_email_reminder_path, submission_params: { committee_member_email: member.email.to_s }, method: :post %></td>
+          <td><%= button_to 'Send Email Reminder', { controller: author_submissions_path, action: "send_email_reminder", committee_member_email: member.email.to_s }, method: :post %></td>
         </tr>
         <% end %>
       </table>
