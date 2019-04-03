@@ -72,7 +72,7 @@ class WorkflowMailer < ActionMailer::Base
   def committee_member_review_request(submission, recipient_email_address)
     @submission = submission
     @author = submission.author
-    
+
     mail to: recipient_email_address,
          from: current_partner.email_address,
          subject: "#{@submission.degree_type} Review Requested"
