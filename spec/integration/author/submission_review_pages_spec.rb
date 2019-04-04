@@ -83,6 +83,13 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
       visit "/author/submissions/#{submission.id}/final_submission"
       expect(page).to have_content('Final Submission Files')
       expect(page).to have_content(submission.title)
+      expect(page).to have_content('Committee Members')
+      within('div#committee_member_table') do
+        expect(page).to have_content('Committee Member')
+        expect(page).to have_content('Status')
+        expect(page).to have_content('Action')
+        expect(page).to have_button('Send Email Reminder')
+      end
       expect(page).to have_content('Date defended') if current_partner.graduate?
       expect(page).to have_content('Keywords')
       expect(page).to have_content(submission.keywords.first.word)
@@ -103,6 +110,17 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
         sleep(5)
       end
       expect(page.driver.browser.window_handles.count).to eql(num_windows + 1)
+    end
+  end
+
+  context 'author can nudge committee members from final_submission page' do
+    it 'sends email reminder' do
+      visit "/author/submissions/#{submission.id}/final_submission"
+      find('div#committee_member_table').first(:button, "Send Email Reminder").click
+      expect(WorkflowMailer.deliveries.first.to).to eq [committee_member1.email]
+      expect(WorkflowMailer.deliveries.first.from).to eq [current_partner.email_address]
+      expect(WorkflowMailer.deliveries.first.subject).to eq "REMINDER: #{submission.degree_type} Review Requested"
+      expect(WorkflowMailer.deliveries.first.body).to match(/Reminder:/)
     end
   end
 end
