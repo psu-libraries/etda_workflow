@@ -1,4 +1,8 @@
+# For importing legacy data during Jan 2019 migration
+# No longer valid
+
 require 'partner'
+
 class Legacy::Importer
   def initialize(records_to_import)
     @display_logger = Logger.new(STDOUT)
