@@ -22,21 +22,25 @@
       <p><%= @submission.title %></p>
     </div>
 
-    <div id="committee_member_statuses" class="review-group <%= even_odd(@row_count) %>">
+    <div id="committee_member_table" class="review-group <%= even_odd(@row_count) %>">
       <h2 class="h4">Committee Members</h2>
       <table id="committee_member_table" class="table table-striped datatable">
-        <tr>
-          <th>Committee Member</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
+        <thead>
+          <tr>
+            <th>Committee Member</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
         <% @submission.committee_members.each do |member| %>
-        <tr>
-          <td><%= member.name %></td>
-          <td><%= member.status %></td>
-          <td><%= button_to 'Send Email Reminder', { controller: author_submissions_path, action: "send_email_reminder", committee_member_email: member.email.to_s }, method: :post %></td>
-        </tr>
+          <tr>
+            <td><%= member.name %></td>
+            <td><%= member.status %></td>
+            <td><%= button_to 'Send Email Reminder', { controller: author_submissions_path, action: "send_email_reminder", committee_member_email: member.email.to_s }, method: :post %></td>
+          </tr>
         <% end %>
+        </tbody>
       </table>
     </div>
 
