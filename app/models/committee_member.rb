@@ -76,4 +76,16 @@ class CommitteeMember < ApplicationRecord
       self.approved_at = nil
     end
   end
+
+  def update_last_reminder_at(new_datetime)
+    update_attributes! last_reminder_at: new_datetime
+  end
+
+  def reminder_email_authorized?
+    if self.last_reminder_at
+      ((DateTime.now.to_time - self.last_reminder_at.to_time) / 60 / 60 ) > 24
+    else
+      true
+    end
+  end
 end
