@@ -30,7 +30,7 @@ end
 sidekiq_config['queues'].each do |k, v|
     threshold = 100
     if v
-        threshold = sidekiq_config['queues'][k]['max_queue_size'] || 30
+        threshold = sidekiq_config['queues'][k]['max_queue_size'] || 100
     end
     OkComputer::Registry.register "sidekiq_size_#{k}", SidekiqQueueCheck.new(k, threshold=threshold)
 end
