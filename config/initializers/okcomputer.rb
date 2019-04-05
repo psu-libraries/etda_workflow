@@ -19,12 +19,20 @@ end
 
 sidekiq_config = YAML.load_file(Rails.root.join('config/sidekiq.yml'))
 
-sidekiq_config['queues'].each do |q|
-    OkComputer::Registry.register "sidekiq_latency_#{q}", OkComputer::SidekiqLatencyCheck.new(q)
+sidekiq_config['queues'].each do |k, v |
+    threshold = 30
+    if v
+        threshold = sidekiq_config['queues'][k]['max_queue_latency'] || 30
+    end
+    OkComputer::Registry.register "sidekiq_latency_#{k}", OkComputer::SidekiqLatencyCheck.new(k, threshold=threshold)
 end
 
-sidekiq_config['queues'].each do |q|
-    OkComputer::Registry.register "sidekiq_size_#{q}", SidekiqQueueCheck.new(q)
+sidekiq_config['queues'].each do |k, v|
+    threshold = 100
+    if v
+        threshold = sidekiq_config['queues'][k]['max_queue_size'] || 30
+    end
+    OkComputer::Registry.register "sidekiq_size_#{k}", SidekiqQueueCheck.new(k, threshold=threshold)
 end
 
 ## Redis Checks 
