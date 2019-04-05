@@ -177,7 +177,7 @@ class Author::SubmissionsController < AuthorController
       flash[:notice] = 'Email Successfully Sent.'
     else
       redirect_to "/author/submissions/#{params[:submission_id]}/final_submission"
-      flash[:alert] = 'Email was not sent.  You may only send email reminders once a day.'
+      flash[:alert] = 'Email was not sent.  A reminder was recently sent to this committee member.  You may only send email reminders once a day.'
     end
   end
 
