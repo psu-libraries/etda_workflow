@@ -60,8 +60,8 @@ class CommitteeMember < ApplicationRecord
   end
 
   def reminder_email_authorized?
-    if self.last_reminder_at
-      ((DateTime.now.to_time - self.last_reminder_at.to_time) / 60 / 60 ) > 24
+    if last_reminder_at
+      ((DateTime.now.to_time - last_reminder_at.to_time) / 60 / 60) > 24
     else
       true
     end
