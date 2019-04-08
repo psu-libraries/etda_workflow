@@ -27,6 +27,43 @@ en:
         address: honorsthesis@psu.edu
         signature: 'Schreyer Honors College<br /> University Park, PA'
 
+        committee_member_review_requested:
+          message: |
+                    %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
+                    Please visit this URL to conduct your final review:
+                    %{review_url}
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+        committee_member_review_reminder:
+          message: |
+                    Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
+                    Please visit this URL to conduct your final review:
+                    %{review_url}
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+        committee_member_review_complete:
+          message: |
+                    Your eTD has been reviewed by %{committee_member_name} and was %{committee_member_status}. Remember, your final submission is not
+                    complete until all of your committee members have finished their review.
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+        committee_member_rejected:
+          message: |
+                    %{committee_member_name} has rejected the %{degree_type} submitted by %{author_name}
         final_submission_approved:
           message: |
                     The electronic honors %{degree_type} submitted by you has been approved by the %{partner_name}.
@@ -111,6 +148,9 @@ en:
       final_submission_incomplete:
         title: Final Submission is Incomplete
         description: Submissions that were rejected and need formatting corrections
+      final_submission_not_approved:
+        title: Final Submission waiting to be approved
+        description: Submitted and waiting to be approved
       final_submission_approved:
         title: Final Submission to be Released
         description: Approved and waiting to be released

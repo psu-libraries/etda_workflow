@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
   mount Sidekiq::Web => '/sidekiq'
 
+  mount OkComputer::Engine, at: "/healthcheck"
+
   ## works: get '/committee_members/autocomplete', to: 'ldap_lookup#autocomplete', as: :committee_members_autocomplete
   get '/committee_members/autocomplete', to: 'application#autocomplete', as: :committee_members_autocomplete
 
@@ -99,6 +101,8 @@ Rails.application.routes.draw do
 
   namespace :approver do
     get '/committee_member/:id', to: 'approvers#edit'
+    patch '/committee_member/:id', to: 'approvers#update', as: :update_committee_member
+    get '/files/final_submissions/:id', to: 'approvers#download_final_submission', as: :approver_file
   end
 
   root to: 'application#main'

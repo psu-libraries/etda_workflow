@@ -1,0 +1,10 @@
+Dear <%= @submission.author.full_name %>,
+
+<%= t( "#{current_partner.id}.partner.email.committee_member_review_complete.message",
+       access_level: @submission.current_access_level.label,
+       degree_type: @submission.degree_type,
+       partner_name: current_partner.name,
+       author_email: @author.psu_email_address,
+       committee_member_name: @committee_member.name,
+       committee_member_status: @committee_member.status,
+       url: @mailer_base_url ) %>

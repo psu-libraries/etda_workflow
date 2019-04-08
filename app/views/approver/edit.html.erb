@@ -1,2 +1,62 @@
-<p><%=  @committee_member.access_id %></p>
-<p><%=  @committee_member.submission.title %></p>
+<!DOCTYPE html>
+<html lang="en">
+<link rel="icon" href="/favicon.ico"/>
+<head>
+  <title>ETDA</title>
+
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+
+  <%= stylesheet_pack_tag 'author', media: 'all' %>
+  <%= javascript_pack_tag 'base' %>
+  <%= javascript_pack_tag 'author' %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="<%= page_classes %>">
+
+<div id="body-container">
+  <%= render 'shared/header' %>
+
+  <main>
+    <div id="content-container" class="container">
+      <%= render partial: 'shared/flash_messages' unless flash.empty? %>
+      <div id="content-row" class="row">
+        <div class="col-xs-12 col-sm-4">
+        </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-9">
+              <h1>Committee Member Approval Page</h1>
+            </div>
+          </div>
+          <div class="submission_info">
+            <p>
+              <div><strong>Title: </strong><%=@committee_member.submission.title%></div>
+              <div><strong>Author: </strong><%= @author.full_name || 'N/A' %></div>
+              <div><strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %></div>
+              <div><strong>Access Id: </strong><%= @author.access_id %></div>
+              <div><strong>Phone:</strong> <%= @author.phone_number %></div>
+              <div><strong>Alternate email:</strong> <%= @author.alternate_email_address %></div>
+              <div><strong>Penn State email:</strong> <%= @author.psu_email_address %></div>
+            </p>
+          </div>
+          <strong>Associated Files:</strong>
+          <div>
+            <%=raw @most_relevant_file_links %>
+          </div>
+          <h2>Final Review -</h2>
+          <div>
+            <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
+              <%= f.input :status, collection: CommitteeMember::STATUS, disabled: "pending", include_blank: true, :input_html => { :class => 'status_select' } %>
+              <%= f.input :notes, :input_html => { :class => 'notes_select' } %>
+              <div class="form-group actions col-xs-4">
+                <%= f.button :submit, "Submit Review" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+  </main>
+</div>
+
+<%= render 'shared/site_footer' %>
+</body>
+</html>

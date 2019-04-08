@@ -1,6 +1,8 @@
 concurrency: 5
 logfile: ./log/sidekiq.log
 max_retries: 3
+latency_threshold: 30
+size_threshold: 100
 queues:
   - default
   - mailers
