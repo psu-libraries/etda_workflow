@@ -1,5 +1,5 @@
 require 'sidekiq/api'
-OkComputer.mount_at = 'healthcheck' 
+OkComputer.mount_at = false
 
 class SidekiqQueueCheck < OkComputer::SizeThresholdCheck
     attr_accessor :queue
