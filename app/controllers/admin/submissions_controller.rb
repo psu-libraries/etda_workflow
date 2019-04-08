@@ -17,6 +17,7 @@ class Admin::SubmissionsController < AdminController
     @submission = Submission.find(params[:id])
     if @submission.status_behavior.beyond_collecting_format_review_files? && status != 'format review completed'
       submission_update_service = FinalSubmissionUpdateService.new(params, @submission)
+      @submission.update_status_from_committee
     else
       submission_update_service = FormatReviewUpdateService.new(params, @submission)
     end

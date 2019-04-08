@@ -100,7 +100,8 @@ class Submission < ApplicationRecord
   scope :format_review_is_completed, -> { where('status = ? OR status = ?', "collecting final submission files", "format review is accepted").where(final_submission_rejected_at: nil) }
 
   scope :final_submission_is_pending, -> { where(status: 'waiting for committee review') }
-  scope :final_submission_is_incomplete, -> { where('status LIKE "collecting final submission files%"').where.not(final_submission_rejected_at: nil) }
+  # scope :final_submission_is_incomplete, -> { where(status: 'waiting for committee review rejected') }
+  scope :final_submission_is_incomplete, -> { where('status LIKE "collecting final submission files%" OR status = "waiting for committee review rejected"').where.not(final_submission_rejected_at: nil) }
   scope :final_submission_is_submitted, -> { where(status: 'waiting for final submission response') }
   scope :final_submission_is_approved, -> { where(status: 'waiting for publication release') }
   scope :released_for_publication, -> { where('status LIKE "released for publication%"') }

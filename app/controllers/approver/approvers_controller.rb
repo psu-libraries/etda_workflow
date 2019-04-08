@@ -18,6 +18,7 @@ class Approver::ApproversController < ApproverController
       return redirect_to(approver_path(params[:id]))
     end
     @committee_member.update_attributes!(committee_member_params)
+    @submission.update_status_from_committee
     redirect_to main_page_path
     flash[:notice] = 'Review submitted successfully'
   rescue ActiveRecord::RecordInvalid
