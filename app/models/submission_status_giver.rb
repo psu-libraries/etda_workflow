@@ -44,7 +44,7 @@ class SubmissionStatusGiver
   end
 
   def can_upload_final_submission_files?
-    validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::FormatReviewAccepted, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected]
+    validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::FormatReviewAccepted, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::WaitingForCommitteeReviewRejected]
   end
 
   def can_review_final_submission_files?
@@ -53,6 +53,18 @@ class SubmissionStatusGiver
 
   def can_respond_to_format_review?
     validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse]
+  end
+
+  def can_waiting_for_committee_review?
+    validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles]
+  end
+
+  def can_waiting_for_committee_review_rejected?
+    validate_current_state! [SubmissionStates::WaitingForCommitteeReview]
+  end
+
+  def can_waiting_for_final_submission?
+    validate_current_state! [SubmissionStates::WaitingForCommitteeReview]
   end
 
   def can_respond_to_final_submission?
@@ -93,6 +105,14 @@ class SubmissionStatusGiver
 
   def collecting_final_submission_files_rejected!
     transition_to SubmissionStates::CollectingFinalSubmissionFilesRejected
+  end
+
+  def waiting_for_committee_review!
+    transition_to SubmissionStates::WaitingForCommitteeReview
+  end
+
+  def waiting_for_committee_review_rejected!
+    transition_to SubmissionStates::WaitingForCommitteeReviewRejected
   end
 
   def waiting_for_final_submission_response!

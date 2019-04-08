@@ -12,6 +12,7 @@ class Admin::SubmissionsDashboardView
       format_review_is_incomplete_filter,
       format_review_is_submitted_filter,
       format_review_is_completed_filter,
+      final_submission_is_pending_filter,
       final_submission_is_submitted_filter,
       final_submission_is_incomplete_filter,
       final_submission_is_approved_filter,
@@ -52,6 +53,17 @@ class Admin::SubmissionsDashboardView
         title: title_for('format_review_completed'),
         description: description_for('format_review_completed'),
         path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/format_review_completed",
+        count: submissions.empty? ? nil : submissions.count.to_s
+      }
+    end
+
+    def final_submission_is_pending_filter
+      submissions = Submission.joins(:degree).where('degrees.degree_type_id' => @degree_type.id).final_submission_is_pending
+      {
+        id: 'final-submission-pending',
+        title: title_for('final_submission_pending'),
+        description: description_for('final_submission_pending'),
+        path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_submission_pending",
         count: submissions.empty? ? nil : submissions.count.to_s
       }
     end

@@ -2,12 +2,11 @@
 
 require 'model_spec_helper'
 
-RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
+RSpec.describe SubmissionStates::WaitingForCommitteeReview do
   describe 'instance methods' do
-    it "transitions to WaitingForPublication, CollectingFinalSubmissionFiles, and CollectingFinalSubmissionFilesRejected" do
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease)
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFiles)
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFilesRejected)
+    it "transitions to WaitingForFinalSubmissionResponse, WaitingForCommitteeReviewRejected" do
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForCommitteeReviewRejected)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingCommittee)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFiles)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFilesRejected)
@@ -23,28 +22,22 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
   describe 'name' do
     let(:subject) { described_class.name }
 
-    it { is_expected.to eq 'waiting for final submission response' }
+    it { is_expected.to eq 'waiting for committee review' }
   end
 
   describe 'status_date' do
-    let(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response }
+    let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review }
     let(:subject) { described_class.new.status_date(submission) }
 
     it { is_expected.to eq(submission.final_submission_files_uploaded_at) }
   end
 
   describe '#transition' do
-    let(:submission) { FactoryBot.create :submission, :final_is_restricted, status: status }
+    let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, status: status }
     let(:subject) { described_class.transition submission }
 
-    context 'when submission status WaitingForFinalSubmissionResponse' do
+    context 'when submission status WaitingForCommittee' do
       let(:status) { described_class.name }
-
-      it { is_expected.to be_truthy }
-    end
-
-    context 'when submission status WaitingForCommitteeReview' do
-      let(:status) { SubmissionStates::WaitingForCommitteeReview.name }
 
       it { is_expected.to be_truthy }
     end
@@ -52,7 +45,7 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
     context 'when submission status CollectingFinalSubmissionFiles' do
       let(:status) { SubmissionStates::CollectingFinalSubmissionFiles.name }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be_truthy }
     end
 
     context 'when submission status CollectingFinalSubmissionFilesRejected' do
@@ -64,13 +57,13 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
     context 'when submission status FormatReviewAccepted' do
       let(:status) { SubmissionStates::FormatReviewAccepted.name }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be_truthy }
     end
 
     context 'when submission status WaitingForPublicationRelease' do
       let(:status) { SubmissionStates::WaitingForPublicationRelease.name }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status ReleasedForPublication' do

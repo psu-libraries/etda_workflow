@@ -99,6 +99,7 @@ class Submission < ApplicationRecord
   scope :format_review_is_submitted, -> { where(status: 'waiting for format review response') }
   scope :format_review_is_completed, -> { where('status = ? OR status = ?', "collecting final submission files", "format review is accepted").where(final_submission_rejected_at: nil) }
 
+  scope :final_submission_is_pending, -> { where(status: 'waiting for committee review') }
   scope :final_submission_is_incomplete, -> { where('status LIKE "collecting final submission files%"').where.not(final_submission_rejected_at: nil) }
   scope :final_submission_is_submitted, -> { where(status: 'waiting for final submission response') }
   scope :final_submission_is_approved, -> { where(status: 'waiting for publication release') }
@@ -109,6 +110,15 @@ class Submission < ApplicationRecord
 
   def set_status_to_collecting_program_information
     self.status = 'collecting program information' if new_record? && status.nil?
+  end
+
+  def update_status_from_committee
+    s = ApprovalStatus.new(self).status
+    if s == 'approved'
+      self.status = 'waiting for final submission response'
+    elsif s == 'rejected'
+      self.status = 'waiting for committee review rejected'
+    end
   end
 
   def initialize_access_level

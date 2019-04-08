@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190315170419) do
+ActiveRecord::Schema.define(version: 20190403165324) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string "access_id", default: "", null: false
@@ -247,6 +247,8 @@ ActiveRecord::Schema.define(version: 20190315170419) do
     t.boolean "has_agreed_to_publication_release"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "committee_review_accepted_at"
+    t.datetime "committee_review_rejected_at"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"

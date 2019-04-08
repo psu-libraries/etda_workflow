@@ -54,6 +54,13 @@ RSpec.describe Admin::SubmissionsDashboardView do
             count: nil
           },
           {
+            id: 'final-submission-pending',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.description"),
+            path: nil,
+            count: nil
+          },
+          {
             id: 'final-submission-submitted',
             title: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.title"),
             description: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.description"),
@@ -107,6 +114,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
         FactoryBot.create :submission, :waiting_for_format_review_response
         FactoryBot.create :submission, :collecting_final_submission_files, final_submission_rejected_at: nil
         FactoryBot.create :submission, :collecting_final_submission_files, final_submission_rejected_at: 1.day.ago
+        FactoryBot.create :submission, :waiting_for_committee_review
         FactoryBot.create :submission, :waiting_for_final_submission_response
         FactoryBot.create :submission, :waiting_for_publication_release
         FactoryBot.create :submission, :released_for_publication
@@ -133,6 +141,11 @@ RSpec.describe Admin::SubmissionsDashboardView do
           a_hash_including(
             id: 'format-review-completed',
             path: admin_submissions_index_path(degree_type, 'format_review_completed'),
+            count: '1'
+          ),
+          a_hash_including(
+            id: 'final-submission-pending',
+            path: admin_submissions_index_path(degree_type, 'final_submission_pending'),
             count: '1'
           ),
           a_hash_including(

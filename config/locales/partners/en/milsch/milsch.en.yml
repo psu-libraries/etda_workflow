@@ -94,9 +94,12 @@ en:
       format_review_completed:
         title: Format Review is Completed
         description: Completed and approved drafts
+      final_submission_pending:
+        title: Final Submission is Pending
+        description: Theses waiting to be reviewed by committee members.
       final_submission_submitted:
         title: Final Submission is Submitted
-        description: Theses waiting to be reviewed for final formatting approval by the Millennium Scholars Program.
+        description: Theses approved by committee and waiting to be reviewed for final formatting approval by the Millennium Scholars Program.
       final_submission_incomplete:
         title: Final Submission is Incomplete
         description: Submissions that were rejected and need formatting corrections
@@ -139,5 +142,3 @@ en:
         name: Verify Thesis Advisor
         update: Refresh Thesis Advisor
         add: Verify Thesis Advisor
-
-
