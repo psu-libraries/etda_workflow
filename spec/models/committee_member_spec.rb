@@ -141,7 +141,7 @@ RSpec.describe CommitteeMember, type: :model do
     context 'when last_reminder_at is not within the past 24 hours' do
       it 'returns true' do
         time_now = DateTime.now
-        cm.last_reminder_at = time_now - 25.hour
+        cm.last_reminder_at = time_now - 25.hours
 
         expect(cm.reminder_email_authorized?).to eq(true)
       end
