@@ -228,6 +228,7 @@ GEM
     nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
     oj (3.7.4)
+    okcomputer (1.17.4)
     orm_adapter (0.5.0)
     parallel (1.12.1)
     parser (2.5.3.0)
@@ -488,6 +489,7 @@ DEPENDENCIES
   mysql2 (>= 0.3.18, < 0.4.11)
   net-ldap (~> 0.16.1)
   oj
+  okcomputer
   poltergeist
   prawn
   puma (~> 3.7)
