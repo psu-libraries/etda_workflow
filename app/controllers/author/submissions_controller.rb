@@ -173,10 +173,10 @@ class Author::SubmissionsController < AuthorController
   def send_email_reminder
     if @submission.committee_members.find(params[:committee_member_id]).reminder_email_authorized?
       WorkflowMailer.committee_member_review_reminder(@submission, @submission.committee_members.find(params[:committee_member_id])).deliver
-      redirect_to "/author/submissions/#{params[:submission_id]}/final_submission"
+      redirect_to author_submission_final_submission_path(@submission.id)
       flash[:notice] = 'Email successfully sent.'
     else
-      redirect_to "/author/submissions/#{params[:submission_id]}/final_submission"
+      redirect_to author_submission_final_submission_path(@submission.id)
       flash[:alert] = 'Email was not sent.  Email reminders may only be sent once a day; a reminder was recently sent to this committee member.'
     end
   end
