@@ -156,6 +156,27 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_six_class
+    if status_behavior.waiting_for_committee_review?
+      'current'
+    elsif status_behavior.beyond_waiting_for_committee_review?
+      'complete'
+    else
+      ''
+    end
+  end
+
+  def step_six_status
+    status = {}
+    if status_behavior.beyond_waiting_for_committee_review?
+      # status[:text] = "approved#{formatted_timestamp_of(final_submission_approved_at)}"
+      status[:partial_name] = '/author/shared/completed_indicator'
+    elsif status_behavior.waiting_for_committee_review?
+      status[:partial_name] = '/author/shared/waiting_indicator'
+    end
+    status
+  end
+
+  def step_seven_class
     if status_behavior.waiting_for_final_submission_response?
       'current'
     elsif status_behavior.beyond_waiting_for_final_submission_response?
@@ -165,7 +186,7 @@ class Author::SubmissionView < SimpleDelegator
     end
   end
 
-  def step_six_status
+  def step_seven_status
     status = {}
     if status_behavior.beyond_waiting_for_final_submission_response?
       status[:text] = "approved#{formatted_timestamp_of(final_submission_approved_at)}"
@@ -176,7 +197,7 @@ class Author::SubmissionView < SimpleDelegator
     status
   end
 
-  def step_seven_class
+  def step_eight_class
     if status_behavior.waiting_for_publication_release? || status_behavior.released_for_publication?
       'complete'
     else
@@ -184,13 +205,13 @@ class Author::SubmissionView < SimpleDelegator
     end
   end
 
-  def step_seven_status
+  def step_eight_status
     return '' unless status_behavior.waiting_for_publication_release? || status_behavior.released_for_publication?
 
     "<div class='step complete final'><strong>#{degree_type.name} Submission is Complete</strong></div>".html_safe
   end
 
-  def step_seven_arrow
+  def step_eight_arrow
     return '<div class="direction glyphicon glyphicon-arrow-down"></div>'.html_safe if status_behavior.waiting_for_publication_release? || status_behavior.released_for_publication?
 
     ''

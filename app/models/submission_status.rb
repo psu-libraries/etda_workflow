@@ -97,7 +97,11 @@ class SubmissionStatus
   end
 
   def beyond_collecting_final_submission_files?
-    waiting_for_committee_review? || beyond_waiting_for_final_submission_response?
+    waiting_for_committee_review? || beyond_waiting_for_committee_review?
+  end
+
+  def beyond_waiting_for_committee_review?
+    waiting_for_final_submission_response? || beyond_waiting_for_final_submission_response?
   end
 
   def beyond_waiting_for_final_submission_response?
