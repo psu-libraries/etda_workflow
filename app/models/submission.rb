@@ -125,6 +125,12 @@ class Submission < ApplicationRecord
     end
   end
 
+  def reset_committee_member_statuses
+    self.committee_members.each do |cm|
+      cm.update_attributes!(status: "")
+    end
+  end
+
   def initialize_access_level
     self.access_level = '' if new_record? && access_level.nil?
   end

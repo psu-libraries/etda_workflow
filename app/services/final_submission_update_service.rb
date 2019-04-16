@@ -17,6 +17,16 @@ class FinalSubmissionUpdateService
     { msg: "The submission was successfully updated.", redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
   end
 
+  def respond_send_back_to_final_submission
+    if update_actions.send_back_to_final_submission?
+      status_giver = SubmissionStatusGiver.new(submission)
+      status_giver.can_upload_final_submission_files?
+      status_giver.collecting_final_submission_files!
+      submission.reset_committee_member_statuses
+      { msg: 'The submission was sent back to waiting for final submission.', redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
+    end
+  end
+
   def respond_final_submission
     msg = ''
     status_giver = SubmissionStatusGiver.new(submission)

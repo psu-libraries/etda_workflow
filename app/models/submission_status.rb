@@ -101,6 +101,10 @@ class SubmissionStatus
   end
 
   def beyond_waiting_for_committee_review?
+    waiting_for_committee_review_rejected? || beyond_waiting_for_committee_review_rejected?
+  end
+
+  def beyond_waiting_for_committee_review_rejected?
     waiting_for_final_submission_response? || beyond_waiting_for_final_submission_response?
   end
 
