@@ -13,6 +13,7 @@ class Approver::ApproversController < ApproverController
 
   def update
     @committee_member = CommitteeMember.find(params[:id])
+    @submission = @committee_member.submission
     if params[:committee_member][:status] == ""
       flash[:error] = 'You must submit a status'
       return redirect_to(approver_path(params[:id]))
