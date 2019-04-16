@@ -167,7 +167,9 @@ class Author::SubmissionView < SimpleDelegator
 
   def step_six_status
     status = {}
-    if status_behavior.beyond_waiting_for_committee_review?
+    if status_behavior.waiting_for_committee_review_rejected?
+      status[:partial_name] = '/author/shared/rejected_indicator'
+    elsif status_behavior.beyond_waiting_for_committee_review?
       # status[:text] = "approved#{formatted_timestamp_of(final_submission_approved_at)}"
       status[:partial_name] = '/author/shared/completed_indicator'
     elsif status_behavior.waiting_for_committee_review?
