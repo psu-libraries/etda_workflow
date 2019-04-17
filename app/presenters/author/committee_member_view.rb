@@ -9,6 +9,10 @@ class Author::CommitteeMemberView
     model.is_required
   end
 
+  def outside_member?
+    model.committee_role.name == 'Outside Member'
+  end
+
   def name_label
     return "Name" unless required?
 
@@ -19,6 +23,12 @@ class Author::CommitteeMemberView
     return "Email" unless required?
 
     "#{role} Email"
+  end
+
+  def access_id_label
+    return "Access ID" unless required?
+
+    "#{role} Access ID"
   end
 
   def role

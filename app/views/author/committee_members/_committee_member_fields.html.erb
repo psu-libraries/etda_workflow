@@ -21,6 +21,11 @@
     <div class="col-sm-6">
         <%= f.input :email, label: local_presenter.email_label, required: true %>
     </div>
+    <% unless local_presenter.outside_member? %>
+      <div class="col-sm-6">
+        <%= f.input :access_id, label: local_presenter.access_id_label, required: true %>
+      </div>
+    <% end %>
     <% unless local_presenter.required? %>
       <div class="col-sm-12 committee-remove">
         <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger' %>
