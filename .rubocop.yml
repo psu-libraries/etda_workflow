@@ -22,6 +22,7 @@ AllCops:
     - 'lib/devise/**/*'
     - 'config/version_number.rb'
     - 'spec/fixtures/version_number.rb'
+    - 'app/models/submission_status_giver.rb'
 
 Rails:
   Enabled: true

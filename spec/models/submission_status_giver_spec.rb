@@ -1358,7 +1358,6 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    //TODO -
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
 

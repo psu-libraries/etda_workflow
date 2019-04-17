@@ -113,7 +113,7 @@ class Author::SubmissionsController < AuthorController
     @submission.update_attributes!(final_submission_params)
     @submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
     status_giver.waiting_for_committee_review!
-    # kick off committee emails - TODO
+    # kick off committee emails
     OutboundLionPathRecord.new(submission: @submission).report_status_change
     @submission.update_final_submission_timestamps!(Time.zone.now)
     redirect_to author_root_path
