@@ -126,7 +126,7 @@ class Submission < ApplicationRecord
   end
 
   def reset_committee_member_statuses
-    self.committee_members.each do |cm|
+    committee_members.each do |cm|
       cm.update_attributes!(status: "")
     end
   end
