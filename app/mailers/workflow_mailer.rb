@@ -69,20 +69,26 @@ class WorkflowMailer < ActionMailer::Base
          subject: 'VERIFY FILES: Misplaced files found'
   end
 
-  def committee_member_review_request(submission, recipient_email_address)
+  def committee_member_review_request(submission, committee_member)
     @submission = submission
+    @committee_member = committee_member
     @author = submission.author
 
-    mail to: recipient_email_address,
+    @committee_member.update_last_reminder_at DateTime.now
+
+    mail to: @committee_member.email,
          from: current_partner.email_address,
          subject: "#{@submission.degree_type} Review Requested"
   end
 
-  def committee_member_review_reminder(submission, recipient_email_address)
+  def committee_member_review_reminder(submission, committee_member)
     @submission = submission
+    @committee_member = committee_member
     @author = submission.author
 
-    mail to: recipient_email_address,
+    @committee_member.update_last_reminder_at DateTime.now
+
+    mail to: @committee_member.email,
          from: current_partner.email_address,
          subject: "REMINDER: #{@submission.degree_type} Review Requested"
   end

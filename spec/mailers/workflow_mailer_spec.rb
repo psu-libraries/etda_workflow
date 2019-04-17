@@ -2,6 +2,7 @@ require 'model_spec_helper'
 
 RSpec.describe WorkflowMailer do
   let(:submission) { FactoryBot.create :submission }
+  let(:committee_member) { FactoryBot.create :committee_member, submission: submission }
   let(:access_updated_email) do
     {
       author_alternate_email_address: "author alt address",
@@ -203,10 +204,10 @@ RSpec.describe WorkflowMailer do
   end
 
   describe '#committee_member_review_reminder' do
-    let(:email) { described_class.committee_member_review_reminder(submission, "test@psu.edu") }
+    let(:email) { described_class.committee_member_review_reminder(submission, committee_member) }
 
     it "is sent to the proper recipient" do
-      expect(email.to).to eq(["test@psu.edu"])
+      expect(email.to).to eq([committee_member.email])
     end
 
     it "is sent from the partner support email address" do
