@@ -116,16 +116,16 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
   context 'author can nudge committee members from final_submission page' do
     it 'sends email reminder' do
       visit "/author/submissions/#{submission.id}/final_submission"
-      expect{ find('div#committee_member').first(:button, "Send Email Reminder").click }.to change{ CommitteeMember.find(committee_member1.id).last_reminder_at }
+      expect { find('div#committee_member').first(:button, "Send Email Reminder").click }.to(change { CommitteeMember.find(committee_member1.id).last_reminder_at })
       expect(page).to have_current_path(author_submission_final_submission_path(submission.id))
-      #expect(page).to have_content("Email successfully sent.")
+      # expect(page).to have_content("Email successfully sent.")
       expect(WorkflowMailer.deliveries.first.to).to eq [committee_member1.email]
       expect(WorkflowMailer.deliveries.first.from).to eq [current_partner.email_address]
       expect(WorkflowMailer.deliveries.first.subject).to eq "REMINDER: #{submission.degree_type} Review Requested"
       expect(WorkflowMailer.deliveries.first.body).to match(/Reminder:/)
-      expect{ find('div#committee_member').first(:button, "Send Email Reminder").click }.not_to change{ CommitteeMember.find(committee_member1.id).last_reminder_at }
+      expect { find('div#committee_member').first(:button, "Send Email Reminder").click }.not_to(change { CommitteeMember.find(committee_member1.id).last_reminder_at })
       expect(page).to have_current_path(author_submission_final_submission_path(submission.id))
-      #expect(page).to have_content("Email was not sent.")
+      # expect(page).to have_content("Email was not sent.")
       expect(WorkflowMailer.deliveries.count).to eq 1
     end
   end
