@@ -18,10 +18,32 @@
     <% end %>
 
     <div id="title" class="review-group <%= even_odd(@row_count) %>">
-
       <h2 class="h4">Document Title</h2>
       <p><%= @submission.title %></p>
     </div>
+
+    <div id="committee_member" class="review-group <%= even_odd(@row_count) %>">
+      <h2 class="h4">Committee Members</h2>
+      <table id="committee_member_table" class="table table-striped datatable">
+        <thead>
+          <tr>
+            <th>Committee Member</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @submission.committee_members.each do |member| %>
+            <tr>
+              <td><%= member.name %></td>
+              <td><%= member.status %></td>
+              <td><%= button_to 'Send Email Reminder', { controller: author_submissions_path, action: "send_email_reminder", committee_member_id: member.id }, method: :post %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
     <% if @submission.defended_at.present? && current_partner.graduate?  %>
     <div id="defended-at" class="review-group <%= even_odd(@row_count) %>">
       <h2 class="h4">Date defended</h2>
@@ -56,12 +78,14 @@
         </div>
       <% end %>
     </div>
+
     <% if @submission.restricted_notes.present? %>
       <div id="restricted-notes" class="review-group"<%= even_odd(@row_count) %>">
         <h2 class="h4">Justification to Restrict paper to Penn State</h2>
         <p><%= @submission.restricted_notes %></p>
       </div>
     <% end %>
+
     <% if @submission.access_level.restricted? %>
         <div id="invention-disclosure" class="review-group <%= even_odd(@row_count) %>">
           <h2 class="h4">Invention Disclosure Number</h2>
@@ -69,6 +93,7 @@
         </div>
     <% end %>
   </div>
+
   <div class="row" >
     <div class="col-xs-12 review-group">
       <p><strong>

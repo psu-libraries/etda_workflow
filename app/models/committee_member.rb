@@ -55,6 +55,18 @@ class CommitteeMember < ApplicationRecord
     false
   end
 
+  def update_last_reminder_at(new_datetime)
+    update_attribute(:last_reminder_at, new_datetime)
+  end
+
+  def reminder_email_authorized?
+    if last_reminder_at
+      ((DateTime.now.to_time - last_reminder_at.to_time) / 60 / 60) > 24
+    else
+      true
+    end
+  end
+
   def status=(new_status)
     self[:status] = new_status
     case new_status
