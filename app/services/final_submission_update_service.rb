@@ -19,7 +19,7 @@ class FinalSubmissionUpdateService
 
   def respond_send_back_to_final_submission
     return unless update_actions.send_back_to_final_submission?
-    
+
     status_giver = SubmissionStatusGiver.new(submission)
     status_giver.can_upload_final_submission_files?
     status_giver.collecting_final_submission_files!
