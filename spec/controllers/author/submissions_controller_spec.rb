@@ -87,4 +87,11 @@ RSpec.describe Author::SubmissionsController, type: :controller do
   #     expect(get: author_submission_refresh_date_defended_path(submission.id)).to route_to(controller: 'author/submissions', action: 'refresh_date_defended', submission_id: submission.id.to_s)
   #   end
   # end
+
+  describe '#send_email_reminder' do
+    it 'routes to author/submissions/[:submission_id]/send_email_reminder' do
+      submission = FactoryBot.create :submission
+      expect(post: author_submission_send_email_reminder_path(submission.id)).to route_to(controller: 'author/submissions', action: 'send_email_reminder', submission_id: submission.id.to_s)
+    end
+  end
 end

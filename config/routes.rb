@@ -61,8 +61,6 @@ Rails.application.routes.draw do
     get '/files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
     get '/files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
 
-
-
     root to: 'submissions#redirect_to_default_dashboard'
 
     root to: 'admin#index'
@@ -86,6 +84,7 @@ Rails.application.routes.draw do
       resource :committee_members, shallow: true # We only modify the set of committee members en masse
       get '/committee_members_refresh', to: 'committee_members#refresh', as: :refresh_committee
 
+      post '/send_email_reminder', to: 'submissions#send_email_reminder'
 
     end
     get '/published_submissions', to: 'submissions#published_submissions_index', as: :published_submissions_index

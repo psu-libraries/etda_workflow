@@ -21,6 +21,7 @@ RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_column(:notes).of_type(:text) }
   it { is_expected.to have_db_index(:submission_id) }
   it { is_expected.to have_db_index(:committee_role_id) }
+  it { is_expected.to have_db_column(:last_reminder_at).of_type(:datetime) }
   it { is_expected.to belong_to(:submission).class_name('Submission') }
   it { is_expected.to belong_to(:committee_role).class_name('CommitteeRole') }
 
@@ -105,6 +106,44 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.approval_started_at).to be_truthy
         expect(cm.approved_at).to be_nil
         expect(cm.rejected_at).to be_nil
+      end
+    end
+  end
+
+  describe 'update_last_reminder_at' do
+    let(:cm) { described_class.new }
+
+    it 'updates last_reminder_at with current DateTime' do
+      time_now = DateTime.now
+      cm.update_last_reminder_at(time_now)
+      expect(cm.last_reminder_at.strftime("%F;%H:%M")).to eq(time_now.to_time.round.strftime("%F;%H:%M"))
+    end
+  end
+
+  describe 'reminder_email_authorized?' do
+    let(:cm) { described_class.new }
+
+    context 'when last_reminder_at is nil' do
+      it 'returns true' do
+        expect(cm.reminder_email_authorized?).to eq(true)
+      end
+    end
+
+    context 'when last_reminder_at is within the past 24 hours' do
+      it 'returns false' do
+        time_now = DateTime.now
+        cm.last_reminder_at = time_now - 1.hour
+
+        expect(cm.reminder_email_authorized?).to eq(false)
+      end
+    end
+
+    context 'when last_reminder_at is not within the past 24 hours' do
+      it 'returns true' do
+        time_now = DateTime.now
+        cm.last_reminder_at = time_now - 25.hours
+
+        expect(cm.reminder_email_authorized?).to eq(true)
       end
     end
   end
