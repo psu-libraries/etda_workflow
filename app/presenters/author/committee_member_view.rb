@@ -9,10 +9,6 @@ class Author::CommitteeMemberView
     model.is_required
   end
 
-  def outside_member?
-    role == 'Outside Member'
-  end
-
   def name_label
     return "Name" unless required?
 
