@@ -81,6 +81,6 @@ class Author::CommitteeMembersController < AuthorController
     end
 
     def submission_params
-      params.require(:submission).permit(committee_members_attributes: [:id, :name, :email, :committee_role_id, :is_required, :lion_path_degree_code, :_destroy])
+      params.require(:submission).permit(committee_members_attributes: [:id, :name, :email, :access_id, :committee_role_id, :is_required, :lion_path_degree_code, :_destroy])
     end
 end
