@@ -10,7 +10,7 @@ class Author::CommitteeMemberView
   end
 
   def outside_member?
-    model.committee_role.name == 'Outside Member'
+    role == 'Outside Member'
   end
 
   def name_label

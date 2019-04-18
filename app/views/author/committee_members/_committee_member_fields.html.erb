@@ -21,9 +21,15 @@
     <div class="col-sm-6">
         <%= f.input :email, label: local_presenter.email_label, required: true %>
     </div>
-    <% unless local_presenter.outside_member? %>
+    <% if local_presenter.required? %>
+      <% unless local_presenter.outside_member? %>
+        <div class="col-sm-6">
+          <%= f.input :access_id, label: local_presenter.access_id_label, required: true %>
+        </div>
+      <% end %>
+    <% else %>
       <div class="col-sm-6">
-        <%= f.input :access_id, label: local_presenter.access_id_label, required: true %>
+        <%= f.input :access_id, label: "Access ID Unless Outside Member" , required: true %>
       </div>
     <% end %>
     <% unless local_presenter.required? %>
