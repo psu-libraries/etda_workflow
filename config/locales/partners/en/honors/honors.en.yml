@@ -139,9 +139,15 @@ en:
       format_review_completed:
         title: Format Review is Completed
         description: Completed and approved drafts
+      final_submission_pending:
+        title: Final Submission is Pending
+        description: Theses waiting to be reviewed by committee members.
+      committee_review_rejected:
+        title: Committee Review Rejected
+        description: Theses rejected by committee.
       final_submission_submitted:
         title: Final Submission is Submitted
-        description: Theses waiting to be reviewed for final formatting approval by Schreyer Honors College
+        description: Theses approved by committee and waiting to be reviewed for final formatting approval by Schreyer Honors College
       final_submission_incomplete:
         title: Final Submission is Incomplete
         description: Submissions that were rejected and need formatting corrections

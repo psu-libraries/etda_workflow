@@ -12,6 +12,8 @@ class SubmissionStatus
       'waiting for format review response',
       'collecting final submission files',
       'collecting final submission files rejected',
+      'waiting for committee review',
+      'waiting for committee review rejected',
       'waiting for final submission response',
       'waiting for publication release',
       'released for publication metadata only',
@@ -54,6 +56,14 @@ class SubmissionStatus
     current_submission.status.include?('collecting final submission files') && !current_submission.final_submission_rejected_at.nil? && current_submission.final_submission_approved_at.nil?
   end
 
+  def waiting_for_committee_review?
+    current_status == 'waiting for committee review'
+  end
+
+  def waiting_for_committee_review_rejected?
+    current_status == 'waiting for committee review rejected'
+  end
+
   def waiting_for_final_submission_response?
     current_status == 'waiting for final submission response'
   end
@@ -87,6 +97,14 @@ class SubmissionStatus
   end
 
   def beyond_collecting_final_submission_files?
+    waiting_for_committee_review? || beyond_waiting_for_committee_review?
+  end
+
+  def beyond_waiting_for_committee_review?
+    waiting_for_committee_review_rejected? || beyond_waiting_for_committee_review_rejected?
+  end
+
+  def beyond_waiting_for_committee_review_rejected?
     waiting_for_final_submission_response? || beyond_waiting_for_final_submission_response?
   end
 
