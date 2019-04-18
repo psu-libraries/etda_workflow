@@ -9,7 +9,7 @@ module SubmissionStates
     end
 
     def status_date(submission)
-      submission.final_submission_files_uploaded_at
+      submission.committee_review_accepted_at
     end
   end
 end

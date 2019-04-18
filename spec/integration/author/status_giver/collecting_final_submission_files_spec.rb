@@ -111,7 +111,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.status).to eq 'waiting for final submission response'
+        expect(submission.status).to eq 'waiting for committee review'
         submission.reload
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
       end
@@ -142,7 +142,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.status).to eq 'waiting for final submission response'
+        expect(submission.status).to eq 'waiting for committee review'
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         expect(submission.final_submission_files.count).to eq(2)
         visit "/author/submissions/#{submission.id}/final_submission"
@@ -178,7 +178,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.status).to eq 'waiting for final submission response'
+        expect(submission.status).to eq 'waiting for committee review'
         submission.reload
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
       end

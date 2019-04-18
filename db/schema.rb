@@ -248,6 +248,8 @@ ActiveRecord::Schema.define(version: 20190404182855) do
     t.boolean "has_agreed_to_publication_release"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "committee_review_accepted_at"
+    t.datetime "committee_review_rejected_at"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"

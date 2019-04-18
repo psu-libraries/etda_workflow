@@ -29,6 +29,8 @@ class Admin::SubmissionsIndexView
     return 'submitted-format-review-submissions-index' if format_review_submitted?
     return 'completed-format-review-submissions-index' if format_review_completed?
     return 'incomplete-final-submission-submissions-index' if final_submission_incomplete?
+    return 'pending-final-submission-submissions-index' if final_submission_pending?
+    return 'committee-review-rejected-submissions-index' if committee_review_rejected?
     return 'submitted-final-submission-submissions-index' if final_submission_submitted?
     return 'approved-final-submission-submissions-index' if final_submission_approved?
     return 'final-restricted-institution-index' if final_restricted_institution?
@@ -105,6 +107,14 @@ class Admin::SubmissionsIndexView
       @scope == 'final_submission_incomplete'
     end
 
+    def final_submission_pending?
+      @scope == 'final_submission_pending'
+    end
+
+    def committee_review_rejected?
+      @scope == 'committee_review_rejected'
+    end
+
     def final_submission_submitted?
       @scope == 'final_submission_submitted'
     end
@@ -130,6 +140,8 @@ class Admin::SubmissionsIndexView
       return 'format_review_is_submitted' if format_review_submitted?
       return 'format_review_is_completed' if format_review_completed?
       return 'final_submission_is_incomplete' if final_submission_incomplete?
+      return 'final_submission_is_pending' if final_submission_pending?
+      return 'committee_review_is_rejected' if committee_review_rejected?
       return 'final_submission_is_submitted' if final_submission_submitted?
       return 'final_submission_is_approved' if final_submission_approved?
       return 'final_is_restricted_institution' if final_restricted_institution?
