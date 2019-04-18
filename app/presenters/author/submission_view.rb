@@ -165,6 +165,16 @@ class Author::SubmissionView < SimpleDelegator
     end
   end
 
+  def step_six_description
+    if status_behavior.waiting_for_committee_review?
+      'Waiting for Committee Review'
+    elsif status_behavior.beyond_waiting_for_committee_review?
+      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
+    else
+      'Waiting for Committee Review'
+    end
+  end
+
   def step_six_status
     status = {}
     if status_behavior.waiting_for_committee_review_rejected?
