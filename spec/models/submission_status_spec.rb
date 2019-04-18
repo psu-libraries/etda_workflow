@@ -80,6 +80,18 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.final_submission_approved_at = Time.now
     expect(described_class.new(submission)).not_to be_collecting_final_submission_files_rejected
   end
+  it 'responds to #waiting_for_committee_review?' do
+    submission.status = 'waiting for committee review'
+    expect(described_class.new(submission)).to be_waiting_for_committee_review
+    submission.status = 'waiting for committee rev'
+    expect(described_class.new(submission)).not_to be_waiting_for_committee_review
+  end
+  it 'responds to #waiting_for_committee_review_rejected?' do
+    submission.status = 'waiting for committee review rejected'
+    expect(described_class.new(submission)).to be_waiting_for_committee_review_rejected
+    submission.status = 'waiting for committee rev'
+    expect(described_class.new(submission)).not_to be_waiting_for_committee_review_rejected
+  end
   it 'responds to #waiting_for_final_submission_response?' do
     submission.status = 'waiting for final submission response'
     expect(described_class.new(submission)).to be_waiting_for_final_submission_response

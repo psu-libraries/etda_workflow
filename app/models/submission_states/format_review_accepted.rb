@@ -5,7 +5,7 @@ module SubmissionStates
     @name = 'format review accepted'
 
     def initialize
-      @transitions_to = [SubmissionStates::WaitingForFinalSubmissionResponse]
+      @transitions_to = [SubmissionStates::WaitingForCommitteeReview]
     end
 
     def status_date(submission)

@@ -1347,6 +1347,28 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     end
   end
 
+  describe '#waiting_for_committee_review!' do
+    context "when status is 'collecting final submission files'" do
+      before { submission.status = 'collecting final submission files' }
+
+      it "updates status to 'waiting for committee review'" do
+        giver = described_class.new(submission)
+        giver.waiting_for_committee_review!
+        expect(submission.status).to eq 'waiting for committee review'
+      end
+    end
+
+    context "when status is 'collecting final submission files'" do
+      before { submission.status = 'collecting final submission files' }
+
+      it "updates status to 'waiting for committee review'" do
+        giver = described_class.new(submission)
+        giver.waiting_for_committee_review!
+        expect(submission.status).to eq 'waiting for committee review'
+      end
+    end
+  end
+
   describe '#waiting_for_final_submission_response!' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
@@ -1389,8 +1411,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "updates status to 'waiting for final submission response'" do
         giver = described_class.new(submission)
-        giver.waiting_for_final_submission_response!
-        expect(submission.status).to eq 'waiting for final submission response'
+        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 

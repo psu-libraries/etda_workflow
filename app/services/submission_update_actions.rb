@@ -22,4 +22,10 @@ class SubmissionUpdateActions
 
     false
   end
+
+  def send_back_to_final_submission?
+    return true if params[:send_back_to_final_submission]
+
+    false
+  end
 end
