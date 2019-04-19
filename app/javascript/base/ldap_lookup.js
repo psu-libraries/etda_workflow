@@ -38,10 +38,12 @@ autocomplete_it = function(input_fields) {
         open: function( event, ui ) {
             last_selected_ui = ui
             clear_email(ui, last_selected_ui, this);
+            clear_access_id(ui, last_selected_ui, this);
         },
         select: function(event, ui) {
             last_selected_ui = ui;
             complete_email(ui, last_selected_ui, this);
+            complete_access_id(ui, last_selected_ui, this);
             return last_selected_ui;
         },
         create: function() {
@@ -53,8 +55,13 @@ autocomplete_it = function(input_fields) {
 };
 
 clear_email = function(ui, last_selected_ui, field_ref) {
-  email_field = $(':input')[$(field_ref).index(':input') + 1];
-  return email_field.value = '';
+    email_field = $(':input')[$(field_ref).index(':input') + 1];
+    return email_field.value = '';
+};
+
+clear_access_id = function(ui, last_selected_ui, field_ref) {
+    access_id_field = $(':input')[$(field_ref).index(':input') + 2];
+    return access_id_field.value = '';
 };
 
 complete_email = function(ui, last_selected_ui, field_ref) {
@@ -68,6 +75,20 @@ complete_email = function(ui, last_selected_ui, field_ref) {
         email_address = ui.item.id;
         email_field = $(':input')[$(field_ref).index(':input') + 1];
         return email_field.value = email_address;
+    }
+};
+
+complete_access_id = function(ui, last_selected_ui, field_ref) {
+    var access_id;
+    var access_id_field;
+
+    if ((ui.item === null) && (last_selected_ui !== null) && (field_ref.value === last_selected_ui.item.label)) {
+        ui = last_selected_ui;
+    }
+    if (ui.item) {
+        access_id = ui.item.uid;
+        access_id_field = $(':input')[$(field_ref).index(':input') + 2];
+        return access_id_field.value = access_id;
     }
 };
 

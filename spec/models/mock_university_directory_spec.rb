@@ -27,6 +27,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
         expect(result.first).to have_key(:id)
         expect(result.first).to have_key(:label)
         expect(result.first).to have_key(:value)
+        expect(result.first).to have_key(:uid)
       end
     end
   end
