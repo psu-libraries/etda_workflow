@@ -25,7 +25,8 @@ class LdapResultsMap
   COMMITTEE_LDAP_MAP = { map: { displayname: %i[label value],
                                 mail: [:id],
                                 psadminarea: [:dept_admin],
-                                psdepartment: [:dept] }, defaults: { dept: 'Department not available', id: 'Email not available' } }.freeze
+                                psdepartment: [:dept] },
+                                uid: [:access_id], defaults: { dept: 'Department not available', id: 'Email not available', uid: 'Access ID not available' } }.freeze
 
   LDAP_RESULTS_MAP = {
     last_name: { method: :format_upcase, options: {} },
