@@ -86,7 +86,7 @@ complete_access_id = function(ui, last_selected_ui, field_ref) {
         ui = last_selected_ui;
     }
     if (ui.item) {
-        access_id = ui.item.uid;
+        access_id = ui.item.access_id;
         access_id_field = $(':input')[$(field_ref).index(':input') + 2];
         return access_id_field.value = access_id;
     }

@@ -24,21 +24,21 @@ class MockUniversityDirectory
     when /(alex)/i
       unless Rails.env.test?
         [
-          { id: 'jxd2@psu.edu', label: 'Joni Davis', value: 'Joni Davis', dept: 'Davis Dept', uid: 'jxd2' },
-          { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling', dept: 'University Libraries', uid: 'ajk5603' },
-          { id: 'jjj1@psu.edu', label: 'John James Johnson', value: 'John Johnson', dept: 'Huck Institute', uid: 'jjj1' },
-          { id: 'mmm3@psu.edu', label: 'Mark Micheal Murphy', value: 'Mark Murphy', dept: 'Ag Science', uid: 'mmm3' },
-          { id: 'mis4@psu.edu', label: 'Maggie I. Smith', value: 'Maggie Smith', dept: 'Earth & Mineral Science', uid: 'mis4' }
+          { id: 'jxd2@psu.edu', label: 'Joni Davis', value: 'Joni Davis', dept: 'Davis Dept', access_id: 'jxd2' },
+          { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling', dept: 'University Libraries', access_id: 'ajk5603' },
+          { id: 'jjj1@psu.edu', label: 'John James Johnson', value: 'John Johnson', dept: 'Huck Institute', access_id: 'jjj1' },
+          { id: 'mmm3@psu.edu', label: 'Mark Micheal Murphy', value: 'Mark Murphy', dept: 'Ag Science', access_id: 'mmm3' },
+          { id: 'mis4@psu.edu', label: 'Maggie I. Smith', value: 'Maggie Smith', dept: 'Earth & Mineral Science', access_id: 'mis4' }
         ]
       end
       [
-        { id: 'jxd2@psu.edu', label: 'Joni Davis', value: 'Joni Davis', dept: 'Davis Dept', uid: 'jxd2' },
-        { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling', dept: 'University Libraries', uid: 'ajk5603' }
+        { id: 'jxd2@psu.edu', label: 'Joni Davis', value: 'Joni Davis', dept: 'Davis Dept', access_id: 'jxd2' },
+        { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling', dept: 'University Libraries', access_id: 'ajk5603' }
       ]
     when /(scott)/i
       [
-        { id: 'sar3@psu.edu', label: 'Scott Rogers', value: 'Scott Rogers', uid: 'sar3' },
-        { id: 'saw140@psu.edu', label: 'Scott Woods', value: 'Scott Woods', uid: 'saw140' }
+        { id: 'sar3@psu.edu', label: 'Scott Rogers', value: 'Scott Rogers', access_id: 'sar3' },
+        { id: 'saw140@psu.edu', label: 'Scott Woods', value: 'Scott Woods', access_id: 'saw140' }
       ]
 
     else
