@@ -18,6 +18,7 @@ config/database.yml
 config/locales/test/**/*
 config/lion_path.yml
 config/redis.yml
+config/ldap.yml
 spec/examples.txt
 
 node_modules/**/*
