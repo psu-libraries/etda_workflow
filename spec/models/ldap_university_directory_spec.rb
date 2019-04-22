@@ -32,14 +32,14 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
 
     context "when given a person's complete name" do
-      let(:search_string) { "Alex Jame Kiessling" }
+      let(:search_string) { "Alex Kiessling" }
 
       it "returns only the entry for that person" do
         expect(results.count).to eq(1)
-        expect(results.first[:label]).to eq("Alex James Kiessling")
+        expect(results.first[:label]).to eq("Alex Kiessling")
       end
       it "returns the person's department" do
-        expect(results.first[:dept]).to eq("ITS Services & Solutions")
+        expect(results.first[:dept]).to eq("Technology Strategies")
       end
       it "returns the person's email as the id" do
         expect(results.first[:id]).to eq("ajk5603@psu.edu")
@@ -72,20 +72,20 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       end
     end
     context "when given a person's complete name in all lowercase" do
-      let(:search_string) { "joni lee barnoff" }
+      let(:search_string) { "alex kiessling" }
 
       it "returns only the entry for that person" do
         expect(results.count).to eq(1)
-        expect(results.first[:label]).to eq("Alex James Kiessling")
+        expect(results.first[:label]).to eq("Alex Kiessling")
       end
     end
 
     context "when given a person's complete name without their middle name" do
-      let(:search_string) { "joni barnoff" }
+      let(:search_string) { "Fred Fenstermaker" }
 
       it "returns only the entry for that person" do
         expect(results.count).to eq(1)
-        expect(results.first[:label]).to eq("Alex James Kiessling")
+        expect(results.first[:label]).to eq("Fred Frank Fenstermaker")
       end
     end
 
@@ -108,7 +108,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
 
       context "that has an apostrophe" do
         let(:search_string) { "O'Brien" }
-        let(:matching_entry) { results.detect { |r| r[:label] == "Edward Patrick O'Brien Jr." } }
+        let(:matching_entry) { results.detect { |r| r[:label] == "Sharon R O'Brien" } }
 
         it "returns an entry for that person (among others)" do
           expect(matching_entry).to be_present
@@ -116,8 +116,8 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       end
 
       context "with trailing whitespace" do
-        let(:search_string) { "barnoff " }
-        let(:matching_entry) { results.detect { |r| r[:label] == "Alex James Kiessling" } }
+        let(:search_string) { "kiessling " }
+        let(:matching_entry) { results.detect { |r| r[:label] == "Alex Kiessling" } }
 
         it "returns an entry for that person" do
           expect(matching_entry).to be_present
@@ -125,10 +125,10 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       end
 
       context "and that person has a middle name" do
-        let(:search_string) { "Kiessling" }
-        let(:matching_entry) { results.detect { |r| r[:label] == "Alex James Kiessling" } }
+        let(:search_string) { "Fenstermaker" }
+        let(:matching_entry) { results.detect { |r| r[:label] == "Fred Frank Fenstermaker" } }
 
-        it "returns an entry for Alex Kiessling (among others)" do
+        it "returns an entry for Fred Frank Fenstermaker (among others)" do
           expect(matching_entry).to be_present
         end
       end
@@ -144,8 +144,8 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       end
 
       context "and that person has a roman numeral after their last name" do
-        let(:search_string) { "sayers miller" }
-        let(:matching_entry) { results.detect { |r| r[:label] == "Sayers John Miller III" } }
+        let(:search_string) { "vaughn whisker" }
+        let(:matching_entry) { results.detect { |r| r[:label] == "Vaughn Eugene Whisker, III" } }
 
         it "includes entry for the person with roman numerals after last name" do
           expect(matching_entry).to be_present
@@ -199,7 +199,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
 
     context "when given a partial last name" do
       let(:search_string) { "Kies" }
-      let(:matching_entry) { results.detect { |r| r[:label] == "Alex James Kiessling" } }
+      let(:matching_entry) { results.detect { |r| r[:label] == "Alex Kiessling" } }
 
       it "includes the entry for that person" do
         expect(matching_entry).to be_present
@@ -208,7 +208,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
 
     context "when given a first name and a partial last name" do
       let(:search_string) { "Alex Kies" }
-      let(:matching_entry) { results.detect { |r| r[:label] == "Alex James Kiessling" } }
+      let(:matching_entry) { results.detect { |r| r[:label] == "Alex Kiessling" } }
 
       it "includes the entry for that person" do
         expect(matching_entry).to be_present
@@ -231,7 +231,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
 
     context 'when searching using wildcards' do
       let(:search_string) { "Kies*" }
-      let(:matching_entry) { results.detect { |r| r[:label] == "Alex James Kiessling" } }
+      let(:matching_entry) { results.detect { |r| r[:label] == "Alex Kiessling" } }
 
       it "doesn't return any results, since wildcards are not supported for the end user" do
         expect(results).to eq([])
@@ -300,15 +300,14 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       it "returns a hash of author attributes" do
         expect(result[:access_id]).to eq('ajk5603') # to confirm that we have the right record
         expect(result[:first_name]).to eq('Alex')
-        expect(result[:middle_name]).to eq('James')
         expect(result[:last_name]).to eq('Kiessling')
-        expect(result[:address_1]).to eq('0116 H Technology Sppt Bldg')
+        expect(result[:address_1]).to eq('W 313 Pattee Library')
         expect(result[:city]).to eq('University Park')
         expect(result[:state]).to eq('PA')
         expect(result[:zip]).to eq('16802')
         expect(result[:country]).to eq('US')
-        expect(result[:phone_number]).to eq('814-865-4845')
-        expect(result[:psu_idn]).to eq('9')
+        expect(result[:phone_number]).to eq('')
+        expect(result[:psu_idn][0]).to eq(nil) #If this is nil.  My psuidn is not in ldap.
       end
     end
 
@@ -332,7 +331,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       let(:result) { directory.get_psu_id_number(access_id) }
 
       it "returns a PSU id" do
-        expect(result).to start_with('9')
+        expect(result).to eq(nil) #If this is nil.  My psuidn is not in ldap.
       end
     end
 
@@ -340,7 +339,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       let(:result) { directory.get_psu_id_number('bogus') }
 
       it "returns blank" do
-        expect(result).to eq(' ')
+        expect(result).to eq('')
       end
     end
   end

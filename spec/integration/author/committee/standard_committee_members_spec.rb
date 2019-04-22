@@ -151,8 +151,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
     describe "typing in part of a known committee member's name", :ldap do
       let(:dropdown_items) { page.all("ul.ui-autocomplete li") }
 
-      let(:dropdown_item_for_joni) do
-        dropdown_items.find { |option| option.text =~ /Joni Lee Barnoff/ }
+      let(:dropdown_item_for_alex) do
+        dropdown_items.find { |option| option.text =~ /Alex Kiessling/ }
       end
 
       before do
@@ -162,15 +162,20 @@ RSpec.describe 'The standard committee form for authors', js: true do
         end
         # Send individual characters one at a time to trigger autocomplete
         # Ref: https://github.com/teampoltergeist/poltergeist/issues/439#issuecomment-66871147
-        find("#submission_committee_members_attributes_0_name").native.send_keys(*"Barn".chars)
+        find("#submission_committee_members_attributes_0_name").native.send_keys(*"Kies".chars)
         sleep 3 # Autocomplete delays before sending/displaying results
       end
 
       it "allows me to autocomplete that committee member's information from LDAP" do
-        dropdown_item_for_joni.click
+        dropdown_item_for_alex.click
         click_button 'Save and Continue Editing'
-        visit author_submission_committee_members_path(submission)
-        expect(page).to have_content "xxb13@psu.edu"
+        sleep 3
+        within('input#submission_committee_members_attributes_0_email') do
+          expect(page).to have_xpath("//input[@value='ajk5603@psu.edu']")
+        end
+        within('input#submission_committee_members_attributes_0_access_id') do
+          expect(page).to have_xpath("//input[@value='ajk5603']")
+        end
       end
     end
   end
