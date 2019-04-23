@@ -307,7 +307,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(result[:zip]).to eq('16802')
         expect(result[:country]).to eq('US')
         expect(result[:phone_number]).to eq('')
-        expect(result[:psu_idn][0]).to eq(nil) #If this is nil.  My psuidn is not in ldap.
+        expect(result[:psu_idn][0]).to eq(nil)
       end
     end
 
@@ -331,7 +331,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       let(:result) { directory.get_psu_id_number(access_id) }
 
       it "returns a PSU id" do
-        expect(result).to eq(nil) #If this is nil.  My psuidn is not in ldap.
+        expect(result).to eq(nil)
       end
     end
 
