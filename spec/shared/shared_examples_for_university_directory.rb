@@ -6,7 +6,8 @@ RSpec.shared_examples "a UniversityDirectory" do
       expect(directory).to respond_to(:autocomplete)
     end
     it "takes one argument" do
-      expect(directory.method(:autocomplete).arity).to eq(1)
+      expect(directory.method(:autocomplete).arity).to eq(1) unless directory.class == MockUniversityDirectory
+      expect(directory.method(:autocomplete).arity).to eq(-2) unless directory.class == LdapUniversityDirectory
     end
   end
 

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class MockUniversityDirectory
+  AUTOCOMPLETE_LDAP_MAP = ::LdapResultsMap::AUTOCOMPLETE_LDAP_MAP
+
   AUTHOR_LDAP_MAP = ::LdapResultsMap::AUTHOR_LDAP_MAP
 
   ADMIN_LDAP_MAP = ::LdapResultsMap::ADMIN_LDAP_MAP
