@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Approver::ApproversController < ApproverController
-  before_action :verify_approver
+  before_action :verify_approver, except: :download_final_submission
   include ActionView::Helpers::UrlHelper
 
   def edit
@@ -36,7 +36,11 @@ class Approver::ApproversController < ApproverController
 
   def download_final_submission
     file = FinalSubmissionFile.find(params[:id])
-    send_file file.current_location, disposition: :inline
+    if file.submission.committee_members.pluck(:access_id).include? current_approver.access_id
+      send_file file.current_location, disposition: :inline
+    else
+      redirect_to '/401'
+    end
   end
 
   private
