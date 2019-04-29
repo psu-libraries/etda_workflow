@@ -110,6 +110,17 @@ RSpec.describe CommitteeMember, type: :model do
     end
   end
 
+  describe 'email' do
+    let(:cm) { described_class.new }
+
+    context 'when email is a psu email' do
+      it 'updates access_id' do
+        cm.update_attributes email: 'test123@psu.edu'
+        expect(cm.access_id).to eq 'test123'
+      end
+    end
+  end
+
   describe 'update_last_reminder_at' do
     let(:cm) { described_class.new }
 
