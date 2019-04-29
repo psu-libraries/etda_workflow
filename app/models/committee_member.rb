@@ -90,9 +90,8 @@ class CommitteeMember < ApplicationRecord
     end
   end
 
-  def email=(email)
-    if email.match? /.*@psu.edu/
-      self.access_id = email.tr('@psu.edu', '')
-    end
+  def email=(new_email)
+    self[:email] = new_email
+    self.access_id = email.tr('@psu.edu', '') if email.match?(/.*@psu.edu/)
   end
 end
