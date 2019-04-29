@@ -13,15 +13,13 @@
       </div>
 
     <div class="form-group actions">
-      <% if @presenter.update? %>
-        <div class="col-xs-12 col-sm-6 col-md-4">
-          <span class='glyphicon glyphicon-plus'> </span>
-          <%= link_to_add_association "Add Committee Member", submission_form, :committee_members,
-                class: 'btn btn-sm btn-default',
-                data: { association_insertion_node: '#add_member', association_insertion_method: 'append' } if @submission.committee_members.count>0 %>
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <span class='glyphicon glyphicon-plus'> </span>
+        <%= link_to_add_association "Add Committee Member", submission_form, :committee_members,
+              class: 'btn btn-sm btn-default',
+              data: { association_insertion_node: '#add_member', association_insertion_method: 'append' } %>
 
-        </div>
-      <% end %>
+      </div>
     </div>
       <div class="col-xs-12 col-xs-10 col-sm-9">
         <%= submission_form.button :submit, class: "btn-primary", value: "Save and Continue Editing" %>

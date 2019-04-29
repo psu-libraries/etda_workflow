@@ -18,12 +18,16 @@
     <div class="col-sm-6">
         <%= f.input :name, label: local_presenter.name_label, input_html: { class: 'ldap-lookup' }, required: true %>
     </div>
-    <div class="col-sm-6">
-        <%= f.input :email, label: local_presenter.email_label, required: true %>
-    </div>
     <% unless local_presenter.required? %>
+      <div class="col-sm-6">
+        <%= f.input :email, label: local_presenter.email_label, required: true %>
+      </div>
       <div class="col-sm-12 committee-remove">
         <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger' %>
+      </div>
+    <% else %>
+      <div class="col-sm-6">
+        <%= f.input :email, label: local_presenter.email_label, required: true, input_html:{ readonly: true } %>
       </div>
     <% end %>
   </div>
