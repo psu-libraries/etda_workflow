@@ -23,7 +23,9 @@
       <%= f.input :notes %>
     </div>
     <div class="col-sm-4">
-      <%= link_to "Send Email Reminder" %>
+      <%= form_tag({controller: "submissions", action: "send_email_reminder", params: { committee_member_id: f.object.id } }, method: "post" ) do %>
+        <div><%= submit_tag 'Send Email Reminder', disabled: !@submission.status_behavior.waiting_for_final_submission_response? %></div>
+      <% end %>
     </div>
   </div>
 </div>

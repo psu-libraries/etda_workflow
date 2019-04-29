@@ -222,4 +222,16 @@ class Admin::SubmissionsController < AdminController
     end
     redirect_to admin_edit_submission_path(@submission.id)
   end
+
+  def send_email_reminder
+    @submission = Submission.find(params[:id])
+    if @submission.committee_members.find(params[:committee_member_id]).reminder_email_authorized?
+      WorkflowMailer.committee_member_review_reminder(@submission, @submission.committee_members.find(params[:committee_member_id])).deliver
+      redirect_to request.referrer
+      flash[:notice] = 'Email successfully sent.'
+    else
+      redirect_to request.referrer
+      flash[:alert] = 'Email was not sent.  Email reminders may only be sent once a day; a reminder was recently sent to this committee member.'
+    end
+  end
 end
