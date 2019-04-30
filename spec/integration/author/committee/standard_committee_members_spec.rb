@@ -50,7 +50,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         @email_list = []
         submission.required_committee_roles.count.times do |i|
           fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
-          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@psu.edu'");
+          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@psu.edu'")
           @email_list << "name_#{i}@psu.edu"
         end
         click_button('Save and Return to Dashboard')
@@ -76,7 +76,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         @email_list = []
         submission.required_committee_roles.count.times do |i|
           fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
-          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@example.com'");
+          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@example.com'")
           @email_list << "name_#{i}@example.com"
         end
         click_button 'Save and Continue Editing'

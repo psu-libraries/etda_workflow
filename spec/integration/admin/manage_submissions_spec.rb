@@ -68,6 +68,7 @@ RSpec.describe "Manage Submissions", js: true do
       context 'Restricted to institution' do
         before do
           visit admin_submissions_index_path(DegreeType.default, 'final_restricted_institution')
+          sleep 3
         end
 
         it 'does not have a delete button but does have other bulk actions' do
@@ -85,6 +86,7 @@ RSpec.describe "Manage Submissions", js: true do
     context 'Withheld' do
       before do
         visit admin_submissions_index_path(DegreeType.default, 'final_withheld')
+        sleep 3
       end
 
       it 'does not have a delete button but has other bulk actions' do
