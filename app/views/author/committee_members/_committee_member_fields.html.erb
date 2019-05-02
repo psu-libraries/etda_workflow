@@ -6,7 +6,9 @@
       <div class="col-sm-12">
         <h2 class="h2-small"><%= local_presenter.role %> </h2>
         <%= f.association :committee_role, as: :hidden, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || []  %>
-        <%= f.input :is_required, as: :hidden, :input_html => {value: f.object.is_required, readonly: true } %>
+        <% unless local_presenter.head_of_program? %>
+          <%= f.input :is_voting, as: :hidden, :input_html => { value: 1, readonly: true } %>
+        <% end %>
       </div>
     <% else %>
       <div class="col-sm-12">
@@ -14,6 +16,8 @@
         <%= f.association :committee_role, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || [] , prompt: 'Please select a role'  %>
       </div>
     <% end %>
+
+    <%= f.input :is_required, as: :hidden, :input_html => { value: f.object.is_required, readonly: true } %>
 
     <div class="col-sm-6">
         <%= f.input :name, label: local_presenter.name_label, input_html: { class: 'ldap-lookup' }, required: true %>

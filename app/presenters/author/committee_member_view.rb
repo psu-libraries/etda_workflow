@@ -9,6 +9,10 @@ class Author::CommitteeMemberView
     model.is_required
   end
 
+  def head_of_program?
+    role == 'Head/Chair of Graduate Program'
+  end
+
   def name_label
     return "Name" unless required?
 

@@ -60,6 +60,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
         assert_equal submission.committee_email_list, @email_list
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count)
         expect(submission.committee_members.first.access_id).to eq('name_0')
+        expect(submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Committee Member').id).is_voting).to eq(true)
+        expect(submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Head/Chair of Graduate Program').id).is_voting).to eq(false)
         visit author_submission_committee_members_path(submission)
         submission.required_committee_roles.count.times do |i|
           # expect(page).to have_content role.name
