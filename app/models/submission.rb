@@ -306,6 +306,10 @@ class Submission < ApplicationRecord
     end
   end
 
+  def voting_committee_members
+    committee_members.collect{ |cm| cm if cm.is_voting }.compact
+  end
+
   # Initialize our committee members with empty records for each of the required roles.
   def build_committee_members_for_partners
     if using_lionpath?

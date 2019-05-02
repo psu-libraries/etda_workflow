@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApprovalStatus
-  attr_reader :current_submission
+  attr_reader :current_submission, :voting_committee_members
 
   WORKFLOW_STATUS =
     [
@@ -13,6 +13,7 @@ class ApprovalStatus
 
   def initialize(submission)
     @current_submission = submission
+    @voting_committee_members = submission.voting_committee_members
   end
 
   def status
@@ -22,15 +23,15 @@ class ApprovalStatus
   private
 
   def none
-    return 'none' if current_submission.committee_members.count.zero?
+    return 'none' if voting_committee_members.count.zero?
   end
 
   def approved
-    return 'approved' unless (current_submission.committee_members.collect { |m| m.status == 'approved' }).count(false) > rejections_permitted
+    return 'approved' unless (voting_committee_members.collect { |m| m.status == 'approved' }).count(false) > rejections_permitted
   end
 
   def rejected
-    return 'rejected' if (current_submission.committee_members.collect { |m| m.status == 'rejected' }).count(true) > rejections_permitted
+    return 'rejected' if (voting_committee_members.collect { |m| m.status == 'rejected' }).count(true) > rejections_permitted
   end
 
   def pending
