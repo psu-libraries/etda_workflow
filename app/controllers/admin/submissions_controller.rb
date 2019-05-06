@@ -1,4 +1,6 @@
 class Admin::SubmissionsController < AdminController
+  skip_before_action :verify_authenticity_token, :only => [:send_email_reminder]
+
   def redirect_to_default_dashboard
     redirect_to admin_submissions_dashboard_path(DegreeType.default)
   end
@@ -227,11 +229,8 @@ class Admin::SubmissionsController < AdminController
     @submission = Submission.find(params[:id])
     if @submission.committee_members.find(params[:committee_member_id]).reminder_email_authorized?
       WorkflowMailer.committee_member_review_reminder(@submission, @submission.committee_members.find(params[:committee_member_id])).deliver
-      redirect_to request.referrer
-      flash[:notice] = 'Email successfully sent.'
     else
-      redirect_to request.referrer
-      flash[:alert] = 'Email was not sent.  Email reminders may only be sent once a day; a reminder was recently sent to this committee member.'
+      raise 'Email was not sent.  Email reminders may only be sent once a day; a reminder was recently sent to this committee member.'
     end
   end
 end
