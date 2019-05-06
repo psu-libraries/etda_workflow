@@ -16,6 +16,10 @@ class ApprovalStatus
     @voting_committee_members = submission.voting_committee_members
   end
 
+  def head_of_program_status
+    current_submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Head/Chair of Graduate Program').id).status
+  end
+
   def status
     none || approved || rejected || pending
   end

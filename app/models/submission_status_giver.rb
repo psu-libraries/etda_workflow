@@ -59,12 +59,16 @@ class SubmissionStatusGiver
     validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles]
   end
 
-  def can_waiting_for_committee_review_rejected?
+  def can_waiting_for_head_of_program_review?
     validate_current_state! [SubmissionStates::WaitingForCommitteeReview]
   end
 
+  def can_waiting_for_committee_review_rejected?
+    current_partner.graduate? ? (validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview]) : (validate_current_state! [SubmissionStates::WaitingForCommitteeReview])
+  end
+
   def can_waiting_for_final_submission?
-    validate_current_state! [SubmissionStates::WaitingForCommitteeReview]
+    current_partner.graduate? ? (validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview]) : (validate_current_state! [SubmissionStates::WaitingForCommitteeReview])
   end
 
   def can_respond_to_final_submission?
@@ -109,6 +113,10 @@ class SubmissionStatusGiver
 
   def waiting_for_committee_review!
     transition_to SubmissionStates::WaitingForCommitteeReview
+  end
+
+  def waiting_for_head_of_program_review!
+    transition_to SubmissionStates::WaitingForHeadOfProgramReview
   end
 
   def waiting_for_committee_review_rejected!

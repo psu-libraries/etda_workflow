@@ -22,6 +22,7 @@ class Admin::SubmissionsController < AdminController
     end
     response = submission_update_service.update_record
     @submission.update_status_from_committee
+    @submission.update_status_from_head_of_program if current_partner.graduate?
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
   rescue ActiveRecord::RecordInvalid

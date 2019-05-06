@@ -117,9 +117,27 @@ class Submission < ApplicationRecord
     submission_status = ApprovalStatus.new(self).status
     status_giver = SubmissionStatusGiver.new(self)
     if submission_status == 'approved'
+      if current_partner.graduate?
+        status_giver.can_waiting_for_head_of_program_review?
+        status_giver.waiting_for_head_of_program_review!
+        WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(self.id).id)
+      else
+        status_giver.can_waiting_for_final_submission?
+        status_giver.waiting_for_final_submission_response!
+      end
+    elsif submission_status == 'rejected'
+      status_giver.can_waiting_for_committee_review_rejected?
+      status_giver.waiting_for_committee_review_rejected!
+    end
+  end
+
+  def update_status_from_head_of_program
+    submission_head_of_program_status = ApprovalStatus.new(self).head_of_program_status
+    status_giver = SubmissionStatusGiver.new(self)
+    if submission_head_of_program_status == 'approved'
       status_giver.can_waiting_for_final_submission?
       status_giver.waiting_for_final_submission_response!
-    elsif submission_status == 'rejected'
+    elsif submission_head_of_program_status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
     end
