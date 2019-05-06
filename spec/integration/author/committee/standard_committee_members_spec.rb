@@ -46,6 +46,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
       it "saves the committee" do
         expect(submission.committee_members.empty?).to eq(true)
         expect(page).to have_link('Add Committee Member')
+        expect(page).to have_link('Graduate Program Search')
         # visit new_author_submission_committee_members_path(submission)
         @email_list = []
         submission.required_committee_roles.count.times do |i|
