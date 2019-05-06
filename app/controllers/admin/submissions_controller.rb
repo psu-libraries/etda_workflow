@@ -227,10 +227,8 @@ class Admin::SubmissionsController < AdminController
 
   def send_email_reminder
     @submission = Submission.find(params[:id])
-    if @submission.committee_members.find(params[:committee_member_id]).reminder_email_authorized?
-      WorkflowMailer.committee_member_review_reminder(@submission, @submission.committee_members.find(params[:committee_member_id])).deliver
-    else
-      raise 'Email was not sent.  Email reminders may only be sent once a day; a reminder was recently sent to this committee member.'
-    end
+    raise 'Email was not sent.' unless @submission.committee_members.find(params[:committee_member_id]).reminder_email_authorized?
+
+    WorkflowMailer.committee_member_review_reminder(@submission, @submission.committee_members.find(params[:committee_member_id])).deliver
   end
 end

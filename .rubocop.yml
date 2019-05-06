@@ -150,10 +150,6 @@ Style/BracesAroundHashParameters:
     - 'config/deploy.rb'
     - 'spec/services/solr_data_import_service_spec.rb'
 
-Style/GuardClause:
-  Exclude:
-    - 'app/controllers/admin/submissions_controller.rb'
-
 Layout/SpaceInsideBlockBraces:
   Exclude:
     - 'spec/services/solr_data_import_service_spec.rb'
