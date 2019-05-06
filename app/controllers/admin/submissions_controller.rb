@@ -1,5 +1,5 @@
 class Admin::SubmissionsController < AdminController
-  skip_before_action :verify_authenticity_token, :only => [:send_email_reminder]
+  skip_before_action :verify_authenticity_token, only: [:send_email_reminder]
 
   def redirect_to_default_dashboard
     redirect_to admin_submissions_dashboard_path(DegreeType.default)
