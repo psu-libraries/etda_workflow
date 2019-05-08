@@ -22,8 +22,10 @@
     <div class="col-sm-4">
       <%= f.input :notes %>
     </div>
-    <div class="col-sm-4">
-      <button type="button" id="send_email_reminder" value="<%= f.object.id.to_s %>">Send Email Reminder</button>
-    </div>
+    <% if SubmissionStatus.new(@submission).waiting_for_committee_review? %>
+      <div class="col-sm-4">
+        <button type="button" id="send_email_reminder" value="<%= f.object.id.to_s %>">Send Email Reminder</button>
+      </div>
+    <% end %>
   </div>
 </div>
