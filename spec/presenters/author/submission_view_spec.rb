@@ -511,7 +511,7 @@ RSpec.describe Author::SubmissionView do
       before { submission.status = 'waiting for committee review' }
 
       it 'to display results page' do
-        expect(view.step_six_description).to match /Waiting for Committee Review.*\[review.*\]/
+        expect(view.step_six_description).to match(/Waiting for Committee Review.*\[review.*\]/)
       end
     end
 
@@ -519,7 +519,7 @@ RSpec.describe Author::SubmissionView do
       before { submission.status = 'waiting for final submission response' }
 
       it 'to display results page' do
-        expect(view.step_six_description).to match /Waiting for Committee Review.*\[review.*\]/
+        expect(view.step_six_description).to match(/Waiting for Committee Review.*\[review.*\]/)
       end
     end
   end
