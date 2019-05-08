@@ -59,6 +59,8 @@ Rails.application.routes.draw do
 
     get 'submissions/:id/academic_plan_refresh', to: 'submissions#refresh_academic_plan', as: 'submissions_refresh_academic_plan'
 
+    post 'submissions/:id/send_email_reminder', to: 'submissions#send_email_reminder', as: 'submissions_send_email_reminder'
+
     get '/files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
     get '/files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
 
