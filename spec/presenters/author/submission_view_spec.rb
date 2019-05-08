@@ -445,8 +445,6 @@ RSpec.describe Author::SubmissionView do
         it "returns 'current'" do
           expect(view.step_six_class).to eq 'current'
         end
-
-        it
       end
 
       context "when step six has been completed" do
