@@ -89,6 +89,7 @@ Rails.application.routes.draw do
 
       post '/send_email_reminder', to: 'submissions#send_email_reminder'
 
+      get '/committee_review', to: 'submissions#committee_review', as: :committee_review
     end
     get '/published_submissions', to: 'submissions#published_submissions_index', as: :published_submissions_index
 
