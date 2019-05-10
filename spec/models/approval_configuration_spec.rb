@@ -16,4 +16,14 @@ RSpec.describe ApprovalConfiguration, type: :model do
   it { is_expected.to validate_presence_of :degree_type_id }
 
   it { is_expected.to belong_to :degree_type }
+
+  let(:default_degree_type_approval_configuration) { ApprovalConfiguration::CONFIGURATION[current_partner.id][DegreeType.default.slug] }
+
+  describe "the ApprovalConfiguration seed data" do
+    context "seed approval configuration data for the current partner" do
+      it "creates the essential approval configurations collections" do
+        expect(DegreeType.default.approval_configuration).to eq(@default_degree_type_approval_configuration)
+      end
+    end
+  end
 end
