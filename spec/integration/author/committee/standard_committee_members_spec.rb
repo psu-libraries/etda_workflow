@@ -94,11 +94,14 @@ RSpec.describe 'The standard committee form for authors', js: true do
         fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last
         last_role = submission.required_committee_roles.last.name
         within fields_for_last_committee_member do
+          expect(page).to have_content('Is voting on approval')
           select last_role, from: 'Committee role'
           fill_in "Name", with: "Extra Member"
           fill_in "Email", with: "extra_member@example.com"
+          find("input[type='checkbox']").trigger('click')
         end
-        click_button 'Save and Return to Dashboard'
+        expect{ click_button 'Save and Return to Dashboard' }.to change { submission.committee_members.count }.by 1
+        expect(submission.committee_members.last.is_voting).to eq(true)
         # expect(page).to have_content('successfully')
       end
 

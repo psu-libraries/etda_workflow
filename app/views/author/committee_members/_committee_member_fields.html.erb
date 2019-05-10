@@ -15,7 +15,7 @@
     <% else %>
       <div class="col-sm-12">
         <h2 class="sr-only">Optional Committee Member </h2>
-        <%= f.association :committee_role, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || [] , prompt: 'Please select a role'  %>
+        <%= f.association :committee_role, collection: local_presenter.possible_additional_roles , prompt: 'Please select a role'  %>
       </div>
     <% end %>
 
@@ -28,7 +28,11 @@
       <div class="col-sm-6">
         <%= f.input :email, label: local_presenter.email_label, required: true %>
       </div>
-      <div class="col-sm-12 committee-remove">
+      <div class="col-sm-6">
+        <%= f.label :is_voting, 'Is voting on approval' %>
+        <%= f.input :is_voting, label: false %>
+      </div>
+      <div class="col-sm-6 committee-remove">
         <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger' %>
       </div>
     <% else %>
