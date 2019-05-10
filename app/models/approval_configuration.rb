@@ -17,12 +17,11 @@ class ApprovalConfiguration < ApplicationRecord
   def self.seed
     ApprovalConfiguration::CONFIGURATIONS[current_partner.id].each do |degree_type, configuration|
       dt = DegreeType.find_by(slug: degree_type)
-      ac = dt.approval_configuration
-      ac.update_attributes(degree_type_id: dt[:id],
-                           approval_deadline_on: configuration[:approval_deadline_on],
-                           rejections_permitted: configuration[:rejections_permitted],
-                           email_admins: configuration[:email_admins],
-                           email_authors: configuration[:email_authors])
+      ApprovalConfiguration.create!(degree_type_id: dt[:id],
+                                    approval_deadline_on: configuration[:approval_deadline_on],
+                                    rejections_permitted: configuration[:rejections_permitted],
+                                    email_admins: configuration[:email_admins],
+                                    email_authors: configuration[:email_authors]) unless dt.approval_configuration.present?
     end
   end
 end
