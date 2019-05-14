@@ -56,22 +56,7 @@ class Admin::SubmissionsController < AdminController
 
   def release_for_publication
     ids = params[:submission_ids].split(',')
-    results = Submission.release_for_publication(ids, Date.strptime(params[:date_to_release], '%m/%d/%Y'))
-    # error = results[1] *****MUST DISPLAY ERRORS
-    flash[:notice] = results[0]
-    render 'admin/submissions/publication_release_results', locals: { results: results[1] }
-    # redirect_to admin_submissions_dashboard_path(params[:degree_type])
-  rescue SubmissionStatusGiver::AccessForbidden
-    flash[:alert] = 'There was a problem releasing the submissions, please try again.'
-    redirect_to session.delete(:return_to)
-  rescue SubmissionStatusGiver::InvalidTransition
-    redirect_to session.delete(:return_to)
-    flash[:alert] = 'Oops! You may have submitted invalid format review data. Please check that the submission\'s format review information is correct.'
-  end
-
-  def release_as_open_access
-    ids = params[:submission_ids].split(',')
-    results = Submission.update_restricted_to_open_access(ids, Date.strptime(params[:date_to_release], '%m/%d/%Y'))
+    results = Submission.release_for_publication(ids, Date.strptime(params[:date_to_release], '%m/%d/%Y'), params[:release_type])
     # error = results[1] *****MUST DISPLAY ERRORS
     flash[:notice] = results[0]
     render 'admin/submissions/publication_release_results', locals: { results: results[1] }

@@ -9,30 +9,18 @@ class SubmissionReleaseService
     @released_submissions = 0
   end
 
-  def publish(submission_ids, date_to_release)
+  def publish(submission_ids, date_to_release, release_type)
     submission_ids.each do |id|
       submission = Submission.find(id)
       original_final_files = final_files_for_submission(submission)
       file_verification_results = file_verification(original_final_files)
       next unless file_verification_results[:valid]
 
-      publish_a_submission(submission, date_to_release, original_final_files)
-    end
-    # wait until all submissions and files have been released and then run delta-import to update solr
-    bulk_solr_result = SolrDataImportService.new.delta_import
-    return { error: true, msg: "Error occurred during delta-import for solr bulk update" } if bulk_solr_result[:error]
-
-    final_results(submission_ids.count)
-  end
-
-  def restricted_to_open_access(submission_ids, date_to_release)
-    submission_ids.each do |id|
-      submission = Submission.find(id)
-      original_final_files = final_files_for_submission(submission)
-      file_verification_results = file_verification(original_final_files)
-      next unless file_verification_results[:valid]
-
-      update_restricted_submission_to_open_access(submission, date_to_release, original_final_files)
+      if release_type == 'Release selected for publication'
+        publish_a_submission(submission, date_to_release, original_final_files)
+      elsif release_type == 'Release as Open Access'
+        update_restricted_submission_to_open_access(submission, date_to_release, original_final_files)
+      end
     end
     # wait until all submissions and files have been released and then run delta-import to update solr
     bulk_solr_result = SolrDataImportService.new.delta_import

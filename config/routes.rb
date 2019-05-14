@@ -45,7 +45,6 @@ Rails.application.routes.draw do
     patch '/submissions/:id/print_signatory_page_update', to: 'submissions#print_signatory_page_update', as: :submissions_print_signatory_page_update
 
     patch '/:degree_type/final_submission_approved', to: 'submissions#release_for_publication', as: :submissions_release_final_submission_approved
-    patch '/:degree_type/release_as_open_access', to: 'submissions#release_as_open_access', as: :submissions_release_as_open_access
     patch '/:degree_type/extend_publication_date', to: 'submissions#extend_publication_date', as: :submissions_extend_publication_date
 
     patch '/:degree_type/export_final_submission_approved', to: 'reports#final_submission_approved', as: :export_final_submission_approved

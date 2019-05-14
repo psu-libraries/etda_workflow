@@ -272,15 +272,9 @@ class Submission < ApplicationRecord
     update_attribute(:final_submission_files_first_uploaded_at, time) if final_submission_files_first_uploaded_at.blank?
   end
 
-  def self.release_for_publication(submission_ids, date_to_release)
+  def self.release_for_publication(submission_ids, date_to_release, release_type)
     # Submission.transaction do
-    SubmissionReleaseService.new.publish(submission_ids, date_to_release)
-    # end
-  end
-
-  def self.update_restricted_to_open_access(submission_ids, date_to_release)
-    # Submission.transaction do
-    SubmissionReleaseService.new.restricted_to_open_access(submission_ids, date_to_release)
+    SubmissionReleaseService.new.publish(submission_ids, date_to_release, release_type)
     # end
   end
 
