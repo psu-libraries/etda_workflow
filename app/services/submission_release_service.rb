@@ -25,6 +25,22 @@ class SubmissionReleaseService
     final_results(submission_ids.count)
   end
 
+  def restricted_to_open_access(submission_ids, date_to_release)
+    submission_ids.each do |id|
+      submission = Submission.find(id)
+      original_final_files = final_files_for_submission(submission)
+      file_verification_results = file_verification(original_final_files)
+      next unless file_verification_results[:valid]
+
+      update_restricted_submission_to_open_access(submission, date_to_release, original_final_files)
+    end
+    # wait until all submissions and files have been released and then run delta-import to update solr
+    bulk_solr_result = SolrDataImportService.new.delta_import
+    return { error: true, msg: "Error occurred during delta-import for solr bulk update" } if bulk_solr_result[:error]
+
+    final_results(submission_ids.count)
+  end
+
   def unpublish(original_final_files)
     release_files(original_final_files)
   end
@@ -65,8 +81,27 @@ class SubmissionReleaseService
   private
 
     def publish_a_submission(submission, date_to_release, original_final_files)
+      publication_release_date = submission.publication_release_date date_to_release
+      metadata_release_date = submission.released_metadata_at.nil? ? date_to_release : submission.released_metadata_at
+      public_id = submission.public_id.presence || PublicIdMinter.new(submission).id
+      return unless public_id_ok(public_id)
+
+      status_giver = SubmissionStatusGiver.new(submission)
+      status_giver.can_release_for_publication?
+      submission.restricted? ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
+      submission.update_attributes(released_for_publication_at: publication_release_date, released_metadata_at: metadata_release_date, public_id: public_id)
+      return unless release_files(original_final_files)
+
+      @released_submissions += 1
+      OutboundLionPathRecord.new(submission: submission).report_status_change
+      # Archiver.new(s).create!
+    rescue StandardError
+      record_error("Error occurred processing submission id: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}")
+    end
+
+    def update_restricted_submission_to_open_access(submission, date_to_release, original_final_files)
       update_service = UpdateSubmissionService.new
-      new_publication_release_date = submission.publication_release_date date_to_release
+      new_publication_release_date = date_to_release
       new_metadata_release_date = submission.released_metadata_at.nil? ? date_to_release : submission.released_metadata_at
       new_access_level = submission.publication_release_access_level
       new_public_id = submission.public_id.presence || PublicIdMinter.new(submission).id
@@ -81,7 +116,7 @@ class SubmissionReleaseService
       update_service.send_email(submission)
       @released_submissions += 1
       OutboundLionPathRecord.new(submission: submission).report_status_change
-      # Archiver.new(s).create!
+        # Archiver.new(s).create!
     rescue StandardError
       record_error("Error occurred processing submission id: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}")
     end
