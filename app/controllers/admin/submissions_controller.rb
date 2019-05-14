@@ -75,7 +75,7 @@ class Admin::SubmissionsController < AdminController
     # error = results[1] *****MUST DISPLAY ERRORS
     flash[:notice] = results[0]
     render 'admin/submissions/publication_release_results', locals: { results: results[1] }
-      # redirect_to admin_submissions_dashboard_path(params[:degree_type])
+    # redirect_to admin_submissions_dashboard_path(params[:degree_type])
   rescue SubmissionStatusGiver::AccessForbidden
     flash[:alert] = 'There was a problem releasing the submissions, please try again.'
     redirect_to session.delete(:return_to)

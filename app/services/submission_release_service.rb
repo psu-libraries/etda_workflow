@@ -116,7 +116,7 @@ class SubmissionReleaseService
       update_service.send_email(submission)
       @released_submissions += 1
       OutboundLionPathRecord.new(submission: submission).report_status_change
-        # Archiver.new(s).create!
+      # Archiver.new(s).create!
     rescue StandardError
       record_error("Error occurred processing submission id: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}")
     end

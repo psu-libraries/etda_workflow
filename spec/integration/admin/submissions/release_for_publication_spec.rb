@@ -94,7 +94,7 @@ RSpec.describe "when an admin releases the submission for publication", js: true
       FileUtilityHelper.new.remove_test_file(released_location)
     end
 
-    it 'should not change access_level should it accidentally be released again' do
+    it 'does not change access_level should it accidentally be released again' do
       allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(nil)
       submission.update_attributes(access_level: 'restricted_to_institution')
       unreleased_location = Rails.root.join(final_submission_file.current_location)
