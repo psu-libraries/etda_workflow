@@ -95,6 +95,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         last_role = submission.required_committee_roles.last.name
         within fields_for_last_committee_member do
           expect(page).to have_content('Is voting on approval')
+          expect{ select 'Head/Chair of Graduate Program', from: 'Committee role' }.to raise_error Capybara::ElementNotFound
           select last_role, from: 'Committee role'
           fill_in "Name", with: "Extra Member"
           fill_in "Email", with: "extra_member@example.com"
