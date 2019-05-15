@@ -43,6 +43,11 @@ class Approver::ApproversController < ApproverController
     end
   end
 
+  def committee_reviews
+    @committee_member = CommitteeMember.find(params[:id])
+    @submission = @committee_member.submission
+  end
+
   private
 
   def committee_member_params
