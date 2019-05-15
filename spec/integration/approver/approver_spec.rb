@@ -4,6 +4,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, created_at: Time.zone.now }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
   let(:approval_configuration) { FactoryBot.create :approval_configuration }
+  let(:committee_role) { FactoryBot.create :committee_role }
 
   before do
     submission.final_submission_files << final_submission_file
@@ -21,6 +22,10 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
     it 'can view approval page' do
       expect(page).to have_content('Committee Member Approval Page')
+    end
+
+    it 'can see access level' do
+      expect(page).to have_content('Open Access')
     end
 
     it 'can download final file submission' do
@@ -61,6 +66,24 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
       visit "approver/files/final_submissions/#{final_submission_file.id}"
       expect(page).to have_current_path('/401')
+    end
+  end
+
+  context 'approver is advisor' do
+    it 'asks about federal funding used' do
+      committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'testuser'
+
+      visit "approver/committee_member/#{committee_member.id}"
+      expect(page).to have_content('Were Federal Funds utilized for this submission?')
+    end
+  end
+
+  context 'approver is not advisor' do
+    it 'asks about federal funding used' do
+      committee_member = FactoryBot.create :committee_member, submission: submission, access_id: 'testuser'
+
+      visit "approver/committee_member/#{committee_member.id}"
+      expect(page).to_not have_content('Were Federal Funds utilized for this submission?')
     end
   end
 
