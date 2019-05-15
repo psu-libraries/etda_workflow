@@ -43,8 +43,10 @@
           <div id="file_links">
             <%=raw @most_relevant_file_links %>
           </div>
-          <h2>Final Review -</h2>
-          <%= link_to 'See other reviews', approver_committee_reviews_path %>
+          <div class="committee_reviews"><strong>Committee Status: </strong> <%= link_to 'Other Committee Member Reviews', approver_committee_reviews_path %></div>
+
+
+          <span><h2>Final Review</h2></span>
           <div>
             <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
               <%= f.input :status, collection: CommitteeMember::STATUS, disabled: "pending", include_blank: true, :input_html => { :class => 'status_select' } %>
