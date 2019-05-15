@@ -47,7 +47,7 @@
           <div>
             <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
               <%= f.input :status, collection: CommitteeMember::STATUS, disabled: "pending", include_blank: true, :input_html => { :class => 'status_select' } %>
-              <%= f.input :notes, :input_html => { :class => 'notes_select' } %>
+              <%= f.input :notes, :label => "Notes for Student (optional)", :input_html => { :class => 'notes_select' } %>
               <%= f.input :federal_funding_used,
                         :required => true,
                         :as => :boolean,

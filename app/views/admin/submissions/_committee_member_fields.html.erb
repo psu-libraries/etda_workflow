@@ -20,7 +20,7 @@
       <%= f.input :status, collection: CommitteeMember::STATUS, include_blank: true %>
     </div>
     <div class="col-sm-4">
-      <%= f.input :notes %>
+      <%= f.input :notes, label: "Notes for Student (optional)" %>
     </div>
     <% if SubmissionStatus.new(@submission).waiting_for_committee_review? %>
       <div class="col-sm-4">
