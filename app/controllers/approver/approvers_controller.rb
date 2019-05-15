@@ -46,7 +46,7 @@ class Approver::ApproversController < ApproverController
   private
 
   def committee_member_params
-    params.require(:committee_member).permit(:notes, :status)
+    params.require(:committee_member).permit(:notes, :status, :federal_funding_used)
   end
 
   def most_relevant_file_links
