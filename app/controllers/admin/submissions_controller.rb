@@ -1,4 +1,6 @@
 class Admin::SubmissionsController < AdminController
+  skip_before_action :verify_authenticity_token, only: [:send_email_reminder]
+
   def redirect_to_default_dashboard
     redirect_to admin_submissions_dashboard_path(DegreeType.default)
   end
@@ -221,5 +223,12 @@ class Admin::SubmissionsController < AdminController
       flash[:alert] = 'There was a problem refreshing your academic plan information.  Please contact your administrator'
     end
     redirect_to admin_edit_submission_path(@submission.id)
+  end
+
+  def send_email_reminder
+    @submission = Submission.find(params[:id])
+    raise 'Email was not sent.' unless @submission.committee_members.find(params[:committee_member_id]).reminder_email_authorized?
+
+    WorkflowMailer.committee_member_review_reminder(@submission, @submission.committee_members.find(params[:committee_member_id])).deliver
   end
 end
