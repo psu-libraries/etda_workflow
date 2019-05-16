@@ -147,6 +147,10 @@ group :development do
   gem 'capistrano-resque', '~> 0.2.1', require: false
   gem 'capistrano-passenger'
 
+  # Support for newer ssh keys on newer machines
+  gem 'ed25519'
+  gem 'bcrypt_pbkdf'
+
   # ------------
   # gem 'net-sftp', '2.1.2'
   # gem 'net-ssh-gateway', '1.2.0'
