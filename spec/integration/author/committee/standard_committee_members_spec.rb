@@ -46,7 +46,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
       it "saves the committee" do
         expect(submission.committee_members.empty?).to eq(true)
         expect(page).to have_content('Head/Chair of Graduate Program') if current_partner.graduate?
-        expect(page).not_to have_content('Head/Chair of Graduate Program') if !current_partner.graduate?
+        expect(page).not_to have_content('Head/Chair of Graduate Program') unless current_partner.graduate?
         expect(page).to have_link('Add Committee Member')
         expect(page).to have_link('Graduate Program Search')
         # visit new_author_submission_committee_members_path(submission)
@@ -97,13 +97,13 @@ RSpec.describe 'The standard committee form for authors', js: true do
         last_role = submission.required_committee_roles.last.name
         within fields_for_last_committee_member do
           expect(page).to have_content('Is voting on approval')
-          expect{ select 'Head/Chair of Graduate Program', from: 'Committee role' }.to raise_error Capybara::ElementNotFound
+          expect { select 'Head/Chair of Graduate Program', from: 'Committee role' }.to raise_error Capybara::ElementNotFound
           select last_role, from: 'Committee role'
           fill_in "Name", with: "Extra Member"
           fill_in "Email", with: "extra_member@example.com"
           find("input[type='checkbox']").trigger('click')
         end
-        expect{ click_button 'Save and Return to Dashboard' }.to change { submission.committee_members.count }.by 1
+        expect { click_button 'Save and Return to Dashboard' }.to change { submission.committee_members.count }.by 1
         expect(submission.committee_members.last.is_voting).to eq(true)
         # expect(page).to have_content('successfully')
       end
