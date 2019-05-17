@@ -30,7 +30,7 @@
       </div>
       <div class="col-sm-6">
         <%= f.label :is_voting, 'Is voting on approval' %>
-        <%= f.input :is_voting, label: false %>
+        <%= f.input :is_voting, as: :radio_buttons, label: false %>
       </div>
       <div class="col-sm-6 committee-remove">
         <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger' %>
