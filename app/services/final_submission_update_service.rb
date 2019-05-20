@@ -15,12 +15,8 @@ class FinalSubmissionUpdateService
   def update_record(current_remote_user)
     submission.update final_submission_params
     submission.committee_members.each do |committee_member|
-      if committee_member.saved_change_to_status?
-        committee_member.notes << "#{current_remote_user} changed 'status' to '#{committee_member.status}' at: #{DateTime.now}\n"
-      end
-      if committee_member.saved_change_to_is_voting?
-        committee_member.notes << "#{current_remote_user} changed 'is_voting' to '#{committee_member.is_voting}' at: #{DateTime.now}\n"
-      end
+      committee_member.notes << "#{current_remote_user} changed 'status' to '#{committee_member.status}' at: #{DateTime.now}\n" if committee_member.saved_change_to_status?
+      committee_member.notes << "#{current_remote_user} changed 'is_voting' to '#{committee_member.is_voting}' at: #{DateTime.now}\n" if committee_member.saved_change_to_is_voting?
     end
     submission.save!
     { msg: "The submission was successfully updated.", redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
