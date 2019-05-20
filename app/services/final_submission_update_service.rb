@@ -12,8 +12,17 @@ class FinalSubmissionUpdateService
     @update_actions = SubmissionUpdateActions.new(params)
   end
 
-  def update_record
-    submission.update_attributes! final_submission_params
+  def update_record(current_remote_user)
+    submission.update final_submission_params
+    submission.committee_members.each do |committee_member|
+      if committee_member.saved_change_to_status?
+        committee_member.notes << "#{current_remote_user} changed 'status' to '#{committee_member.status}' at: #{DateTime.now}\n"
+      end
+      if committee_member.saved_change_to_is_voting?
+        committee_member.notes << "#{current_remote_user} changed 'is_voting' to '#{committee_member.is_voting}' at: #{DateTime.now}\n"
+      end
+    end
+    submission.save!
     { msg: "The submission was successfully updated.", redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
   end
 
@@ -141,7 +150,7 @@ class FinalSubmissionUpdateService
       :has_agreed_to_publication_release,
       :lion_path_degree_code,
       :restricted_notes,
-      committee_members_attributes: [:id, :committee_role_id, :name, :email, :status, :notes, :is_required, :_destroy],
+      committee_members_attributes: [:id, :committee_role_id, :name, :email, :status, :notes, :is_required, :is_voting, :_destroy],
       format_review_files_attributes: [:asset, :asset_cache, :id, :_destroy],
       final_submission_files_attributes: [:asset, :asset_cache, :id, :_destroy],
       keywords_attributes: [:word, :id, :_destroy],

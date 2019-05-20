@@ -20,7 +20,7 @@ class Admin::SubmissionsController < AdminController
     else
       submission_update_service = FormatReviewUpdateService.new(params, @submission)
     end
-    response = submission_update_service.update_record
+    response = submission_update_service.update_record(current_remote_user)
     @submission.update_status_from_committee
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
