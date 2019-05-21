@@ -2,8 +2,8 @@ RSpec.describe 'Admin submission access_level', js: true do
   require 'integration/integration_spec_helper'
 
   let(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response }
-  let(:committee_member1) { FactoryBot.create :committee_member, submission: submission }
-  let(:committee_member2) { FactoryBot.create :committee_member, submission: submission }
+  let(:committee_member1) { FactoryBot.create :committee_member, submission: submission, committee_role: CommitteeRole.first }
+  let(:committee_member2) { FactoryBot.create :committee_member, submission: submission, committee_role: CommitteeRole.second }
 
   before do
     FactoryBot.create :format_review_file, submission: submission
