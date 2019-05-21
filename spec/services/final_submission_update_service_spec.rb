@@ -15,7 +15,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       params[:submission] = submission.attributes
       params[:approved] = true
       params[:submission][:title] = 'update this title'
-      final_submission_update_service = described_class.new(params, submission)
+      final_submission_update_service = described_class.new(params, submission, 'testuser123')
       result = final_submission_update_service.respond_final_submission
       expect(result[:msg]).to eql("The submission\'s final submission information was successfully approved.")
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/final_submission_submitted")
@@ -32,7 +32,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       params[:submission] = submission.attributes
       params[:rejected] = true
       params[:submission][:abstract] = 'this abstract is updated'
-      final_submission_update_service = described_class.new(params, submission)
+      final_submission_update_service = described_class.new(params, submission, 'testuser123')
       result = final_submission_update_service.respond_final_submission
       expect(result[:msg]).to eql("The submission\'s final submission information was successfully rejected and returned to the author for revision.")
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/final_submission_submitted")
@@ -52,7 +52,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       params[:update_final] = true
       params[:submission][:title] = 'a different title'
       params[:submission][:final_submission_notes] = 'a note to you'
-      final_submission_update_service = described_class.new(params, submission)
+      final_submission_update_service = described_class.new(params, submission, 'testuser123')
       result = final_submission_update_service.respond_final_submission
       expect(result[:msg]).to eql(" Final submission information was successfully edited by an administrator")
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/final_submission_submitted")
@@ -70,7 +70,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       params[:update_final] = true
       params[:submission][:title] = 'a different title for release'
       params[:submission][:abstract] = 'a new abstract'
-      final_submission_update_service = described_class.new(params, submission)
+      final_submission_update_service = described_class.new(params, submission, 'testuser123')
       result = final_submission_update_service.respond_waiting_to_be_released
       expect(result[:msg]).to eql("The submission was successfully updated.")
       expect(result[:redirect_path]).to eql(admin_edit_submission_path(submission.id.to_s))
@@ -91,7 +91,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       params[:submission] = submission.attributes
       params[:rejected] = true
       params[:submission][:final_submission_notes] = 'a final note to you!!!'
-      final_submission_update_service = described_class.new(params, submission)
+      final_submission_update_service = described_class.new(params, submission, 'testuser123')
       result = final_submission_update_service.respond_waiting_to_be_released
       expect(result[:msg]).to eql("Submission was removed from waiting to be released")
       expect(result[:redirect_path]).to eql(admin_submissions_release_final_submission_approved_path(submission.degree_type.slug.to_s))
@@ -112,7 +112,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       params[:update_final] = true
       params[:submission][:title] = 'a different title for released submission'
       params[:submission][:abstract] = 'a different abstract'
-      final_submission_update_service = described_class.new(params, submission)
+      final_submission_update_service = described_class.new(params, submission, 'testuser123')
       result = final_submission_update_service.respond_released_submission
       expect(result[:msg]).to eql("The submission was successfully updated.")
       expect(result[:redirect_path]).to eql(admin_edit_submission_path(submission.id.to_s))
@@ -130,7 +130,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       params[:submission] = submission.attributes
       params[:rejected] = true
       params[:submission][:abstract] = 'I am an abstract!!!!!'
-      final_submission_update_service = described_class.new(params, submission)
+      final_submission_update_service = described_class.new(params, submission, 'testuser123')
       result = final_submission_update_service.respond_released_submission
       expect(result[:msg]).to eql("Submission for #{submission.author.first_name} #{submission.author.last_name} was successfully un-published.")
       expect(result[:redirect_path]).to eq(admin_edit_submission_path(submission.id.to_s))
@@ -147,7 +147,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       params[:submission] = submission.attributes
       # params[:approved] = true
       title = submission.title
-      final_submission_update_service = described_class.new(params, submission)
+      final_submission_update_service = described_class.new(params, submission, 'testuser123')
       result = final_submission_update_service.update_record
       expect(result[:msg]).to eql("The submission was successfully updated.")
       expect(result[:redirect_path]).to eql(admin_edit_submission_path(submission.id.to_s))

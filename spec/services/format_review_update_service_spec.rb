@@ -11,7 +11,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       params[:submission] = submission.attributes
       params[:approved] = true
       title = submission.title
-      format_review_update_service = described_class.new(params, submission)
+      format_review_update_service = described_class.new(params, submission, 'testuser123')
       result = format_review_update_service.respond_format_review
       expect(result[:msg]).to eql("The submission\'s format review information was successfully approved and returned to the author to collect final submission information.")
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/format_review_submitted")
@@ -27,7 +27,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       params[:submission] = submission.attributes
       params[:rejected] = true
       semester = submission.semester
-      format_review_update_service = described_class.new(params, submission)
+      format_review_update_service = described_class.new(params, submission, 'testuser123')
       result = format_review_update_service.respond_format_review
       expect(result[:msg]).to eql("The submission\'s format review information was successfully rejected and returned to the author for revision.")
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/format_review_submitted")
@@ -45,7 +45,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       params[:update_format_review] = true
       params[:submission][:title] = 'a different title'
       params[:submission][:format_review_notes] = 'a note to you'
-      format_review_update_service = described_class.new(params, submission)
+      format_review_update_service = described_class.new(params, submission, 'testuser123')
       result = format_review_update_service.update_record
       expect(result[:msg]).to eql("The submission was successfully updated.")
       expect(result[:redirect_path]).to eql(admin_edit_submission_path(submission.id.to_s))
@@ -63,7 +63,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       params[:approved] = true
       params[:submission][:title] = 'another different title'
       params[:submission][:format_review_notes] = 'another note to you'
-      format_review_update_service = described_class.new(params, submission)
+      format_review_update_service = described_class.new(params, submission, 'testuser123')
       result = format_review_update_service.respond_format_review
       expect(result[:msg]).to eql("The submission's format review information was successfully approved and returned to the author to collect final submission information.")
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/format_review_submitted")

@@ -16,11 +16,11 @@ class Admin::SubmissionsController < AdminController
   def update
     @submission = Submission.find(params[:id])
     if @submission.status_behavior.beyond_collecting_format_review_files? && status != 'format review completed'
-      submission_update_service = FinalSubmissionUpdateService.new(params, @submission)
+      submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     else
-      submission_update_service = FormatReviewUpdateService.new(params, @submission)
+      submission_update_service = FormatReviewUpdateService.new(params, @submission, current_remote_user)
     end
-    response = submission_update_service.update_record(current_remote_user)
+    response = submission_update_service.update_record
     @submission.update_status_from_committee
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
@@ -81,7 +81,7 @@ class Admin::SubmissionsController < AdminController
 
   def record_format_review_response
     @submission = Submission.find(params[:id])
-    format_review_update_service = FormatReviewUpdateService.new(params, @submission)
+    format_review_update_service = FormatReviewUpdateService.new(params, @submission, current_remote_user)
     response = format_review_update_service.respond_format_review
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
@@ -98,7 +98,7 @@ class Admin::SubmissionsController < AdminController
 
   def update_final_submission
     @submission = Submission.find(params[:id])
-    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission)
+    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     response = final_submission_update_service.waiting_for_final_submission
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
@@ -115,7 +115,7 @@ class Admin::SubmissionsController < AdminController
 
   def record_final_submission_response
     @submission = Submission.find(params[:id])
-    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission)
+    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     response = final_submission_update_service.respond_final_submission
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
@@ -132,7 +132,7 @@ class Admin::SubmissionsController < AdminController
 
   def record_send_back_to_final_submission
     @submission = Submission.find(params[:id])
-    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission)
+    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     response = final_submission_update_service.respond_send_back_to_final_submission
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
@@ -149,7 +149,7 @@ class Admin::SubmissionsController < AdminController
 
   def update_waiting_to_be_released
     @submission = Submission.find(params[:id])
-    released_submission_service = FinalSubmissionUpdateService.new(params, @submission)
+    released_submission_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     response = released_submission_service.respond_waiting_to_be_released
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
@@ -167,7 +167,7 @@ class Admin::SubmissionsController < AdminController
   def update_released
     @submission = Submission.find(params[:id])
     session[:return_to] = "/admin/#{@submission.degree_type.slug}"
-    released_submission_service = FinalSubmissionUpdateService.new(params, @submission)
+    released_submission_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     response = released_submission_service.respond_released_submission
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
