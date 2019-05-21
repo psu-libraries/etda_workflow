@@ -22,13 +22,13 @@ RSpec.describe "Editing committee member information for format reviews and fina
       within('#committee') do
         expect(find("select[id='submission_committee_members_attributes_0_committee_role_id']").value).to eq role.id.to_s
         expect(find("select[id='submission_committee_members_attributes_0_committee_role_id']").disabled?).to eq true
-        expect{ find("label[for='submission_committee_members_attributes_0_Is voting on approval']") }.to raise_error Capybara::ElementNotFound
+        expect { find("label[for='submission_committee_members_attributes_0_Is voting on approval']") }.to raise_error Capybara::ElementNotFound
         expect(find("select[id='submission_committee_members_attributes_1_committee_role_id']").disabled?).to eq false
-        expect{ find("label[for='submission_committee_members_attributes_1_Is voting on approval']") }.not_to raise_error
+        expect { find("label[for='submission_committee_members_attributes_1_Is voting on approval']") }.not_to raise_error
         within("select#submission_committee_members_attributes_1_committee_role_id") do
           CommitteeRole.where(degree_type: degree.degree_type).each do |option|
             expect(find("option[value='#{option[:id]}']").text).to eq(option[:name]) unless option[:name] == role.name
-            expect{ find("option[value='#{option[:id]}']").text }.to raise_error Capybara::ElementNotFound if option[:name] == role.name
+            expect { find("option[value='#{option[:id]}']").text }.to raise_error Capybara::ElementNotFound if option[:name] == role.name
           end
         end
       end
