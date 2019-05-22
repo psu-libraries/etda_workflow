@@ -39,7 +39,7 @@ RSpec.describe "Editing committee member information for format reviews and fina
       sleep 5
       expect(submission.committee_members.count).to eq(committee_size.to_i - 1)
       expect(submission.committee_members.first.status).to eq 'approved'
-      expect(submission.committee_members.first.notes).to match /changed 'status' to 'approved'/
+      expect(submission.committee_members.first.notes).to match(/changed 'status' to 'approved'/)
     end
   end
 end
