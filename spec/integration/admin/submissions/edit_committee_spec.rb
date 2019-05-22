@@ -17,21 +17,29 @@ RSpec.describe "Editing committee member information for format reviews and fina
   context 'when partner is graduate' do
     it 'has Head/Chair of Graduate Program' do
       visit admin_edit_submission_path(submission)
-      sleep 3
+      committee_size = submission.committee_members.count
       find("div[data-target='#committee']").click
       within('#committee') do
         expect(find("select[id='submission_committee_members_attributes_0_committee_role_id']").value).to eq role.id.to_s
-        expect(find("select[id='submission_committee_members_attributes_0_committee_role_id']").disabled?).to eq true
-        expect { find("label[for='submission_committee_members_attributes_0_Is voting on approval']") }.to raise_error Capybara::ElementNotFound
+        expect(find("select[id='submission_committee_members_attributes_0_committee_role_id']").disabled?).to eq true if current_partner.graduate?
+        expect { find("label[for='submission_committee_members_attributes_0_Is voting on approval']") }.to raise_error Capybara::ElementNotFound if current_partner.graduate?
         expect(find("select[id='submission_committee_members_attributes_1_committee_role_id']").disabled?).to eq false
         expect { find("label[for='submission_committee_members_attributes_1_Is voting on approval']") }.not_to raise_error
         within("select#submission_committee_members_attributes_1_committee_role_id") do
           CommitteeRole.where(degree_type: degree.degree_type).each do |option|
-            expect(find("option[value='#{option[:id]}']").text).to eq(option[:name]) unless option[:name] == role.name
-            expect { find("option[value='#{option[:id]}']").text }.to raise_error Capybara::ElementNotFound if option[:name] == role.name
+            expect(find("option[value='#{option[:id]}']").text).to eq(option[:name]) unless option[:name] == 'Head/Chair of Graduate Program'
+            expect { find("option[value='#{option[:id]}']").text }.to raise_error Capybara::ElementNotFound if option[:name] == 'Head/Chair of Graduate Program'
           end
         end
+        first_committee_member_remove = find_all("a", text: "Remove Committee Member").first
+        find("select#submission_committee_members_attributes_1_status").find(:option, 'approved').select_option
+        first_committee_member_remove.trigger('click')
       end
+      click_button 'Update Metadata'
+      sleep 5
+      expect(submission.committee_members.count).to eq(committee_size.to_i - 1)
+      expect(submission.committee_members.first.status).to eq 'approved'
+      expect(submission.committee_members.first.notes).to match /changed 'status' to 'approved'/
     end
   end
 end
