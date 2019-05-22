@@ -14,7 +14,6 @@ RSpec.describe "Editing committee member information for format reviews and fina
     webaccess_authorize_admin
   end
 
-
   it 'has specific content and records changes for certain updates' do
     visit admin_edit_submission_path(submission)
     committee_size = submission.committee_members.count
