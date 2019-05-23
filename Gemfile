@@ -59,7 +59,7 @@ gem 'rabl-rails'
 # FontAwesome sass integration
 gem 'font-awesome-rails'
 
-gem 'devise'
+gem 'devise', '>= 4.6.0'
 
 gem 'sprockets', '~> 3.7.2'
 
@@ -152,6 +152,10 @@ group :development do
   gem 'capistrano-rbenv-install'
   gem 'capistrano-resque', '~> 0.2.1', require: false
   gem 'capistrano-passenger'
+
+  # Support for newer ssh keys on newer machines
+  gem 'ed25519'
+  gem 'bcrypt_pbkdf'
 
   # ------------
   # gem 'net-sftp', '2.1.2'
