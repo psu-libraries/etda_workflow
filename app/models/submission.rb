@@ -277,7 +277,6 @@ class Submission < ApplicationRecord
     # release restricted after 2-year-hold (time period may be longer)
     #   released_fo_publication_at = date_to_release
     return date_to_release if open_access?
-    return date_to_release if status_behavior.released_for_publication?
 
     two_years_later = date_to_release.to_date + 2.years
     two_years_later
@@ -293,9 +292,9 @@ class Submission < ApplicationRecord
     update_attribute(:final_submission_files_first_uploaded_at, time) if final_submission_files_first_uploaded_at.blank?
   end
 
-  def self.release_for_publication(submission_ids, date_to_release)
+  def self.release_for_publication(submission_ids, date_to_release, release_type)
     # Submission.transaction do
-    SubmissionReleaseService.new.publish(submission_ids, date_to_release)
+    SubmissionReleaseService.new.publish(submission_ids, date_to_release, release_type)
     # end
   end
 

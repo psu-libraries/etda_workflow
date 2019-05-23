@@ -433,6 +433,10 @@ RSpec.describe Author::SubmissionView do
         it "returns an empty string" do
           expect(view.step_six_class).to eq ''
         end
+
+        it "does not display review page" do
+          expect(view.step_six_description).to eq 'Waiting for Committee Review'
+        end
       end
 
       context "when step six is the current step" do
@@ -490,6 +494,32 @@ RSpec.describe Author::SubmissionView do
           submission.status = 'waiting for committee review rejected'
           expect(view.step_six_status).to eq(partial_name: '/author/shared/rejected_indicator')
         end
+      end
+    end
+  end
+
+  describe '#step_six_description' do
+    context "when the submission is before step six" do
+      before { allow(submission.status_behavior).to receive(:beyond_collecting_final_submission_files?).and_return(false) }
+
+      it "does not display review page" do
+        expect(view.step_six_description).to eq 'Waiting for Committee Review'
+      end
+    end
+
+    context 'when the submission is currently waiting for committee review' do
+      before { submission.status = 'waiting for committee review' }
+
+      it 'to display results page' do
+        expect(view.step_six_description).to match(/Waiting for Committee Review.*\[review.*\]/)
+      end
+    end
+
+    context "when step six has been completed" do
+      before { submission.status = 'waiting for final submission response' }
+
+      it 'to display results page' do
+        expect(view.step_six_description).to match(/Waiting for Committee Review.*\[review.*\]/)
       end
     end
   end
