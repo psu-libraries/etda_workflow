@@ -36,9 +36,8 @@ RSpec.describe "Editing committee member information for format reviews and fina
     end
     click_button 'Update Metadata'
     sleep 5
-    puts page.body
     expect(page).to have_content("Waiting for Committee Review") if current_partner.graduate?
-    expect(page).to have_content("Final Submission Evaluation") if !current_partner.graduate?
+    expect(page).to have_content("Final Submission Evaluation") unless current_partner.graduate?
     expect(submission.committee_members.count).to eq(committee_size.to_i - 1)
     expect(submission.committee_members.first.status).to eq 'approved'
     expect(submission.committee_members.first.notes).to match(/changed 'status' to 'approved'/)
