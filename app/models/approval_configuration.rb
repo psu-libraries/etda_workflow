@@ -17,7 +17,7 @@ class ApprovalConfiguration < ApplicationRecord
   def self.seed
     ApprovalConfiguration::CONFIGURATIONS[current_partner.id].each do |degree_type, configuration|
       dt = DegreeType.find_by(slug: degree_type)
-      next unless dt.approval_configuration.blank?
+      next if dt.approval_configuration.present?
 
       ApprovalConfiguration.create!(degree_type_id: dt[:id],
                                     approval_deadline_on: configuration[:approval_deadline_on],
