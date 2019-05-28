@@ -59,7 +59,7 @@ class Admin::SubmissionsController < AdminController
 
   def release_for_publication
     ids = params[:submission_ids].split(',')
-    results = Submission.release_for_publication(ids, Date.strptime(params[:date_to_release], '%m/%d/%Y'))
+    results = Submission.release_for_publication(ids, Date.strptime(params[:date_to_release], '%m/%d/%Y'), params[:release_type])
     # error = results[1] *****MUST DISPLAY ERRORS
     flash[:notice] = results[0]
     render 'admin/submissions/publication_release_results', locals: { results: results[1] }
