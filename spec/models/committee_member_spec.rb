@@ -32,6 +32,10 @@ RSpec.describe CommitteeMember, type: :model do
     it 'has is_voting defaulted to false' do
       expect(cm.is_voting).to eq false
     end
+
+    it 'has status defaulted to ""' do
+      expect(cm.status).to eq ""
+    end
   end
 
   describe 'validates' do
