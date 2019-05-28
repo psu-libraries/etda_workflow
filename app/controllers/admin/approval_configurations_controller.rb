@@ -5,11 +5,11 @@ class Admin::ApprovalConfigurationsController < AdminController
   end
 
   def edit
-    @approval_configuration = DegreeType.find(params[:id]).approval_configuration
+    @approval_configuration = ApprovalConfiguration.find(params[:id])
   end
 
   def update
-    @approval_configuration = DegreeType.find(params[:id]).approval_configuration
+    @approval_configuration = ApprovalConfiguration.find(params[:id])
     @approval_configuration.attributes = approval_configuration_params
     @approval_configuration.save!
     redirect_to admin_approval_configurations_path
@@ -22,7 +22,7 @@ class Admin::ApprovalConfigurationsController < AdminController
   private
 
   def approval_configuration_params
-    approval_configuration_params_permitted = [:approval_deadline_on, :rejections_permitted, :email_admins, :email_authors]
+    approval_configuration_params_permitted = [:approval_deadline_on, :rejections_permitted, :email_admins, :email_authors, :percentage_for_approval, :use_percentage]
 
     params.require(:approval_configuration).permit(approval_configuration_params_permitted)
   end

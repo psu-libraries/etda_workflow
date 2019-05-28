@@ -18,3 +18,4 @@ require('../admin/initialize_tooltips.js');
 require('../admin/initialize_datatables.js');
 require('../admin/lionpath_plan_information.js');
 require('../admin/send_email_reminder.js');
+require('../admin/approval_configuration_radios.js');
