@@ -4,7 +4,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, created_at: Time.zone.now }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
   let(:approval_configuration) { FactoryBot.create :approval_configuration }
-  let(:committee_role) { FactoryBot.create :committee_role, id: 1 }
+  let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor" }
 
   before do
     submission.final_submission_files << final_submission_file

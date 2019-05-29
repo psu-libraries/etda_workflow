@@ -57,7 +57,7 @@
               <fieldset <%=@review_complete ? 'disabled' : ''%> >
                 <%= f.input :status, collection: CommitteeMember::STATUS, disabled: "pending", include_blank: true, :input_html => { :class => 'status_select' } %>
                 <%= f.input :notes, :label => "Notes for Student (optional)", :input_html => { :class => 'notes_select' } %>
-                <% if current_partner.graduate? && @committee_member.committee_role_id == 1 %>
+                <% if current_partner.graduate? && @committee_member.committee_role.name.include?("Advisor") %>
                   <%= f.input :federal_funding_used, :required => true, as: :radio_buttons, label: 'Were Federal Funds utilized for this submission?'%>
                   <strong>I confirm that, as required by federal guidelines, all federal funds used for the work
                   described in this thesis / dissertation have been explicitly acknowledged in the document,</strong>
