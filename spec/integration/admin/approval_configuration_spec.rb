@@ -10,7 +10,7 @@ RSpec.describe "Editing approval configuration", js: true do
   end
 
   it 'has approval configuration content' do
-    expect(page).to have_content('Edit Dissertation Configuration')
+    expect(page).to have_content("Edit #{degree.degree_type.name} Configuration")
     expect(page).to have_content('Approval deadline on*')
     expect(page).to have_content('Committee Approval Method')
     expect(page).to have_content('Rejections permitted*')
