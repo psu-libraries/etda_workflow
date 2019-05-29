@@ -3,7 +3,7 @@ RSpec.describe "Editing committee member information for format reviews and fina
 
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
-  let!(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type) }
+  let!(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type, use_percentage: false, rejections_permitted: 0) }
   let!(:role) { CommitteeRole.first }
   let!(:author) { FactoryBot.create(:author, :no_lionpath_record) }
   let(:submission) { FactoryBot.create(:submission, :waiting_for_committee_review, author: author) }
@@ -31,15 +31,14 @@ RSpec.describe "Editing committee member information for format reviews and fina
         end
       end
       first_committee_member_remove = find_all("a", text: "Remove Committee Member").first
-      find("select#submission_committee_members_attributes_1_status").find(:option, 'approved').select_option
+      find("select#submission_committee_members_attributes_1_status").find(:option, 'pending').select_option
       first_committee_member_remove.trigger('click')
     end
     click_button 'Update Metadata'
     sleep 5
-    expect(page).to have_content("Waiting for Committee Review") if current_partner.graduate?
-    expect(page).to have_content("Final Submission Evaluation") unless current_partner.graduate?
+    expect(page).to have_content("Waiting for Committee Review")
     expect(submission.committee_members.count).to eq(committee_size.to_i - 1)
-    expect(submission.committee_members.first.status).to eq 'approved'
-    expect(submission.committee_members.first.notes).to match(/changed 'status' to 'approved'/)
+    expect(submission.committee_members.first.status).to eq 'pending'
+    expect(submission.committee_members.first.notes).to match(/changed 'status' to 'pending'/)
   end
 end

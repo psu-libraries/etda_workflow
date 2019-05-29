@@ -8,6 +8,8 @@ RSpec.describe ApprovalConfiguration, type: :model do
   it { is_expected.to have_db_column(:rejections_permitted).of_type(:integer) }
   it { is_expected.to have_db_column(:email_admins).of_type(:boolean) }
   it { is_expected.to have_db_column(:email_authors).of_type(:boolean) }
+  it { is_expected.to have_db_column(:use_percentage).of_type(:boolean) }
+  it { is_expected.to have_db_column(:percentage_for_approval).of_type(:decimal) }
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
 
