@@ -26,13 +26,16 @@
       <%= f.input :status, collection: CommitteeMember::STATUS, include_blank: true %>
     </div>
     <div class="col-sm-4">
-      <%= f.input :notes %>
+      <%= f.input :notes, label: "Notes for Student (optional)" %>
     </div>
     <% if SubmissionStatus.new(@submission).waiting_for_committee_review? %>
       <div class="col-sm-4">
         <button type="button" id="send_email_reminder" value="<%= f.object.id.to_s %>">Send Email Reminder</button>
       </div>
     <% end %>
+    <div class="col-sm-4">
+      <%= f.input :federal_funding_used if current_partner.graduate? %>
+    </div>
   </div>
   <div class="row">
     <% unless f.object.is_required == true && f.object.committee_role.name == 'Head/Chair of Graduate Program'  %>
