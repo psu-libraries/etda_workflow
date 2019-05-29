@@ -156,7 +156,7 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_six_class
-    if status_behavior.waiting_for_committee_review?
+    if status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_committee_review_rejected?
       'current'
     elsif status_behavior.beyond_waiting_for_committee_review?
       'complete'

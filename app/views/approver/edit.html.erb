@@ -39,29 +39,31 @@
             </p>
           </div>
           <strong>Associated Files:</strong>
-          <div><strong>Access Level - </strong> <%=@committee_member.submission.current_access_level.label %></div>
+          <% if @committee_member.submission.current_access_level.label.include?("open") %>
+            <div class="access-level-open"><strong>Access Level - </strong> <%=@committee_member.submission.current_access_level.label %></div>
+          <% else %>
+            <div class="access-level-warning"><strong>Access Level - </strong> <%=@committee_member.submission.current_access_level.label %></div>
+          <% end %>
           <div id="file_links">
             <%=raw @most_relevant_file_links %>
           </div>
-          <div class="committee_reviews"><strong>Committee Status: </strong> <%= link_to 'Other Committee Member Reviews', approver_committee_reviews_path %></div>
 
 
           <span><h2>Final Review</h2></span>
+          <div class="committee_reviews"><strong>Current Status of Submission: </strong> <%= link_to 'Committee Member Reviews', approver_committee_reviews_path %></div>
+          </br>
           <div>
             <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
               <%= f.input :status, collection: CommitteeMember::STATUS, disabled: "pending", include_blank: true, :input_html => { :class => 'status_select' } %>
               <%= f.input :notes, :label => "Notes for Student (optional)", :input_html => { :class => 'notes_select' } %>
-              <%= f.input :federal_funding_used,
-                        :required => true,
-                        :as => :boolean,
-                        :label => "Were Federal Funds utilized for this submission?",
-                        :boolean_style => :inline,
-                        :item_wrapper_class => 'inline' if current_partner.graduate? && @committee_member.committee_role_id == 1 %>
-              <strong>I confirm that, as required by federal guidelines, all federal funds used for the work
-              described in this thesis / dissertation have been explicitly acknowledged in the document,</strong>
-              along with a disclaimer indicating that the findings and conclusions do not necessarily
-              reflect the view of the funding agency. I confirm that no federal funds were used for the
-              work described in this thesis / dissertation.
+              <% if current_partner.graduate? && @committee_member.committee_role_id == 1 %>
+                <%= f.input :federal_funding_used, :required => true, as: :radio_buttons, label: 'Were Federal Funds utilized for this submission?'%>
+                <strong>I confirm that, as required by federal guidelines, all federal funds used for the work
+                described in this thesis / dissertation have been explicitly acknowledged in the document,</strong>
+                along with a disclaimer indicating that the findings and conclusions do not necessarily
+                reflect the view of the funding agency. <strong> I confirm that no federal funds were used for the
+                work described in this thesis / dissertation. </strong>
+              <% end %>
               <div class="form-group actions col-xs-4">
                 <%= f.button :submit, "Submit Review" %>
               </div>
