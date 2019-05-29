@@ -12,7 +12,7 @@ RSpec.describe "Editing approval configuration", js: true do
   it 'has approval configuration content' do
     expect(page).to have_content("Edit #{degree.degree_type.name} Configuration")
     expect(page).to have_content('Approval deadline on*')
-    expect(page).to have_content('Committee Approval Method')
+    expect(page).to have_content('Committee approval method')
     expect(page).to have_content('Rejections permitted*')
     expect(page).not_to have_content('Percentage for approval*')
     expect(page).to have_content('Email admins')
@@ -40,8 +40,7 @@ RSpec.describe "Editing approval configuration", js: true do
     expect(page).to have_content('Manage Approval Configurations')
     expect(ApprovalConfiguration.find(approval_configuration.id).approval_deadline_on).to eq Date.today
     expect(ApprovalConfiguration.find(approval_configuration.id).use_percentage).to eq true
-    expect(ApprovalConfiguration.find(approval_configuration.id).percentage_for_approval).to eq 80
-    expect(ApprovalConfiguration.find(approval_configuration.id).rejections_permitted).to eq 0
+    expect(ApprovalConfiguration.find(approval_configuration.id).configuration_threshold).to eq 80
     expect(ApprovalConfiguration.find(approval_configuration.id).email_admins).to eq true
     expect(ApprovalConfiguration.find(approval_configuration.id).email_authors).to eq true
   end

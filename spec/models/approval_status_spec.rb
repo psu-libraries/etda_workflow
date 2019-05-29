@@ -4,10 +4,10 @@ require 'model_spec_helper'
 
 RSpec.describe ApprovalStatus, type: :model do
   let(:submission) { FactoryBot.create :submission }
-  let(:approval_configuration1) { ApprovalConfiguration.create(rejections_permitted: 0, use_percentage: 0) }
-  let(:approval_configuration2) { ApprovalConfiguration.create(rejections_permitted: 1, use_percentage: 0) }
-  let(:approval_configuration3) { ApprovalConfiguration.create(percentage_for_approval: 100, use_percentage: 1) }
-  let(:approval_configuration4) { ApprovalConfiguration.create(percentage_for_approval: 75, use_percentage: 1) }
+  let(:approval_configuration1) { ApprovalConfiguration.create(configuration_threshold: 0, use_percentage: 0, approval_deadline_on: Date.today) }
+  let(:approval_configuration2) { ApprovalConfiguration.create(configuration_threshold: 1, use_percentage: 0, approval_deadline_on: Date.today) }
+  let(:approval_configuration3) { ApprovalConfiguration.create(configuration_threshold: 100, use_percentage: 1, approval_deadline_on: Date.today) }
+  let(:approval_configuration4) { ApprovalConfiguration.create(configuration_threshold: 75, use_percentage: 1, approval_deadline_on: Date.today) }
 
   describe "#status" do
     context "when using rejections permitted" do
