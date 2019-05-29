@@ -66,7 +66,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   end
 
   context 'approver is advisor and part of graduate school' do
-    let(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'testuser'}
+    let(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'testuser' }
 
     before do
       visit "approver/committee_member/#{committee_member.id}"
@@ -96,8 +96,8 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   end
 
   context 'approval is complete' do
-    let(:submission1) { FactoryBot.create :submission, status: "waiting for final submission response"}
-    let(:committee_member) { FactoryBot.create :committee_member, submission: submission1, access_id: 'testuser', status: "approved", notes: "this is the note", approved_at: DateTime.new(2019,10,10,5,5,55) }
+    let(:submission1) { FactoryBot.create :submission, status: "waiting for final submission response" }
+    let(:committee_member) { FactoryBot.create :committee_member, submission: submission1, access_id: 'testuser', status: "approved", notes: "this is the note", approved_at: DateTime.new(2019, 10, 10, 5, 5, 55) }
 
     before do
       visit "approver/committee_member/#{committee_member.id}"
