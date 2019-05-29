@@ -9,3 +9,4 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 DegreeType.seed
 CommitteeRole.seed
+ApprovalConfiguration.seed
