@@ -24,6 +24,14 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       expect(page).to have_content('Committee Member Approval Page')
     end
 
+    it 'can see access level' do
+      expect(page).to have_content('Open Access')
+    end
+
+    it 'can see other committee members reviews' do
+      expect(page).to have_link('Committee Member Reviews')
+    end
+
     it 'can download final file submission' do
       num_windows = page.driver.browser.window_handles.count
       within("div#file_links") do

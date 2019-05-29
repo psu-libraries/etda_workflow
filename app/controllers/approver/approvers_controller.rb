@@ -44,10 +44,15 @@ class Approver::ApproversController < ApproverController
     end
   end
 
+  def committee_reviews
+    @committee_member = CommitteeMember.find(params[:id])
+    @submission = @committee_member.submission
+  end
+
   private
 
   def committee_member_params
-    params.require(:committee_member).permit(:notes, :status)
+    params.require(:committee_member).permit(:notes, :status, :federal_funding_used)
   end
 
   def most_relevant_file_links
