@@ -39,7 +39,7 @@
             </p>
           </div>
           <strong>Associated Files:</strong>
-          <% if @committee_member.submission.current_access_level.label.include?("open") %>
+          <% if @committee_member.submission.current_access_level.current_access_level.include?('open') %>
             <div class="access-level-open"><strong>Access Level - </strong> <%=@committee_member.submission.current_access_level.label %></div>
           <% else %>
             <div class="access-level-warning"><strong>Access Level - </strong> <%=@committee_member.submission.current_access_level.label %></div>
