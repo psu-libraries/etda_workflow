@@ -29,7 +29,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
 
     it 'can see other committee members reviews' do
-      expect(page).to have_link('See other reviews')
+      expect(page).to have_link('Committee Member Reviews')
     end
 
     it 'can download final file submission' do
@@ -73,9 +73,11 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
   end
 
-  context 'approver is advisor' do
-    it 'asks about federal funding used' do
-      committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'testuser'
+  context 'approver is advisor and part of graduate school' do
+    xit 'asks about federal funding used' do
+      committee_member = FactoryBot.create :committee_member, submission: submission, access_id: 'testuser'
+      allow_any_instance_of(CommitteeMember).to receive(:committee_role_id).and_return(1)
+      allow_any_instance_of(Partner).to receive(:graduate?).and_return(true)
 
       visit "approver/committee_member/#{committee_member.id}"
       expect(page).to have_content('Were Federal Funds utilized for this submission?')
@@ -87,7 +89,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       committee_member = FactoryBot.create :committee_member, submission: submission, access_id: 'testuser'
 
       visit "approver/committee_member/#{committee_member.id}"
-      expect(page).to_not have_content('Were Federal Funds utilized for this submission?')
+      expect(page).not_to have_content('Were Federal Funds utilized for this submission?')
     end
   end
 
