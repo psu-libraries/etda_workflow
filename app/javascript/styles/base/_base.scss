@@ -635,6 +635,31 @@ a.cancel-link{
   }
 }
 
+.access-level-warning {
+  color: red;
+}
+
+.access-level-open {
+  color: green;
+}
+
+.committee_reviews {
+  padding-top: 20px;
+}
+
+.review-message {
+  width: 600px;
+}
+
+.review-complete {
+  color: green;
+}
+
+.altering-submission {
+  padding-top: 10px;
+  font-style: italic;
+}
+
 .status_select {
   width: 200px;
 }
