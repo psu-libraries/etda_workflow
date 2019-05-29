@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApprovalStatus
-  attr_reader :current_submission, :voting_committee_members
+  attr_reader :current_submission, :voting_committee_members, :approval_configuration
 
   WORKFLOW_STATUS =
     [
@@ -14,6 +14,7 @@ class ApprovalStatus
   def initialize(submission)
     @current_submission = submission
     @voting_committee_members = submission.voting_committee_members
+    @approval_configuration = submission.degree.degree_type.approval_configuration
   end
 
   def status
@@ -39,6 +40,10 @@ class ApprovalStatus
   end
 
   def rejections_permitted
-    current_submission.degree.degree_type.approval_configuration.rejections_permitted
+    if approval_configuration.use_percentage == false
+      approval_configuration.rejections_permitted
+    else
+      voting_committee_members.count - (voting_committee_members.count.to_f * ((approval_configuration.percentage_for_approval.to_f) / 100)).round
+    end
   end
 end
