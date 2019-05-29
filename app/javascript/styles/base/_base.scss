@@ -297,8 +297,53 @@ form {
       }
     }
 
+  .committee-member-information {
+    label {
+      float: left;
+      width: 100px;
+      text-align: right;
+      margin: 2px 10px;
+    }
+
+    div.input {
+      margin-bottom: 10px;
+    }
+  }
+
   .committee-role .form-group {
     margin-bottom: 0.5em;
+    width: 50%;
+  }
+
+  .committee-role {
+    display: flex;
+    div {
+      padding-right: 0px;
+    }
+  }
+
+  .committee-details {
+    width: 50%;
+    div {
+      padding-right: 0px;
+    }
+  }
+
+  .status-row {
+    display: flex;
+  }
+
+  .submission_committee_members_status {
+    width: 50%
+  }
+
+  #send_email_reminder {
+    margin-left: 50px;
+    line-height: inherit;
+  }
+
+  .remove-member {
+    margin-left: 200px;
   }
 
   .admin {
