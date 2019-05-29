@@ -22,8 +22,21 @@ RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_index(:submission_id) }
   it { is_expected.to have_db_index(:committee_role_id) }
   it { is_expected.to have_db_column(:last_reminder_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:is_voting).of_type(:boolean) }
   it { is_expected.to belong_to(:submission).class_name('Submission') }
   it { is_expected.to belong_to(:committee_role).class_name('CommitteeRole') }
+
+  describe 'defaults' do
+    let(:cm) { described_class.new }
+
+    it 'has is_voting defaulted to false' do
+      expect(cm.is_voting).to eq false
+    end
+
+    it 'has status defaulted to ""' do
+      expect(cm.status).to eq ""
+    end
+  end
 
   describe 'validates' do
     let(:submission) { FactoryBot.create(:submission) }
@@ -106,6 +119,17 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.approval_started_at).to be_truthy
         expect(cm.approved_at).to be_nil
         expect(cm.rejected_at).to be_nil
+      end
+    end
+  end
+
+  describe 'email' do
+    let(:cm) { described_class.new }
+
+    context 'when email is a psu email' do
+      it 'updates access_id' do
+        cm.update_attributes email: 'test123@psu.edu'
+        expect(cm.access_id).to eq 'test123'
       end
     end
   end

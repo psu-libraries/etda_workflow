@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApprovalStatus
-  attr_reader :current_submission
+  attr_reader :current_submission, :voting_committee_members, :approval_configuration
 
   WORKFLOW_STATUS =
     [
@@ -13,6 +13,8 @@ class ApprovalStatus
 
   def initialize(submission)
     @current_submission = submission
+    @voting_committee_members = submission.voting_committee_members
+    @approval_configuration = submission.degree.degree_type.approval_configuration
   end
 
   def status
@@ -22,15 +24,15 @@ class ApprovalStatus
   private
 
   def none
-    return 'none' if current_submission.committee_members.count.zero?
+    return 'none' if voting_committee_members.count.zero?
   end
 
   def approved
-    return 'approved' unless (current_submission.committee_members.collect { |m| m.status == 'approved' }).count(false) > rejections_permitted
+    return 'approved' unless (voting_committee_members.collect { |m| m.status == 'approved' }).count(false) > rejections_permitted
   end
 
   def rejected
-    return 'rejected' if (current_submission.committee_members.collect { |m| m.status == 'rejected' }).count(true) > rejections_permitted
+    return 'rejected' if (voting_committee_members.collect { |m| m.status == 'rejected' }).count(true) > rejections_permitted
   end
 
   def pending
@@ -38,6 +40,10 @@ class ApprovalStatus
   end
 
   def rejections_permitted
-    current_submission.degree.degree_type.approval_configuration.rejections_permitted
+    if approval_configuration.use_percentage == false
+      approval_configuration.rejections_permitted
+    else
+      voting_committee_members.count - (voting_committee_members.count.to_f * (approval_configuration.percentage_for_approval.to_f / 100)).round
+    end
   end
 end

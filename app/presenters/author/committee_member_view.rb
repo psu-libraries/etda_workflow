@@ -9,6 +9,10 @@ class Author::CommitteeMemberView
     model.is_required
   end
 
+  def head_of_program?
+    role == 'Head/Chair of Graduate Program'
+  end
+
   def name_label
     return "Name" unless required?
 
@@ -27,5 +31,9 @@ class Author::CommitteeMemberView
 
   def possible_roles
     model.submission.degree_type.try(&:committee_roles).order('name asc') || []
+  end
+
+  def possible_additional_roles
+    model.submission.degree_type.try(&:committee_roles).where.not(name: 'Head/Chair of Graduate Program').order('name asc') || []
   end
 end

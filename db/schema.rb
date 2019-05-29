@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190515141200) do
+ActiveRecord::Schema.define(version: 20190528162042) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "access_id", default: "", null: false
@@ -41,6 +41,8 @@ ActiveRecord::Schema.define(version: 20190515141200) do
     t.datetime "updated_at", null: false
     t.boolean "email_admins"
     t.boolean "email_authors"
+    t.decimal "percentage_for_approval", precision: 10
+    t.boolean "use_percentage"
     t.index ["degree_type_id"], name: "degree_type_id_fk"
   end
 
@@ -107,8 +109,9 @@ ActiveRecord::Schema.define(version: 20190515141200) do
     t.datetime "last_notified_at"
     t.string "last_notified_type"
     t.text "notes"
-    t.string "status"
+    t.string "status", default: ""
     t.datetime "last_reminder_at"
+    t.boolean "is_voting", default: false
     t.boolean "federal_funding_used"
     t.index ["committee_role_id"], name: "committee_members_committee_role_id_fk"
     t.index ["submission_id"], name: "committee_members_submission_id_fk"
@@ -251,6 +254,8 @@ ActiveRecord::Schema.define(version: 20190515141200) do
     t.datetime "updated_at", null: false
     t.datetime "committee_review_accepted_at"
     t.datetime "committee_review_rejected_at"
+    t.datetime "head_of_program_review_accepted_at"
+    t.datetime "head_of_program_review_rejected_at"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"
