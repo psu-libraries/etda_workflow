@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190528162042) do
+ActiveRecord::Schema.define(version: 20190529192549) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "access_id", default: "", null: false
@@ -33,20 +33,19 @@ ActiveRecord::Schema.define(version: 20190528162042) do
     t.index ["access_id"], name: "index_admins_on_access_id", unique: true
   end
 
-  create_table "approval_configurations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "approval_configurations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.bigint "degree_type_id"
     t.date "approval_deadline_on"
-    t.integer "rejections_permitted"
+    t.integer "configuration_threshold"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "email_admins"
     t.boolean "email_authors"
-    t.decimal "percentage_for_approval", precision: 10
     t.boolean "use_percentage"
     t.index ["degree_type_id"], name: "degree_type_id_fk"
   end
 
-  create_table "approvers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "approvers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string "access_id", default: "", null: false
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false

@@ -41,9 +41,9 @@ class ApprovalStatus
 
   def rejections_permitted
     if approval_configuration.use_percentage == false
-      approval_configuration.rejections_permitted
+      approval_configuration.configuration_threshold
     else
-      voting_committee_members.count - (voting_committee_members.count.to_f * (approval_configuration.percentage_for_approval.to_f / 100)).round
+      voting_committee_members.count - (voting_committee_members.count.to_f * (approval_configuration.configuration_threshold.to_f / 100)).round
     end
   end
 end
