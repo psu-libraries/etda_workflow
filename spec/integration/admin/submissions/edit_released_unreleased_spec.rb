@@ -3,7 +3,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
 
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
-  let!(:role) { CommitteeRole.first }
+  let!(:role) { CommitteeRole.second }
   let!(:author) { FactoryBot.create(:author, :no_lionpath_record) }
   let(:submission) { FactoryBot.create(:submission, :released_for_publication, author: author) }
   let(:committee) { create_committee(submission) }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190502171818) do
+ActiveRecord::Schema.define(version: 20190529192549) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "access_id", default: "", null: false
@@ -36,11 +36,12 @@ ActiveRecord::Schema.define(version: 20190502171818) do
   create_table "approval_configurations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.bigint "degree_type_id"
     t.date "approval_deadline_on"
-    t.integer "rejections_permitted"
+    t.integer "configuration_threshold"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "email_admins"
     t.boolean "email_authors"
+    t.boolean "use_percentage"
     t.index ["degree_type_id"], name: "degree_type_id_fk"
   end
 
@@ -107,9 +108,10 @@ ActiveRecord::Schema.define(version: 20190502171818) do
     t.datetime "last_notified_at"
     t.string "last_notified_type"
     t.text "notes"
-    t.string "status"
+    t.string "status", default: ""
     t.datetime "last_reminder_at"
     t.boolean "is_voting", default: false
+    t.boolean "federal_funding_used"
     t.index ["committee_role_id"], name: "committee_members_committee_role_id_fk"
     t.index ["submission_id"], name: "committee_members_submission_id_fk"
   end

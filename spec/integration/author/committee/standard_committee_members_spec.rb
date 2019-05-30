@@ -45,6 +45,9 @@ RSpec.describe 'The standard committee form for authors', js: true do
     describe "save and return to dashboard" do
       it "saves the committee" do
         expect(submission.committee_members.empty?).to eq(true)
+        expect(page).to have_content('Head/Chair of Graduate Program') if current_partner.graduate?
+        expect(page).not_to have_content('Head/Chair of Graduate Program') unless current_partner.graduate?
+        expect(page).to have_link('Graduate Program Search') if current_partner.graduate?
         expect(page).to have_link('Add Committee Member')
         # visit new_author_submission_committee_members_path(submission)
         @email_list = []
@@ -60,8 +63,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
         assert_equal submission.committee_email_list, @email_list
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count)
         expect(submission.committee_members.first.access_id).to eq('name_0')
-        expect(submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Committee Member').id).is_voting).to eq(true)
-        expect(submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Head/Chair of Graduate Program').id).is_voting).to eq(false)
+        expect(submission.committee_members.where(is_required: true).where.not(committee_role: CommitteeRole.find_by(name: 'Head/Chair of Graduate Program')).first.is_voting).to eq(true)
+        expect(submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Head/Chair of Graduate Program').id).is_voting).to eq(false) if current_partner.graduate?
         visit author_submission_committee_members_path(submission)
         submission.required_committee_roles.count.times do |i|
           # expect(page).to have_content role.name
@@ -93,11 +96,15 @@ RSpec.describe 'The standard committee form for authors', js: true do
         fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last
         last_role = submission.required_committee_roles.last.name
         within fields_for_last_committee_member do
+          expect(page).to have_content('Is voting on approval')
+          expect { select 'Head/Chair of Graduate Program', from: 'Committee role' }.to raise_error Capybara::ElementNotFound if current_partner.graduate?
           select last_role, from: 'Committee role'
           fill_in "Name", with: "Extra Member"
           fill_in "Email", with: "extra_member@example.com"
+          find_field('Yes', with: 'true').click
         end
-        click_button 'Save and Return to Dashboard'
+        expect { click_button 'Save and Return to Dashboard' }.to change { submission.committee_members.count }.by 1
+        expect(submission.committee_members.last.is_voting).to eq(true)
         # expect(page).to have_content('successfully')
       end
 
@@ -113,26 +120,23 @@ RSpec.describe 'The standard committee form for authors', js: true do
       end
     end
 
-    describe "Remove an optional committee member for honors college authors", js: true do
+    describe "Remove an optional committee member", js: true do
       before do
         submission.committee_members = []
-        submission.status = 'collecting committee'
+        submission.status = 'collecting format review files'
         roles = CommitteeRole.all
         submission.required_committee_roles.count.times do |i|
-          submission.committee_members << FactoryBot.create(:committee_member, name: "Name_#{i}", email: "name_#{i}_@example.com", is_required: false, committee_role_id: roles[i].id)
+          submission.committee_members << FactoryBot.create(:committee_member, name: "Name_#{i}", email: "name_#{i}_@example.com", is_required: true, committee_role_id: roles[i].id)
         end
         submission.committee_members << FactoryBot.create(:committee_member, name: 'I am Special', email: 'special@psu.edu', is_required: false, committee_role_id: CommitteeRole.where(num_required: 0).first.id)
         submission.save!
-        visit new_author_submission_committee_members_path(submission)
+        visit edit_author_submission_committee_members_path(submission)
       end
 
-      let(:last_remove_link) { all(".committee_remove a href").last }
-
       # PROBLEM FINDING THE RemoveLINK
-      xit "can delete an optional committee member" do
-        remove_link = all(".committee_remove a href").last
+      it "can delete an optional committee member" do
         expect(page).to have_field('Name', with: 'I am Special')
-        remove_link.click
+        click_link "Remove Committee Member"
         sleep(2)
         click_button 'Save and Continue Editing'
         # expect(page).to have_content('successfully')

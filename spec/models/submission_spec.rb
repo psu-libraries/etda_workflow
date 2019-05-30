@@ -233,9 +233,10 @@ RSpec.describe Submission, type: :model do
         submission.build_committee_members_for_partners
         submission.committee_members.each_with_index do |cm, index|
           next if index == 0
+
           cm.is_voting = true
         end
-        expect(submission.voting_committee_members).to eq(submission.voting_committee_members.collect{ |cm| cm if cm.is_voting }.compact)
+        expect(submission.voting_committee_members).to eq(submission.voting_committee_members.collect { |cm| cm if cm.is_voting }.compact)
       end
     end
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Approver::ApproversController < ApproverController
-  before_action :verify_approver
+  before_action :verify_approver, except: :download_final_submission
   include ActionView::Helpers::UrlHelper
 
   def edit
@@ -33,19 +33,30 @@ class Approver::ApproversController < ApproverController
 
   def verify_approver
     @committee_member = CommitteeMember.find(params[:id])
+    @submission = @committee_member.submission
     redirect_to '/404' if @approver.nil? || current_approver.nil?
-    redirect_to '/401' unless @approver_ability.can? :edit, @committee_member
+    # TODO: redirect to page indicating review is complete, if beyond_waiting_for_committee_review
+    redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member) && @submission.status_behavior.waiting_for_committee_review?
   end
 
   def download_final_submission
     file = FinalSubmissionFile.find(params[:id])
-    send_file file.current_location, disposition: :inline
+    if file.submission.committee_members.pluck(:access_id).include? current_approver.access_id
+      send_file file.current_location, disposition: :inline
+    else
+      redirect_to '/401'
+    end
+  end
+
+  def committee_reviews
+    @committee_member = CommitteeMember.find(params[:id])
+    @submission = @committee_member.submission
   end
 
   private
 
   def committee_member_params
-    params.require(:committee_member).permit(:notes, :status)
+    params.require(:committee_member).permit(:notes, :status, :federal_funding_used)
   end
 
   def most_relevant_file_links

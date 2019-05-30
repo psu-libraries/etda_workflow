@@ -1,5 +1,9 @@
-class CreateStudentSubmissions < ActiveRecord::Migration[5.1]
+class CreateStudentSubmissionsWithDrop < ActiveRecord::Migration[5.1]
   def change
+    execute <<-SQL
+      drop view if exists `student_submissions`
+    SQL
+
     execute <<-SQL
       CREATE VIEW `student_submissions` AS
       SELECT

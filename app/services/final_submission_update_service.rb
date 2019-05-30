@@ -4,16 +4,18 @@ class FinalSubmissionUpdateService
   attr_accessor :params
   attr_accessor :submission
   attr_accessor :update_actions
+  attr_accessor :current_remote_user
 
-  def initialize(params, submission)
+  def initialize(params, submission, current_remote_user)
     @submission = submission
     @submission.author_edit = false
     @params = params
     @update_actions = SubmissionUpdateActions.new(params)
+    @current_remote_user = current_remote_user
   end
 
   def update_record
-    submission.update_attributes! final_submission_params
+    UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
     { msg: "The submission was successfully updated.", redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
   end
 
@@ -34,11 +36,11 @@ class FinalSubmissionUpdateService
     if update_actions.approved?
       submission.update_attribute :final_submission_approved_at, Time.zone.now
       status_giver.waiting_for_publication_release!
-      submission.update_attributes! final_submission_params
+      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       deliver_final_emails
       msg = "The submission\'s final submission information was successfully approved."
     elsif update_actions.rejected?
-      submission.update_attributes! final_submission_params
+      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       submission.has_agreed_to_publication_release = false
       submission.publication_release_terms_agreed_to_at = nil
       submission.has_agreed_to_terms = false
@@ -48,7 +50,7 @@ class FinalSubmissionUpdateService
       msg = "The submission\'s final submission information was successfully rejected and returned to the author for revision."
     end
     if update_actions.record_updated?
-      submission.update_attributes! final_submission_params
+      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       msg += " Final submission information was successfully edited by an administrator"
     end
     OutboundLionPathRecord.new(submission: submission).report_status_change if update_actions.approved? || update_actions.rejected?
@@ -59,7 +61,7 @@ class FinalSubmissionUpdateService
   def respond_waiting_to_be_released
     if update_actions.record_updated?
       # Editing a submission that is waiting to be released for publication
-      submission.update_attributes! final_submission_params
+      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       { msg: 'The submission was successfully updated.', redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
     elsif update_actions.rejected?
       # Move back to Waiting for final submission approval (final submission submitted)
@@ -71,7 +73,7 @@ class FinalSubmissionUpdateService
       # submission.update_attributes! final_submission_params
       submission.final_submission_approved_at = nil
       submission.final_submission_rejected_at = nil
-      submission.update_attributes! final_submission_params
+      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       { msg: 'Submission was removed from waiting to be released', redirect_path: Rails.application.routes.url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_approved') }
     end
   end
@@ -79,7 +81,7 @@ class FinalSubmissionUpdateService
   def respond_released_submission
     if update_actions.record_updated?
       message = 'The submission was successfully updated.'
-      submission.update_attributes!(final_submission_params)
+      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       update_service = UpdateSubmissionService.new
       update_service.send_email(submission)
       update_results = update_service.solr_delta_update(submission)
@@ -93,7 +95,7 @@ class FinalSubmissionUpdateService
       original_final_files = submission_release_service.final_files_for_submission(submission)
       file_verification_results = submission_release_service.file_verification(original_final_files)
       # return unless file_verification_results
-      submission.update_attributes final_submission_params
+      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       # status_giver.unreleased_for_publication!
       submission.update_attributes(released_for_publication_at: nil, released_metadata_at: nil, status: 'waiting for publication release')
       SubmissionReleaseService.new.unpublish(original_final_files) if file_verification_results[:valid]
@@ -141,7 +143,7 @@ class FinalSubmissionUpdateService
       :has_agreed_to_publication_release,
       :lion_path_degree_code,
       :restricted_notes,
-      committee_members_attributes: [:id, :committee_role_id, :name, :email, :status, :notes, :is_required, :_destroy],
+      committee_members_attributes: [:id, :committee_role_id, :name, :email, :status, :notes, :is_required, :is_voting, :_destroy],
       format_review_files_attributes: [:asset, :asset_cache, :id, :_destroy],
       final_submission_files_attributes: [:asset, :asset_cache, :id, :_destroy],
       keywords_attributes: [:word, :id, :_destroy],

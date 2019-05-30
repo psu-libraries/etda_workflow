@@ -10,24 +10,28 @@ class CommitteeRole < ApplicationRecord
     { name: 'Committee Chair',     num_required: 1, is_active: true },
     { name: 'Committee Member',    num_required: 2, is_active: true },
     { name: 'Outside Member',      num_required: 1, is_active: true },
-    { name: 'Special Member',      num_required: 0, is_active: true }
+    { name: 'Special Member', num_required: 0, is_active: true },
+    { name: 'Special Signatory', num_required: 0, is_active: true }
   ],
                      'master_thesis' => [
                        { name: 'Head/Chair of Graduate Program', num_required: 1, is_active: true },
                        { name: 'Thesis Advisor', num_required: 1, is_active: true },
-                       { name: 'Committee Member', num_required: 0, is_active: true }
+                       { name: 'Committee Member', num_required: 0, is_active: true },
+                       { name: 'Special Signatory', num_required: 0, is_active: true }
                      ] }.freeze
 
   HONORS_ROLES = { 'thesis' => [
     { name: 'Thesis Supervisor',       num_required: 1, is_active: true },
     { name: 'Honors Advisor',          num_required: 1, is_active: true },
-    { name: 'Faculty Reader',          num_required: 0, is_active: true }
+    { name: 'Faculty Reader',          num_required: 0, is_active: true },
+    { name: 'Special Signatory', num_required: 0, is_active: true }
   ] }.freeze
 
   MILSCH_ROLES = { 'thesis' => [
     { name: 'Thesis Supervisor', num_required: 1, is_active: true },
     { name: 'Advisor',           num_required: 0, is_active: true },
-    { name: 'Honors Advisor',    num_required: 0, is_active: true }
+    { name: 'Honors Advisor',    num_required: 0, is_active: true },
+    { name: 'Special Signatory', num_required: 0, is_active: true }
   ] }.freeze
 
   ROLES = { 'graduate' => CommitteeRole::GRADUATE_ROLES, 'honors' => CommitteeRole::HONORS_ROLES, 'milsch' => CommitteeRole::MILSCH_ROLES }.freeze

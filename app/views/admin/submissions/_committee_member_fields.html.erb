@@ -1,8 +1,14 @@
 <div class="nested-fields admin panel panel-default">
   <div class="row committee-role">
-    <div class="col-sm-6">
-        <%= f.association :committee_role, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || [] , input_html: {class: 'role'} %>
-    </div>
+    <% if f.object.is_required == true && f.object.committee_role.name == 'Head/Chair of Graduate Program' %>
+      <div class="col-sm-6">
+        <%= f.association :committee_role, disabled: true %>
+      </div>
+    <% else %>
+      <div class="col-sm-6">
+        <%= f.association :committee_role, collection: @submission.degree_type.try(&:committee_roles).where.not(name: 'Head/Chair of Graduate Program').order('name asc') || [] , input_html: {class: 'role'} %>
+      </div>
+    <% end %>
     <div class="col-sm-4">
         <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger'%>
     </div>
@@ -20,10 +26,23 @@
       <%= f.input :status, collection: CommitteeMember::STATUS, include_blank: true %>
     </div>
     <div class="col-sm-4">
-      <%= f.input :notes %>
+      <%= f.input :notes, label: "Notes for Student (optional)" %>
     </div>
+    <% if SubmissionStatus.new(@submission).waiting_for_committee_review? %>
+      <div class="col-sm-4">
+        <button type="button" id="send_email_reminder" value="<%= f.object.id.to_s %>">Send Email Reminder</button>
+      </div>
+    <% end %>
     <div class="col-sm-4">
-      <%= link_to "Send Email Reminder" %>
+      <%= f.input :federal_funding_used if current_partner.graduate? %>
     </div>
+  </div>
+  <div class="row">
+    <% unless f.object.is_required == true && f.object.committee_role.name == 'Head/Chair of Graduate Program'  %>
+      <div class="col-sm-4">
+        <%= f.label "Is voting on approval" %>
+        <%= f.input :is_voting, as: :radio_buttons, label: false %>
+      </div>
+    <% end %>
   </div>
 </div>

@@ -41,6 +41,7 @@ set :passenger_roles, :web
 
 # rails settings, NOTE: Task is wired into event stack
 set :rails_env, 'production'
+# Variable added after webpack/yarn started to fail on workflow prod/stage but not other hosts.  Worked for first partner on deploy but hung on others.  Once added everything worked.
 set :default_env, { 'NODE_ENV' => 'production' }
 
 # Settings for whenever gem that updates the crontab file on the server
@@ -116,6 +117,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
   'public/packs',
   'node_modules'
 )
+# packs and modules added because of deployment issue.  Worked for first partner on deploy but hung on others.  Once added everything worked.
 
 namespace :deploy do
   task :symlink_shared do
@@ -142,6 +144,21 @@ namespace :deploy do
   # before "deploy:migrate", "deploy:symlink_shared"
 
   after "deploy:updated", "deploy:migrate"
+
+# Placeholder for possible fix.
+# Worked for first partner on deploy but hung on others.  Once added everything worked but alternative solutions already existed.  
+#    before "deploy:assets:precompile", "deploy:yarn_install"
+#    namespace :deploy do
+#      desc 'Run rake yarn:install'
+#      task :yarn_install do
+#        on roles(:web) do
+#          within release_path do
+#            execute("cd #{release_path} && yarn install")
+#          end
+#        end
+#      end
+#    end
+
 end
 
 # Used to keep x-1 instances of ruby on a machine.  Ex +4 leaves 3 versions on a machine.  +3 leaves 2 versions
