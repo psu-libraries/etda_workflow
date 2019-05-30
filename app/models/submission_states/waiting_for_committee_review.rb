@@ -6,7 +6,7 @@ module SubmissionStates
 
     def initialize
       if current_partner.graduate?
-        @transitions_to = [SubmissionStates::WaitingForHeadOfProgramReview]
+        @transitions_to = [SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected]
       else
         @transitions_to = [SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForCommitteeReviewRejected]
       end

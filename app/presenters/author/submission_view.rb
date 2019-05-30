@@ -158,6 +158,8 @@ class Author::SubmissionView < SimpleDelegator
   def step_six_class
     if status_behavior.waiting_for_committee_review?
       'current'
+    elsif status_behavior.waiting_for_head_of_program_review?
+      'current'
     elsif status_behavior.beyond_waiting_for_committee_review?
       'complete'
     else
@@ -173,6 +175,8 @@ class Author::SubmissionView < SimpleDelegator
       # status[:text] = "approved#{formatted_timestamp_of(final_submission_approved_at)}"
       status[:partial_name] = '/author/shared/completed_indicator'
     elsif status_behavior.waiting_for_committee_review?
+      status[:partial_name] = '/author/shared/waiting_indicator'
+    elsif status_behavior.waiting_for_head_of_program_review?
       status[:partial_name] = '/author/shared/waiting_indicator'
     end
     status
