@@ -17,14 +17,14 @@ class Admin::SubmissionsController < AdminController
 
   def update
     @submission = Submission.find(params[:id])
-    if @submission.status_behavior.beyond_collecting_format_review_files? && status != 'format review completed'
+    if @submission.status_behavior.beyond_collecting_format_review_files? && @submission.status != 'format review completed'
       submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     else
       submission_update_service = FormatReviewUpdateService.new(params, @submission, current_remote_user)
     end
     response = submission_update_service.update_record
-    @submission.update_status_from_committee
-    @submission.update_status_from_head_of_program if current_partner.graduate?
+    @submission.update_status_from_committee if @submission.status == 'waiting for committee review'
+    @submission.update_status_from_head_of_program if current_partner.graduate? && @submission.status == 'waiting for head of program review'
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
   rescue ActiveRecord::RecordInvalid

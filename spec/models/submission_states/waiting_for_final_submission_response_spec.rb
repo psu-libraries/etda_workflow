@@ -46,7 +46,8 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
     context 'when submission status WaitingForCommitteeReview' do
       let(:status) { SubmissionStates::WaitingForCommitteeReview.name }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be_truthy } unless current_partner.graduate?
+      it { is_expected.to be_falsey } if current_partner.graduate?
     end
 
     context 'when submission status CollectingFinalSubmissionFiles' do

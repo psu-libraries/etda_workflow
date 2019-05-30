@@ -99,7 +99,7 @@ class Submission < ApplicationRecord
   scope :format_review_is_submitted, -> { where(status: 'waiting for format review response') }
   scope :format_review_is_completed, -> { where('status = ? OR status = ?', "collecting final submission files", "format review is accepted").where(final_submission_rejected_at: nil) }
 
-  scope :final_submission_is_pending, -> { where(status: 'waiting for committee review') }
+  scope :final_submission_is_pending, -> { where(status: ['waiting for committee review', 'waiting for head of program review']) }
   scope :committee_review_is_rejected, -> { where(status: 'waiting for committee review rejected') }
   scope :final_submission_is_incomplete, -> { where('status LIKE "collecting final submission files%" OR status = "waiting for committee review rejected"').where.not(final_submission_rejected_at: nil) }
   scope :final_submission_is_submitted, -> { where(status: 'waiting for final submission response') }
@@ -120,7 +120,7 @@ class Submission < ApplicationRecord
       if current_partner.graduate?
         status_giver.can_waiting_for_head_of_program_review?
         status_giver.waiting_for_head_of_program_review!
-        WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(self.id).id)
+        WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id))
       else
         status_giver.can_waiting_for_final_submission?
         status_giver.waiting_for_final_submission_response!

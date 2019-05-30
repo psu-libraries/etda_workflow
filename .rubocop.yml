@@ -70,6 +70,7 @@ Metrics/ClassLength:
   - app/models/legacy/file_importer.rb
   - app/models/ldap_result.rb
   - app/services/submission_release_service.rb
+  - app/models/submission_status.rb
 
 
 Metrics/CyclomaticComplexity:

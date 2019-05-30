@@ -5,11 +5,8 @@ module SubmissionStates
     @name = 'waiting for committee review'
 
     def initialize
-      if current_partner.graduate?
-        @transitions_to = [SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected]
-      else
-        @transitions_to = [SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForCommitteeReviewRejected]
-      end
+      @transitions_to = [SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected] if current_partner.graduate?
+      @transitions_to = [SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForCommitteeReviewRejected] unless current_partner.graduate?
     end
 
     def status_date(submission)

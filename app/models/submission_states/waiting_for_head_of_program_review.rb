@@ -2,7 +2,7 @@
 
 module SubmissionStates
   class WaitingForHeadOfProgramReview < SubmissionState
-    @name = 'waiting for committee review'
+    @name = 'waiting for head of program review'
 
     def initialize
       @transitions_to = [SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForCommitteeReviewRejected]
