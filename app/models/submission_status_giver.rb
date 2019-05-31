@@ -26,12 +26,12 @@ class SubmissionStatusGiver
   end
 
   def can_review_program_information?
-    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFormatReviewFilesRejected]
+    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFormatReviewFilesRejected]
   end
 
   def can_create_or_edit_committee?
     validate_current_state! [SubmissionStates::CollectingCommittee, SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::CollectingFormatReviewFilesRejected,
-                             SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::CollectingFinalSubmissionFilesRejected]
+                             SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::CollectingFinalSubmissionFilesRejected]
   end
 
   def can_review_committee?
@@ -40,7 +40,7 @@ class SubmissionStatusGiver
   end
 
   def can_review_format_review_files?
-    validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFinalSubmissionFilesRejected]
+    validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFinalSubmissionFilesRejected]
   end
 
   def can_upload_final_submission_files?

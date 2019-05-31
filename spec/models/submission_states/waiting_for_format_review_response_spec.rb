@@ -18,6 +18,7 @@ RSpec.describe SubmissionStates::WaitingForFormatReviewResponse do
       expect(described_class.new).not_to be_valid_state_change(described_class)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::ReleasedForPublicationMetadataOnly)
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForHeadOfProgramReview)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::Bogus)
     end
   end

@@ -16,6 +16,7 @@ RSpec.describe SubmissionStates::WaitingForPublicationRelease do
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFiles)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFilesRejected)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingProgramInformation)
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForHeadOfProgramReview)
       expect(described_class.new).not_to be_valid_state_change(described_class)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::Bogus)
     end

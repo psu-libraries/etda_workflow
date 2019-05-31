@@ -44,6 +44,8 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:lion_path_degree_code).of_type(:string) }
   it { is_expected.to have_db_column(:restricted_notes).of_type(:text) }
   it { is_expected.to have_db_column(:publication_release_terms_agreed_to_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:head_of_program_review_accepted_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:head_of_program_review_rejected_at).of_type(:datetime) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
