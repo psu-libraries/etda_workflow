@@ -5,6 +5,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
   let(:approval_configuration) { FactoryBot.create :approval_configuration }
   let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor" }
+  let(:committee_role_not_advisor) { FactoryBot.create :committee_role, name: "Just Normal Member" }
 
   before do
     submission.final_submission_files << final_submission_file
@@ -75,19 +76,18 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
   context 'approver is advisor and part of graduate school' do
     let(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'testuser' }
-
     before do
       visit "approver/committee_member/#{committee_member.id}"
     end
 
     it 'asks about federal funding used' do
-      expect(page).to have_content('Were Federal Funds utilized for this submission?')
+      expect(page).to have_content('Were Federal Funds utilized for this submission?') if current_partner.graduate?
     end
   end
 
   context 'approver is not advisor' do
     it 'asks about federal funding used' do
-      committee_member = FactoryBot.create :committee_member, submission: submission, access_id: 'testuser'
+      committee_member = FactoryBot.create :committee_member, committee_role: committee_role_not_advisor, submission: submission, access_id: 'testuser'
 
       visit "approver/committee_member/#{committee_member.id}"
       expect(page).not_to have_content('Were Federal Funds utilized for this submission?')
