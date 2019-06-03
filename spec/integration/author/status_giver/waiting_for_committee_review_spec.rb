@@ -8,7 +8,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
     end
 
     let!(:author) { current_author }
-    let!(:approver)  { current_approver }
+    let!(:approver) { current_approver }
     let!(:degree) { FactoryBot.create :degree }
     let!(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, author: author, degree: degree }
     let!(:committee_member) { FactoryBot.create :committee_member, submission: submission, access_id: 'approverflow' }
