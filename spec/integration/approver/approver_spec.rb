@@ -76,6 +76,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
   context 'approver is advisor and part of graduate school' do
     let(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'testuser' }
+
     before do
       visit "approver/committee_member/#{committee_member.id}"
     end
