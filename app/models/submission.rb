@@ -113,33 +113,11 @@ class Submission < ApplicationRecord
     self.status = 'collecting program information' if new_record? && status.nil?
   end
 
-  def update_status_from_committee
-    submission_status = ApprovalStatus.new(self).status
-    status_giver = SubmissionStatusGiver.new(self)
-    if submission_status == 'approved'
-      if current_partner.graduate?
-        status_giver.can_waiting_for_head_of_program_review?
-        status_giver.waiting_for_head_of_program_review!
-        WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id))
-      else
-        status_giver.can_waiting_for_final_submission?
-        status_giver.waiting_for_final_submission_response!
-      end
-    elsif submission_status == 'rejected'
-      status_giver.can_waiting_for_committee_review_rejected?
-      status_giver.waiting_for_committee_review_rejected!
-    end
-  end
-
-  def update_status_from_head_of_program
-    submission_head_of_program_status = ApprovalStatus.new(self).head_of_program_status
-    status_giver = SubmissionStatusGiver.new(self)
-    if submission_head_of_program_status == 'approved'
-      status_giver.can_waiting_for_final_submission?
-      status_giver.waiting_for_final_submission_response!
-    elsif submission_head_of_program_status == 'rejected'
-      status_giver.can_waiting_for_committee_review_rejected?
-      status_giver.waiting_for_committee_review_rejected!
+  def update_approval_status
+    if status == 'waiting for committee review'
+      update_status_from_committee
+    elsif status == 'waiting for head of program review'
+      update_status_from_head_of_program
     end
   end
 
@@ -353,6 +331,40 @@ class Submission < ApplicationRecord
       false
     else
       true
+    end
+  end
+
+  def update_status_from_committee
+    submission_status = ApprovalStatus.new(self).status
+    status_giver = SubmissionStatusGiver.new(self)
+    if submission_status == 'approved'
+      if current_partner.graduate?
+        status_giver.can_waiting_for_head_of_program_review?
+        status_giver.waiting_for_head_of_program_review!
+        WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id))
+      else
+        status_giver.can_waiting_for_final_submission?
+        status_giver.waiting_for_final_submission_response!
+        update_attribute(:committee_review_accepted_at, DateTime.now)
+      end
+    elsif submission_status == 'rejected'
+      status_giver.can_waiting_for_committee_review_rejected?
+      status_giver.waiting_for_committee_review_rejected!
+      update_attribute(:committee_review_rejected_at, DateTime.now)
+    end
+  end
+
+  def update_status_from_head_of_program
+    submission_head_of_program_status = ApprovalStatus.new(self).head_of_program_status
+    status_giver = SubmissionStatusGiver.new(self)
+    if submission_head_of_program_status == 'approved'
+      status_giver.can_waiting_for_final_submission?
+      status_giver.waiting_for_final_submission_response!
+      update_attribute(:committee_review_accepted_at, DateTime.now)
+    elsif submission_head_of_program_status == 'rejected'
+      status_giver.can_waiting_for_committee_review_rejected?
+      status_giver.waiting_for_committee_review_rejected!
+      update_attribute(:committee_review_rejected_at, DateTime.now)
     end
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Approver::ApproversController < ApproverController
-  before_action :verify_approver, except: :download_final_submission
+  before_action :verify_approver, except: [:download_final_submission, :update]
   include ActionView::Helpers::UrlHelper
 
   def edit
@@ -19,8 +19,7 @@ class Approver::ApproversController < ApproverController
       return redirect_to(approver_path(params[:id]))
     end
     @committee_member.update_attributes!(committee_member_params)
-    @submission.update_status_from_committee
-    @submission.update_status_from_head_of_program if current_partner.graduate? && CommitteeMember.head_of_program(@submission.id) == @committee_member
+    @submission.update_approval_status
     redirect_to main_page_path
     flash[:notice] = 'Review submitted successfully'
   rescue ActiveRecord::RecordInvalid
@@ -32,7 +31,7 @@ class Approver::ApproversController < ApproverController
     @submission = @committee_member.submission
     redirect_to '/404' if @approver.nil? || current_approver.nil?
     # TODO: redirect to page indicating review is complete, if beyond_waiting_for_committee_review
-    redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member) && @submission.status_behavior.waiting_for_committee_review?
+    redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member) && (@submission.status_behavior.waiting_for_committee_review? || @submission.status_behavior.waiting_for_head_of_program_review?)
   end
 
   def download_final_submission
