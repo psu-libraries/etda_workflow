@@ -89,4 +89,9 @@ class CommitteeMember < ApplicationRecord
       self.approved_at = nil
     end
   end
+
+  def email=(new_email)
+    self[:email] = new_email
+    self.access_id = email.gsub('@psu.edu', '').strip if email.match?(/.*@psu.edu/)
+  end
 end

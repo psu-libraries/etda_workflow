@@ -1,10 +1,11 @@
 RSpec.describe 'Admin submission access_level', js: true do
   require 'integration/integration_spec_helper'
 
+  let(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response }
+  let(:committee_member1) { FactoryBot.create :committee_member, submission: submission, committee_role: CommitteeRole.first }
+  let(:committee_member2) { FactoryBot.create :committee_member, submission: submission, committee_role: CommitteeRole.second }
+
   before do
-    submission = FactoryBot.create :submission, :waiting_for_final_submission_response
-    committee_member1 = FactoryBot.create :committee_member, submission: submission
-    committee_member2 = FactoryBot.create :committee_member, submission: submission
     FactoryBot.create :format_review_file, submission: submission
     FactoryBot.create :final_submission_file, submission: submission
     submission.committee_members << committee_member1
@@ -12,6 +13,7 @@ RSpec.describe 'Admin submission access_level', js: true do
     submission.access_level = 'open_access'
     webaccess_authorize_admin
     visit admin_edit_submission_path(submission)
+    sleep 3
   end
 
   context 'admin users can choose the access level' do

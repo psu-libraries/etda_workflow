@@ -3,6 +3,7 @@ RSpec.describe Author::CommitteeMemberView do
   let(:view) { described_class.new(member) }
   let(:member) { FactoryBot.create :committee_member, committee_role: role }
   let(:role) { FactoryBot.create(:committee_role, name: 'My Role') }
+  let(:head_role) { FactoryBot.create(:committee_role, name: 'Head/Chair of Graduate Program') }
 
   describe '#role' do
     subject { view.role }
@@ -14,6 +15,40 @@ RSpec.describe Author::CommitteeMemberView do
     subject { view.possible_roles }
 
     it { is_expected.to eq([role]) }
+  end
+
+  describe '#possible_additional_roles' do
+    context 'when head of program' do
+      subject { view.possible_additional_roles }
+
+      let(:member) { FactoryBot.create :committee_member, :required, committee_role: head_role }
+
+      it { is_expected.to eq([]) }
+    end
+
+    context 'when not head of program' do
+      subject { view.possible_additional_roles }
+
+      it { is_expected.to eq([role]) }
+    end
+  end
+
+  describe '#head_of_program?' do
+    context 'when head of program' do
+      subject { view.head_of_program? }
+
+      let(:member) { FactoryBot.create :committee_member, :required, committee_role: head_role }
+
+      it { is_expected.to be_truthy }
+    end
+
+    context 'when not head of program' do
+      subject { view.head_of_program? }
+
+      let(:member) { FactoryBot.create :committee_member, :required, committee_role: role }
+
+      it { is_expected.to be_falsey }
+    end
   end
 
   context "required member" do

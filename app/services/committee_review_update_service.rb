@@ -4,16 +4,18 @@ class CommitteeReviewUpdateService
   attr_accessor :params
   attr_accessor :submission
   attr_accessor :update_actions
+  attr_accessor :current_remote_user
 
-  def initialize(params, submission)
+  def initialize(params, submission, current_remote_user)
     @submission = submission
     @submission.author_edit = false
     @params = params
     @update_actions = SubmissionUpdateActions.new(params)
+    @current_remote_user = current_remote_user
   end
 
   def update_record
-    submission.update_attributes! final_submission_params
+    UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
     { msg: "The submission was successfully updated.", redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
   end
 
