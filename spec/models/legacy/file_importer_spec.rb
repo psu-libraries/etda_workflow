@@ -3,7 +3,7 @@
 require 'model_spec_helper'
 
 RSpec.describe Legacy::FileImporter do
-  it 'imports final submission files' do
+  xit 'imports final submission files' do
     FileUtils.rm_rf Dir.glob(Rails.root.join('tmp', 'workflow', '*'))
     FileUtils.rm_rf Dir.glob(Rails.root.join('tmp', 'explore', '*'))
     file_importer = described_class.new
@@ -20,7 +20,7 @@ RSpec.describe Legacy::FileImporter do
     file_importer.copy_final_submission_files(Rails.root.join(base_path).to_s, true)
   end
 
-  it 'imports format review files' do
+  xit 'imports format review files' do
     FileUtils.rm_rf Dir.glob(Rails.root.join('tmp', 'workflow', '*'))
     file_importer = described_class.new
     base_path = Rails.root.join('spec/fixtures/legacy/').to_s

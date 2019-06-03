@@ -7,6 +7,8 @@ class Approver::ApproversController < ApproverController
   def edit
     @committee_member = CommitteeMember.find(params[:id])
     @submission = @committee_member.submission
+    @review_complete = SubmissionStatus.new(@submission).beyond_waiting_for_committee_review?
+    @approved = SubmissionStatus.new(@submission).beyond_waiting_for_committee_review_rejected?
     @author = @submission.author
     @most_relevant_file_links = most_relevant_file_links
   end
@@ -30,7 +32,6 @@ class Approver::ApproversController < ApproverController
     @committee_member = CommitteeMember.find(params[:id])
     @submission = @committee_member.submission
     redirect_to '/404' if @approver.nil? || current_approver.nil?
-    # TODO: redirect to page indicating review is complete, if beyond_waiting_for_committee_review
     redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member) && @submission.status_behavior.waiting_for_committee_review?
   end
 
@@ -43,10 +44,15 @@ class Approver::ApproversController < ApproverController
     end
   end
 
+  def committee_reviews
+    @committee_member = CommitteeMember.find(params[:id])
+    @submission = @committee_member.submission
+  end
+
   private
 
   def committee_member_params
-    params.require(:committee_member).permit(:notes, :status)
+    params.require(:committee_member).permit(:notes, :status, :federal_funding_used)
   end
 
   def most_relevant_file_links

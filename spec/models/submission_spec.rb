@@ -226,6 +226,20 @@ RSpec.describe Submission, type: :model do
       end
     end
 
+    context '#voting_committee_members' do
+      it 'returns a list of voting committee members' do
+        degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
+        submission = Submission.new(degree: degree)
+        submission.build_committee_members_for_partners
+        submission.committee_members.each_with_index do |cm, index|
+          next if index == 0
+
+          cm.is_voting = true
+        end
+        expect(submission.voting_committee_members).to eq(submission.voting_committee_members.collect { |cm| cm if cm.is_voting }.compact)
+      end
+    end
+
     context '#build_committee_members_for_partners' do
       it 'returns a list of required committee members' do
         degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')

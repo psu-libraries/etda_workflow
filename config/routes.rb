@@ -105,6 +105,7 @@ Rails.application.routes.draw do
   namespace :approver do
     get '/committee_member/:id', to: 'approvers#edit'
     patch '/committee_member/:id', to: 'approvers#update', as: :update_committee_member
+    get '/committee_member/:id/committee_reviews', to: 'approvers#committee_reviews', as: :committee_reviews
     get '/files/final_submissions/:id', to: 'approvers#download_final_submission', as: :approver_file
   end
 

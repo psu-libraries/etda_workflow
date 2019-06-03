@@ -680,6 +680,31 @@ a.cancel-link{
   }
 }
 
+.access-level-warning {
+  color: red;
+}
+
+.access-level-open {
+  color: green;
+}
+
+.committee_reviews {
+  padding-top: 20px;
+}
+
+.review-message {
+  width: 600px;
+}
+
+.review-complete {
+  color: green;
+}
+
+.altering-submission {
+  padding-top: 10px;
+  font-style: italic;
+}
+
 .status_select {
   width: 200px;
 }
@@ -687,4 +712,14 @@ a.cancel-link{
 .notes_select {
   width: 320px;
   min-height: 124px;
+}
+
+.submission_committee_members_federal_funding_used {
+  display: flex;
+}
+
+.funding-box {
+  div {
+    margin-left: 20px;
+  }
 }
