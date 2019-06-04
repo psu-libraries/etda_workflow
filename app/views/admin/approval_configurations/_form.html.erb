@@ -5,10 +5,25 @@
                 wrapper: :vertical_radio_and_checkboxes,
                 label: 'Committee approval method'.html_safe %>
     <%= f.input :configuration_threshold, required: true, label: "Rejections permitted*" %>
-    <%= f.input :email_admins, :as => :boolean, :label => false, :inline_label => true %>
-    <%= f.input :email_authors, :as => :boolean, :label => false, :inline_label => true %>
+    <%= f.input :head_of_program_is_approving, as: :radio_buttons,
+                collection: [['Yes', true], ['No', false]],
+                wrapper: :vertical_radio_and_checkboxes,
+                label: 'Require approval from head of graduate program after committee approval?'.html_safe %>
+  <hr>
+
+  <div class="row">
+    <div class="col-sm-2">
+      <%= f.input :email_admins, :as => :boolean, :label => false, :inline_label => true %>
+    </div>
+    <div class="col-sm-2">
+      <%= f.input :email_authors, :as => :boolean, :label => false, :inline_label => true %>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="form-group actions col-xs-4">
       <%= f.button :submit, 'Update Approval Configuration', class: 'btn btn-success' %>
       <%= link_to "Cancel", admin_approval_configurations_path, class: 'admin btn cancel-link' %>
     </div>
+  </div>
 <% end %>

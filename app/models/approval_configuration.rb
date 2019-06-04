@@ -3,14 +3,14 @@
 class ApprovalConfiguration < ApplicationRecord
   belongs_to :degree_type
 
-  validates :degree_type_id, :approval_deadline_on, :configuration_threshold, presence: true
+  validates :degree_type_id, :approval_deadline_on, :configuration_threshold, :head_of_program_is_approving, presence: true
 
-  GRADUATE_CONFIGURATION = { 'dissertation' => { approval_deadline_on: Date.today, rejections_permitted: 0, email_admins: 0, email_authors: 0, use_percentage: 0, percentage_for_approval: 100 },
-                             'master_thesis' => { approval_deadline_on: Date.today, rejections_permitted: 0, email_admins: 0, email_authors: 0, use_percentage: 0, percentage_for_approval: 100 } }.freeze
+  GRADUATE_CONFIGURATION = { 'dissertation' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 0, email_authors: 0, use_percentage: 0, head_of_program_is_approving: 1 },
+                             'master_thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 0, email_authors: 0, use_percentage: 0, head_of_program_is_approving: 1 } }.freeze
 
-  HONORS_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, rejections_permitted: 0, email_admins: 0, email_authors: 0, use_percentage: 0, percentage_for_approval: 100 } }.freeze
+  HONORS_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 0, email_authors: 0, use_percentage: 0, head_of_program_is_approving: 1 } }.freeze
 
-  MILSCH_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, rejections_permitted: 0, email_admins: 0, email_authors: 0, use_percentage: 0, percentage_for_approval: 100 } }.freeze
+  MILSCH_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 0, email_authors: 0, use_percentage: 0, head_of_program_is_approving: 1 } }.freeze
 
   CONFIGURATIONS = { 'graduate' => ApprovalConfiguration::GRADUATE_CONFIGURATION, 'honors' => ApprovalConfiguration::HONORS_CONFIGURATION, 'milsch' => ApprovalConfiguration::MILSCH_CONFIGURATION }.freeze
 
@@ -21,9 +21,10 @@ class ApprovalConfiguration < ApplicationRecord
 
       ApprovalConfiguration.create!(degree_type_id: dt[:id],
                                     approval_deadline_on: configuration[:approval_deadline_on],
-                                    rejections_permitted: configuration[:rejections_permitted],
+                                    rejections_permitted: configuration[:configuration_threshold],
                                     email_admins: configuration[:email_admins],
-                                    email_authors: configuration[:email_authors])
+                                    email_authors: configuration[:email_authors],
+                                    head_of_program_is_approving: configuration[:head_of_program_is_approving])
     end
   end
 end
