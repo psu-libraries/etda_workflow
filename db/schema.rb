@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190529192549) do
+ActiveRecord::Schema.define(version: 20190604191338) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "access_id", default: "", null: false
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20190529192549) do
     t.boolean "email_admins"
     t.boolean "email_authors"
     t.boolean "use_percentage"
+    t.boolean "head_of_program_is_approving"
     t.index ["degree_type_id"], name: "degree_type_id_fk"
   end
 
