@@ -23,7 +23,7 @@ class Admin::SubmissionsController < AdminController
       submission_update_service = FormatReviewUpdateService.new(params, @submission, current_remote_user)
     end
     response = submission_update_service.update_record
-    @submission.update_approval_status
+    @submission.update_status_from_committee
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
   rescue ActiveRecord::RecordInvalid

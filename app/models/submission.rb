@@ -113,9 +113,9 @@ class Submission < ApplicationRecord
     self.status = 'collecting program information' if new_record? && status.nil?
   end
 
-  def update_approval_status
+  def update_status_from_committee
     if status == 'waiting for committee review'
-      update_status_from_committee
+      update_status_from_base_committee
     elsif status == 'waiting for head of program review'
       update_status_from_head_of_program
     end
@@ -334,14 +334,14 @@ class Submission < ApplicationRecord
     end
   end
 
-  def update_status_from_committee
+  def update_status_from_base_committee
     submission_status = ApprovalStatus.new(self).status
     status_giver = SubmissionStatusGiver.new(self)
     if submission_status == 'approved'
       if current_partner.graduate?
         status_giver.can_waiting_for_head_of_program_review?
         status_giver.waiting_for_head_of_program_review!
-        WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id))
+        WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id)).deliver
       else
         status_giver.can_waiting_for_final_submission?
         status_giver.waiting_for_final_submission_response!

@@ -288,5 +288,66 @@ RSpec.describe Submission, type: :model do
         expect(formatted_time(submission.final_submission_files_first_uploaded_at)).to eq(time_now_formatted)
       end
     end
+
+    context '#update_status_from_committee' do
+      context 'when status is waiting for committee review' do
+        context 'when approval status is approved' do
+          it 'changes status to waiting for head of program review if graduate school' do
+            skip 'Graduate only' unless current_partner.graduate?
+
+            allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
+            submission = FactoryBot.create :submission, :waiting_for_committee_review
+            allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create :committee_member)
+            submission.update_status_from_committee
+            expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
+            expect(WorkflowMailer.deliveries.count).to eq 1
+          end
+
+          it 'changes status to waiting for final submission response unless graduate school' do
+            skip 'Non Graduate' if current_partner.graduate?
+
+            allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
+            submission = FactoryBot.create :submission, :waiting_for_committee_review
+            allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create :committee_member)
+            submission.update_status_from_committee
+            expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
+            expect(WorkflowMailer.deliveries.count).to eq 0
+          end
+        end
+
+        context 'when approval status is rejected' do
+          it 'changes status to waiting for committee review rejected' do
+            allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
+            submission = FactoryBot.create :submission, :waiting_for_committee_review
+            submission.update_status_from_committee
+            expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
+          end
+        end
+      end
+
+      context 'when status is waiting for head of program review' do
+        context 'when approval head of program status is approved' do
+          it 'changes status to waiting for final submission response if graduate school' do
+            skip 'Graduate only' unless current_partner.graduate?
+
+            allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('approved')
+            submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
+            submission.update_status_from_committee
+            expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
+          end
+        end
+
+        context 'when approval head of program status is rejected' do
+          it 'changes status to waiting for committee review rejected if graduate school' do
+            skip 'Graduate only' unless current_partner.graduate?
+
+            allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('rejected')
+            submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
+            submission.update_status_from_committee
+            expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
+          end
+        end
+      end
+    end
   end
 end
