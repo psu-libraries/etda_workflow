@@ -43,6 +43,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
 
     it 'can edit status and notes' do
+      allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create :committee_member)
       within("form#edit_committee_member_#{committee_member.id}") do
         select "approved", from: 'committee_member_status'
         fill_in "committee_member_notes", with: 'Some notes.'
