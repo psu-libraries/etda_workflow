@@ -229,11 +229,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         webaccess_authorize_approver
       end
 
-      context "if 'waiting for head of program review'" do
-        before do
-          committee_member.status = 'approved'
-        end
-
+      context "when 'waiting for head of program review'" do
         it "proceeds to 'waiting for final submission response' if approved" do
           skip 'Graduate only' unless current_partner.graduate?
 
