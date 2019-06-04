@@ -297,7 +297,7 @@ RSpec.describe Submission, type: :model do
 
             allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
             submission = FactoryBot.create :submission, :waiting_for_committee_review
-            allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create :committee_member)
+            allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
             submission.update_status_from_committee
             expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
             expect(WorkflowMailer.deliveries.count).to eq 1
@@ -308,7 +308,7 @@ RSpec.describe Submission, type: :model do
 
             allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
             submission = FactoryBot.create :submission, :waiting_for_committee_review
-            allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create :committee_member)
+            allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
             submission.update_status_from_committee
             expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
             expect(WorkflowMailer.deliveries.count).to eq 0

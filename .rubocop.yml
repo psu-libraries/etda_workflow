@@ -84,6 +84,7 @@ Metrics/CyclomaticComplexity:
   - app/models/mock_university_directory.rb
   - app/helpers/application_helper.rb
   - app/models/submission.rb
+  - app/presenters/author/submission_view.rb
 
 Metrics/PerceivedComplexity:
   Exclude:
@@ -95,6 +96,7 @@ Metrics/PerceivedComplexity:
   - app/helpers/application_helper.rb
   - app/services/submission_release_service.rb
   - app/models/submission.rb
+  - app/presenters/author/submission_view.rb
 
 Layout/MultilineBlockLayout:
   Exclude:
