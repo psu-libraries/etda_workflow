@@ -440,9 +440,13 @@ RSpec.describe Author::SubmissionView do
       end
 
       context "when step six is the current step" do
-        before { submission.status = 'waiting for committee review' }
+        it "returns 'current' when waiting for committee review" do
+          submission.status = 'waiting for committee review'
+          expect(view.step_six_class).to eq 'current'
+        end
 
-        it "returns 'current'" do
+        it "returns 'current' when waiting for head of program review" do
+          submission.status = 'waiting for head of program review'
           expect(view.step_six_class).to eq 'current'
         end
       end
@@ -474,6 +478,14 @@ RSpec.describe Author::SubmissionView do
         end
       end
 
+      context 'when the submission is currently waiting for head of program review' do
+        before { submission.status = 'waiting for head of program review' }
+
+        it 'returns "under review by head of program"' do
+          expect(view.step_six_status).to eq(partial_name: '/author/shared/waiting_indicator')
+        end
+      end
+
       context "when the submission's committee approved" do
         before do
           submission.committee_review_accepted_at = Time.zone.local(2014, 7, 4)
@@ -481,7 +493,7 @@ RSpec.describe Author::SubmissionView do
 
         it 'returns approved' do
           submission.status = 'waiting for final submission response'
-          expect(view.step_six_status).to eq(partial_name: '/author/shared/completed_indicator')
+          expect(view.step_six_status).to eq(partial_name: '/author/shared/completed_indicator', text: "approved on July 4, 2014")
         end
       end
 
@@ -492,7 +504,7 @@ RSpec.describe Author::SubmissionView do
 
         it 'returns rejected' do
           submission.status = 'waiting for committee review rejected'
-          expect(view.step_six_status).to eq(partial_name: '/author/shared/rejected_indicator')
+          expect(view.step_six_status).to eq(partial_name: '/author/shared/rejected_indicator', text: "approved on July 4, 2014")
         end
       end
     end
@@ -509,6 +521,14 @@ RSpec.describe Author::SubmissionView do
 
     context 'when the submission is currently waiting for committee review' do
       before { submission.status = 'waiting for committee review' }
+
+      it 'to display results page' do
+        expect(view.step_six_description).to match(/Waiting for Committee Review.*\[review.*\]/)
+      end
+    end
+
+    context 'when the submission is currently waiting for head of program review' do
+      before { submission.status = 'waiting for head of program review' }
 
       it 'to display results page' do
         expect(view.step_six_description).to match(/Waiting for Committee Review.*\[review.*\]/)
