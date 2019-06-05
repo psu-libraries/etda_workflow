@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     patch '/submissions/:id/update_released', to: 'submissions#update_released', as: :submissions_update_released
     patch '/submissions/:id/update_waiting_to_be_released', to: 'submissions#update_waiting_to_be_released', as: :submissions_update_waiting_to_be_released
     patch '/submissions/:id', to: 'submissions#update', as: :submission
+    get '/submissions/:id/audit', to: 'submissions#audit', as: :submission_audit
     get '/submissions/:id/committee_members_refresh', to: 'submissions#refresh_committee', as: :refresh_committee
 
     get '/:degree_type', to: 'submissions#dashboard', as: :submissions_dashboard
