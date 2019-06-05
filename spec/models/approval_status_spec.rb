@@ -3,11 +3,12 @@
 require 'model_spec_helper'
 
 RSpec.describe ApprovalStatus, type: :model do
-  let(:submission) { FactoryBot.create :submission }
-  let(:approval_configuration1) { ApprovalConfiguration.create(configuration_threshold: 0, use_percentage: 0, approval_deadline_on: Date.today) }
-  let(:approval_configuration2) { ApprovalConfiguration.create(configuration_threshold: 1, use_percentage: 0, approval_deadline_on: Date.today) }
-  let(:approval_configuration3) { ApprovalConfiguration.create(configuration_threshold: 100, use_percentage: 1, approval_deadline_on: Date.today) }
-  let(:approval_configuration4) { ApprovalConfiguration.create(configuration_threshold: 75, use_percentage: 1, approval_deadline_on: Date.today) }
+  let(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+  let(:submission) { FactoryBot.create :submission, degree: degree }
+  let(:approval_configuration1) { ApprovalConfiguration.create(configuration_threshold: 0, use_percentage: 0, approval_deadline_on: Date.today, head_of_program_is_approving: false ) }
+  let(:approval_configuration2) { ApprovalConfiguration.create(configuration_threshold: 1, use_percentage: 0, approval_deadline_on: Date.today, head_of_program_is_approving: false ) }
+  let(:approval_configuration3) { ApprovalConfiguration.create(configuration_threshold: 100, use_percentage: 1, approval_deadline_on: Date.today, head_of_program_is_approving: false ) }
+  let(:approval_configuration4) { ApprovalConfiguration.create(configuration_threshold: 75, use_percentage: 1, approval_deadline_on: Date.today, head_of_program_is_approving: false ) }
 
   describe "#status" do
     context "when using rejections permitted" do

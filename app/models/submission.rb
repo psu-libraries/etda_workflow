@@ -318,6 +318,10 @@ class Submission < ApplicationRecord
     end
   end
 
+  def head_of_program_is_approving?
+    degree.degree_type.approval_configuration.head_of_program_is_approving
+  end
+
   private
 
   def format_review_file_check
@@ -338,7 +342,7 @@ class Submission < ApplicationRecord
     submission_status = ApprovalStatus.new(self).status
     status_giver = SubmissionStatusGiver.new(self)
     if submission_status == 'approved'
-      if current_partner.graduate?
+      if head_of_program_is_approving?
         status_giver.can_waiting_for_head_of_program_review?
         status_giver.waiting_for_head_of_program_review!
         WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id)).deliver
@@ -360,11 +364,11 @@ class Submission < ApplicationRecord
     if submission_head_of_program_status == 'approved'
       status_giver.can_waiting_for_final_submission?
       status_giver.waiting_for_final_submission_response!
-      update_attribute(:committee_review_accepted_at, DateTime.now)
+      update_attribute(:head_of_program_review_accepted_at, DateTime.now)
     elsif submission_head_of_program_status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
-      update_attribute(:committee_review_rejected_at, DateTime.now)
+      update_attribute(:head_of_program_review_rejected_at, DateTime.now)
     end
   end
 end

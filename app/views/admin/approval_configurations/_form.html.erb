@@ -5,10 +5,12 @@
                 wrapper: :vertical_radio_and_checkboxes,
                 label: 'Committee approval method'.html_safe %>
     <%= f.input :configuration_threshold, required: true, label: "Rejections permitted*" %>
+    <% if current_partner.graduate? %>
     <%= f.input :head_of_program_is_approving, as: :radio_buttons,
                 collection: [['Yes', true], ['No', false]],
                 wrapper: :vertical_radio_and_checkboxes,
                 label: 'Require approval from head of graduate program after committee approval?'.html_safe %>
+    <% end %>
   <hr>
 
   <div class="row">

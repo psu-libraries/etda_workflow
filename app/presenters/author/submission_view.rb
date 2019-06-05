@@ -181,7 +181,8 @@ class Author::SubmissionView < SimpleDelegator
       status[:partial_name] = '/author/shared/rejected_indicator'
       status[:text] = "approved#{formatted_timestamp_of(committee_review_rejected_at)}"
     elsif status_behavior.beyond_waiting_for_head_of_program_review?
-      status[:text] = "approved#{formatted_timestamp_of(committee_review_accepted_at)}"
+      status[:text] = "approved#{formatted_timestamp_of(head_of_program_review_accepted_at)}" if head_of_program_is_approving?
+      status[:text] = "approved#{formatted_timestamp_of(committee_review_accepted_at)}" unless head_of_program_is_approving?
       status[:partial_name] = '/author/shared/completed_indicator'
     elsif status_behavior.waiting_for_committee_review?
       status[:partial_name] = '/author/shared/waiting_indicator'

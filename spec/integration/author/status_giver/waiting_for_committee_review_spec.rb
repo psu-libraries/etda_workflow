@@ -103,15 +103,26 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         webaccess_authorize_approver
       end
 
-      it "moves forward in process if accepted" do
+      it "moves forward in process if accepted when head of program is approving" do
+        submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
           select "approved", from: 'committee_member_status'
         end
         click_button 'Submit Review'
         sleep 3
-        expect(Submission.find(submission.id).status).to eq 'waiting for head of program review' if current_partner.graduate?
-        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' unless current_partner.graduate?
+        expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
+      end
+
+      it "moves forward in process if accepted when head of program is not approving" do
+        submission.degree.degree_type.approval_configuration.update_attribute :head_of_program_is_approving, false
+        visit approver_path(committee_member)
+        within("form#edit_committee_member_#{committee_member.id}") do
+          select "approved", from: 'committee_member_status'
+        end
+        click_button 'Submit Review'
+        sleep 3
+        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
       end
 
       it "proceeds to 'waiting for committee review rejected' if rejected" do
@@ -121,7 +132,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         end
         click_button 'Submit Review'
         sleep 3
-        expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected' if current_partner.graduate?
+        expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
       end
     end
   end

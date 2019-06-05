@@ -106,7 +106,7 @@ class SubmissionStatus
   end
 
   def beyond_waiting_for_committee_review?
-    current_partner.graduate? ? waiting_for_head_of_program_review? || beyond_waiting_for_head_of_program_review? : waiting_for_committee_review_rejected? || beyond_waiting_for_committee_review_rejected?
+    waiting_for_head_of_program_review? || beyond_waiting_for_head_of_program_review?
   end
 
   def beyond_waiting_for_head_of_program_review?

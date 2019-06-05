@@ -426,6 +426,13 @@ RSpec.describe Author::SubmissionView do
   end
 
   describe 'step six: Graduate school or Honors College waiting for committee review' do
+    let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type}
+
+    before do
+      submission.degree = degree
+    end
+
     describe '#step_six_class' do
       context "when the submission is before step six" do
         before { allow(submission.status_behavior).to receive(:beyond_collecting_final_submission_files?).and_return(false) }
@@ -489,10 +496,17 @@ RSpec.describe Author::SubmissionView do
       context "when the submission's committee approved" do
         before do
           submission.committee_review_accepted_at = Time.zone.local(2014, 7, 4)
+          submission.head_of_program_review_accepted_at = Time.zone.local(2014, 7, 5)
         end
 
-        it 'returns approved' do
+        it 'returns approved (w/ head of program)' do
           submission.status = 'waiting for final submission response'
+          expect(view.step_six_status).to eq(partial_name: '/author/shared/completed_indicator', text: "approved on July 5, 2014")
+        end
+
+        it 'returns approved (w/o head of program)' do
+          submission.status = 'waiting for final submission response'
+          submission.degree.degree_type.approval_configuration.head_of_program_is_approving = false
           expect(view.step_six_status).to eq(partial_name: '/author/shared/completed_indicator', text: "approved on July 4, 2014")
         end
       end

@@ -39,9 +39,7 @@ RSpec.describe ApprovalConfiguration, type: :model do
 
     it 'is valid' do
       ac.approval_deadline_on = Date.today
-      ac.configuration_threshold = 2
       ac.degree_type_id = degree_type.id
-      ac.head_of_program_is_approving = true
       expect(ac).to be_valid
     end
   end

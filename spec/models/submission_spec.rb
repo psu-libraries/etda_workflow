@@ -290,11 +290,15 @@ RSpec.describe Submission, type: :model do
     end
 
     context '#update_status_from_committee' do
+      let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+      let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type}
+
       context 'when status is waiting for committee review' do
         context 'when approval status is approved' do
           it 'changes status to waiting for head of program review if graduate school' do
             skip 'Graduate only' unless current_partner.graduate?
 
+            submission.degree = degree
             allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
             submission = FactoryBot.create :submission, :waiting_for_committee_review
             allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
@@ -306,6 +310,7 @@ RSpec.describe Submission, type: :model do
           it 'changes status to waiting for final submission response unless graduate school' do
             skip 'Non Graduate' if current_partner.graduate?
 
+            submission.degree = degree
             allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
             submission = FactoryBot.create :submission, :waiting_for_committee_review
             allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
@@ -317,6 +322,7 @@ RSpec.describe Submission, type: :model do
 
         context 'when approval status is rejected' do
           it 'changes status to waiting for committee review rejected' do
+            submission.degree = degree
             allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
             submission = FactoryBot.create :submission, :waiting_for_committee_review
             submission.update_status_from_committee
@@ -330,6 +336,7 @@ RSpec.describe Submission, type: :model do
           it 'changes status to waiting for final submission response if graduate school' do
             skip 'Graduate only' unless current_partner.graduate?
 
+            submission.degree = degree
             allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('approved')
             submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
             submission.update_status_from_committee
