@@ -21,7 +21,7 @@ class ApprovalConfiguration < ApplicationRecord
 
       ApprovalConfiguration.create!(degree_type_id: dt[:id],
                                     approval_deadline_on: configuration[:approval_deadline_on],
-                                    rejections_permitted: configuration[:configuration_threshold],
+                                    configuration_threshold: configuration[:configuration_threshold],
                                     email_admins: configuration[:email_admins],
                                     email_authors: configuration[:email_authors],
                                     head_of_program_is_approving: configuration[:head_of_program_is_approving])
