@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Approver::ApproversController < ApproverController
-  before_action :verify_approver, except: [:download_final_submission, :update]
+  before_action :verify_approver, except: :download_final_submission
   include ActionView::Helpers::UrlHelper
 
   def edit
