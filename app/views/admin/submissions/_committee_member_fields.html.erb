@@ -1,4 +1,4 @@
-<div class="nested-fields admin panel panel-default">
+<div class="nested-fields admin panel panel-default committee-member-information">
   <div class="row committee-role">
     <% if f.object.is_required == true && f.object.committee_role.name == 'Head/Chair of Graduate Program' %>
       <div class="col-sm-6">
@@ -9,35 +9,19 @@
         <%= f.association :committee_role, collection: @submission.degree_type.try(&:committee_roles).where.not(name: 'Head/Chair of Graduate Program').order('name asc') || [] , input_html: {class: 'role'} %>
       </div>
     <% end %>
-    <div class="col-sm-4">
-        <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger'%>
-    </div>
+    <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger remove-member'%>
   </div>
-  <div class="row">
-    <div class="col-sm-6">
-        <%= f.input :name, input_html: { class: 'ldap-lookup' } %>
-    </div>
-    <div class="col-sm-6">
-        <%= f.input :email %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-4">
-      <%= f.input :status, collection: CommitteeMember::STATUS, include_blank: true %>
-    </div>
-    <div class="col-sm-4">
-      <%= f.input :notes, label: "Notes for Student (optional)" %>
-    </div>
-    <% if SubmissionStatus.new(@submission).waiting_for_committee_review? %>
-      <div class="col-sm-4">
+  <div class="row committee-details">
+    <%= f.input :name, input_html: { class: 'ldap-lookup' } %>
+    <%= f.input :email %>
+    <div class="status-row">
+      <%= f.input :status, collection: CommitteeMember::STATUS, include_blank: true, input_html: { class: "select-status" } %>
+      <% if SubmissionStatus.new(@submission).waiting_for_committee_review? %>
         <button type="button" id="send_email_reminder" value="<%= f.object.id.to_s %>">Send Email Reminder</button>
-      </div>
-    <% end %>
-    <div class="col-sm-4">
-      <%= f.input :federal_funding_used if current_partner.graduate? %>
+      <% end %>
     </div>
-  </div>
-  <div class="row">
+    <%= f.input :notes %>
+    <%= f.input :federal_funding_used, input_html: { class: "funding-box" } if current_partner.graduate? %>
     <% unless f.object.is_required == true && f.object.committee_role.name == 'Head/Chair of Graduate Program'  %>
       <div class="col-sm-4">
         <%= f.label "Is voting on approval" %>
