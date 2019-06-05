@@ -5,12 +5,12 @@ class ApprovalConfiguration < ApplicationRecord
 
   validates :degree_type_id, :approval_deadline_on, :configuration_threshold, presence: true
 
-  GRADUATE_CONFIGURATION = { 'dissertation' => { approval_deadline_on: Date.today, rejections_permitted: 0, email_admins: 0, email_authors: 0, use_percentage: 0, percentage_for_approval: 100 },
-                             'master_thesis' => { approval_deadline_on: Date.today, rejections_permitted: 0, email_admins: 0, email_authors: 0, use_percentage: 0, percentage_for_approval: 100 } }.freeze
+  GRADUATE_CONFIGURATION = { 'dissertation' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 0, email_authors: 0, use_percentage: 0, percentage_for_approval: 100 },
+                             'master_thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 0, email_authors: 0, use_percentage: 0, percentage_for_approval: 100 } }.freeze
 
-  HONORS_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, rejections_permitted: 0, email_admins: 0, email_authors: 0, use_percentage: 0, percentage_for_approval: 100 } }.freeze
+  HONORS_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 0, email_authors: 0, use_percentage: 0, percentage_for_approval: 100 } }.freeze
 
-  MILSCH_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, rejections_permitted: 0, email_admins: 0, email_authors: 0, use_percentage: 0, percentage_for_approval: 100 } }.freeze
+  MILSCH_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 0, email_authors: 0, use_percentage: 0, percentage_for_approval: 100 } }.freeze
 
   CONFIGURATIONS = { 'graduate' => ApprovalConfiguration::GRADUATE_CONFIGURATION, 'honors' => ApprovalConfiguration::HONORS_CONFIGURATION, 'milsch' => ApprovalConfiguration::MILSCH_CONFIGURATION }.freeze
 
@@ -21,7 +21,7 @@ class ApprovalConfiguration < ApplicationRecord
 
       ApprovalConfiguration.create!(degree_type_id: dt[:id],
                                     approval_deadline_on: configuration[:approval_deadline_on],
-                                    rejections_permitted: configuration[:rejections_permitted],
+                                    configuration_threshold: configuration[:configuration_threshold],
                                     email_admins: configuration[:email_admins],
                                     email_authors: configuration[:email_authors])
     end
