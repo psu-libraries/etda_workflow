@@ -18,7 +18,7 @@ class ApprovalStatus
   end
 
   def head_of_program_status
-    current_submission.committee_members.find_by(committee_role: CommitteeRole.find_by(name: 'Head/Chair of Graduate Program', degree_type: current_submission.degree.degree_type).id).status
+    current_submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Head/Chair of Graduate Program', degree_type: current_submission.degree.degree_type).id).status
   end
 
   def status

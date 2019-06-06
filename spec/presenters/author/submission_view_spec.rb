@@ -427,7 +427,7 @@ RSpec.describe Author::SubmissionView do
 
   describe 'step six: Graduate school or Honors College waiting for committee review' do
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type}
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type }
 
     before do
       submission.degree = degree

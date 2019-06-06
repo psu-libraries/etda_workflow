@@ -291,7 +291,7 @@ RSpec.describe Submission, type: :model do
 
     context '#update_status_from_committee' do
       let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-      let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type}
+      let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type }
 
       context 'when status is waiting for committee review' do
         context 'when approval status is approved' do

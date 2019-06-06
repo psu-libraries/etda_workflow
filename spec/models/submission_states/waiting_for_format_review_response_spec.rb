@@ -64,6 +64,18 @@ RSpec.describe SubmissionStates::WaitingForFormatReviewResponse do
       it { is_expected.to be_falsey }
     end
 
+    context 'when submission status WaitingForCommitteeReview' do
+      let(:status) { SubmissionStates::WaitingForCommitteeReview.name }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context 'when submission status WaitingForHeadOfProgramReview' do
+      let(:status) { SubmissionStates::WaitingForHeadOfProgramReview.name }
+
+      it { is_expected.to be_falsey }
+    end
+
     context 'when submission status CollectingFinalSubmissionFilesRejected' do
       let(:status) { SubmissionStates::CollectingFinalSubmissionFilesRejected.name }
 
