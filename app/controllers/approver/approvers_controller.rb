@@ -32,7 +32,6 @@ class Approver::ApproversController < ApproverController
     @committee_member = CommitteeMember.find(params[:id])
     @submission = @committee_member.submission
     redirect_to '/404' if @approver.nil? || current_approver.nil?
-    # TODO: redirect to page indicating review is complete, if beyond_waiting_for_committee_review
     redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member) && (@submission.status_behavior.waiting_for_committee_review? || @submission.status_behavior.waiting_for_head_of_program_review?)
   end
 
