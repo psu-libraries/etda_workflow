@@ -1,59 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<link rel="icon" href="/favicon.ico"/>
-<head>
-  <title>ETDA</title>
-
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-
-  <%= stylesheet_pack_tag 'author', media: 'all' %>
-  <%= javascript_pack_tag 'base' %>
-  <%= javascript_pack_tag 'author' %>
-  <%= csrf_meta_tags %>
-</head>
-<body class="<%= page_classes %>">
-
-<div id="body-container">
-  <%= render 'shared/header' %>
-
-  <main>
-    <div id="content-container" class="container">
-      <%= render partial: 'shared/flash_messages' unless flash.empty? %>
-      <div id="content-row" class="row">
-        <div class="col-xs-12 col-sm-4">
-        </div>
-          <div class="row">
-            <div class="col-xs-12 col-sm-9">
-              <h1>Committee Member Reviews</h1>
-            </div>
-            <br />
-            <table id="committee_member_table" class="table">
-              <thead>
-              <tr>
-                <th>Name</th>
-                <th>Status</th>
-                <th>Notes</th>
-              </tr>
-              </thead>
-              <tbody>
-              <% @submission.committee_members.each do |member| %>
-                <tr>
-                  <td><%= member.name %></td>
-                  <td><%= member.status %></td>
-                  <td><%= member.notes %></td>
-                </tr>
-              <% end %>
-              </tbody>
-            </table>
-            <strong>
-              <%= link_to 'Return to Review', approver_path %>
-            </strong>
-          </div>
-        </div>
-      </div>
-  </main>
+</div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-9">
+      <h1>Committee Member Reviews</h1>
+    </div>
+    <br />
+    <table id="committee_member_table" class="table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Notes</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @submission.committee_members.each do |member| %>
+        <tr>
+          <td><%= member.name %></td>
+          <td><%= member.status %></td>
+          <td><%= member.notes %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <strong>
+      <%= link_to 'Return to Review', approver_path %>
+    </strong>
+  </div>
 </div>
 
-<%= render 'shared/site_footer' %>
-</body>
-</html>
+

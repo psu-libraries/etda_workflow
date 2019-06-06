@@ -1,95 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<link rel="icon" href="/favicon.ico"/>
-<head>
-  <title>ETDA</title>
+</div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-9">
+      <h1>Committee Member Approval Page</h1>
+    </div>
+  </div>
+  <div class="submission_info">
+    <p>
+      <div><strong>Title: </strong><%=@committee_member.submission.title%></div>
+      <div><strong>Author: </strong><%= @author.full_name || 'N/A' %></div>
+      <div><strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %></div>
+      <div><strong>Access Id: </strong><%= @author.access_id %></div>
+      <div><strong>Phone:</strong> <%= @author.phone_number %></div>
+      <div><strong>Alternate email:</strong> <%= @author.alternate_email_address %></div>
+      <div><strong>Penn State email:</strong> <%= @author.psu_email_address %></div>
+    </p>
+  </div>
+  <strong>Associated Files:</strong>
+  <% if @committee_member.submission.current_access_level.current_access_level.include?('open') %>
+    <div class="access-level-open"><strong>Access Level - </strong> <%=@committee_member.submission.current_access_level.label %></div>
+  <% else %>
+    <div class="access-level-warning"><strong>Access Level - </strong> <%=@committee_member.submission.current_access_level.label %></div>
+  <% end %>
+  <div id="file_links">
+    <%=raw @most_relevant_file_links %>
+  </div>
 
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
 
-  <%= stylesheet_pack_tag 'author', media: 'all' %>
-  <%= javascript_pack_tag 'base' %>
-  <%= javascript_pack_tag 'author' %>
-  <%= csrf_meta_tags %>
-</head>
-<body class="<%= page_classes %>">
-
-<div id="body-container">
-  <%= render 'shared/header' %>
-
-  <main>
-    <div id="content-container" class="container">
-      <%= render partial: 'shared/flash_messages' unless flash.empty? %>
-      <div id="content-row" class="row">
-        <div class="col-xs-12 col-sm-4">
-        </div>
-          <div class="row">
-            <div class="col-xs-12 col-sm-9">
-              <h1>Committee Member Approval Page</h1>
+  <span><h2>Final Review</h2></span>
+  <div class="committee_reviews"><strong>Current Status of Submission: </strong> <%= link_to 'Committee Member Reviews', approver_committee_reviews_path %></div>
+  </br>
+  <div>
+    <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
+      <fieldset <%=@review_complete ? 'disabled' : ''%> >
+        <%= f.input :status, collection: CommitteeMember::STATUS, disabled: "pending", include_blank: true, :input_html => { :class => 'status_select' } %>
+        <%= f.input :notes, :label => "Notes for Student (optional)", :input_html => { :class => 'notes_select' } %>
+        <% if current_partner.graduate? && @committee_member.committee_role.name.include?("Advisor") %>
+          <%= f.input :federal_funding_used, :required => true, as: :radio_buttons, label: 'Were Federal Funds utilized for this submission?'%>
+          <strong>I confirm that, as required by federal guidelines, all federal funds used for the work
+          described in this thesis / dissertation have been explicitly acknowledged in the document,</strong>
+          along with a disclaimer indicating that the findings and conclusions do not necessarily
+          reflect the view of the funding agency. <strong> I confirm that no federal funds were used for the
+          work described in this thesis / dissertation. </strong>
+        <% end %>
+        <div class="form-group actions col-xs-4">
+          <%= f.button :submit, "Submit Review" %>
+          <% if @review_complete %>
+            <div class="review-message">
+              <div class="review-complete">
+                <% completed_on = @committee_member.approved_at ? @committee_member.approved_at : @committee_member.rejected_at %>
+                <%= completed_on.strftime("Review Completed on %m/%d/%Y at %I:%M%p") %>
+              </div>
+              <div>
+                Committee <%= @approved ? "approved" : "rejected" %> the submission.
+              </div>
+              <div class="altering-submission">
+                If your response needs to be altered, please <%= link_to "contact the site admin.", author_email_contact_form_new_path %>
+              </div>
             </div>
-          </div>
-          <div class="submission_info">
-            <p>
-              <div><strong>Title: </strong><%=@committee_member.submission.title%></div>
-              <div><strong>Author: </strong><%= @author.full_name || 'N/A' %></div>
-              <div><strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %></div>
-              <div><strong>Access Id: </strong><%= @author.access_id %></div>
-              <div><strong>Phone:</strong> <%= @author.phone_number %></div>
-              <div><strong>Alternate email:</strong> <%= @author.alternate_email_address %></div>
-              <div><strong>Penn State email:</strong> <%= @author.psu_email_address %></div>
-            </p>
-          </div>
-          <strong>Associated Files:</strong>
-          <% if @committee_member.submission.current_access_level.current_access_level.include?('open') %>
-            <div class="access-level-open"><strong>Access Level - </strong> <%=@committee_member.submission.current_access_level.label %></div>
-          <% else %>
-            <div class="access-level-warning"><strong>Access Level - </strong> <%=@committee_member.submission.current_access_level.label %></div>
           <% end %>
-          <div id="file_links">
-            <%=raw @most_relevant_file_links %>
-          </div>
-
-
-          <span><h2>Final Review</h2></span>
-          <div class="committee_reviews"><strong>Current Status of Submission: </strong> <%= link_to 'Committee Member Reviews', approver_committee_reviews_path %></div>
-          </br>
-          <div>
-            <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
-              <fieldset <%=@review_complete ? 'disabled' : ''%> >
-                <%= f.input :status, collection: CommitteeMember::STATUS, disabled: "pending", include_blank: true, :input_html => { :class => 'status_select' } %>
-                <%= f.input :notes, :label => "Notes for Student (optional)", :input_html => { :class => 'notes_select' } %>
-                <% if current_partner.graduate? && @committee_member.committee_role.name.include?("Advisor") %>
-                  <%= f.input :federal_funding_used, :required => true, as: :radio_buttons, label: 'Were Federal Funds utilized for this submission?'%>
-                  <strong>I confirm that, as required by federal guidelines, all federal funds used for the work
-                  described in this thesis / dissertation have been explicitly acknowledged in the document,</strong>
-                  along with a disclaimer indicating that the findings and conclusions do not necessarily
-                  reflect the view of the funding agency. <strong> I confirm that no federal funds were used for the
-                  work described in this thesis / dissertation. </strong>
-                <% end %>
-                <div class="form-group actions col-xs-4">
-                  <%= f.button :submit, "Submit Review" %>
-                  <% if @review_complete %>
-                    <div class="review-message">
-                      <div class="review-complete">
-                        <% completed_on = @committee_member.approved_at ? @committee_member.approved_at : @committee_member.rejected_at %>
-                        <%= completed_on.strftime("Review Completed on %m/%d/%Y at %I:%M%p") %>
-                      </div>
-                      <div>
-                        Committee <%= @approved ? "approved" : "rejected" %> the submission.
-                      </div>
-                      <div class="altering-submission">
-                        If your response needs to be altered, please <%= link_to "contact the site admin.", author_email_contact_form_new_path %>
-                      </div>
-                    </div>
-                  <% end %>
-                </div>
-              </fieldset>
-            <% end %>
-          </div>
         </div>
-      </div>
-  </main>
+      </fieldset>
+    <% end %>
+  </div>
 </div>
 
-<%= render 'shared/site_footer' %>
-</body>
-</html>
