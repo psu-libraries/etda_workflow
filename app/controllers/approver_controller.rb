@@ -35,6 +35,8 @@ class ApproverController < ApplicationController
   end
 
   def valid_approver?
+    return true if valid_approver_session?
+
     this_approver = current_remote_user
     user_is_in_ldap = LdapUniversityDirectory.new.exists?(this_approver)
     session[:user_role] = 'approver' if user_is_in_ldap
