@@ -236,10 +236,12 @@ RSpec.describe ApprovalStatus, type: :model do
     before do
       head_role = CommitteeRole.find_by(name: 'Head/Chair of Graduate Program', degree_type_id: submission.degree.degree_type_id)
       submission.committee_members = []
-      FactoryBot.create(:committee_member, status: 'pending', committee_role_id: head_role.id, submission: submission)
+      FactoryBot.create(:committee_member, status: 'pending', committee_role_id: head_role.id, submission: submission) if current_partner.graduate?
     end
 
     it 'grabs status of Head/Chair of Graduate Program' do
+      skip 'Graduate Only' unless current_partner.graduate?
+
       expect(described_class.new(submission).head_of_program_status).to eq('pending')
     end
   end

@@ -1915,7 +1915,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
           giver.waiting_for_final_submission_response!
           expect(submission.status).to eq 'waiting for final submission response'
         end
-        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition) unless current_partner.graduate?
+        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 

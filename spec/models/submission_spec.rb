@@ -311,6 +311,7 @@ RSpec.describe Submission, type: :model do
             skip 'Non Graduate' if current_partner.graduate?
 
             submission.degree = degree
+            submission.degree.degree_type.approval_configuration.update_attribute :head_of_program_is_approving, false
             allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
             submission = FactoryBot.create :submission, :waiting_for_committee_review
             allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
