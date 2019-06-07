@@ -1909,13 +1909,10 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for head of program review'" do
       before { submission.status = 'waiting for head of program review' }
 
-      it "updates status to 'waiting for final submission response' if graduate" do
+      it "updates status to 'waiting for final submission response'" do
         giver = described_class.new(submission)
-        if current_partner.graduate?
-          giver.waiting_for_final_submission_response!
-          expect(submission.status).to eq 'waiting for final submission response'
-        end
-        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        giver.waiting_for_final_submission_response!
+        expect(submission.status).to eq 'waiting for final submission response'
       end
     end
 
