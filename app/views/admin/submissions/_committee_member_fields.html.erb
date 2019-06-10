@@ -24,8 +24,10 @@
     <%= f.input :federal_funding_used, input_html: { class: "funding-box" } if current_partner.graduate? %>
     <% unless f.object.is_required == true && f.object.committee_role.name == 'Head/Chair of Graduate Program'  %>
       <div class="col-sm-4">
-        <%= f.label "Is voting on approval" %>
-        <%= f.input :is_voting, as: :radio_buttons, label: false %>
+        <%= f.input :is_voting, as: :radio_buttons,
+                    collection: [['Yes', true], ['No', false]],
+                    wrapper: :vertical_radio_and_checkboxes,
+                    label: 'Is voting on approval'.html_safe %>
       </div>
     <% end %>
   </div>
