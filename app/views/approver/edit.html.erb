@@ -60,7 +60,6 @@
 
     <div id="content-container" class="container">
       <span><h2>Final Review</h2></span>
-      <div class="committee_reviews"><strong>Current Status of Submission: </strong> <%= link_to 'Committee Member Reviews', approver_committee_reviews_path %></div>
       </br>
       <div>
         <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
