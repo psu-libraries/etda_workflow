@@ -107,7 +107,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
-          select "approved", from: 'committee_member_status'
+          find(:css, "#committee_member_status_approved").set true
         end
         click_button 'Submit Review'
         sleep 3
@@ -118,7 +118,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         submission.degree.degree_type.approval_configuration.update_attribute :head_of_program_is_approving, false
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
-          select "approved", from: 'committee_member_status'
+          find(:css, "#committee_member_status_approved").set true
         end
         click_button 'Submit Review'
         sleep 3
@@ -128,7 +128,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
       it "proceeds to 'waiting for committee review rejected' if rejected" do
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
-          select "rejected", from: 'committee_member_status'
+          find(:css, "#committee_member_status_rejected").set true
         end
         click_button 'Submit Review'
         sleep 3
@@ -246,7 +246,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
 
           visit approver_path(head_of_program)
           within("form#edit_committee_member_#{head_of_program.id}") do
-            select "approved", from: 'committee_member_status'
+            find(:css, "#committee_member_status_approved").set true
           end
           click_button 'Submit Review'
           sleep 3
@@ -258,7 +258,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
 
           visit approver_path(head_of_program)
           within("form#edit_committee_member_#{head_of_program.id}") do
-            select "rejected", from: 'committee_member_status'
+            find(:css, "#committee_member_status_rejected").set true
           end
           click_button 'Submit Review'
           sleep 3

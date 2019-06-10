@@ -51,6 +51,9 @@
       </div>
       <div class="row">
         <div class="col-sm-12"><h4><strong>Access Level - </strong><%=@committee_member.submission.current_access_level.label %></h4></div>
+        <% if @submission.restricted? || @submission.restricted_to_institution? %>
+          <div class="col-sm-12"><p class="hint">*Notice: This submission's access level is <strong><%= @submission.current_access_level.label %></strong> and should not be duplicated, distributed, or used for any other reason than this review.</p></div>
+        <% end %>
       </div>
     </div>
 
@@ -81,7 +84,6 @@
                                        ["I confirm that no federal funds were used for the work described in this #{@submission.degree.degree_type.name.to_s.downcase}. ", false]],
                           wrapper: :vertical_radio_and_checkboxes,
                           label: 'Were Federal Funds utilized for this submission?'.html_safe %>
-              <strong> <strong> </strong>
             <% end %>
             <div class="form-group actions col-xs-4">
               <%= f.button :submit, "Submit Review" %>
@@ -104,6 +106,7 @@
         <% end %>
       </div>
     </div>
+  </main>
   </div>
 </body>
 
