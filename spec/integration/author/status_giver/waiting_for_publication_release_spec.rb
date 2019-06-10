@@ -5,11 +5,14 @@ RSpec.describe "Last Step: 'waiting for publication release'", js: true do
     before do
       webaccess_authorize_author
       webaccess_authorize_admin
+      submission.degree.degree_type.approval_configuration = approval_configuration
     end
 
     let!(:author) { current_author }
     let!(:admin) { current_admin }
-    let!(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, author: author }
+    let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+    let!(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, author: author, degree: degree }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration }
 
     context "visiting the 'Author Submissions Index Page' page" do
       it 'loads the page' do

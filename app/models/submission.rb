@@ -99,7 +99,7 @@ class Submission < ApplicationRecord
   scope :format_review_is_submitted, -> { where(status: 'waiting for format review response') }
   scope :format_review_is_completed, -> { where('status = ? OR status = ?', "collecting final submission files", "format review is accepted").where(final_submission_rejected_at: nil) }
 
-  scope :final_submission_is_pending, -> { where(status: 'waiting for committee review') }
+  scope :final_submission_is_pending, -> { where(status: ['waiting for committee review', 'waiting for head of program review']) }
   scope :committee_review_is_rejected, -> { where(status: 'waiting for committee review rejected') }
   scope :final_submission_is_incomplete, -> { where('status LIKE "collecting final submission files%" OR status = "waiting for committee review rejected"').where.not(final_submission_rejected_at: nil) }
   scope :final_submission_is_submitted, -> { where(status: 'waiting for final submission response') }
@@ -114,14 +114,10 @@ class Submission < ApplicationRecord
   end
 
   def update_status_from_committee
-    submission_status = ApprovalStatus.new(self).status
-    status_giver = SubmissionStatusGiver.new(self)
-    if submission_status == 'approved'
-      status_giver.can_waiting_for_final_submission?
-      status_giver.waiting_for_final_submission_response!
-    elsif submission_status == 'rejected'
-      status_giver.can_waiting_for_committee_review_rejected?
-      status_giver.waiting_for_committee_review_rejected!
+    if status == 'waiting for committee review'
+      update_status_from_base_committee
+    elsif status == 'waiting for head of program review'
+      update_status_from_head_of_program
     end
   end
 
@@ -322,6 +318,10 @@ class Submission < ApplicationRecord
     end
   end
 
+  def head_of_program_is_approving?
+    degree.degree_type.approval_configuration.head_of_program_is_approving
+  end
+
   private
 
   def format_review_file_check
@@ -335,6 +335,40 @@ class Submission < ApplicationRecord
       false
     else
       true
+    end
+  end
+
+  def update_status_from_base_committee
+    submission_status = ApprovalStatus.new(self).status
+    status_giver = SubmissionStatusGiver.new(self)
+    if submission_status == 'approved'
+      if head_of_program_is_approving?
+        status_giver.can_waiting_for_head_of_program_review?
+        status_giver.waiting_for_head_of_program_review!
+        WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id)).deliver
+      else
+        status_giver.can_waiting_for_final_submission?
+        status_giver.waiting_for_final_submission_response!
+        update_attribute(:committee_review_accepted_at, DateTime.now)
+      end
+    elsif submission_status == 'rejected'
+      status_giver.can_waiting_for_committee_review_rejected?
+      status_giver.waiting_for_committee_review_rejected!
+      update_attribute(:committee_review_rejected_at, DateTime.now)
+    end
+  end
+
+  def update_status_from_head_of_program
+    submission_head_of_program_status = ApprovalStatus.new(self).head_of_program_status
+    status_giver = SubmissionStatusGiver.new(self)
+    if submission_head_of_program_status == 'approved'
+      status_giver.can_waiting_for_final_submission?
+      status_giver.waiting_for_final_submission_response!
+      update_attribute(:head_of_program_review_accepted_at, DateTime.now)
+    elsif submission_head_of_program_status == 'rejected'
+      status_giver.can_waiting_for_committee_review_rejected?
+      status_giver.waiting_for_committee_review_rejected!
+      update_attribute(:head_of_program_review_rejected_at, DateTime.now)
     end
   end
 end

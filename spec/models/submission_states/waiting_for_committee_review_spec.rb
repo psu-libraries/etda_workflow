@@ -4,8 +4,9 @@ require 'model_spec_helper'
 
 RSpec.describe SubmissionStates::WaitingForCommitteeReview do
   describe 'instance methods' do
-    it "transitions to WaitingForFinalSubmissionResponse, WaitingForCommitteeReviewRejected" do
+    it "transitions to WaitingForFinalSubmissionResponse, WaitingForCommitteeReviewRejected, WaitingForHeadOfProgramReview" do
       expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForHeadOfProgramReview)
       expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForCommitteeReviewRejected)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingCommittee)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFiles)
@@ -46,6 +47,12 @@ RSpec.describe SubmissionStates::WaitingForCommitteeReview do
       let(:status) { SubmissionStates::CollectingFinalSubmissionFiles.name }
 
       it { is_expected.to be_truthy }
+    end
+
+    context 'when submission status WaitingForHeadOfProgramReview' do
+      let(:status) { SubmissionStates::WaitingForHeadOfProgramReview.name }
+
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status CollectingFinalSubmissionFilesRejected' do

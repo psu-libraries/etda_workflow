@@ -2,21 +2,20 @@
 
 require 'model_spec_helper'
 
-RSpec.describe SubmissionStates::WaitingForCommitteeReviewRejected do
+RSpec.describe SubmissionStates::WaitingForHeadOfProgramReview do
   describe 'instance methods' do
-    it "transitions to CollectingFinalSubmissionFiles" do
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFiles)
-      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview)
-      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
+    it "transitions to WaitingForFinalSubmissionResponse, WaitingForCommitteeReviewRejected" do
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
+      expect(described_class.new).not_to be_valid_state_change(described_class)
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForCommitteeReviewRejected)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingCommittee)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFiles)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFilesRejected)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingProgramInformation)
-      expect(described_class.new).not_to be_valid_state_change(described_class)
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFormatReviewResponse)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::ReleasedForPublication)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::ReleasedForPublicationMetadataOnly)
-      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForHeadOfProgramReview)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::Bogus)
     end
   end
@@ -24,21 +23,21 @@ RSpec.describe SubmissionStates::WaitingForCommitteeReviewRejected do
   describe 'name' do
     let(:subject) { described_class.name }
 
-    it { is_expected.to eq 'waiting for committee review rejected' }
+    it { is_expected.to eq 'waiting for head of program review' }
   end
 
   describe 'status_date' do
-    let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review_rejected }
+    let(:submission) { FactoryBot.create :submission, :waiting_for_head_of_program_review, committee_review_accepted_at: DateTime.now }
     let(:subject) { described_class.new.status_date(submission) }
 
-    it { is_expected.to eq(submission.committee_review_rejected_at) }
+    it { is_expected.to eq(submission.committee_review_accepted_at) }
   end
 
   describe '#transition' do
-    let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review_rejected, status: status }
+    let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, status: status }
     let(:subject) { described_class.transition submission }
 
-    context 'when submission status WaitingForCommitteeReviewRejected' do
+    context 'when submission status WaitingForCommittee' do
       let(:status) { described_class.name }
 
       it { is_expected.to be_truthy }
@@ -50,14 +49,8 @@ RSpec.describe SubmissionStates::WaitingForCommitteeReviewRejected do
       it { is_expected.to be_falsey }
     end
 
-    context 'when submission status WaitingForCommitteeReview' do
-      let(:status) { SubmissionStates::WaitingForCommitteeReview.name }
-
-      it { is_expected.to be_truthy }
-    end
-
     context 'when submission status WaitingForHeadOfProgramReview' do
-      let(:status) { SubmissionStates::WaitingForHeadOfProgramReview.name }
+      let(:status) { described_class.name }
 
       it { is_expected.to be_truthy }
     end

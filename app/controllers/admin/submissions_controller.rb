@@ -17,7 +17,7 @@ class Admin::SubmissionsController < AdminController
 
   def update
     @submission = Submission.find(params[:id])
-    if @submission.status_behavior.beyond_collecting_format_review_files? && status != 'format review completed'
+    if @submission.status_behavior.beyond_collecting_format_review_files? && @submission.status != 'format review completed'
       submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     else
       submission_update_service = FormatReviewUpdateService.new(params, @submission, current_remote_user)
