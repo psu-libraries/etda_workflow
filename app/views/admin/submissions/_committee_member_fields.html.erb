@@ -1,5 +1,5 @@
 <div class="nested-fields admin panel panel-default committee-member-information">
-  <div class="row committee-role">
+  <div class="status-row">
     <% if f.object.is_required == true && f.object.committee_role.name == 'Head/Chair of Graduate Program' %>
       <div class="col-sm-6">
         <%= f.association :committee_role, disabled: true %>
