@@ -1,10 +1,26 @@
 <%= simple_form_for [:admin, @approval_configuration] do |f| %>
-    <%= f.input :approval_deadline_on, required: true %>
-    <%= f.input :use_percentage, as: :radio_buttons,
-                collection: [['Percentage of approvals', true], ['Number of rejections', false]],
-                wrapper: :vertical_radio_and_checkboxes,
-                label: 'Committee approval method'.html_safe %>
-    <%= f.input :configuration_threshold, required: true, label: "Rejections permitted*" %>
+  <div class="row">
+    <div class="col-sm-12">
+      <%= f.input :approval_deadline_on, required: true %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <%= f.label :use_percentage, 'Committee approval method' %>
+      <%= f.input :use_percentage, as: :radio_buttons,
+                  collection: [['Percentage of approvals', true], ['Number of rejections', false]],
+                  wrapper: :vertical_radio_and_checkboxes,
+                  label: false %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <%= f.input :configuration_threshold, required: true, label: "Rejections permitted*" %>
+    </div>
+  </div>
+
   <% if current_partner.graduate? %>
   <div class="row">
     <div class="col-sm-12">
@@ -40,7 +56,7 @@
   </div>
 
   <div class="row">
-    <div class="form-group actions col-xs-4">
+    <div class="form-group actions">
       <%= f.button :submit, 'Update Approval Configuration', class: 'btn btn-success' %>
       <%= link_to "Cancel", admin_approval_configurations_path, class: 'admin btn cancel-link' %>
     </div>
