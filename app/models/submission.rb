@@ -322,6 +322,13 @@ class Submission < ApplicationRecord
     degree.degree_type.approval_configuration.head_of_program_is_approving
   end
 
+  def initial_committee_emails(committee)
+    committee.each do |committee_member|
+      WorkflowMailer.committee_member_review_request(self, committee_member).deliver
+      CommitteeReminderWorker.perform_in(10.days,[self.id, committee_member.id])
+    end
+  end
+
   private
 
   def format_review_file_check
@@ -350,11 +357,13 @@ class Submission < ApplicationRecord
         status_giver.can_waiting_for_final_submission?
         status_giver.waiting_for_final_submission_response!
         update_attribute(:committee_review_accepted_at, DateTime.now)
+        committee_approved_emails
       end
     elsif submission_status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
       update_attribute(:committee_review_rejected_at, DateTime.now)
+      committee_rejected_emails
     end
   end
 
@@ -365,10 +374,25 @@ class Submission < ApplicationRecord
       status_giver.can_waiting_for_final_submission?
       status_giver.waiting_for_final_submission_response!
       update_attribute(:head_of_program_review_accepted_at, DateTime.now)
+      committee_approved_emails
     elsif submission_head_of_program_status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
       update_attribute(:head_of_program_review_rejected_at, DateTime.now)
+      committee_rejected_emails
     end
+  end
+
+  def committee_rejected_emails
+    if degree.degree_type.approval_configuration.email_admins
+      Admin.all.each do |admin|
+        WorkflowMailer.committee_rejected_admin(self, admin) unless ['jkc103', 'jxb13', 'jrp22', 'amg32', 'ajk5603', 'djb44'].include? admin.access_id.to_s
+      end
+    end
+    WorkflowMailer.committee_rejected_author(self).deliver if degree.degree_type.approval_configuration.email_authors
+  end
+
+  def committee_approved_emails
+    WorkflowMailer.committee_review_complete(self).deliver if degree.degree_type.approval_configuration.email_authors
   end
 end
