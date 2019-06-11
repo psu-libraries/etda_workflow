@@ -325,7 +325,7 @@ class Submission < ApplicationRecord
   def initial_committee_member_emails(committee)
     committee.each do |committee_member|
       WorkflowMailer.committee_member_review_request(self, committee_member).deliver
-      CommitteeReminderWorker.perform_in(10.days,[self.id, committee_member.id])
+      CommitteeReminderWorker.perform_in(10.days, [id, committee_member.id])
     end
   end
 
@@ -385,7 +385,7 @@ class Submission < ApplicationRecord
 
   def committee_rejected_emails
     if degree.degree_type.approval_configuration.email_admins
-      Admin.all.each do |admin|
+      Admin.find_each do |admin|
         WorkflowMailer.committee_rejected_admin(self, admin).deliver unless ['jkc103', 'jxb13', 'jrp22', 'amg32', 'ajk5603', 'djb44'].include? admin.access_id.to_s
       end
     end
