@@ -5,20 +5,37 @@
                 wrapper: :vertical_radio_and_checkboxes,
                 label: 'Committee approval method'.html_safe %>
     <%= f.input :configuration_threshold, required: true, label: "Rejections permitted*" %>
-    <% if current_partner.graduate? %>
+  <% if current_partner.graduate? %>
+  <div class="row">
+    <div class="col-sm-12">
+    <%= f.label :email_admins, 'Require approval from head of graduate program?' %>
+    <p class="hint">*After the committee approves, the head of the graduate program must then approve for the submission to proceed.</p>
     <%= f.input :head_of_program_is_approving, as: :radio_buttons,
                 collection: [['Yes', true], ['No', false]],
                 wrapper: :vertical_radio_and_checkboxes,
-                label: 'Require approval from head of graduate program after committee approval?'.html_safe %>
+                label: false %>
     <% end %>
-  <hr>
+    </div>
+  </div>
 
   <div class="row">
-    <div class="col-sm-2">
-      <%= f.input :email_admins, :as => :boolean, :label => false, :inline_label => true %>
+    <div class="col-sm-12">
+      <%= f.label :email_admins, 'Email admins' %>
+      <p class="hint">*Allow emails to be sent to admins when a committee rejects a submission.</p>
+      <%= f.input :email_admins, as: :radio_buttons,
+                   collection: [['Yes', true], ['No', false]],
+                   wrapper: :vertical_radio_and_checkboxes,
+                   label: false %>
     </div>
-    <div class="col-sm-2">
-      <%= f.input :email_authors, :as => :boolean, :label => false, :inline_label => true %>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <%= f.label :email_authors, 'Email authors' %>
+      <p class="hint">*Allow emails to be sent to authors when a committee rejects or approves their submission.</p>
+      <%= f.input :email_authors, as: :radio_buttons,
+                  collection: [['Yes', true], ['No', false]],
+                  wrapper: :vertical_radio_and_checkboxes,
+                  label: false %>
     </div>
   </div>
 
