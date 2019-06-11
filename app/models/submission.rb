@@ -322,8 +322,8 @@ class Submission < ApplicationRecord
     degree.degree_type.approval_configuration.head_of_program_is_approving
   end
 
-  def initial_committee_member_emails(committee)
-    committee.each do |committee_member|
+  def initial_committee_member_emails(voting_committee_members)
+    voting_committee_members.each do |committee_member|
       WorkflowMailer.committee_member_review_request(self, committee_member).deliver
       CommitteeReminderWorker.perform_in(10.days, [id, committee_member.id])
     end
