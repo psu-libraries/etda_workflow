@@ -386,7 +386,7 @@ class Submission < ApplicationRecord
   def committee_rejected_emails
     if degree.degree_type.approval_configuration.email_admins
       Admin.all.each do |admin|
-        WorkflowMailer.committee_rejected_admin(self, admin) unless ['jkc103', 'jxb13', 'jrp22', 'amg32', 'ajk5603', 'djb44'].include? admin.access_id.to_s
+        WorkflowMailer.committee_rejected_admin(self, admin).deliver unless ['jkc103', 'jxb13', 'jrp22', 'amg32', 'ajk5603', 'djb44'].include? admin.access_id.to_s
       end
     end
     WorkflowMailer.committee_rejected_author(self).deliver if degree.degree_type.approval_configuration.email_authors
