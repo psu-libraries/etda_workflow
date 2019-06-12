@@ -132,7 +132,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         FactoryBot.create :admin
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
-          select "approved", from: 'committee_member_status'
+          find('#committee_member_status_approved').click
         end
         click_button 'Submit Review'
         sleep 3
@@ -278,7 +278,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
           FactoryBot.create :admin
           visit approver_path(head_of_program)
           within("form#edit_committee_member_#{head_of_program.id}") do
-            select "rejected", from: 'committee_member_status'
+            find('#committee_member_status_rejected').click
           end
           click_button 'Submit Review'
           sleep 3
