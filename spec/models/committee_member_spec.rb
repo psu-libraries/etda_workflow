@@ -5,6 +5,7 @@ require 'model_spec_helper'
 RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_column(:submission_id).of_type(:integer) }
   it { is_expected.to have_db_column(:committee_role_id).of_type(:integer) }
+  it { is_expected.to have_db_column(:approver_id).of_type(:integer) }
   it { is_expected.to have_db_column(:name).of_type(:string) }
   it { is_expected.to have_db_column(:email).of_type(:string) }
   it { is_expected.to have_db_column(:is_required).of_type(:boolean) }
@@ -23,8 +24,11 @@ RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_index(:committee_role_id) }
   it { is_expected.to have_db_column(:last_reminder_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:is_voting).of_type(:boolean) }
+  it { is_expected.to have_db_index(:approver_id) }
   it { is_expected.to belong_to(:submission).class_name('Submission') }
   it { is_expected.to belong_to(:committee_role).class_name('CommitteeRole') }
+  it { is_expected.to belong_to(:approver).class_name('Approver') }
+  it { is_expected.to have_one(:committee_member_token).class_name('CommitteeMemberToken') }
 
   describe 'defaults' do
     let(:cm) { described_class.new }

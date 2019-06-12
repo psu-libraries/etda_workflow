@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190604191338) do
+ActiveRecord::Schema.define(version: 20190612142613) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "access_id", default: "", null: false
@@ -92,6 +92,14 @@ ActiveRecord::Schema.define(version: 20190604191338) do
     t.index ["legacy_id"], name: "index_authors_on_legacy_id"
   end
 
+  create_table "committee_member_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.string "authentication_token"
+    t.bigint "committee_member_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["committee_member_id"], name: "index_committee_member_tokens_on_committee_member_id"
+  end
+
   create_table "committee_members", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "submission_id"
     t.bigint "committee_role_id"
@@ -113,6 +121,8 @@ ActiveRecord::Schema.define(version: 20190604191338) do
     t.datetime "last_reminder_at"
     t.boolean "is_voting", default: false
     t.boolean "federal_funding_used"
+    t.bigint "approver_id"
+    t.index ["approver_id"], name: "index_committee_members_on_approver_id"
     t.index ["committee_role_id"], name: "committee_members_committee_role_id_fk"
     t.index ["submission_id"], name: "committee_members_submission_id_fk"
   end
@@ -268,6 +278,8 @@ ActiveRecord::Schema.define(version: 20190604191338) do
   end
 
   add_foreign_key "approval_configurations", "degree_types", name: "degree_type_id_fk"
+  add_foreign_key "committee_member_tokens", "committee_members", name: "committee_member_tokens_committee_member_id_fk"
+  add_foreign_key "committee_members", "approvers", name: "committee_members_approver_id_fk"
   add_foreign_key "committee_members", "committee_roles", name: "committee_members_committee_role_id_fk"
   add_foreign_key "committee_members", "submissions", name: "committee_members_submission_id_fk"
   add_foreign_key "committee_roles", "degree_types", name: "committee_roles_degree_type_id_fk"

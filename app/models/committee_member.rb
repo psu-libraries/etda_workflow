@@ -10,6 +10,8 @@ class CommitteeMember < ApplicationRecord
 
   belongs_to :submission
   belongs_to :committee_role
+  belongs_to :approver, optional: true
+  has_one :committee_member_token
 
   STATUS = ["pending", "approved", "rejected"].freeze
 
