@@ -13,7 +13,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
     let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, author: author, degree: degree }
     let(:committee_member) { FactoryBot.create :committee_member, submission: submission, access_id: 'approverflow' }
     let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
-    let(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0 }
+    let(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, email_admins: true }
     let(:head_role) { CommitteeRole.find_by(name: 'Head/Chair of Graduate Program', degree_type: submission.degree.degree_type) }
 
     context 'when author tries visiting various pages' do
@@ -116,6 +116,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
 
       it "moves forward in process if accepted when head of program is not approving" do
         submission.degree.degree_type.approval_configuration.update_attribute :head_of_program_is_approving, false
+        FactoryBot.create :admin
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
           select "approved", from: 'committee_member_status'
@@ -123,9 +124,24 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         click_button 'Submit Review'
         sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
+        expect(WorkflowMailer.deliveries.count).to eq 1
+      end
+
+      it "moves forward in process if accepted when head of program is not approving but does not send email" do
+        submission.degree.degree_type.approval_configuration.update_attributes head_of_program_is_approving: false, email_admins: false, email_authors: false
+        FactoryBot.create :admin
+        visit approver_path(committee_member)
+        within("form#edit_committee_member_#{committee_member.id}") do
+          select "approved", from: 'committee_member_status'
+        end
+        click_button 'Submit Review'
+        sleep 3
+        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
+        expect(WorkflowMailer.deliveries.count).to eq 0
       end
 
       it "proceeds to 'waiting for committee review rejected' if rejected" do
+        FactoryBot.create :admin
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
           select "rejected", from: 'committee_member_status'
@@ -133,6 +149,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         click_button 'Submit Review'
         sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
+        expect(WorkflowMailer.deliveries.count).to eq 2
       end
     end
   end
@@ -149,7 +166,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
     let(:submission) { FactoryBot.create :submission, :waiting_for_head_of_program_review, author: author, degree: degree }
     let(:committee_member) { FactoryBot.create :committee_member, submission: submission, access_id: 'approverflow' }
     let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
-    let(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0 }
+    let(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, email_admins: true }
     let(:head_role) { CommitteeRole.find_by(name: 'Head/Chair of Graduate Program', degree_type: submission.degree.degree_type) }
     let(:head_of_program) { FactoryBot.create :committee_member, :required, submission: submission, committee_role: head_role, access_id: 'approverflow' }
 
@@ -244,6 +261,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         it "proceeds to 'waiting for final submission response' if approved" do
           skip 'Graduate only' unless current_partner.graduate?
 
+          FactoryBot.create :admin
           visit approver_path(head_of_program)
           within("form#edit_committee_member_#{head_of_program.id}") do
             select "approved", from: 'committee_member_status'
@@ -251,11 +269,13 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
           click_button 'Submit Review'
           sleep 3
           expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
+          expect(WorkflowMailer.deliveries.count).to eq 1
         end
 
         it "proceeds to 'waiting for committee review rejected' if rejected" do
           skip 'Graduate only' unless current_partner.graduate?
 
+          FactoryBot.create :admin
           visit approver_path(head_of_program)
           within("form#edit_committee_member_#{head_of_program.id}") do
             select "rejected", from: 'committee_member_status'
@@ -263,6 +283,22 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
           click_button 'Submit Review'
           sleep 3
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
+          expect(WorkflowMailer.deliveries.count).to eq 2
+        end
+
+        it "proceeds to 'waiting for committee review rejected' if rejected but doesn't send emails" do
+          skip 'Graduate only' unless current_partner.graduate?
+
+          FactoryBot.create :admin
+          approval_configuration.update_attributes email_admins: false, email_authors: false
+          visit approver_path(head_of_program)
+          within("form#edit_committee_member_#{head_of_program.id}") do
+            select "rejected", from: 'committee_member_status'
+          end
+          click_button 'Submit Review'
+          sleep 3
+          expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
+          expect(WorkflowMailer.deliveries.count).to eq 0
         end
       end
     end
