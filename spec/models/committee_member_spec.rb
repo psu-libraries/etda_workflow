@@ -206,4 +206,18 @@ RSpec.describe CommitteeMember, type: :model do
       end
     end
   end
+
+  context 'committee_role_id' do
+    it 'creates a committee_member_token if special committee member' do
+      submission = FactoryBot.create(:submission)
+      committee_role =  FactoryBot.create(:committee_role, name: 'Special Member')
+      committee_role.save!
+      committee_member1 = described_class.create(committee_role_id: committee_role.id, name: "I am " + I18n.t("#{current_partner.id}.committee.special_role"), email: 'advisor@psu.edu', submission_id: submission.id)
+      committee_member1.save!
+      committee_member2 = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am " + I18n.t("#{current_partner.id}.committee.special_role"), email: 'advisor@psu.edu', submission_id: submission.id)
+      committee_member2.save!
+      expect(described_class.find(committee_member1.id).committee_member_token).not_to be_nil
+      expect(described_class.find(committee_member2.id).committee_member_token).to be_nil
+    end
+  end
 end

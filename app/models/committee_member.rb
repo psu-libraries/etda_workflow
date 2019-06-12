@@ -101,4 +101,13 @@ class CommitteeMember < ApplicationRecord
     self[:email] = new_email
     self.access_id = email.gsub('@psu.edu', '').strip if email.match?(/.*@psu.edu/)
   end
+
+  def committee_role_id=(new_committee_role_id)
+    self[:committee_role_id] = new_committee_role_id
+    if CommitteeRole.find(new_committee_role_id).name == 'Special Member' || CommitteeRole.find(new_committee_role_id).name == 'Special Signatory'
+      token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)
+      self.committee_member_token = token
+      self.committee_member_token.save!
+    end
+  end
 end
