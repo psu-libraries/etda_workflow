@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   ## works: get '/committee_members/autocomplete', to: 'ldap_lookup#autocomplete', as: :committee_members_autocomplete
   get '/committee_members/autocomplete', to: 'application#autocomplete', as: :committee_members_autocomplete
 
+  get '/special_committee/:authentication_token', to: 'special_committee#main', as: :special_committee_main
+
   namespace :admin do
     resources :admins, except: [:index, :show]
     resources :degrees, except: [:show, :destroy]
