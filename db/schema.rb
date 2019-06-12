@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190612142613) do
+ActiveRecord::Schema.define(version: 20190612163852) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "access_id", default: "", null: false
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 20190612142613) do
     t.bigint "committee_member_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "token_created_on"
     t.index ["committee_member_id"], name: "index_committee_member_tokens_on_committee_member_id"
   end
 
