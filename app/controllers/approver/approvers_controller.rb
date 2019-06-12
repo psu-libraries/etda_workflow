@@ -7,7 +7,7 @@ class Approver::ApproversController < ApproverController
   def edit
     @committee_member = CommitteeMember.find(params[:id])
     @submission = @committee_member.submission
-    @review_complete = SubmissionStatus.new(@submission).beyond_waiting_for_committee_review?
+    @review_complete = SubmissionStatus.new(@submission).beyond_waiting_for_head_of_program_review?
     @approved = SubmissionStatus.new(@submission).beyond_waiting_for_committee_review_rejected?
     @author = @submission.author
     @most_relevant_file_links = most_relevant_file_links
@@ -32,7 +32,7 @@ class Approver::ApproversController < ApproverController
     @committee_member = CommitteeMember.find(params[:id])
     @submission = @committee_member.submission
     redirect_to '/404' if @approver.nil? || current_approver.nil?
-    redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member) && @submission.status_behavior.waiting_for_committee_review?
+    redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member) && (@submission.status_behavior.waiting_for_committee_review? || @submission.status_behavior.waiting_for_head_of_program_review?)
   end
 
   def download_final_submission

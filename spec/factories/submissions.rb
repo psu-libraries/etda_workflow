@@ -67,6 +67,10 @@ FactoryBot.define do
       status { "waiting for committee review" }
     end
 
+    trait :waiting_for_head_of_program_review do
+      status { "waiting for head of program review" }
+    end
+
     trait :waiting_for_committee_review_rejected do
       status { "waiting for committee review rejected" }
     end

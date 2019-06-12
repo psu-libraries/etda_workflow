@@ -37,6 +37,11 @@ class CommitteeMember < ApplicationRecord
     CommitteeMember.where(submission_id: submission_id).pluck(:committee_role_id, :is_required, :name, :email)
   end
 
+  def self.head_of_program(submission_id)
+    @submission = Submission.find(submission_id)
+    CommitteeMember.where(submission: @submission).find_by(committee_role: CommitteeRole.find_by(name: 'Head/Chair of Graduate Program', degree_type: @submission.degree.degree_type))
+  end
+
   def validate_committee_member
     starting_count = errors.count
     errors.add(:name, "Name can't be blank") if name.blank?

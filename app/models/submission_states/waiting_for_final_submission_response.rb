@@ -9,7 +9,7 @@ module SubmissionStates
     end
 
     def status_date(submission)
-      submission.committee_review_accepted_at
+      submission.head_of_program_review_accepted_at || submission.committee_review_accepted_at
     end
   end
 end

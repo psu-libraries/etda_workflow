@@ -8,6 +8,7 @@ module SubmissionStates
       WaitingForPublicationRelease.name => WaitingForPublicationRelease.new,
       WaitingForFinalSubmissionResponse.name => WaitingForFinalSubmissionResponse.new,
       WaitingForCommitteeReview.name => WaitingForCommitteeReview.new,
+      WaitingForHeadOfProgramReview.name => WaitingForHeadOfProgramReview.new,
       WaitingForCommitteeReviewRejected.name => WaitingForCommitteeReviewRejected.new,
       CollectingFinalSubmissionFiles.name => CollectingFinalSubmissionFiles.new,
       CollectingFinalSubmissionFilesRejected.name => CollectingFinalSubmissionFilesRejected.new,
