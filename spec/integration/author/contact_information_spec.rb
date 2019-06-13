@@ -22,7 +22,7 @@ RSpec.describe "Manage Contact Information", js: true do
       expect(page).to have_content(author.last_name)
       expect(page).to have_content(author.first_name)
       expect(page).to have_content(author.middle_name)
-      expect(page).to have_unchecked_field(author.opt_out_email) if current_partner.graduate?
+      expect(page).to have_checked_field(author.opt_out_email) if current_partner.graduate?
       if current_partner.graduate?
         expect(page).to have_field('Phone number')
         expect(page).to have_field('Address 1')
@@ -38,6 +38,7 @@ RSpec.describe "Manage Contact Information", js: true do
       expect(page).to have_link('Cancel')
       click_button('Save')
       sleep(5)
+      expect(Author.find(author.id).opt_out_email).to eq true
       expect(page).to have_current_path(author_root_path)
       sleep(3)
       # expect(page).to have_content('Contact information updated successfully')
