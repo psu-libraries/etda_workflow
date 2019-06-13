@@ -1,1 +1,12 @@
-<p><%= @token %></p>
+<div id="main-page" class="col-sm-12">
+  <div id="content-container" class="nav nav-pills">
+    <div class="h2">New to Penn State?</div>
+    <p class="hint">You must create a Penn State account, which is your digital identity to authenticate and approve of ETDs.</p>
+    <li><%= link_to "Create Your Penn State Account", "https://accounts.psu.edu/create/new", class: "btn btn-main" %></li>
+  </div>
+</br>
+  <div id="content-container" class="nav nav-pills">
+    <div id="content-container" class="h2">Already have a PSU OneID or completed your application?</div>
+    <li><%= link_to "Proceed to Approval Page", main_page_path, class: "btn btn-main" %></li>
+  </div>
+</div>

@@ -38,6 +38,12 @@ RSpec.describe ApplicationController, type: :controller do
     end
   end
 
+  describe 'special committee page' do
+    it 'displays the committee page' do
+      expect(get: '/special_committee/1').to route_to(controller: 'special_committee', action: 'main', authentication_token: '1')
+    end
+  end
+
   describe 'login methods' do
     describe '#destroy' do
       it 'redirects to the central logout page and destroy the cookie' do
