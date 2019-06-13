@@ -3,6 +3,6 @@ class ApproverAbility
   def initialize(approver, _committee_member_id)
     return if approver.blank?
 
-    can [:view, :read, :edit], CommitteeMember, access_id: approver.access_id
+    can [:view, :read, :edit], CommitteeMember, approver_id: approver.id
   end
 end

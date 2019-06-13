@@ -23,6 +23,8 @@ Rails.application.routes.draw do
 
   get '/special_committee/:authentication_token', to: 'special_committee#main', as: :special_committee_main
 
+  post '/special_committee/:authentication_token/advance_to_reviews', to: 'special_committee#advance_to_reviews', as: :advance_to_reviews
+
   namespace :admin do
     resources :admins, except: [:index, :show]
     resources :degrees, except: [:show, :destroy]
