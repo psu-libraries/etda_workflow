@@ -71,6 +71,7 @@ Metrics/ClassLength:
   - app/models/ldap_result.rb
   - app/services/submission_release_service.rb
   - app/models/submission_status.rb
+  - app/mailers/workflow_mailer.rb
 
 
 Metrics/CyclomaticComplexity:

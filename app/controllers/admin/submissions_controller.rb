@@ -235,7 +235,7 @@ class Admin::SubmissionsController < AdminController
     @committee_member = @submission.committee_members.find(params[:committee_member_id])
     raise 'Email was not sent.' unless @committee_member.reminder_email_authorized?
 
-    if @committee_member.commitee_role.name == 'Special Member' || @committee_member.commitee_role.name == 'Special Signatory'
+    if @committee_member.committee_role.name == 'Special Member' || @committee_member.committee_role.name == 'Special Signatory'
       WorkflowMailer.special_committee_review_request(@submission, @committee_member).deliver
     else
       WorkflowMailer.committee_member_review_reminder(@submission, @committee_member).deliver
