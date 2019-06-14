@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
 class Approver::ApproversController < ApproverController
-  before_action :verify_approver, except: :download_final_submission
+  before_action :verify_approver, except: [:download_final_submission, :index]
   include ActionView::Helpers::UrlHelper
+
+  def index
+    @approver = Approver.find_by(access_id: current_approver.access_id)
+    @committee_members = @approver.committee_members
+  end
 
   def edit
     @committee_member = CommitteeMember.find(params[:id])

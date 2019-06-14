@@ -1,19 +1,32 @@
 class SpecialCommitteeController < ApplicationController
+  before_action :authenticate_and_redirect
 
   layout 'home'
 
   def main
-    @token = params[:authentication_token]
   end
 
   def advance_to_reviews
-    committee_member = CommitteeMemberToken.find_by(authentication_token: params[:authentication_token]).committee_member
-    return redirect_to '401' unless committee_member
+    committee_member_token = CommitteeMemberToken.find_by(authentication_token: params[:authentication_token])
+    return redirect_to '/401' unless committee_member_token
 
+    marry_via_token(committee_member_token)
+    redirect_to approver_approver_reviews_path
+  end
+
+  private
+
+  def marry_via_token(committee_member_token)
+    committee_member = committee_member_token.committee_member
     approver = Approver.find_by(access_id: current_remote_user)
     approver.committee_members << committee_member
     approver.save!
-    #TODO redirect to /reviews landing
-    redirect_to approver_path(committee_member)
+    CommitteeMemberToken.find(committee_member_token.id).destroy
+  end
+
+  def authenticate_and_redirect
+    return unless current_remote_user
+
+    redirect_to approver_approver_reviews_path
   end
 end
