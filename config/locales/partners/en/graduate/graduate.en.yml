@@ -60,6 +60,19 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
+        special_committee_review_requested:
+          message: |
+                    Thanks for being part of the Committee for {Student Name}.
+                    In order to proceed and provide input on their work please follow this link:
+                    etda.libraries.psu.edu/special_committee/%{token}
+                    or you can copy and paste this into your browser.
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
         committee_member_review_reminder:
           message: |
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
