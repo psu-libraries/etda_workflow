@@ -15,7 +15,7 @@ RSpec.describe "Editing approval configuration", js: true do
     expect(page).to have_content('Committee approval method')
     expect(page).to have_content('Rejections permitted*')
     expect(page).not_to have_content('Percentage for approval*')
-    expect(page).to have_content('Require approval from head of graduate program after committee approval?') if current_partner.graduate?
+    expect(page).to have_content('Require approval from head of graduate program?') if current_partner.graduate?
     expect(page).to have_content('Email admins')
     expect(page).to have_content('Email authors')
     expect(page).to have_button('Update Approval Configuration')
@@ -35,8 +35,8 @@ RSpec.describe "Editing approval configuration", js: true do
     find('#approval_configuration_use_percentage_true').click
     fill_in 'Percentage for approval*', with: 80
     find('#approval_configuration_head_of_program_is_approving_false').click if current_partner.graduate?
-    find('#approval_configuration_email_admins').click
-    find('#approval_configuration_email_authors').click
+    find('#approval_configuration_email_admins_true').click
+    find('#approval_configuration_email_authors_true').click
     click_on 'Update Approval Configuration'
     sleep 3
     expect(page).to have_content('Manage Approval Configurations')

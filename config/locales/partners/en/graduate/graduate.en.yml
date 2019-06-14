@@ -85,19 +85,21 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
-        committee_member_review_complete:
+        committee_review_complete:
           message: |
-                    Your eTD has been reviewed by %{committee_member_name} and was %{committee_member_status}. Remember, your final submission is not
-                    complete until all of your committee members have finished their review.
+                    Your eTD has been reviewed and was approved. Your final submission will now be reviewed by administrators before finalized.
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:
                     Office of Theses and Dissertations
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
-        committee_member_rejected:
+        committee_rejected_admin:
           message: |
-                    %{committee_member_name} has rejected the %{degree_type} submitted by %{author_name}
+                    The committee for %{author_name}'s %{degree_type} has rejected their submission.  It is now under review by administrators.
+        committee_rejected_author:
+          message: |
+                    The committee reviewing your %{degree_type} has rejected your submission.  It is now under review by administrators.
         final_submission_approved:
           message: |
                     Your eTD has been reviewed and approved. Everything is in order, and you need do nothing further for our office.

@@ -31,7 +31,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
 
     it 'can see other committee members reviews' do
-      expect(page).to have_link('Committee Member Reviews')
+      expect(page).to have_content('Committee Member Reviews')
     end
 
     it 'can download final file submission' do
@@ -47,7 +47,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     it 'can edit status and notes' do
       allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
       within("form#edit_committee_member_#{committee_member.id}") do
-        select "approved", from: 'committee_member_status'
+        find(:css, "#committee_member_status_approved").set true
         fill_in "committee_member_notes", with: 'Some notes.'
       end
       click_button 'Submit Review'
@@ -107,6 +107,41 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
       visit "approver/committee_member/#{committee_member.id}"
       expect(page).to have_current_path('/401')
+    end
+  end
+
+  context 'access level help text' do
+    before do
+      allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
+    end
+
+    let(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow' }
+
+    context 'submission is open access' do
+      it "doesn't display help text" do
+        submission.update_attribute :access_level, 'open_access'
+        visit "approver/committee_member/#{committee_member.id}"
+
+        expect(page).not_to have_content("Notice: This submission's access level is")
+      end
+    end
+
+    context 'submission is restricted' do
+      it "does display help text" do
+        submission.update_attribute :access_level, 'restricted'
+        visit "approver/committee_member/#{committee_member.id}"
+
+        expect(page).to have_content("Notice: This submission's access level is")
+      end
+    end
+
+    context 'submission is restricted_to_institution' do
+      it "does display help text" do
+        submission.update_attribute :access_level, 'restricted_to_institution'
+        visit "approver/committee_member/#{committee_member.id}"
+
+        expect(page).to have_content("Notice: This submission's access level is")
+      end
     end
   end
 end

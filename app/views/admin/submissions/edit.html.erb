@@ -27,6 +27,9 @@
     <%= render partial: "admin/submissions/edit_form_actions/#{@view.actions_partial_name}", locals: { f: f } %>
     <%= link_to "Cancel", @view.cancellation_path, class: 'btn cancel-link' %>
   </div>
+  <div>
+    <%= link_to "View Printable Audit", admin_submission_audit_path(@submission.id), class: 'link' %>
+  </div>
 
 
 <% end %>
