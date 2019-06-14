@@ -169,7 +169,7 @@ RSpec.describe Submission, type: :model do
       end
     end
 
-    context 'using lionpath?' do
+    context 'using lionpath?', lionpath: true do
       it 'knows when lion_path integration is being used' do
         author = Author.new
         author.inbound_lion_path_record = nil
