@@ -1,5 +1,5 @@
 class SpecialCommitteeController < ApplicationController
-  before_action :authenticate_and_redirect
+  before_action :authenticate_and_redirect, except: :advance_to_reviews
 
   layout 'home'
 
