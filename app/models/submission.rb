@@ -324,7 +324,11 @@ class Submission < ApplicationRecord
 
   def initial_committee_member_emails(voting_committee_members)
     voting_committee_members.each do |committee_member|
-      WorkflowMailer.committee_member_review_request(self, committee_member).deliver
+      if committee_member.commitee_role.name == 'Special Member' || committee_member.commitee_role.name == 'Special Signatory'
+        WorkflowMailer.special_committee_review_request(self, committee_member).deliver
+      else
+        WorkflowMailer.committee_member_review_request(self, committee_member).deliver
+      end
       CommitteeReminderWorker.perform_in(10.days, [id, committee_member.id])
     end
   end

@@ -232,8 +232,13 @@ class Admin::SubmissionsController < AdminController
 
   def send_email_reminder
     @submission = Submission.find(params[:id])
-    raise 'Email was not sent.' unless @submission.committee_members.find(params[:committee_member_id]).reminder_email_authorized?
+    @committee_member = @submission.committee_members.find(params[:committee_member_id])
+    raise 'Email was not sent.' unless @committee_member.reminder_email_authorized?
 
-    WorkflowMailer.committee_member_review_reminder(@submission, @submission.committee_members.find(params[:committee_member_id])).deliver
+    if @committee_member.commitee_role.name == 'Special Member' || @committee_member.commitee_role.name == 'Special Signatory'
+      WorkflowMailer.special_committee_review_request(@submission, @committee_member).deliver
+    else
+      WorkflowMailer.committee_member_review_reminder(@submission, @committee_member).deliver
+    end
   end
 end
