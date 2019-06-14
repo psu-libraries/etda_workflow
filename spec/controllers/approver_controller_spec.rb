@@ -17,13 +17,4 @@ RSpec.describe ApproverController, type: :controller do
       expect(response.status).to eq(200)
     end
   end
-
-  # describe 'private' do
-  #   let(:request) { double(headers: { 'HTTP_REMOTE_USER' => 'authorflow', 'REQUEST_URI' => '/' }) }
-  #   it 'executes a private method' do
-  #     allow(request).to receive(:env).and_return(:headers)
-  #
-  #     expect(@author_controller.send(:find_or_initialize_author)).to render_template('author/index')
-  #   end
-  # end
 end

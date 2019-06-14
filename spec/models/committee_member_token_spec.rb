@@ -11,6 +11,7 @@ RSpec.describe CommitteeMemberToken, type: :model do
 
   context 'when authentication_token changes' do
     let(:committee_member_token) { FactoryBot.create :committee_member_token, token_created_on: Date.yesterday }
+
     it 'updates token_created_on' do
       expect(committee_member_token.token_created_on).to eq Date.yesterday
       committee_member_token.update_attribute :authentication_token, '123fds654'

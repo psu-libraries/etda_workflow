@@ -5,6 +5,6 @@ class CommitteeMemberToken < ApplicationRecord
 
   def authentication_token=(new_token)
     self[:authentication_token] = new_token
-    self.token_created_on = Date.today unless new_token.blank?
+    self.token_created_on = Date.today if new_token.present?
   end
 end

@@ -3,7 +3,7 @@ class Approver < ApplicationRecord
 
   devise :webaccess_authenticatable, :rememberable, :trackable, :registerable
 
-  has_many :committee_members
+  has_many :committee_members, dependent: :nullify
 
   validates :access_id, presence: true, uniqueness: true
 

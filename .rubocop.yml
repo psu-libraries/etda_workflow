@@ -247,6 +247,7 @@ RSpec/VerifiedDoubles:
     - 'spec/models/format_review_files_spec.rb'
     - 'spec/controllers/author_controller_spec.rb'
     - 'spec/controllers/admin_controller_spec.rb'
+    - 'spec/controllers/approver_controller_spec.rb'
 
 RSpec/NestedGroups:
   Enabled: false
