@@ -1,29 +1,62 @@
 <%= simple_form_for [:admin, @approval_configuration] do |f| %>
-    <%= f.input :approval_deadline_on, required: true %>
-    <%= f.input :use_percentage, as: :radio_buttons,
-                collection: [['Percentage of approvals', true], ['Number of rejections', false]],
-                wrapper: :vertical_radio_and_checkboxes,
-                label: 'Committee approval method'.html_safe %>
-    <%= f.input :configuration_threshold, required: true, label: "Rejections permitted*" %>
-    <% if current_partner.graduate? %>
-    <%= f.input :head_of_program_is_approving, as: :radio_buttons,
-                collection: [['Yes', true], ['No', false]],
-                wrapper: :vertical_radio_and_checkboxes,
-                label: 'Require approval from head of graduate program after committee approval?'.html_safe %>
-    <% end %>
-  <hr>
-
   <div class="row">
-    <div class="col-sm-2">
-      <%= f.input :email_admins, :as => :boolean, :label => false, :inline_label => true %>
-    </div>
-    <div class="col-sm-2">
-      <%= f.input :email_authors, :as => :boolean, :label => false, :inline_label => true %>
+    <div class="col-sm-12">
+      <%= f.input :approval_deadline_on, required: true %>
     </div>
   </div>
 
   <div class="row">
-    <div class="form-group actions col-xs-4">
+    <div class="col-sm-12">
+      <%= f.label :use_percentage, 'Committee approval method' %>
+      <%= f.input :use_percentage, as: :radio_buttons,
+                  collection: [['Percentage of approvals', true], ['Number of rejections', false]],
+                  wrapper: :vertical_radio_and_checkboxes,
+                  label: false %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <%= f.input :configuration_threshold, required: true, label: "Rejections permitted*" %>
+    </div>
+  </div>
+
+  <% if current_partner.graduate? %>
+    <div class="row">
+      <div class="col-sm-12">
+      <%= f.label :email_admins, 'Require approval from head of graduate program?' %>
+      <p class="hint">*After the committee approves, the head of the graduate program must then approve for the submission to proceed.</p>
+      <%= f.input :head_of_program_is_approving, as: :radio_buttons,
+                  collection: [['Yes', true], ['No', false]],
+                  wrapper: :vertical_radio_and_checkboxes,
+                  label: false %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <%= f.label :email_admins, 'Email admins' %>
+      <p class="hint">*Allow emails to be sent to admins when a committee rejects a submission.</p>
+      <%= f.input :email_admins, as: :radio_buttons,
+                   collection: [['Yes', true], ['No', false]],
+                   wrapper: :vertical_radio_and_checkboxes,
+                   label: false %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <%= f.label :email_authors, 'Email authors' %>
+      <p class="hint">*Allow emails to be sent to authors when a committee rejects or approves their submission.</p>
+      <%= f.input :email_authors, as: :radio_buttons,
+                  collection: [['Yes', true], ['No', false]],
+                  wrapper: :vertical_radio_and_checkboxes,
+                  label: false %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group actions">
       <%= f.button :submit, 'Update Approval Configuration', class: 'btn btn-success' %>
       <%= link_to "Cancel", admin_approval_configurations_path, class: 'admin btn cancel-link' %>
     </div>

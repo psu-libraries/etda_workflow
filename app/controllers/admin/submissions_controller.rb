@@ -39,6 +39,11 @@ class Admin::SubmissionsController < AdminController
     @view = Admin::SubmissionsIndexView.new(params[:degree_type], params[:scope], view_context)
   end
 
+  def audit
+    @submission = Submission.find(params[:id])
+    @author = @submission.author
+  end
+
   def bulk_destroy
     # return_path = request.referer
     ids = params[:submission_ids].split(',')
