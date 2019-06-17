@@ -220,6 +220,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "has desired content" do
+      expect(email.body).to match(/\/approver\/reviews/)
       expect(email.body).to match(/Reminder:/)
     end
   end
@@ -241,7 +242,8 @@ RSpec.describe WorkflowMailer do
     end
 
     it "has desired content" do
-      expect(email.body).to match(/Thanks for being part/)
+      expect(email.body).to match(/\/special_committee\/#{commmittee_member_token.authentication_token.to_s}/) if current_partner.graduate?
+      expect(email.body).to match(/Thanks for being part/) if current_partner.graduate?
     end
   end
 end
