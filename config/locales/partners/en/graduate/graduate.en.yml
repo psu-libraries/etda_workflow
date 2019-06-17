@@ -64,7 +64,7 @@ en:
           message: |
                     Thanks for being part of the Committee for {Student Name}.
                     In order to proceed and provide input on their work please follow this link:
-                    etda.libraries.psu.edu/special_committee/%{token}
+                    %{review_url}
                     or you can copy and paste this into your browser.
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.

@@ -73,6 +73,7 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @committee_member = committee_member
     @author = submission.author
+    @review_url = "#{EtdUrls.new.workflow}/approver/reviews"
 
     @committee_member.update_last_reminder_at DateTime.now
 
@@ -86,6 +87,7 @@ class WorkflowMailer < ActionMailer::Base
     @committee_member = committee_member
     @token = committee_member.committee_member_token.authentication_token
     @author = submission.author
+    @review_url = "#{EtdUrls.new.workflow}/special_committee/#{@token}"
 
     @committee_member.update_last_reminder_at DateTime.now
 
@@ -98,6 +100,7 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @committee_member = committee_member
     @author = submission.author
+    @review_url = "#{EtdUrls.new.workflow}/approver/reviews"
 
     @committee_member.update_last_reminder_at DateTime.now
 
