@@ -38,7 +38,6 @@ RSpec.describe "Manage Contact Information", js: true do
       expect(page).to have_link('Cancel')
       click_button('Save')
       sleep(5)
-      expect(Author.find(author.id).opt_out_email).to eq true if current_partner.graduate?
       expect(page).to have_current_path(author_root_path)
       sleep(3)
       # expect(page).to have_content('Contact information updated successfully')
