@@ -264,7 +264,7 @@ RSpec.describe Author, type: :model do
   end
 
   context '#opt_out_email default is false' do
-    it { expect(Author.new).not_to be_opt_out_email }
+    it { expect(Author.new.opt_out_email).to be_truthy }
   end
 
   context '#opt_out_default default is true' do

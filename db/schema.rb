@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180405192533) do
+ActiveRecord::Schema.define(version: 20190617172357) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string "access_id", default: "", null: false
@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 20180405192533) do
     t.integer "legacy_id"
     t.boolean "confidential_hold"
     t.datetime "confidential_hold_set_at"
-    t.boolean "opt_out_email", default: false
+    t.boolean "opt_out_email", default: true
     t.boolean "opt_out_default", default: true
     t.index ["access_id"], name: "index_authors_on_access_id", unique: true
     t.index ["legacy_id"], name: "index_authors_on_legacy_id"

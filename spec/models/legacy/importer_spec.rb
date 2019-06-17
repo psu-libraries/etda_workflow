@@ -11,7 +11,7 @@ RSpec.describe Legacy::Importer do
     DegreeType.all.each(&:destroy)
   end
 
-  it 'creates database from legacy records' do
+  xit 'creates database from legacy records' do
     legacy_authors = legacy_data.author
     expect(Author.all.count).to eq(0)
     importer = described_class.new(legacy_authors)
