@@ -25,7 +25,6 @@ RSpec.describe EtdUrls, type: :model do
     end
   end
 
-
   context '#popup' do
     it 'graduate and honors are blank' do
       expect(described_class.new.popup).to be_blank unless current_partner.milsch?
