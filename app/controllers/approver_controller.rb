@@ -6,14 +6,14 @@ class ApproverController < ApplicationController
   Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
   before_action :clear_approver
-  before_action :authenticate_or_redirect
   before_action :find_or_initialize_approver
+  before_action :authenticate_or_redirect
 
   protected
 
   def find_or_initialize_approver
     @approver = Approver.find_or_initialize_by(access_id: current_approver.access_id)
-    session[:access_id] = @approver.access_id
+    session[:user_name] = @approver.access_id
     approver_ability
     # Rails.logger.info "current_approver = #{current_approver.inspect}"
     # redirect to login_path if @approver.nil?
