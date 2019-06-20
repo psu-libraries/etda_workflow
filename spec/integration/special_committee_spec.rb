@@ -9,7 +9,7 @@ RSpec.describe 'Special committee page', type: :integration, js: true do
     visit '/special_committee/1'
     expect(page).to have_content('New to Penn State?')
     expect(page).to have_link('Create Your Penn State Account', href: 'https://accounts.psu.edu/create/new')
-    expect(page).to have_content('Already have a PSU OneID or completed your application?')
+    expect(page).to have_content('Already have or created a Penn State OneID account?')
     expect(page).to have_link('Proceed to ETD Submission Reviews Page')
   end
 
@@ -40,7 +40,18 @@ RSpec.describe 'Special committee page', type: :integration, js: true do
     find(:xpath, "//a[@href='/special_committee/1/advance_to_reviews']").click
     sleep 3
     expect(Approver.find_by(access_id: 'approverflow').committee_members.count).to eq 1
+    expect { CommitteeMemberToken.find(committee_member_token.id) }.to raise_error ActiveRecord::RecordNotFound
     expect(page).to have_current_path(approver_approver_reviews_path)
     expect(page).to have_link(submission.title)
+  end
+
+  it 'does not marry an approver and committee member record via token when clicking advance button' do
+    visit '/special_committee/1'
+    find(:xpath, "//a[@href='/special_committee/1/advance_to_reviews']").click
+    sleep 3
+    expect { Approver.find_by(access_id: 'approverflow').committee_members.count }.to raise_error NoMethodError
+    expect(CommitteeMemberToken.find(committee_member_token.id)).to eq committee_member_token
+    expect(page).to have_current_path('/special_committee/1')
+    expect(page).to have_content('Please create a OneID account and login first.')
   end
 end

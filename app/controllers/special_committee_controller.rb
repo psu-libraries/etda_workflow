@@ -11,7 +11,6 @@ class SpecialCommitteeController < ApplicationController
     return redirect_to approver_approver_reviews_path unless committee_member_token
 
     marry_via_token(committee_member_token)
-    redirect_to approver_approver_reviews_path
   end
 
   private
@@ -23,7 +22,6 @@ class SpecialCommitteeController < ApplicationController
     return redirect_to approver_approver_reviews_path unless committee_member_token
 
     marry_via_token(committee_member_token)
-    redirect_to approver_approver_reviews_path
   end
 
   def marry_via_token(committee_member_token)
@@ -32,5 +30,9 @@ class SpecialCommitteeController < ApplicationController
     approver.committee_members << committee_member
     approver.save!
     CommitteeMemberToken.find(committee_member_token.id).destroy
+    redirect_to approver_approver_reviews_path
+  rescue NoMethodError => e
+    redirect_to special_committee_main_path
+    flash[:alert] = 'Please create a OneID account and login first.  If you already have an account, you can login by clicking the button at the top right of the screen.'
   end
 end
