@@ -51,7 +51,5 @@ RSpec.describe 'Special committee page', type: :integration, js: true do
     sleep 3
     expect { Approver.find_by(access_id: 'approverflow').committee_members.count }.to raise_error NoMethodError
     expect(CommitteeMemberToken.find(committee_member_token.id)).to eq committee_member_token
-    expect(page).to have_current_path('/special_committee/1')
-    expect(page).to have_content('Please create a OneID account and login first.')
   end
 end
