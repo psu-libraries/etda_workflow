@@ -73,6 +73,21 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @committee_member = committee_member
     @author = submission.author
+    @review_url = "#{EtdUrls.new.workflow}/approver/reviews"
+
+    @committee_member.update_last_reminder_at DateTime.now
+
+    mail to: @committee_member.email,
+         from: current_partner.email_address,
+         subject: "#{@submission.degree_type} Review Requested"
+  end
+
+  def special_committee_review_request(submission, committee_member)
+    @submission = submission
+    @committee_member = committee_member
+    @token = committee_member.committee_member_token.authentication_token
+    @author = submission.author
+    @review_url = "#{EtdUrls.new.workflow}/special_committee/#{@token}"
 
     @committee_member.update_last_reminder_at DateTime.now
 
@@ -85,6 +100,7 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @committee_member = committee_member
     @author = submission.author
+    @review_url = "#{EtdUrls.new.workflow}/approver/reviews"
 
     @committee_member.update_last_reminder_at DateTime.now
 
@@ -93,26 +109,31 @@ class WorkflowMailer < ActionMailer::Base
          subject: "REMINDER: #{@submission.degree_type} Review Requested"
   end
 
-  def committee_member_review_complete(submission, committee_member, mailer_base_url)
+  def committee_review_complete(submission)
     @submission = submission
-    @committee_member = committee_member
     @author = submission.author
-    @mailer_base_url = mailer_base_url
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
-         subject: "#{@committee_member.name} has reviewed your #{@submission.degree_type}"
+         subject: "Your #{@submission.degree_type} has been approved by its committee"
   end
 
-  def committee_member_rejected(submission, committee_member, admin, mailer_base_url)
+  def committee_rejected_author(submission)
     @submission = submission
-    @committee_member = committee_member
+    @author = submission.author
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "Your #{@submission.degree_type} has been rejected by its committee"
+  end
+
+  def committee_rejected_admin(submission, admin)
+    @submission = submission
     @admin = admin
     @author = submission.author
-    @mailer_base_url = mailer_base_url
 
     mail to: @admin.psu_email_address,
          from: current_partner.email_address,
-         subject: "#{@committee_member.name} has rejected a #{@submission.degree_type}"
+         subject: "A #{@submission.degree_type} has been rejected by its committee"
   end
 end

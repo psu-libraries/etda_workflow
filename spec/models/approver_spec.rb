@@ -12,6 +12,7 @@ RSpec.describe Approver, type: :model do
   it { is_expected.to have_db_column(:last_sign_in_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:current_sign_in_ip).of_type(:string) }
   it { is_expected.to have_db_column(:last_sign_in_ip).of_type(:string) }
+  it { is_expected.to have_many :committee_members }
 
   it { is_expected.to validate_uniqueness_of(:access_id) }
   it { is_expected.to validate_presence_of(:access_id) }

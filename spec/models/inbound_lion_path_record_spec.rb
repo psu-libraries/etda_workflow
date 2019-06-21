@@ -2,7 +2,7 @@
 
 require 'model_spec_helper'
 
-RSpec.describe InboundLionPathRecord, type: :model do
+RSpec.describe InboundLionPathRecord, type: :model, lionpath: true do
   subject { described_class.new }
 
   it { is_expected.to have_db_column(:author_id).of_type(:integer) }

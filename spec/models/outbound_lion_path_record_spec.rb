@@ -1,5 +1,5 @@
 require 'model_spec_helper'
-RSpec.describe OutboundLionPathRecord, type: :model do
+RSpec.describe OutboundLionPathRecord, type: :model, lionpath: true do
   it { is_expected.to have_db_column(:transaction_id).of_type(:string) }
   it { is_expected.to have_db_column(:status_data).of_type(:text) }
   it { is_expected.to have_db_column(:received).of_type(:boolean) }

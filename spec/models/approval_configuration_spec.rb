@@ -11,6 +11,7 @@ RSpec.describe ApprovalConfiguration, type: :model do
   it { is_expected.to have_db_column(:email_authors).of_type(:boolean) }
   it { is_expected.to have_db_column(:use_percentage).of_type(:boolean) }
   it { is_expected.to have_db_column(:configuration_threshold).of_type(:integer) }
+  it { is_expected.to have_db_column(:head_of_program_is_approving).of_type(:boolean) }
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
 
@@ -38,7 +39,6 @@ RSpec.describe ApprovalConfiguration, type: :model do
 
     it 'is valid' do
       ac.approval_deadline_on = Date.today
-      ac.configuration_threshold = 2
       ac.degree_type_id = degree_type.id
       expect(ac).to be_valid
     end

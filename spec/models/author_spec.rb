@@ -253,7 +253,7 @@ RSpec.describe Author, type: :model do
     end
   end
 
-  context '#academic_plan?' do
+  context '#academic_plan?', lionpath: true do
     it 'returns false if there is no lion path record' do
       author = FactoryBot.create :author
       FactoryBot.create(:inbound_lion_path_record, author: author, current_data: LionPath::MockLionPathRecord.current_data)
@@ -271,7 +271,7 @@ RSpec.describe Author, type: :model do
     it { expect(Author.new.opt_out_default).to be_truthy }
   end
 
-  context '#populate_lion_path_record' do
+  context '#populate_lion_path_record', lionpath: true do
     it 'returns lion_path data for the author' do
       author = FactoryBot.create :author
       expect(author.inbound_lion_path_record).to be_nil

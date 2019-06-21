@@ -15,6 +15,7 @@ RSpec.describe "Editing approval configuration", js: true do
     expect(page).to have_content('Committee approval method')
     expect(page).to have_content('Rejections permitted*')
     expect(page).not_to have_content('Percentage for approval*')
+    expect(page).to have_content('Require approval from head of graduate program?') if current_partner.graduate?
     expect(page).to have_content('Email admins')
     expect(page).to have_content('Email authors')
     expect(page).to have_button('Update Approval Configuration')
@@ -33,14 +34,16 @@ RSpec.describe "Editing approval configuration", js: true do
     select Date.today.day, from: 'approval_configuration_approval_deadline_on_3i'
     find('#approval_configuration_use_percentage_true').click
     fill_in 'Percentage for approval*', with: 80
-    find('#approval_configuration_email_admins').click
-    find('#approval_configuration_email_authors').click
+    find('#approval_configuration_head_of_program_is_approving_false').click if current_partner.graduate?
+    find('#approval_configuration_email_admins_true').click
+    find('#approval_configuration_email_authors_true').click
     click_on 'Update Approval Configuration'
     sleep 3
     expect(page).to have_content('Manage Approval Configurations')
     expect(ApprovalConfiguration.find(approval_configuration.id).approval_deadline_on).to eq Date.today
     expect(ApprovalConfiguration.find(approval_configuration.id).use_percentage).to eq true
     expect(ApprovalConfiguration.find(approval_configuration.id).configuration_threshold).to eq 80
+    expect(ApprovalConfiguration.find(approval_configuration.id).head_of_program_is_approving).to eq false if current_partner.graduate?
     expect(ApprovalConfiguration.find(approval_configuration.id).email_admins).to eq true
     expect(ApprovalConfiguration.find(approval_configuration.id).email_authors).to eq true
   end

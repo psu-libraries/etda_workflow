@@ -21,6 +21,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'Edit Completed Format Review' if status_behavior.collecting_final_submission_files? && !status_behavior.final_submission_rejected?
     return 'Edit Incomplete Final Submission' if status_behavior.collecting_final_submission_files? && status_behavior.final_submission_rejected?
     return 'Waiting for Committee Review' if status_behavior.waiting_for_committee_review?
+    return 'Waiting for Head/Chair Review' if status_behavior.waiting_for_head_of_program_review?
     return 'Committee Review Rejected' if status_behavior.waiting_for_committee_review_rejected?
     return 'Final Submission Evaluation' if status_behavior.waiting_for_final_submission_response?
     return 'Edit Final Submission to be Released' if status_behavior.waiting_for_publication_release?

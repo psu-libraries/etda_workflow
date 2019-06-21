@@ -1,13 +1,18 @@
 # frozen_string_literal: true
 
 class Approver::ApproversController < ApproverController
-  before_action :verify_approver, except: :download_final_submission
+  before_action :verify_approver, except: [:download_final_submission, :index, :special_committee_link]
   include ActionView::Helpers::UrlHelper
+
+  def index
+    @approver = Approver.find_by(access_id: current_approver.access_id)
+    @committee_members = @approver.committee_members
+  end
 
   def edit
     @committee_member = CommitteeMember.find(params[:id])
     @submission = @committee_member.submission
-    @review_complete = SubmissionStatus.new(@submission).beyond_waiting_for_committee_review?
+    @review_complete = SubmissionStatus.new(@submission).beyond_waiting_for_head_of_program_review?
     @approved = SubmissionStatus.new(@submission).beyond_waiting_for_committee_review_rejected?
     @author = @submission.author
     @most_relevant_file_links = most_relevant_file_links
@@ -32,7 +37,7 @@ class Approver::ApproversController < ApproverController
     @committee_member = CommitteeMember.find(params[:id])
     @submission = @committee_member.submission
     redirect_to '/404' if @approver.nil? || current_approver.nil?
-    redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member) && @submission.status_behavior.waiting_for_committee_review?
+    redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member)
   end
 
   def download_final_submission
@@ -49,7 +54,23 @@ class Approver::ApproversController < ApproverController
     @submission = @committee_member.submission
   end
 
+  def special_committee_link
+    @committee_member_token = CommitteeMemberToken.find_by(authentication_token: params[:authentication_token])
+    return redirect_to approver_approver_reviews_path unless @committee_member_token
+
+    marry_via_token(@committee_member_token)
+    redirect_to approver_approver_reviews_path
+  end
+
   private
+
+  def marry_via_token(committee_member_token)
+    committee_member = committee_member_token.committee_member
+    approver = Approver.find_by(access_id: current_remote_user)
+    approver.committee_members << committee_member
+    approver.save!
+    CommitteeMemberToken.find(committee_member_token.id).destroy
+  end
 
   def committee_member_params
     params.require(:committee_member).permit(:notes, :status, :federal_funding_used)

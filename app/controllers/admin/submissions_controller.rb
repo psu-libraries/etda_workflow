@@ -17,7 +17,7 @@ class Admin::SubmissionsController < AdminController
 
   def update
     @submission = Submission.find(params[:id])
-    if @submission.status_behavior.beyond_collecting_format_review_files? && status != 'format review completed'
+    if @submission.status_behavior.beyond_collecting_format_review_files? && @submission.status != 'format review completed'
       submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     else
       submission_update_service = FormatReviewUpdateService.new(params, @submission, current_remote_user)
@@ -37,6 +37,11 @@ class Admin::SubmissionsController < AdminController
   def index
     session[:return_to] = request.referer
     @view = Admin::SubmissionsIndexView.new(params[:degree_type], params[:scope], view_context)
+  end
+
+  def audit
+    @submission = Submission.find(params[:id])
+    @author = @submission.author
   end
 
   def bulk_destroy
@@ -227,8 +232,13 @@ class Admin::SubmissionsController < AdminController
 
   def send_email_reminder
     @submission = Submission.find(params[:id])
-    raise 'Email was not sent.' unless @submission.committee_members.find(params[:committee_member_id]).reminder_email_authorized?
+    @committee_member = @submission.committee_members.find(params[:committee_member_id])
+    raise 'Email was not sent.' unless @committee_member.reminder_email_authorized?
 
-    WorkflowMailer.committee_member_review_reminder(@submission, @submission.committee_members.find(params[:committee_member_id])).deliver
+    if @committee_member.committee_role.name == 'Special Member' || @committee_member.committee_role.name == 'Special Signatory'
+      WorkflowMailer.special_committee_review_request(@submission, @committee_member).deliver
+    else
+      WorkflowMailer.committee_member_review_reminder(@submission, @committee_member).deliver
+    end
   end
 end

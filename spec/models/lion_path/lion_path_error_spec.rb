@@ -1,6 +1,6 @@
 require 'model_spec_helper'
 
-RSpec.describe LionPath::LionPathError, type: :model do
+RSpec.describe LionPath::LionPathError, type: :model, lionpath: true do
   subject = described_class.new({ pe_etd_comm_fault: { emplid: "99999", err_nbr: 400, err_msg: "No valid Academic Plan " } }, access_id = 'xxb13')
 
   context '#error_msg' do

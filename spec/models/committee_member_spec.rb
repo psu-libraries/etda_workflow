@@ -5,6 +5,7 @@ require 'model_spec_helper'
 RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_column(:submission_id).of_type(:integer) }
   it { is_expected.to have_db_column(:committee_role_id).of_type(:integer) }
+  it { is_expected.to have_db_column(:approver_id).of_type(:integer) }
   it { is_expected.to have_db_column(:name).of_type(:string) }
   it { is_expected.to have_db_column(:email).of_type(:string) }
   it { is_expected.to have_db_column(:is_required).of_type(:boolean) }
@@ -23,8 +24,11 @@ RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_index(:committee_role_id) }
   it { is_expected.to have_db_column(:last_reminder_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:is_voting).of_type(:boolean) }
+  it { is_expected.to have_db_index(:approver_id) }
   it { is_expected.to belong_to(:submission).class_name('Submission') }
   it { is_expected.to belong_to(:committee_role).class_name('CommitteeRole') }
+  it { is_expected.to belong_to(:approver).class_name('Approver') }
+  it { is_expected.to have_one(:committee_member_token).class_name('CommitteeMemberToken') }
 
   describe 'defaults' do
     let(:cm) { described_class.new }
@@ -200,6 +204,20 @@ RSpec.describe CommitteeMember, type: :model do
         advisor_member = committee_member.name
         expect(described_class.advisor_name(submission)).to eq(advisor_member)
       end
+    end
+  end
+
+  context 'committee_role_id' do
+    it 'creates a committee_member_token if special committee member' do
+      submission = FactoryBot.create(:submission)
+      committee_role = FactoryBot.create(:committee_role, name: 'Special Member')
+      committee_role.save!
+      committee_member1 = described_class.create(committee_role_id: committee_role.id, name: "I am " + I18n.t("#{current_partner.id}.committee.special_role"), email: 'advisor@psu.edu', submission_id: submission.id)
+      committee_member1.save!
+      committee_member2 = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am " + I18n.t("#{current_partner.id}.committee.special_role"), email: 'advisor@psu.edu', submission_id: submission.id)
+      committee_member2.save!
+      expect(described_class.find(committee_member1.id).committee_member_token).not_to be_nil
+      expect(described_class.find(committee_member2.id).committee_member_token).to be_nil
     end
   end
 end

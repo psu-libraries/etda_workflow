@@ -108,12 +108,13 @@ class Author::SubmissionsController < AuthorController
 
   def update_final_submission
     @submission = find_submission
+    @voting_committee_members = @submission.voting_committee_members
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
     @submission.update_attributes!(final_submission_params)
     @submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
     status_giver.waiting_for_committee_review!
-    # kick off committee emails
+    @submission.initial_committee_member_emails(@voting_committee_members)
     OutboundLionPathRecord.new(submission: @submission).report_status_change
     @submission.update_final_submission_timestamps!(Time.zone.now)
     redirect_to author_root_path
@@ -172,8 +173,13 @@ class Author::SubmissionsController < AuthorController
   end
 
   def send_email_reminder
-    if @submission.committee_members.find(params[:committee_member_id]).reminder_email_authorized?
-      WorkflowMailer.committee_member_review_reminder(@submission, @submission.committee_members.find(params[:committee_member_id])).deliver
+    @committee_member = @submission.committee_members.find(params[:committee_member_id])
+    if @committee_member.reminder_email_authorized?
+      if @committee_member.committee_role.name == 'Special Member' || @committee_member.committee_role.name == 'Special Signatory'
+        WorkflowMailer.special_committee_review_request(@submission, @committee_member).deliver
+      else
+        WorkflowMailer.committee_member_review_reminder(@submission, @committee_member).deliver
+      end
       redirect_to author_submission_committee_review_path(@submission.id)
       flash[:notice] = 'Email successfully sent.'
     else
