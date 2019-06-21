@@ -26,7 +26,7 @@
             <li class="<%= top_nav_active?('about') %>">
               <%= link_to 'About', about_page_path, class: 'btn btn-default navbar-btn' %>
             </li >
-            <% if session[:user_role] == 'author' || session[:user_role] == nil %>
+            <% if session[:user_role] == 'author' || session[:user_role] == 'approver' %>
               <li class="<%= top_nav_active?('email') %>">
               <%= link_to 'Contact Us', author_email_contact_form_new_path, class: 'btn btn-default ' %>
               </li>

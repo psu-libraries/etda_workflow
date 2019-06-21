@@ -9,6 +9,8 @@ class ApproverController < ApplicationController
   before_action :find_or_initialize_approver
   before_action :authenticate_or_redirect
 
+  layout 'approver'
+
   protected
 
   def find_or_initialize_approver

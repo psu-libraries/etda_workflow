@@ -3,7 +3,7 @@
 class Author < ApplicationRecord
   class NotAuthorizedToEdit < StandardError; end
 
-  Devise.add_module(:webacess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
+  Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
   devise :webaccess_authenticatable, :rememberable, :trackable, :registerable
 

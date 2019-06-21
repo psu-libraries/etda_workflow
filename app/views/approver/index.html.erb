@@ -1,57 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<link rel="icon" href="/favicon.ico"/>
-<head>
-  <title>ETDA</title>
-
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-
-  <%= stylesheet_pack_tag 'author', media: 'all' %>
-  <%= javascript_pack_tag 'base' %>
-  <%= javascript_pack_tag 'author' %>
-  <%= csrf_meta_tags %>
-</head>
-<body class="<%= page_classes %>">
-
-<div id="body-container">
-  <%= render 'shared/header' %>
-
-  <main>
-    <div id="content-container" class="container">
-      <%= render partial: 'shared/flash_messages' unless flash.empty? %>
-      <div class="row">
-        <div class="col-xs-12 col-sm-9">
-          <h1>Submission Reviews</h1>
-        </div>
-      </div>
-    </br>
-      <table id="committee_member_table" class="table">
-        <thead>
-        <tr>
-          <th>Submission Title</th>
-          <th>Author</th>
-          <th>Review Started On</th>
-          <th>My Review</th>
-          <th>Submission Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @committee_members.each do |committee_member| %>
-          <% next unless committee_member.submission.final_submission_files_uploaded_at %>
-          <tr>
-            <td><%= link_to committee_member.submission.title, approver_path(committee_member) %></td>
-            <td><%= committee_member.submission.author.first_name %> <%= committee_member.submission.author.last_name %></td>
-            <td><%= committee_member.submission.final_submission_files_uploaded_at.strftime('%m/%d/%Y') %></td>
-            <td><%= committee_member.status.titleize %></td>
-            <td><%= committee_member.submission.status.titleize %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
+<div class="content-container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>Submission Reviews</h1>
     </div>
-  </main>
+  </div>
+  </br>
+  <div class="row">
+    <table id="committee_member_table" class="table">
+      <thead>
+      <tr>
+        <th>Submission Title</th>
+        <th>Author</th>
+        <th>Review Started On</th>
+        <th>My Review</th>
+        <th>Submission Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @committee_members.each do |committee_member| %>
+        <% next unless committee_member.submission.final_submission_files_uploaded_at %>
+        <tr>
+          <td><%= link_to committee_member.submission.title, approver_path(committee_member) %></td>
+          <td><%= committee_member.submission.author.first_name %> <%= committee_member.submission.author.last_name %></td>
+          <td><%= committee_member.submission.final_submission_files_uploaded_at.strftime('%m/%d/%Y') %></td>
+          <td><%= committee_member.status.titleize %></td>
+          <td><%= committee_member.submission.status.titleize %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
-
-<%= render 'shared/site_footer' %>
-</body>
-</html>

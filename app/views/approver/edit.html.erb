@@ -1,114 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<link rel="icon" href="/favicon.ico"/>
-<head>
-  <title>ETDA</title>
-
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-
-  <%= stylesheet_pack_tag 'author', media: 'all' %>
-  <%= javascript_pack_tag 'base' %>
-  <%= javascript_pack_tag 'author' %>
-  <%= csrf_meta_tags %>
-</head>
-<body class="<%= page_classes %>">
-
-<div id="body-container">
-  <%= render 'shared/header' %>
-
-  <main>
-    <div id="content-container" class="container">
-      <%= render partial: 'shared/flash_messages' unless flash.empty? %>
-      <div class="row">
-        <div class="col-xs-12 col-sm-9">
-          <h1>Committee Member Approval Page</h1>
+<div id="content-container" class="container">
+  <h2>Submission Details</h2>
+  <div class="row">
+    <div class="col-xs-6 submission_info">
+      <p>
+        <div><strong>Title: </strong><%=@committee_member.submission.title%></div>
+        <div><strong>Author: </strong><%= @author.full_name || 'N/A' %></div>
+        <div><strong>Access Id: </strong><%= @author.access_id %></div>
+        <strong>Associated Files:</strong>
+        <div id="file_links">
+          <%=raw @most_relevant_file_links %>
         </div>
-      </div>
+      </p>
     </div>
-
-    <div id="content-container" class="container">
-      <h2>Submission Details</h2>
-      <div class="row">
-        <div class="col-xs-6 submission_info">
-          <p>
-            <div><strong>Title: </strong><%=@committee_member.submission.title%></div>
-            <div><strong>Author: </strong><%= @author.full_name || 'N/A' %></div>
-            <div><strong>Access Id: </strong><%= @author.access_id %></div>
-            <strong>Associated Files:</strong>
-            <div id="file_links">
-              <%=raw @most_relevant_file_links %>
-            </div>
-          </p>
-        </div>
-        <div class="col-xs-6 submission_info">
-          <p>
-            <div><strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %></div>
-            <div><strong>Phone:</strong> <%= @author.phone_number %></div>
-            <div><strong>Alternate email:</strong> <%= @author.alternate_email_address %></div>
-            <div><strong>Penn State email:</strong> <%= @author.psu_email_address %></div>
-          </p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12"><h4><strong>Access Level - </strong><%=@committee_member.submission.current_access_level.label %></h4></div>
-        <% if @submission.restricted? || @submission.restricted_to_institution? %>
-          <div class="col-sm-12"><p class="hint">*Notice: This submission's access level is <strong><%= @submission.current_access_level.label %></strong> and should not be duplicated, distributed, or used for any other reason than this review.</p></div>
-        <% end %>
-      </div>
+    <div class="col-xs-6 submission_info">
+      <p>
+        <div><strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %></div>
+        <div><strong>Phone:</strong> <%= @author.phone_number %></div>
+        <div><strong>Alternate email:</strong> <%= @author.alternate_email_address %></div>
+        <div><strong>Penn State email:</strong> <%= @author.psu_email_address %></div>
+      </p>
     </div>
-
-    <div id="content-container" class="container">
-      <%= render 'committee_reviews' %>
-    </div>
-
-    <div id="content-container" class="container">
-      <span><h2>Final Review</h2></span>
-      </br>
-      <div>
-        <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
-          <fieldset <%=@review_complete ? 'disabled' : ''%> >
-            <%= f.label 'My Approval' %>
-            <p>I accept and approve the <%= @submission.degree.degree_type.name.to_s.downcase %> of the student named above and agree to distribution as indicated by the access level.</p>
-            <%= f.input :status, as: :radio_buttons,
-                        collection: [['Yes, I accept and approve.', 'approved'], ['No, I do not accept and approve.', 'rejected']],
-                        wrapper: :vertical_radio_and_checkboxes,
-                        label: false %>
-            <%= f.input :notes, :label => "Notes for Student (optional)", :input_html => { :class => 'notes_select' } %>
-            <% if current_partner.graduate? && @committee_member.committee_role.name.include?("Advisor") %>
-              <%= f.input :federal_funding_used, as: :radio_buttons,
-                          :required => true,
-                          collection: [["I confirm that, as required by federal guidelines, all federal funds used for the work
-                                         described in this #{@submission.degree.degree_type.name.to_s.downcase} have been explicitly acknowledged in the document,
-                                         along with a disclaimer indicating that the findings and conclusions do not necessarily
-                                         reflect the view of the funding agency.", true],
-                                       ["I confirm that no federal funds were used for the work described in this #{@submission.degree.degree_type.name.to_s.downcase}. ", false]],
-                          wrapper: :vertical_radio_and_checkboxes,
-                          label: 'Were Federal Funds utilized for this submission?'.html_safe %>
-            <% end %>
-            <div class="form-group actions col-xs-4">
-              <%= f.button :submit, "Submit Review" %>
-              <% if @review_complete %>
-                <div class="review-message">
-                  <div class="review-complete">
-                    <% completed_on = @committee_member.approved_at ? @committee_member.approved_at : @committee_member.rejected_at %>
-                    <%= completed_on.strftime("Review Completed on %m/%d/%Y at %I:%M%p") %>
-                  </div>
-                  <div>
-                    Committee <%= @approved ? "approved" : "rejected" %> the submission.
-                  </div>
-                  <div class="altering-submission">
-                    If your response needs to be altered, please <%= link_to "contact the site admin.", author_email_contact_form_new_path %>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </fieldset>
-        <% end %>
-      </div>
-    </div>
-  </main>
   </div>
-</body>
+  <div class="row">
+    <div class="col-sm-12"><h4><strong>Access Level - </strong><%=@committee_member.submission.current_access_level.label %></h4></div>
+    <% if @submission.restricted? || @submission.restricted_to_institution? %>
+      <div class="col-sm-12"><p class="hint">*Notice: This submission's access level is <strong><%= @submission.current_access_level.label %></strong> and should not be duplicated, distributed, or used for any other reason than this review.</p></div>
+    <% end %>
+  </div>
+</div>
 
-<%= render 'shared/site_footer' %>
-</html>
+<div id="content-container" class="container">
+  <%= render 'committee_reviews' %>
+</div>
+
+<div id="content-container" class="container">
+  <span><h2>Final Review</h2></span>
+  </br>
+  <div>
+    <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
+      <fieldset <%=@review_complete ? 'disabled' : ''%> >
+        <%= f.label 'My Approval' %>
+        <p>I accept and approve the <%= @submission.degree.degree_type.name.to_s.downcase %> of the student named above and agree to distribution as indicated by the access level.</p>
+        <%= f.input :status, as: :radio_buttons,
+                    collection: [['Yes, I accept and approve.', 'approved'], ['No, I do not accept and approve.', 'rejected']],
+                    wrapper: :vertical_radio_and_checkboxes,
+                    label: false %>
+        <%= f.input :notes, :label => "Notes for Student (optional)", :input_html => { :class => 'notes_select' } %>
+        <% if current_partner.graduate? && @committee_member.committee_role.name.include?("Advisor") %>
+          <%= f.input :federal_funding_used, as: :radio_buttons,
+                      :required => true,
+                      collection: [["I confirm that, as required by federal guidelines, all federal funds used for the work
+                                     described in this #{@submission.degree.degree_type.name.to_s.downcase} have been explicitly acknowledged in the document,
+                                     along with a disclaimer indicating that the findings and conclusions do not necessarily
+                                     reflect the view of the funding agency.", true],
+                                   ["I confirm that no federal funds were used for the work described in this #{@submission.degree.degree_type.name.to_s.downcase}. ", false]],
+                      wrapper: :vertical_radio_and_checkboxes,
+                      label: 'Were Federal Funds utilized for this submission?'.html_safe %>
+        <% end %>
+        <div class="form-group actions col-xs-4">
+          <%= f.button :submit, "Submit Review" %>
+          <% if @review_complete %>
+            <div class="review-message">
+              <div class="review-complete">
+                <% completed_on = @committee_member.approved_at ? @committee_member.approved_at : @committee_member.rejected_at %>
+                <%= completed_on.strftime("Review Completed on %m/%d/%Y at %I:%M%p") %>
+              </div>
+              <div>
+                Committee <%= @approved ? "approved" : "rejected" %> the submission.
+              </div>
+              <div class="altering-submission">
+                If your response needs to be altered, please <%= link_to "contact the site admin.", author_email_contact_form_new_path %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </fieldset>
+    <% end %>
+  </div>
+  <div class="row" >
+    <div class="col-xs-12 review-group">
+      <p><strong>
+        <%= link_to 'Return to reviews list', approver_root_path %>
+      </strong></p>
+    </div>
+  </div>
+</div>
+
