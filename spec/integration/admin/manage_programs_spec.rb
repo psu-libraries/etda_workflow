@@ -13,11 +13,15 @@ RSpec.describe "Manage Programs", js: true do
   end
 
   it 'has a list of programs' do
+    expect(page).to have_content('Name')
+    expect(page).to have_content('Code')
+    expect(page).to have_content('Active?')
     expect(page).to have_content(program.name)
     expect(page).to have_content(program2.name)
     page.find('.add-button').click
     expect(page).to have_button("New #{current_partner.program_label}")
     fill_in 'Name', with: 'A New Program'
+    fill_in 'Code', with: 'ANP'
     check 'Is active'
     button_text = "New #{current_partner.program_label}"
     click_button button_text
@@ -25,6 +29,7 @@ RSpec.describe "Manage Programs", js: true do
     expect(page).to have_content(program.name)
     within('tr', text: 'A New Program') do
       expect(page).to have_content('A New Program')
+      expect(page).to have_content('ANP')
       expect(page).to have_content('Yes')
     end
     expect(page).to have_content("#{current_partner.program_label} successfully created")
@@ -32,10 +37,12 @@ RSpec.describe "Manage Programs", js: true do
     expect(page).to have_content("Edit #{current_partner.program_label}")
     expect(page).to have_selector("input[value='A New Program']")
     fill_in 'Name', with: 'a different program name'
+    fill_in 'Code', with: 'New Code'
     uncheck 'Is active'
     click_button "Update #{current_partner.program_label}"
     expect(page).to have_content(program.name)
     within('tr', text: 'a different program name') do
+      expect(page).to have_content('New Code')
       expect(page).to have_content('No')
     end
     expect(page).to have_content("#{current_partner.program_label} successfully updated")

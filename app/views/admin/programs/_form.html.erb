@@ -1,5 +1,6 @@
 <%= simple_form_for [:admin, @program] do |f| %>
   <%= f.input :name %>
+  <%= f.input :code %>
   <%= f.input :is_active, wrapper: :checkbox %>
   <div class="form-group actions col-xs-4">
     <%= f.button :submit, "#{this_action} #{current_partner.program_label}" %>

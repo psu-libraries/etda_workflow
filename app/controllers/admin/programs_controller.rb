@@ -35,6 +35,7 @@ class Admin::ProgramsController < AdminController
 
   def program_params
     params.require(:program).permit(:name,
-                                    :is_active)
+                                    :is_active,
+                                    :code)
   end
 end
