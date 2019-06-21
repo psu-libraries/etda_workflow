@@ -22,6 +22,10 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
     let(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow' }
 
+    it 'has link to contact us' do
+      expect(page).to have_content('Contact Us')
+    end
+
     it 'can view approval page' do
       expect(page).to have_content('Submission Details')
     end

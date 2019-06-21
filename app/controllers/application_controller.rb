@@ -38,10 +38,12 @@ class ApplicationController < ActionController::Base
 
   def main
     render '/main/index.html', layout: 'home'
+    session[:user_name] = 'Guest' if current_remote_user && session[:user_name].blank?
   end
 
   def about
     render '/about/index.html', layout: 'home'
+    session[:user_name] = 'Guest' if current_remote_user && session[:user_name].blank?
   end
 
   def login
