@@ -413,4 +413,13 @@ RSpec.describe Admin::SubmissionFormView do
       end
     end
   end
+
+  describe 'program_collection' do
+    let!(:program_1) { FactoryBot.create :program, name: 'program_1', code: 'AAA' }
+    let!(:program_2) { FactoryBot.create :program, name: 'program_2', is_active: 0 }
+
+    it 'returns a collection of programs' do
+      expect(view.program_collection).to eq [[submission.program.id, submission.program.name.to_s], [program_1.id, "#{program_1.name} - #{program_1.code}"], [program_2.id, program_2.name.to_s]]
+    end
+  end
 end

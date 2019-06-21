@@ -138,8 +138,8 @@ class Admin::SubmissionFormView < SimpleDelegator
   def program_collection
     collection = []
     Program.order('name ASC').each do |program|
-      collection << [ program.id, "#{program.name} - #{program.code}" ] if program.code.present?
-      collection << [ program.id, "#{program.name}" ] unless program.code.present?
+      collection << [program.id, "#{program.name} - #{program.code}"] if program.code.present?
+      collection << [program.id, program.name.to_s] if program.code.blank?
     end
     collection
   end
