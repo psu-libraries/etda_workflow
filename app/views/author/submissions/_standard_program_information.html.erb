@@ -1,5 +1,5 @@
 <div class="row col-xs-12">
-  <%= f.input :program_id, label: "#{current_partner.program_label}", collection: Program.where(is_active: true).order('name ASC'), prompt: "Please Select a  #{current_partner.program_label}", required: true %>
+  <%= f.input :program_id, label: "#{current_partner.program_label}", collection: @view.program_collection, prompt: "Please Select a  #{current_partner.program_label}", required: true, label_method: :second, value_method: :first %>
 </div>
 <div class="row col-xs-12">
   <div id="degree">

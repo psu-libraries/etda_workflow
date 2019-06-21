@@ -135,6 +135,15 @@ class Admin::SubmissionFormView < SimpleDelegator
     "class='form-section-body collapse in'".html_safe
   end
 
+  def program_collection
+    collection = []
+    Program.order('name ASC').each do |program|
+      collection << [ program.id, "#{program.name} - #{program.code}" ] if program.code.present?
+      collection << [ program.id, "#{program.name}" ] unless program.code.present?
+    end
+    collection
+  end
+
   private
 
     def collapse_content?(section_heading)

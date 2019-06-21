@@ -14,4 +14,13 @@ class Author::ProgramInformationView
 
     'lionpath_program_information'
   end
+
+  def program_collection
+    collection = []
+    Program.where(is_active: true).order('name ASC').each do |program|
+      collection << [ program.id, "#{program.name} - #{program.code}" ] if program.code.present?
+      collection << [ program.id, "#{program.name}" ] unless program.code.present?
+    end
+    collection
+  end
 end
