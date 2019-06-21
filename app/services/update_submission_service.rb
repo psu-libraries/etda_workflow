@@ -2,8 +2,8 @@ class UpdateSubmissionService
   def self.admin_update_submission(submission, current_remote_user, params)
     submission.update params
     submission.committee_members.each do |committee_member|
-      committee_member.notes << "#{current_remote_user} changed 'status' to '#{committee_member.status}' at: #{DateTime.now}\n" if committee_member.saved_change_to_status?
-      committee_member.notes << "#{current_remote_user} changed 'is_voting' to '#{committee_member.is_voting}' at: #{DateTime.now}\n" if committee_member.saved_change_to_is_voting?
+      committee_member.notes << "The admin user #{current_remote_user} changed Review Status to '#{committee_member.status.capitalize}' at: #{DateTime.now.to_formatted_s(:long)}\n" if committee_member.saved_change_to_status?
+      committee_member.notes << "The admin user #{current_remote_user} changed Voting Attribute to '#{committee_member.is_voting.to_s.capitalize}' at: #{DateTime.now.to_formatted_s(:long)}\n" if committee_member.saved_change_to_is_voting?
     end
     submission.save!
   end
