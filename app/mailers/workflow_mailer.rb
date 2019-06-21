@@ -73,6 +73,21 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @committee_member = committee_member
     @author = submission.author
+    @review_url = "#{EtdUrls.new.workflow}/approver/reviews"
+
+    @committee_member.update_last_reminder_at DateTime.now
+
+    mail to: @committee_member.email,
+         from: current_partner.email_address,
+         subject: "#{@submission.degree_type} Review Requested"
+  end
+
+  def special_committee_review_request(submission, committee_member)
+    @submission = submission
+    @committee_member = committee_member
+    @token = committee_member.committee_member_token.authentication_token
+    @author = submission.author
+    @review_url = "#{EtdUrls.new.workflow}/special_committee/#{@token}"
 
     @committee_member.update_last_reminder_at DateTime.now
 
@@ -85,6 +100,7 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @committee_member = committee_member
     @author = submission.author
+    @review_url = "#{EtdUrls.new.workflow}/approver/reviews"
 
     @committee_member.update_last_reminder_at DateTime.now
 

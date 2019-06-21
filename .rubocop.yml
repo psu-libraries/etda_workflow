@@ -71,6 +71,7 @@ Metrics/ClassLength:
   - app/models/ldap_result.rb
   - app/services/submission_release_service.rb
   - app/models/submission_status.rb
+  - app/mailers/workflow_mailer.rb
 
 
 Metrics/CyclomaticComplexity:
@@ -247,6 +248,7 @@ RSpec/VerifiedDoubles:
     - 'spec/models/format_review_files_spec.rb'
     - 'spec/controllers/author_controller_spec.rb'
     - 'spec/controllers/admin_controller_spec.rb'
+    - 'spec/controllers/approver_controller_spec.rb'
 
 RSpec/NestedGroups:
   Enabled: false

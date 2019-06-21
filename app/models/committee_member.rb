@@ -10,6 +10,8 @@ class CommitteeMember < ApplicationRecord
 
   belongs_to :submission
   belongs_to :committee_role
+  belongs_to :approver, optional: true
+  has_one :committee_member_token, dependent: :destroy
 
   STATUS = ["pending", "approved", "rejected"].freeze
 
@@ -98,5 +100,14 @@ class CommitteeMember < ApplicationRecord
   def email=(new_email)
     self[:email] = new_email
     self.access_id = email.gsub('@psu.edu', '').strip if email.match?(/.*@psu.edu/)
+  end
+
+  def committee_role_id=(new_committee_role_id)
+    self[:committee_role_id] = new_committee_role_id
+    return unless CommitteeRole.find(new_committee_role_id).name == 'Special Member' || CommitteeRole.find(new_committee_role_id).name == 'Special Signatory'
+
+    token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)
+    self.committee_member_token = token
+    committee_member_token.save!
   end
 end

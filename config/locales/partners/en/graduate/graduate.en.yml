@@ -60,6 +60,19 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
+        special_committee_review_requested:
+          message: |
+                    Thanks for being part of the committee for %{full_name}.  Their %{degree_type} entitled %{title} is awaiting your review.
+                    In order to proceed and provide input on their work please follow this link:
+                    %{review_url}
+                    or you can copy and paste this into your browser.
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
         committee_member_review_reminder:
           message: |
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
@@ -125,6 +138,8 @@ en:
         label: Committee Members
       author_instructions:
         The committee for a Master's thesis must consist of at least one Thesis Advisor and two Committee Members.  The committee for a Dissertation must include one Dissertation Advisor, one Committee Chair, two Committee Members, and one Outside Member.
+      author_notice:
+        Special Signatories and Special Members can be added at the bottom of the screen by clicking "Add Committee Member" and selecting their role from the dropdown.  Note that if these members are external to Penn State and do not have Access IDs, they will be prompted to create a OneID account when they visit this site.
       special_role: advisor
     admin_filters:
       format_review_incomplete:

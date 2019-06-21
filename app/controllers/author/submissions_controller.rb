@@ -173,8 +173,13 @@ class Author::SubmissionsController < AuthorController
   end
 
   def send_email_reminder
-    if @submission.committee_members.find(params[:committee_member_id]).reminder_email_authorized?
-      WorkflowMailer.committee_member_review_reminder(@submission, @submission.committee_members.find(params[:committee_member_id])).deliver
+    @committee_member = @submission.committee_members.find(params[:committee_member_id])
+    if @committee_member.reminder_email_authorized?
+      if @committee_member.committee_role.name == 'Special Member' || @committee_member.committee_role.name == 'Special Signatory'
+        WorkflowMailer.special_committee_review_request(@submission, @committee_member).deliver
+      else
+        WorkflowMailer.committee_member_review_reminder(@submission, @committee_member).deliver
+      end
       redirect_to author_submission_committee_review_path(@submission.id)
       flash[:notice] = 'Email successfully sent.'
     else

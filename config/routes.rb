@@ -21,6 +21,10 @@ Rails.application.routes.draw do
   ## works: get '/committee_members/autocomplete', to: 'ldap_lookup#autocomplete', as: :committee_members_autocomplete
   get '/committee_members/autocomplete', to: 'application#autocomplete', as: :committee_members_autocomplete
 
+  get '/special_committee/:authentication_token', to: 'special_committee#main', as: :special_committee_main
+
+  post '/special_committee/:authentication_token/advance_to_reviews', to: 'special_committee#advance_to_reviews', as: :advance_to_reviews
+
   namespace :admin do
     resources :admins, except: [:index, :show]
     resources :degrees, except: [:show, :destroy]
@@ -104,10 +108,13 @@ Rails.application.routes.draw do
   end
 
   namespace :approver do
+    get '/reviews', to: 'approvers#index', as: :approver_reviews
     get '/committee_member/:id', to: 'approvers#edit'
     patch '/committee_member/:id', to: 'approvers#update', as: :update_committee_member
+    get '/special_committee_link/:authentication_token', to: 'approvers#special_committee_link', as: :special_committee_link
     get '/committee_member/:id/committee_reviews', to: 'approvers#committee_reviews', as: :committee_reviews
     get '/files/final_submissions/:id', to: 'approvers#download_final_submission', as: :approver_file
+    root to: 'approvers#index'
   end
 
   root to: 'application#main'

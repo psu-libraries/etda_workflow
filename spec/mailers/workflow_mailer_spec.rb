@@ -3,6 +3,7 @@ require 'model_spec_helper'
 RSpec.describe WorkflowMailer do
   let(:submission) { FactoryBot.create :submission }
   let(:committee_member) { FactoryBot.create :committee_member, submission: submission }
+  let(:commmittee_member_token) { FactoryBot.create :committee_member_token, committee_member: committee_member }
   let(:access_updated_email) do
     {
       author_alternate_email_address: "author alt address",
@@ -219,7 +220,30 @@ RSpec.describe WorkflowMailer do
     end
 
     it "has desired content" do
-      expect(email.body).to match(/Reminder:/) # some regex when email views are completed
+      expect(email.body).to match(/\/approver\/reviews/)
+      expect(email.body).to match(/Reminder:/)
+    end
+  end
+
+  describe '#special_committee_review_reminder' do
+    let!(:commmittee_member_token) { FactoryBot.create :committee_member_token, committee_member: committee_member }
+    let(:email) { described_class.special_committee_review_request(submission, committee_member) }
+
+    it "is sent to the proper recipient" do
+      expect(email.to).to eq([committee_member.email])
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("#{submission.degree_type} Review Requested")
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/\/special_committee\/#{commmittee_member_token.authentication_token.to_s}/) if current_partner.graduate?
+      expect(email.body).to match(/Thanks for being part/) if current_partner.graduate?
     end
   end
 end

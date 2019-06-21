@@ -1,6 +1,6 @@
 require 'model_spec_helper'
 
-RSpec.describe LionPath::Crosswalk, type: :model do
+RSpec.describe LionPath::Crosswalk, type: :model, lionpath: true do
   if current_partner.graduate?
 
     context '#lp_to_etd_degree' do

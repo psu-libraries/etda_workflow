@@ -1,6 +1,6 @@
 require 'model_spec_helper'
 
-RSpec.describe LionPath::LpEtdPlan, type: :model do
+RSpec.describe LionPath::LpEtdPlan, type: :model, lionpath: true do
   let(:author) { create :author }
   let(:code) { LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN].first[LionPath::LpKeys::DEGREE_CODE] }
   let(:lp_plan) { described_class.new(LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN][0]) }

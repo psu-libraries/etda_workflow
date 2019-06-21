@@ -3,13 +3,13 @@
 require 'model_spec_helper'
 
 RSpec.describe ApproverAbility, type: :model do
-  approver_user = FactoryBot.create :approver
+  let!(:approver_user) { FactoryBot.create :approver, access_id: 'approverflow' }
 
   context 'An Approver can edit their committee_member record' do
-    approver_ability = described_class.new(approver_user, nil)
+    let(:approver_ability) { described_class.new(approver_user, nil) }
 
     it 'allows approver to view, read, edit their committee_member record' do
-      committee_member = FactoryBot.create :committee_member, access_id: approver_user.access_id
+      committee_member = FactoryBot.create :committee_member, access_id: approver_user.access_id, approver_id: approver_user.id
       expect(approver_ability.can?(:view, committee_member)).to be_truthy
       expect(approver_ability.can?(:read, committee_member)).to be_truthy
       expect(approver_ability.can?(:edit, committee_member)).to be_truthy
