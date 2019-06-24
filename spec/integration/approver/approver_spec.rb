@@ -114,7 +114,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
   end
 
-  context 'access level help text' do
+  context 'access level tooltip' do
     before do
       allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
     end
@@ -126,7 +126,8 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
         submission.update_attribute :access_level, 'open_access'
         visit "approver/committee_member/#{committee_member.id}"
 
-        expect(page).not_to have_content("Notice: This submission is Restricted")
+        find('a[data-toggle="tooltip"]').hover
+        expect(page).to have_content("Allows free worldwide")
       end
     end
 
@@ -135,7 +136,8 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
         submission.update_attribute :access_level, 'restricted'
         visit "approver/committee_member/#{committee_member.id}"
 
-        expect(page).to have_content("Notice: This submission is Restricted")
+        find('a[data-toggle="tooltip"]').hover
+        expect(page).to have_content("Restricts the entire work")
       end
     end
 
@@ -144,7 +146,8 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
         submission.update_attribute :access_level, 'restricted_to_institution'
         visit "approver/committee_member/#{committee_member.id}"
 
-        expect(page).to have_content("Notice: This submission is Restricted")
+        find('a[data-toggle="tooltip"]').hover
+        expect(page).to have_content("Access restricted to")
       end
     end
   end

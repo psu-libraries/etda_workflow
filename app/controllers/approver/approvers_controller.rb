@@ -16,6 +16,7 @@ class Approver::ApproversController < ApproverController
     @approved = SubmissionStatus.new(@submission).beyond_waiting_for_head_of_program_review?
     @author = @submission.author
     @most_relevant_file_links = most_relevant_file_links
+    @view = Approver::ApproversView.new(@submission)
   end
 
   def update

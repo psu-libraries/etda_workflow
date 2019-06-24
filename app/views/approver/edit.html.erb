@@ -30,10 +30,7 @@
 <div id="content-container" class="container">
   <h2>My Final Review</h2>
   <div class="row">
-    <div class="col-sm-12"><h4>This submission's access level is <%=@committee_member.submission.current_access_level.label %></h4></div>
-    <% if @submission.restricted? || @submission.restricted_to_institution? %>
-      <div class="col-sm-12"><p class="hint">*Notice: This submission is <%= @submission.current_access_level.label %> and should not be duplicated, distributed, or used for any other reason than this review.</p></div>
-    <% end %>
+    <div class="col-sm-12"><h4>This submission's access level is <a data-toggle="tooltip" data-placement="top" title="<%= @view.tooltip_text %>"><%=@committee_member.submission.current_access_level.label %></a></h4></div>
   </div>
   </br>
   <div>
