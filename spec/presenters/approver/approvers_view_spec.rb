@@ -4,7 +4,6 @@ RSpec.describe Approver::ApproversView do
   let(:view) { described_class.new(submission) }
 
   describe '#tooltip_text' do
-
     context 'when open access' do
       it "returns the proper text for open access" do
         submission.update_attribute :access_level, 'open_access'
