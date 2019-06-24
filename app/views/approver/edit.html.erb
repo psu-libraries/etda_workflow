@@ -1,31 +1,25 @@
 <div id="content-container" class="container">
-  <h2>Submission Details</h2>
   <div class="row">
-    <div class="col-xs-6 submission_info">
-      <p>
-        <div><strong>Title: </strong><%=@committee_member.submission.title%></div>
-        <div><strong>Author: </strong><%= @author.full_name || 'N/A' %></div>
-        <div><strong>Access Id: </strong><%= @author.access_id %></div>
-        <strong>Associated Files:</strong>
-        <div id="file_links">
-          <%=raw @most_relevant_file_links %>
-        </div>
-      </p>
-    </div>
-    <div class="col-xs-6 submission_info">
-      <p>
-        <div><strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %></div>
-        <div><strong>Phone:</strong> <%= @author.phone_number %></div>
-        <div><strong>Alternate email:</strong> <%= @author.alternate_email_address %></div>
-        <div><strong>Penn State email:</strong> <%= @author.psu_email_address %></div>
-      </p>
+    <h1>Final Committee Approval for <%= @author.full_name %></h1>
+  </div>
+</br>
+  <div class="row">
+    <div class="col-sm-12">
+      <p><span class="text-info"><strong>Help: </strong></span>On this page you will have the chance to submit a final review of <%= @author.full_name %>'s <%= @submission.degree.degree_type.name.downcase %>.  Below is some information about the submission, student, and reviews from other committee members.  Under the "My Final Review" header of this page you can review the files associated with this submission, and either accept or reject the submission.  You also have the option to submit notes.  If you are experiencing problems, you can contact help by clicking the "Contact Us" link above.</p>
     </div>
   </div>
+</div>
+
+<div id="content-container" class="container">
+  <span><h2>Submission Details</h2></span>
   <div class="row">
-    <div class="col-sm-12"><h4><strong>Access Level - </strong><%=@committee_member.submission.current_access_level.label %></h4></div>
-    <% if @submission.restricted? || @submission.restricted_to_institution? %>
-      <div class="col-sm-12"><p class="hint">*Notice: This submission's access level is <strong><%= @submission.current_access_level.label %></strong> and should not be duplicated, distributed, or used for any other reason than this review.</p></div>
-    <% end %>
+    <div class="col-xs-6 submission_info">
+      <p>
+        <div><strong>Submission Title: </strong><%=@committee_member.submission.title%></div>
+        <div><strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %></div>
+        <div><strong>Phone:</strong> <%= @author.phone_number %></div>
+      </p>
+    </div>
   </div>
 </div>
 
@@ -34,13 +28,22 @@
 </div>
 
 <div id="content-container" class="container">
-  <span><h2>Final Review</h2></span>
+  <h2>My Final Review</h2>
+  <div class="row">
+    <div class="col-sm-12"><h4>This submission's access level is <%=@committee_member.submission.current_access_level.label %></h4></div>
+    <% if @submission.restricted? || @submission.restricted_to_institution? %>
+      <div class="col-sm-12"><p class="hint">*Notice: This submission is <%= @submission.current_access_level.label %> and should not be duplicated, distributed, or used for any other reason than this review.</p></div>
+    <% end %>
+  </div>
   </br>
   <div>
     <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
       <fieldset <%=@review_complete ? 'disabled' : ''%> >
-        <%= f.label 'My Approval' %>
-        <p>I accept and approve the <%= @submission.degree.degree_type.name.to_s.downcase %> of the student named above and agree to distribution as indicated by the access level.</p>
+        <strong>Files I need to review:</strong>
+        <div id="file_links">
+          <%=raw @most_relevant_file_links %></div>
+        </br>
+        <p>I accept and approve <%= @author.full_name %>'s <%= @submission.degree.degree_type.name.to_s.downcase %> and agree to distribution as indicated by the access level.</p>
         <%= f.input :status, as: :radio_buttons,
                     collection: [['Yes, I accept and approve.', 'approved'], ['No, I do not accept and approve.', 'rejected']],
                     wrapper: :vertical_radio_and_checkboxes,
@@ -62,7 +65,7 @@
           <% if @review_complete %>
             <div class="review-message">
               <div class="review-complete">
-                <% completed_on = @committee_member.approved_at ? @committee_member.approved_at : @committee_member.rejected_at %>
+                <% completed_on = @submission.head_of_program_review_accepted_at || @submission.head_of_program_review_rejected_at || @submission.committee_review_accepted_at || @submission.committee_review_rejected_at %>
                 <%= completed_on.strftime("Review Completed on %m/%d/%Y at %I:%M%p") %>
               </div>
               <div>
@@ -85,4 +88,3 @@
     </div>
   </div>
 </div>
-
