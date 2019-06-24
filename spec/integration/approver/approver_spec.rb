@@ -35,7 +35,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
 
     it 'can see other committee members reviews' do
-      expect(page).to have_content('Committee Member Reviews')
+      expect(page).to have_content('Committee Reviews')
     end
 
     it 'can download final file submission' do
@@ -56,7 +56,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       end
       click_button 'Submit Review'
       sleep 3
-      expect(page).to have_current_path(main_page_path)
+      expect(page).to have_current_path(approver_root_path)
       expect(CommitteeMember.find(committee_member.id).status).to eq 'approved'
       expect(CommitteeMember.find(committee_member.id).notes).to eq 'Some notes.'
     end
@@ -126,7 +126,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
         submission.update_attribute :access_level, 'open_access'
         visit "approver/committee_member/#{committee_member.id}"
 
-        expect(page).not_to have_content("Notice: This submission's access level is")
+        expect(page).not_to have_content("Notice: This submission is Restricted")
       end
     end
 
@@ -135,7 +135,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
         submission.update_attribute :access_level, 'restricted'
         visit "approver/committee_member/#{committee_member.id}"
 
-        expect(page).to have_content("Notice: This submission's access level is")
+        expect(page).to have_content("Notice: This submission is Restricted")
       end
     end
 
@@ -144,7 +144,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
         submission.update_attribute :access_level, 'restricted_to_institution'
         visit "approver/committee_member/#{committee_member.id}"
 
-        expect(page).to have_content("Notice: This submission's access level is")
+        expect(page).to have_content("Notice: This submission is Restricted")
       end
     end
   end
