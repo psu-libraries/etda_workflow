@@ -358,8 +358,8 @@ class Submission < ApplicationRecord
         status_giver.waiting_for_head_of_program_review!
         WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id)).deliver
       else
-        status_giver.can_waiting_for_final_submission?
-        status_giver.waiting_for_final_submission_response!
+        status_giver.can_waiting_publication_release?
+        status_giver.waiting_for_publication_release!
         update_attribute(:committee_review_accepted_at, DateTime.now)
         committee_approved_emails
       end
@@ -375,8 +375,8 @@ class Submission < ApplicationRecord
     submission_head_of_program_status = ApprovalStatus.new(self).head_of_program_status
     status_giver = SubmissionStatusGiver.new(self)
     if submission_head_of_program_status == 'approved'
-      status_giver.can_waiting_for_final_submission?
-      status_giver.waiting_for_final_submission_response!
+      status_giver.can_waiting_for_publication_release?
+      status_giver.waiting_for_publication_release!
       update_attribute(:head_of_program_review_accepted_at, DateTime.now)
       committee_approved_emails
     elsif submission_head_of_program_status == 'rejected'
