@@ -113,8 +113,8 @@ class Author::SubmissionsController < AuthorController
     status_giver.can_upload_final_submission_files?
     @submission.update_attributes!(final_submission_params)
     @submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
-    status_giver.waiting_for_committee_review!
-    @submission.initial_committee_member_emails(@voting_committee_members)
+    status_giver.can_waiting_for_final_submission?
+    status_giver.waiting_for_final_submission_response!
     OutboundLionPathRecord.new(submission: @submission).report_status_change
     @submission.update_final_submission_timestamps!(Time.zone.now)
     redirect_to author_root_path

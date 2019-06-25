@@ -123,7 +123,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         end
         click_button 'Submit Review'
         sleep 3
-        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
+        expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
         expect(WorkflowMailer.deliveries.count).to eq 1
       end
 
@@ -136,7 +136,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         end
         click_button 'Submit Review'
         sleep 3
-        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
+        expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
         expect(WorkflowMailer.deliveries.count).to eq 0
       end
 
@@ -258,7 +258,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
       end
 
       context "when 'waiting for head of program review'" do
-        it "proceeds to 'waiting for final submission response' if approved" do
+        it "proceeds to 'waiting for publication release' if approved" do
           skip 'Graduate only' unless current_partner.graduate?
 
           FactoryBot.create :admin
@@ -268,7 +268,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
           end
           click_button 'Submit Review'
           sleep 3
-          expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
+          expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
           expect(WorkflowMailer.deliveries.count).to eq 1
         end
 

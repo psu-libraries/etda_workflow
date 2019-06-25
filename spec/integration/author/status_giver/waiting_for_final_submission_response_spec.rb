@@ -100,7 +100,7 @@ RSpec.describe "Step 7: Waiting for Final Submission Response'", js: true do
         click_button 'Approve Final Submission'
         expect(page).to have_content("The submission's final submission information was successfully approved.")
         submission.reload
-        expect(submission.status).to eq 'waiting for publication release'
+        expect(submission.status).to eq 'waiting for committee review'
         expect(page).to have_content("The submission's final submission information was successfully approved.")
         submission.reload
         expect(submission.final_submission_approved_at).not_to be_nil
@@ -114,7 +114,7 @@ RSpec.describe "Step 7: Waiting for Final Submission Response'", js: true do
 
     context "when an admin accepts the final submission files for a submission with an active Lion Path Record" do
       if InboundLionPathRecord.active?
-        it "updates submission status to 'waiting for publication release'" do
+        it "updates submission status to 'waiting for committee_review'" do
           submission.status = 'collecting final submission files'
           submission.final_submission_approved_at = nil
           submission.defended_at = Time.zone.yesterday
@@ -131,7 +131,7 @@ RSpec.describe "Step 7: Waiting for Final Submission Response'", js: true do
           click_button 'Approve Final Submission'
           expect(page).to have_content("The submission's final submission information was successfully approved.")
           submission.reload
-          expect(submission.status).to eq 'waiting for publication release'
+          expect(submission.status).to eq 'waiting for committee review'
           expect(page).to have_content("The submission's final submission information was successfully approved.")
           submission.reload
           expect(submission.final_submission_approved_at).not_to be_nil

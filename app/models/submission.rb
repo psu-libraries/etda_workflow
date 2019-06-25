@@ -322,7 +322,7 @@ class Submission < ApplicationRecord
     degree.degree_type.approval_configuration.head_of_program_is_approving
   end
 
-  def initial_committee_member_emails(voting_committee_members)
+  def send_initial_committee_member_emails
     voting_committee_members.each do |committee_member|
       if committee_member.committee_role.name == 'Special Member' || committee_member.committee_role.name == 'Special Signatory'
         WorkflowMailer.special_committee_review_request(self, committee_member).deliver
@@ -358,7 +358,7 @@ class Submission < ApplicationRecord
         status_giver.waiting_for_head_of_program_review!
         WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id)).deliver
       else
-        status_giver.can_waiting_publication_release?
+        status_giver.can_waiting_for_publication_release?
         status_giver.waiting_for_publication_release!
         update_attribute(:committee_review_accepted_at, DateTime.now)
         committee_approved_emails

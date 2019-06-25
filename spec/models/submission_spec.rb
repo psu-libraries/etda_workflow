@@ -341,7 +341,7 @@ RSpec.describe Submission, type: :model do
             allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('approved')
             submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
             submission.update_status_from_committee
-            expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
+            expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
           end
         end
 
