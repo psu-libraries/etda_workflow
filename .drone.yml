@@ -33,7 +33,7 @@ steps:
     # - cd /etda_workflow
     - export RAILS_ENV=test
     - export QT_QPA_PLATFORM=offscreen
-    - bundle install --with development test
+    # - bundle install --with development test
     - bundle exec rake db:create
     - bundle exec rake db:test:load
     - bundle exec rake db:migrate
