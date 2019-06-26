@@ -2,7 +2,7 @@
 ---
 apiVersion: v1
 data:
-  {{ (.Files.Glob "files/env.env").AsConfig }}
+  {{- (.Files.Glob "files/env.env").AsConfig | nindent 2 }}
   vault-agent-config.hcl: |-
     exit_after_auth = true
     pid_file = "/home/vault/pidfile"
