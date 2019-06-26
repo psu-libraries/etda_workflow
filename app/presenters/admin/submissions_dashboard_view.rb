@@ -61,22 +61,22 @@ class Admin::SubmissionsDashboardView
     def final_submission_is_submitted_filter
       submissions = Submission.joins(:degree).where('degrees.degree_type_id' => @degree_type.id).final_submission_is_submitted
       {
-          id: 'final-submission-submitted',
-          title: title_for('final_submission_submitted'),
-          description: description_for('final_submission_submitted'),
-          path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_submission_submitted",
-          count: submissions.empty? ? nil : submissions.count.to_s
+        id: 'final-submission-submitted',
+        title: title_for('final_submission_submitted'),
+        description: description_for('final_submission_submitted'),
+        path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_submission_submitted",
+        count: submissions.empty? ? nil : submissions.count.to_s
       }
     end
 
     def final_submission_is_incomplete_filter
       submissions = Submission.joins(:degree).where('degrees.degree_type_id' => @degree_type.id).final_submission_is_incomplete
       {
-          id: 'final-submission-incomplete',
-          title: title_for('final_submission_incomplete'),
-          description: description_for('final_submission_incomplete'),
-          path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_submission_incomplete",
-          count: submissions.empty? ? nil : submissions.count.to_s
+        id: 'final-submission-incomplete',
+        title: title_for('final_submission_incomplete'),
+        description: description_for('final_submission_incomplete'),
+        path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_submission_incomplete",
+        count: submissions.empty? ? nil : submissions.count.to_s
       }
     end
 

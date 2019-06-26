@@ -54,18 +54,18 @@ RSpec.describe Admin::SubmissionsDashboardView do
             count: nil
           },
           {
-              id: 'final-submission-submitted',
-              title: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.title"),
-              description: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.description"),
-              path: nil,
-              count: nil
+            id: 'final-submission-submitted',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.description"),
+            path: nil,
+            count: nil
           },
           {
-              id: 'final-submission-incomplete',
-              title: I18n.t("#{current_partner.id}.admin_filters.final_submission_incomplete.title"),
-              description: I18n.t("#{current_partner.id}.admin_filters.final_submission_incomplete.description"),
-              path: nil,
-              count: nil
+            id: 'final-submission-incomplete',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_incomplete.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_incomplete.description"),
+            path: nil,
+            count: nil
           },
           {
             id: 'final-submission-pending',
@@ -95,12 +95,14 @@ RSpec.describe Admin::SubmissionsDashboardView do
             path: nil,
             count: nil
           },
-          {   id: 'final-restricted-institution',
-              title: I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.title"),
-              description: I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.description"),
-              path: nil,
-              count: nil,
-              sub_count: nil },
+          {
+            id: 'final-restricted-institution',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.description"),
+            path: nil,
+            count: nil,
+            sub_count: nil
+          },
           {
             id: 'final-withheld',
             title: I18n.t("#{current_partner.id}.admin_filters.final_withheld.title"),
@@ -152,14 +154,14 @@ RSpec.describe Admin::SubmissionsDashboardView do
             count: '1'
           ),
           a_hash_including(
-              id: 'final-submission-submitted',
-              path: admin_submissions_index_path(degree_type, 'final_submission_submitted'),
-              count: '1'
+            id: 'final-submission-submitted',
+            path: admin_submissions_index_path(degree_type, 'final_submission_submitted'),
+            count: '1'
           ),
           a_hash_including(
-              id: 'final-submission-incomplete',
-              path: admin_submissions_index_path(degree_type, 'final_submission_incomplete'),
-              count: '1'
+            id: 'final-submission-incomplete',
+            path: admin_submissions_index_path(degree_type, 'final_submission_incomplete'),
+            count: '1'
           ),
           a_hash_including(
             id: 'final-submission-pending',
