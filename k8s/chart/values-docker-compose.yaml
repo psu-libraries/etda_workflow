@@ -1,0 +1,68 @@
+---
+replicaCount: 1
+persistence:
+  enabled: true
+  storageClassName: nfs-client
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+image:
+  repository: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+  tag: 156
+  pullPolicy: IfNotPresent
+  imagePullSecrets: harbor-dsrd-libraries
+nameOverride: ''
+fullnameOverride: ''
+service:
+  type: ClusterIP
+  port: 80
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "10000m" 
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/ssl-passthrough: 'true'
+  hosts:
+  - host: submit-etda-docker-compose.dsrd.libraries.psu.edu
+    paths:
+    - "/"
+  tls:
+  - secretName: submit-etda-docker-compose-dsrd-libraries-psu-edu
+    hosts:
+    - submit-etda-docker-compose.dsrd.libraries.psu.edu
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+webaccess:
+  enabled: true
+  cosignService: submit-etda-docker-compose.dsrd.libraries.psu.edu
+
+redis:
+  enabled: true
+  persistence:
+    enabled: true
+    storageClass: nfs-client
+
+mariadb:
+  db:
+    user: etda_workflow
+    name: etda_workflow
+  enabled: true
+  persistence:
+    enabled: true
+    storageClass: nfs-client
+
+certmanager:
+  enabled: true
+
+global:
+  vault:
+    enabled: true
+    address: https://vault.dsrd.libraries.psu.edu:8200
+    mountPath: auth/k8s-dsrd-dev
+    path: secret/app/etda_workflow/dev
+    role: etda_workflow_dev
+
