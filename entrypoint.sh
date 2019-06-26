@@ -1,7 +1,16 @@
 #!/bin/bash
 
-if [ "$RAILS_ENV" == "production" ]; then
-    envconsul -vault-token=$(cat /etc/token/.vault-token) -secret="$VAULT_KEY_PATH" -no-prefix -once ./run.sh
-else
-    ./run.sh
-fi
+if [ -f /secrets/env.env ]; then 
+set -a
+source /secrets/env.env
+set +a
+fi 
+
+freshclam -d & 
+clamd & 
+
+rails db:create
+rails db:migrate
+rails db:seed:essential
+
+rails s
