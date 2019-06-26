@@ -115,7 +115,6 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
     context 'while waiting for committee review' do
       it 'has content' do
         visit "/author/submissions/#{submission2.id}/committee_review"
-        expect(page).to have_content('Committee Members')
         within('table#committee_member_table') do
           expect(page).to have_content('Name')
           expect(page).to have_content('Status')
@@ -144,7 +143,6 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
     context 'while waiting for publication release' do
       it 'has disabled send email button' do
         visit "/author/submissions/#{submission1.id}/committee_review"
-        expect(page).to have_content('Committee Members')
         within('table#committee_member_table') do
           expect(page).to have_content('Name')
           expect(page).to have_content('Status')

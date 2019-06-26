@@ -24,7 +24,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       expect(submission.title).to eq(title)
       expect(submission.committee_members.first.is_voting).to eq(false)
       expect(submission.committee_members.first.status).to eq('approved')
-      expect(submission.committee_members.first.notes).to match(/\ntestuser123 changed 'status' to 'approved' at: .*\ntestuser123 changed 'is_voting' to 'false' at:/)
+      expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Review Status to 'Approved' at: .*\n\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
     end
   end
 
@@ -44,7 +44,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       expect(submission.status).to eq('collecting format review files rejected')
       expect(submission.semester).to eq(semester)
       expect(submission.committee_members.first.is_voting).to eq(false)
-      expect(submission.committee_members.first.notes).to match(/\ntestuser123 changed 'is_voting' to 'false' at:/)
+      expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
     end
   end
 

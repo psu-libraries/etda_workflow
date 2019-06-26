@@ -22,7 +22,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
     describe "return to author index page" do
       it "returns to the author index page and displays validation errors" do
         expect(submission.committee_members.empty?).to eq(true)
-        click_button "Save and Return to Dashboard"
+        click_button "Save and Continue Submission"
         expect(page).to have_content("can't be blank")
       end
     end
@@ -42,7 +42,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
       end
     end
 
-    describe "save and return to dashboard" do
+    describe "save and continue submission" do
       it "saves the committee" do
         expect(submission.committee_members.empty?).to eq(true)
         expect(page).to have_content('Head/Chair of Graduate Program') if current_partner.graduate?
@@ -56,7 +56,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
           page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@psu.edu'")
           @email_list << "name_#{i}@psu.edu"
         end
-        click_button('Save and Return to Dashboard')
+        click_button('Save and Continue Submission')
         sleep(3)
         expect(page).to have_content('My Submissions')
         submission.reload
@@ -103,7 +103,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
           fill_in "Email", with: "extra_member@example.com"
           find_field('Yes', with: 'true').click
         end
-        expect { click_button 'Save and Return to Dashboard' }.to change { submission.committee_members.count }.by 1
+        expect { click_button 'Save and Continue Submission' }.to change { submission.committee_members.count }.by 1
         expect(submission.committee_members.last.is_voting).to eq(true)
         # expect(page).to have_content('successfully')
       end
