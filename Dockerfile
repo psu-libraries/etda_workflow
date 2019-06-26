@@ -18,7 +18,7 @@ RUN echo  "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config &
     gem install bundler
 
 RUN bundle package --all
-RUN bundle install --deployment
+RUN bundle install 
 
 FROM ruby:2.4.6
 WORKDIR /etda_workflow
