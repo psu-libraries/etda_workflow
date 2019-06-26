@@ -333,6 +333,12 @@ class Submission < ApplicationRecord
     end
   end
 
+  def reset_committee_review
+    committee_members.each do |committee_member|
+      committee_member.update_attributes status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
+    end
+  end
+
   private
 
   def format_review_file_check

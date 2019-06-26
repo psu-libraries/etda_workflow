@@ -34,7 +34,6 @@ class Admin::SubmissionFormView < SimpleDelegator
 
   def actions_partial_name
     return 'format_review_evaluation_actions' if status_behavior.waiting_for_format_review_response?
-    return 'committee_rejected_actions' if status_behavior.waiting_for_committee_review_rejected?
     return 'final_submission_evaluation_actions' if status_behavior.waiting_for_final_submission_response?
     return 'released_actions' if status_behavior.released_for_publication? && access_level.open_access?
     return 'restricted_actions' if status_behavior.released_for_publication_metadata_only?
