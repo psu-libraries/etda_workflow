@@ -35,11 +35,7 @@ module Devise
       end
 
       def remote_user(headers)
-        if Rails.env.production?
-          headers.fetch('REMOTE_USER', nil)
-        else
-          headers.fetch('REMOTE_USER', nil) || headers.fetch('HTTP_REMOTE_USER', nil)
-        end
+        headers.fetch('REMOTE_USER', nil) || headers.fetch('HTTP_REMOTE_USER', nil)
       end
 
       protected
