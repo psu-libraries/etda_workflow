@@ -13,11 +13,11 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-config/secrets.yml
-config/database.yml
+#config/secrets.yml
+#config/database.yml
 config/locales/test/**/*
-config/lion_path.yml
-config/redis.yml
+#config/lion_path.yml
+#config/redis.yml
 spec/examples.txt
 
 node_modules/**/*
