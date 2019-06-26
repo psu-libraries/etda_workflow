@@ -18,9 +18,7 @@ RUN echo  "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config &
     gem install bundler
 
 RUN bundle package --all
-
-RUN if [ "$RAILS_ENV" = "development" ]; then echo "bundle install"; else echo "bundle install --without development test"; fi 
-RUN if [ "$RAILS_ENV" = "development" ]; then bundle install; else bundle install --without development test; fi 
+RUN bundle install --deployment
 
 FROM ruby:2.4.6
 WORKDIR /etda_workflow
@@ -69,7 +67,6 @@ RUN yarn
 # USER etda
 
 COPY . /etda_workflow
-COPY k8s/bin/envconsul /usr/local/bin/
 
 # USER root
 
