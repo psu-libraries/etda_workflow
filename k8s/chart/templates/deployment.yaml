@@ -97,7 +97,7 @@ spec:
         args: [
           "-vault-agent-token-file=/home/vault/.vault-token",
           "-vault-addr={{ .Values.global.vault.address }}",
-          "-template=/etc/vault/env.env:/secrets/env.env",
+          "-template=/etc/consul-template/env.env:/secrets/env.env",
           "-once"
         ]
       {{- end }}
