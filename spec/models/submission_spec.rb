@@ -292,16 +292,16 @@ RSpec.describe Submission, type: :model do
     context '#reset_committee_review' do
       it 'resets committee statuses and timestamps' do
         submission = FactoryBot.create :submission, :waiting_for_committee_review
-        committee_member_1 = FactoryBot.create :committee_member, submission: submission, status: 'approved', notes: 'Notes', approved_at: DateTime.now
-        committee_member_2 = FactoryBot.create :committee_member, submission: submission, status: 'rejected', rejected_at: DateTime.now
+        committee_member_one = FactoryBot.create :committee_member, submission: submission, status: 'approved', notes: 'Notes', approved_at: DateTime.now
+        committee_member_two = FactoryBot.create :committee_member, submission: submission, status: 'rejected', rejected_at: DateTime.now
         submission.reset_committee_review
-        expect(CommitteeMember.find(committee_member_1.id).status).to eq ''
-        expect(CommitteeMember.find(committee_member_1.id).notes).to eq 'Notes'
-        expect(CommitteeMember.find(committee_member_1.id).approved_at).to eq nil
-        expect(CommitteeMember.find(committee_member_1.id).reset_at).to be_present
-        expect(CommitteeMember.find(committee_member_2.id).status).to eq ''
-        expect(CommitteeMember.find(committee_member_2.id).rejected_at).to eq nil
-        expect(CommitteeMember.find(committee_member_2.id).reset_at).to be_present
+        expect(CommitteeMember.find(committee_member_one.id).status).to eq ''
+        expect(CommitteeMember.find(committee_member_one.id).notes).to eq 'Notes'
+        expect(CommitteeMember.find(committee_member_one.id).approved_at).to eq nil
+        expect(CommitteeMember.find(committee_member_one.id).reset_at).to be_present
+        expect(CommitteeMember.find(committee_member_two.id).status).to eq ''
+        expect(CommitteeMember.find(committee_member_two.id).rejected_at).to eq nil
+        expect(CommitteeMember.find(committee_member_two.id).reset_at).to be_present
       end
     end
 
@@ -324,7 +324,7 @@ RSpec.describe Submission, type: :model do
             expect(WorkflowMailer.deliveries.count).to eq 1
           end
 
-          it 'changes status to waiting for final submission response unless graduate school' do
+          it 'changes status to waiting for publication release unless graduate school' do
             skip 'Non Graduate' if current_partner.graduate?
 
             submission.degree = degree
@@ -333,8 +333,9 @@ RSpec.describe Submission, type: :model do
             submission = FactoryBot.create :submission, :waiting_for_committee_review
             allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
             submission.update_status_from_committee
-            expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
-            expect(WorkflowMailer.deliveries.count).to eq 0
+            expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
+            expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.honors?
+            expect(WorkflowMailer.deliveries.count).to eq 0 if current_partner.milsch?
           end
         end
 

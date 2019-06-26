@@ -111,7 +111,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           select "Fall", from: "Semester Intending to Graduate"
           select 1.year.from_now.year, from: "Graduation Year"
           fill_in 'Abstract', with: 'Abstract'
-          find('#submission_access_level_open_access').click
+          find('#submission_access_level_open_access').click if current_partner.graduate?
           click_link "Additional File"
           within('#final-submission-file-fields') do
             all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
@@ -135,6 +135,8 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
       end
 
       it "moves forward in process if accepted when head of program is approving" do
+        skip 'Graduate Only' unless current_partner.graduate?
+
         submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
@@ -146,6 +148,8 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
       end
 
       it "proceeds to 'waiting for publication release' when head of program is approving if head already accepted" do
+        skip 'Graduate Only' unless current_partner.graduate?
+
         FactoryBot.create :committee_member, :required, submission: submission, committee_role: head_role, status: 'approved', access_id: 'approverflow'
         submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
         visit approver_path(committee_member)
@@ -167,7 +171,8 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         click_button 'Submit Review'
         sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
-        expect(WorkflowMailer.deliveries.count).to eq 1
+        expect(WorkflowMailer.deliveries.count).to eq 1 unless current_partner.honors?
+        expect(WorkflowMailer.deliveries.count).to eq 2 if current_partner.honors?
       end
 
       it "moves forward in process if accepted when head of program is not approving but does not send email" do
@@ -180,7 +185,8 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         click_button 'Submit Review'
         sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
-        expect(WorkflowMailer.deliveries.count).to eq 0
+        expect(WorkflowMailer.deliveries.count).to eq 0 unless current_partner.honors?
+        expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.honors?
       end
 
       it "proceeds to 'waiting for committee review rejected' if rejected" do
