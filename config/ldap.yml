@@ -1,17 +1,23 @@
-development:  
-  host: dirapps.aset.psu.edu 
-  port: 389 
-  group_base: dc=psu,dc=edu
-  base: dc=psu,dc=edu
-test:
-  host: dirapps.aset.psu.edu 
-  port: 389 
-  group_base: dc=psu,dc=edu
-  base: dc=psu,dc=edu
-production:  
-  host: dirapps.aset.psu.edu 
-  port: 389 
-  group_base: dc=psu,dc=edu
-  base: dc=psu,dc=edu
-  uid: uid 
+default: &default
+  host: <%= ENV.fetch("LDAP_HOST", "dirapps.aset.psu.edu") %>
+  port: <%= ENV.fetch("LDAP_PORT", "636") %>
+  group_base: <%= ENV.fetch("LDAP_GROUP_BASE", "dc=psu,dc=edu") %>
+  base: <%= ENV.fetch("LDAP_BASE", "dc=psu,dc=edu") %>
+  uid: <%= ENV.fetch("LDAP_UID", "uid" ) %>
+  <% if ENV["LDAP_USER"] %>
+  user: <%= ENV["LDAP_USER"] %>
+  <% else %>
+  user: nil
+  <% end %>
+  <% if ENV["LDAP_PASSWORD"] %>
+  password: <%= ENV["LDAP_PASSWORD"] %>
+  <% else %>
+  password: nil
+  <% end %>
 
+development:
+  <<: *default
+test:
+  <<: *default
+production:
+  <<: *default
