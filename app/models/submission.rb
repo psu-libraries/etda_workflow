@@ -364,6 +364,7 @@ class Submission < ApplicationRecord
         status_giver.waiting_for_head_of_program_review!
         update_attribute(:committee_review_accepted_at, DateTime.now)
         WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id)).deliver
+        update_status_from_head_of_program
       else
         status_giver.can_waiting_for_publication_release?
         status_giver.waiting_for_publication_release!
