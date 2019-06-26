@@ -15,42 +15,41 @@ steps:
   - docker login -u 'robot$drone' -p $DOCKER_PASSWORD harbor.dsrd.libraries.psu.edu
   - docker build --build-arg SSH_PRIVATE_KEY=$SSH_PRIVATE_KEY -t harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER . 
   - docker tag harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
-  # - docker run -e MYSQL_HOST=mariadb -e MYSQL_PASSWORD=root -e MYSQL_USER=root -e REDIS_HOST=redis harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER /etda_workflow/run-tests.sh
   - docker push harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER 
   volumes:
   - name: docker-sock
     path: /var/run/host.sock
 
-# - name: prepare
-#   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
-#   environment:
-#     MYSQL_USER: root
-#     MYSQL_PASSWORD: root
-#     MYSQL_HOST: mariadb
-#     REDIS_HOST: redis
-#   depends_on:
-#   - build
-#   commands:
-#     # - cd /etda_workflow
-#     - export RAILS_ENV=test
-#     - export QT_QPA_PLATFORM=offscreen
-#     - bundle install --with development test
-#     - bundle exec rake db:create
-#     - bundle exec rake db:test:load
-#     - bundle exec rake db:migrate
+- name: prepare
+  image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+  environment:
+    MYSQL_USER: root
+    MYSQL_PASSWORD: root
+    MYSQL_HOST: mariadb
+    REDIS_HOST: redis
+  depends_on:
+  - build
+  commands:
+    # - cd /etda_workflow
+    - export RAILS_ENV=test
+    - export QT_QPA_PLATFORM=offscreen
+    - bundle install --with development test
+    - bundle exec rake db:create
+    - bundle exec rake db:test:load
+    - bundle exec rake db:migrate
 
-# - name: test-controllers
-#   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
-#   environment:
-#     MYSQL_USER: root
-#     MYSQL_PASSWORD: root
-#     MYSQL_HOST: mariadb
-#     REDIS_HOST: redis
-#   depends_on:
-#   - prepare
-#   commands:
-#     # - cd /etda_workflow
-#     - bundle exec rake spec:controllers
+- name: test-controllers
+  image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+  environment:
+    MYSQL_USER: root
+    MYSQL_PASSWORD: root
+    MYSQL_HOST: mariadb
+    REDIS_HOST: redis
+  depends_on:
+  - prepare
+  commands:
+    # - cd /etda_workflow
+    - bundle exec rake spec:controllers
 
 # - name: test-models
 #   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
