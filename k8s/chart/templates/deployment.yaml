@@ -30,6 +30,8 @@ spec:
         configMap:
           name: {{ $fullName }}-vault
           items:
+          - key: env.env
+            path: env.env
           - key: vault-agent-config.hcl
             path: vault-agent-config.hcl
       {{- if .Values.webaccess.enabled }}
@@ -77,6 +79,27 @@ spec:
           "agent",
           "-config=/etc/vault/vault-agent-config.hcl",
         ]
+      - name: consul-template
+        image: hashicorp/consul-template:alpine
+        imagePullPolicy: Always
+        env:
+        - name: VAULT_PATH
+          value: {{ .Values.global.vault.path }}
+        - name: VAULT_ADDR
+          value: {{ .Values.global.vault.address }}
+        volumeMounts:
+        - name: shared-data
+          mountPath: /secrets
+        - name: vault-token
+          mountPath: /home/vault
+        - name: vault-config
+          mountPath: /etc/consul-template
+        args: [
+          "-vault-agent-token-file=/home/vault/.vault-token",
+          "-vault-addr={{ .Values.global.vault.address }}",
+          "-template=/etc/vault/env.env:/secrets/env.env",
+          "-once"
+        ]
       {{- end }}
       containers:
       {{- if .Values.webaccess.enabled }}
@@ -120,14 +143,14 @@ spec:
           image: "{{- if .Values.imageName }}{{ .Values.imageName }}{{- else}}{{ .Values.image.repository }}:{{ .Values.image.tag }}{{- end}}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-          {{- if .Values.global.vault.enabled }}
-          - name: VAULT_KEY_PATH
-            value: " {{ .Values.global.vault.path }}"
-          - name: VAULT_ADDR
-            value: "{{ .Values.global.vault.address }}"
-          - name: VAULT_TOKEN
-            value: /etc/token/.vault-token
-          {{- end }}
+          # {{- if .Values.global.vault.enabled }}
+          # - name: VAULT_KEY_PATH
+          #   value: " {{ .Values.global.vault.path }}"
+          # - name: VAULT_ADDR
+          #   value: "{{ .Values.global.vault.address }}"
+          # - name: VAULT_TOKEN
+          #   value: /etc/token/.vault-token
+          # {{- end }}
           - name: RAILS_ENV
             value: {{ .Values.rails.environment }}
           - name: PARTNER
