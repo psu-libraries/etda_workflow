@@ -5,8 +5,10 @@
 //var $ = require('jquery');
 //window.jQuery = $;
 
+require('bootstrap3/dist/css/bootstrap.min.css');
 require('bootstrap3/dist/css/bootstrap.css');
 require('../styles/author/committee.scss');
 require('../styles/author/screen.scss');
+require('../styles/base/_base.scss');
 // Must be included last in order for close icon to appear on keyword tag
 require('../styles/author/tag-it.scss');
