@@ -1,6 +1,6 @@
 dependencies:
 - name: redis
-  version: 0.1.8
+  version: 0.1.9
   repository: https://harbor.dsrd.libraries.psu.edu/chartrepo/public
   condition: redis.enabled
 - name: mariadb
