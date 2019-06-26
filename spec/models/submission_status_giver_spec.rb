@@ -137,9 +137,9 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
 
-      it "does not raise exception" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_for_committee_review? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_for_committee_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -155,9 +155,9 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
 
-      it "raises an exception" do
+      it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_for_committee_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_for_committee_review? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -1802,10 +1802,9 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
 
-      it "updates status to 'collecting final submission files'" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        giver.collecting_final_submission_files!
-        expect(submission.status).to eq 'collecting final submission files'
+        expect { giver.collecting_final_submission_files! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -1832,20 +1831,9 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
 
-      it "updates status to 'waiting for committee review'" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        giver.waiting_for_committee_review!
-        expect(submission.status).to eq 'waiting for committee review'
-      end
-    end
-
-    context "when status is 'collecting final submission files'" do
-      before { submission.status = 'collecting final submission files' }
-
-      it "updates status to 'waiting for committee review'" do
-        giver = described_class.new(submission)
-        giver.waiting_for_committee_review!
-        expect(submission.status).to eq 'waiting for committee review'
+        expect { giver.waiting_for_committee_review! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
   end
@@ -1890,15 +1878,6 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
 
-      it "raises an exception" do
-        giver = described_class.new(submission)
-        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
-      end
-    end
-
-    context "when status is 'waiting for committee review'" do
-      before { submission.status = 'waiting for committee review' }
-
       it "updates status to 'waiting for final submission response' unless graduate" do
         giver = described_class.new(submission)
         giver.waiting_for_final_submission_response!
@@ -1906,13 +1885,21 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
+    context "when status is 'waiting for committee review'" do
+      before { submission.status = 'waiting for committee review' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+      end
+    end
+
     context "when status is 'waiting for head of program review'" do
       before { submission.status = 'waiting for head of program review' }
 
-      it "updates status to 'waiting for final submission response'" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        giver.waiting_for_final_submission_response!
-        expect(submission.status).to eq 'waiting for final submission response'
+        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -1994,28 +1981,29 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for committee review'" do
       before { submission.status = 'waiting for committee review' }
 
-      it "raises an exception" do
+      it "updates status to 'waiting for publication release'" do
         giver = described_class.new(submission)
-        expect { giver.waiting_for_publication_release! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        giver.waiting_for_publication_release!
+        expect(submission.status).to eq 'waiting for publication release'
       end
     end
 
     context "when status is 'waiting for head of program review'" do
       before { submission.status = 'waiting for head of program review' }
 
-      it "raises an exception" do
+      it "updates status to 'waiting for publication release'" do
         giver = described_class.new(submission)
-        expect { giver.waiting_for_publication_release! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        giver.waiting_for_publication_release!
+        expect(submission.status).to eq 'waiting for publication release'
       end
     end
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
 
-      it "updates status to 'waiting for publication release'" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        giver.waiting_for_publication_release!
-        expect(submission.status).to eq 'waiting for publication release'
+        expect { giver.waiting_for_publication_release! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -2183,29 +2171,29 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for committee review'" do
       before { submission.status = 'waiting for committee review' }
 
-      it "raises an exception" do
+      it "changes the status to 'waiting for publication release'" do
         giver = described_class.new(submission)
-        expect { giver.unreleased_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        giver.unreleased_for_publication!
+        expect(submission.status).to eq 'waiting for publication release'
       end
     end
 
     context "when status is 'waiting for head of program review'" do
       before { submission.status = 'waiting for head of program review' }
 
-      it "raises an exception" do
+      it "changes the status to 'waiting for publication release'" do
         giver = described_class.new(submission)
-        expect { giver.unreleased_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        giver.unreleased_for_publication!
+        expect(submission.status).to eq 'waiting for publication release'
       end
     end
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
 
-      it "changes the status to 'waiting for publication release'" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        giver.unreleased_for_publication!
-        expect(submission.status).to eq 'waiting for publication release'
-        #        expect {giver.unreleased_for_publication!}.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.unreleased_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 

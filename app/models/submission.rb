@@ -361,7 +361,7 @@ class Submission < ApplicationRecord
         status_giver.can_waiting_for_publication_release?
         status_giver.waiting_for_publication_release!
         update_attribute(:committee_review_accepted_at, DateTime.now)
-        committee_approved_emails
+        deliver_final_emails
       end
     elsif submission_status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
@@ -378,7 +378,7 @@ class Submission < ApplicationRecord
       status_giver.can_waiting_for_publication_release?
       status_giver.waiting_for_publication_release!
       update_attribute(:head_of_program_review_accepted_at, DateTime.now)
-      committee_approved_emails
+      deliver_final_emails
     elsif submission_head_of_program_status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
@@ -396,7 +396,8 @@ class Submission < ApplicationRecord
     WorkflowMailer.committee_rejected_author(self).deliver if degree.degree_type.approval_configuration.email_authors
   end
 
-  def committee_approved_emails
-    WorkflowMailer.committee_review_complete(self).deliver if degree.degree_type.approval_configuration.email_authors
+  def deliver_final_emails
+    WorkflowMailer.final_submission_approved(self, I18n.t("#{current_partner.id}.partner.email.url")).deliver_now if degree.degree_type.approval_configuration.email_authors
+    WorkflowMailer.pay_thesis_fee(self).deliver_now if current_partner.honors?
   end
 end

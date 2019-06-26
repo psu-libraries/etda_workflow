@@ -10,26 +10,20 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
 
   describe 'it processes approved final submissions' do
     it 'approves a final submission' do
-      start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :waiting_for_final_submission_response, committee_members: [committee_member]
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
       params[:submission][:committee_members_attributes] = { "0" => submission.committee_members.first.attributes }
       params[:approved] = true
       params[:submission][:title] = 'update this title'
-      params[:submission][:committee_members_attributes]["0"]['is_voting'] = false
-      params[:submission][:committee_members_attributes]["0"]['status'] = 'approved'
       final_submission_update_service = described_class.new(params, submission, 'testuser123')
       result = final_submission_update_service.respond_final_submission
       expect(result[:msg]).to eql("The submission\'s final submission information was successfully approved.")
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/final_submission_submitted")
-      expect(submission.status).to eq('waiting for publication release')
+      expect(submission.status).to eq('waiting for committee review')
       expect(submission.title).to eq('update this title')
-      expect(submission.committee_members.first.is_voting).to eq(false)
-      expect(submission.committee_members.first.status).to eq('approved')
-      expect(submission.committee_members.first.notes).to match(/\ntestuser123 changed 'status' to 'approved' at: .*\ntestuser123 changed 'is_voting' to 'false' at:/)
       expect(submission.publication_release_terms_agreed_to_at).not_to be_nil
-      expect(ActionMailer::Base.deliveries.count).to eq(start_count + final_count)
+      expect(ActionMailer::Base.deliveries.count).to eq(submission.voting_committee_members.count)
     end
 
     it 'rejects a final submission' do

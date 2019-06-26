@@ -51,15 +51,6 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
-        committee_review_complete:
-          message: |
-                    Your eTD has been reviewed and was approved by your committee. Your final submission will now be reviewed by administrators before finalized.
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
-                    You may also call (814)865-5448, or send mail to:
-                    Office of Theses and Dissertations
-                    115 Kern Building
-                    Graduate School
-                    University Park, PA  16802
         committee_rejected_admin:
           message: |
                     The committee for %{author_name}'s %{degree_type} has rejected their submission.  It is now under review by administrators.
@@ -143,13 +134,13 @@ en:
         description: Completed and approved drafts
       final_submission_pending:
         title: Final Submission is Pending
-        description: Theses waiting to be reviewed by committee members.
+        description: Theses waiting to be reviewed by committee members
       committee_review_rejected:
         title: Committee Review Rejected
-        description: Theses rejected by committee.
+        description: Theses rejected by committee
       final_submission_submitted:
         title: Final Submission is Submitted
-        description: Theses approved by committee and waiting to be reviewed for final formatting approval by Schreyer Honors College
+        description: Theses waiting to be reviewed for final formatting approval by Schreyer Honors College
       final_submission_incomplete:
         title: Final Submission is Incomplete
         description: Submissions that were rejected and need formatting corrections
@@ -158,20 +149,20 @@ en:
         description: Submitted and waiting to be approved
       final_submission_approved:
         title: Final Submission to be Released
-        description: Approved and waiting to be released
+        description: Approved by committee and waiting to be released
       released_for_publication:
         title: Released Theses
         description: Manage theses which have already been released
       final_restricted_institution:
         title: Final Submission is Restricted to Penn State
-        description: Submissions restricted to the Penn State community.
+        description: Submissions restricted to the Penn State community
       final_withheld:
         title: Restricted Theses
         description: Availability restricted for 2 years.
     access_level:
       open_access: Open Access
       open_access_attr:
-        description_html: Allows for open access to the body of the thesis. Note:"Withheld" status must be arranged by contacting the Honors College Records Department.
+        description_html: Allows for open access to the body of the thesis. Note:"Withheld" status must be arranged by contacting the Honors College Records Department
         scope: released_for_publication
       restricted_to_institution: 'Restricted (Penn State Only)'
       restricted_to_institution_attr:
