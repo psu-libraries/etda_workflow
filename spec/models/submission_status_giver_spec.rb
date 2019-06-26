@@ -1072,6 +1072,15 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
+    context "when status is 'waiting for committee review rejected'" do
+      before { submission.status = 'waiting for committee review rejected' }
+
+      it "does not raise an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_upload_final_submission_files? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
 

@@ -95,6 +95,37 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           expect(page).to have_current_path(author_submission_final_submission_path(submission))
         end
       end
+
+      context "when status is 'waiting for committee review rejected'" do
+        before do
+          submission.update_attribute :status, 'waiting for committee review rejected'
+          submission.keywords << (FactoryBot.create :keyword)
+        end
+
+        let!(:committee_member_2) { FactoryBot.create :committee_member, status: 'approved', approved_at: DateTime.now, notes: 'Notes', submission: submission }
+
+        it 'can edit final submission' do
+          visit author_submission_edit_final_submission_path(submission)
+          expect(page).to have_current_path(author_submission_edit_final_submission_path(submission))
+          fill_in "Title", with: "A Brand New Title"
+          select "Fall", from: "Semester Intending to Graduate"
+          select 1.year.from_now.year, from: "Graduation Year"
+          fill_in 'Abstract', with: 'Abstract'
+          find('#submission_access_level_open_access').click
+          click_link "Additional File"
+          within('#final-submission-file-fields') do
+            all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
+          end
+          find('#submission_has_agreed_to_terms').click
+          click_button 'Submit final files for review'
+          sleep 1
+          expect(CommitteeMember.find(committee_member_2.id).status).to eq ''
+          expect(CommitteeMember.find(committee_member_2.id).approved_at).to eq nil
+          expect(CommitteeMember.find(committee_member_2.id).notes).to eq 'Notes'
+          expect(CommitteeMember.find(committee_member_2.id).reset_at).to be_present
+          expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+        end
+      end
     end
 
     context "when committee reviews" do
@@ -112,6 +143,18 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         click_button 'Submit Review'
         sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
+      end
+
+      it "proceeds to 'waiting for publication release' when head of program is approving if head already accepted" do
+        FactoryBot.create :committee_member, :required, submission: submission, committee_role: head_role, status: 'approved', access_id: 'approverflow'
+        submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
+        visit approver_path(committee_member)
+        within("form#edit_committee_member_#{committee_member.id}") do
+          find(:css, "#committee_member_status_approved").set true
+        end
+        click_button 'Submit Review'
+        sleep 3
+        expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
       end
 
       it "moves forward in process if accepted when head of program is not approving" do
