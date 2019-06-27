@@ -30,31 +30,30 @@ steps:
   depends_on:
   - build
   commands:
-    - sleep 30
     - cd /etda_workflow
     - apt-get update 
     - apt-get install mysql-client -y
     - export RAILS_ENV=test
     - unset CI
-    - export QT_QPA_PLATFORM=offscreen
     # - bundle install --with development test
     - bundle exec rake drone_prepare
 
-# - name: integration-tests
-#   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
-#   environment:
-#     MYSQL_USER: root
-#     MYSQL_PASSWORD: root
-#     MYSQL_HOST: mariadb
-#     REDIS_HOST: redis
-#   depends_on:
-#     - prepare
-#   commands:
-#     - cd /etda_workflow
-#     - yarn global add phantomjs-prebuilt
-#     - export PARTNER=graduate
-#     - unset CI
-#     - bundle exec rake spec:integration
+- name: integration-tests
+  image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+  environment:
+    MYSQL_USER: root
+    MYSQL_PASSWORD: root
+    MYSQL_DATABASE: something
+    MYSQL_HOST: mariadb
+    REDIS_HOST: redis
+  depends_on:
+    - prepare
+  commands:
+    - cd /etda_workflow
+    - yarn global add phantomjs-prebuilt
+    - export PARTNER=graduate
+    - unset CI
+    - bundle exec rake spec:integration
 
 - name: test-grad
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
