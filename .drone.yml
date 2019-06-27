@@ -42,7 +42,7 @@ steps:
     # - bundle exec rake db:test:load
     # - bundle exec rake db:migrate
 
-- name: test
+- name: test-grad
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
   environment:
     MYSQL_USER: root
@@ -54,11 +54,11 @@ steps:
   commands:
     - cd /etda_workflow
     - apt-get update
-    - apt-get install mysql-client phantomjs -y
+    - apt-get install phantomjs -y
     - export RAILS_ENV=test
     - unset CI
     - export QT_QPA_PLATFORM=offscreen
-    - bundle exec rake ci
+    - bundle exec rake drone_grad
 
 # - name: test-models
 #   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
