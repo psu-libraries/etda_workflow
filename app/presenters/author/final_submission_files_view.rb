@@ -10,13 +10,13 @@ class Author::FinalSubmissionFilesView
   end
 
   def author_access_level_view
-    return 'access_level_static' unless current_partner.graduate?
+    return 'access_level_static' if current_partner.milsch?
 
     'access_level_standard'
   end
 
   def disclosure_class
-    return '' unless current_partner.graduate?
+    return '' if current_partner.milsch?
     return '' if @record.access_level.restricted?
 
     'hidden'

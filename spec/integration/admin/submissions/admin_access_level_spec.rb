@@ -20,12 +20,12 @@ RSpec.describe 'Admin submission access_level', js: true do
     it 'has an open_access radio button' do
       page.find("input#submission_access_level_open_access").trigger('click')
       expect(find("#submission_access_level_open_access")).to be_checked
-      expect(page).to have_content('Enter justification') unless current_partner.graduate?
+      expect(page).to have_content('Enter justification') if current_partner.milsch?
     end
     it 'has a restricted_to_institution radio button' do
       page.find("input#submission_access_level_restricted_to_institution").trigger('click')
       expect(page.find("input#submission_access_level_restricted_to_institution")).to be_checked
-      unless current_partner.graduate?
+      if current_partner.milsch?
         expect(page).to have_content('Enter justification')
         expect(page.find('textarea#submission_restricted_notes')).to be_truthy
       end
@@ -36,7 +36,7 @@ RSpec.describe 'Admin submission access_level', js: true do
       expect(page.find("input#submission_access_level_restricted")).to be_checked
       click_button('Update Metadata Only')
       sleep(1)
-      expect(page).to have_content('Enter justification') unless current_partner.graduate?
+      expect(page).to have_content('Enter justification') if current_partner.milsch?
       expect(page).to have_field('submission_invention_disclosures_attributes_0_id_number')
       inventions = page.find(:css, 'div.form-group.string.optional.submission_invention_disclosures_id_number')
       within inventions do
