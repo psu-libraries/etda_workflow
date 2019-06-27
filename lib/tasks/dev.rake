@@ -47,6 +47,7 @@ if defined?(RSpec)
     Rake::Task['db:create'].invoke
     Rake::Task['db:test:load'].invoke
     Rake::Task['db:migrate'].invoke
+    Rake::Task['db:seed:essential'].invoke
     Rake::Task['legacy:db:test_fixtures:load'].invoke
   end
 
