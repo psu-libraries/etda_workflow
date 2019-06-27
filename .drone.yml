@@ -50,6 +50,7 @@ steps:
   - prepare
   commands:
     - cd /etda_workflow
+    - unset CI
     - export QT_QPA_PLATFORM=offscreen
     - bundle exec rake spec:controllers
 
@@ -64,6 +65,7 @@ steps:
   - prepare
   commands:
     - cd /etda_workflow
+    - unset CI
     - export QT_QPA_PLATFORM=offscreen
     - bundle exec rake spec:models
 
