@@ -54,7 +54,7 @@ steps:
   commands:
     - cd /etda_workflow
     - apt-get update
-    - apt-get install phantomjs -y
+    - yarn global add phantomjs
     - export RAILS_ENV=test
     - unset CI
     - export QT_QPA_PLATFORM=offscreen
@@ -79,7 +79,7 @@ steps:
   image: alpine/git
   depends_on:
     - prepare
-    - test
+    - test-grad
     # - test-models
   commands:
   - cd k8s/chart
