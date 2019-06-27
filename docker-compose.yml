@@ -25,7 +25,7 @@ services:
         RAILS_ENV: development
     command: >
       sh -c "yarn install && 
-            if [ -f tmp/pids/sever/server.pid ]; then rm tmp/pids/server.pid; fi &&
+            if [ -f tmp/pids/server.pid ]; then rm tmp/pids/server.pid; fi &&
             echo starting database migrations &&
             rails db:create && 
             rails db:migrate &&
