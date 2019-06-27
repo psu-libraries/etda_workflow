@@ -52,6 +52,7 @@ steps:
   depends_on:
   - prepare
   commands:
+    - sleep 30
     - cd /etda_workflow
     - apt-get update
     - yarn global add phantomjs-prebuilt
