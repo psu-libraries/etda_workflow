@@ -5,3 +5,4 @@
 --tag ~glacial
 --tag ~import_test
 --tag ~lionpath
+--fail-fast
