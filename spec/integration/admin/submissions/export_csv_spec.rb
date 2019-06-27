@@ -14,7 +14,7 @@ RSpec.describe "Exporting a list of approved submissions as an admin", js: true 
       visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')
     end
 
-    it 'has a button to export submissions to a CSV file' do
+    it 'has a button to export submissions to a CSV file', retry: 5 do
       expect(page).to have_content('Final Submission to be Released', wait: 5)
       find_button('Select Visible', wait: 8)
       click_button 'Select Visible'
