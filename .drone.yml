@@ -51,7 +51,7 @@ steps:
   commands:
     - cd /etda_workflow
     - apt-get update
-    - apt-get install mysql-client -y
+    - apt-get install mysql-client phantomjs -y
     - export RAILS_ENV=test
     - unset CI
     - export QT_QPA_PLATFORM=offscreen
@@ -80,6 +80,7 @@ steps:
     # - test-models
   commands:
   - cd k8s/chart
+  - if [ ! -f values-$DRONE_BRANCH.yaml ]; then echo "no environment to deploy, exiting && exit 0"; fi
   - 'sed -i "/^image:/,/*[^:]*:/s/tag:.*/tag: $DRONE_BUILD_NUMBER/g" values-$DRONE_BRANCH.yaml'
   - git config user.email "drone@drone2test.vmhost.psu.edu"
   - git config user.name "DroneCI"
