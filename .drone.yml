@@ -31,13 +31,16 @@ steps:
   - build
   commands:
     - cd /etda_workflow
+    - apt-get update 
+    - apt-get install mysql-client -y
     - export RAILS_ENV=test
     - unset CI
     - export QT_QPA_PLATFORM=offscreen
     # - bundle install --with development test
-    - bundle exec rake db:create
-    - bundle exec rake db:test:load
-    - bundle exec rake db:migrate
+    - bundle exec rake drone_prepare
+    # - bundle exec rake db:create
+    # - bundle exec rake db:test:load
+    # - bundle exec rake db:migrate
 
 - name: test
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
