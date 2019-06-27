@@ -30,6 +30,7 @@ steps:
   depends_on:
   - build
   commands:
+    - pwd
     # - cd /etda_workflow
     - export RAILS_ENV=test
     - export QT_QPA_PLATFORM=offscreen
