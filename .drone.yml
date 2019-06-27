@@ -53,7 +53,7 @@ steps:
     - export RAILS_ENV=test
     - unset CI
     - export QT_QPA_PLATFORM=offscreen
-    - bundle exec rake rake ci
+    - bundle exec rake ci
 
 # - name: test-models
 #   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
