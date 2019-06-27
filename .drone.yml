@@ -3,22 +3,22 @@ kind: pipeline
 name: default
 
 steps:
-- name: build
-  image: docker
-  environment:
-    SSH_PRIVATE_KEY:
-      from_secret: SSH_PRIVATE_KEY
-    DOCKER_PASSWORD:
-      from_secret: DOCKER_PASSWORD
-  commands:
-  - export DOCKER_HOST=unix:///var/run/host.sock
-  - docker login -u 'robot$drone' -p $DOCKER_PASSWORD harbor.dsrd.libraries.psu.edu
-  - docker build --build-arg SSH_PRIVATE_KEY=$SSH_PRIVATE_KEY -t harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER . 
-  - docker tag harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
-  - docker push harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER 
-  volumes:
-  - name: docker-sock
-    path: /var/run/host.sock
+# - name: build
+#   image: docker
+#   environment:
+#     SSH_PRIVATE_KEY:
+#       from_secret: SSH_PRIVATE_KEY
+#     DOCKER_PASSWORD:
+#       from_secret: DOCKER_PASSWORD
+#   commands:
+#   - export DOCKER_HOST=unix:///var/run/host.sock
+#   - docker login -u 'robot$drone' -p $DOCKER_PASSWORD harbor.dsrd.libraries.psu.edu
+#   - docker build --build-arg SSH_PRIVATE_KEY=$SSH_PRIVATE_KEY -t harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER . 
+#   - docker tag harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+#   - docker push harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER 
+#   volumes:
+#   - name: docker-sock
+#     path: /var/run/host.sock
 
 - name: prepare
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
@@ -27,10 +27,11 @@ steps:
     MYSQL_PASSWORD: root
     MYSQL_HOST: mariadb
     REDIS_HOST: redis
-  depends_on:
-  - build
+  # depends_on:
+  # - build
   commands:
     - cd /etda_workflow
+    - gem list
     - export RAILS_ENV=test
     - bundle exec rake -T 
     - export QT_QPA_PLATFORM=offscreen
