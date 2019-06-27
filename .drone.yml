@@ -3,22 +3,22 @@ kind: pipeline
 name: default
 
 steps:
-# - name: build
-#   image: docker
-#   environment:
-#     SSH_PRIVATE_KEY:
-#       from_secret: SSH_PRIVATE_KEY
-#     DOCKER_PASSWORD:
-#       from_secret: DOCKER_PASSWORD
-#   commands:
-#   - export DOCKER_HOST=unix:///var/run/host.sock
-#   - docker login -u 'robot$drone' -p $DOCKER_PASSWORD harbor.dsrd.libraries.psu.edu
-#   - docker build --build-arg SSH_PRIVATE_KEY=$SSH_PRIVATE_KEY -t harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER . 
-#   - docker tag harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
-#   - docker push harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER 
-#   volumes:
-#   - name: docker-sock
-#     path: /var/run/host.sock
+- name: build
+  image: docker
+  environment:
+    SSH_PRIVATE_KEY:
+      from_secret: SSH_PRIVATE_KEY
+    DOCKER_PASSWORD:
+      from_secret: DOCKER_PASSWORD
+  commands:
+  - export DOCKER_HOST=unix:///var/run/host.sock
+  - docker login -u 'robot$drone' -p $DOCKER_PASSWORD harbor.dsrd.libraries.psu.edu
+  - docker build --build-arg SSH_PRIVATE_KEY=$SSH_PRIVATE_KEY -t harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER . 
+  - docker tag harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+  - docker push harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER 
+  volumes:
+  - name: docker-sock
+    path: /var/run/host.sock
 
 - name: prepare
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
@@ -27,8 +27,8 @@ steps:
     MYSQL_PASSWORD: root
     MYSQL_HOST: mariadb
     REDIS_HOST: redis
-  # depends_on:
-  # - build
+  depends_on:
+  - build
   commands:
     - sleep 30
     - cd /etda_workflow
@@ -39,9 +39,6 @@ steps:
     - export QT_QPA_PLATFORM=offscreen
     # - bundle install --with development test
     - bundle exec rake drone_prepare
-    # - bundle exec rake db:create
-    # - bundle exec rake db:test:load
-    # - bundle exec rake db:migrate
 
 - name: test-grad
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
@@ -54,36 +51,18 @@ steps:
   - prepare
   commands:
     - cd /etda_workflow
-    - apt-get update
     - yarn global add phantomjs-prebuilt
     - export RAILS_ENV=test
     - export PARTNER=graduate
     - unset CI
     - export QT_QPA_PLATFORM=offscreen
     - bundle exec rspec --fail-fast
-    # - bundle exec rake drone_grad
-
-# - name: test-models
-#   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
-#   environment:
-#     MYSQL_USER: root
-#     MYSQL_PASSWORD: root
-#     MYSQL_HOST: mariadb
-#     REDIS_HOST: redis
-#   depends_on:
-#   - prepare
-#   commands:
-#     - cd /etda_workflow
-#     - unset CI
-#     - export QT_QPA_PLATFORM=offscreen
-#     - bundle exec rake spec:models
 
 - name: tag
   image: alpine/git
   depends_on:
     - prepare
     - test-grad
-    # - test-models
   commands:
   - cd k8s/chart
   - if [ ! -f values-$DRONE_BRANCH.yaml ]; then echo "no environment to deploy, exiting && exit 0"; fi
@@ -104,15 +83,6 @@ services:
 - name: redis
   image: redis
 
-
-# - name: notify
-#   image: drillster/drone-email
-#   settings:
-#     host: smtp.psu.edu
-#     from: drone@drone-test.dsrd.libraries.psu.edu
-#   when:
-#    status: [ changed, success, failure ]
-  
 volumes:
 - name: docker-sock
   host:
