@@ -11,11 +11,11 @@ steps:
     DOCKER_PASSWORD:
       from_secret: DOCKER_PASSWORD
   commands:
-  - export DOCKER_HOST=unix:///var/run/host.sock
-  - docker login -u 'robot$drone' -p $DOCKER_PASSWORD harbor.dsrd.libraries.psu.edu
-  - docker build --build-arg SSH_PRIVATE_KEY=$SSH_PRIVATE_KEY -t harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER . 
-  - docker tag harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
-  - docker push harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER 
+    - export DOCKER_HOST=unix:///var/run/host.sock
+    - docker login -u 'robot$drone' -p $DOCKER_PASSWORD harbor.dsrd.libraries.psu.edu
+    - docker build --build-arg SSH_PRIVATE_KEY=$SSH_PRIVATE_KEY -t harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER . 
+    - docker tag harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+    - docker push harbor.dsrd.libraries.psu.edu/library/etda-workflow:$DRONE_BUILD_NUMBER 
   volumes:
   - name: docker-sock
     path: /var/run/host.sock
@@ -55,7 +55,7 @@ steps:
     - export RAILS_ENV=test
     - export PARTNER=graduate
     - unset CI
-    - export QT_QPA_PLATFORM=offscreen
+    # - export QT_QPA_PLATFORM=offscreen
     - bundle exec rspec --fail-fast
 
 - name: tag
@@ -64,14 +64,14 @@ steps:
     - prepare
     - test-grad
   commands:
-  - cd k8s/chart
-  - if [ ! -f values-$DRONE_BRANCH.yaml ]; then echo "no environment to deploy, exiting && exit 0"; fi
-  - 'sed -i "/^image:/,/*[^:]*:/s/tag:.*/tag: $DRONE_BUILD_NUMBER/g" values-$DRONE_BRANCH.yaml'
-  - git config user.email "drone@drone2test.vmhost.psu.edu"
-  - git config user.name "DroneCI"
-  - git add values-$DRONE_BRANCH.yaml
-  - git commit -m "[skip ci] adds $DRONE_BUILD_NUMBER"
-  - git push -u origin $DRONE_BRANCH
+    - cd k8s/chart
+    - if [ ! -f values-$DRONE_BRANCH.yaml ]; then echo "no environment to deploy, exiting && exit 0"; fi
+    - 'sed -i "/^image:/,/*[^:]*:/s/tag:.*/tag: $DRONE_BUILD_NUMBER/g" values-$DRONE_BRANCH.yaml'
+    - git config user.email "drone@drone2test.vmhost.psu.edu"
+    - git config user.name "DroneCI"
+    - git add values-$DRONE_BRANCH.yaml
+    - git commit -m "[skip ci] adds $DRONE_BUILD_NUMBER"
+    - git push -u origin $DRONE_BRANCH
 
 
 services:
