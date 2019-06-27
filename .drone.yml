@@ -33,6 +33,7 @@ steps:
     - cd /etda_workflow
     - gem list
     - gem environment
+    - env
     - export RAILS_ENV=test
     - bundle exec rake -T 
     - export QT_QPA_PLATFORM=offscreen
