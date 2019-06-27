@@ -39,7 +39,7 @@ steps:
     - bundle exec rake db:test:load
     - bundle exec rake db:migrate
 
-- name: test-controllers
+- name: test
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
   environment:
     MYSQL_USER: root
@@ -50,31 +50,32 @@ steps:
   - prepare
   commands:
     - cd /etda_workflow
+    - export RAILS_ENV=test
     - unset CI
     - export QT_QPA_PLATFORM=offscreen
-    - bundle exec rake spec:controllers
+    - bundle exec rake rake ci
 
-- name: test-models
-  image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
-  environment:
-    MYSQL_USER: root
-    MYSQL_PASSWORD: root
-    MYSQL_HOST: mariadb
-    REDIS_HOST: redis
-  depends_on:
-  - prepare
-  commands:
-    - cd /etda_workflow
-    - unset CI
-    - export QT_QPA_PLATFORM=offscreen
-    - bundle exec rake spec:models
+# - name: test-models
+#   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+#   environment:
+#     MYSQL_USER: root
+#     MYSQL_PASSWORD: root
+#     MYSQL_HOST: mariadb
+#     REDIS_HOST: redis
+#   depends_on:
+#   - prepare
+#   commands:
+#     - cd /etda_workflow
+#     - unset CI
+#     - export QT_QPA_PLATFORM=offscreen
+#     - bundle exec rake spec:models
 
 - name: tag
   image: alpine/git
   depends_on:
     - prepare
     - test-controllers
-    - test-models
+    # - test-models
   commands:
   - cd k8s/chart
   - 'sed -i "/^image:/,/*[^:]*:/s/tag:.*/tag: $DRONE_BUILD_NUMBER/g" values-$DRONE_BRANCH.yaml'
