@@ -40,6 +40,22 @@ steps:
     # - bundle install --with development test
     - bundle exec rake drone_prepare
 
+- name: integration-tests
+  image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+  environment:
+    MYSQL_USER: root
+    MYSQL_PASSWORD: root
+    MYSQL_HOST: mariadb
+    REDIS_HOST: redis
+  depends_on:
+    - prepare
+  commands:
+    - cd /etda_workflow
+    - yarn global add phantomjs-prebuilt
+    - export PARTNER=graduate
+    - unset CI
+    - bundle exec rake spec:integration
+
 - name: test-grad
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
   environment:
@@ -55,8 +71,17 @@ steps:
     - export RAILS_ENV=test
     - export PARTNER=graduate
     - unset CI
-    # - export QT_QPA_PLATFORM=offscreen
-    - bundle exec rspec --fail-fast
+    - bundle exec rake spec:controllers
+    - bundle exec rake spec:helpers
+    # - bundle exec rake spec:integration
+    - bundle exec rake spec:lib
+    - bundle exec rake spec:mailers
+    - bundle exec rake spec:models
+    - bundle exec rake spec:presenters
+    - bundle exec rake spec:requests
+    - bundle exec rake spec:routing
+    - bundle exec rake spec:services
+    - bundle exec rake spec:workers
 
 - name: tag
   image: alpine/git
