@@ -50,6 +50,8 @@ steps:
   - prepare
   commands:
     - cd /etda_workflow
+    - apt-get update
+    - apt-get install mysql-client -y
     - export RAILS_ENV=test
     - unset CI
     - export QT_QPA_PLATFORM=offscreen
