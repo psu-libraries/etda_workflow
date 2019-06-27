@@ -74,7 +74,7 @@ steps:
   image: alpine/git
   depends_on:
     - prepare
-    - test-controllers
+    - test
     # - test-models
   commands:
   - cd k8s/chart
