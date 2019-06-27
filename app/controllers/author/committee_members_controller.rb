@@ -39,7 +39,7 @@ class Author::CommitteeMembersController < AuthorController
     @submission.update_attribute :committee_provided_at, Time.zone.now
 
     flash[:notice] = 'Committee updated successfully'
-    if params[:commit] == "Save and Return to Dashboard" || params[:commit] == 'Verify Committee'
+    if params[:commit] == "Save and Continue Submission" || params[:commit] == 'Verify Committee'
       redirect_to author_root_path
     else
       redirect_to edit_author_submission_committee_members_path(@submission)

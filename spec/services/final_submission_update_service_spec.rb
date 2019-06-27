@@ -45,7 +45,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.has_agreed_to_publication_release).to be_falsey
       expect(submission.abstract).to eq('this abstract is updated')
       expect(submission.committee_members.first.is_voting).to eq(false)
-      expect(submission.committee_members.first.notes).to match(/\ntestuser123 changed 'is_voting' to 'false' at: /)
+      expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
       expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
     end
 
@@ -67,7 +67,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.title).to eq('a different title')
       expect(submission.final_submission_notes).to eq('a note to you')
       expect(submission.committee_members.first.is_voting).to eq(false)
-      expect(submission.committee_members.first.notes).to match(/\ntestuser123 changed 'is_voting' to 'false' at: /)
+      expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Voting Attribute to 'False' at: /)
       expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
     end
 
@@ -90,7 +90,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.title).to eq('a different title for release')
       expect(submission.abstract).to eq('a new abstract')
       expect(submission.committee_members.first.status).to eq('pending')
-      expect(submission.committee_members.first.notes).to match(/\ntestuser123 changed 'status' to 'pending' at: .*/)
+      expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Review Status to 'Pending' at:*/)
       # No emails sent when edit only
       expect(ActionMailer::Base.deliveries.count).to eq(start_count)
     end
@@ -116,7 +116,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.final_submission_approved_at).to be(nil)
       expect(submission.final_submission_rejected_at).to be(nil)
       expect(submission.committee_members.first.status).to eq('rejected')
-      expect(submission.committee_members.first.notes).to match(/\ntestuser123 changed 'status' to 'rejected' at: .*/)
+      expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Review Status to 'Rejected' at:*/)
       # no email updates for moving submission out of waiting to be released (this has not been published yet)
       expect(ActionMailer::Base.deliveries.count).to eq(start_count)
     end
@@ -140,7 +140,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.title).to eq('a different title for released submission')
       expect(submission.abstract).to eq('a different abstract')
       expect(submission.committee_members.first.is_voting).to eq(false)
-      expect(submission.committee_members.first.notes).to match(/\ntestuser123 changed 'is_voting' to 'false' at: /)
+      expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
       expect(ActionMailer::Base.deliveries.count).to be == start_count + 0
     end
     it 'removes a submission from publication and does not send an email - access_level does not change' do
@@ -161,7 +161,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.status).to eq('waiting for publication release')
       expect(submission.abstract).to eq('I am an abstract!!!!!')
       expect(submission.committee_members.first.is_voting).to eq(false)
-      expect(submission.committee_members.first.notes).to match(/Some note\ntestuser123 changed 'is_voting' to 'false' at: /)
+      expect(submission.committee_members.first.notes).to match(/Some note\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
       expect(ActionMailer::Base.deliveries.count).to be == start_count + 0
     end
     it 'updates a final submission without changing the status' do
@@ -182,7 +182,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.status).to eq('collecting final submission files')
       expect(submission.title).to eq(title)
       expect(submission.committee_members.first.is_voting).to eq(false)
-      expect(submission.committee_members.first.notes).to match(/\ntestuser123 changed 'is_voting' to 'false' at: /)
+      expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Voting Attribute to 'False' at: /)
       expect(ActionMailer::Base.deliveries.count).to eq(start_count)
     end
   end

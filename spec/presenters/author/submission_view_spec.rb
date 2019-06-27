@@ -576,7 +576,7 @@ RSpec.describe Author::SubmissionView do
 
         it 'returns rejected' do
           submission.status = 'waiting for committee review rejected'
-          expect(view.step_seven_status).to eq(partial_name: '/author/shared/rejected_indicator', text: "approved on July 4, 2014")
+          expect(view.step_seven_status).to eq(partial_name: '/author/shared/rejected_indicator', text: "rejected on July 4, 2014")
         end
       end
     end
