@@ -60,9 +60,6 @@ steps:
     - export PARTNER=graduate
     - unset CI
     - export QT_QPA_PLATFORM=offscreen
-    - bundle exec db:drop
-    - bundle exec db:create
-    - bundle exec db:seed:essential
     - bundle exec rspec --fail-fast
     # - bundle exec rake drone_grad
 
