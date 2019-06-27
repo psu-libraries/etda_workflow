@@ -54,7 +54,7 @@ if defined?(RSpec)
   task drone_grad: :environment do
     ENV['PARTNER'] = 'graduate'
     ::Rake.application['spec'].reenable
-    Rake::Task['spec'].invoke
+    Rake::Task['spec'].invoke(["--fail-fast"])
     ::Rake.application['spec'].reenable
   end
 

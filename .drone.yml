@@ -57,9 +57,11 @@ steps:
     - apt-get update
     - yarn global add phantomjs-prebuilt
     - export RAILS_ENV=test
+    - export PARTNER=graduate
     - unset CI
     - export QT_QPA_PLATFORM=offscreen
-    - bundle exec rake drone_grad
+    - bundle exec rspec --fail-fast
+    # - bundle exec rake drone_grad
 
 # - name: test-models
 #   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
