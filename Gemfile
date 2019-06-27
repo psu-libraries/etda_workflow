@@ -121,7 +121,6 @@ group :development, :test do
 
   gem 'rspec-rails'
   gem 'rubocop'
-  gem 'parallel_tests'
   gem 'rubocop-rspec'
 
   # Adds support for Capybara system testing and selenium driver
