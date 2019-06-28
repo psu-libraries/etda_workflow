@@ -32,7 +32,7 @@
       <%= render partial: @view.author_access_level_view, locals: {f: f}  %>
 
       <div id="final-submission-file-fields">
-        <%= render partial: 'author/submissions/file_label' %>
+        <%= render partial: 'author/submissions/final_submission_file_label' %>
         <%= f.simple_fields_for :final_submission_files do |final_submission_file| %>
             <%= render 'file_fields', file_fields: final_submission_file %>
         <% end %>
@@ -46,7 +46,7 @@
                                        data: { association_insertion_node: '#final-submission-file-fields', association_insertion_method: 'append' },
                                        form_name: 'file_fields',
                                        partial: 'file_fields' do %>
-          <span class="glyphicon glyphicon-plus"></span> Additional File
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Add Additional File
         <% end %>
       </div>
 
