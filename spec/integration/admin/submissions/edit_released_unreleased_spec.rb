@@ -41,7 +41,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     fill_in "Admin notes", with: "Some admin notes"
   end
 
-  it 'Displays a message indicating the submission must be withdrawn to edit' do
+  it 'Displays a message indicating the submission must be withdrawn to edit', retry: 5 do
     allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
 
     expect(page).to have_content('In order to update a published submission, it must be withdrawn from publication. After withdrawing, the submission can be edited and re-published.   The withdraw button is at the bottom of the page.')

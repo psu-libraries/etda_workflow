@@ -14,7 +14,7 @@ RSpec.describe "Editing committee member information for format reviews and fina
     webaccess_authorize_admin
   end
 
-  it 'has specific content and records changes for certain updates' do
+  it 'has specific content and records changes for certain updates', retry: 5 do
     visit admin_edit_submission_path(submission)
     committee_size = submission.committee_members.count
     find("div[data-target='#committee']").click
@@ -39,6 +39,6 @@ RSpec.describe "Editing committee member information for format reviews and fina
     expect(page).to have_content("Waiting for Committee Review")
     expect(submission.committee_members.count).to eq(committee_size.to_i - 1)
     expect(submission.committee_members.first.status).to eq 'pending'
-    expect(submission.committee_members.first.notes).to match(/changed 'status' to 'pending'/)
+    expect(submission.committee_members.first.notes).to match(/changed Review Status to 'Pending'/)
   end
 end
