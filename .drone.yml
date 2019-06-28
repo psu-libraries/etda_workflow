@@ -106,7 +106,8 @@ steps:
   image: alpine/git
   depends_on:
     - prepare
-    - test-grad
+    - test-grad-0
+    - test-grad-1
   commands:
     - cd k8s/chart
     - if [ ! -f values-$DRONE_BRANCH.yaml ]; then echo "no environment to deploy, exiting && exit 0"; fi
