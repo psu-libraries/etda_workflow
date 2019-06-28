@@ -94,8 +94,8 @@ steps:
     - yarn global add phantomjs-prebuilt
     - export RAILS_ENV=test
     - export PARTNER=graduate
-    - bundle exec rake drone_prepare
     - unset CI
+    - bundle exec rake drone_prepare
     - bundle exec rake spec:presenters
     - bundle exec rake spec:requests
     - bundle exec rake spec:routing
