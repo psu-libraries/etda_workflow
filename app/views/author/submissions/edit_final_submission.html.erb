@@ -27,9 +27,7 @@
 
       <%= f.input :abstract, as: :text, required: true, label: 'Abstract', input_html: {rows: 8} %>
 
-      <div aria-live="polite" tabindex=0 aria-relevant="all" >
       <%= f.input :delimited_keywords, as: :string, label: 'Keywords', wrapper: :hint_top, hint: Keyword.hint, required: true, input_html: { class: 'tagit' } %>
-      </div>
 
       <%= render partial: @view.author_access_level_view, locals: {f: f}  %>
 
