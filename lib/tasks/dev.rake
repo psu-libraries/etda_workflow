@@ -51,31 +51,6 @@ if defined?(RSpec)
     Rake::Task['legacy:db:test_fixtures:load'].invoke
   end
 
-  desc 'drone grad'
-  task drone_grad: :environment do
-    ENV['PARTNER'] = 'graduate'
-    ::Rake.application['spec'].reenable
-    Rake::Task['spec'].invoke(["--fail-fast"])
-    ::Rake.application['spec'].reenable
-  end
-
-  desc 'drone milsch'
-  task drone_milsch: :environment do
-    ENV['PARTNER'] = 'milsch'
-    ::Rake.application['spec'].reenable
-    Rake::Task['spec'].invoke
-    ::Rake.application['spec'].reenable
-  end
-
-  desc 'drone honors'
-  task drone_honors: :environment do
-    ENV['PARTNER'] = 'honors'
-    ::Rake.application['spec'].reenable
-    Rake::Task['spec'].invoke
-    ::Rake.application['spec'].reenable
-  end
-
-
 
   # desc 'bundle audit'
   # Bundler::Audit::Task.new do |task|
