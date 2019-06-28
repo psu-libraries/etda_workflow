@@ -74,28 +74,9 @@ steps:
     - unset CI
     - bundle exec rake spec:controllers
     - bundle exec rake spec:helpers
-    # - bundle exec rake spec:integration
     - bundle exec rake spec:lib
     - bundle exec rake spec:mailers
     - bundle exec rake spec:models
-
-- name: test-grad-1
-  image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
-  environment:
-    MYSQL_USER: root
-    MYSQL_PASSWORD: root
-    MYSQL_DATABASE: test-1
-    MYSQL_HOST: mariadb
-    REDIS_HOST: redis
-  depends_on:
-  - prepare
-  commands:
-    - cd /etda_workflow
-    - yarn global add phantomjs-prebuilt
-    - export RAILS_ENV=test
-    - export PARTNER=graduate
-    - unset CI
-    - bundle exec rake drone_prepare
     - bundle exec rake spec:presenters
     - bundle exec rake spec:requests
     - bundle exec rake spec:routing
@@ -103,12 +84,12 @@ steps:
     - bundle exec rake spec:workers
 
 
+
 - name: tag
   image: alpine/git
   depends_on:
     - prepare
     - test-grad-0
-    - test-grad-1
   commands:
     - cd k8s/chart
     - if [ ! -f values-$DRONE_BRANCH.yaml ]; then echo "no environment to deploy, exiting && exit 0"; fi
