@@ -57,7 +57,7 @@ steps:
     - bundle exec rake drone_prepare
     - bundle exec rake spec:integration
 
-- name: test-grad
+- name: test-grad-0
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
   environment:
     MYSQL_USER: root
@@ -78,11 +78,29 @@ steps:
     - bundle exec rake spec:lib
     - bundle exec rake spec:mailers
     - bundle exec rake spec:models
+
+- name: test-grad-1
+  image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+  environment:
+    MYSQL_USER: root
+    MYSQL_PASSWORD: root
+    MYSQL_DATABASE: test-1
+    MYSQL_HOST: mariadb
+    REDIS_HOST: redis
+  depends_on:
+  - prepare
+  commands:
+    - cd /etda_workflow
+    - yarn global add phantomjs-prebuilt
+    - export RAILS_ENV=test
+    - export PARTNER=graduate
+    - unset CI
     - bundle exec rake spec:presenters
     - bundle exec rake spec:requests
     - bundle exec rake spec:routing
     - bundle exec rake spec:services
     - bundle exec rake spec:workers
+
 
 - name: tag
   image: alpine/git
