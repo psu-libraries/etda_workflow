@@ -22,7 +22,7 @@ RSpec.describe "Manage Contact Information", js: true do
       expect(page).to have_content(author.first_name)
       expect(page).to have_content(author.middle_name)
       if current_partner.graduate?
-        expect(page).to have_unchecked_field('author[opt_out_email]') if not author.opt_out_email
+        expect(page).to have_unchecked_field('author[opt_out_email]')
         expect(page).to have_field('Phone number')
         expect(page).to have_field('Address 1')
         expect(page).to have_field('Address 2')
