@@ -3,7 +3,7 @@
 class ApprovalConfiguration < ApplicationRecord
   belongs_to :degree_type
 
-  validates :degree_type_id, :approval_deadline_on, :configuration_threshold, presence: true
+  validates :degree_type_id, :configuration_threshold, presence: true
 
   GRADUATE_CONFIGURATION = { 'dissertation' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 0, email_authors: 0, use_percentage: 0, head_of_program_is_approving: 1 },
                              'master_thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 0, email_authors: 0, use_percentage: 0, head_of_program_is_approving: 1 } }.freeze
