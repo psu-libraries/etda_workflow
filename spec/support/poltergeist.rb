@@ -11,5 +11,5 @@ Capybara.default_max_wait_time = 5
 Capybara.automatic_reload = true
 Capybara.raise_server_errors = false
 # Returns Capybara 2 style string matching
-# TODO this option will not be possible with Capybara 4
-Capybara.default_normalize_ws = true
+# # TODO this option will not be possible with Capybara 4
+# Capybara.default_normalize_ws = true
