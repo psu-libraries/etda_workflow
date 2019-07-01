@@ -179,7 +179,7 @@ spec:
             value: {{ .Values.redis.password }}
           {{- end }}
           - name: REDIS_HOST
-            value: {{ $fullName }}-redis-master
+            value: {{ $fullName }}-redis
           {{- end }}
           volumeMounts:
             - name: shared-data
