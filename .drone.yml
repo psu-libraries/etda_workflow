@@ -25,6 +25,7 @@ steps:
   environment:
     MYSQL_USER: root
     MYSQL_PASSWORD: root
+    MYSQL_DATABASE_TEST: etda_workflow_test
     MYSQL_HOST: mariadb
     REDIS_HOST: redis
   depends_on:
@@ -43,6 +44,7 @@ steps:
   environment:
     MYSQL_USER: root
     MYSQL_PASSWORD: root
+    MYSQL_DATABASE_TEST: etda_workflow_test
     MYSQL_DATABASE: integration
     MYSQL_HOST: mariadb
     REDIS_HOST: redis
@@ -62,6 +64,7 @@ steps:
   environment:
     MYSQL_USER: root
     MYSQL_PASSWORD: root
+    MYSQL_DATABASE_TEST: etda_workflow_test
     MYSQL_HOST: mariadb
     REDIS_HOST: redis
   depends_on:
