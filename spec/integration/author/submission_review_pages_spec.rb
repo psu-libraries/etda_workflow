@@ -95,7 +95,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
       expect(page).to have_content(submission1.current_access_level.label)
       expect(page).to have_content(submission1.final_submission_files.first.asset.identifier)
       expect(page).to have_content(submission1.invention_disclosures.first.id_number)
-      # TODO find out why capybara 3 doesn't match this
+      # TODO: find out why capybara 3 doesn't match this
       # expect(page).to have_content(submission1.restricted_notes)
       expect(page).to have_content(long_note + long_note + long_note + long_note + long_note + long_note + long_note)
       expect(page).to have_link('Return to dashboard')
