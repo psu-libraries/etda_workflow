@@ -111,3 +111,16 @@ global:
     path: secret/data/etd/dev/workflow
     role: etd
     # serviceAccountName: vault-auth
+
+healthcheck:
+  readinessProbe:
+    initialDelaySeconds: 25
+    periodSeconds: 5
+    failureThreshold: 3
+    path: /healthcheck/all
+  livenessProbe:
+    path: /healthcheck/all
+    initialDelaySeconds: 25
+    periodSeconds: 5
+    failureThreshold: 3
+  enabled: false

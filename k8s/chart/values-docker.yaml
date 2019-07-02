@@ -66,3 +66,6 @@ global:
     path: secret/app/etda_workflow/dev
     role: etda_workflow_dev
 
+healthcheck:
+  enabled: true
+
