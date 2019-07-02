@@ -114,13 +114,13 @@ global:
 
 healthcheck:
   readinessProbe:
-    initialDelaySeconds: 5
+    initialDelaySeconds: 25
     periodSeconds: 5
     failureThreshold: 3
     path: /healthcheck/all
   livenessProbe:
     path: /healthcheck/all
-    initialDelaySeconds: 5
+    initialDelaySeconds: 25
     periodSeconds: 5
     failureThreshold: 3
   enabled: false
