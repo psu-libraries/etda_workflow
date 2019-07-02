@@ -29,7 +29,7 @@ ingress:
     paths:
     - "/"
   tls:
-  - secretName: submit-etda-docker-dsrd-libraries-psu-edu
+  - secretName: submit-etda-digital-signatures-dsrd-libraries-psu-edu
     hosts:
     - submit-etda-digital-signatures.dsrd.libraries.psu.edu
 resources: {}
