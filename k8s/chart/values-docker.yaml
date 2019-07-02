@@ -10,7 +10,7 @@ persistence:
       storage: 8Gi
 image:
   repository: harbor.dsrd.libraries.psu.edu/library/etda-workflow
-  tag: 262
+  tag: 259
   pullPolicy: IfNotPresent
   imagePullSecrets: harbor-dsrd-libraries
 nameOverride: ''
@@ -65,4 +65,7 @@ global:
     mountPath: auth/k8s-dsrd-dev
     path: secret/app/etda_workflow/dev
     role: etda_workflow_dev
+
+healthcheck:
+  enabled: true
 
