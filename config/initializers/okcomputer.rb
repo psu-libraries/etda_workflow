@@ -17,7 +17,7 @@ end
 
 ## Sidekiq Checks
 
-sidekiq_config = YAML.safe_load(ERB.new(IO.read(File.join(Rails.root, 'config', 'sidekiq.yml'))).result).with_indifferent_access
+sidekiq_config = Rails.application.config_for(:sidekiq)
 
 sidekiq_config['queues'].each do |q|
     threshold = sidekiq_config['latency_threshold'] || 30
@@ -31,6 +31,6 @@ end
 
 ## Redis Checks 
 
-redis_config = YAML.safe_load(ERB.new(IO.read(File.join(Rails.root, 'config', 'redis.yml'))).result)[Rails.env].with_indifferent_access
+redis_config = Rails.application.config_for(:redis)
 
 OkComputer::Registry.register "redis", OkComputer::RedisCheck.new(redis_config)

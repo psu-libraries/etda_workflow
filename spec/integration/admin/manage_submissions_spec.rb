@@ -26,10 +26,8 @@ RSpec.describe "Manage Submissions", js: true do
         outbound_records = OutboundLionPathRecord.all.count
         submission_count = Submission.all.count
         click_button 'Select Visible'
-        sleep(3)
         expect(page).to have_button('Delete selected')
         click_button('Delete selected')
-        sleep 4
         expect(page).to have_content('successfully')
         total_outbound = OutboundLionPathRecord.all.count
         total_submissions = Submission.all.count
@@ -45,7 +43,6 @@ RSpec.describe "Manage Submissions", js: true do
         find(:css, "input.row-checkbox", match: :first).set(true)
         expect(page).to have_button('Delete selected')
         click_button('Delete selected')
-        sleep 3
         expect(page).to have_content('successfully')
         total_outbound = OutboundLionPathRecord.all.count
         total_submissions = Submission.all.count
@@ -68,13 +65,14 @@ RSpec.describe "Manage Submissions", js: true do
       context 'Restricted to institution' do
         before do
           visit admin_submissions_index_path(DegreeType.default, 'final_restricted_institution')
-          sleep 3
         end
 
         it 'does not have a delete button but does have other bulk actions' do
           expect(page).to have_content('Restricted to Penn State')
           expect(page).to have_content('Showing')
-          click_button 'Select Visible'
+          expect(page).not_to have_selector('div#approved-final-submission-submissions-index_processing', visible: false)
+          # expect(page).not_to have_content("Loading Data...")
+          find_button('Select Visible').click
           expect(page).to have_content('Bulk Actions')
           expect(page).to have_xpath("//input[@type='checkbox']")
           expect(page).not_to have_button('Delete Selected')
@@ -86,15 +84,14 @@ RSpec.describe "Manage Submissions", js: true do
     context 'Withheld' do
       before do
         visit admin_submissions_index_path(DegreeType.default, 'final_withheld')
-        sleep 3
       end
 
       it 'does not have a delete button but has other bulk actions' do
         expect(page).to have_content('Restricted Theses')
         expect(page).to have_content('Showing')
-        click_button 'Select Visible'
-        sleep(5)
-        expect(page).to have_content('Bulk Actions')
+        expect(page).not_to have_selector('div#approved-final-submission-submissions-index_processing', visible: false)
+        find_button('Select Visible').click
+        expect(page).to have_content('Bulk Actions', wait: 5)
         expect(page).to have_xpath("//input[@type='checkbox']")
         expect(page).to have_button('Release as Open Access')
         expect(page).not_to have_button('Delete Selected')
