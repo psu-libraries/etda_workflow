@@ -1,0 +1,46 @@
+version: '3.2'
+services:
+  redis:
+    image: redis:5.0.5
+    volumes:
+    - redis-data:/data
+    ports:
+    - "6379:6379"
+  db:
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    image: mariadb:10.4.6
+    ports:
+    - "3306:3306"
+    volumes:
+    - db-data:/var/lib/mysql
+  web:
+    environment:
+      REDIS_HOST: redis
+      MYSQL_HOST: db
+      RAILS_ENV: development
+    build: 
+      context: .
+      args:
+        RAILS_ENV: development
+    command: >
+      sh -c "yarn install && 
+            if [ -f tmp/pids/server.pid ]; then rm tmp/pids/server.pid; fi &&
+            echo starting database migrations &&
+            rails db:create && 
+            rails db:migrate &&
+            echo starting rails &&
+            rails s"
+    volumes:
+      - type: bind
+        source: ./app/
+        target: /etda_workflow/app
+        consistency: cached
+    ports:
+    - "3000:3000"
+    depends_on:
+    - db
+
+volumes:
+  db-data:
+  redis-data:
