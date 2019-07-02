@@ -1,4 +1,6 @@
 development:
-   secret_key: 'asdfasdfasdfsadfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfjkl;jkljkl;jkljkl;j;kl'
+  secret_key: 'asdfasdfasdfsadfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfjkl;jkljkl;jkljkl;j;kl'
 test:
-   secret_key: 'testkeyasdfasdfasdfasdfasdfasdfasdf'
+  secret_key: 'testkeyasdfasdfasdfasdfasdfasdfasdf'
+production:
+  secret_key: "<%= ENV['DEVISE_SECRET_KEY'] %>"

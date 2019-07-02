@@ -42,6 +42,16 @@ if defined?(RSpec)
     # Rake::Task['bundle:audit'].invoke
   end
 
+  desc 'drone prepare'
+  task drone_prepare: :environment do
+    Rake::Task['db:create'].invoke
+    Rake::Task['db:test:load'].invoke
+    Rake::Task['db:migrate'].invoke
+    Rake::Task['db:seed:essential'].invoke
+    Rake::Task['legacy:db:test_fixtures:load'].invoke
+  end
+
+
   # desc 'bundle audit'
   # Bundler::Audit::Task.new do |task|
   #   task default: 'bundle:audit'

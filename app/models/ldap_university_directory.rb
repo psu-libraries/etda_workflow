@@ -83,7 +83,7 @@ class LdapUniversityDirectory
 
   def ldap_configuration
     # Only ever read this once.
-    @ldap_configuration ||= YAML.safe_load(ERB.new(IO.read(File.join(Rails.root, 'config', 'ldap.yml'))).result)[Rails.env].freeze
+    @ldap_configuration ||= Rails.application.config_for(:ldap)
   end
 
   def directory_lookup(query_type, search_string)
