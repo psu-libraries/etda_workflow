@@ -93,7 +93,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     # puts page.find_field("Committee role").value
 
     # expect(page.find_field("Committee role").value).to eq role.id.to_s
-    puts page.body
+    # puts page.body
     # expect(page.find_field("Name").value).to eq "Bob Tester"
     # expect(page.find_field("Email").value).to eq "bob@email.com"
     # end
