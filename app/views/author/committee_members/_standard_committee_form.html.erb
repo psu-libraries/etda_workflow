@@ -15,6 +15,13 @@
 
       </div>
 
+      <% if current_partner.graduate? %>
+      <div class="col-xs-12 col-xs-10 col-sm-9">
+        <%= link_to "Input Head of Graduate Program >>" %>
+      </div>
+      </br>
+      <% end %>
+
     <div class="form-group actions">
       <div class="col-xs-12 col-sm-6 col-md-4">
         <span class='glyphicon glyphicon-plus'> </span>
