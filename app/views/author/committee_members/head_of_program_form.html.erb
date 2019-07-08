@@ -1,0 +1,31 @@
+<h1>Input Head of Program</h1>
+<br/>
+
+<div class="nested-fields panel panel-default">
+  <div class="row">
+    <div class="col-xs-12">
+      <%= simple_form_for @submission, url: author_submission_committee_members_path(@submission)do |form| %>
+        <%= form.simple_fields_for :committee_members do |f| %>
+          <% if f.object.committee_role.name == 'Head/Chair of Graduate Program' %>
+            <%= f.input :committee_role, as: :hidden,  input_html: { value: @submission.degree_type.committee_roles.find_by(name: 'Head/Chair of Graduate Program') } %>
+            <p>You can find the primary contact for your program here: <a href="https://secure.gradsch.psu.edu/gpms/" target="_blank">Graduate Program Search</a></p>
+            <div class="row">
+              <div class="col-sm-6">
+                <%= f.input :name, label: 'Head of Graduate Program Name', input_html: { class: 'ldap-lookup' } %>
+              </div>
+              <div class="col-sm-6">
+                <%= f.input :email, label: 'Head of Graduate Program Email', input_html: { readonly: true }%>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+    </div>
+  </div>
+</div>
+<div class="form-group actions">
+  <div class="col-xs-12 col-xs-10 col-sm-9">
+    <%= form.button :submit, class: "btn-primary", value: "Update Head of Program Information" %>
+    <%= link_to "Return to dashboard", author_root_path, class: 'btn cancel-link'%>
+  </div>
+</div>
+<% end %>

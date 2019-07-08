@@ -41,6 +41,8 @@ class Author::CommitteeMembersController < AuthorController
     flash[:notice] = 'Committee updated successfully'
     if params[:commit] == "Save and Continue Submission" || params[:commit] == 'Verify Committee'
       redirect_to author_root_path
+    elsif params[:commit] == "Save and Input Head of Graduate Program >>"
+      redirect_to author_submission_head_of_program_path
     else
       redirect_to edit_author_submission_committee_members_path(@submission)
     end
@@ -67,6 +69,15 @@ class Author::CommitteeMembersController < AuthorController
       flash[:alert] = 'Unable to refresh committee member information from Lion Path.'
     end
     render :show
+  end
+
+  def head_of_program
+    status_giver.can_update_committee?
+    @submission.committee_members.build(committee_role: @submission.degree_type.committee_roles.find_by(name: 'Head/Chair of Graduate Program'), is_required: true)
+    render :head_of_program_form
+  rescue SubmissionStatusGiver::AccessForbidden
+    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    redirect_to author_root_path
   end
 
   private

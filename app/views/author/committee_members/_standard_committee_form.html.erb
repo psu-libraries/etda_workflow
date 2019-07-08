@@ -15,13 +15,6 @@
 
       </div>
 
-      <% if current_partner.graduate? %>
-      <div class="col-xs-12 col-xs-10 col-sm-9">
-        <%= link_to "Input Head of Graduate Program >>" %>
-      </div>
-      </br>
-      <% end %>
-
     <div class="form-group actions">
       <div class="col-xs-12 col-sm-6 col-md-4">
         <span class='glyphicon glyphicon-plus'> </span>
@@ -32,8 +25,12 @@
       </div>
     </div>
       <div class="col-xs-12 col-xs-10 col-sm-9">
-        <%= submission_form.button :submit, class: "btn-primary", value: "Save and Continue Editing" %>
-        <%= submission_form.button :submit, class: "btn-primary btn-success", value: "Save and Continue Submission" %>
+        <% if current_partner.graduate? && @submission.status == 'collecting committee' %>
+          <%= submission_form.button :submit, class: "btn-primary", value: "Save and Input Head of Graduate Program >>" %>
+        <% else %>
+          <%= submission_form.button :submit, class: "btn-primary", value: "Save and Continue Editing" %>
+          <%= submission_form.button :submit, class: "btn-primary btn-success", value: "Save and Continue Submission" %>
+        <% end %>
         <%= link_to "Cancel", author_root_path, class: 'btn cancel-link'%>
       </div>
 
