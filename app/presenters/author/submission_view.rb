@@ -40,7 +40,7 @@ class Author::SubmissionView < SimpleDelegator
     if status_behavior.collecting_committee?
       ("<a href='" + "/author/submissions/#{id}/committee_members/new" + "'>" + step_two_name + "</a>").html_safe
     elsif status_behavior.ok_to_update_committee?
-      (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members/edit" + "' class='medium'>[update <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe
+      (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members/edit" + "' class='medium'>[update <span class='sr-only'>committee for submission '#{title}' </span>]</a>" + "<a href='" + "/author/submissions/#{id}/head_of_program" + "' class='medium'>[edit head of program <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe
     elsif status_behavior.beyond_collecting_format_review_files? || using_lionpath?
       (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members" + "' class='medium'>[review <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe
     else
