@@ -1,14 +1,16 @@
 RSpec.describe 'Step 2: Collecting Committee status', js: true do
   require 'integration/integration_spec_helper'
 
+  let!(:author) { current_author }
+  let!(:admin)  { current_admin }
+  let!(:submission) { FactoryBot.create :submission, :collecting_committee, author: author }
+  let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+  let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: true }
+
   describe "When status is 'collecting committee'" do
     before do
       webaccess_authorize_author
     end
-
-    let!(:author) { current_author }
-    let!(:admin)  { current_admin }
-    let!(:submission) { FactoryBot.create :submission, :collecting_committee, author: author }
 
     context "visiting the 'Author Submissions Index Page' page" do
       it 'loads the page' do
@@ -90,9 +92,6 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
   end
 
   describe "author can delete a submission" do
-    let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: true }
-
     before do
       webaccess_authorize_author
     end

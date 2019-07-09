@@ -111,7 +111,8 @@ class Author::SubmissionsController < AuthorController
     @voting_committee_members = @submission.voting_committee_members
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
-    raise CommitteeMember::ProgramHeadMissing if current_partner.graduate? && CommitteeMember.head_of_program(@submission.id).blank?
+    raise CommitteeMember::ProgramHeadMissing if @submission.head_of_program_is_approving? && CommitteeMember.head_of_program(@submission.id).blank?
+
     @submission.update_attributes!(final_submission_params)
     @submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
     status_giver.waiting_for_committee_review!

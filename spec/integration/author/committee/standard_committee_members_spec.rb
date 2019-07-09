@@ -35,6 +35,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         expect(page).to have_content('Add Committee')
         submission.required_committee_roles.count.times do |i|
           next if i == 0 && current_partner.graduate?
+
           fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
           fill_in "submission_committee_members_attributes_#{i}_email", with: "name_#{i}@example.com"
         end
@@ -53,6 +54,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         @email_list = []
         submission.required_committee_roles.count.times do |i|
           next if i == 0 && current_partner.graduate?
+
           fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
           page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@psu.edu'")
           @email_list << "name_#{i}@psu.edu"
@@ -71,6 +73,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         visit author_submission_committee_members_path(submission)
         submission.required_committee_roles.count.times do |i|
           next if i == 0 && current_partner.graduate?
+
           # expect(page).to have_content role.name
           name = "Name #{i}"
           email = "name_#{i}@psu.edu"
@@ -85,6 +88,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         @email_list = []
         submission.required_committee_roles.count.times do |i|
           next if i == 0 && current_partner.graduate?
+
           fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
           page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@example.com'")
           @email_list << "name_#{i}@example.com"

@@ -37,7 +37,6 @@ class Author::CommitteeMembersController < AuthorController
     @submission.update_attributes!(submission_params)
     status_giver.collecting_format_review_files! if @submission.status_behavior.collecting_committee?
     @submission.update_attribute :committee_provided_at, Time.zone.now
-
     flash[:notice] = 'Committee updated successfully'
     if params[:commit] == "Save and Continue Submission" || params[:commit] == 'Verify Committee'
       redirect_to author_root_path

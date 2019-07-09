@@ -148,7 +148,7 @@ RSpec.describe Author::SubmissionView do
           if InboundLionPathRecord.active?
             expect(view.step_two_description).to eq view.step_two_name + "<a href='#{author_submission_committee_members_path(submission)}' class='medium'>[review <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
           else
-            expect(view.step_two_description).to eq view.step_two_name + "<a href='#{edit_author_submission_committee_members_path(submission)}' class='medium'>[update <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a><a href='#{author_submission_head_of_program_path(submission)}' class='medium'>[edit head of program <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>" if current_partner.graduate?
+            expect(view.step_two_description).to eq view.step_two_name + "<a href='#{edit_author_submission_committee_members_path(submission)}' class='medium'>[update <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a><a href='#{author_submission_head_of_program_path(submission)}' class='medium'>[edit head of program <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
           end
         end
 
@@ -158,7 +158,7 @@ RSpec.describe Author::SubmissionView do
           if InboundLionPathRecord.active?
             expect(view.step_two_description).to eq view.step_two_name + "<a href='#{author_submission_committee_members_path(submission)}' class='medium'>[review <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
           else
-            expect(view.step_two_description).to eq view.step_two_name + "<a href='#{author_submission_committee_members_path(submission)}' class='medium'>[review <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>" unless current_partner.graduate?
+            expect(view.step_two_description).to eq view.step_two_name + "<a href='#{edit_author_submission_committee_members_path(submission)}' class='medium'>[update <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
           end
         end
       end
