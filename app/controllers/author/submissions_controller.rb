@@ -131,7 +131,7 @@ class Author::SubmissionsController < AuthorController
     redirect_to author_root_path
     flash[:alert] = 'Oops! You may have submitted invalid format review data. Please check that your format review information is correct.'
   rescue CommitteeMember::ProgramHeadMissing
-    redirect_to author_submission_head_of_program_path
+    redirect_to author_submission_head_of_program_path(@submission)
     flash[:alert] = 'In order to proceed beyond the final submission stage, you must input the head/chair of your graduate program here.'
   end
 

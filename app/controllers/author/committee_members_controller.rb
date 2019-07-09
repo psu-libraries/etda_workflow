@@ -42,7 +42,7 @@ class Author::CommitteeMembersController < AuthorController
     if params[:commit] == "Save and Continue Submission" || params[:commit] == 'Verify Committee'
       redirect_to author_root_path
     elsif params[:commit] == "Save and Input Head of Graduate Program >>"
-      redirect_to author_submission_head_of_program_path
+      redirect_to author_submission_head_of_program_path(@submission)
     elsif params[:commit] == "Update Head of Graduate Program Information"
       redirect_to author_root_path
     else
