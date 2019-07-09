@@ -47,6 +47,10 @@ redis:
     storageClass: nfs-client
 
 mariadb:
+  backup:
+    enabled: true
+    keep: 5
+    database: etda_workflow
   db:
     user: etda_workflow
     name: etda_workflow
