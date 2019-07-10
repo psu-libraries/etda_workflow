@@ -24,7 +24,7 @@
 
   <div class="row">
     <div class="col-sm-6">
-        <%= f.input :name, label: local_presenter.name_label, input_html: { class: 'ldap-lookup' }, required: true %>
+        <%= f.input :name, label: local_presenter.name_label, aria: { label: "Use arrow keys to navigate your committee member search results to confirm the proper person" }, input_html: { class: 'ldap-lookup' }, required: true %>
     </div>
     <% unless local_presenter.required? %>
       <div class="col-sm-6">
