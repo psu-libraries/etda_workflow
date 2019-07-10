@@ -42,14 +42,14 @@ class Author::CommitteeMembersController < AuthorController
       redirect_to author_root_path
     elsif params[:commit] == "Save and Input Head/Chair of Graduate Program >>"
       redirect_to author_submission_head_of_program_path(@submission)
-    elsif params[:commit] == "Update Head of Graduate Program Information"
+    elsif params[:commit] == "Update Head/Chair of Graduate Program Information"
       redirect_to author_root_path
     else
       redirect_to edit_author_submission_committee_members_path(@submission)
     end
   rescue ActiveRecord::RecordInvalid => e
     flash[:alert] = e.message
-    if params[:commit] == "Update Head of Graduate Program Information"
+    if params[:commit] == "Update Head/Chair of Graduate Program Information"
       redirect_to author_submission_head_of_program_path(@submission)
     else
       render :form
