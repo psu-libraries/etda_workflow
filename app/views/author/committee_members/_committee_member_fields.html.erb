@@ -30,6 +30,11 @@
       <div class="col-sm-6">
         <%= f.input :email, label: local_presenter.email_label, required: true %>
       </div>
+      <% if f.object.committee_role == 'Special Signatory' %>
+        <%= f.input :is_voting, as: :hidden, :input_html => { value: 0, readonly: true } %>
+      <% else %>
+        <%= f.input :is_voting, as: :hidden, :input_html => { value: 1, readonly: true } %>
+      <% end %>
       <div class="col-sm-6">
         <%= f.label :is_voting, 'Is voting on approval' %>
         <%= f.input :is_voting, as: :radio_buttons, label: false %>
