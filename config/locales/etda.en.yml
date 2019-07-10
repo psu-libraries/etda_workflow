@@ -4,7 +4,5 @@ en:
     success: '%{released_count} %{submissions} successfully released for publication.  '
     base_error:  'Submissions not released:  '
     submission_error: 'ID: %{id} %{last_name}, %{first_name} '
-  opt_out_email:
-    label: 'Do not send non-eTD related correspondence to my alternate email address after graduation.'
   display_alternate_email:
     label: 'Display your alternate email address on your %{slug} document summary page?'

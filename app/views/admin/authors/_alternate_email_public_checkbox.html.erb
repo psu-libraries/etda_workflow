@@ -1,4 +1,2 @@
 
   <%= f.input :is_alternate_email_public, label: I18n.t('display_alternate_email.label', slug: "#{current_partner.slug}"), as: :boolean, wrapper: :checkbox %>
-  <%= f.input :opt_out_email, label: "#{I18n.t('opt_out_email.label')}", as: :boolean, wrapper: :checkbox if current_partner.graduate? %>* Opt-out value set by <%= @author.opt_out_default? ? 'application' : 'author' if current_partner.graduate? %>
-

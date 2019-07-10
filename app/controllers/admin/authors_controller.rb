@@ -41,9 +41,7 @@ class Admin::AuthorsController < AdminController
                                :city,
                                :state,
                                :zip,
-                               :country,
-                               :opt_out_email,
-                               :opt_out_default]
+                               :country]
 
     author_params_permitted.merge(:inbound_lion_path_record_attributes[:lion_path_degree_code, :id, :author_id, :current_record]) if InboundLionPathRecord.active?
 

@@ -8,7 +8,6 @@ node(:data) do
       author[:first_name],
       author[:year] || '',
       author[:alternate_email_address],
-      author[:opt_out_email],
       author[:opt_out_user_set],
       author[:confidential_alert_icon]
     ]
