@@ -67,7 +67,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         click_button 'Save and Input Head/Chair of Graduate Program >>' if current_partner.graduate?
         sleep(3)
         expect(page).to have_content('My Submissions') unless current_partner.graduate?
-        expect(page).to have_content('Input Head of Graduate Program') if current_partner.graduate?
+        expect(page).to have_content('Input Head/Chair of Graduate Program') if current_partner.graduate?
         submission.reload
         assert_equal submission.committee_email_list, @email_list
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count) unless current_partner.graduate?
