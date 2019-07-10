@@ -49,7 +49,11 @@ class Author::CommitteeMembersController < AuthorController
     end
   rescue ActiveRecord::RecordInvalid => e
     flash[:alert] = e.message
-    render :form
+    if params[:commit] == "Update Head of Graduate Program Information"
+      redirect_to author_submission_head_of_program_path(@submission)
+    else
+      render :form
+    end
   rescue SubmissionStatusGiver::AccessForbidden
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
     redirect_to author_root_path

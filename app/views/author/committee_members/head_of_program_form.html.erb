@@ -1,4 +1,4 @@
-<h1>Input Head of Graduate Program</h1>
+<h1>Input Head/Chair of Graduate Program</h1>
 <br/>
 <p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.head_of_program_notice") %></p>
 <br/>
@@ -12,10 +12,10 @@
             <p><strong>You can find the primary contact for your graduate program here: </strong><a href="https://secure.gradsch.psu.edu/gpms/" target="_blank">Graduate Program Search</a></p>
             <div class="row">
               <div class="col-sm-6">
-                <%= f.input :name, label: 'Head of Graduate Program Name', input_html: { class: 'ldap-lookup' } %>
+                <%= f.input :name, label: 'Head/Chair of Graduate Program Name', input_html: { class: 'ldap-lookup' } %>
               </div>
               <div class="col-sm-6">
-                <%= f.input :email, label: 'Head of Graduate Program Email', input_html: { readonly: true }%>
+                <%= f.input :email, label: 'Head/Chair of Graduate Program Email', input_html: { readonly: true }%>
               </div>
             </div>
           <% end %>
@@ -24,8 +24,8 @@
   </div>
 </div>
 <div class="form-group actions">
-  <div class="col-xs-12 col-xs-10 col-sm-9">
-    <%= form.button :submit, class: "btn-primary", value: "Update Head of Graduate Program Information" %>
+  <div class="col-xs-10">
+    <%= form.button :submit, class: "btn-primary", value: "Update Head/Chair of Graduate Program Information" %>
     <%= link_to "Return to dashboard", author_root_path, class: 'btn cancel-link'%>
   </div>
 </div>

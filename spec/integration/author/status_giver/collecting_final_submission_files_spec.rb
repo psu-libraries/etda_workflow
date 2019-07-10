@@ -120,6 +120,14 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         expect(WorkflowMailer.deliveries.count).to eq(submission.voting_committee_members.count) unless current_partner.graduate?
         expect(Sidekiq::Worker.jobs.size).to eq(submission.voting_committee_members.count)
       end
+
+      it 'redirects to head of program page if none exists and head is approving' do
+        ApprovalConfiguration.find(approval_configuration.id).update_attribute :head_of_program_is_approving, true
+        CommitteeMember.remove_committee_members(submission)
+        visit author_submission_edit_final_submission_path(submission)
+        click_button 'Submit final files for review'
+        expect(page).to have_current_path(author_submission_head_of_program_path(submission))
+      end
     end
 
     context "when I submit the 'Upload Final Submission Files' form with multiple files" do
