@@ -92,7 +92,7 @@ class Admin::SubmissionFormView < SimpleDelegator
   end
 
   def psu_only(label)
-    label == AccessLevel.paper_access_levels[AccessLevel.RESTRICTED_TO_INSTITUTION.to_i][:label] && !Partner.current.graduate? # 'Restricted (Penn State Only)'
+    label == AccessLevel.paper_access_levels[AccessLevel.RESTRICTED_TO_INSTITUTION.to_i][:label] && Partner.current.milsch? # 'Restricted (Penn State Only)'
   end
 
   def release_date_history
