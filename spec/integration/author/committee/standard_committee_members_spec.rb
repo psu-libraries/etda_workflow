@@ -4,6 +4,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
   let(:author) { current_author }
   let(:submission) { FactoryBot.create :submission, :collecting_committee, author: author }
   let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+
   let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: true } if current_partner.graduate?
   let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false } unless current_partner.graduate?
 
