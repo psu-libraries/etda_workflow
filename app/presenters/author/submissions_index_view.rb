@@ -35,10 +35,6 @@ class Author::SubmissionsIndexView
   end
 
   def update_contact_information?
-    if current_partner.graduate?
-      @author.opt_out_default? || @author.alternate_email_address.nil?
-    else
-      @author.alternate_email_address.nil?
-    end
+    @author.alternate_email_address.nil?
   end
 end

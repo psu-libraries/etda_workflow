@@ -25,7 +25,6 @@ class Author::AuthorsController < AuthorController
       @author.psu_idn = Author.new.psu_id_number(@author.access_id)
       @author.save
     end
-    @author.opt_out_default = false if current_partner.graduate?
     @author.update_attributes!(author_params)
     outbound_lionpath_record.report_email_change unless @author.submissions.empty?
     redirect_to author_root_path
@@ -69,9 +68,7 @@ class Author::AuthorsController < AuthorController
                           :city,
                           :state,
                           :zip,
-                          :country,
-                          :opt_out_email,
-                          :opt_out_default]
+                          :country]
 
     # author_params_list.merge(:inbound_lion_path_record_attributes[:lion_path_degree_code, :id, :author_id, :current_record]) if InboundLionPathRecord.active?
 
