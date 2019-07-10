@@ -5,11 +5,11 @@ module SubmissionStates
     @name = 'waiting for committee review'
 
     def initialize
-      @transitions_to = [SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse]
+      @transitions_to = [SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForPublicationRelease]
     end
 
     def status_date(submission)
-      submission.final_submission_files_uploaded_at
+      submission.final_submission_approved_at
     end
   end
 end

@@ -108,15 +108,27 @@ class Author::SubmissionsController < AuthorController
 
   def update_final_submission
     @submission = find_submission
-    @voting_committee_members = @submission.voting_committee_members
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
     raise CommitteeMember::ProgramHeadMissing if @submission.head_of_program_is_approving? && CommitteeMember.head_of_program(@submission.id).blank?
 
     @submission.update_attributes!(final_submission_params)
     @submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
-    status_giver.waiting_for_committee_review!
-    @submission.initial_committee_member_emails(@voting_committee_members)
+    if @submission.status == 'waiting for committee review rejected'
+      status_giver.can_waiting_for_committee_review?
+      status_giver.waiting_for_committee_review!
+      OutboundLionPathRecord.new(submission: @submission).report_status_change
+      @submission.update_final_submission_timestamps!(Time.zone.now)
+      @submission.update_attribute :final_submission_approved_at, Time.zone.now
+      @submission.send_initial_committee_member_emails
+      @submission.reset_committee_review
+      redirect_to author_root_path
+      WorkflowMailer.final_submission_received(@submission).deliver if current_partner.graduate?
+      flash[:notice] = 'Final submission files uploaded successfully.'
+      return
+    end
+    status_giver.can_waiting_for_final_submission?
+    status_giver.waiting_for_final_submission_response!
     OutboundLionPathRecord.new(submission: @submission).report_status_change
     @submission.update_final_submission_timestamps!(Time.zone.now)
     redirect_to author_root_path

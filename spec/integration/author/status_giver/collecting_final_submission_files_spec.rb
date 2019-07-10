@@ -113,12 +113,11 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.status).to eq 'waiting for committee review'
+        expect(submission.status).to eq 'waiting for final submission response'
         submission.reload
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
-        expect(WorkflowMailer.deliveries.count).to eq(submission.voting_committee_members.count + 1) if current_partner.graduate?
-        expect(WorkflowMailer.deliveries.count).to eq(submission.voting_committee_members.count) unless current_partner.graduate?
-        expect(Sidekiq::Worker.jobs.size).to eq(submission.voting_committee_members.count)
+        expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.graduate?
+        expect(WorkflowMailer.deliveries.count).to eq(0) unless current_partner.graduate?
       end
 
       it 'redirects to head of program page if none exists and head is approving' do
@@ -155,7 +154,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.status).to eq 'waiting for committee review'
+        expect(submission.status).to eq 'waiting for final submission response'
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         expect(submission.final_submission_files.count).to eq(2)
         visit "/author/submissions/#{submission.id}/final_submission"
@@ -191,7 +190,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.status).to eq 'waiting for committee review'
+        expect(submission.status).to eq 'waiting for final submission response'
         submission.reload
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
       end

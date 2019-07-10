@@ -157,6 +157,27 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_six_class
+    if status_behavior.waiting_for_final_submission_response?
+      'current'
+    elsif status_behavior.beyond_waiting_for_final_submission_response?
+      'complete'
+    else
+      ''
+    end
+  end
+
+  def step_six_status
+    status = {}
+    if status_behavior.beyond_waiting_for_final_submission_response?
+      status[:text] = "approved#{formatted_timestamp_of(final_submission_approved_at)}"
+      status[:partial_name] = '/author/shared/completed_indicator'
+    elsif status_behavior.waiting_for_final_submission_response?
+      status[:partial_name] = '/author/shared/under_review_indicator'
+    end
+    status
+  end
+
+  def step_seven_class
     if status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_committee_review_rejected?
       'current'
     elsif status_behavior.waiting_for_head_of_program_review?
@@ -168,15 +189,17 @@ class Author::SubmissionView < SimpleDelegator
     end
   end
 
-  def step_six_description
-    if status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_head_of_program_review? || status_behavior.beyond_waiting_for_head_of_program_review?
+  def step_seven_description
+    if status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_head_of_program_review? || status_behavior.beyond_waiting_for_committee_review_rejected?
       ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
+    elsif status_behavior.waiting_for_committee_review_rejected?
+      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/final_submission/edit" + "' class='medium'>[update <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
     else
       'Waiting for Committee Review'
     end
   end
 
-  def step_six_status
+  def step_seven_status
     status = {}
     if status_behavior.waiting_for_committee_review_rejected?
       status[:partial_name] = '/author/shared/rejected_indicator'
@@ -189,27 +212,6 @@ class Author::SubmissionView < SimpleDelegator
       status[:partial_name] = '/author/shared/waiting_indicator'
     elsif status_behavior.waiting_for_head_of_program_review?
       status[:partial_name] = '/author/shared/waiting_indicator'
-    end
-    status
-  end
-
-  def step_seven_class
-    if status_behavior.waiting_for_final_submission_response?
-      'current'
-    elsif status_behavior.beyond_waiting_for_final_submission_response?
-      'complete'
-    else
-      ''
-    end
-  end
-
-  def step_seven_status
-    status = {}
-    if status_behavior.beyond_waiting_for_final_submission_response?
-      status[:text] = "approved#{formatted_timestamp_of(final_submission_approved_at)}"
-      status[:partial_name] = '/author/shared/completed_indicator'
-    elsif status_behavior.waiting_for_final_submission_response?
-      status[:partial_name] = '/author/shared/under_review_indicator'
     end
     status
   end

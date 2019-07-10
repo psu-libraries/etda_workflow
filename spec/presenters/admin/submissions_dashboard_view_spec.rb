@@ -54,13 +54,6 @@ RSpec.describe Admin::SubmissionsDashboardView do
             count: nil
           },
           {
-            id: 'final-submission-pending',
-            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.description"),
-            path: nil,
-            count: nil
-          },
-          {
             id: 'final-submission-submitted',
             title: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.title"),
             description: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.description"),
@@ -68,16 +61,23 @@ RSpec.describe Admin::SubmissionsDashboardView do
             count: nil
           },
           {
-            id: 'committee-review-rejected',
-            title: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.description"),
+            id: 'final-submission-incomplete',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_incomplete.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_incomplete.description"),
             path: nil,
             count: nil
           },
           {
-            id: 'final-submission-incomplete',
-            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_incomplete.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_incomplete.description"),
+            id: 'final-submission-pending',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.description"),
+            path: nil,
+            count: nil
+          },
+          {
+            id: 'committee-review-rejected',
+            title: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.description"),
             path: nil,
             count: nil
           },
@@ -95,12 +95,14 @@ RSpec.describe Admin::SubmissionsDashboardView do
             path: nil,
             count: nil
           },
-          {   id: 'final-restricted-institution',
-              title: I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.title"),
-              description: I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.description"),
-              path: nil,
-              count: nil,
-              sub_count: nil },
+          {
+            id: 'final-restricted-institution',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.description"),
+            path: nil,
+            count: nil,
+            sub_count: nil
+          },
           {
             id: 'final-withheld',
             title: I18n.t("#{current_partner.id}.admin_filters.final_withheld.title"),
@@ -152,23 +154,23 @@ RSpec.describe Admin::SubmissionsDashboardView do
             count: '1'
           ),
           a_hash_including(
-            id: 'final-submission-pending',
-            path: admin_submissions_index_path(degree_type, 'final_submission_pending'),
-            count: '1'
-          ),
-          a_hash_including(
             id: 'final-submission-submitted',
             path: admin_submissions_index_path(degree_type, 'final_submission_submitted'),
             count: '1'
           ),
           a_hash_including(
-            id: 'committee-review-rejected',
-            path: admin_submissions_index_path(degree_type, 'committee_review_rejected'),
+            id: 'final-submission-incomplete',
+            path: admin_submissions_index_path(degree_type, 'final_submission_incomplete'),
             count: '1'
           ),
           a_hash_including(
-            id: 'final-submission-incomplete',
-            path: admin_submissions_index_path(degree_type, 'final_submission_incomplete'),
+            id: 'final-submission-pending',
+            path: admin_submissions_index_path(degree_type, 'final_submission_pending'),
+            count: '1'
+          ),
+          a_hash_including(
+            id: 'committee-review-rejected',
+            path: admin_submissions_index_path(degree_type, 'committee_review_rejected'),
             count: '1'
           ),
           a_hash_including(

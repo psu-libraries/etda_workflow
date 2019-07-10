@@ -6,10 +6,10 @@ RSpec.describe SubmissionStates::CollectingFinalSubmissionFiles do
   describe 'instance methods' do
     let(:subject) { described_class.new }
 
-    it "transitions to Waiting For Committee Review" do
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview)
+    it "transitions to Waiting For Final Submission Response" do
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForCommitteeReviewRejected)
-      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFiles)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFilesRejected)
       expect(described_class.new).not_to be_valid_state_change(described_class)
@@ -63,7 +63,7 @@ RSpec.describe SubmissionStates::CollectingFinalSubmissionFiles do
     context 'when submission status WaitingForFinalSubmissionResponse' do
       let(:status) { SubmissionStates::WaitingForFinalSubmissionResponse.name }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status WaitingForFormatReviewResponse' do
