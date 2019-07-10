@@ -109,15 +109,6 @@ class WorkflowMailer < ActionMailer::Base
          subject: "REMINDER: #{@submission.degree_type} Review Requested"
   end
 
-  def committee_review_complete(submission)
-    @submission = submission
-    @author = submission.author
-
-    mail to: @author.psu_email_address,
-         from: current_partner.email_address,
-         subject: "Your #{@submission.degree_type} has been approved by its committee"
-  end
-
   def committee_rejected_author(submission)
     @submission = submission
     @author = submission.author

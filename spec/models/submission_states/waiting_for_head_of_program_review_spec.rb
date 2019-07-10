@@ -4,11 +4,12 @@ require 'model_spec_helper'
 
 RSpec.describe SubmissionStates::WaitingForHeadOfProgramReview do
   describe 'instance methods' do
-    it "transitions to WaitingForFinalSubmissionResponse, WaitingForCommitteeReviewRejected" do
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
+    it "transitions to WaitingForPublicationRelease, WaitingForCommitteeReviewRejected" do
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease)
       expect(described_class.new).not_to be_valid_state_change(described_class)
       expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForCommitteeReviewRejected)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingCommittee)
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFiles)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFilesRejected)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingProgramInformation)
