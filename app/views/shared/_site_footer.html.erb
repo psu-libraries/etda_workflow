@@ -8,7 +8,7 @@
             <li><%= link_to t("#{current_partner.id}.partner.name"), t("#{current_partner.id}.partner.url"), class: 'small', target: '_blank' %> <span class="sr-only">link opens in a new tab</span></li>
             <li><%= link_to "© #{Time.now.year} The Pennsylvania State University", 'http://www.psu.edu/ur/copyright.html', class: 'small', target: '_blank' %> <span class="sr-only">link opens in a new tab</span></li>
             <li><%= link_to 'Privacy and Legal Statements', 'http://www.psu.edu/ur/legal.html', class: 'small', target: '_blank' %> <span class="sr-only">link opens in a new tab</span></li>
-            <li><%= link_to 'Accessibility', 'http://accessibility.psu.edu', class: 'small', target: '_blank' %> <span class="sr-only">link opens in a new tab</span></li>
+            <li><%= link_to 'Accessibility', 'https://www.psu.edu/accessibilitystatement', class: 'small', target: '_blank' %> <span class="sr-only">link opens in a new tab</span></li>
             <%= render_conditional_links %>
             <li class="small version"><span><%= current_version_number %></span></li>
           </ul>
