@@ -12,6 +12,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
   end
 
   it 'fills in head of program page' do
+    skip 'Graduate Only' unless current_partner.graduate?
+
     submission.required_committee_roles.count.times do |i|
       next if i == 0
 
@@ -28,6 +30,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
   end
 
   it 'validates and returns to dashboard' do
+    skip 'Graduate Only' unless current_partner.graduate?
+
     submission.required_committee_roles.count.times do |i|
       next if i == 0
 
