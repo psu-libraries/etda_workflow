@@ -23,7 +23,7 @@ class Approver::ApproversController < ApproverController
     @committee_member = CommitteeMember.find(params[:id])
     @submission = @committee_member.submission
     if params[:committee_member][:status] == ""
-      flash[:error] = 'You must submit a status'
+      flash[:error] = 'Validation Failed: You must submit a status'
       return redirect_to(approver_path(params[:id]))
     end
     @committee_member.update_attributes!(committee_member_params)
