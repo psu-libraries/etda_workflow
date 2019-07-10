@@ -14,8 +14,8 @@ RSpec.describe 'Author submission access_level', js: true do
     visit author_submission_edit_final_submission_path(submission)
   end
 
-  context 'graduate authors can choose the access level' do
-    if current_partner.graduate?
+  context 'graduate an honors authors can choose the access level' do
+    unless current_partner.milsch?
       it 'has an open_access radio button' do
         expect(page).not_to have_content('Access Level for this paper:')
         page.find("input#submission_access_level_open_access").trigger('click')
@@ -47,8 +47,8 @@ RSpec.describe 'Author submission access_level', js: true do
     end
   end
 
-  context 'non-graduate authors cannot choose the access level' do
-    unless current_partner.graduate?
+  context 'milsch authors cannot choose the access level' do
+    if current_partner.milsch?
       it 'has an open_access description' do
         expect(page).to have_content('Access Level for this paper: Open Access')
         expect(page.find("li.open_access")).to be_truthy

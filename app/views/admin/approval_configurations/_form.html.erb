@@ -1,9 +1,12 @@
 <%= simple_form_for [:admin, @approval_configuration] do |f| %>
   <div class="row">
     <div class="col-sm-12">
-      <%= f.input :approval_deadline_on, required: true %>
+      <%= f.input :approval_deadline_on, wrapper_html: { class: 'hide' } %>
     </div>
   </div>
+
+  <p><span class="text-info"><strong>Help: </strong></span>In the form below you may select the method in which submissions are approved by the committee.  Selecting 'Percentage of approvals' allows you to input the percentage of committee members that must approve for the submission to proceed.  Selecting 'Number of rejections' allows you to input the number of committee member rejections that are permitted for the submission to still proceed.</p>
+  </br>
 
   <div class="row">
     <div class="col-sm-12">

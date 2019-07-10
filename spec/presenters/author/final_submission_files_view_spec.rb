@@ -26,7 +26,7 @@ RSpec.describe Author::FinalSubmissionFilesView do
         expect(view.author_access_level_view).to eql('access_level_static') if current_partner.milsch?
       end
       it 'returns access_level_static partial for Honors' do
-        expect(view.author_access_level_view).to eql('access_level_static') if current_partner.honors?
+        expect(view.author_access_level_view).to eql('access_level_standard') if current_partner.honors?
       end
       it 'returns access_level_standard partial for Grad School' do
         expect(view.author_access_level_view).to eq('access_level_standard') if current_partner.graduate?
@@ -37,9 +37,9 @@ RSpec.describe Author::FinalSubmissionFilesView do
   describe 'disclosure_class' do
     let(:submission) { FactoryBot.create :submission }
 
-    context 'when graduate student chooses open access or restricted_to_institution' do
+    context 'when graduate or honors student chooses open access or restricted_to_institution' do
       it 'returns hidden class' do
-        if current_partner.graduate?
+        unless current_partner.milsch?
           submission.access_level = 'open_access'
           expect(view.disclosure_class).to eq('hidden')
           submission.access_level = 'restricted_to_institution'
@@ -48,9 +48,9 @@ RSpec.describe Author::FinalSubmissionFilesView do
       end
     end
 
-    context 'honors and milsch with all access levels' do
+    context 'milsch with all access levels' do
       it 'returns empty class' do
-        unless current_partner.graduate?
+        if current_partner.milsch?
           submission.access_level = 'restricted'
           expect(view.disclosure_class).to eq('')
           submission.access_level = 'restricted_to_institution'
