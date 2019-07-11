@@ -30,6 +30,7 @@ require('../images/PS_HOR_REV_RGB_2C.png');
 require('../admin/edit_submission_form.js');
 require('../base/committee_member_focus.js');
 require('../base/initialize_tooltips.js');
+require('../base/aria_defended_date.js');
 
 
 

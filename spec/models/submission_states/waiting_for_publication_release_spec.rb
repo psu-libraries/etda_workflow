@@ -29,10 +29,19 @@ RSpec.describe SubmissionStates::WaitingForPublicationRelease do
   end
 
   describe 'status_date' do
-    let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release }
-    let(:subject) { described_class.new.status_date(submission) }
+    context 'when head of program is approving' do
+      let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, head_of_program_review_accepted_at: DateTime.now }
+      let(:subject) { described_class.new.status_date(submission) }
 
-    it { is_expected.to eq(submission.final_submission_approved_at) }
+      it { is_expected.to eq(submission.head_of_program_review_accepted_at) }
+    end
+
+    context 'when head of program is not approving' do
+      let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, committee_review_accepted_at: DateTime.now }
+      let(:subject) { described_class.new.status_date(submission) }
+
+      it { is_expected.to eq(submission.committee_review_accepted_at) }
+    end
   end
 
   describe '#transition' do
@@ -60,7 +69,7 @@ RSpec.describe SubmissionStates::WaitingForPublicationRelease do
     context 'when submission status WaitingForFinalSubmissionResponse' do
       let(:status) { SubmissionStates::WaitingForFinalSubmissionResponse.name }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status CollectingProgramInformation' do
@@ -90,13 +99,13 @@ RSpec.describe SubmissionStates::WaitingForPublicationRelease do
     context 'when submission status WaitingForCommitteeReview' do
       let(:status) { SubmissionStates::WaitingForCommitteeReview.name }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be_truthy }
     end
 
     context 'when submission status WaitingForHeadOfProgramReview' do
       let(:status) { SubmissionStates::WaitingForHeadOfProgramReview.name }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be_truthy }
     end
 
     context 'when submission status CollectingFinalSubmissionFilesRejected' do
