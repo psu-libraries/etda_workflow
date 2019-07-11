@@ -34,3 +34,4 @@ public/packs/**/*
 coverage
 /yarn-error.log
 .byebug_history
+.envrc
