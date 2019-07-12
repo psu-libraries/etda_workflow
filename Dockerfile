@@ -62,11 +62,14 @@ COPY yarn.lock /etda_workflow
 COPY package.json /etda_workflow
 RUN yarn
 
-
-# RUN useradd etda
-# USER etda
-
 COPY . /etda_workflow
+
+RUN useradd etda
+RUN usermod -G clamav etda
+
+RUN chown -R etda /etda_workflow
+USER etda
+
 
 # USER root
 
