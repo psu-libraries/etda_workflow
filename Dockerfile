@@ -62,20 +62,14 @@ COPY yarn.lock /etda_workflow
 COPY package.json /etda_workflow
 RUN yarn
 
-COPY . /etda_workflow
 
-RUN useradd etda
+RUN useradd -u 1000 etda
 RUN usermod -G clamav etda
 
-RUN chown -R etda /etda_workflow
-USER etda
+COPY --chown=etda . /etda_workflow
 
-
-# USER root
 
 RUN if [ "$RAILS_ENV" = "development" ]; then echo "skipping assets:precompile"; else RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile; fi
-
-# USER etda
 
 
 CMD ["./entrypoint.sh"]
