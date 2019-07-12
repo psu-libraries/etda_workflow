@@ -37,7 +37,8 @@ RUN ln -sf /usr/local/bin/node /usr/local/bin/nodejs \
 
 # Clam AV 
 RUN apt-get update && \ 
-  apt-get install clamav clamdscan clamav-daemon wget libpng-dev make -y 
+  apt-get install --no-install-recommends mariadb-client clamav clamdscan clamav-daemon wget libpng-dev make -y && \
+  rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /var/run/clamav && \
     chown clamav:clamav /var/run/clamav && \
@@ -70,6 +71,8 @@ COPY --chown=etda . /etda_workflow
 
 
 RUN if [ "$RAILS_ENV" = "development" ]; then echo "skipping assets:precompile"; else RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile; fi
+
+USER etda
 
 
 CMD ["./entrypoint.sh"]

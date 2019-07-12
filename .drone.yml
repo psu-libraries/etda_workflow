@@ -32,8 +32,8 @@ steps:
   - build
   commands:
     - cd /etda_workflow
-    - apt-get update 
-    - apt-get install mariadb-client -y
+    # - apt-get update 
+    # - apt-get install mariadb-client -y
     - export RAILS_ENV=test
     - unset CI
     # - bundle install --with development test
