@@ -52,7 +52,7 @@ steps:
     - prepare
   commands:
     - cd /etda_workflow
-    - apt-get install mysql-client -y
+    # - apt-get install mysql-client -y
     - yarn global add phantomjs-prebuilt
     - export PARTNER=graduate
     - unset CI
