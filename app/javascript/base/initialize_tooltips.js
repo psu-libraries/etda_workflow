@@ -7,6 +7,14 @@ var $ = require('jquery');
 window.jQuery = $;
 require('bootstrap3/js/tooltip.js');
 
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-})
+const initialize_tooltips = function () {
+    $('[data-toggle="tooltip"]').tooltip();
+};
+
+const reinitialize_tooltips = function () {
+    $('.add_field').click(setTimeout(initialize_tooltips, 500));
+    $('.add_field').click(setTimeout(reinitialize_tooltips, 500));
+};
+
+$(document).ready(initialize_tooltips);
+$(document).ready(reinitialize_tooltips);

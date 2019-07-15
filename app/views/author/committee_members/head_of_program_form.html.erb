@@ -9,7 +9,7 @@
         <%= form.simple_fields_for :committee_members do |f| %>
           <% if f.object.committee_role.name == 'Head/Chair of Graduate Program' %>
             <%= f.input :committee_role_id, as: :hidden,  input_html: { value: @submission.degree_type.committee_roles.find_by(name: 'Head/Chair of Graduate Program').id } %>
-            <p><strong>You can find the primary contact for your graduate program here: </strong><a href="https://secure.gradsch.psu.edu/gpms/" target="_blank">Graduate Program Search</a></p>
+            <p><strong>You can find the primary contact for your graduate program here: </strong><a href="https://secure.gradsch.psu.edu/gpms/" target="_blank">Graduate Program Search</a> <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="top" data-html="true" title="<p><strong>Program Head/Chair</strong> - Faculty member responsible for leadership in developing the department’s academic programs.</p>"></span></a></p>
             <div class="row">
               <div class="col-sm-6">
                 <%= f.input :name, label: 'Head/Chair of Graduate Program Name', input_html: { class: 'ldap-lookup' } %>
