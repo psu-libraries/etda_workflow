@@ -64,7 +64,7 @@ COPY package.json /etda_workflow
 RUN yarn
 
 
-RUN useradd -u 1000 etda
+RUN useradd -u 10000 etda
 RUN usermod -G clamav etda
 
 COPY --chown=etda . /etda_workflow
