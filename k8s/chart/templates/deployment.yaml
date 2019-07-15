@@ -21,6 +21,8 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       securityContext:
+        capabilities:
+          add: ["CAP_SETFCAP"]
         runAsUser: 10000
       volumes:
         - name: shared-data
