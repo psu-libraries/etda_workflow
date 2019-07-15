@@ -20,6 +20,8 @@ spec:
         app.kubernetes.io/name: {{ include "chart.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      securityContext:
+        runAsUser: 10000
       volumes:
         - name: shared-data
           emptyDir: {}
