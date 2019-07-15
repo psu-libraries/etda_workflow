@@ -80,6 +80,13 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
           expect(page).not_to have_content('Date Defended')
         end
       end
+
+      it 'redirects to head of program page if none exists and head is approving' do
+        ApprovalConfiguration.find(approval_configuration.id).update_attribute :head_of_program_is_approving, true
+        CommitteeMember.remove_committee_members(submission)
+        visit author_submission_edit_final_submission_path(submission)
+        expect(page).to have_current_path(author_submission_head_of_program_path(submission))
+      end
     end
 
     context "visiting the 'Review Final Submission Files' page" do
@@ -118,14 +125,6 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.graduate?
         expect(WorkflowMailer.deliveries.count).to eq(0) unless current_partner.graduate?
-      end
-
-      it 'redirects to head of program page if none exists and head is approving' do
-        ApprovalConfiguration.find(approval_configuration.id).update_attribute :head_of_program_is_approving, true
-        CommitteeMember.remove_committee_members(submission)
-        visit author_submission_edit_final_submission_path(submission)
-        click_button 'Submit final files for review'
-        expect(page).to have_current_path(author_submission_head_of_program_path(submission))
       end
     end
 

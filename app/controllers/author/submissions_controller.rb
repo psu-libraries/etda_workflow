@@ -101,17 +101,20 @@ class Author::SubmissionsController < AuthorController
     @submission.access_level = 'open_access' if (current_partner.honors? || current_partner.milsch?) && @submission.access_level.blank?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
+    raise CommitteeMember::ProgramHeadMissing if @submission.head_of_program_is_approving? && CommitteeMember.head_of_program(@submission.id).blank?
+
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+  rescue CommitteeMember::ProgramHeadMissing
+    redirect_to author_submission_head_of_program_path(@submission)
+    flash[:alert] = 'In order to proceed to the final submission stage, you must input the head/chair of your graduate program here.'
   end
 
   def update_final_submission
     @submission = find_submission
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
-    raise CommitteeMember::ProgramHeadMissing if @submission.head_of_program_is_approving? && CommitteeMember.head_of_program(@submission.id).blank?
-
     @submission.update_attributes!(final_submission_params)
     @submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
     if @submission.status == 'waiting for committee review rejected'
@@ -143,9 +146,6 @@ class Author::SubmissionsController < AuthorController
   rescue SubmissionStatusGiver::InvalidTransition
     redirect_to author_root_path
     flash[:alert] = 'Oops! You may have submitted invalid format review data. Please check that your format review information is correct.'
-  rescue CommitteeMember::ProgramHeadMissing
-    redirect_to author_submission_head_of_program_path(@submission)
-    flash[:alert] = 'In order to proceed beyond the final submission stage, you must input the head/chair of your graduate program here.'
   end
 
   def final_submission

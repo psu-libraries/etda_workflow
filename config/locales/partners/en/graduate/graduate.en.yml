@@ -132,7 +132,7 @@ en:
       author_notice:
         Special Signatories and Special Members can be added at the bottom of the screen by clicking "Add Committee Member" and selecting their role from the dropdown.  Note that if these members are external to Penn State and do not have Access IDs, they will be prompted to create a OneID account when they visit this site.
       head_of_program_notice:
-        In order to proceed beyond the final submission stage, you must enter and submit the head/chair of your graduate program here.  If you do not yet know who the head of your program is, you can simply skip this step by clicking "Return to dashboard" below.  You may then proceed to the format review stage.  You will be prompted again when submitting your final submission to complete this step if you have not yet done so.
+        In order to proceed to the final submission stage, you must enter and submit the head/chair of your graduate program here.  If you do not yet know who the head of your program is, you can simply skip this step by clicking "Return to dashboard" below.  You may then proceed to the format review stage.  You will be prompted again when submitting your final submission to complete this step if you have not yet done so.
       special_role: advisor
     admin_filters:
       format_review_incomplete:
