@@ -191,9 +191,11 @@ RSpec.describe 'The standard committee form for authors', js: true do
   end
 
   describe 'tooltips' do
+    let!(:committee) { create_committee(submission) }
+
     it 'has tooltip for required committee members' do
       tooltips = find_all('.fa-exclamation-circle')
-      expect(tooltips.count).to eq(5)
+      expect(tooltips.count).to eq(committee.count)
       tooltips.first.hover
       expect(page).to have_css('.tooltip')
     end
