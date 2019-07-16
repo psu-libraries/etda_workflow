@@ -37,10 +37,6 @@ class Author::CommitteeMemberView
     model.submission.degree_type.try(&:committee_roles).where.not(name: 'Head/Chair of Graduate Program').order('name asc') || []
   end
 
-  def help_text
-
-  end
-
   def committee_members_tooltip_text
     if current_partner.graduate? && model.submission.degree_type.name == "Master Thesis"
       "<p><strong>Thesis Advisor</strong> - The professor responsible for supervising a MS student thru the writing of their thesis.</p><p><strong>Committee Member</strong> - A professor who serves a variety of roles in the student’s thesis and is a member of the committee.</p>"
