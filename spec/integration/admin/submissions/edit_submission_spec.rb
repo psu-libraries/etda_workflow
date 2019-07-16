@@ -136,7 +136,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
       visit admin_edit_submission_path(final_submission)
       click_link 'View Printable Audit'
       expect(page).to have_content("#{final_submission.degree.degree_type.name} Audit")
-      expect(page).to have_link("#{file.asset_identifier}")
+      expect(page).to have_link(file.asset_identifier.to_s)
       expect(page).to have_content("Committee Member Reviews")
     end
   end
