@@ -225,6 +225,29 @@ RSpec.describe WorkflowMailer do
     end
   end
 
+  describe '#committee_member_review_request' do
+    let(:email) { described_class.committee_member_review_request(submission, committee_member) }
+
+    it "is sent to the proper recipient" do
+      expect(email.to).to eq([committee_member.email])
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
+      expect(email.subject).to eq("Honors Thesis Needs Approval") if current_partner.honors?
+      expect(email.subject).to eq("Thesis Review") if current_partner.milsch?
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/\/approver\/reviews/)
+      expect(email.body).to match(/Hello/)
+    end
+  end
+
   describe '#special_committee_review_reminder' do
     let!(:commmittee_member_token) { FactoryBot.create :committee_member_token, committee_member: committee_member }
     let(:email) { described_class.special_committee_review_request(submission, committee_member) }
@@ -242,8 +265,9 @@ RSpec.describe WorkflowMailer do
     end
 
     it "has desired content" do
-      expect(email.body).to match(/\/special_committee\/#{commmittee_member_token.authentication_token.to_s}/) if current_partner.graduate?
-      expect(email.body).to match(/Thanks for being part/) if current_partner.graduate?
+      skip 'Graduate Only' unless current_partner.graduate?
+      expect(email.body).to match(/\/special_committee\/#{commmittee_member_token.authentication_token.to_s}/)
+      expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
     end
   end
 end

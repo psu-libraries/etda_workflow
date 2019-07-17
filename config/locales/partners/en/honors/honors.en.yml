@@ -29,34 +29,49 @@ en:
 
         committee_member_review_requested:
           message: |
-                    %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
-                    Please visit this URL to conduct your final review:
-                    %{review_url}
+                    Hello %{committee_member_name},
+                    The Schreyer Honors College and %{full_name}  need your prompt attention to review and digitally sign a proposed work that you have been a part of.  Please login to %{review_url} and complete this request within five business days.
+                    If you have any further questions please contact:  Debra Rodgers, Coordinator of Academic Services djr255@psu.edu
+                    Sincerely,
+                    The Schreyer Honors College
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
-                    You may also call (814)865-5448, or send mail to:
-                    Office of Theses and Dissertations
-                    115 Kern Building
-                    Graduate School
-                    University Park, PA  16802
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA 16802
         committee_member_review_reminder:
           message: |
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
                     Please visit this URL to conduct your final review:
                     %{review_url}
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
-                    You may also call (814)865-5448, or send mail to:
-                    Office of Theses and Dissertations
-                    115 Kern Building
-                    Graduate School
-                    University Park, PA  16802
+                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA 16802
         committee_rejected_admin:
           message: |
                     The committee for %{author_name}'s %{degree_type} has rejected their submission.  It is now under review by administrators.
+
+                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA 16802
         committee_rejected_author:
           message: |
                     The committee reviewing your %{degree_type} has rejected your submission.  It is now under review by administrators.
+
+                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA 16802
         final_submission_approved:
           message: |
                     The electronic honors %{degree_type} submitted by you has been approved by the %{partner_name}.
