@@ -1,5 +1,6 @@
 class Admin::SubmissionsController < AdminController
   skip_before_action :verify_authenticity_token, only: [:send_email_reminder]
+  include ActionView::Helpers::UrlHelper
 
   def redirect_to_default_dashboard
     redirect_to admin_submissions_dashboard_path(DegreeType.default)
@@ -42,6 +43,7 @@ class Admin::SubmissionsController < AdminController
   def audit
     @submission = Submission.find(params[:id])
     @author = @submission.author
+    @most_relevant_file_links = most_relevant_file_links
   end
 
   def bulk_destroy
@@ -240,5 +242,18 @@ class Admin::SubmissionsController < AdminController
     else
       WorkflowMailer.committee_member_review_reminder(@submission, @committee_member).deliver
     end
+  end
+
+  private
+
+  def most_relevant_file_links
+    links = []
+    if @submission.final_submission_files.any?
+      @submission.final_submission_files.map do |f|
+        link = link_to f.asset_identifier, admin_final_submission_file_path(f.id), 'target': '_blank', 'data-no-turbolink': true
+        links.push(link)
+      end
+    end
+    links.join(" ")
   end
 end

@@ -129,4 +129,15 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     expect(page).not_to have_link('final_submission_file_01.pdf')
     expect(page).to have_link('final_submission_file_02.docx')
   end
+  describe 'has link to audit page' do
+    let!(:file) { FactoryBot.create :final_submission_file, submission: final_submission }
+
+    it 'directs to audit page with audit content' do
+      visit admin_edit_submission_path(final_submission)
+      click_link 'View Printable Audit'
+      expect(page).to have_content("#{final_submission.degree.degree_type.name} Audit")
+      expect(page).to have_link(file.asset_identifier.to_s)
+      expect(page).to have_content("Committee Member Reviews")
+    end
+  end
 end
