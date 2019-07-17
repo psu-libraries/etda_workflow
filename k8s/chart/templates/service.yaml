@@ -14,7 +14,7 @@ spec:
     - port: 443
       targetPort: https-wa
       protocol: TCP
-      name: https-wa
+      name: https
       {{- else }}
     - port: {{ .Values.service.port }}
       targetPort: http
