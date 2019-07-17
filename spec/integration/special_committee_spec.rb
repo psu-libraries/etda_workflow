@@ -10,7 +10,7 @@ RSpec.describe 'Special committee page', type: :integration, js: true do
     expect(page).to have_content('New to Penn State?')
     expect(page).to have_link('Create Your Penn State Account', href: 'https://accounts.psu.edu/create/new')
     expect(page).to have_content('Already have or created a Penn State OneID account?')
-    expect(page).to have_link('Proceed to ETD Submission Reviews Page')
+    expect(page).to have_link('Proceed to ETD My Reviews Page')
   end
 
   it 'automatically proceeds to reviews if signed into webaccess but does not marry committee record' do
