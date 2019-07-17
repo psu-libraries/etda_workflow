@@ -151,8 +151,8 @@ spec:
             value: {{ .Values.rails.environment }}
           - name: PARTNER
             value: {{ .Values.partner }}
-          - name: RAILS_LOG_TO_STDOUT
-            value: "true"
+          # - name: RAILS_LOG_TO_STDOUT
+          #   value: "true"
           {{- if .Values.mariadb.enabled }}
           - name: MYSQL_HOST
             value: {{ $fullName }}-mariadb
