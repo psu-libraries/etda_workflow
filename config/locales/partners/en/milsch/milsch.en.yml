@@ -9,7 +9,7 @@ en:
       create:
         success: Your Millennium Scholars Program submission was created successfully.
         failure: There was a problem submitting your Millennium Scholars Thesis.
-      new: If you would like to start a new thesis submission, you may do so by clicking the link below.
+      new: If you would like to start a new thesis submission, you may do so by clicking the following link.
     partner:
       abbrev: millennium
       name: Millennium Scholars Program

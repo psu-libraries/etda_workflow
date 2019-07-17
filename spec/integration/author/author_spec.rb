@@ -10,7 +10,7 @@ RSpec.describe 'Author submission page', type: :integration, js: true do
 
   context 'Author Submissions Page' do
     it 'displays a paragraph of thesis instructions' do
-      expect(page).to have_content('The thesis submission process requires the submission ')
+      expect(page).to have_content('You will need to input your committee, upload your format ')
     end
     it 'contains a list of submissions' do
       expect(page).to have_content('My Submissions')
