@@ -32,32 +32,32 @@ steps:
   - build
   commands:
     - cd /etda_workflow
-    - apt-get update 
-    - apt-get install mysql-client -y
+    # - apt-get update 
+    # - apt-get install mariadb-client -y
     - export RAILS_ENV=test
     - unset CI
     # - bundle install --with development test
     - bundle exec rake drone_prepare
 
-- name: integration-tests
-  image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
-  environment:
-    MYSQL_USER: root
-    MYSQL_PASSWORD: root
-    MYSQL_DATABASE_TEST: integration_test
-    MYSQL_DATABASE: integration
-    MYSQL_HOST: mariadb
-    REDIS_HOST: redis
-  depends_on:
-    - prepare
-  commands:
-    - cd /etda_workflow
-    - apt-get install mysql-client -y
-    - yarn global add phantomjs-prebuilt
-    - export PARTNER=graduate
-    - unset CI
-    - bundle exec rake drone_prepare
-    - bundle exec rake spec:integration
+# - name: integration-tests
+#   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+#   environment:
+#     MYSQL_USER: root
+#     MYSQL_PASSWORD: root
+#     MYSQL_DATABASE_TEST: integration_test
+#     MYSQL_DATABASE: integration
+#     MYSQL_HOST: mariadb
+#     REDIS_HOST: redis
+#   depends_on:
+#     - prepare
+#   commands:
+#     - cd /etda_workflow
+#     # - apt-get install mysql-client -y
+#     - yarn global add phantomjs-prebuilt
+#     - export PARTNER=graduate
+#     - unset CI
+#     - bundle exec rake drone_prepare
+#     - bundle exec rake spec:integration
 
 - name: test-grad-0
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
