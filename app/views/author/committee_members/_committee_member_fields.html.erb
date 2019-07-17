@@ -5,7 +5,7 @@
   <div class="row committee-role">
   <% if local_presenter.required? %>
     <div class="col-sm-12">
-      <h2 class="h2-small"><%= local_presenter.role %> </h2>
+      <h2 class="h2-small"><%= local_presenter.role %> <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="right" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>"></span></a></h2>
       <%= f.association :committee_role, as: :hidden, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || []  %>
       <% unless local_presenter.head_of_program? %>
         <%= f.input :is_voting, as: :hidden, :input_html => { value: 1, readonly: true } %>
@@ -16,7 +16,12 @@
   <% else %>
     <div class="col-sm-12">
       <h2 class="sr-only">Optional Committee Member </h2>
-      <%= f.association :committee_role, collection: local_presenter.possible_additional_roles , prompt: 'Please select a role'  %>
+      <div><%= f.label :committee_role %>
+        <% if controller_name == 'committee_members' %>
+          <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="top" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>"></span></a>
+        <% end %>
+      </div>
+      <%= f.association :committee_role, collection: local_presenter.possible_additional_roles , prompt: 'Please select a role', label_html: { class: 'hidden' } %>
     </div>
   <% end %>
   </div>
