@@ -3,7 +3,7 @@ class LegacyDatabaseHelper
   attr_accessor :table_field_list
 
   def author_columns
-    Author.column_names - ['confidential_hold', 'confidential', 'is_admin', 'is_site_admin', 'opt_out_email', 'opt_out_default']
+    Author.column_names - ['confidential_hold', 'confidential', 'is_admin', 'is_site_admin']
   end
 
   def submission_columns

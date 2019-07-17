@@ -26,7 +26,7 @@ class Author::CommitteeMemberView
   end
 
   def role
-    model.committee_role.name
+    model.committee_role.present? ? model.committee_role.name : nil
   end
 
   def possible_roles

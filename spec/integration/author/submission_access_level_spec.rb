@@ -4,6 +4,8 @@ RSpec.describe 'Author submission access_level', js: true do
   let!(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, author: current_author }
   let(:committee_member1) { FactoryBot.create :committee_member, submission: submission }
   let(:committee_member2) { FactoryBot.create :committee_member, submission: submission }
+  let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+  let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
 
   before do
     webaccess_authorize_author
