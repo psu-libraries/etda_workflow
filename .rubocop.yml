@@ -86,6 +86,9 @@ Metrics/CyclomaticComplexity:
   - app/helpers/application_helper.rb
   - app/models/submission.rb
   - app/presenters/author/submission_view.rb
+  - app/controllers/author/committee_members_controller.rb
+  - app/controllers/author/submissions_controller.rb
+  - app/presenters/author/committee_member_view.rb
 
 Metrics/PerceivedComplexity:
   Exclude:
@@ -98,6 +101,8 @@ Metrics/PerceivedComplexity:
   - app/services/submission_release_service.rb
   - app/models/submission.rb
   - app/presenters/author/submission_view.rb
+  - app/controllers/author/committee_members_controller.rb
+  - app/presenters/author/committee_member_view.rb
 
 Layout/MultilineBlockLayout:
   Exclude:

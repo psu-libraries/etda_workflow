@@ -90,6 +90,7 @@ Rails.application.routes.draw do
       get '/date_defended_refresh', to: 'submissions#refresh_date_defended', as: :refresh_date_defended
 
       resource :committee_members, shallow: true # We only modify the set of committee members en masse
+      get :head_of_program, to: 'committee_members#head_of_program', as: :head_of_program
       get '/committee_members_refresh', to: 'committee_members#refresh', as: :refresh_committee
 
       post '/send_email_reminder', to: 'submissions#send_email_reminder'

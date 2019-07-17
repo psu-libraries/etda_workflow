@@ -164,6 +164,14 @@
   }
 
   &.preview, &.in-process{
+
+      .header {
+        margin-top: 30px;
+        color: $gray-med-dark;
+        font-size: 20px;
+        font-weight: bold;
+      }
+
       .number {
         border: 1px solid $gray-med-dark;
       }

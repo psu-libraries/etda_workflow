@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CommitteeMember < ApplicationRecord
+  class ProgramHeadMissing < StandardError; end
+
   # This maps ldap values to one or more values needed for committee member autocomplete
   validate :validate_committee_member
   validate :validate_email

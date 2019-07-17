@@ -14,6 +14,8 @@
       </p>
     </div>
     <strong>Associated Files:</strong>
+    <div id="file_links"><%=raw @most_relevant_file_links %></div>
+    </br>
     <% if @submission.current_access_level.current_access_level.include?('open') %>
       <div class="access-level-open"><strong>Access Level - </strong> <%=@submission.current_access_level.label %></div>
     <% else %>
