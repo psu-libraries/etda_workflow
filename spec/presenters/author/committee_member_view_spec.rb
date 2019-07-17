@@ -3,7 +3,7 @@ RSpec.describe Author::CommitteeMemberView do
   let(:view) { described_class.new(member) }
   let(:member) { FactoryBot.create :committee_member, committee_role: role }
   let(:role) { FactoryBot.create(:committee_role, name: 'My Role') }
-  let(:head_role) { FactoryBot.create(:committee_role, name: 'Head/Chair of Graduate Program') }
+  let(:head_role) { FactoryBot.create(:committee_role, name: 'Program Head/Chair') }
 
   describe '#role' do
     subject { view.role }

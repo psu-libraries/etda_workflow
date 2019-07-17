@@ -10,7 +10,7 @@ class Author::CommitteeMemberView
   end
 
   def head_of_program?
-    role == 'Head/Chair of Graduate Program'
+    role == 'Program Head/Chair'
   end
 
   def name_label
@@ -34,6 +34,6 @@ class Author::CommitteeMemberView
   end
 
   def possible_additional_roles
-    model.submission.degree_type.try(&:committee_roles).where.not(name: 'Head/Chair of Graduate Program').order('name asc') || []
+    model.submission.degree_type.try(&:committee_roles).where.not(name: 'Program Head/Chair').order('name asc') || []
   end
 end
