@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
+  config.lograge.enabled = true
+  config.lograge.formatter =  Lograge::Formatters::Logstash.new
+  config.logger = ActiveSupport::Logger.new(STDOUT)
+
   config.webpacker.check_yarn_integrity = false
 
   # Settings specified here will take precedence over those in config/application.rb.
@@ -91,7 +95,8 @@ Rails.application.configure do
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+    config.logger = ActiveSupport::Logger.new(STDOUT)
+    # config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
   Dir.glob('lib/capistrano/tasks/**/*.rake').each { |r| import r }
