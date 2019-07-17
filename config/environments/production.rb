@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
+  config.lograge.enabled = true
+  config.lograge.formatter =  Lograge::Formatters::Logstash.new
+
   config.webpacker.check_yarn_integrity = false
 
   # Settings specified here will take precedence over those in config/application.rb.
