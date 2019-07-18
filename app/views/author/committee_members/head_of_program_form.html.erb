@@ -1,4 +1,4 @@
-<h1>Input Head/Chair of Graduate Program</h1>
+<h1>Input Program Head/Chair</h1>
 <br/>
 <p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.head_of_program_notice") %></p>
 <br/>
@@ -7,15 +7,15 @@
     <div class="col-xs-12">
       <%= simple_form_for @submission, url: author_submission_committee_members_path(@submission)do |form| %>
         <%= form.simple_fields_for :committee_members do |f| %>
-          <% if f.object.committee_role.name == 'Head/Chair of Graduate Program' %>
-            <%= f.input :committee_role_id, as: :hidden,  input_html: { value: @submission.degree_type.committee_roles.find_by(name: 'Head/Chair of Graduate Program').id } %>
+          <% if f.object.committee_role.name == 'Program Head/Chair' %>
+            <%= f.input :committee_role_id, as: :hidden,  input_html: { value: @submission.degree_type.committee_roles.find_by(name: 'Program Head/Chair').id } %>
             <p><strong>You can find the primary contact for your graduate program here: </strong><a href="https://secure.gradsch.psu.edu/gpms/" target="_blank">Graduate Program Search</a> <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="top" data-html="true" title="<p><strong>Program Head/Chair</strong> - Faculty member responsible for leadership in developing the department’s academic programs.</p>"></span></a></p>
             <div class="row">
               <div class="col-sm-6">
-                <%= f.input :name, label: 'Head/Chair of Graduate Program Name', input_html: { class: 'ldap-lookup' } %>
+                <%= f.input :name, label: 'Program Head/Chair Name', input_html: { class: 'ldap-lookup' } %>
               </div>
               <div class="col-sm-6">
-                <%= f.input :email, label: 'Head/Chair of Graduate Program Email', input_html: { readonly: true }%>
+                <%= f.input :email, label: 'Program Head/Chair Email', input_html: { readonly: true }%>
               </div>
             </div>
           <% end %>
@@ -25,7 +25,7 @@
 </div>
 <div class="form-group actions">
   <div class="col-xs-10">
-    <%= form.button :submit, class: "btn-primary", value: "Update Head/Chair of Graduate Program Information" %>
+    <%= form.button :submit, class: "btn-primary", value: "Update Program Head/Chair Information" %>
     <%= link_to "Return to dashboard", author_root_path, class: 'btn cancel-link'%>
   </div>
 </div>

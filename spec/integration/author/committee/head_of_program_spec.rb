@@ -20,11 +20,11 @@ RSpec.describe 'The standard committee form for authors', js: true do
       fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
       page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@example.com'")
     end
-    click_button 'Save and Input Head/Chair of Graduate Program >>'
-    expect(page).to have_content 'Input Head/Chair of Graduate Program'
+    click_button 'Save and Input Program Head/Chair >>'
+    expect(page).to have_content 'Input Program Head/Chair'
     fill_in "submission_committee_members_attributes_5_name", with: "Name 5"
     page.execute_script("document.getElementById('submission_committee_members_attributes_5_email').value = 'name_5@example.com'")
-    click_button 'Update Head/Chair of Graduate Program Information'
+    click_button 'Update Program Head/Chair Information'
     expect(page).to have_current_path(author_root_path)
     expect(CommitteeMember.head_of_program(submission.id).name).to eq 'Name 5'
   end
@@ -38,9 +38,9 @@ RSpec.describe 'The standard committee form for authors', js: true do
       fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
       page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@example.com'")
     end
-    click_button 'Save and Input Head/Chair of Graduate Program >>'
-    expect(page).to have_content 'Input Head/Chair of Graduate Program'
-    click_button 'Update Head/Chair of Graduate Program Information'
+    click_button 'Save and Input Program Head/Chair >>'
+    expect(page).to have_content 'Input Program Head/Chair'
+    click_button 'Update Program Head/Chair Information'
     expect(page).to have_current_path(author_submission_head_of_program_path(submission))
     expect(CommitteeMember.head_of_program(submission.id)).to eq nil
     click_link 'Return to dashboard'

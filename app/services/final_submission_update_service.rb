@@ -36,7 +36,8 @@ class FinalSubmissionUpdateService
       submission.update_attribute :final_submission_approved_at, Time.zone.now
       status_giver.waiting_for_committee_review!
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-      @submission.send_initial_committee_member_emails
+      @submission.update_status_from_committee
+      @submission.send_initial_committee_member_emails unless @submission.status == 'waiting for publication release'
       msg = "The submission\'s final submission information was successfully approved."
     elsif update_actions.rejected?
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)

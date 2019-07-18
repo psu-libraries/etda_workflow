@@ -19,7 +19,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
     describe "submit empty form" do
       it "displays validation errors" do
         click_button 'Save and Continue Editing' unless current_partner.graduate?
-        click_button 'Save and Input Head/Chair of Graduate Program >>' if current_partner.graduate?
+        click_button 'Save and Input Program Head/Chair >>' if current_partner.graduate?
         expect(page).to have_content("can't be blank")
       end
     end
@@ -64,10 +64,10 @@ RSpec.describe 'The standard committee form for authors', js: true do
           @email_list << "name_#{i}@psu.edu"
         end
         click_button 'Save and Continue Submission' unless current_partner.graduate?
-        click_button 'Save and Input Head/Chair of Graduate Program >>' if current_partner.graduate?
+        click_button 'Save and Input Program Head/Chair >>' if current_partner.graduate?
         sleep(3)
         expect(page).to have_content('My Submissions') unless current_partner.graduate?
-        expect(page).to have_content('Input Head/Chair of Graduate Program') if current_partner.graduate?
+        expect(page).to have_content('Input Program Head/Chair') if current_partner.graduate?
         submission.reload
         assert_equal submission.committee_email_list, @email_list
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count) unless current_partner.graduate?
@@ -114,7 +114,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
           fill_in "Name", with: "Extra Member"
           fill_in "Email", with: "extra_member@example.com"
         end
-        expect { click_button 'Save and Input Head/Chair of Graduate Program >>' }.to change { submission.committee_members.count }.by 6 if current_partner.graduate?
+        expect { click_button 'Save and Input Program Head/Chair >>' }.to change { submission.committee_members.count }.by 6 if current_partner.graduate?
         expect { click_button 'Save and Continue Editing' }.to change { submission.committee_members.count }.by 1 unless current_partner.graduate?
         submission.reload
         expect(submission.status).to eq 'collecting format review files'
@@ -131,7 +131,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
           fill_in "Name", with: "Extra Member"
           fill_in "Email", with: "extra_member@example.com"
         end
-        click_button 'Save and Input Head/Chair of Graduate Program >>' if current_partner.graduate?
+        click_button 'Save and Input Program Head/Chair >>' if current_partner.graduate?
         click_button 'Save and Continue Editing' unless current_partner.graduate?
         submission.reload
         expect(submission.committee_members.last.is_voting).to eq(false)

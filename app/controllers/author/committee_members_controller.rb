@@ -40,16 +40,16 @@ class Author::CommitteeMembersController < AuthorController
     flash[:notice] = 'Committee updated successfully'
     if params[:commit] == "Save and Continue Submission" || params[:commit] == 'Verify Committee'
       redirect_to author_root_path
-    elsif params[:commit] == "Save and Input Head/Chair of Graduate Program >>"
+    elsif params[:commit] == "Save and Input Program Head/Chair >>"
       redirect_to author_submission_head_of_program_path(@submission)
-    elsif params[:commit] == "Update Head/Chair of Graduate Program Information"
+    elsif params[:commit] == "Update Program Head/Chair Information"
       redirect_to author_root_path
     else
       redirect_to edit_author_submission_committee_members_path(@submission)
     end
   rescue ActiveRecord::RecordInvalid => e
     flash[:alert] = e.message
-    if params[:commit] == "Update Head/Chair of Graduate Program Information"
+    if params[:commit] == "Update Program Head/Chair Information"
       redirect_to author_submission_head_of_program_path(@submission)
     else
       render :form
@@ -78,7 +78,7 @@ class Author::CommitteeMembersController < AuthorController
 
   def head_of_program
     status_giver.can_update_committee?
-    @submission.committee_members.build(committee_role: @submission.degree_type.committee_roles.find_by(name: 'Head/Chair of Graduate Program'), is_required: true) if CommitteeMember.head_of_program(@submission.id).blank?
+    @submission.committee_members.build(committee_role: @submission.degree_type.committee_roles.find_by(name: 'Program Head/Chair'), is_required: true) if CommitteeMember.head_of_program(@submission.id).blank?
     render :head_of_program_form
   rescue SubmissionStatusGiver::AccessForbidden
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'

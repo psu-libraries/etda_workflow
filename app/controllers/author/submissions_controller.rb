@@ -123,7 +123,6 @@ class Author::SubmissionsController < AuthorController
       @submission.update_final_submission_timestamps!(Time.zone.now)
       @submission.update_attribute :final_submission_approved_at, Time.zone.now
       @submission.send_initial_committee_member_emails
-      @submission.reset_committee_review
       redirect_to author_root_path
       WorkflowMailer.final_submission_received(@submission).deliver if current_partner.graduate?
       flash[:notice] = 'Final submission files uploaded successfully.'

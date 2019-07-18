@@ -333,12 +333,6 @@ class Submission < ApplicationRecord
     end
   end
 
-  def reset_committee_review
-    committee_members.each do |committee_member|
-      committee_member.update_attributes status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
-    end
-  end
-
   private
 
   def format_review_file_check
@@ -375,6 +369,7 @@ class Submission < ApplicationRecord
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
       update_attribute(:committee_review_rejected_at, DateTime.now)
+      reset_committee_review
       committee_rejected_emails
     end
   end
@@ -391,7 +386,14 @@ class Submission < ApplicationRecord
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
       update_attribute(:head_of_program_review_rejected_at, DateTime.now)
+      reset_committee_review
       committee_rejected_emails
+    end
+  end
+
+  def reset_committee_review
+    committee_members.each do |committee_member|
+      committee_member.update_attributes! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
     end
   end
 

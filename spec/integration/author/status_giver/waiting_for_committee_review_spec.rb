@@ -103,8 +103,6 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           submission.keywords << (FactoryBot.create :keyword)
         end
 
-        let!(:committee_member_2) { FactoryBot.create :committee_member, status: 'approved', approved_at: DateTime.now, notes: 'Notes', submission: submission }
-
         it 'can edit final submission' do
           visit author_submission_edit_final_submission_path(submission)
           expect(page).to have_current_path(author_submission_edit_final_submission_path(submission))
@@ -120,10 +118,6 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find('#submission_has_agreed_to_terms').click
           click_button 'Submit final files for review'
           sleep 1
-          expect(CommitteeMember.find(committee_member_2.id).status).to eq ''
-          expect(CommitteeMember.find(committee_member_2.id).approved_at).to eq nil
-          expect(CommitteeMember.find(committee_member_2.id).notes).to eq 'Notes'
-          expect(CommitteeMember.find(committee_member_2.id).reset_at).to be_present
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
         end
       end
@@ -190,7 +184,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.honors?
       end
 
-      it "proceeds to 'waiting for committee review rejected' if rejected" do
+      it "proceeds to 'waiting for committee review rejected' if rejected and resets committee reviews" do
         FactoryBot.create :admin
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
@@ -199,6 +193,10 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         click_button 'Submit Review'
         sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
+        expect(CommitteeMember.find(committee_member.id).status).to eq ''
+        expect(CommitteeMember.find(committee_member.id).reset_at).to be_present
+        expect(CommitteeMember.find(committee_member.id).approved_at).to eq nil
+        expect(CommitteeMember.find(committee_member.id).rejected_at).to eq nil
         expect(WorkflowMailer.deliveries.count).to eq 2
       end
     end
