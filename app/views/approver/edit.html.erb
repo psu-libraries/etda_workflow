@@ -5,7 +5,8 @@
 </br>
   <div class="row">
     <div class="col-sm-12">
-      <p><span class="text-info"><strong>Help: </strong></span>On this page you will have the chance to submit a final review of <%= @author.full_name %>'s <%= @submission.degree.degree_type.name.downcase %>.  Below is some information about the submission, student, and reviews from other committee members.  Under the "My Final Review" header of this page you can review the files associated with this submission, and either accept or reject the submission.  You also have the option to submit notes.  If you are experiencing problems, you can contact help by clicking the "Contact Us" link above.</p>
+      <p><span class="text-info"></span>Please submit a final review of <%= @author.full_name %>'s <%= @submission.degree.degree_type.name.downcase %>. Review the submission details, and the status of other committee members. The section "My Final Review" requires your input.   At this step review the files associated with the submission being mindful of the access level, and submit your approval.</p>
+      <p>If you are experiencing problems, you can use the "Contact Us" link at the top of the page.</p>
     </div>
   </div>
 </div>
@@ -81,7 +82,7 @@
   <div class="row" >
     <div class="col-xs-12 review-group">
       <p><strong>
-        <%= link_to 'Return to reviews list', approver_root_path %>
+        <%= link_to 'Return to My Committee Reviews', approver_root_path %>
       </strong></p>
     </div>
   </div>

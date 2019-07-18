@@ -43,7 +43,7 @@ class CommitteeMember < ApplicationRecord
 
   def self.head_of_program(submission_id)
     @submission = Submission.find(submission_id)
-    CommitteeMember.where(submission: @submission).find_by(committee_role: CommitteeRole.find_by(name: 'Head/Chair of Graduate Program', degree_type: @submission.degree.degree_type))
+    CommitteeMember.where(submission: @submission).find_by(committee_role: CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: @submission.degree.degree_type))
   end
 
   def validate_committee_member
@@ -79,11 +79,6 @@ class CommitteeMember < ApplicationRecord
   def status=(new_status)
     self[:status] = new_status
     case new_status
-    when nil || ""
-      self.approval_started_at = nil
-      self.approved_at = nil
-      self.rejected_at = nil
-      self.reset_at = Time.zone.now
     when 'pending'
       self.approval_started_at = Time.zone.now
       self.approved_at = nil
@@ -106,9 +101,9 @@ class CommitteeMember < ApplicationRecord
 
   def committee_role_id=(new_committee_role_id)
     self[:committee_role_id] = new_committee_role_id
-    self[:is_voting] = true unless CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Head/Chair of Graduate Program'
-    self[:is_voting] = false if CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Head/Chair of Graduate Program'
-    return unless CommitteeRole.find(new_committee_role_id).name == 'Special Member' || CommitteeRole.find(new_committee_role_id).name == 'Special Signatory'
+    self[:is_voting] = true unless CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Program Head/Chair'
+    self[:is_voting] = false if CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Program Head/Chair'
+    return unless (CommitteeRole.find(new_committee_role_id).name == 'Special Member' || CommitteeRole.find(new_committee_role_id).name == 'Special Signatory') && committee_member_token.blank?
 
     token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)
     self.committee_member_token = token

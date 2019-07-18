@@ -19,7 +19,7 @@ RSpec.describe 'Approver reviews page', type: :integration, js: true do
     expect(Approver.find_by(access_id: 'approverflow').committee_members.count).to eq 0
     visit '/approver/reviews'
     expect(page).to have_content('Contact Us')
-    expect(page).to have_content('Submission Reviews')
+    expect(page).to have_content('My Reviews')
     expect(page).to have_content('Submission Title')
     expect(page).to have_content('Author')
     expect(page).to have_content('Review Started On')

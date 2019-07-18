@@ -289,22 +289,6 @@ RSpec.describe Submission, type: :model do
       end
     end
 
-    context '#reset_committee_review' do
-      it 'resets committee statuses and timestamps' do
-        submission = FactoryBot.create :submission, :waiting_for_committee_review
-        committee_member_one = FactoryBot.create :committee_member, submission: submission, status: 'approved', notes: 'Notes', approved_at: DateTime.now
-        committee_member_two = FactoryBot.create :committee_member, submission: submission, status: 'rejected', rejected_at: DateTime.now
-        submission.reset_committee_review
-        expect(CommitteeMember.find(committee_member_one.id).status).to eq ''
-        expect(CommitteeMember.find(committee_member_one.id).notes).to eq 'Notes'
-        expect(CommitteeMember.find(committee_member_one.id).approved_at).to eq nil
-        expect(CommitteeMember.find(committee_member_one.id).reset_at).to be_present
-        expect(CommitteeMember.find(committee_member_two.id).status).to eq ''
-        expect(CommitteeMember.find(committee_member_two.id).rejected_at).to eq nil
-        expect(CommitteeMember.find(committee_member_two.id).reset_at).to be_present
-      end
-    end
-
     context '#update_status_from_committee' do
       let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
       let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type }
