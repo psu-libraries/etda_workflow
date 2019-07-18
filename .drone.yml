@@ -87,24 +87,24 @@ steps:
     - bundle exec rake spec:workers
 
 
-- name: tag
-  image: alpine/git
-  depends_on:
-    - prepare
-    - test-grad-0
-  trigger:
-    event:
-      exclude:
-      - pull_request
-  commands:
-    - cd k8s/chart
-    - if [ ! -f values-$DRONE_BRANCH.yaml ]; then echo "no environment to deploy, exiting && exit 0"; fi
-    - 'sed -i "/^image:/,/*[^:]*:/s/tag:.*/tag: $DRONE_BUILD_NUMBER/g" values-$DRONE_BRANCH.yaml'
-    - git config user.email "drone@drone2test.vmhost.psu.edu"
-    - git config user.name "DroneCI"
-    - git add values-$DRONE_BRANCH.yaml
-    - git commit -m "[skip ci] adds $DRONE_BUILD_NUMBER"
-    - git push -u origin $DRONE_BRANCH
+#- name: tag
+#  image: alpine/git
+#  depends_on:
+  #   - prepare
+  #   - test-grad-0
+  # trigger:
+  #   event:
+  #     exclude:
+  #     - pull_request
+  # commands:
+  #   - cd k8s/chart
+  #   - if [ ! -f values-$DRONE_BRANCH.yaml ]; then echo "no environment to deploy, exiting && exit 0"; fi
+  #   - 'sed -i "/^image:/,/*[^:]*:/s/tag:.*/tag: $DRONE_BUILD_NUMBER/g" values-$DRONE_BRANCH.yaml'
+  #   - git config user.email "drone@drone2test.vmhost.psu.edu"
+  #   - git config user.name "DroneCI"
+  #   - git add values-$DRONE_BRANCH.yaml
+  #   - git commit -m "[skip ci] adds $DRONE_BUILD_NUMBER"
+  #   - git push -u origin $DRONE_BRANCH
 
 
 services:
