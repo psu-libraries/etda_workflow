@@ -90,11 +90,13 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
   end
 
   describe "author can delete a submission" do
+    let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: true }
+    let(:author) { current_author }
+
     before do
       webaccess_authorize_author
     end
-
-    let(:author) { current_author }
 
     it "deletes the submission" do
       FactoryBot.create :submission, :collecting_format_review_files, author: author

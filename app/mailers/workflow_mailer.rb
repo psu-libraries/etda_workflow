@@ -79,7 +79,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @committee_member.email,
          from: current_partner.email_address,
-         subject: "#{@submission.degree_type} Review Requested"
+         subject: partner_review_request
   end
 
   def special_committee_review_request(submission, committee_member)
@@ -126,5 +126,17 @@ class WorkflowMailer < ActionMailer::Base
     mail to: @admin.psu_email_address,
          from: current_partner.email_address,
          subject: "A #{@submission.degree_type} has been rejected by its committee"
+  end
+
+  private
+
+  def partner_review_request
+    if current_partner.graduate?
+      "#{@submission.degree_type} Needs Approval"
+    elsif current_partner.honors?
+      "Honors Thesis Needs Approval"
+    elsif current_partner.milsch?
+      "Thesis Review"
+    end
   end
 end

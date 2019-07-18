@@ -8,6 +8,8 @@ RSpec.describe 'Tagit-keywords', type: :integration, js: true do
 
     let(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, author: current_author }
     let(:submission2) { FactoryBot.create :submission, :collecting_final_submission_files, author: current_author }
+    let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
 
     it 'allows author to delete keywords' do
       visit author_submission_edit_final_submission_path(submission)

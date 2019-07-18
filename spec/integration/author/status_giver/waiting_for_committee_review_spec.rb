@@ -99,6 +99,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
       context "when status is 'waiting for committee review rejected'" do
         before do
           submission.update_attribute :status, 'waiting for committee review rejected'
+          submission.degree.degree_type.approval_configuration.update_attribute :head_of_program_is_approving, false
           submission.keywords << (FactoryBot.create :keyword)
         end
 

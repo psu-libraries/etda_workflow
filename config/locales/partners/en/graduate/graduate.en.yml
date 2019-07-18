@@ -9,7 +9,7 @@ en:
       create:
         success: Your Graduate School submission was created successfully.
         failure: There was a problem submitting your Graduate School eTD.
-      new: If you would like to start a new thesis or dissertation, you may do so by clicking the link below.
+      new: If you would like to start a new thesis or dissertation, you may do so by clicking the following link.
     partner:
       abbrev: graduate
       name: Graduate School
@@ -33,6 +33,7 @@ en:
                     you when the review has been completed.
                     You will receive the results of the review by email within two weeks.
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+
                     You may also call (814)865-5448, or send mail to:
                     Office of Theses and Dissertations
                     115 Kern Building
@@ -43,6 +44,7 @@ en:
                     Thank you for submitting your final %{degree_type}.  You will be notified by email of your eTD approval
                     or if changes are required within 2-3 weeks after submitting your final.
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+
                     You may also call (814)865-5448, or send mail to:
                     Office of Theses and Dissertations
                     115 Kern Building
@@ -50,11 +52,12 @@ en:
                     University Park, PA  16802
         committee_member_review_requested:
           message: |
-                    %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
-                    Please visit this URL to conduct your final review:
-                    %{review_url}
+                    Hello %{committee_member_name},
+                    The Graduate School and #{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member.  Please login to %{review_url} and complete this request.
+                    If you have any further questions please contact gradthesis@psu.edu.
+                    Sincerely,
+                    The Graduate School
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:
                     Office of Theses and Dissertations
                     115 Kern Building
@@ -62,12 +65,14 @@ en:
                     University Park, PA  16802
         special_committee_review_requested:
           message: |
-                    Thanks for being part of the committee for %{full_name}.  Their %{degree_type} entitled %{title} is awaiting your review.
-                    In order to proceed and provide input on their work please follow this link:
+                    Hello %{committee_member_name},
+                    The Graduate School of The Pennsylvania State University and %{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member.  In order to proceed and provide input on their work, please follow this link:
                     %{review_url}
                     or you can copy and paste this into your browser.
+                    If you have any further questions please contact gradthesis@psu.edu.
+                    Sincerely,
+                    The Graduate School of The Pennsylvania State University
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:
                     Office of Theses and Dissertations
                     115 Kern Building
@@ -88,15 +93,30 @@ en:
         committee_rejected_admin:
           message: |
                     The committee for %{author_name}'s %{degree_type} has rejected their submission.  It is now under review by administrators.
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
         committee_rejected_author:
           message: |
                     The committee reviewing your %{degree_type} has rejected your submission.  It is now under review by administrators.
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
         final_submission_approved:
           message: |
                     Your eTD has been reviewed and approved. Everything is in order, and you need do nothing further for our office.
                     After graduation, the eTD will be available through Penn State’s eTD database %{url} and will be sent to ProQuest/UMI Dissertation Services for processing unless you have chosen to restrict access to it. If it is restricted, it will automatically change to Open Access after two years.
                     The access level for your %{degree_type} is: %{access_level}.
                     Please accept our congratulations as you complete your degree (commencement information can be found online as http://commencement.psu.edu/).
+
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:
                     Office of Theses and Dissertations
@@ -131,6 +151,8 @@ en:
         The committee for a Master's thesis must consist of at least one Thesis Advisor and two Committee Members.  The committee for a Dissertation must include one Dissertation Advisor, one Committee Chair, two Committee Members, and one Outside Member.
       author_notice:
         Special Signatories and Special Members can be added at the bottom of the screen by clicking "Add Committee Member" and selecting their role from the dropdown.  Note that if these members are external to Penn State and do not have Access IDs, they will be prompted to create a OneID account when they visit this site.
+      head_of_program_notice:
+        In order to proceed to the final submission stage, you must enter and submit the head/chair of your graduate program here.  If you do not yet know who the head of your program is, you can simply skip this step by clicking "Return to dashboard" below.  You may then proceed to the format review stage.  You will be prompted again when submitting your final submission to complete this step if you have not yet done so.
       special_role: advisor
     admin_filters:
       format_review_incomplete:

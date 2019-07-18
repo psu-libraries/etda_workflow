@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'shoulda-matchers'
 
 RSpec.describe FormatReviewUpdateService, type: :model do
-  let(:committee_member) { FactoryBot.create :committee_member }
+  let(:committee_member) { FactoryBot.create :committee_member, created_at: DateTime.yesterday }
 
   context 'it processes approved format review submissions' do
     it 'approves a format review' do

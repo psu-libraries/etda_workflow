@@ -1,12 +1,12 @@
 class EtdUrls
   def explore
-    return "http://" + I18n.t("#{current_partner.id}.partner.url_slug") + ".localhost:3000/" if Rails.env.test?
+    return "http://" + I18n.t("#{current_partner.id}.partner.url_slug") + ".localhost:3000" if Rails.env.test?
 
     explore_url
   end
 
   def workflow
-    return workflow_url + ".localhost:3000/" if Rails.env.test?
+    return workflow_url + ".localhost:3000" if Rails.env.test?
 
     workflow_url
   end

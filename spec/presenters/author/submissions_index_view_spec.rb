@@ -1,10 +1,10 @@
 require 'presenters/presenters_spec_helper'
 RSpec.describe Author::SubmissionsIndexView do
-  let(:existing_author) { FactoryBot.create :author, opt_out_default: false }
+  let(:existing_author) { FactoryBot.create :author }
   let(:view_for_existing_author) { described_class.new existing_author }
   let(:new_author) { Author.new }
   let(:view_for_new_author) { described_class.new new_author }
-  let(:ldap_author) { FactoryBot.create :author, :author_from_ldap, opt_out_default: false }
+  let(:ldap_author) { FactoryBot.create :author, :author_from_ldap }
   let(:view_for_ldap_author) { described_class.new ldap_author }
 
   describe '#update_contact_information?' do

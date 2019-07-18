@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CommitteeMember < ApplicationRecord
+  class ProgramHeadMissing < StandardError; end
+
   # This maps ldap values to one or more values needed for committee member autocomplete
   validate :validate_committee_member
   validate :validate_email
@@ -104,6 +106,8 @@ class CommitteeMember < ApplicationRecord
 
   def committee_role_id=(new_committee_role_id)
     self[:committee_role_id] = new_committee_role_id
+    self[:is_voting] = true unless CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Head/Chair of Graduate Program'
+    self[:is_voting] = false if CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Head/Chair of Graduate Program'
     return unless CommitteeRole.find(new_committee_role_id).name == 'Special Member' || CommitteeRole.find(new_committee_role_id).name == 'Special Signatory'
 
     token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)

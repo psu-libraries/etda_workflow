@@ -1,6 +1,6 @@
 <div class="nested-fields admin panel panel-default committee-member-information">
   <div class="status-row">
-    <% if f.object.is_required == true && f.object.committee_role.name == 'Program Head/Chair' %>
+    <% if f.object.committee_role.name == 'Program Head/Chair' %>
       <div class="col-sm-6">
         <%= f.association :committee_role, disabled: true %>
       </div>
@@ -22,7 +22,7 @@
     </div>
     <%= f.input :notes %>
     <%= f.input :federal_funding_used, input_html: { class: "funding-box" } if current_partner.graduate? %>
-    <% unless f.object.is_required == true && f.object.committee_role.name == 'Program Head/Chair'  %>
+    <% unless f.object.committee_role.name == 'Program Head/Chair'  %>
     <div class="status-row">
       <%= f.input :is_voting, as: :radio_buttons,
                   collection: [['Yes', true], ['No', false]],
