@@ -124,6 +124,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
       end
 
       it 'sets is_voting to false for special signatory' do
+        skip 'Graduate Only' unless current_partner.graduate?
+
         click_link 'Add Committee Member'
         fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last
         within fields_for_last_committee_member do
