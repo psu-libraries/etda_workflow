@@ -122,6 +122,20 @@ RSpec.describe 'The standard committee form for authors', js: true do
         expect(submission.committee_members.last.is_voting).to eq(true)
         # expect(page).to have_content('successfully')
       end
+
+      it 'sets is_voting to false for special signatory' do
+        click_link 'Add Committee Member'
+        fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last
+        within fields_for_last_committee_member do
+          select "Special Signatory", from: 'Committee role'
+          fill_in "Name", with: "Extra Member"
+          fill_in "Email", with: "extra_member@example.com"
+        end
+        click_button 'Save and Input Head/Chair of Graduate Program >>' if current_partner.graduate?
+        click_button 'Save and Continue Editing' unless current_partner.graduate?
+        submission.reload
+        expect(submission.committee_members.last.is_voting).to eq(false)
+      end
     end
 
     describe "Remove an optional committee member", js: true do
