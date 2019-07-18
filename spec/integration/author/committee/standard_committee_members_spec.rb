@@ -53,12 +53,6 @@ RSpec.describe 'The standard committee form for authors', js: true do
     describe "save and continue submission" do
       it "saves the committee" do
         expect(submission.committee_members.empty?).to eq(true)
-<<<<<<< HEAD
-        expect(page).to have_content('Program Head/Chair') if current_partner.graduate?
-        expect(page).not_to have_content('Program Head/Chair') unless current_partner.graduate?
-        expect(page).to have_link('Graduate Program Search') if current_partner.graduate?
-=======
->>>>>>> digital-signatures
         expect(page).to have_link('Add Committee Member')
         # visit new_author_submission_committee_members_path(submission)
         @email_list = []
@@ -76,17 +70,10 @@ RSpec.describe 'The standard committee form for authors', js: true do
         expect(page).to have_content('Input Head/Chair of Graduate Program') if current_partner.graduate?
         submission.reload
         assert_equal submission.committee_email_list, @email_list
-<<<<<<< HEAD
-        expect(submission.committee_members.count).to eq(submission.required_committee_roles.count)
-        expect(submission.committee_members.first.access_id).to eq('name_0')
-        expect(submission.committee_members.where(is_required: true).where.not(committee_role: CommitteeRole.find_by(name: 'Program Head/Chair')).first.is_voting).to eq(true)
-        expect(submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Program Head/Chair').id).is_voting).to eq(false) if current_partner.graduate?
-=======
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count) unless current_partner.graduate?
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count - 1) if current_partner.graduate?
         expect(submission.committee_members.first.access_id).to eq('name_0') unless current_partner.graduate?
         expect(submission.committee_members.first.access_id).to eq('name_1') if current_partner.graduate?
->>>>>>> digital-signatures
         visit author_submission_committee_members_path(submission)
         submission.required_committee_roles.count.times do |i|
           next if i == 0 && current_partner.graduate?
