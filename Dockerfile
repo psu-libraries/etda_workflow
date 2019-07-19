@@ -37,7 +37,7 @@ RUN ln -sf /usr/local/bin/node /usr/local/bin/nodejs \
 
 # Clam AV 
 RUN apt-get update && \ 
-  apt-get install --no-install-recommends mariadb-client clamav clamdscan clamav-daemon wget libpng-dev make -y && \
+  apt-get install mariadb-client clamav clamdscan clamav-daemon wget libpng-dev make -y && \
   rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /var/run/clamav && \
@@ -69,6 +69,8 @@ RUN usermod -G clamav etda
 
 COPY --chown=etda . /etda_workflow
 
+# Needed for phantomjs to work
+ENV OPENSSL_CONF=/etc/ssl/
 
 RUN if [ "$RAILS_ENV" = "development" ]; then echo "skipping assets:precompile"; else RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile; fi
 
