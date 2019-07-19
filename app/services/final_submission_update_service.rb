@@ -32,8 +32,8 @@ class FinalSubmissionUpdateService
     msg = ''
     status_giver = SubmissionStatusGiver.new(submission)
     status_giver.can_respond_to_final_submission?
-    approval_status = ApprovalStatus.new(@submission).status
     if update_actions.approved?
+      approval_status = ApprovalStatus.new(@submission).status
       submission.update_attribute :final_submission_approved_at, Time.zone.now
       status_giver.waiting_for_committee_review!
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
