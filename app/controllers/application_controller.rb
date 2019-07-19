@@ -44,6 +44,10 @@ class ApplicationController < ActionController::Base
     render '/about/index.html', layout: 'home'
   end
 
+  def docs
+    render '/docs/index.html', layout: 'home'
+  end
+
   def login
     Rails.logger.info 'LOGGING IN APP CONTROLLER'
     # webaccess_login_url = WebAccess.new(request.env['HTTP_REFERER']).login_url
