@@ -140,7 +140,7 @@ namespace :deploy do
 
 
   before "deploy:assets:precompile", "deploy:symlink_shared"
-  before "deploy:assets:precompile", "custom_cleanup:clean_yarn_cache"
+  before "deploy:assets:precompile", "yarn:install"
   # before "deploy:migrate", "deploy:symlink_shared"
 
   after "deploy:updated", "deploy:migrate"
@@ -172,15 +172,25 @@ namespace :rbenv_custom_ruby_cleanup do
   after 'deploy:finishing', 'rbenv_custom_ruby_cleanup:purge_old_versions'
 end
 
-namespace :custom_cleanup do
-  desc 'clean up the yarn cache before building webpack'
-  task :clean_yarn_cache do
-    puts '***cleaning yarn'
-    on roles (:web) do
-      execute 'yarn cache clean'
+namespace :yarn do
+  desc 'yarn tasks to perform on the repository before a deployment'
+  task :install do
+    puts '***running yarn install'
+    on roles (:web) do 
+      execute "cd #{release_path} && yarn install"
     end
   end
 end
+
+# namespace :custom_cleanup do
+#   desc 'clean up the yarn cache before building webpack'
+#   task :clean_yarn_cache do
+#     puts '***cleaning yarn'
+#     on roles (:web) do
+#       execute 'yarn cache clean'
+#     end
+#   end
+# end
 
 namespace :deploy_all do
   task :deploy do
