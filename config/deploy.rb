@@ -141,6 +141,7 @@ namespace :deploy do
 
   before "deploy:assets:precompile", "deploy:symlink_shared"
   before "deploy:assets:precompile", "yarn:install"
+  before "deploy:assets:precompile", "yarn:check"
   # before "deploy:migrate", "deploy:symlink_shared"
 
   after "deploy:updated", "deploy:migrate"
@@ -178,6 +179,15 @@ namespace :yarn do
     puts '***running yarn install'
     on roles (:web) do 
       execute "cd #{release_path} && yarn install"
+    end
+  end
+
+  desc 'check dependencies'
+  task :check do
+    on roles (:web) do 
+      puts '***running yarn check'
+      execute "cd #{release_path} && yarn check --integrity"
+      execute "cd #{release_path} && yarn check --verify-tree"
     end
   end
 end
