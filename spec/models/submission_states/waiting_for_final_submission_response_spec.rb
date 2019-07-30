@@ -65,7 +65,7 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
     context 'when submission status CollectingFinalSubmissionFilesRejected' do
       let(:status) { SubmissionStates::CollectingFinalSubmissionFilesRejected.name }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be_truthy }
     end
 
     context 'when submission status FormatReviewAccepted' do
