@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'boot'
-require_relative '../lib/log/formatter'
 
 # require 'rails/all'
 #
@@ -18,6 +17,8 @@ require "action_view/railtie"
 # require "rails/test_unit/railtie"
 require 'action_cable'
 require 'csv'
+
+require_relative '../lib/log/formatter'
 #
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
