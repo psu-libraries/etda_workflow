@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'boot'
+require_relative '../lib/log/formatter'
 
 # require 'rails/all'
 #
@@ -26,6 +27,27 @@ module EtdaWorkflow
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
+
+    # Logging
+    logging_config = Rails.application.config_for(:logging)
+    config.lograge.enabled = logging_config['lograge']['enabled']
+    if logging_config['format'] == 'logstash'
+      config.lograge.formatter =  Lograge::Formatters::Logstash.new
+    end
+
+    if logging_config['stdout']
+      config.logger = ActiveSupport::Logger.new(STDOUT)
+    else
+      config.logger = ActiveSupport::Logger.new(Rails.root.join('log', "#{Rails.env}.log"))
+    end
+
+    if logging_config['format'] == 'logstash'
+      config.log_formatter = JSONFormatter.new
+    else
+      config.log_formatter = ActiveSupport::Logger::SimpleFormatter.new
+    end
+
+    config.logger.formatter = config.log_formatter
 
     # moved lib/devise to app/lib/devise to bypass eagerload/autoload issue rails 5
     # config.eager_load_paths << "#{Rails.root}/lib/**/*"
