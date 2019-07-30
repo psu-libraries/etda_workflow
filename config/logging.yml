@@ -1,7 +1,7 @@
 default: &default
   lograge:
     enabled: true
-  stdout: true
+  stdout: false
   format: logstash
 
 development:
