@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
-  config.lograge.enabled = true
-  config.lograge.formatter =  Lograge::Formatters::Logstash.new
-  config.logger = ActiveSupport::Logger.new(Rails.root.join('log', 'production.log'))
 
   config.webpacker.check_yarn_integrity = false
 
@@ -86,18 +83,19 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
+  # config.log_formatter = ::Logger::Formatter.new
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
-    logger.formatter = config.log_formatter
-    config.logger = ActiveSupport::Logger.new(STDOUT)
-    # config.logger    = ActiveSupport::TaggedLogging.new(logger)
-  end
+  # Moved into application.rb
+  # if ENV["RAILS_LOG_TO_STDOUT"].present?
+  #   logger           = ActiveSupport::Logger.new(STDOUT)
+  #   logger.formatter = config.log_formatter
+  #   config.logger = ActiveSupport::Logger.new(STDOUT)
+  #   # config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  # end
 
   Dir.glob('lib/capistrano/tasks/**/*.rake').each { |r| import r }
 

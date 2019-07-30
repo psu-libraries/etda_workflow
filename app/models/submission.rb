@@ -350,14 +350,14 @@ class Submission < ApplicationRecord
   end
 
   def update_status_from_base_committee
-    submission_status = ApprovalStatus.new(self).status
+    submission_status = ApprovalStatus.new(self)
     status_giver = SubmissionStatusGiver.new(self)
-    if submission_status == 'approved'
+    if submission_status.status == 'approved'
       if head_of_program_is_approving?
         status_giver.can_waiting_for_head_of_program_review?
         status_giver.waiting_for_head_of_program_review!
         update_attribute(:committee_review_accepted_at, DateTime.now)
-        WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id)).deliver
+        WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id)).deliver unless submission_status.head_of_program_status == 'approved'
         update_status_from_head_of_program
       else
         status_giver.can_waiting_for_publication_release?
@@ -365,7 +365,7 @@ class Submission < ApplicationRecord
         update_attribute(:committee_review_accepted_at, DateTime.now)
         deliver_final_emails
       end
-    elsif submission_status == 'rejected'
+    elsif submission_status.status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
       update_attribute(:committee_review_rejected_at, DateTime.now)

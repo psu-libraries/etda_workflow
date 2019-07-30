@@ -1,0 +1,12 @@
+default: &default
+  lograge:
+    enabled: <%= ENV.fetch("RAILS_LOGRAGE_ENABLED") { true } %>
+  stdout: <%= ENV.fetch("RAILS_LOG_TO_STDOUT") { false } %>
+  format: <%= ENV.fetch("RAILS_LOG_FORMAT") { "logstash" } %>
+
+development:
+  <<: *default
+test:
+  <<: *default
+production:
+  <<: *default

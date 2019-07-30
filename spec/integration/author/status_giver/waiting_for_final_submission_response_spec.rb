@@ -89,9 +89,9 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
         select_day = '1'
         submission.author.inbound_lion_path_record = nil
         submission.final_submission_approved_at = nil
+        create_committee(submission)
         FactoryBot.create :format_review_file, submission: submission
         FactoryBot.create :final_submission_file, submission: submission
-        create_committee(submission)
         visit admin_edit_submission_path(submission)
         sleep 2
         fill_in 'Final Submission Notes to Student', with: 'Note on paper is approved'
@@ -101,7 +101,6 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
           select select_day, from: 'submission[defended_at(3i)]'
         end
         click_button 'Approve Final Submission'
-        puts page.body
         expect(page).to have_content("The submission's final submission information was successfully approved.")
         submission.reload
         expect(submission.status).to eq 'waiting for committee review'
