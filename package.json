@@ -15,7 +15,7 @@
     "caniuse-lite": "^1.0.30000824",
     "cocoon": "github:nathanvda/cocoon",
     "coffeescript": "1.12.7",
-    "css-loader": "^0.28.11",
+    "css-loader": "^3.1.0",
     "datatables.net-bs": "^1.10.16",
     "datatables.net-buttons-bs": "^1.5.1",
     "datatables.net-fixedheader-bs": "^3.1.3",
