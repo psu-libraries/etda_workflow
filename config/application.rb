@@ -33,21 +33,20 @@ module EtdaWorkflow
     # Logging
     logging_config = Rails.application.config_for(:logging)
     config.lograge.enabled = logging_config['lograge']['enabled']
-    if logging_config['format'] == 'logstash'
-      config.lograge.formatter =  Lograge::Formatters::Logstash.new
-    end
 
-    if logging_config['stdout']
-      config.logger = ActiveSupport::Logger.new(STDOUT)
-    else
-      config.logger = ActiveSupport::Logger.new(Rails.root.join('log', "#{Rails.env}.log"))
-    end
+    config.lograge.formatter = Lograge::Formatters::Logstash.new if logging_config['format'] == 'logstash'
 
-    if logging_config['format'] == 'logstash'
-      config.log_formatter = JSONFormatter.new
-    else
-      config.log_formatter = ActiveSupport::Logger::SimpleFormatter.new
-    end
+    config.logger = if logging_config['stdout']
+                        ActiveSupport::Logger.new(STDOUT)
+                    else
+                        ActiveSupport::Logger.new(Rails.root.join('log', "#{Rails.env}.log"))
+                    end
+
+    config.log_formatter = if logging_config['format'] == 'logstash'
+                                JSONFormatter.new
+                           else
+                              ActiveSupport::Logger::SimpleFormatter.new
+                           end
 
     config.logger.formatter = config.log_formatter
 
@@ -61,9 +60,9 @@ module EtdaWorkflow
     config.time_zone = 'Eastern Time (US & Canada)'
     config.active_record.default_timezone = :local
     config.active_record.time_zone_aware_attributes = false
-    
+
     config.autoload_paths += [
-      Rails.root.join('app/presenters'),
+      Rails.root.join('app/presenters')
     ]
     config.autoload_paths += Dir["#{config.root}/lib/**/*"]
 
