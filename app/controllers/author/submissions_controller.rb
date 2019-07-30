@@ -122,6 +122,7 @@ class Author::SubmissionsController < AuthorController
       OutboundLionPathRecord.new(submission: @submission).report_status_change
       @submission.update_final_submission_timestamps!(Time.zone.now)
       @submission.update_attribute :final_submission_approved_at, Time.zone.now
+      @submission.reset_committee_reviews
       @submission.send_initial_committee_member_emails
       redirect_to author_root_path
       WorkflowMailer.final_submission_received(@submission).deliver if current_partner.graduate?

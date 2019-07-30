@@ -128,6 +128,36 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
       end
     end
 
+    context "when I submit the 'Upload Final Submission Files' form after committee rejection" do
+      it 'resets committee reviews and proceeds to "waiting for committee review"' do
+        submission.committee_members.first.update_attribute :status, 'rejected'
+        submission.status = 'waiting for committee review rejected'
+        submission.defended_at = Time.zone.yesterday
+        submission.save(validate: false)
+        submission.reload
+        visit author_submission_edit_final_submission_path(submission)
+        select Time.zone.now.next_year.year, from: 'Graduation Year'
+        select 'Spring', from: 'Semester Intending to Graduate'
+        fill_in 'Abstract', with: 'A paper on stuff'
+        page.find(".submission_delimited_keywords .ui-autocomplete-input").set('stuff')
+        choose "submission_access_level_open_access" if current_partner.graduate?
+        expect(page).to have_css('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')
+        first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
+        attach_file first_input_id, fixture('final_submission_file_01.pdf')
+        check 'I agree to copyright statement'
+        # check 'I agree to release agreement'
+        click_button 'Submit final files for review'
+        # expect(page).to have_content('successfully')
+        submission.reload
+        expect(submission.committee_members.first.status).to eq ''
+        expect(submission.status).to eq 'waiting for committee review'
+        expect(submission.final_submission_files_uploaded_at).not_to be_nil
+        expect(WorkflowMailer.deliveries.count).to eq(7) if current_partner.graduate?
+        expect(WorkflowMailer.deliveries.count).to eq(2) if current_partner.honors?
+        expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.milsch?
+      end
+    end
+
     context "when I submit the 'Upload Final Submission Files' form with multiple files" do
       it 'uploads two files' do
         submission.defended_at = Time.zone.yesterday
