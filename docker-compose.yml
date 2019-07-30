@@ -32,15 +32,6 @@ services:
             rails db:migrate &&
             echo starting rails &&
             rails s"
-    volumes:
-      - type: bind
-        source: ./spec/
-        target: /etda_workflow/spec
-        consistency: cached
-      - type: bind
-        source: ./app/
-        target: /etda_workflow/app
-        consistency: cached
     ports:
     - "3000:3000"
     depends_on:
