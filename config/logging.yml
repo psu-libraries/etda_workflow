@@ -1,0 +1,12 @@
+default: &default
+  lograge:
+    enabled: true
+  stdout: true
+  format: logstash
+
+development:
+  <<: *default
+test:
+  <<: *default
+production:
+  <<: *default
