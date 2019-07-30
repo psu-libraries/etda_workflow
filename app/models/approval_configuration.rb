@@ -24,6 +24,7 @@ class ApprovalConfiguration < ApplicationRecord
                                     configuration_threshold: configuration[:configuration_threshold],
                                     email_admins: configuration[:email_admins],
                                     email_authors: configuration[:email_authors],
+                                    use_percentage: configuration[:use_percentage],
                                     head_of_program_is_approving: configuration[:head_of_program_is_approving])
     end
   end
