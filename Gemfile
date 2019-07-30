@@ -10,6 +10,7 @@ source 'https://rubygems.org'
 gem 'okcomputer'
 
 gem 'lograge'
+gem 'lograge-sql'
 gem 'logstash-event'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

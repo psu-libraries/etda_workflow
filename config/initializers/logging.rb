@@ -1,0 +1,1 @@
+require 'lograge/sql/extension'
