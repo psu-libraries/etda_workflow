@@ -33,8 +33,6 @@ steps:
   - build
   commands:
     - cd /etda_workflow
-    # - apt-get update 
-    # - apt-get install mariadb-client -y
     - export RAILS_ENV=test
     - unset CI
     # - bundle install --with development test
@@ -54,6 +52,7 @@ steps:
   commands:
     - cd /etda_workflow
     - yarn global add phantomjs-prebuilt
+    - export PATH=$PATH:~/.yarn/bin
     - export RAILS_ENV=test
     - export PARTNER=graduate
     - unset CI
