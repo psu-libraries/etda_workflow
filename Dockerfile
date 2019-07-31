@@ -12,8 +12,9 @@ ARG SSH_PRIVATE_KEY
 ARG RAILS_ENV
 ENV RAILS_ENV=$RAILS_ENV
 ENV SSH_PRIVATE_KEY_ENV=$SSH_PRIVATE_KEY
-ENV GEM_HOME=/etda_workflow/.gem
-ENV GEM_PATH=/etda_workflow/.gem
+ENV GEM_HOME=/etda_workflow/vendor/bundle
+ENV GEM_PATH=/etda_workflow/vendor/bundle
+ENV BUNDLE_PATH=/etda_workflow/vendor/bundle
 
 RUN echo  "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config && \
     echo "${SSH_PRIVATE_KEY_ENV}" | base64 -d  > /root/.ssh/id_rsa && \
