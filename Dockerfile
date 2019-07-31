@@ -4,7 +4,7 @@ FROM ruby:2.4.6 as ruby
 
 RUN mkdir /etda_workflow && \
     mkdir -p /root/.ssh
-COPY Gemfile Gemfile.lock vendor/cache* /etda_workflow/
+COPY Gemfile Gemfile.lock  /etda_workflow/
 WORKDIR /etda_workflow
 
 ARG SSH_PRIVATE_KEY
