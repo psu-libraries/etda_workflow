@@ -37,7 +37,7 @@
     "style-loader": "^0.19.1",
     "tag-it": "^2.0.0",
     "url-loader": "^0.6.2",
-    "url-parse": "1.4.3",
+    "url-parse": "1.4.7",
     "webpack": "^4.29"
   },
   "devDependencies": {
