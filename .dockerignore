@@ -1,6 +1,10 @@
 public/assets
 vendor/cache
 .git
+.bundle
+.mutagen
+.yarn
+.cache
 node_modules
 tmp
 
