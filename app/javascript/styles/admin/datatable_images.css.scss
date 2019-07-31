@@ -1,32 +1,32 @@
 table.dataTable thead .sorting {
   padding-left: 2em;
   background: url("../../images/datatables/sort_both.png") no-repeat center left;
-  background: image-url("datatables/sort_both.png") no-repeat center left;
+  background: image-url("../../images/datatables/sort_both.png") no-repeat center left;
 }
 table.dataTable thead .sorting_asc {
   padding-left: 2em;
   background: url("../../images/datatables/sort_asc.png") no-repeat center left;
-  background: image-url("datatables/sort_asc.png") no-repeat center left;
+  background: image-url("../../images/datatables/sort_asc.png") no-repeat center left;
 }
 table.dataTable thead .sorting_desc {
   padding-left: 2em;
   background: url("../../images/datatables/sort_desc.png") no-repeat center left;
-  background: image-url("datatables/sort_desc.png") no-repeat center left;
+  background: image-url("../../images/datatables/sort_desc.png") no-repeat center left;
 }
 table.dataTable thead .sorting_asc_disabled {
   padding-left: 2em;
   background: url("../../images/datatables/sort_asc_disabled.png") no-repeat center left;
-  background: image-url("datatables/sort_asc_disabled.png") no-repeat center left;
+  background: image-url("../../images/datatables/sort_asc_disabled.png") no-repeat center left;
 }
 table.dataTable thead .sorting_desc_disabled {
   padding-left: 2em;
   background: url("../../images/datatables/sort_desc_disabled.png") no-repeat center left;
-  background: image-url("datatables/sort_desc_disabled.png") no-repeat center left;
+  background: image-url("../../images/datatables/sort_desc_disabled.png") no-repeat center left;
 }
 .spinner {
   display: block;
   background: url('../../images/spinner.gif') no-repeat center left;
-  background: image-url('images.gif') no-repeat center left;
+  background: image-url('../../images/spinner.gif') no-repeat center left;
 }
 .spinner-info {
   margin-left: 2em;
