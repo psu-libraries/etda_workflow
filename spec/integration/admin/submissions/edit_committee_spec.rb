@@ -21,9 +21,7 @@ RSpec.describe "Editing committee member information for format reviews and fina
     within('#committee') do
       expect(find("select[id='submission_committee_members_attributes_0_committee_role_id']").value).to eq role.id.to_s
       expect(find("select[id='submission_committee_members_attributes_0_committee_role_id']").disabled?).to eq true if current_partner.graduate?
-      expect { find("label[for='submission_committee_members_attributes_0_is_voting_true']") }.to raise_error Capybara::ElementNotFound if current_partner.graduate?
       expect(find("select[id='submission_committee_members_attributes_1_committee_role_id']").disabled?).to eq false
-      expect { find("label[for='submission_committee_members_attributes_1_is_voting_true']") }.not_to raise_error
       within("select#submission_committee_members_attributes_1_committee_role_id") do
         CommitteeRole.where(degree_type: degree.degree_type).each do |option|
           expect(find("option[value='#{option[:id]}']").text).to eq(option[:name]) unless option[:name] == 'Program Head/Chair'
