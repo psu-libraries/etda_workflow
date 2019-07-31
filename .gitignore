@@ -7,6 +7,8 @@
 # Ignore bundler config.
 /.bundle
 
+vendor/gems
+
 # Ignore all logfiles and tempfiles.
 /.idea/*
 /log/*
