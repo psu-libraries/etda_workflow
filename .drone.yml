@@ -22,6 +22,7 @@ steps:
 
 - name: prepare
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+  user: root
   environment:
     MYSQL_USER: root
     MYSQL_PASSWORD: root
@@ -41,6 +42,7 @@ steps:
 
 - name: test-grad-0
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+  user: root
   environment:
     MYSQL_USER: root
     MYSQL_PASSWORD: root
