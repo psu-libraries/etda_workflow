@@ -146,20 +146,6 @@ namespace :deploy do
 
   after "deploy:updated", "deploy:migrate"
 
-# Placeholder for possible fix.
-# Worked for first partner on deploy but hung on others.  Once added everything worked but alternative solutions already existed.  
-#    before "deploy:assets:precompile", "deploy:yarn_install"
-#    namespace :deploy do
-#      desc 'Run rake yarn:install'
-#      task :yarn_install do
-#        on roles(:web) do
-#          within release_path do
-#            execute("cd #{release_path} && yarn install")
-#          end
-#        end
-#      end
-#    end
-
 end
 
 # Used to keep x-1 instances of ruby on a machine.  Ex +4 leaves 3 versions on a machine.  +3 leaves 2 versions
@@ -193,15 +179,6 @@ namespace :yarn do
   end
 end
 
-# namespace :custom_cleanup do
-#   desc 'clean up the yarn cache before building webpack'
-#   task :clean_yarn_cache do
-#     puts '***cleaning yarn'
-#     on roles (:web) do
-#       execute 'yarn cache clean'
-#     end
-#   end
-# end
 
 namespace :deploy_all do
   task :deploy do
