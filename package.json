@@ -38,7 +38,8 @@
     "tag-it": "^2.0.0",
     "url-loader": "^0.6.2",
     "url-parse": "1.4.7",
-    "webpack": "^4.29"
+    "webpack": "^4.29",
+    "webpack-cli": "^3.3.6"
   },
   "devDependencies": {
     "webpack-dev-server": "^=3.1.11"
