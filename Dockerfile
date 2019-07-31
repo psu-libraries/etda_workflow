@@ -73,9 +73,8 @@ COPY --chown=etda . /etda_workflow
 # Needed for phantomjs to work
 ENV OPENSSL_CONF=/etc/ssl/
 
-RUN if [ "$RAILS_ENV" = "development" ]; then echo "skipping assets:precompile"; else RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile; fi
-
 # USER etda
 
+RUN RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
 
 CMD ["./entrypoint.sh"]
