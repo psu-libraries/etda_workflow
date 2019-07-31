@@ -1,4 +1,4 @@
-FROM node:10 as nodejs
+FROM node:12 as nodejs
 
 FROM ruby:2.4.6 as ruby
 
@@ -18,7 +18,8 @@ RUN echo  "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config &
     gem install bundler
 
 RUN bundle package --all
-RUN bundle install 
+
+RUN bundle install --path vendor/gems
 
 FROM ruby:2.4.6
 WORKDIR /etda_workflow
