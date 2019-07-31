@@ -188,6 +188,7 @@ namespace :yarn do
       puts '***running yarn check'
       execute "cd #{release_path} && yarn check --integrity"
       execute "cd #{release_path} && yarn check --verify-tree"
+      execute "cd #{release_path} && yarn check"
     end
   end
 end
