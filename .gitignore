@@ -8,6 +8,8 @@
 /.bundle
 vendor/gems
 
+vendor/gems
+
 # Ignore all logfiles and tempfiles.
 /.idea/*
 /log/*
