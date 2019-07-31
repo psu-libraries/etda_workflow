@@ -2,3 +2,5 @@ public/assets
 vendor/cache
 .git
 node_modules
+tmp
+
