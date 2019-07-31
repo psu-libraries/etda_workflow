@@ -1,4 +1,4 @@
-FROM node:12 as nodejs
+FROM node:12.7.0 as nodejs
 
 FROM ruby:2.4.6 as ruby
 
