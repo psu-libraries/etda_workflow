@@ -54,6 +54,7 @@ steps:
     - yarn global add phantomjs-prebuilt
     - export PATH=$PATH:~/.yarn/bin
     - export RAILS_ENV=test
+    - whoami
     - export PARTNER=graduate
     - unset CI
     - bundle exec rake spec:controllers
@@ -82,6 +83,7 @@ steps:
     - cd /etda_workflow
     # - apt-get install mysql-client -y
     - yarn global add phantomjs-prebuilt
+    - export PATH=$PATH:~/.yarn/bin
     - export PARTNER=graduate
     - unset CI
     - bundle exec rake drone_prepare
