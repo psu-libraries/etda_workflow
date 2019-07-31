@@ -26,6 +26,12 @@ RUN bundle install
 
 FROM ruby:2.4.6
 
+ARG RAILS_ENV
+ENV RAILS_ENV=$RAILS_ENV
+ENV GEM_HOME=/etda_workflow/vendor/bundle
+ENV GEM_PATH=/etda_workflow/vendor/bundle
+ENV BUNDLE_PATH=/etda_workflow/vendor/bundle
+ENV PATH="/etda_workflow/vendor/bundle/bin:${PATH}"
 WORKDIR /etda_workflow
 
 ENV TZ=America/New_York
@@ -70,7 +76,7 @@ RUN chown etda /etda_workflow
 
 USER etda
 
-COPY --from=ruby /usr/local/bundle /usr/local/bundle
+# COPY --from=ruby /usr/local/bundle /usr/local/bundle
 COPY --from=ruby /etda_workflow /etda_workflow
 
 # Install javascript Dependencies before copying up source code
@@ -91,6 +97,7 @@ USER etda
 # ensure tmp directory exists
 
 # Precompile assets as part of build to speed up runtime startup, and identify any problems before runtime
-RUN RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
+# RUN RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
+RUN if [ "$RAILS_ENV" = "development" ]; then echo "skipping assets:precompile"; else RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile; fi
 
 CMD ["./entrypoint.sh"]
