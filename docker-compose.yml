@@ -18,11 +18,11 @@ services:
     environment:
       REDIS_HOST: redis
       MYSQL_HOST: db
-      RAILS_ENV: development
+      RAILS_ENV: production
     build: 
       context: .
       args:
-        RAILS_ENV: development
+        RAILS_ENV: production
     command: >
       sh -c "yarn install && 
             if [ -f tmp/pids/server.pid ]; then rm tmp/pids/server.pid; fi &&
