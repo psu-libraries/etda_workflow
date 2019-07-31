@@ -8,6 +8,9 @@ help: ## This help.
 
 .DEFAULT_GOAL := help
 
+exec: ## pop a shell in this thing
+	docker-compose exec web /bin/bash
+
 bundle: ## run bundle install in container
 	docker-compose exec web bundle install
 
