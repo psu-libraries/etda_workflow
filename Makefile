@@ -8,9 +8,6 @@ help: ## This help.
 
 .DEFAULT_GOAL := help
 
-exec: ## pop a shell in this thing
-	docker-compose exec web /bin/bash
-
 bundle: ## run bundle install in container
 	docker-compose exec web bundle install
 
@@ -20,7 +17,7 @@ down: ## turn this thing off
 
 up: ## run this thing
 	docker-compose up -d
-	mutagen create --ignore .git --ignore vendor/cache --ignore tmp --ignore public -m two-way-resolved --label app=etda-workflow docker://etda_workflow_web_1/etda_workflow .
+	mutagen create --ignore .git --ignore vendor/cache -m two-way-resolved --label app=etda-workflow docker://etda_workflow_web_1/etda_worklfow .
 
 rebuild: build up ## run build and then up
 

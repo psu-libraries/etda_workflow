@@ -13,7 +13,7 @@ require('jquery-ui/ui/widgets/spinner');
 require('jquery-ui/ui/widgets/button');
 
 require('bootstrap3');
-// require('bootstrap-modal');
+require('bootstrap-modal');
 require('../../../vendor/assets/javascripts/tag-it.js');
 require('../../../vendor/assets/javascripts/breakpoints.js');
 require('../base/cocoon.js');
