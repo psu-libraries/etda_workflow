@@ -6,6 +6,7 @@
 
 # Ignore bundler config.
 /.bundle
+vendor/gems
 
 vendor/gems
 
@@ -29,6 +30,8 @@ node_modules/**/*
 solr_instance
 solr/conf/db-data-config.xml
 solr
+
+app/javascript/app/javascript/packs/**
  
 assets
 public/packs-test/**/*

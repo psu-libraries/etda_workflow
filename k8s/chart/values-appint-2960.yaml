@@ -10,7 +10,7 @@ persistence:
       storage: 8Gi
 image:
   repository: harbor.dsrd.libraries.psu.edu/library/etda-workflow
-  tag: 411
+  tag: 410
   pullPolicy: IfNotPresent
   imagePullSecrets: harbor-dsrd-libraries
 nameOverride: ''
@@ -25,20 +25,20 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/ssl-passthrough: 'true'
   hosts:
-  - host: submit-etda-digital-sigs.dsrd.libraries.psu.edu
+  - host: submit-etda-appint-2960.dsrd.libraries.psu.edu
     paths:
     - "/"
   tls:
-  - secretName: submit-etda-digital-sigs-dsrd-libraries-psu-edu
+  - secretName: submit-etda-appint-2960-dsrd-libraries-psu-edu
     hosts:
-    - submit-etda-digital-sigs.dsrd.libraries.psu.edu
+    - submit-etda-appint-2960.dsrd.libraries.psu.edu
 resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
 webaccess:
   enabled: true
-  cosignService: submit-etda-digital-sigs.dsrd.libraries.psu.edu
+  cosignService: submit-etda-appint-2960.dsrd.libraries.psu.edu
 
 redis:
   enabled: true
