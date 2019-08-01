@@ -38,6 +38,7 @@ class FinalSubmissionUpdateService
       status_giver.waiting_for_committee_review!
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       @submission.update_status_from_committee
+      WorkflowMailer.final_submission_approved(@submission).deliver
       @submission.send_initial_committee_member_emails unless approval_status == 'approved'
       msg = "The submission\'s final submission information was successfully approved."
     elsif update_actions.rejected?
@@ -48,6 +49,7 @@ class FinalSubmissionUpdateService
       submission.final_submission_rejected_at = Time.zone.now
       submission.save
       status_giver.collecting_final_submission_files_rejected!
+      WorkflowMailer.final_submission_rejected(@submission).deliver
       msg = "The submission\'s final submission information was successfully rejected and returned to the author for revision."
     end
     if update_actions.record_updated?
@@ -151,10 +153,5 @@ class FinalSubmissionUpdateService
       keywords_attributes: [:word, :id, :_destroy],
       invention_disclosures_attributes: [:id, :submission_id, :id_number, :_destroy]
     )
-  end
-
-  def deliver_final_emails
-    WorkflowMailer.final_submission_approved(@submission, I18n.t("#{current_partner.id}.partner.email.url")).deliver_now
-    WorkflowMailer.pay_thesis_fee(@submission).deliver_now if current_partner.honors?
   end
 end

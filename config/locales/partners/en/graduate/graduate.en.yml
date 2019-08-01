@@ -27,6 +27,31 @@ en:
         address: gradthesis@psu.edu
         signature: 'Graduate School <br />Keller Building<br /> University Park, PA'
 
+        final_submission_rejected:
+          message: |
+                    The electronic %{degree_type} submitted by you has been rejected by the %{partner_name}.
+                    Review notes from the administrator and resubmit your work here: %{url}
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+
+        final_submission_approved:
+          message: |
+                    The electronic %{degree_type} submitted by you has been approved by the %{partner_name}.
+                    The submission will now proceed to the committee review stage.  Your committee has been notified to begin reviewing your submission.
+                    Use the following URL to review your submission: %{url}
+                    Click the link "[My Committee Review]" on that page to review your committee.
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+
         format_review_received:
           message: |
                     Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with
@@ -110,9 +135,9 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
-        final_submission_approved:
+        committee_approved:
           message: |
-                    Your eTD has been reviewed and approved. Everything is in order, and you need do nothing further for our office.
+                    Your eTD has been reviewed by its committee and approved. Everything is in order, and you need do nothing further for our office.
                     After graduation, the eTD will be available through Penn State’s eTD database %{url} and will be sent to ProQuest/UMI Dissertation Services for processing unless you have chosen to restrict access to it. If it is restricted, it will automatically change to Open Access after two years.
                     The access level for your %{degree_type} is: %{access_level}.
                     Please accept our congratulations as you complete your degree (commencement information can be found online as http://commencement.psu.edu/).
@@ -123,8 +148,7 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
-                    cc:%{author_email}
-                    %{committee_email_list}
+
           dissertation_publish_msg: and will be sent to ProQuest/UMI Dissertation Services for processing
         access_level_updated:
           message: |

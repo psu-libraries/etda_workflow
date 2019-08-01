@@ -27,6 +27,30 @@ en:
         address: honorsthesis@psu.edu
         signature: 'Schreyer Honors College<br /> University Park, PA'
 
+        final_submission_rejected:
+          message: |
+                    The electronic honors %{degree_type} submitted by you has been rejected by the %{partner_name}.
+                    Review notes from the administrator and resubmit your work here: %{url}
+                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA  16802
+
+        final_submission_approved:
+          message: |
+                    The electronic honors %{degree_type} submitted by you has been approved by the %{partner_name}.
+                    The submission will now proceed to the committee review stage.  Your committee has been notified to begin reviewing your submission.
+                    Use the following URL to review your submission: %{url}
+                    Click the link "[My Committee Review]" on that page to review your committee.
+                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA  16802
+
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
@@ -72,9 +96,9 @@ en:
                     10 Schreyer Honors College
                     The Pennsylvania State University
                     University Park, PA 16802
-        final_submission_approved:
+        committee_approved:
           message: |
-                    The electronic honors %{degree_type} submitted by you has been approved by the %{partner_name}.
+                    The electronic honors %{degree_type} submitted by you has been approved by the %{partner_name} and your committee.
                     The access level for your %{degree_type} is: %{access_level}
                     Use the following URL to access the available information for Honors Theses: %{url}
                     If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
@@ -83,8 +107,7 @@ en:
                     10 Schreyer Honors College
                     The Pennsylvania State University
                     University Park, PA  16802
-                    cc: %{author_email}
-                    %{committee_email_list}
+
         pay_thesis_fee:
           message: |
                     Now that your honors %{degree_type} has been approved, you must complete two more steps to finalize the process:

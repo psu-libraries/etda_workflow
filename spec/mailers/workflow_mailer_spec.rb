@@ -92,7 +92,7 @@ RSpec.describe WorkflowMailer do
     let(:email) { described_class.final_submission_approved(submission, 'http://test_this_url:999') }
 
     it 'contains publication information for graduate dissertations' do
-      publication_message = t("#{current_partner.id}.partner.email.final_submission_approved.dissertation_publish_msg")
+      publication_message = t("#{current_partner.id}.partner.email.committee_approved.dissertation_publish_msg")
       if current_partner.graduate?
         expect(email.body).to include(publication_message)
       else
@@ -220,7 +220,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "has desired content" do
-      expect(email.body).to match(/\/approver\/reviews/)
+      expect(email.body).to match(/\/approver/)
       expect(email.body).to match(/Reminder:/)
     end
   end
@@ -243,7 +243,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "has desired content" do
-      expect(email.body).to match(/\/approver\/reviews/)
+      expect(email.body).to match(/\/approver/)
       expect(email.body).to match(/Hello/)
     end
   end

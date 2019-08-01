@@ -27,6 +27,28 @@ en:
         address: millennium@psu.edu
         signature: 'Millennium Scholars Program <br />130 Ritenour Building<br /> University Park, PA 16802'
 
+        final_submission_rejected:
+          message: |
+                    The electronic %{degree_type} submitted by you has been rejected by the %{partner_name}.
+                    Review notes from the administrator and resubmit your work here: %{url}
+                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
+                    You may also call (814)867-5105, or send mail to:
+                    Millennium Scholars Program
+                    130 Ritenour Building
+                    University Park, PA  16802
+
+        final_submission_approved:
+            message: |
+                      The electronic %{degree_type} submitted by you has been approved by the %{partner_name}.
+                      The submission will now proceed to the committee review stage.  Your committee has been notified to begin reviewing your submission.
+                      Use the following URL to review your submission: %{url}
+                      Click the link "[My Committee Review]" on that page to review your committee.
+                      If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
+                      You may also call (814)867-5105, or send mail to:
+                      Millennium Scholars Program
+                      130 Ritenour Building
+                      University Park, PA  16802
+
         format_review_received:
           message: |
                     Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with
@@ -87,9 +109,9 @@ en:
                     Millennium Scholars Program
                     130 Ritenour Building
                     University Park, PA  16802
-        final_submission_approved:
+        committee_approved:
           message: |
-                    Your MSPT has been reviewed and approved. Everything is in order, and you need do nothing further for our office.
+                    Your MSPT has been reviewed by its committee and approved. Everything is in order, and you need do nothing further for our office.
                     After graduation, the MSPT will be available through Penn State’s MSPT database %{url} and will be sent to ProQuest/UMI Dissertation Services for processing unless you have chosen to restrict access to it. If it is restricted, it will automatically change to Open Access after two years.
                     The access level for your %{degree_type} is: %{access_level}.
                     Please accept our congratulations as you complete your degree (commencement information can be found online as http://commencement.psu.edu/).
@@ -98,8 +120,7 @@ en:
                     Millennium Scholars Program
                     130 Ritenour Building
                     University Park, PA  16802
-                    cc:%{author_email}
-                    %{committee_email_list}
+
         access_level_updated:
           message: |
                     The Millennium Scholars Program has changed the availability of the following MSPT as shown below:
