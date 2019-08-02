@@ -5,6 +5,6 @@ Dear <%= @submission.author.full_name %>,
        degree_type: @submission.degree_type,
        partner_name: current_partner.name,
        author_email: @author.psu_email_address,
-       url: @url,
+       url: @explore_url,
        final_publish_msg: @dissertation_publish_info,
        committee_email_list: @submission.committee_email_list.join(", ") ) %>

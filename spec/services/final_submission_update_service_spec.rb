@@ -29,7 +29,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.status).to eq('waiting for committee review')
       expect(submission.title).to eq('update this title')
       expect(submission.publication_release_terms_agreed_to_at).not_to be_nil
-      expect(ActionMailer::Base.deliveries.count).to eq(submission.voting_committee_members.count)
+      expect(ActionMailer::Base.deliveries.count).to eq(submission.voting_committee_members.count + 1)
     end
 
     it 'approves a final submission and proceeds to publication release if committee approved' do
@@ -48,12 +48,11 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.status).to eq('waiting for publication release')
       expect(submission.title).to eq('update this title')
       expect(submission.publication_release_terms_agreed_to_at).not_to be_nil
-      expect(WorkflowMailer.deliveries.count).to eq(1) unless current_partner.honors?
-      expect(WorkflowMailer.deliveries.count).to eq(2) if current_partner.honors?
+      expect(WorkflowMailer.deliveries.count).to eq(2) unless current_partner.honors?
+      expect(WorkflowMailer.deliveries.count).to eq(3) if current_partner.honors?
     end
 
     it 'rejects a final submission' do
-      start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :waiting_for_final_submission_response, committee_members: [committee_member]
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
@@ -72,7 +71,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.abstract).to eq('this abstract is updated')
       expect(submission.committee_members.first.is_voting).to eq(false)
       expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
-      expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
+      expect(ActionMailer::Base.deliveries.count).to eq(1)
     end
 
     it 'updates a final submission' do
