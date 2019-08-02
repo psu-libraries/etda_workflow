@@ -89,16 +89,7 @@ RSpec.describe WorkflowMailer do
   end
 
   describe '#final_submission_approved' do
-    let(:email) { described_class.final_submission_approved(submission, 'http://test_this_url:999') }
-
-    it 'contains publication information for graduate dissertations' do
-      publication_message = t("#{current_partner.id}.partner.email.committee_approved.dissertation_publish_msg")
-      if current_partner.graduate?
-        expect(email.body).to include(publication_message)
-      else
-        expect(email.body).not_to include(publication_message)
-      end
-    end
+    let(:email) { described_class.final_submission_approved(submission) }
 
     it "sets an appropriate subject" do
       expect(email.subject).to match(/has been approved/i)
@@ -112,17 +103,9 @@ RSpec.describe WorkflowMailer do
       expect(email.to).to eq([author.psu_email_address])
     end
 
-    it "is carbon copied to the committee members for honors and graduate school " do
-      expect(email.cc).to eq(submission.committee_email_list)
-    end
-
     it "tells the author that the final submission has been approved" do
-      expect(email.body).to match(/has been reviewed and approved/i) if current_partner.graduate?
+      expect(email.body).to match(/The submission will now proceed/i) if current_partner.graduate?
       expect(email.body).to match(/has been approved/i) if current_partner.honors?
-    end
-
-    it 'contains the url to the partner site' do
-      expect(email.body).to match(/http:\/\/test_this_url:999/i)
     end
   end
 
