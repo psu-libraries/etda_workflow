@@ -53,7 +53,6 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
     end
 
     it 'rejects a final submission' do
-      start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :waiting_for_final_submission_response, committee_members: [committee_member]
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
