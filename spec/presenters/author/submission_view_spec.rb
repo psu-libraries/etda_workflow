@@ -633,6 +633,14 @@ RSpec.describe Author::SubmissionView do
         expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[Review Committee Review.*\]/)
       end
     end
+
+    context "when waiting for committee review rejected" do
+      before { submission.status = 'waiting for committee review rejected' }
+
+      it 'to display review and update links' do
+        expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[Review Committee Review.*\[Update.*\]/)
+      end
+    end
   end
 
   describe 'step eight: Released for Publication' do

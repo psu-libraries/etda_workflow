@@ -6,7 +6,7 @@ RSpec.describe "Rake::Task['tokens:remove_expired']", type: :task do
   subject(:task) { Rake::Task['tokens:remove_expired'] }
 
   let!(:committee_member_token_1) { FactoryBot.create :committee_member_token, token_created_on: Date.today }
-  let!(:committee_member_token_2) { FactoryBot.create :committee_member_token, token_created_on: (Date.today - 40.days) }
+  let!(:committee_member_token_2) { FactoryBot.create :committee_member_token, token_created_on: (Date.today - 190.days) }
 
   before do
     task.reenable

@@ -193,7 +193,7 @@ class Author::SubmissionView < SimpleDelegator
     if status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_head_of_program_review? || status_behavior.beyond_waiting_for_committee_review_rejected?
       ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[Review Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
     elsif status_behavior.waiting_for_committee_review_rejected?
-      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/final_submission/edit" + "' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
+      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[Review Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>" + "<a href='" + "/author/submissions/#{id}/final_submission/edit" + "' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
     else
       'Waiting for Committee Review'
     end
@@ -203,7 +203,7 @@ class Author::SubmissionView < SimpleDelegator
     status = {}
     if status_behavior.waiting_for_committee_review_rejected?
       status[:partial_name] = '/author/shared/rejected_indicator'
-      status[:text] = "rejected#{formatted_timestamp_of(committee_review_rejected_at)}"
+      status[:text] = (head_of_program_review_rejected_at.present? ? "rejected#{formatted_timestamp_of(head_of_program_review_rejected_at)}" : "rejected#{formatted_timestamp_of(committee_review_rejected_at)}")
     elsif status_behavior.beyond_waiting_for_head_of_program_review?
       status[:text] = "approved#{formatted_timestamp_of(head_of_program_review_accepted_at)}" if head_of_program_is_approving?
       status[:text] = "approved#{formatted_timestamp_of(committee_review_accepted_at)}" unless head_of_program_is_approving?

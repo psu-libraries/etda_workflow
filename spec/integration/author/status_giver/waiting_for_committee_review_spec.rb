@@ -185,7 +185,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.honors?
       end
 
-      it "proceeds to 'waiting for committee review rejected' if rejected and resets committee reviews" do
+      it "proceeds to 'waiting for committee review rejected' if rejected" do
         FactoryBot.create :admin
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
@@ -194,10 +194,6 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         click_button 'Submit Review'
         sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
-        expect(CommitteeMember.find(committee_member.id).status).to eq ''
-        expect(CommitteeMember.find(committee_member.id).reset_at).to be_present
-        expect(CommitteeMember.find(committee_member.id).approved_at).to eq nil
-        expect(CommitteeMember.find(committee_member.id).rejected_at).to eq nil
         expect(WorkflowMailer.deliveries.count).to eq 2
       end
     end
