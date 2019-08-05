@@ -46,6 +46,7 @@ data:
     }" json
 
     RequestHeader set X-Forwarded-Proto "https"
+    Timeout 300
 
     <LocationMatch / >
         CosignProtected On
