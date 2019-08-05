@@ -96,7 +96,7 @@ en:
                     University Park, PA  16802
         committee_rejected_admin:
           message: |
-                    The committee for %{author_name}'s %{degree_type} has rejected their submission.  It is now under review by administrators.
+                    The committee for %{author_name}'s %{degree_type} has rejected their submission.  Please review this submission and then reject it so that it can be returned to the student for edits.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
@@ -105,7 +105,8 @@ en:
                     University Park, PA  16802
         committee_rejected_author:
           message: |
-                    The committee reviewing your %{degree_type} has rejected your submission.  It is now under review by administrators.
+                    The committee reviewing your %{degree_type} has rejected your submission.  You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review. 
+                    For additional information regarding the rejection please consult your %{degree_type} adviser.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
