@@ -10,7 +10,7 @@ default: &default
   user: nil
   <% end %>
   <% if ENV["LDAP_PASSWORD"] %>
-  password: <%= ENV["LDAP_PASSWORD"] %>
+  password: "<%= ENV["LDAP_PASSWORD"] %>""
   <% else %>
   password: nil
   <% end %>
