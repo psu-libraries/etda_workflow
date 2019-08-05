@@ -323,7 +323,10 @@ class Submission < ApplicationRecord
   end
 
   def send_initial_committee_member_emails
-    voting_committee_members.each do |committee_member|
+    byebug
+    committee_members.each do |committee_member|
+      next if committee_member.committee_role.name == 'Program Head/Chair'
+
       if committee_member.committee_role.name == 'Special Member' || committee_member.committee_role.name == 'Special Signatory'
         WorkflowMailer.special_committee_review_request(self, committee_member).deliver
       else
