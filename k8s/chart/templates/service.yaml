@@ -12,12 +12,12 @@ spec:
   ports:
       {{- if .Values.webaccess.enabled }}
     - port: 443
-      targetPort: https-wa
+      targetPort: https
       protocol: TCP
       name: https
       {{- else }}
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: app
       protocol: TCP
       name: http
       {{- end }}

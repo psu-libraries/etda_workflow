@@ -19,6 +19,12 @@ service:
   type: ClusterIP
   port: 80
 
+
+contour:
+  enabled: false
+  # defaults to (index .Values.ingress.hosts 0).host
+  # fqdn:
+
 ingress:
   enabled: false
   annotations: {}

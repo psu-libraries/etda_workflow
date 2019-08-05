@@ -121,10 +121,10 @@ spec:
               mountPath: /etc/ssl/private/key.key
               subPath: tls.key
           ports:
-            - name: http-wa
+            - name: http
               containerPort: 80
               protocol: TCP
-            - name: https-wa
+            - name: https
               containerPort: 443
               protocol: TCP
           # livenessProbe:
@@ -187,7 +187,7 @@ spec:
             - name: etda-explore-data
               mountPath: /etda_workflow/explore_data_files
           ports:
-            - name: http
+            - name: app
               containerPort: 3000
               protocol: TCP
           {{- if .Values.healthcheck.enabled }}

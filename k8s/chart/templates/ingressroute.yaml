@@ -1,0 +1,34 @@
+{{- if .Values.contour.enabled -}}
+{{- $fullName := include "chart.fullname" . -}}
+{{- $webAccessEnabled := .Values.webaccess.enabled}}
+---
+apiVersion: contour.heptio.com/v1beta1
+kind: IngressRoute
+metadata:
+  name: {{ $fullName }}
+  labels:
+    app.kubernetes.io/name: {{ include "chart.name" . }}
+    helm.sh/chart: {{ include "chart.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  virtualhost:
+    fqdn: {{ .Values.contour.fqdn | default (index .Values.ingress.hosts 0).host }}
+{{- if $webAccessEnabled }}
+  tls:
+    passthrough: true
+  tcpproxy:
+    services:
+      - name: {{ $fullName }}
+        port: 443
+{{- end }}
+  routes:
+    - match: /
+      services:
+        - name: {{ $fullName }}
+        {{- if $webAccessEnabled }}
+          port: 443
+        {{- else }}
+          port: 3000
+        {{- end }}
+{{- end -}}
