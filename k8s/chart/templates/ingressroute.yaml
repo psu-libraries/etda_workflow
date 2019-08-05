@@ -15,8 +15,8 @@ spec:
   virtualhost:
     fqdn: {{ .Values.contour.fqdn | default (index .Values.ingress.hosts 0).host }}
 {{- if $webAccessEnabled }}
-  tls:
-    passthrough: true
+    tls:
+      passthrough: true
   tcpproxy:
     services:
       - name: {{ $fullName }}
