@@ -70,8 +70,9 @@ en:
                     University Park, PA  16802
         committee_member_review_requested:
           message: |
-                    Hello %{committee_member_name}
-                    The Millennium Scholars Program and %{full_name} need you to review and digitally sign a proposed work that you have been a part of or have reviewed. Please login to %{review_url} and complete this request.
+                    Hello %{committee_member_name},
+                    The Millennium Scholars Program and %{full_name} need you to review and digitally sign a proposed work that you have been a part of or have reviewed.
+                    Please login to %{review_url} and complete this request.
                     If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
                     If you have any further questions please contact: millennium@psu.edu.
                     Sincerely,

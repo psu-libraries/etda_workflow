@@ -78,7 +78,8 @@ en:
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
-                    The Graduate School and #{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member.  Please login to %{review_url} and complete this request.
+                    The Graduate School and %{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member.
+                    Please login to %{review_url} and complete this request.
                     If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
                     If you have any further questions please contact gradthesis@psu.edu.
                     Sincerely,
@@ -89,7 +90,7 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
-        special_committee_review_requested:
+        special_committee_review_request:
           message: |
                     Hello %{committee_member_name},
                     The Graduate School of The Pennsylvania State University and %{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member.  In order to proceed and provide input on their work, please follow this link:
