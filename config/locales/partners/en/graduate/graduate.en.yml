@@ -29,8 +29,8 @@ en:
 
         final_submission_rejected:
           message: |
-                    The electronic %{degree_type} submitted by you has been rejected by the %{partner_name}.
-                    Review notes from the administrator and resubmit your work here: %{url}
+                    Your final %{submission.degree_type} has been rejected by the Office of Theses and Dissertations. 
+                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type}. 
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:
@@ -78,7 +78,8 @@ en:
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
-                    The Graduate School and #{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member.  Please login to %{review_url} and complete this request.
+                    The Graduate School and %{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member.
+                    Please login to %{review_url} and complete this request.
                     If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
                     If you have any further questions please contact gradthesis@psu.edu.
                     Sincerely,
@@ -89,7 +90,7 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
-        special_committee_review_requested:
+        special_committee_review_request:
           message: |
                     Hello %{committee_member_name},
                     The Graduate School of The Pennsylvania State University and %{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member.  In order to proceed and provide input on their work, please follow this link:
@@ -119,7 +120,7 @@ en:
                     University Park, PA  16802
         committee_rejected_admin:
           message: |
-                    The committee for %{author_name}'s %{degree_type} has rejected their submission.  It is now under review by administrators.
+                    The committee for %{author_name}'s %{degree_type} has rejected their submission.
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:
@@ -129,7 +130,8 @@ en:
                     University Park, PA  16802
         committee_rejected_author:
           message: |
-                    The committee reviewing your %{degree_type} has rejected your submission.  It is now under review by administrators.
+                    The committee reviewing your %{degree_type} has rejected your submission.  You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review. 
+                    For additional information regarding the rejection please consult your %{degree_type} adviser.
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:
@@ -139,7 +141,7 @@ en:
                     University Park, PA  16802
         committee_approved:
           message: |
-                    Your eTD has been reviewed by its committee and approved. Everything is in order, and you need do nothing further for our office.
+                    Your eTD has been reviewed and approved.  No further action is needed by you at this time. 
                     After graduation, the eTD will be available through Penn State’s eTD database %{url} and will be sent to ProQuest/UMI Dissertation Services for processing unless you have chosen to restrict access to it. If it is restricted, it will automatically change to Open Access after two years.
                     The access level for your %{degree_type} is: %{access_level}.
                     Please accept our congratulations as you complete your degree (commencement information can be found online as http://commencement.psu.edu/).
