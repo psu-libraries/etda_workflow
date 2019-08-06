@@ -55,6 +55,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       within("form#edit_committee_member_#{committee_member.id}") do
         find(:css, "#committee_member_status_approved").set true
         fill_in "committee_member_notes", with: 'Some notes.'
+        find(:css, "#committee_member_federal_funding_used_true").set true
       end
       click_button 'Submit Review'
       sleep 3
