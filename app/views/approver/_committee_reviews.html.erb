@@ -17,7 +17,7 @@
           <% @submission.committee_members.each do |member| %>
             <tr>
               <td><%= member.name %></td>
-              <td><%= member.status %></td>
+              <td><%= member.status.capitalize %></td>
               <td><%= member.notes %></td>
             </tr>
           <% end %>
