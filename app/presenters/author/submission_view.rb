@@ -191,9 +191,9 @@ class Author::SubmissionView < SimpleDelegator
 
   def step_seven_description
     if status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_head_of_program_review? || status_behavior.beyond_waiting_for_committee_review_rejected?
-      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[Review Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
+      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
     elsif status_behavior.waiting_for_committee_review_rejected?
-      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[Review Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>" + "<a href='" + "/author/submissions/#{id}/final_submission/edit" + "' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
+      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>" + "<a href='" + "/author/submissions/#{id}/final_submission/edit" + "' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
     else
       'Waiting for Committee Review'
     end
