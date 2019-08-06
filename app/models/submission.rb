@@ -323,7 +323,6 @@ class Submission < ApplicationRecord
   end
 
   def send_initial_committee_member_emails
-    byebug
     committee_members.each do |committee_member|
       next if committee_member.committee_role.name == 'Program Head/Chair'
 
