@@ -45,7 +45,7 @@ class Author::CommitteeMemberView
     elsif current_partner.honors?
       "<p><strong>Thesis Supervisor</strong> - A professor in the area in which the thesis is written, who the student works closely with.</p><p><strong>Thesis Honors Adviser</strong> - Faculty member who oversees the thesis work and confirms it is indeed honors work in their area of expertise.</p><p><strong>Faculty Reader</strong> - This role is only required if the Honors Advisor and Thesis Supervisor are the same person.  This is a faculty member in the discipline in which the thesis is written.</p>"
     elsif current_partner.milsch?
-      "<p><strong>Thesis Supervisor</strong> - The faculty member or researcher who is the principal investigator of the lab where the student conducted the research. The thesis supervisor also acts as a research mentor regarding the thesis project.</p><p><strong>Special Signatory</strong> - A faculty member who acts as a second reader to assess the quality of the thesis.</p>"
+      "<p><strong>Thesis Supervisor</strong> - The faculty member or researcher who is the principal investigator of the lab where the student conducted the research. The thesis supervisor also acts as a research mentor regarding the thesis project.</p><p><strong>Advisor</strong> - Faculty member who reviews the thesis and confirms that it is an acceptable undergraduate thesis.</p><p><strong>Honors Advisor</strong> - Faculty member who reviews the thesis and confirms that it meets the criteria for honors designation.</p>"
     end
   end
 end
