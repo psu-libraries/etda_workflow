@@ -25,7 +25,7 @@ class Approver::ApproversController < ApproverController
       flash[:error] = 'Validation Failed: You must select whether you approve or reject before submitting your review.'
       return redirect_to(approver_path(params[:id]))
     end
-    if (params[:committee_member][:federal_funding_used] == "") && (@committee_member.committee_role.name.include?("Advisor"))
+    if (params[:committee_member][:federal_funding_used] == "") && @committee_member.committee_role.name.include?("Advisor")
       flash[:error] = 'Validation Failed: As an Advisor, you must indicate if federal funding was utilized for this submission.'
       return redirect_to(approver_path(params[:id]))
     end
