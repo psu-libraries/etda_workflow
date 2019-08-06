@@ -22,14 +22,19 @@ class Approver::ApproversController < ApproverController
     @committee_member = CommitteeMember.find(params[:id])
     @submission = @committee_member.submission
     if params[:committee_member][:status] == ""
-      flash[:error] = 'Validation Failed: You must submit a status'
+      flash[:error] = 'Validation Failed: You must select whether you approve or reject before submitting your review.'
+      return redirect_to(approver_path(params[:id]))
+    end
+    if (params[:committee_member][:federal_funding_used] == "") && (@committee_member.committee_role.name.include?("Advisor"))
+      flash[:error] = 'Validation Failed: As an Advisor, you must indicate if federal funding was utilized for this submission.'
       return redirect_to(approver_path(params[:id]))
     end
     @committee_member.update_attributes!(committee_member_params)
     @submission.update_status_from_committee
     redirect_to approver_root_path
     flash[:notice] = 'Review submitted successfully'
-  rescue ActiveRecord::RecordInvalid
+  rescue ActiveRecord::RecordInvalid => e
+    flash[:error] = e.message
     redirect_to approver_path(params[:id])
   end
 
