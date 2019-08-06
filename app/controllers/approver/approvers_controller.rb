@@ -13,7 +13,6 @@ class Approver::ApproversController < ApproverController
     @committee_member = CommitteeMember.find(params[:id])
     @submission = @committee_member.submission
     @review_complete = SubmissionStatus.new(@submission).beyond_waiting_for_head_of_program_review?
-    @approved = SubmissionStatus.new(@submission).beyond_waiting_for_head_of_program_review?
     @author = @submission.author
     @most_relevant_file_links = most_relevant_file_links
     @view = Approver::ApproversView.new(@submission)

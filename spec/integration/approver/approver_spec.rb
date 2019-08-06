@@ -3,6 +3,8 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
   let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, created_at: Time.zone.now }
   let(:submission1) { FactoryBot.create :submission, :waiting_for_final_submission_response, created_at: Time.zone.now }
+  let(:submission2) { FactoryBot.create :submission, :waiting_for_publication_release, committee_review_accepted_at: DateTime.now, created_at: Time.zone.now }
+  let(:submission3) { FactoryBot.create :submission, :waiting_for_publication_release, committee_review_rejected_at: DateTime.now, created_at: Time.zone.now }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
   let(:approval_configuration) { FactoryBot.create :approval_configuration, head_of_program_is_approving: false }
   let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor" }
@@ -69,19 +71,33 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
     context 'approver is not advisor' do
       it 'asks about federal funding used' do
-        committee_member = FactoryBot.create :committee_member, committee_role: committee_role_not_advisor, submission: submission, access_id: 'testuser'
+        committee_member = FactoryBot.create :committee_member, committee_role: committee_role_not_advisor, submission: submission, access_id: 'approverflow'
 
         visit "approver/committee_member/#{committee_member.id}"
         expect(page).not_to have_content('Were Federal Funds utilized for this submission?')
       end
     end
 
-    context 'approval is complete' do
-      xit 'displays the committee members response' do
-        committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission1, access_id: 'testuser'
+    context 'approval is approved' do
+      it 'displays the committee members response' do
+        committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission2, access_id: 'approverflow'
+        submission2.degree.degree_type.approval_configuration = approval_configuration
+        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
         visit "approver/committee_member/#{committee_member.id}"
 
         expect(page).to have_content('approved')
+        expect(page).to have_content('Review Completed on')
+      end
+    end
+
+    context 'approval is rejected' do
+      it 'displays the committee members response' do
+        committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission3, access_id: 'approverflow'
+        submission3.degree.degree_type.approval_configuration = approval_configuration
+        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
+        visit "approver/committee_member/#{committee_member.id}"
+
+        expect(page).to have_content('rejected')
         expect(page).to have_content('Review Completed on')
       end
     end

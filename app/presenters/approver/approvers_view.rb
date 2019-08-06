@@ -12,4 +12,15 @@ class Approver::ApproversView
       "Allows free worldwide access to the entire work beginning immediately after degree conferral."
     end
   end
+
+  def approved?
+    committee_status = ApprovalStatus.new(@submission).status
+    if @submission.head_of_program_is_approving?
+      head_of_program_status = ApprovalStatus.new(@submission).head_of_program_status
+      return true if head_of_program_status == 'approved'
+    elsif committee_status == 'approved'
+      return true
+    end
+    false
+  end
 end
