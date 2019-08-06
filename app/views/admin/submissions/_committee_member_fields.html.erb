@@ -15,7 +15,7 @@
     <%= f.input :name, input_html: { class: 'ldap-lookup' } %>
     <%= f.input :email %>
     <div class="status-row">
-      <%= f.input :status, collection: CommitteeMember::STATUS.map{ |s| s.capitalize }, include_blank: true, input_html: { class: "select-status" } %>
+      <%= f.input :status, collection: Hash[CommitteeMember::STATUS.collect{ |item| [item, item.capitalize] }], label_method: :last, value_method: :first, include_blank: true, input_html: { class: "select-status" } %>
       <% if SubmissionStatus.new(@submission).waiting_for_committee_review? %>
         <button type="button" id="send_email_reminder" value="<%= f.object.id.to_s %>">Send Email Reminder</button>
       <% end %>
