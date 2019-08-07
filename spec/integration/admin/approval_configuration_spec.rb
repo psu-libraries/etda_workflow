@@ -3,7 +3,7 @@ RSpec.describe "Editing approval configuration", js: true do
 
   let!(:degree) { FactoryBot.create(:degree, name: "Doctor of Philosophy", is_active: true) }
   let!(:approval_configuration_1) { FactoryBot.create(:approval_configuration, degree_type: DegreeType.first) }
-  let!(:approval_configuration_2) { FactoryBot.create(:approval_configuration, degree_type: DegreeType.second) }
+  let!(:approval_configuration_2) { FactoryBot.create(:approval_configuration, degree_type: DegreeType.second) } if current_partner.graduate?
 
   before do
     webaccess_authorize_admin
