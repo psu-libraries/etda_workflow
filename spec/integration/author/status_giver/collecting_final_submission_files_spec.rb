@@ -124,7 +124,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         submission.reload
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.graduate?
-        expect(WorkflowMailer.deliveries.count).to eq(0) unless current_partner.graduate?
+        expect(WorkflowMailer.deliveries.count).to eq(1) unless current_partner.graduate?
       end
     end
 
@@ -153,8 +153,8 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         expect(submission.status).to eq 'waiting for committee review'
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         expect(WorkflowMailer.deliveries.count).to eq(6) if current_partner.graduate?
-        expect(WorkflowMailer.deliveries.count).to eq(2) if current_partner.honors?
-        expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.milsch?
+        expect(WorkflowMailer.deliveries.count).to eq(3) if current_partner.honors?
+        expect(WorkflowMailer.deliveries.count).to eq(2) if current_partner.milsch?
       end
     end
 

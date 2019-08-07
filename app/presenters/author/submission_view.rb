@@ -191,9 +191,9 @@ class Author::SubmissionView < SimpleDelegator
 
   def step_seven_description
     if status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_head_of_program_review? || status_behavior.beyond_waiting_for_committee_review_rejected?
-      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[Review Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
+      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
     elsif status_behavior.waiting_for_committee_review_rejected?
-      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[Review Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>" + "<a href='" + "/author/submissions/#{id}/final_submission/edit" + "' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
+      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>" + "<a href='" + "/author/submissions/#{id}/final_submission/edit" + "' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
     else
       'Waiting for Committee Review'
     end
@@ -242,7 +242,7 @@ class Author::SubmissionView < SimpleDelegator
 
   def display_notes?(step_number)
     return display_format_review_notes?(step_number) if [3, 4].include? step_number
-    return display_final_submission_notes?(step_number) if [5, 6, 7].include? step_number
+    return display_final_submission_notes?(step_number) if [5, 6].include? step_number
 
     false
   end
@@ -271,8 +271,7 @@ class Author::SubmissionView < SimpleDelegator
     def display_final_submission_notes?(step_number)
       return false if final_submission_notes.blank?
       return true if step_number == 5 && status_behavior.collecting_final_submission_files_rejected?
-      return true if step_number == 6 && status_behavior.beyond_waiting_for_head_of_program_review?
-      return true if step_number == 7 && !final_submission_approved_at.nil?
+      return true if step_number == 6 && !final_submission_approved_at.nil?
 
       false
     end
