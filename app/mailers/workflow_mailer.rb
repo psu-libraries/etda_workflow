@@ -25,7 +25,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
-         subject: "Your #{@submission.degree_type} has been approved by admins"
+         subject: "Your #{@submission.degree_type} has been approved by the #{current_partner.name}"
   end
 
   def final_submission_rejected(submission)
@@ -36,7 +36,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
-         subject: "Your #{@submission.degree_type} has been rejected by admins"
+         subject: "Your #{@submission.degree_type} has been rejected"
   end
 
   def release_for_publication(submission)
@@ -125,7 +125,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
-         subject: "Your #{@submission.degree_type} has been rejected by its committee"
+         subject: "Committee Rejected Final Submission"
   end
 
   def committee_rejected_admin(submission, admin)
@@ -135,7 +135,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @admin.psu_email_address,
          from: current_partner.email_address,
-         subject: "A #{@submission.degree_type} has been rejected by its committee"
+         subject: "Committee Rejected Final Submission"
   end
 
   def committee_approved(submission)
