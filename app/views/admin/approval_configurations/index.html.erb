@@ -3,7 +3,7 @@
     <h1>Manage Approval Configurations</h1>
     <% DegreeType.all.each do |dt| %>
       <li>
-        <%= link_to dt.name, edit_admin_approval_configuration_path(dt.id) %>
+        <%= link_to dt.name, edit_admin_approval_configuration_path(dt.approval_configuration.id) %>
       </li>
     <% end %>
   </div>
