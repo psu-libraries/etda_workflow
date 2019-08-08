@@ -104,7 +104,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "tells the author that the final submission has been approved" do
-      expect(email.body).to match(/The submission will now proceed/i) if current_partner.graduate?
+      expect(email.body).to match(/It will now be automatically sent to your committee/i) if current_partner.graduate?
       expect(email.body).to match(/has been approved/i) if current_partner.honors?
     end
   end
@@ -199,7 +199,8 @@ RSpec.describe WorkflowMailer do
     end
 
     it "sets an appropriate subject" do
-      expect(email.subject).to eq("REMINDER: #{submission.degree_type} Review Requested")
+      expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
+      expect(email.subject).to eq("#{submission.degree_type} Needs Approval") unless current_partner.honors?
     end
 
     it "has desired content" do
@@ -244,7 +245,8 @@ RSpec.describe WorkflowMailer do
     end
 
     it "sets an appropriate subject" do
-      expect(email.subject).to eq("#{submission.degree_type} Review Requested")
+      expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
+      expect(email.subject).to eq("#{submission.degree_type} Needs Approval") unless current_partner.honors?
     end
 
     it "has desired content" do
