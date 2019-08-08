@@ -17,7 +17,7 @@ class Approver::ApproversView
     committee_status = ApprovalStatus.new(@submission).status
     if @submission.head_of_program_is_approving?
       head_of_program_status = ApprovalStatus.new(@submission).head_of_program_status
-      return true if head_of_program_status == 'approved'
+      return true if head_of_program_status == 'approved' && committee_status == 'approved'
     elsif committee_status == 'approved'
       return true
     end
