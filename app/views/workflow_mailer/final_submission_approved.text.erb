@@ -1,4 +1,4 @@
-Dear <%= @submission.author.full_name %>,
+Dear <%= @author.full_name %>,
 
 <%= t( "#{current_partner.id}.partner.email.final_submission_approved.message",
        access_level: @submission.current_access_level.label,

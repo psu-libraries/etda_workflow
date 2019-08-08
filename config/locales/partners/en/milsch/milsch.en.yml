@@ -72,6 +72,7 @@ en:
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
+
                     The Millennium Scholars Program and %{full_name} need you to review and digitally sign a proposed work that you have been a part of or have reviewed.
                     Please login to %{review_url} and complete this request.
                     We ask that you complete this review within two weeks from receipt of this request.
@@ -98,7 +99,7 @@ en:
                     University Park, PA  16802
         committee_rejected_admin:
           message: |
-                    The committee for %{author_name}'s %{degree_type} has rejected their submission.  Please review this submission and then reject it so that it can be returned to the student for edits.
+                    The committee for %{author_name}'s %{degree_type} has rejected their submission.  The submission will automatically be available for the student to edit and resubmit for committee approval.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:

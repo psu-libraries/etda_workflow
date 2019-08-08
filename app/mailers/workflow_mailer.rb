@@ -95,7 +95,7 @@ class WorkflowMailer < ActionMailer::Base
   def special_committee_review_request(submission, committee_member)
     @submission = submission
     @committee_member = committee_member
-    @token = committee_member.committee_member_token.authentication_token
+    @token = committee_member.committee_member_token ? committee_member.committee_member_token.authentication_token : 'X'
     @author = submission.author
     @review_url = "#{EtdUrls.new.workflow}/special_committee/#{@token}"
 

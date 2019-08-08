@@ -233,26 +233,38 @@ RSpec.describe WorkflowMailer do
   end
 
   describe '#special_committee_review_reminder' do
-    let!(:commmittee_member_token) { FactoryBot.create :committee_member_token, committee_member: committee_member }
-    let(:email) { described_class.special_committee_review_request(submission, committee_member) }
+    context 'when committee member token exists' do
+      let!(:commmittee_member_token) { FactoryBot.create :committee_member_token, committee_member: committee_member }
+      let(:email) { described_class.special_committee_review_request(submission, committee_member) }
 
-    it "is sent to the proper recipient" do
-      expect(email.to).to eq([committee_member.email])
+      it "is sent to the proper recipient" do
+        expect(email.to).to eq([committee_member.email])
+      end
+
+      it "is sent from the partner support email address" do
+        expect(email.from).to eq([partner_email])
+      end
+
+      it "sets an appropriate subject" do
+        expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
+        expect(email.subject).to eq("#{submission.degree_type} Needs Approval") unless current_partner.honors?
+      end
+
+      it "has desired content" do
+        skip 'Graduate Only' unless current_partner.graduate?
+        expect(email.body).to match(/\/special_committee\/#{commmittee_member_token.authentication_token.to_s}/)
+        expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
+      end
     end
 
-    it "is sent from the partner support email address" do
-      expect(email.from).to eq([partner_email])
-    end
+    context "when committee member token doesn't exist" do
+      let(:email) { described_class.special_committee_review_request(submission, committee_member) }
 
-    it "sets an appropriate subject" do
-      expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
-      expect(email.subject).to eq("#{submission.degree_type} Needs Approval") unless current_partner.honors?
-    end
-
-    it "has desired content" do
-      skip 'Graduate Only' unless current_partner.graduate?
-      expect(email.body).to match(/\/special_committee\/#{commmittee_member_token.authentication_token.to_s}/)
-      expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
+      it "has an 'X' in the url in place of a token" do
+        skip 'Graduate Only' unless current_partner.graduate?
+        expect(email.body).to match(/\/special_committee\/X/)
+        expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
+      end
     end
   end
 end

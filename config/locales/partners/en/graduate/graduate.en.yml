@@ -38,10 +38,9 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
-
         final_submission_approved:
           message: |
-                    Your final #{@submission.degree_type} has been approved by the Office of Theses and Dissertations.  It will now be automatically sent to your committee for review and approval. 
+                    Your final %{degree_type} has been approved by the Office of Theses and Dissertations.  It will now be automatically sent to your committee for review and approval. 
                     No action is required of you at this time. 
                     You will be notified once your committee has reviewed and made a decision regarding your document.  
 
@@ -51,7 +50,6 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
-
         format_review_received:
           message: |
                     Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with
@@ -78,6 +76,7 @@ en:
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
+
                     The Graduate School and %{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member.
                     Please login to %{review_url} and complete this request.
                     If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
@@ -93,6 +92,7 @@ en:
         special_committee_review_request:
           message: |
                     Hello %{committee_member_name},
+
                     The Graduate School of The Pennsylvania State University and %{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member.  In order to proceed and provide input on their work, please follow this link:
                     %{review_url}
                     or you can copy and paste this into your browser.
@@ -130,7 +130,8 @@ en:
                     University Park, PA  16802
         committee_rejected_author:
           message: |
-                    The committee reviewing your %{degree_type} has rejected your submission.  You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review. 
+                    The committee reviewing your %{degree_type} has rejected your submission. 
+                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review. 
                     For additional information regarding the rejection please consult your %{degree_type} adviser.
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
@@ -153,7 +154,6 @@ en:
                     Graduate School
                     University Park, PA  16802
                     cc:%{committee_email_list}
-
           dissertation_publish_msg: and will be sent to ProQuest/UMI Dissertation Services for processing
         access_level_updated:
           message: |
