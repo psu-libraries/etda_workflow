@@ -30,7 +30,7 @@ en:
           message: |
                     The electronic %{degree_type} submitted by you has been rejected by the %{partner_name}.
                     Please meet with your thesis advisor to discuss and make the necessary edits.
-                    Resubmit your thesis when directed by the thesis administrator. 
+                    Resubmit your thesis when directed by the thesis administrator.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
@@ -40,7 +40,7 @@ en:
         final_submission_approved:
             message: |
                       Your thesis has been been approved for committee review.
-                      You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.  
+                      You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
 
                       If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
                       You may also call (814)867-5105, or send mail to:
@@ -105,7 +105,7 @@ en:
                     University Park, PA  16802
         committee_rejected_author:
           message: |
-                    The committee reviewing your %{degree_type} has rejected your submission.  You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review. 
+                    The committee reviewing your %{degree_type} has rejected your submission.  You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review.
                     For additional information regarding the rejection please consult your %{degree_type} adviser.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
@@ -115,7 +115,7 @@ en:
                     University Park, PA  16802
         committee_approved:
           message: |
-                    Congratulations!  Your thesis has been approved by its committee.  
+                    Congratulations!  Your thesis has been approved by its committee.
                     Please accept our congratulations as you complete your degree (commencement information can be found online as http://commencement.psu.edu/).
 
                     If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.

@@ -89,7 +89,7 @@ en:
                     University Park, PA 16802
         committee_rejected_author:
           message: |
-                    The committee reviewing your %{degree_type} has rejected your submission.  You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review. 
+                    The committee reviewing your %{degree_type} has rejected your submission.  You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review.
                     For additional information regarding the rejection please consult your %{degree_type} adviser.
 
                     If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
