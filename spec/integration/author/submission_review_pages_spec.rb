@@ -132,7 +132,8 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
         # expect(page).to have_content("Email successfully sent.")
         expect(WorkflowMailer.deliveries.first.to).to eq [committee_member1.email]
         expect(WorkflowMailer.deliveries.first.from).to eq [current_partner.email_address]
-        expect(WorkflowMailer.deliveries.first.subject).to eq "#{submission2.degree_type} Needs Approval"
+        expect(WorkflowMailer.deliveries.first.subject).to eq "Honors #{submission2.degree_type} Needs Approval" if current_partner.honors?
+        expect(WorkflowMailer.deliveries.first.subject).to eq "#{submission2.degree_type} Needs Approval" unless current_partner.honors?
         expect(WorkflowMailer.deliveries.first.body).to match(/Reminder:/)
         expect { find('table#committee_member_table').first(:button, "Send Email Reminder").click }.not_to(change { CommitteeMember.find(committee_member3.id).last_reminder_at })
         expect(page).to have_current_path(author_submission_committee_review_path(submission2.id))
