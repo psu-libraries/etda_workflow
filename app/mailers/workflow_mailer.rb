@@ -36,7 +36,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
-         subject: "Your #{@submission.degree_type} has been rejected"
+         subject: "Your #{@submission.degree_type} has been rejected by the #{current_partner.name}"
   end
 
   def release_for_publication(submission)
@@ -89,7 +89,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @committee_member.email,
          from: current_partner.email_address,
-         subject: partner_review_request
+         subject: partner_review_request_subject
   end
 
   def special_committee_review_request(submission, committee_member)
@@ -103,7 +103,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @committee_member.email,
          from: current_partner.email_address,
-         subject: "#{@submission.degree_type} Review Requested"
+         subject: partner_review_request_subject
   end
 
   def committee_member_review_reminder(submission, committee_member)
@@ -116,7 +116,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @committee_member.email,
          from: current_partner.email_address,
-         subject: "REMINDER: #{@submission.degree_type} Review Requested"
+         subject: partner_review_request_subject
   end
 
   def committee_rejected_author(submission)
@@ -147,18 +147,18 @@ class WorkflowMailer < ActionMailer::Base
     mail to: @author.psu_email_address,
          cc: @submission.committee_email_list,
          from: current_partner.email_address,
-         subject: "Your #{@submission.degree_type} has been approved by its committee"
+         subject: "Your #{@submission.degree_type} has been approved by committee"
   end
 
   private
 
-  def partner_review_request
+  def partner_review_request_subject
     if current_partner.graduate?
       "#{@submission.degree_type} Needs Approval"
     elsif current_partner.honors?
       "Honors Thesis Needs Approval"
     elsif current_partner.milsch?
-      "Thesis Review"
+      "Millennium Scholars Thesis Review"
     end
   end
 end
