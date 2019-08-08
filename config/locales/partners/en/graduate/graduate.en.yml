@@ -26,7 +26,6 @@ en:
         url: 'https://etda-explore.libraries.psu.edu'
         address: gradthesis@psu.edu
         signature: 'Graduate School <br />Keller Building<br /> University Park, PA'
-
         final_submission_rejected:
           message: |
                     Your final %{degree_type} has been rejected by the Office of Theses and Dissertations. 
@@ -154,7 +153,6 @@ en:
                     Graduate School
                     University Park, PA  16802
                     cc:%{committee_email_list}
-          dissertation_publish_msg: and will be sent to ProQuest/UMI Dissertation Services for processing
         access_level_updated:
           message: |
                     The Graduate School has changed the availability of the following eTD as shown below:

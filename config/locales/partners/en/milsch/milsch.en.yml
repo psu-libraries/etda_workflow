@@ -26,7 +26,6 @@ en:
         url: 'https://millennium-scholars-explore.libraries.psu.edu'
         address: millennium@psu.edu
         signature: 'Millennium Scholars Program <br />130 Ritenour Building<br /> University Park, PA 16802'
-
         final_submission_rejected:
           message: |
                     The electronic %{degree_type} submitted by you has been rejected by the %{partner_name}.
@@ -38,7 +37,6 @@ en:
                     Millennium Scholars Program
                     130 Ritenour Building
                     University Park, PA  16802
-
         final_submission_approved:
             message: |
                       Your thesis has been been approved for committee review.
@@ -49,7 +47,6 @@ en:
                       Millennium Scholars Program
                       130 Ritenour Building
                       University Park, PA  16802
-
         format_review_received:
           message: |
                     Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with you when the review has been completed.
@@ -126,7 +123,6 @@ en:
                     Millennium Scholars Program
                     130 Ritenour Building
                     University Park, PA  16802
-
         access_level_updated:
           message: |
                     The Millennium Scholars Program has changed the availability of the following MSPT as shown below:

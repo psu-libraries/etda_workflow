@@ -21,7 +21,6 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @author = submission.author
     @url = "#{EtdUrls.new.workflow}/author"
-    @dissertation_publish_info = @submission.degree_type.slug == 'dissertation' ? t("#{current_partner.id}.partner.email.final_submission_approved.dissertation_publish_msg") : ''
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
@@ -32,7 +31,6 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @author = submission.author
     @url = "#{EtdUrls.new.workflow}/author"
-    @dissertation_publish_info = @submission.degree_type.slug == 'dissertation' ? t("#{current_partner.id}.partner.email.final_submission_rejected.dissertation_publish_msg") : ''
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
@@ -142,7 +140,6 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @author = submission.author
     @explore_url = EtdUrls.new.explore.to_s
-    @dissertation_publish_info = @submission.degree_type.slug == 'dissertation' ? t("#{current_partner.id}.partner.email.committee_approved.dissertation_publish_msg") : ''
 
     mail to: @author.psu_email_address,
          cc: @submission.committee_email_list,

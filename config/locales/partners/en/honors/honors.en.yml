@@ -26,7 +26,6 @@ en:
         url:  'https://honors-explore.libraries.psu.edu'
         address: honorsthesis@psu.edu
         signature: 'Schreyer Honors College<br /> University Park, PA'
-
         final_submission_rejected:
           message: |
                     The electronic honors %{degree_type} submitted by you has been rejected by the %{partner_name}.
@@ -50,7 +49,6 @@ en:
                     10 Schreyer Honors College
                     The Pennsylvania State University
                     University Park, PA  16802
-
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
@@ -111,7 +109,6 @@ en:
                     10 Schreyer Honors College
                     The Pennsylvania State University
                     University Park, PA  16802
-
         pay_thesis_fee:
           message: |
                     Now that your honors %{degree_type} has been approved, you must complete two more steps to finalize the process:
