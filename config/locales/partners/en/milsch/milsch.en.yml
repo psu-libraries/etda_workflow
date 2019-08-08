@@ -71,7 +71,8 @@ en:
           message: |
                     Hello %{committee_member_name},
 
-                    The Millennium Scholars Program and %{full_name} need you to review and digitally sign a proposed work that you have been a part of or have reviewed.
+                    The Millennium Scholars Program and %{full_name} need you to review and digitally sign a proposed work that you have been a
+                    part of or have reviewed.
                     Please login to %{review_url} and complete this request.
                     We ask that you complete this review within two weeks from receipt of this request.
                     If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
@@ -109,7 +110,8 @@ en:
         committee_rejected_author:
           message: |
                     The committee reviewing your %{degree_type} has rejected your submission.
-                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review.
+                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for
+                    your committee to review.
                     For additional information regarding the rejection please consult your %{degree_type} adviser.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
@@ -120,7 +122,8 @@ en:
         committee_approved:
           message: |
                     Congratulations!  Your thesis has been approved by its committee.
-                    Please accept our congratulations as you complete your degree (commencement information can be found online as http://commencement.psu.edu/).
+                    Please accept our congratulations as you complete your degree.
+                    (commencement information can be found online as http://commencement.psu.edu/).
 
                     If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:

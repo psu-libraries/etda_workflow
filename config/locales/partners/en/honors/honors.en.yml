@@ -51,10 +51,34 @@ en:
                     10 Schreyer Honors College
                     The Pennsylvania State University
                     University Park, PA  16802
+        format_review_received:
+          message: |
+                    Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with
+                    you when the review has been completed.
+                    You will receive the results of the review by email within 2-3 weeks.
+
+                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA  16802
+        final_submission_received:
+          message: |
+                    Thank you for submitting your final %{degree_type}.  You will be notified by email of your eTD approval
+                    or if changes are required within 2-3 weeks after submitting your final.
+
+                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA  16802
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
-                    The Schreyer Honors College and %{full_name} need your prompt attention to review and digitally sign a proposed work that you have been a part of.
+                    The Schreyer Honors College and %{full_name} need your prompt attention to review and digitally sign a proposed work that you
+                    have been a part of.
                     Please login to %{review_url} and complete this request within five business days.
                     If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
                     If you have any further questions please contact:  Debra Rodgers, Coordinator of Academic Services djr255@psu.edu
@@ -120,7 +144,8 @@ en:
                     1. Go to https://www.shc.psu.edu/srs/grad/fee and pay the thesis processing fee.
 
                     2.  Bring payment receipt and your signed signatory page to the Honors College, C-4 Atherton Hall.
-                    In Summer and Fall, you must make an advance appointment to submit your signature page. In Spring, you must attend during the designated Thesis Days.
+                    In Summer and Fall, you must make an advance appointment to submit your signature page. In Spring, you must attend during the
+                    designated Thesis Days.
                     Once fee and signatory page are received, you can hit the GONG and we will celebrate with you.  Congratulations!
 
                     If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
