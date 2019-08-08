@@ -38,15 +38,15 @@ en:
                     130 Ritenour Building
                     University Park, PA  16802
         final_submission_approved:
-            message: |
-                      Your thesis has been been approved for committee review.
-                      You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
+          message: |
+                    Your thesis has been been approved for committee review.
+                    You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
 
-                      If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
-                      You may also call (814)867-5105, or send mail to:
-                      Millennium Scholars Program
-                      130 Ritenour Building
-                      University Park, PA  16802
+                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
+                    You may also call (814)867-5105, or send mail to:
+                    Millennium Scholars Program
+                    130 Ritenour Building
+                    University Park, PA  16802
         format_review_received:
           message: |
                     Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with you when the review has been completed.
@@ -59,7 +59,8 @@ en:
                     University Park, PA  16802
         final_submission_received:
           message: |
-                    Thank you for submitting your final %{degree_type}.  You will be notified by email of your thesis approval or if changes are required within 2-3 weeks after submitting your final.
+                    Thank you for submitting your final %{degree_type}.
+                    You will be notified by email of your thesis approval or if changes are required within 2-3 weeks after submitting your final.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
@@ -75,6 +76,7 @@ en:
                     We ask that you complete this review within two weeks from receipt of this request.
                     If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
                     If you have any further questions please contact: millennium@psu.edu.
+
                     Sincerely,
                     The Millennium Scholars Program
 
@@ -96,7 +98,8 @@ en:
                     University Park, PA  16802
         committee_rejected_admin:
           message: |
-                    The committee for %{author_name}'s %{degree_type} has rejected their submission.  The submission will automatically be available for the student to edit and resubmit for committee approval.
+                    The committee for %{author_name}'s %{degree_type} has rejected their submission.
+                    The submission will automatically be available for the student to edit and resubmit for committee approval.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
@@ -105,7 +108,8 @@ en:
                     University Park, PA  16802
         committee_rejected_author:
           message: |
-                    The committee reviewing your %{degree_type} has rejected your submission.  You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review.
+                    The committee reviewing your %{degree_type} has rejected your submission.
+                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review.
                     For additional information regarding the rejection please consult your %{degree_type} adviser.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
