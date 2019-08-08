@@ -200,7 +200,8 @@ RSpec.describe WorkflowMailer do
 
     it "sets an appropriate subject" do
       expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
-      expect(email.subject).to eq("#{submission.degree_type} Needs Approval") unless current_partner.honors?
+      expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
+      expect(email.subject).to eq("Millennium Scholars #{submission.degree_type} Review") if current_partner.milsch?
     end
 
     it "has desired content" do
@@ -223,7 +224,7 @@ RSpec.describe WorkflowMailer do
     it "sets an appropriate subject" do
       expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
       expect(email.subject).to eq("Honors Thesis Needs Approval") if current_partner.honors?
-      expect(email.subject).to eq("Thesis Review") if current_partner.milsch?
+      expect(email.subject).to eq("Millennium Scholars Thesis Review") if current_partner.milsch?
     end
 
     it "has desired content" do
@@ -247,7 +248,8 @@ RSpec.describe WorkflowMailer do
 
       it "sets an appropriate subject" do
         expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
-        expect(email.subject).to eq("#{submission.degree_type} Needs Approval") unless current_partner.honors?
+        expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
+        expect(email.subject).to eq("Millennium Scholars #{submission.degree_type} Review") if current_partner.milsch?
       end
 
       it "has desired content" do
