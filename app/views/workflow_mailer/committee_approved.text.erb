@@ -1,10 +1,9 @@
-Dear <%= @submission.author.full_name %>,
+Dear <%= @author.full_name %>,
 
-<%= t( "#{current_partner.id}.partner.committee_approved.message",
+<%= t( "#{current_partner.id}.partner.email.committee_approved.message",
        access_level: @submission.current_access_level.label,
        degree_type: @submission.degree_type,
        partner_name: current_partner.name,
        author_email: @author.psu_email_address,
        url: @explore_url,
-       final_publish_msg: @dissertation_publish_info,
        committee_email_list: @submission.committee_email_list.join(", ") ) %>
