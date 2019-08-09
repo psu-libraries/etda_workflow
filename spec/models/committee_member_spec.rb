@@ -220,4 +220,35 @@ RSpec.describe CommitteeMember, type: :model do
       expect(described_class.find(committee_member2.id).committee_member_token).to be_nil
     end
   end
+
+  context 'email' do
+    let(:submission) { FactoryBot.create(:submission) }
+    let(:cm) { described_class.new }
+    let(:committee_role) { FactoryBot.create(:committee_role) }
+
+    before do
+      cm.name = 'Mr. Committee Member'
+      cm.committee_role_id = committee_role.id
+      cm.submission_id = submission.id
+      cm.is_required = true
+    end
+
+    it 'accepts email' do
+      cm.email = 'email@psu.edu'
+      expect(cm).to be_valid
+      cm.email = 'email@health.sdu.dk'
+      expect(cm).to be_valid
+      cm.email = 'jamesbrown@funky.funktown'
+      expect(cm).to be_valid
+    end
+
+    it 'rejects email' do
+      cm.email = 'emailpsu.edu'
+      expect(cm).not_to be_valid
+      cm.email = 'email@psuedu'
+      expect(cm).not_to be_valid
+      cm.email = 'email@ps u.edu'
+      expect(cm).not_to be_valid
+    end
+  end
 end

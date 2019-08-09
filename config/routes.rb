@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/login', to: 'application#login', as: :login
   get '/about', to: 'application#about', as: :about_page
   get '/main', to: 'application#main', as: :main_page
+  get '/docs', to: 'application#docs', as: :docs_page
 
   get '/', to: redirect(path: '/main')
 

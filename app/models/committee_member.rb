@@ -49,7 +49,7 @@ class CommitteeMember < ApplicationRecord
     return true if email.blank?
 
     unless email.nil?
-      return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(com|edu|org|net|gov|mil|biz|info))\z/i)
+      return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(.*))\z/i)
     end
     errors.add(:email, 'is invalid')
     false
