@@ -133,7 +133,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         skip 'Graduate Only' unless current_partner.graduate?
 
         submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
-        submission.committee_members << (FactoryBot.create :committee_member, committee_role_id: head_role.id)
+        submission.committee_members << (FactoryBot.create :committee_member, committee_role_id: head_role.id, access_id: 'abc123')
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
           find(:css, "#committee_member_status_approved").set true

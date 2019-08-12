@@ -67,6 +67,8 @@ class Submission < ApplicationRecord
 
   validate :check_title_capitalization
 
+  validate :duplicate_committee_members
+
   validates :access_level, inclusion: { in: AccessLevel::ACCESS_LEVEL_KEYS }, if: proc { |s| s.status_behavior.beyond_collecting_final_submission_files? && s.author_edit }
 
   validates :invention_disclosure, invention_disclosure_number: true, if: proc { |s| s.status_behavior.beyond_collecting_format_review_files? && !s.status_behavior.released_for_publication? }
@@ -332,6 +334,14 @@ class Submission < ApplicationRecord
         WorkflowMailer.committee_member_review_request(self, committee_member).deliver
       end
       CommitteeReminderWorker.perform_in(10.days, [id, committee_member.id])
+    end
+  end
+
+  def duplicate_committee_members
+    committee_access_ids = []
+    committee_members.each do |member|
+      member.update_attribute :is_voting, false if committee_access_ids.include? member.access_id
+      committee_access_ids << member.access_id
     end
   end
 
