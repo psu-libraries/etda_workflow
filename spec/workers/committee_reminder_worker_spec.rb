@@ -9,7 +9,7 @@ RSpec.describe CommitteeReminderWorker do
 
   context "when approval process starts" do
     it 'queues to sidekiq via worker' do
-      expect { described_class.perform_in(5.days, [submission.id, committee_member.id]) }.to change { Sidekiq::Worker.jobs.size }.by(1)
+      expect { described_class.perform_in(5.days, submission.id, committee_member.id) }.to change { Sidekiq::Worker.jobs.size }.by(1)
     end
 
     it 'performs task' do
