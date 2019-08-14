@@ -35,8 +35,10 @@ class FinalSubmissionUpdateService
     if update_actions.approved?
       approval_status = ApprovalStatus.new(@submission).status
       submission.update_attribute :final_submission_approved_at, Time.zone.now
+      status_giver.can_waiting_for_committee_review?
       status_giver.waiting_for_committee_review!
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
+      @submission.reset_committee_reviews
       @submission.update_status_from_committee
       WorkflowMailer.final_submission_approved(@submission).deliver
       @submission.send_initial_committee_member_emails unless approval_status == 'approved'

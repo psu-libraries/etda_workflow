@@ -117,13 +117,10 @@ class Author::SubmissionsController < AuthorController
     @submission.update_attributes!(final_submission_params)
     @submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
     if @submission.status == 'waiting for committee review rejected'
-      status_giver.can_waiting_for_committee_review?
-      status_giver.waiting_for_committee_review!
+      status_giver.waiting_for_final_submission_response!
       OutboundLionPathRecord.new(submission: @submission).report_status_change
       @submission.update_final_submission_timestamps!(Time.zone.now)
       @submission.update_attribute :final_submission_approved_at, Time.zone.now
-      @submission.reset_committee_reviews
-      @submission.send_initial_committee_member_emails
       redirect_to author_root_path
       WorkflowMailer.final_submission_received(@submission).deliver
       flash[:notice] = 'Final submission files uploaded successfully.'
