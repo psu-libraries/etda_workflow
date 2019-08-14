@@ -22,7 +22,7 @@ RSpec.describe CommitteeReminderWorker do
   context "when submission no longer exists" do
     it 'NoMethodError is returned' do
       Sidekiq::Testing.inline! do
-        expect { described_class.perform_async(submission.id + 1, committee_member.id) }.to raise_error(NoMethodError)
+        expect { described_class.perform_async(submission.id + 1, committee_member.id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
