@@ -7,7 +7,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
     end
 
     let!(:author) { current_author }
-    let!(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, lion_path_degree_code: 'PHD', author: author }
+    let!(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, lion_path_degree_code: 'PHD', author: author, degree: degree }
     let!(:inbound_record) { FactoryBot.create :inbound_lion_path_record, author: author }
     let!(:committee_members) { create_committee(submission) }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
