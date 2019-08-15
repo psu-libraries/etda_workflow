@@ -67,8 +67,6 @@ class Submission < ApplicationRecord
 
   validate :check_title_capitalization
 
-  validate :duplicate_committee_members
-
   validates :access_level, inclusion: { in: AccessLevel::ACCESS_LEVEL_KEYS }, if: proc { |s| s.status_behavior.beyond_collecting_final_submission_files? && s.author_edit }
 
   validates :invention_disclosure, invention_disclosure_number: true, if: proc { |s| s.status_behavior.beyond_collecting_format_review_files? && !s.status_behavior.released_for_publication? }
@@ -304,7 +302,14 @@ class Submission < ApplicationRecord
   end
 
   def voting_committee_members
-    committee_members.collect { |cm| cm if cm.is_voting }.compact
+    seen_access_ids = []
+    voting_no_dups = []
+    flagged_voting = committee_members.collect{ |cm| cm if cm.is_voting }.compact
+    flagged_voting.each do |member|
+      voting_no_dups << member unless seen_access_ids.include? member.access_id
+      seen_access_ids << member.access_id
+    end
+    voting_no_dups
   end
 
   # Initialize our committee members with empty records for each of the required roles.
@@ -326,7 +331,8 @@ class Submission < ApplicationRecord
 
   def send_initial_committee_member_emails
     committee_members.each do |committee_member|
-      next if committee_member.committee_role.name == 'Program Head/Chair'
+      seen_access_ids = []
+      next if committee_member.committee_role.name == 'Program Head/Chair' || seen_access_ids.include?(committee_member.access_id)
 
       if committee_member.committee_role.name == 'Special Member' || committee_member.committee_role.name == 'Special Signatory'
         WorkflowMailer.special_committee_review_request(self, committee_member).deliver
@@ -334,14 +340,7 @@ class Submission < ApplicationRecord
         WorkflowMailer.committee_member_review_request(self, committee_member).deliver
       end
       CommitteeReminderWorker.perform_in(10.days, [id, committee_member.id])
-    end
-  end
-
-  def duplicate_committee_members
-    committee_access_ids = []
-    committee_members.each do |member|
-      member.update_attribute :is_voting, false if committee_access_ids.include? member.access_id
-      committee_access_ids << member.access_id
+      seen_access_ids << committee_member.access_id
     end
   end
 
