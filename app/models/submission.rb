@@ -304,7 +304,7 @@ class Submission < ApplicationRecord
   def voting_committee_members
     seen_access_ids = []
     voting_no_dups = []
-    flagged_voting = committee_members.collect{ |cm| cm if cm.is_voting }.compact
+    flagged_voting = committee_members.collect { |cm| cm if cm.is_voting }.compact
     flagged_voting.each do |member|
       voting_no_dups << member unless seen_access_ids.include? member.access_id
       seen_access_ids << member.access_id
