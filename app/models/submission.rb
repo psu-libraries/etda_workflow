@@ -306,8 +306,6 @@ class Submission < ApplicationRecord
     voting_no_dups = []
     flagged_voting = committee_members.collect{ |cm| cm if cm.is_voting }.compact
     flagged_voting.each do |member|
-      member.update_attribute :status, voting_no_dups.select{|voter| voter[:access_id] == member.access_id}.first.status if seen_access_ids.include? member.access_id
-      voting_no_dups.select{|voter| voter[:access_id] == member.access_id}.first.update_attribute :status, member.status if seen_access_ids.include? member.access_id
       voting_no_dups << member unless seen_access_ids.include? member.access_id
       seen_access_ids << member.access_id
     end
