@@ -32,20 +32,11 @@ FactoryBot.define do
     state { "PA" }
     zip { "16801" }
     updated_at { 4.days.ago }
-    opt_out_email { false }
-    opt_out_default { false }
     # inbound_lion_path_record { FactoryBot.create(:inbound_lion_path_record }
-  end
-
-  trait :opt_out_default do
-    opt_out_email { false }
-    opt_out_default { true }
   end
 
   trait :author_from_ldap do
     alternate_email_address { "" }
-    opt_out_email { false }
-    opt_out_default { true }
     to_create { |instance| instance.save(validate: false) }
   end
 

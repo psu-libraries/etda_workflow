@@ -13,6 +13,9 @@ class SubmissionStatus
       'collecting final submission files',
       'collecting final submission files rejected',
       'waiting for final submission response',
+      'waiting for committee review',
+      'waiting for head of program review',
+      'waiting for committee review rejected',
       'waiting for publication release',
       'released for publication metadata only',
       'released for publication',
@@ -58,6 +61,18 @@ class SubmissionStatus
     current_status == 'waiting for final submission response'
   end
 
+  def waiting_for_committee_review?
+    current_status == 'waiting for committee review'
+  end
+
+  def waiting_for_head_of_program_review?
+    current_status == 'waiting for head of program review'
+  end
+
+  def waiting_for_committee_review_rejected?
+    current_status == 'waiting for committee review rejected'
+  end
+
   def waiting_for_publication_release?
     current_status == 'waiting for publication release'
   end
@@ -91,6 +106,18 @@ class SubmissionStatus
   end
 
   def beyond_waiting_for_final_submission_response?
+    waiting_for_committee_review? || beyond_waiting_for_committee_review?
+  end
+
+  def beyond_waiting_for_committee_review?
+    waiting_for_head_of_program_review? || beyond_waiting_for_head_of_program_review?
+  end
+
+  def beyond_waiting_for_head_of_program_review?
+    waiting_for_committee_review_rejected? || beyond_waiting_for_committee_review_rejected?
+  end
+
+  def beyond_waiting_for_committee_review_rejected?
     waiting_for_publication_release? || released_for_publication?
   end
 

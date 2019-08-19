@@ -1,6 +1,6 @@
 require 'model_spec_helper'
 
-RSpec.describe LionPath::MockLionPathRecord, type: :model do
+RSpec.describe LionPath::MockLionPathRecord, type: :model, lionpath: true do
   first_degree_code = LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN].first[LionPath::LpKeys::DEGREE_CODE]
   first_degree_description = LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN].first[LionPath::LpKeys::DEGREE_DESC]
   it 'returns data from the static mock record' do

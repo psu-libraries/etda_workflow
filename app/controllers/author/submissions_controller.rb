@@ -101,9 +101,13 @@ class Author::SubmissionsController < AuthorController
     @submission.access_level = 'open_access' if (current_partner.honors? || current_partner.milsch?) && @submission.access_level.blank?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
+    raise CommitteeMember::ProgramHeadMissing if @submission.head_of_program_is_approving? && CommitteeMember.head_of_program(@submission.id).blank?
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+  rescue CommitteeMember::ProgramHeadMissing
+    redirect_to author_submission_head_of_program_path(@submission)
+    flash[:alert] = 'In order to proceed to the final submission stage, you must input the head/chair of your graduate program here.'
   end
 
   def update_final_submission
@@ -112,11 +116,25 @@ class Author::SubmissionsController < AuthorController
     status_giver.can_upload_final_submission_files?
     @submission.update_attributes!(final_submission_params)
     @submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
+    if @submission.status == 'waiting for committee review rejected'
+      status_giver.can_waiting_for_committee_review?
+      status_giver.waiting_for_committee_review!
+      OutboundLionPathRecord.new(submission: @submission).report_status_change
+      @submission.update_final_submission_timestamps!(Time.zone.now)
+      @submission.update_attribute :final_submission_approved_at, Time.zone.now
+      @submission.reset_committee_reviews
+      @submission.send_initial_committee_member_emails
+      redirect_to author_root_path
+      WorkflowMailer.final_submission_received(@submission).deliver
+      flash[:notice] = 'Final submission files uploaded successfully.'
+      return
+    end
+    status_giver.can_waiting_for_final_submission?
     status_giver.waiting_for_final_submission_response!
     OutboundLionPathRecord.new(submission: @submission).report_status_change
     @submission.update_final_submission_timestamps!(Time.zone.now)
     redirect_to author_root_path
-    WorkflowMailer.final_submission_received(@submission).deliver_now if current_partner.graduate?
+    WorkflowMailer.final_submission_received(@submission).deliver_now
     flash[:notice] = 'Final submission files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid
     @view = Author::FinalSubmissionFilesView.new(@submission)
@@ -168,6 +186,22 @@ class Author::SubmissionsController < AuthorController
   def published_submissions_index
     @view = Author::PublishedSubmissionsIndexView.new(@author)
     render 'published_submissions_index'
+  end
+
+  def send_email_reminder
+    @committee_member = @submission.committee_members.find(params[:committee_member_id])
+    if @committee_member.reminder_email_authorized?
+      if @committee_member.committee_role.name == 'Special Member' || @committee_member.committee_role.name == 'Special Signatory'
+        WorkflowMailer.special_committee_review_request(@submission, @committee_member).deliver
+      else
+        WorkflowMailer.committee_member_review_reminder(@submission, @committee_member).deliver
+      end
+      redirect_to author_submission_committee_review_path(@submission.id)
+      flash[:notice] = 'Email successfully sent.'
+    else
+      redirect_to author_submission_committee_review_path(@submission.id)
+      flash[:alert] = 'Email was not sent.  Email reminders may only be sent once a day; a reminder was recently sent to this committee member.'
+    end
   end
 
   private

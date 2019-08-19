@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h1><%= @submission.degree_type %> Audit</h1>
+
+    <div class="submission_info">
+      <p>
+        <div><strong>Title: </strong><%=@submission.title%></div>
+        <div><strong>Author: </strong><%= @author.full_name || 'N/A' %></div>
+        <div><strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %></div>
+        <div><strong>Access Id: </strong><%= @author.access_id %></div>
+        <div><strong>Phone:</strong> <%= @author.phone_number %></div>
+        <div><strong>Alternate email:</strong> <%= @author.alternate_email_address %></div>
+        <div><strong>Penn State email:</strong> <%= @author.psu_email_address %></div>
+      </p>
+    </div>
+    <strong>Associated Files:</strong>
+    <div id="file_links"><%=raw @most_relevant_file_links %></div>
+    </br>
+    <% if @submission.current_access_level.current_access_level.include?('open') %>
+      <div class="access-level-open"><strong>Access Level - </strong> <%=@submission.current_access_level.label %></div>
+    <% else %>
+      <div class="access-level-warning"><strong>Access Level - </strong> <%=@submission.current_access_level.label %></div>
+    <% end %>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-9">
+        <h3>Committee Member Reviews</h3>
+      </div>
+      <br />
+      <table id="committee_member_table_audit" class="table">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @submission.committee_members.each do |member| %>
+          <tr>
+            <td><%= member.name %></td>
+            <td><%= member.committee_role.name %></td>
+            <td><%= member.status ? member.status.capitalize : nil %></td>
+            <td><%= member.notes %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

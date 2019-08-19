@@ -25,6 +25,23 @@ RSpec.describe ApplicationController, type: :controller do
         expect(new_admin_session_path).to eq('/admin/sign_in')
       end
     end
+
+    context 'approver' do
+      it 'sends /logout to sessions#destroy' do
+        expect(get: '/logout').to route_to(controller: 'application', action: 'logout')
+        expect(destroy_approver_session_path).to eq('/approver/sign_out')
+      end
+      it 'sends /login to sessions#new' do
+        expect(get: '/login').to route_to(controller: 'application', action: 'login')
+        expect(new_approver_session_path).to eq('/approver/sign_in')
+      end
+    end
+  end
+
+  describe 'special committee page' do
+    it 'displays the committee page' do
+      expect(get: '/special_committee/1').to route_to(controller: 'special_committee', action: 'main', authentication_token: '1')
+    end
   end
 
   describe 'login methods' do

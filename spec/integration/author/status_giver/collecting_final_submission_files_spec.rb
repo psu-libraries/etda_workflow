@@ -10,6 +10,8 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
     let!(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, lion_path_degree_code: 'PHD', author: author }
     let!(:inbound_record) { FactoryBot.create :inbound_lion_path_record, author: author }
     let!(:committee_members) { create_committee(submission) }
+    let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
 
     context "visiting the 'Update Program Information' page" do
       it 'raises a forbidden access error' do
@@ -78,6 +80,13 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
           expect(page).not_to have_content('Date Defended')
         end
       end
+
+      it 'redirects to head of program page if none exists and head is approving' do
+        ApprovalConfiguration.find(approval_configuration.id).update_attribute :head_of_program_is_approving, true
+        CommitteeMember.remove_committee_members(submission)
+        visit author_submission_edit_final_submission_path(submission)
+        expect(page).to have_current_path(author_submission_head_of_program_path(submission))
+      end
     end
 
     context "visiting the 'Review Final Submission Files' page" do
@@ -114,6 +123,38 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         expect(submission.status).to eq 'waiting for final submission response'
         submission.reload
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
+        expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.graduate?
+        expect(WorkflowMailer.deliveries.count).to eq(1) unless current_partner.graduate?
+      end
+    end
+
+    context "when I submit the 'Upload Final Submission Files' form after committee rejection" do
+      it 'resets committee reviews and proceeds to "waiting for committee review"' do
+        submission.committee_members.first.update_attribute :status, 'rejected'
+        submission.status = 'waiting for committee review rejected'
+        submission.defended_at = Time.zone.yesterday
+        submission.save(validate: false)
+        submission.reload
+        visit author_submission_edit_final_submission_path(submission)
+        select Time.zone.now.next_year.year, from: 'Graduation Year'
+        select 'Spring', from: 'Semester Intending to Graduate'
+        fill_in 'Abstract', with: 'A paper on stuff'
+        page.find(".submission_delimited_keywords .ui-autocomplete-input").set('stuff')
+        choose "submission_access_level_open_access" if current_partner.graduate?
+        expect(page).to have_css('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')
+        first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
+        attach_file first_input_id, fixture('final_submission_file_01.pdf')
+        check 'I agree to copyright statement'
+        # check 'I agree to release agreement'
+        click_button 'Submit final files for review'
+        # expect(page).to have_content('successfully')
+        submission.reload
+        expect(submission.committee_members.first.status).to eq ''
+        expect(submission.status).to eq 'waiting for committee review'
+        expect(submission.final_submission_files_uploaded_at).not_to be_nil
+        expect(WorkflowMailer.deliveries.count).to eq(6) if current_partner.graduate?
+        expect(WorkflowMailer.deliveries.count).to eq(3) if current_partner.honors?
+        expect(WorkflowMailer.deliveries.count).to eq(2) if current_partner.milsch?
       end
     end
 

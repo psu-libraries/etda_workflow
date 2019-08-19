@@ -9,7 +9,10 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
 
     let!(:author) { current_author }
     let!(:admin)  { current_admin }
-    let!(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response, author: author }
+    let!(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response, author: author, degree: degree }
+    let!(:degree) { FactoryBot.create :degree, degree_type: degree_type }
+    let!(:degree_type) { FactoryBot.create :degree_type, approval_configuration: approval_configuration }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, use_percentage: false, email_admins: true }
 
     context "visiting the 'Update Program Information' page" do
       it "raises a forbidden access error" do
@@ -80,15 +83,15 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
     end
 
     context "when an admin accepts the final submission files for a submission without a Lion Path Record" do
-      it "updates status to 'waiting for publication release'" do
+      it "updates status to 'waiting for committee review'" do
         select_year = Date.current.year - 2
         select_month = 'Mar'
         select_day = '1'
         submission.author.inbound_lion_path_record = nil
         submission.final_submission_approved_at = nil
+        create_committee(submission)
         FactoryBot.create :format_review_file, submission: submission
         FactoryBot.create :final_submission_file, submission: submission
-        create_committee(submission)
         visit admin_edit_submission_path(submission)
         sleep 2
         fill_in 'Final Submission Notes to Student', with: 'Note on paper is approved'
@@ -100,7 +103,7 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
         click_button 'Approve Final Submission'
         expect(page).to have_content("The submission's final submission information was successfully approved.")
         submission.reload
-        expect(submission.status).to eq 'waiting for publication release'
+        expect(submission.status).to eq 'waiting for committee review'
         expect(page).to have_content("The submission's final submission information was successfully approved.")
         submission.reload
         expect(submission.final_submission_approved_at).not_to be_nil
@@ -114,7 +117,7 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
 
     context "when an admin accepts the final submission files for a submission with an active Lion Path Record" do
       if InboundLionPathRecord.active?
-        it "updates submission status to 'waiting for publication release'" do
+        it "updates submission status to 'waiting for committee_review'" do
           submission.status = 'collecting final submission files'
           submission.final_submission_approved_at = nil
           submission.defended_at = Time.zone.yesterday
@@ -131,7 +134,7 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
           click_button 'Approve Final Submission'
           expect(page).to have_content("The submission's final submission information was successfully approved.")
           submission.reload
-          expect(submission.status).to eq 'waiting for publication release'
+          expect(submission.status).to eq 'waiting for committee review'
           expect(page).to have_content("The submission's final submission information was successfully approved.")
           submission.reload
           expect(submission.final_submission_approved_at).not_to be_nil

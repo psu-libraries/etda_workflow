@@ -10,6 +10,8 @@ RSpec.describe DegreeType, type: :model do
   it { is_expected.to have_db_index(:name).unique(true) }
   it { is_expected.to have_db_index(:slug).unique(true) }
 
+  it { is_expected.to have_one :approval_configuration }
+
   describe '#default' do
     it "returns the first degree type" do
       expect(described_class.default).to eq(described_class.first)

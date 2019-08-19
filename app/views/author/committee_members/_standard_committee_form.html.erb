@@ -1,8 +1,11 @@
 
     <p>
-    <p>Enter required committee members in the form below.  Type the committee member's name in the form.  After a blank is entered, a list names will appear.  Use up and down arrow keys to scroll through the list.  When the desired name is highlighted, click the return key to populate the form.  Both the committee member's name and email address will be filled after the selection is made.</p>
+    <p>Enter required committee members in the form below.  Type the committee member's name in the form.  After a blank is entered, a list of names will appear.  Use up and down arrow keys to scroll through the list.  When the desired name is highlighted, click the return key to populate the form.  Both the committee member's name and email address will be filled after the selection is made.  Emails will automatically be sent to each committee member once your final submission is submitted and the committee review stage begins.  These emails will provide a link to where committee members can complete their reviews.</p>
 
     <p><span class="text-info"><strong>Help:</strong></span> <%= t("#{current_partner.id}.committee.author_instructions") %></p>
+    <% if current_partner.graduate? %>
+      <p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.author_notice") %></p>
+    <% end %>
     <%= simple_form_for @submission,
                         url:  author_submission_committee_members_path(@submission) do |submission_form| %>
       <%= submission_form.simple_fields_for :committee_members do |committee_member_form| %>
@@ -13,19 +16,21 @@
       </div>
 
     <div class="form-group actions">
-      <% if @presenter.update? %>
-        <div class="col-xs-12 col-sm-6 col-md-4">
-          <span class='glyphicon glyphicon-plus'> </span>
-          <%= link_to_add_association "Add Committee Member", submission_form, :committee_members,
-                class: 'btn btn-sm btn-default',
-                data: { association_insertion_node: '#add_member', association_insertion_method: 'append' } if @submission.committee_members.count>0 %>
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <span class='glyphicon glyphicon-plus'> </span>
+        <%= link_to_add_association "Add Committee Member", submission_form, :committee_members,
+              class: 'btn btn-sm btn-default',
+              data: { association_insertion_node: '#add_member', association_insertion_method: 'append' } %>
 
-        </div>
-      <% end %>
+      </div>
     </div>
       <div class="col-xs-12 col-xs-10 col-sm-9">
-        <%= submission_form.button :submit, class: "btn-primary", value: "Save and Continue Editing" %>
-        <%= submission_form.button :submit, class: "btn-primary btn-success", value: "Save and Return to Dashboard" %>
+        <% if @submission.head_of_program_is_approving? && @submission.status == 'collecting committee' %>
+          <%= submission_form.button :submit, class: "btn-primary", value: "Save and Input Program Head/Chair >>" %>
+        <% else %>
+          <%= submission_form.button :submit, class: "btn-primary", value: "Save and Continue Editing" %>
+          <%= submission_form.button :submit, class: "btn-primary btn-success", value: "Save and Continue Submission" %>
+        <% end %>
         <%= link_to "Cancel", author_root_path, class: 'btn cancel-link'%>
       </div>
 

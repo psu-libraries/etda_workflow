@@ -6,6 +6,13 @@ source 'https://rubygems.org'
 #   "https://github.com/#{repo_name}.git"
 # end
 
+# Health Checks!
+gem 'okcomputer'
+
+gem 'lograge'
+gem 'lograge-sql'
+gem 'logstash-event'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.6.1'
 # Use mysql as the database for Active Record
@@ -16,7 +23,7 @@ gem 'puma', '~> 3.7'
 gem 'webpacker'
 
 gem 'therubyracer', platforms: :ruby
-gem 'newrelic_rpm'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -24,6 +31,9 @@ gem 'redis'
 
 # Resque Pool
 gem 'resque-pool'
+
+# SideKiq for queueing jobs
+gem 'sidekiq'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -174,6 +184,11 @@ group :test do
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
 
   gem 'rspec-activemodel-mocks'
+  gem 'rspec-retry'
 
   gem 'webmock'
+end
+
+group :production do
+  gem 'newrelic_rpm'
 end

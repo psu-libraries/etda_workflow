@@ -14,6 +14,8 @@ class Admin::SubmissionsDashboardView
       format_review_is_completed_filter,
       final_submission_is_submitted_filter,
       final_submission_is_incomplete_filter,
+      final_submission_is_pending_filter,
+      committee_review_is_rejected_filter,
       final_submission_is_approved_filter,
       released_for_publication_filter,
       final_is_restricted_institution_filter,
@@ -56,6 +58,17 @@ class Admin::SubmissionsDashboardView
       }
     end
 
+    def final_submission_is_submitted_filter
+      submissions = Submission.joins(:degree).where('degrees.degree_type_id' => @degree_type.id).final_submission_is_submitted
+      {
+        id: 'final-submission-submitted',
+        title: title_for('final_submission_submitted'),
+        description: description_for('final_submission_submitted'),
+        path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_submission_submitted",
+        count: submissions.empty? ? nil : submissions.count.to_s
+      }
+    end
+
     def final_submission_is_incomplete_filter
       submissions = Submission.joins(:degree).where('degrees.degree_type_id' => @degree_type.id).final_submission_is_incomplete
       {
@@ -67,13 +80,24 @@ class Admin::SubmissionsDashboardView
       }
     end
 
-    def final_submission_is_submitted_filter
-      submissions = Submission.joins(:degree).where('degrees.degree_type_id' => @degree_type.id).final_submission_is_submitted
+    def final_submission_is_pending_filter
+      submissions = Submission.joins(:degree).where('degrees.degree_type_id' => @degree_type.id).final_submission_is_pending
       {
-        id: 'final-submission-submitted',
-        title: title_for('final_submission_submitted'),
-        description: description_for('final_submission_submitted'),
-        path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_submission_submitted",
+        id: 'final-submission-pending',
+        title: title_for('final_submission_pending'),
+        description: description_for('final_submission_pending'),
+        path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_submission_pending",
+        count: submissions.empty? ? nil : submissions.count.to_s
+      }
+    end
+
+    def committee_review_is_rejected_filter
+      submissions = Submission.joins(:degree).where('degrees.degree_type_id' => @degree_type.id).committee_review_is_rejected
+      {
+        id: 'committee-review-rejected',
+        title: title_for('committee_review_rejected'),
+        description: description_for('committee_review_rejected'),
+        path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/committee_review_rejected",
         count: submissions.empty? ? nil : submissions.count.to_s
       }
     end

@@ -19,9 +19,11 @@ AllCops:
     - 'Gemfile*'
     - 'Capfile'
     - 'spec/*_helper.rb'
-    - 'lib/devise/**'
+    - 'lib/devise/**/*'
     - 'config/version_number.rb'
     - 'spec/fixtures/version_number.rb'
+    - 'app/models/submission_status_giver.rb'
+    - 'spec/models/submission_status_giver_spec.rb'
 
 Rails:
   Enabled: true
@@ -68,6 +70,8 @@ Metrics/ClassLength:
   - app/models/legacy/file_importer.rb
   - app/models/ldap_result.rb
   - app/services/submission_release_service.rb
+  - app/models/submission_status.rb
+  - app/mailers/workflow_mailer.rb
 
 
 Metrics/CyclomaticComplexity:
@@ -81,6 +85,12 @@ Metrics/CyclomaticComplexity:
   - app/models/mock_university_directory.rb
   - app/helpers/application_helper.rb
   - app/models/submission.rb
+  - app/presenters/author/submission_view.rb
+  - app/controllers/author/committee_members_controller.rb
+  - app/controllers/author/submissions_controller.rb
+  - app/presenters/author/committee_member_view.rb
+  - app/models/committee_member.rb
+  - app/services/final_submission_update_service.rb
 
 Metrics/PerceivedComplexity:
   Exclude:
@@ -92,6 +102,11 @@ Metrics/PerceivedComplexity:
   - app/helpers/application_helper.rb
   - app/services/submission_release_service.rb
   - app/models/submission.rb
+  - app/presenters/author/submission_view.rb
+  - app/controllers/author/committee_members_controller.rb
+  - app/presenters/author/committee_member_view.rb
+  - app/models/committee_member.rb
+  - app/services/final_submission_update_service.rb
 
 Layout/MultilineBlockLayout:
   Exclude:
@@ -242,6 +257,7 @@ RSpec/VerifiedDoubles:
     - 'spec/models/format_review_files_spec.rb'
     - 'spec/controllers/author_controller_spec.rb'
     - 'spec/controllers/admin_controller_spec.rb'
+    - 'spec/controllers/approver_controller_spec.rb'
 
 RSpec/NestedGroups:
   Enabled: false
@@ -252,6 +268,7 @@ RSpec/PredicateMatcher:
    - 'spec/lib/tasks/confidential_rake_spec.rb'
    - 'spec/models/admin_ability_spec.rb'
    - 'spec/models/author_ability_spec.rb'
+   - 'spec/models/approver_ability_spec.rb'
 
 Naming/FileName:
   Exclude:

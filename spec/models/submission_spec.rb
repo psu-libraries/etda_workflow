@@ -44,6 +44,8 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:lion_path_degree_code).of_type(:string) }
   it { is_expected.to have_db_column(:restricted_notes).of_type(:text) }
   it { is_expected.to have_db_column(:publication_release_terms_agreed_to_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:head_of_program_review_accepted_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:head_of_program_review_rejected_at).of_type(:datetime) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
@@ -167,7 +169,7 @@ RSpec.describe Submission, type: :model do
       end
     end
 
-    context 'using lionpath?' do
+    context 'using lionpath?', lionpath: true do
       it 'knows when lion_path integration is being used' do
         author = Author.new
         author.inbound_lion_path_record = nil
@@ -226,6 +228,20 @@ RSpec.describe Submission, type: :model do
       end
     end
 
+    context '#voting_committee_members' do
+      it 'returns a list of voting committee members' do
+        degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
+        submission = Submission.new(degree: degree)
+        submission.build_committee_members_for_partners
+        submission.committee_members.each_with_index do |cm, index|
+          next if index == 0
+
+          cm.is_voting = true
+        end
+        expect(submission.voting_committee_members).to eq(submission.voting_committee_members.collect { |cm| cm if cm.is_voting }.compact)
+      end
+    end
+
     context '#build_committee_members_for_partners' do
       it 'returns a list of required committee members' do
         degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
@@ -270,6 +286,91 @@ RSpec.describe Submission, type: :model do
         submission.update_final_submission_timestamps!(time_now)
         expect(formatted_time(submission.final_submission_files_uploaded_at)).to eq(time_now_formatted)
         expect(formatted_time(submission.final_submission_files_first_uploaded_at)).to eq(time_now_formatted)
+      end
+    end
+
+    context '#update_status_from_committee' do
+      let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+      let!(:degree_type) { FactoryBot.create :degree_type }
+      let!(:approval_configuration) { FactoryBot.create :approval_configuration, head_of_program_is_approving: true, degree_type_id: degree_type.id }
+
+      before do
+        WorkflowMailer.deliveries = []
+        submission.degree = degree
+      end
+
+      context 'when status is waiting for committee review' do
+        context 'when approval status is approved' do
+          it 'changes status to waiting for head of program review if graduate school' do
+            skip 'Graduate only' unless current_partner.graduate?
+
+            allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
+            allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('')
+            submission = FactoryBot.create :submission, :waiting_for_committee_review
+            allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
+            submission.update_status_from_committee
+            expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
+            expect(WorkflowMailer.deliveries.count).to eq 1
+          end
+
+          it 'changes status to waiting for publication release unless graduate school' do
+            skip 'Non Graduate' if current_partner.graduate?
+
+            allow_any_instance_of(Submission).to receive(:head_of_program_is_approving?).and_return false
+            allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
+            submission = FactoryBot.create :submission, :waiting_for_committee_review
+            allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
+            submission.update_status_from_committee
+            expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
+            expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.honors?
+            expect(WorkflowMailer.deliveries.count).to eq 0 if current_partner.milsch?
+          end
+
+          it 'proceeds to waiting for publication release and does not send email when head of program is already approved' do
+            skip 'Graduate only' unless current_partner.graduate?
+
+            allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
+            allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('approved')
+            submission = FactoryBot.create :submission, :waiting_for_committee_review
+            allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
+            submission.update_status_from_committee
+            expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
+            expect(WorkflowMailer.deliveries.count).to eq 0
+          end
+        end
+
+        context 'when approval status is rejected' do
+          it 'changes status to waiting for committee review rejected' do
+            allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
+            submission = FactoryBot.create :submission, :waiting_for_committee_review
+            submission.update_status_from_committee
+            expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
+          end
+        end
+      end
+
+      context 'when status is waiting for head of program review' do
+        context 'when approval head of program status is approved' do
+          it 'changes status to waiting for final submission response if graduate school' do
+            skip 'Graduate only' unless current_partner.graduate?
+
+            allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('approved')
+            submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
+            submission.update_status_from_committee
+            expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
+          end
+        end
+
+        context 'when approval head of program status is rejected' do
+          it 'changes status to waiting for committee review rejected if graduate school' do
+            skip 'Graduate only' unless current_partner.graduate?
+
+            allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('rejected')
+            submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
+            submission.update_status_from_committee
+            expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
+          end
+        end
       end
     end
   end

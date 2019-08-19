@@ -17,12 +17,11 @@ RSpec.describe Admin::AuthorOptOutView do
         expect(authors.count).to eq(3)
         expect(authors).to include(id: author1.id, last_name: author1.last_name, first_name: author1.first_name,
                                    year: author1.submissions.last.year, alternate_email_address: author1.alternate_email_address,
-                                   opt_out_email: author1.opt_out_email? ? 'yes' : 'no', opt_out_user_set: author1.opt_out_default? ? 'no' : 'yes', confidential_alert_icon: "")
+                                   confidential_alert_icon: "")
         expect(authors).not_to include(id: author4.id, last_name: author4.last_name, first_name: author4.first_name,
-                                       year: author4.submissions.last.year, alternate_email_address: author4.alternate_email_address,
-                                       opt_out_email: author4.opt_out_email? ? 'yes' : 'no', opt_out_user_set: author4.opt_out_default? ? 'no' : 'yes')
+                                       year: author4.submissions.last.year, alternate_email_address: author4.alternate_email_address)
 
-        expect(authors).to include(id: author3.id, last_name: author3.last_name, first_name: author3.first_name, year: author3.submissions.last.year, alternate_email_address: author3.alternate_email_address, opt_out_email: author3.opt_out_email? ? 'yes' : 'no', opt_out_user_set: author3.opt_out_default? ? 'no' : 'yes', confidential_alert_icon: " <span class='confidential-alert xxs' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='confidential hold'><span class='fa fa-warning'></span></span><span class='sr-only'>#{author3.first_name} #{author3.last_name} has a confidential hold</span>")
+        expect(authors).to include(id: author3.id, last_name: author3.last_name, first_name: author3.first_name, year: author3.submissions.last.year, alternate_email_address: author3.alternate_email_address, confidential_alert_icon: " <span class='confidential-alert xxs' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='confidential hold'><span class='fa fa-warning'></span></span><span class='sr-only'>#{author3.first_name} #{author3.last_name} has a confidential hold</span>")
       end
     end
   end

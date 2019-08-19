@@ -1,6 +1,6 @@
 require 'model_spec_helper'
 
-RSpec.describe LionPath::AcademicPlan, type: :model do
+RSpec.describe LionPath::AcademicPlan, type: :model, lionpath: true do
   author = FactoryBot.create :author
   inbound_record = FactoryBot.create :inbound_lion_path_record, author: author
   submission = FactoryBot.create :submission, author: author

@@ -78,6 +78,23 @@ set :format_options, command_output: false
 # Default value for keep_releases is 5
 set :keep_releases, 7
 
+# SideKiq commands
+namespace :sidekiq do
+  %i[stop start].each do |action|
+    desc "#{action.to_s.capitalize} SideKiq"
+    task action do
+      on roles(:app) do
+        execute "sudo /bin/systemctl #{action} sidekiq_pool_#{fetch(:partner)}"
+      end
+    end
+  end
+
+  after "deploy:starting", "sidekiq:stop"
+  after "deploy:published", "sidekiq:start"
+end
+
+
+
 # Apache namespace to control apache
 namespace :apache do
   %i[stop start restart reload].each do |action|
@@ -112,6 +129,8 @@ namespace :deploy do
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/lion_path.yml #{release_path}/config/lion_path.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/#{fetch(:partner)}_secrets.yml #{release_path}/config/secrets.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/ldap.yml #{release_path}/config/ldap.yml"
+      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/sidekiq.yml #{release_path}/config/sidekiq.yml"
+      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/redis.yml #{release_path}/config/redis.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/newrelic.yml #{release_path}/config/newrelic.yml"
       execute "ln -sf /etda_workflow/data/#{fetch(:stage)}/etda_workflow_#{fetch(:partner)}/ #{release_path}/workflow_data_files"
       execute "ln -sf /etda_workflow/data/#{fetch(:stage)}/etda_explore_#{fetch(:partner)}/ #{release_path}/explore_data_files"
@@ -122,7 +141,8 @@ namespace :deploy do
 
 
   before "deploy:assets:precompile", "deploy:symlink_shared"
-  before "deploy:assets:precompile", "custom_cleanup:clean_yarn_cache"
+  before "deploy:assets:precompile", "yarn:install"
+  before "deploy:assets:precompile", "yarn:check"
   # before "deploy:migrate", "deploy:symlink_shared"
 
   after "deploy:updated", "deploy:migrate"
@@ -154,15 +174,34 @@ namespace :rbenv_custom_ruby_cleanup do
   after 'deploy:finishing', 'rbenv_custom_ruby_cleanup:purge_old_versions'
 end
 
-namespace :custom_cleanup do
-  desc 'clean up the yarn cache before building webpack'
-  task :clean_yarn_cache do
-    puts '***cleaning yarn'
-    on roles (:web) do
-      execute 'yarn cache clean'
+namespace :yarn do
+  desc 'yarn tasks to perform on the repository before a deployment'
+  task :install do
+    puts '***running yarn install'
+    on roles (:web) do 
+      execute "cd #{release_path} && yarn install --ignore-engines"
+    end
+  end
+
+  desc 'check dependencies'
+  task :check do
+    on roles (:web) do 
+      puts '***running yarn check'
+      execute "cd #{release_path} && yarn check --integrity"
+      execute "cd #{release_path} && yarn check --verify-tree"
     end
   end
 end
+
+# namespace :custom_cleanup do
+#   desc 'clean up the yarn cache before building webpack'
+#   task :clean_yarn_cache do
+#     puts '***cleaning yarn'
+#     on roles (:web) do
+#       execute 'yarn cache clean'
+#     end
+#   end
+# end
 
 namespace :deploy_all do
   task :deploy do

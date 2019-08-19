@@ -1,0 +1,222 @@
+{{- $fullName := include "chart.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chart.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "chart.name" . }}
+    helm.sh/chart: {{ include "chart.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "chart.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "chart.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      # securityContext:
+      #   capabilities:
+      #     add: ["CAP_SETFCAP"]
+      #   runAsUser: 10000
+      volumes:
+        - name: shared-data
+          emptyDir: {}
+        - name: vault-token
+          emptyDir:
+            medium: Memory
+        - name: vault-config
+          configMap:
+            name: {{ $fullName }}-vault
+            items:
+            - key: env.env
+              path: env.env
+            - key: vault-agent-config.hcl
+              path: vault-agent-config.hcl
+        {{- if .Values.webaccess.enabled }}
+        - name: webaccess-config
+          configMap:
+            name: {{ $fullName }}-webaccess
+        - name: tls
+          secret:
+            {{- range .Values.ingress.tls }}
+            secretName: {{ .secretName }}
+            {{- end }}
+        {{- end }}
+        - name: etda-workflow-data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ $fullName }}-workflow
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: etda-explore-data
+         {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ $fullName }}-explore
+         {{- else }}
+            emptyDir: {}
+         {{- end }}
+      {{- if .Values.image.imagePullSecrets}}
+      imagePullSecrets:
+        - name: {{ .Values.image.imagePullSecrets }}
+      {{- end }}
+      serviceAccountName: {{ .Release.Name }}
+      {{- if .Values.global.vault.enabled }}
+      initContainers:
+        - name: vault-agent-auth
+          image: vault
+          volumeMounts:
+          - name: vault-config
+            mountPath: /etc/vault
+          - name: vault-token
+            mountPath: /home/vault
+          env:
+          - name: VAULT_ADDR
+            value: {{ .Values.global.vault.address }}
+          args: [
+            "agent",
+            "-config=/etc/vault/vault-agent-config.hcl",
+          ]
+        - name: consul-template
+          image: hashicorp/consul-template:alpine
+          imagePullPolicy: Always
+          env:
+          - name: VAULT_PATH
+            value: {{ .Values.global.vault.path }}
+          - name: VAULT_ADDR
+            value: {{ .Values.global.vault.address }}
+          volumeMounts:
+          - name: shared-data
+            mountPath: /secrets
+          - name: vault-token
+            mountPath: /home/vault
+          - name: vault-config
+            mountPath: /etc/consul-template
+          args: [
+            "-vault-agent-token-file=/home/vault/.vault-token",
+            "-vault-addr={{ .Values.global.vault.address }}",
+            "-template=/etc/consul-template/env.env:/secrets/env.env",
+            "-once"
+          ]
+      {{- end }}
+      containers:
+      {{- if .Values.webaccess.enabled }}
+        - name: {{ .Chart.Name }}-webaccess
+          image: {{ .Values.webaccess.image }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: webaccess-config
+              mountPath: /etc/apache2/sites-enabled/vhost.conf
+              subPath: vhost.conf
+            - name: tls
+              mountPath: /etc/ssl/certs/cert.crt
+              subPath: tls.crt
+            - name: tls
+              mountPath: /etc/ssl/private/key.key
+              subPath: tls.key
+          ports:
+            - name: http-wa
+              containerPort: 80
+              protocol: TCP
+            - name: https-wa
+              containerPort: 443
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            limits:
+              cpu: 100m
+              memory: 2048Mi
+            requests:
+              cpu: 100m
+              memory: 1024Mi
+      {{- end }}
+        - name: {{ .Chart.Name }}
+          image: "{{- if .Values.imageName }}{{ .Values.imageName }}{{- else}}{{ .Values.image.repository }}:{{ .Values.image.tag }}{{- end}}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: RAILS_ENV
+            value: {{ .Values.rails.environment }}
+          - name: PARTNER
+            value: {{ .Values.partner }}
+          - name: RAILS_LOG_TO_STDOUT
+            value: "true"
+          {{- if .Values.mariadb.enabled }}
+          - name: MYSQL_HOST
+            value: {{ $fullName }}-mariadb
+          {{- if .Values.mariadb.db.user }}
+          - name: MYSQL_USER
+            value: {{ .Values.mariadb.db.user }}
+          {{- end}}
+          {{- if .Values.mariadb.db.name }}
+          - name: MYSQL_DATABASE
+            value: {{ .Values.mariadb.db.name }}
+          {{- end}}
+          {{- if .Values.mariadb.db.password }}
+          - name: MYSQL_PASSWORD
+            value: {{ .Values.mariadb.db.password }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.redis.enabled }}
+          {{- if .Values.redis.password }}
+          - name: REDIS_PASSWORD
+            value: {{ .Values.redis.password }}
+          {{- end }}
+          - name: REDIS_HOST
+            value: {{ $fullName }}-redis
+          {{- end }}
+          volumeMounts:
+            - name: shared-data
+              mountPath: /secrets
+            - name: vault-token
+              mountPath: /etc/token
+            - name: etda-workflow-data
+              mountPath: /etda_workflow/workflow_data_files
+            - name: etda-explore-data
+              mountPath: /etda_workflow/explore_data_files
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          {{- if .Values.healthcheck.enabled }}
+          livenessProbe:
+            periodSeconds: {{ .Values.healthcheck.livenessProbe.periodSeconds }}
+            initialDelaySeconds: {{ .Values.healthcheck.livenessProbe.initialDelaySeconds }}
+            failureThreshold: {{ .Values.healthcheck.livenessProbe.failureThreshold }}
+            httpGet:
+              path: {{ .Values.healthcheck.livenessProbe.path }}
+              port: http
+          readinessProbe:
+            periodSeconds: {{ .Values.healthcheck.readinessProbe.periodSeconds }}
+            initialDelaySeconds: {{ .Values.healthcheck.readinessProbe.initialDelaySeconds }}
+            failureThreshold: {{ .Values.healthcheck.readinessProbe.failureThreshold }}
+            httpGet:
+              path: {{ .Values.healthcheck.readinessProbe.path }}
+              port: http
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

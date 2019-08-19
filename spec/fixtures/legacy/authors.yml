@@ -28,8 +28,6 @@
     psu_idn: '955555555'
     confidential_hold: NULL
     confidential_hold_set_at: NULL
-    opt_out_email: true
-    opt_out_default: true
   - id: 2
     access_id: 'hhh111'
     first_name: 'Henry'
@@ -60,8 +58,6 @@
     psu_idn: NULL
     confidential_hold: NULL
     confidential_hold_set_at:  NULL
-    opt_out_email: true
-    out_out_default: true
   - id: 3
     access_id: 'aaa000'
     first_name: 'Arthur'
@@ -92,6 +88,4 @@
     psu_idn: NULL
     confidential_hold:  NULL
     confidential_hold_set_at:  NULL
-    opt_out_email: true
-    opt_out_default: true
 

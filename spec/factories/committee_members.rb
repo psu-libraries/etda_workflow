@@ -7,6 +7,9 @@ FactoryBot.define do
     name { "Professor Buck Murphy" }
     email { "buck@hotmail.com" }
     is_required { true }
+    is_voting { true }
+    notes { '' }
+    status { nil }
   end
 
   trait :required do

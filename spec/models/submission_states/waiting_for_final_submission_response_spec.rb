@@ -4,10 +4,10 @@ require 'model_spec_helper'
 
 RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
   describe 'instance methods' do
-    it "transitions to WaitingForPublication, CollectingFinalSubmissionFiles, and CollectingFinalSubmissionFilesRejected" do
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease)
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFiles)
+    it "transitions to WaitingForCommitteeReview and CollectingFinalSubmissionFilesRejected" do
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview)
       expect(described_class.new).to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFilesRejected)
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingCommittee)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFiles)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFilesRejected)
@@ -16,6 +16,7 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFormatReviewResponse)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::ReleasedForPublication)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::ReleasedForPublicationMetadataOnly)
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForHeadOfProgramReview)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::Bogus)
     end
   end
@@ -43,6 +44,18 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
       it { is_expected.to be_truthy }
     end
 
+    context 'when submission status WaitingForCommitteeReview' do
+      let(:status) { SubmissionStates::WaitingForCommitteeReview.name }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context 'when submission status WaitingForHeadOfProgramReview' do
+      let(:status) { SubmissionStates::WaitingForHeadOfProgramReview.name }
+
+      it { is_expected.to be_falsey }
+    end
+
     context 'when submission status CollectingFinalSubmissionFiles' do
       let(:status) { SubmissionStates::CollectingFinalSubmissionFiles.name }
 
@@ -58,7 +71,7 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
     context 'when submission status FormatReviewAccepted' do
       let(:status) { SubmissionStates::FormatReviewAccepted.name }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status WaitingForPublicationRelease' do

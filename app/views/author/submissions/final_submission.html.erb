@@ -18,10 +18,10 @@
     <% end %>
 
     <div id="title" class="review-group <%= even_odd(@row_count) %>">
-
       <h2 class="h4">Document Title</h2>
       <p><%= @submission.title %></p>
     </div>
+
     <% if @submission.defended_at.present? && current_partner.graduate?  %>
     <div id="defended-at" class="review-group <%= even_odd(@row_count) %>">
       <h2 class="h4">Date defended</h2>
@@ -56,12 +56,14 @@
         </div>
       <% end %>
     </div>
+
     <% if @submission.restricted_notes.present? %>
       <div id="restricted-notes" class="review-group"<%= even_odd(@row_count) %>">
         <h2 class="h4">Justification to Restrict paper to Penn State</h2>
         <p><%= @submission.restricted_notes %></p>
       </div>
     <% end %>
+
     <% if @submission.access_level.restricted? %>
         <div id="invention-disclosure" class="review-group <%= even_odd(@row_count) %>">
           <h2 class="h4">Invention Disclosure Number</h2>
@@ -69,6 +71,7 @@
         </div>
     <% end %>
   </div>
+
   <div class="row" >
     <div class="col-xs-12 review-group">
       <p><strong>

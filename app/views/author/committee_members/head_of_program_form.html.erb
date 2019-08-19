@@ -1,0 +1,30 @@
+<h1>Input Program Head/Chair</h1>
+<br/>
+<p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.head_of_program_notice").html_safe %></p>
+<br/>
+<div class="nested-fields panel panel-default">
+  <div class="row">
+    <%= simple_form_for @submission, url: author_submission_committee_members_path(@submission)do |form| %>
+      <%= form.simple_fields_for :committee_members do |f| %>
+        <% if f.object.committee_role.name == 'Program Head/Chair' %>
+          <div class="row committee-role">
+            <%= f.input :committee_role_id, as: :hidden,  input_html: { value: @submission.degree_type.committee_roles.find_by(name: 'Program Head/Chair').id } %>
+            <h2 class="h2-small">Program Head/Chair <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="right" data-html="true" title="<p><strong>Program Head/Chair</strong> - Faculty member responsible for leadership in developing the department’s academic programs.</p>"></span></a></h2>
+          </div>
+          <div class="col-sm-6">
+            <%= f.input :name, label: 'Program Head/Chair Name', input_html: { class: 'ldap-lookup' } %>
+          </div>
+          <div class="col-sm-6">
+            <%= f.input :email, label: 'Program Head/Chair Email', input_html: { readonly: true }%>
+          </div>
+        <% end %>
+      <% end %>
+  </div>
+</div>
+<div class="form-group actions">
+  <div class="col-xs-10">
+    <%= form.button :submit, class: "btn-primary", value: "Update Program Head/Chair Information" %>
+    <%= link_to "Return to dashboard", author_root_path, class: 'btn cancel-link'%>
+  </div>
+</div>
+<% end %>

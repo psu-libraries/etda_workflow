@@ -26,7 +26,7 @@
             <li class="<%= top_nav_active?('about') %>">
               <%= link_to 'About', about_page_path, class: 'btn btn-default navbar-btn' %>
             </li >
-            <% if session[:user_role] == 'author' || session[:user_role] == nil %>
+            <% if session[:user_role] == 'author' || session[:user_role] == 'approver' %>
               <li class="<%= top_nav_active?('email') %>">
               <%= link_to 'Contact Us', author_email_contact_form_new_path, class: 'btn btn-default ' %>
               </li>
@@ -42,11 +42,13 @@
 
         <div class="col-xs-4 col-sm-5">
           <!--<div class="pull-right">-->
-          <% unless session[:user_name].present? %>
-            <%= link_to 'Log In', :login, class: "btn btn-default btn-sm navbar-btn" %>
-          <% else %>
-            <span class="navbar-text small hidden-xs">Logged in as <%= session[:user_name] || current_author.access_id || current_admin.access_id %></span>
-            <%= link_to 'Log Out', :logout, class: "btn btn-default btn-sm navbar-btn" %>
+          <% unless controller_name == 'special_committee' %>
+            <% unless session[:user_name].present? %>
+              <%= link_to 'Log In', :login, class: "btn btn-default btn-sm navbar-btn" %>
+            <% else %>
+              <span class="navbar-text small hidden-xs">Logged in as <%= session[:user_name] || current_author.access_id || current_admin.access_id || current_approver.access_id %></span>
+              <%= link_to 'Log Out', :logout, class: "btn btn-default btn-sm navbar-btn" %>
+            <% end %>
           <% end %>
           <!--</div>-->
         </div>

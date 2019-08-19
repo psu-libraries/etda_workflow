@@ -9,11 +9,7 @@ module SubmissionStates
     end
 
     def status_date(submission)
-      submission.final_submission_approved_at
-    end
-
-    def remove_date(submission)
-      submission.final_submission_rejected_at
+      submission.head_of_program_review_accepted_at || submission.committee_review_accepted_at
     end
   end
 end

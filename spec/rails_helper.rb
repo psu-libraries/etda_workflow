@@ -21,12 +21,17 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'devise'
 require 'cancan/ability'
 require 'shoulda/matchers'
+require 'rspec/retry'
 
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
+
+# sidekiq
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!  # by default it is fake
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -78,4 +83,17 @@ RSpec.configure do |config|
 
   config.include Devise::Test::ControllerHelpers, type: :controller
   #  config.include RequestSpecHelper, type: :request
+
+  # show retry status in spec process
+  config.verbose_retry = true
+  # show exception that triggers a retry if verbose_retry is set to true
+  config.display_try_failure_messages = true
+
+  # callback to be run between retries
+  config.retry_callback = proc do |ex|
+    # run some additional clean up task - can be filtered by example metadata
+    if ex.metadata[:js]
+      Capybara.reset!
+    end
+  end
 end

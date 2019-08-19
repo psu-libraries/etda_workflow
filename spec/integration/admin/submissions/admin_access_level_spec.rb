@@ -1,10 +1,13 @@
 RSpec.describe 'Admin submission access_level', js: true do
   require 'integration/integration_spec_helper'
 
+  let(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response }
+  let!(:committee_member1) { FactoryBot.create :committee_member, submission: submission, committee_role: CommitteeRole.first }
+  let!(:committee_member2) { FactoryBot.create :committee_member, submission: submission, committee_role: CommitteeRole.second }
+  let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+  let!(:approval_configuration) { FactoryBot.create :approval_configuration, head_of_program_is_approving: true, use_percentage: false, configuration_threshold: 0 }
+
   before do
-    submission = FactoryBot.create :submission, :waiting_for_final_submission_response
-    committee_member1 = FactoryBot.create :committee_member, submission: submission
-    committee_member2 = FactoryBot.create :committee_member, submission: submission
     FactoryBot.create :format_review_file, submission: submission
     FactoryBot.create :final_submission_file, submission: submission
     submission.committee_members << committee_member1
@@ -12,18 +15,19 @@ RSpec.describe 'Admin submission access_level', js: true do
     submission.access_level = 'open_access'
     webaccess_authorize_admin
     visit admin_edit_submission_path(submission)
+    sleep 3
   end
 
   context 'admin users can choose the access level' do
     it 'has an open_access radio button' do
       page.find("input#submission_access_level_open_access").trigger('click')
       expect(find("#submission_access_level_open_access")).to be_checked
-      expect(page).to have_content('Enter justification') unless current_partner.graduate?
+      expect(page).to have_content('Enter justification') if current_partner.milsch?
     end
     it 'has a restricted_to_institution radio button' do
       page.find("input#submission_access_level_restricted_to_institution").trigger('click')
       expect(page.find("input#submission_access_level_restricted_to_institution")).to be_checked
-      unless current_partner.graduate?
+      if current_partner.milsch?
         expect(page).to have_content('Enter justification')
         expect(page.find('textarea#submission_restricted_notes')).to be_truthy
       end
@@ -34,7 +38,7 @@ RSpec.describe 'Admin submission access_level', js: true do
       expect(page.find("input#submission_access_level_restricted")).to be_checked
       click_button('Update Metadata Only')
       sleep(1)
-      expect(page).to have_content('Enter justification') unless current_partner.graduate?
+      expect(page).to have_content('Enter justification') if current_partner.milsch?
       expect(page).to have_field('submission_invention_disclosures_attributes_0_id_number')
       inventions = page.find(:css, 'div.form-group.string.optional.submission_invention_disclosures_id_number')
       within inventions do

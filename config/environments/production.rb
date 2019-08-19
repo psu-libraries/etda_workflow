@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
+
   config.webpacker.check_yarn_integrity = false
 
   # Settings specified here will take precedence over those in config/application.rb.
@@ -54,6 +55,8 @@ Rails.application.configure do
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
   config.log_level = :debug
+  # Allow kubernetes to reach healthcheck endpoint insecurely
+  config.ssl_options = { redirect: { exclude: -> request { request.path =~ /healthcheck/ } } }
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [:request_id]
@@ -80,17 +83,19 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
+  # config.log_formatter = ::Logger::Formatter.new
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
-    logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
-  end
+  # Moved into application.rb
+  # if ENV["RAILS_LOG_TO_STDOUT"].present?
+  #   logger           = ActiveSupport::Logger.new(STDOUT)
+  #   logger.formatter = config.log_formatter
+  #   config.logger = ActiveSupport::Logger.new(STDOUT)
+  #   # config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  # end
 
   Dir.glob('lib/capistrano/tasks/**/*.rake').each { |r| import r }
 

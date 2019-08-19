@@ -73,20 +73,32 @@
       <div class="description"><%= I18n.t("#{current_partner.id}.partner.name") %> approves Final Submission files
         <div class="status">
           <% status = @submission_view.step_six_status %>
-          <%# render(status[:partial_name], step_number: 6, text: status[:text]) unless status[:partial_name].blank? %>
           <%= render(status[:partial_name], step_number: 6, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(6)) unless status[:partial_name].blank? %>
-          <%#= @submission_view.step_six_status %>
         </div>
       </div>
       <div class='number-arrow' >
         <div class="number">6</div>
-        <%= @submission_view.step_seven_arrow %>
+        <div class="direction glyphicon glyphicon-arrow-down"></div>
       </div>
     </div>
   </div>
-  <div class="step step-7 <%= @submission_view.step_seven_class %>">
+  <div class="step step-7 <%= @submission_view.step_seven_class %>"><%= @submission_view.step_info(7) %>
+    <div class="information">
+      <div class="description"><%= @submission_view.step_seven_description %>
+        <div class="status">
+          <% status = @submission_view.step_seven_status %>
+          <%= render(status[:partial_name], step_number: 7, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(7)) unless status[:partial_name].blank? %>
+        </div>
+      </div>
+      <div class='number-arrow' >
+        <div class="number">7</div>
+        <%= @submission_view.step_eight_arrow %>
+      </div>
+    </div>
+  </div>
+  <div class="step step-8 <%= @submission_view.step_eight_class %>">
     <div>
-      <div><%= @submission_view.step_seven_status %></div>
+      <div><%= @submission_view.step_eight_status %></div>
     </div>
   </div>
 </div>

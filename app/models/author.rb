@@ -3,7 +3,7 @@
 class Author < ApplicationRecord
   class NotAuthorizedToEdit < StandardError; end
 
-  Devise.add_module(:webacess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
+  Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
   devise :webaccess_authenticatable, :rememberable, :trackable, :registerable
 
@@ -30,9 +30,6 @@ class Author < ApplicationRecord
             :city,
             :state,
             :zip, presence: true, if: proc { current_partner.graduate? }
-
-  validates :opt_out_email,
-            :opt_out_default, inclusion: { in: [true, false] }, if: proc { current_partner.graduate? }
 
   validates :alternate_email_address,
             :psu_email_address,
@@ -143,14 +140,6 @@ class Author < ApplicationRecord
     return false if inbound_lion_path_record.current_data.empty?
 
     true
-  end
-
-  def opt_out_email?
-    opt_out_email
-  end
-
-  def opt_out_default?
-    opt_out_default
   end
 
   private

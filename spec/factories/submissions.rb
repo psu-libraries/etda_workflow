@@ -63,6 +63,18 @@ FactoryBot.define do
       publication_release_terms_agreed_to_at { Time.zone.now }
     end
 
+    trait :waiting_for_committee_review do
+      status { "waiting for committee review" }
+    end
+
+    trait :waiting_for_head_of_program_review do
+      status { "waiting for head of program review" }
+    end
+
+    trait :waiting_for_committee_review_rejected do
+      status { "waiting for committee review rejected" }
+    end
+
     trait :waiting_for_final_submission_response do
       status { "waiting for final submission response" }
       final_submission_traits

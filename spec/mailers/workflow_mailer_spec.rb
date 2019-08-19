@@ -2,6 +2,8 @@ require 'model_spec_helper'
 
 RSpec.describe WorkflowMailer do
   let(:submission) { FactoryBot.create :submission }
+  let(:committee_member) { FactoryBot.create :committee_member, submission: submission }
+  let(:commmittee_member_token) { FactoryBot.create :committee_member_token, committee_member: committee_member }
   let(:access_updated_email) do
     {
       author_alternate_email_address: "author alt address",
@@ -87,16 +89,7 @@ RSpec.describe WorkflowMailer do
   end
 
   describe '#final_submission_approved' do
-    let(:email) { described_class.final_submission_approved(submission, 'http://test_this_url:999') }
-
-    it 'contains publication information for graduate dissertations' do
-      publication_message = t("#{current_partner.id}.partner.email.final_submission_approved.dissertation_publish_msg")
-      if current_partner.graduate?
-        expect(email.body).to include(publication_message)
-      else
-        expect(email.body).not_to include(publication_message)
-      end
-    end
+    let(:email) { described_class.final_submission_approved(submission) }
 
     it "sets an appropriate subject" do
       expect(email.subject).to match(/has been approved/i)
@@ -110,17 +103,9 @@ RSpec.describe WorkflowMailer do
       expect(email.to).to eq([author.psu_email_address])
     end
 
-    it "is carbon copied to the committee members for honors and graduate school " do
-      expect(email.cc).to eq(submission.committee_email_list)
-    end
-
     it "tells the author that the final submission has been approved" do
-      expect(email.body).to match(/has been reviewed and approved/i) if current_partner.graduate?
+      expect(email.body).to match(/It will now be automatically sent to your committee/i) if current_partner.graduate?
       expect(email.body).to match(/has been approved/i) if current_partner.honors?
-    end
-
-    it 'contains the url to the partner site' do
-      expect(email.body).to match(/http:\/\/test_this_url:999/i)
     end
   end
 
@@ -199,6 +184,89 @@ RSpec.describe WorkflowMailer do
 
     it "has body" do
       expect(email.body.raw_source).to eq("Verify Files\r\n\r\nMisplaced files found.")
+    end
+  end
+
+  describe '#committee_member_review_reminder' do
+    let(:email) { described_class.committee_member_review_reminder(submission, committee_member) }
+
+    it "is sent to the proper recipient" do
+      expect(email.to).to eq([committee_member.email])
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
+      expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
+      expect(email.subject).to eq("Millennium Scholars #{submission.degree_type} Review") if current_partner.milsch?
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/\/approver/)
+      expect(email.body).to match(/Reminder:/)
+    end
+  end
+
+  describe '#committee_member_review_request' do
+    let(:email) { described_class.committee_member_review_request(submission, committee_member) }
+
+    it "is sent to the proper recipient" do
+      expect(email.to).to eq([committee_member.email])
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
+      expect(email.subject).to eq("Honors Thesis Needs Approval") if current_partner.honors?
+      expect(email.subject).to eq("Millennium Scholars Thesis Review") if current_partner.milsch?
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/\/approver/)
+      expect(email.body).to match(/Hello/)
+    end
+  end
+
+  describe '#special_committee_review_reminder' do
+    context 'when committee member token exists' do
+      let!(:commmittee_member_token) { FactoryBot.create :committee_member_token, committee_member: committee_member }
+      let(:email) { described_class.special_committee_review_request(submission, committee_member) }
+
+      it "is sent to the proper recipient" do
+        expect(email.to).to eq([committee_member.email])
+      end
+
+      it "is sent from the partner support email address" do
+        expect(email.from).to eq([partner_email])
+      end
+
+      it "sets an appropriate subject" do
+        expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
+        expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
+        expect(email.subject).to eq("Millennium Scholars #{submission.degree_type} Review") if current_partner.milsch?
+      end
+
+      it "has desired content" do
+        skip 'Graduate Only' unless current_partner.graduate?
+        expect(email.body).to match(/\/special_committee\/#{commmittee_member_token.authentication_token.to_s}/)
+        expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
+      end
+    end
+
+    context "when committee member token doesn't exist" do
+      let(:email) { described_class.special_committee_review_request(submission, committee_member) }
+
+      it "has an 'X' in the url in place of a token" do
+        skip 'Graduate Only' unless current_partner.graduate?
+        expect(email.body).to match(/\/special_committee\/X/)
+        expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
+      end
     end
   end
 end

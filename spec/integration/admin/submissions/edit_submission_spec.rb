@@ -3,7 +3,8 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
 
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
-  let!(:role) { CommitteeRole.first }
+  let!(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type) }
+  let!(:role) { CommitteeRole.second }
   let!(:author) { FactoryBot.create(:author, :no_lionpath_record) }
   let(:submission) { FactoryBot.create(:submission, :collecting_committee, author: author) }
   let(:admin) { FactoryBot.create :admin }
@@ -13,7 +14,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     webaccess_authorize_admin
   end
 
-  it "Saves the updated submission data for a submission with status collecting committee" do
+  it "Saves the updated submission data for a submission with status collecting committee", retry: 5 do
     visit admin_edit_submission_path(submission)
     check "Allow completely upper-case words in title"
     fill_in "Title", with: "A Brand New TITLE"
@@ -73,7 +74,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     sleep(10)
     expect(page).to have_content('success')
     visit admin_edit_submission_path(submission)
-    sleep 8
+    sleep(8)
     expect(page).to have_link "format_review_file_02.pdf"
     expect(page).not_to have_link "format_review_file_01.pdf"
   end
@@ -127,5 +128,16 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     sleep 8
     expect(page).not_to have_link('final_submission_file_01.pdf')
     expect(page).to have_link('final_submission_file_02.docx')
+  end
+  describe 'has link to audit page' do
+    let!(:file) { FactoryBot.create :final_submission_file, submission: final_submission }
+
+    it 'directs to audit page with audit content' do
+      visit admin_edit_submission_path(final_submission)
+      click_link 'View Printable Audit'
+      expect(page).to have_content("#{final_submission.degree.degree_type.name} Audit")
+      expect(page).to have_link(file.asset_identifier.to_s)
+      expect(page).to have_content("Committee Member Reviews")
+    end
   end
 end

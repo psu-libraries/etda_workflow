@@ -14,3 +14,7 @@ end
 every :sunday, at: '1am', roles: [:app] do
   rake 'final_files:verify'
 end
+
+every :day, at: '1am', roles: [:app]  do
+  rake 'tokens:remove_expired'
+end

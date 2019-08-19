@@ -1,3 +1,7 @@
+<div class="col-xs-12">
+  <%= render 'new_submission_button' %>
+</div>
+
 <div class="row">
   <div class="col-xs-12">
     <h2>My Submissions</h2>
@@ -7,10 +11,7 @@
 <div id="submissions" class="row">
 
   <div class="col-xs-12 submission">
-    <p><%= @view.no_submissions_message.html_safe %></p>
-
-    <%= render 'new_submission_button' %>
-
+    <p class="hint"><%= @view.no_submissions_message.html_safe %></p>
 
     <%= render 'progress_indicator_preview'%>
   </div>

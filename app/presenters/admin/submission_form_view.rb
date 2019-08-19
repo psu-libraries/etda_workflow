@@ -20,6 +20,9 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'Format Review Evaluation' if status_behavior.waiting_for_format_review_response?
     return 'Edit Completed Format Review' if status_behavior.collecting_final_submission_files? && !status_behavior.final_submission_rejected?
     return 'Edit Incomplete Final Submission' if status_behavior.collecting_final_submission_files? && status_behavior.final_submission_rejected?
+    return 'Waiting for Committee Review' if status_behavior.waiting_for_committee_review?
+    return 'Waiting for Head/Chair Review' if status_behavior.waiting_for_head_of_program_review?
+    return 'Committee Review Rejected' if status_behavior.waiting_for_committee_review_rejected?
     return 'Final Submission Evaluation' if status_behavior.waiting_for_final_submission_response?
     return 'Edit Final Submission to be Released' if status_behavior.waiting_for_publication_release?
     return 'Edit Released Submission' if status_behavior.released_for_publication? && open_access?
@@ -43,6 +46,7 @@ class Admin::SubmissionFormView < SimpleDelegator
   def form_for_url
     return "/admin/submissions/#{id}/format_review_response" if status_behavior.waiting_for_format_review_response?
     return "/admin/submissions/#{id}/final_submission_response" if status_behavior.waiting_for_final_submission_response?
+    return "/admin/submissions/#{id}/update_final_submission" if status_behavior.waiting_for_committee_review_rejected?
     return "/admin/submissions/#{id}/update_waiting_to_be_released" if status_behavior.waiting_for_publication_release?
     return "/admin/submissions/#{id}/update_released" if status_behavior.released_for_publication?
 
@@ -87,7 +91,7 @@ class Admin::SubmissionFormView < SimpleDelegator
   end
 
   def psu_only(label)
-    label == AccessLevel.paper_access_levels[AccessLevel.RESTRICTED_TO_INSTITUTION.to_i][:label] && !Partner.current.graduate? # 'Restricted (Penn State Only)'
+    label == AccessLevel.paper_access_levels[AccessLevel.RESTRICTED_TO_INSTITUTION.to_i][:label] && Partner.current.milsch? # 'Restricted (Penn State Only)'
   end
 
   def release_date_history

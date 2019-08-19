@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# For importing legacy data during Jan 2019 migration
+# No longer valid
+
 require 'model_spec_helper'
 
 RSpec.describe Legacy::Importer do

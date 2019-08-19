@@ -1,4 +1,7 @@
 class Admin::SubmissionsController < AdminController
+  skip_before_action :verify_authenticity_token, only: [:send_email_reminder]
+  include ActionView::Helpers::UrlHelper
+
   def redirect_to_default_dashboard
     redirect_to admin_submissions_dashboard_path(DegreeType.default)
   end
@@ -15,12 +18,13 @@ class Admin::SubmissionsController < AdminController
 
   def update
     @submission = Submission.find(params[:id])
-    if @submission.status_behavior.beyond_collecting_format_review_files? && status != 'format review completed'
-      submission_update_service = FinalSubmissionUpdateService.new(params, @submission)
+    if @submission.status_behavior.beyond_collecting_format_review_files? && @submission.status != 'format review completed'
+      submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     else
-      submission_update_service = FormatReviewUpdateService.new(params, @submission)
+      submission_update_service = FormatReviewUpdateService.new(params, @submission, current_remote_user)
     end
     response = submission_update_service.update_record
+    @submission.update_status_from_committee if @submission.status == 'waiting for committee review' || @submission.status == 'waiting for head of program review'
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
   rescue ActiveRecord::RecordInvalid
@@ -34,6 +38,12 @@ class Admin::SubmissionsController < AdminController
   def index
     session[:return_to] = request.referer
     @view = Admin::SubmissionsIndexView.new(params[:degree_type], params[:scope], view_context)
+  end
+
+  def audit
+    @submission = Submission.find(params[:id])
+    @author = @submission.author
+    @most_relevant_file_links = most_relevant_file_links
   end
 
   def bulk_destroy
@@ -80,7 +90,7 @@ class Admin::SubmissionsController < AdminController
 
   def record_format_review_response
     @submission = Submission.find(params[:id])
-    format_review_update_service = FormatReviewUpdateService.new(params, @submission)
+    format_review_update_service = FormatReviewUpdateService.new(params, @submission, current_remote_user)
     response = format_review_update_service.respond_format_review
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
@@ -95,10 +105,44 @@ class Admin::SubmissionsController < AdminController
     flash[:alert] = 'Oops! You may have submitted invalid format review data. Please check that the submission\'s format review information is correct.'
   end
 
+  def update_final_submission
+    @submission = Submission.find(params[:id])
+    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
+    response = final_submission_update_service.waiting_for_final_submission
+    redirect_to response[:redirect_path]
+    flash[:notice] = response[:msg]
+  rescue ActiveRecord::RecordInvalid
+    @view = Admin::SubmissionFormView.new(@submission, session)
+    render :edit
+  rescue SubmissionStatusGiver::AccessForbidden
+    redirect_to session.delete(:return_to)
+    flash[:alert] = 'This submission\'s final submission information has already been evaluated.'
+  rescue SubmissionStatusGiver::InvalidTransition
+    redirect_to session.delete(:return_to)
+    flash[:alert] = 'Oops! You may have submitted invalid final submission data. Please check that the submission\'s final submission information is correct.'
+  end
+
   def record_final_submission_response
     @submission = Submission.find(params[:id])
-    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission)
+    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     response = final_submission_update_service.respond_final_submission
+    redirect_to response[:redirect_path]
+    flash[:notice] = response[:msg]
+  rescue ActiveRecord::RecordInvalid
+    @view = Admin::SubmissionFormView.new(@submission, session)
+    render :edit
+  rescue SubmissionStatusGiver::AccessForbidden
+    redirect_to session.delete(:return_to)
+    flash[:alert] = 'This submission\'s final submission information has already been evaluated.'
+  rescue SubmissionStatusGiver::InvalidTransition
+    redirect_to session.delete(:return_to)
+    flash[:alert] = 'Oops! You may have submitted invalid final submission data. Please check that the submission\'s final submission information is correct.'
+  end
+
+  def record_send_back_to_final_submission
+    @submission = Submission.find(params[:id])
+    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
+    response = final_submission_update_service.respond_send_back_to_final_submission
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
@@ -114,7 +158,7 @@ class Admin::SubmissionsController < AdminController
 
   def update_waiting_to_be_released
     @submission = Submission.find(params[:id])
-    released_submission_service = FinalSubmissionUpdateService.new(params, @submission)
+    released_submission_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     response = released_submission_service.respond_waiting_to_be_released
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
@@ -132,7 +176,7 @@ class Admin::SubmissionsController < AdminController
   def update_released
     @submission = Submission.find(params[:id])
     session[:return_to] = "/admin/#{@submission.degree_type.slug}"
-    released_submission_service = FinalSubmissionUpdateService.new(params, @submission)
+    released_submission_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     response = released_submission_service.respond_released_submission
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
@@ -186,5 +230,30 @@ class Admin::SubmissionsController < AdminController
       flash[:alert] = 'There was a problem refreshing your academic plan information.  Please contact your administrator'
     end
     redirect_to admin_edit_submission_path(@submission.id)
+  end
+
+  def send_email_reminder
+    @submission = Submission.find(params[:id])
+    @committee_member = @submission.committee_members.find(params[:committee_member_id])
+    raise 'Email was not sent.' unless @committee_member.reminder_email_authorized?
+
+    if @committee_member.committee_role.name == 'Special Member' || @committee_member.committee_role.name == 'Special Signatory'
+      WorkflowMailer.special_committee_review_request(@submission, @committee_member).deliver
+    else
+      WorkflowMailer.committee_member_review_reminder(@submission, @committee_member).deliver
+    end
+  end
+
+  private
+
+  def most_relevant_file_links
+    links = []
+    if @submission.final_submission_files.any?
+      @submission.final_submission_files.map do |f|
+        link = link_to f.asset_identifier, admin_final_submission_file_path(f.id), 'target': '_blank', 'data-no-turbolink': true
+        links.push(link)
+      end
+    end
+    links.join(" ")
   end
 end

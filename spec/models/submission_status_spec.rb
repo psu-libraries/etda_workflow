@@ -80,6 +80,24 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.final_submission_approved_at = Time.now
     expect(described_class.new(submission)).not_to be_collecting_final_submission_files_rejected
   end
+  it 'responds to #waiting_for_committee_review?' do
+    submission.status = 'waiting for committee review'
+    expect(described_class.new(submission)).to be_waiting_for_committee_review
+    submission.status = 'waiting for committee rev'
+    expect(described_class.new(submission)).not_to be_waiting_for_committee_review
+  end
+  it 'responds to #waiting_for_head_of_program_review?' do
+    submission.status = 'waiting for head of program review'
+    expect(described_class.new(submission)).to be_waiting_for_head_of_program_review
+    submission.status = 'waiting for head of program re'
+    expect(described_class.new(submission)).not_to be_waiting_for_head_of_program_review
+  end
+  it 'responds to #waiting_for_committee_review_rejected?' do
+    submission.status = 'waiting for committee review rejected'
+    expect(described_class.new(submission)).to be_waiting_for_committee_review_rejected
+    submission.status = 'waiting for committee rev'
+    expect(described_class.new(submission)).not_to be_waiting_for_committee_review_rejected
+  end
   it 'responds to #waiting_for_final_submission_response?' do
     submission.status = 'waiting for final submission response'
     expect(described_class.new(submission)).to be_waiting_for_final_submission_response
@@ -133,13 +151,25 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.status = ''
     expect(described_class.new(submission)).not_to be_beyond_waiting_for_format_review_response
   end
-  it 'responds to #beyond_collecting_final_submission_files?' do
-    submission.status = 'released for publication'
-    expect(described_class.new(submission)).to be_beyond_collecting_final_submission_files
+  it 'responds to #beyond_waiting_for_committee_review?' do
+    submission.status = 'waiting for head of program review'
+    expect(described_class.new(submission)).to be_beyond_waiting_for_committee_review
     submission.status = 'waiting for final submission response'
-    expect(described_class.new(submission)).to be_beyond_collecting_final_submission_files
-    submission.status = ''
-    expect(described_class.new(submission)).not_to be_beyond_waiting_for_format_review_response
+    expect(described_class.new(submission)).not_to be_beyond_waiting_for_committee_review
+    submission.status = 'waiting for format review response'
+    expect(described_class.new(submission)).not_to be_beyond_waiting_for_committee_review
+    submission.status = 'waiting for publication release'
+    expect(described_class.new(submission)).to be_beyond_waiting_for_committee_review
+  end
+  it 'responds to #beyond_waiting_for_head_of_program_review?' do
+    submission.status = 'waiting for publication release'
+    expect(described_class.new(submission)).to be_beyond_waiting_for_head_of_program_review
+    submission.status = 'waiting for final submission response'
+    expect(described_class.new(submission)).not_to be_beyond_waiting_for_head_of_program_review
+    submission.status = 'waiting for format review response'
+    expect(described_class.new(submission)).not_to be_beyond_waiting_for_head_of_program_review
+    submission.status = 'waiting for publication release'
+    expect(described_class.new(submission)).to be_beyond_waiting_for_head_of_program_review
   end
   it 'responds to #beyond_waiting_for_final_submission_response?' do
     submission.status = 'waiting for publication release'

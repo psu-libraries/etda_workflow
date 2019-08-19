@@ -37,7 +37,6 @@ RSpec.describe "Admins can run reports", js: true do
       expect(page).to have_link('Reports')
       page.find('a#reports_menu').trigger('click')
       sleep(5)
-      expect(page).to have_link('Committee Report')
       expect(page).to have_link('Custom Report')
     end
   end
@@ -49,7 +48,7 @@ RSpec.describe "Admins can run reports", js: true do
       click_link('Committee Report')
     end
 
-    it 'displays the Committee Report page' do
+    xit 'displays the Committee Report page' do
       expect(page).to have_content('Committee Report')
       expect(page).to have_button('Select Visible')
       expect(page).to have_content('Submission1')

@@ -14,7 +14,6 @@ RSpec.describe "Manage Contact Information", js: true do
       author = current_author
       visit author_root_path(author)
       click_link 'Update My Contact Information'
-      sleep(3)
       expect(page).to have_current_path(edit_author_author_path(author))
       expect(page).to have_content("Update Contact Information")
       expect(page).not_to have_content(author.access_id)
@@ -22,7 +21,6 @@ RSpec.describe "Manage Contact Information", js: true do
       expect(page).to have_content(author.last_name)
       expect(page).to have_content(author.first_name)
       expect(page).to have_content(author.middle_name)
-      expect(page).to have_checked_field(author.opt_out_email) if current_partner.graduate?
       if current_partner.graduate?
         expect(page).to have_field('Phone number')
         expect(page).to have_field('Address 1')
@@ -37,9 +35,7 @@ RSpec.describe "Manage Contact Information", js: true do
       fill_in 'Alternate email address', with: 'myalternate@gmail.com'
       expect(page).to have_link('Cancel')
       click_button('Save')
-      sleep(5)
       expect(page).to have_current_path(author_root_path)
-      sleep(3)
       # expect(page).to have_content('Contact information updated successfully')
       visit edit_author_author_path(author)
       expect(page).to have_field('Alternate email address', with: 'myalternate@gmail.com')
@@ -70,7 +66,6 @@ RSpec.describe "Manage Contact Information", js: true do
       click_button('Save')
       sleep(5)
       expect(page).to have_current_path(author_root_path)
-      sleep(3)
       author.reload
       expect(author.psu_idn).not_to be_blank
       # expect(page).to have_content('Contact information updated successfully')
