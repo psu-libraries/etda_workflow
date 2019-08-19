@@ -179,7 +179,7 @@ namespace :yarn do
   task :install do
     puts '***running yarn install'
     on roles (:web) do 
-      execute "cd #{release_path} && yarn install"
+      execute "cd #{release_path} && yarn install --ignore-engines"
     end
   end
 
