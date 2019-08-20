@@ -188,3 +188,7 @@ group :test do
 
   gem 'webmock'
 end
+
+group :production do
+  gem 'newrelic_rpm'
+end
