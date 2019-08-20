@@ -190,5 +190,5 @@ group :test do
 end
 
 group :production do
-  gem 'newrelic_rpm' , '< 6.5'
+  gem 'newrelic_rpm' , '< 6.4'
 end
