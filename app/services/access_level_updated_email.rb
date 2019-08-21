@@ -2,7 +2,7 @@ class AccessLevelUpdatedEmail
 attr_reader :old_submission
 
 def self.cataloging_email_address
-  'ul-etd-release@lists.psu.edu'
+  'ul-etda-released@pennstateoffice365.onmicrosoft.com'
 end
 
 def self.otm_email_address
