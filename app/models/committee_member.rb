@@ -87,7 +87,7 @@ class CommitteeMember < ApplicationRecord
 
   def email=(new_email)
     self[:email] = new_email
-    self.access_id = email.gsub('@psu.edu', '').strip if email.match?(/.*@psu.edu/)
+    self.access_id = LdapUniversityDirectory.new.retrieve_committee_access_id(new_email)
   end
 
   def committee_role_id=(new_committee_role_id)

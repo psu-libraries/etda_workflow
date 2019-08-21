@@ -51,6 +51,15 @@ class LdapUniversityDirectory
     mapped_attributes.first
   end
 
+  def retrieve_committee_access_id(psu_email)
+    ldap_record = directory_lookup('psMailID', psu_email)
+    mapped_attributes = LdapResult.new(ldap_record: ldap_record,
+                                       attribute_map: LdapResultsMap::COMMITTEE_LDAP_MAP).map_directory_info
+    return nil if mapped_attributes.blank?
+
+    mapped_attributes.first[:access_id]
+  end
+
   def authors_confidential_status(this_access_id)
     attr = get_ldap_attribute(this_access_id, 'psconfhold')
     return false if attr.nil?
