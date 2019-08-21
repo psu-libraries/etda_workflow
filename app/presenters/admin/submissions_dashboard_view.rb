@@ -8,22 +8,43 @@ class Admin::SubmissionsDashboardView
   end
 
   def filters
-    [
-      format_review_is_incomplete_filter,
-      format_review_is_submitted_filter,
-      format_review_is_completed_filter,
-      final_submission_is_pending_filter,
-      committee_review_is_rejected_filter,
-      final_submission_is_submitted_filter,
-      final_submission_is_incomplete_filter,
-      final_submission_is_approved_filter,
-      released_for_publication_filter,
-      final_is_restricted_institution_filter,
-      final_is_withheld_filter
-    ]
+    standard_filters unless current_partner.honors?
+    honors_filters if current_partner.honors?
   end
 
   private
+
+    def standard_filters
+      [
+        format_review_is_incomplete_filter,
+        format_review_is_submitted_filter,
+        format_review_is_completed_filter,
+        final_submission_is_submitted_filter,
+        final_submission_is_incomplete_filter,
+        final_submission_is_pending_filter,
+        committee_review_is_rejected_filter,
+        final_submission_is_approved_filter,
+        released_for_publication_filter,
+        final_is_restricted_institution_filter,
+        final_is_withheld_filter
+      ]
+    end
+
+    def honors_filters
+      [
+        format_review_is_incomplete_filter,
+        format_review_is_submitted_filter,
+        format_review_is_completed_filter,
+        final_submission_is_pending_filter,
+        committee_review_is_rejected_filter,
+        final_submission_is_submitted_filter,
+        final_submission_is_incomplete_filter,
+        final_submission_is_approved_filter,
+        released_for_publication_filter,
+        final_is_restricted_institution_filter,
+        final_is_withheld_filter
+      ]
+    end
 
     def format_review_is_incomplete_filter
       submissions = Submission.joins(:degree).where('degrees.degree_type_id' => @degree_type.id).format_review_is_incomplete

@@ -53,3 +53,4 @@ production:
 
 development:
   <<: *default
+  database: "etda_workflow"
