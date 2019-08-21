@@ -1,3 +1,5 @@
+Dear <%= @submission.author.full_name %>,
+
 <%= t( "#{current_partner.id}.partner.email.committee_rejected_author.message",
        degree_type: @submission.degree_type,
        partner_name: current_partner.name,

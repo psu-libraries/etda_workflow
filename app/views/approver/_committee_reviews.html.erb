@@ -9,6 +9,7 @@
           <thead>
           <tr>
             <th>Name</th>
+            <th>Committee Role</th>
             <th>Review Status</th>
             <th>Notes</th>
           </tr>
@@ -17,7 +18,8 @@
           <% @submission.committee_members.each do |member| %>
             <tr>
               <td><%= member.name %></td>
-              <td><%= member.status %></td>
+              <td><%= member.committee_role.name %></td>
+              <td><%= member.status ? member.status.capitalize : nil %></td>
               <td><%= member.notes %></td>
             </tr>
           <% end %>

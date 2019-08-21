@@ -26,12 +26,32 @@ en:
         url: 'https://millennium-scholars-explore.libraries.psu.edu'
         address: millennium@psu.edu
         signature: 'Millennium Scholars Program <br />130 Ritenour Building<br /> University Park, PA 16802'
+        final_submission_rejected:
+          message: |
+                    The electronic %{degree_type} submitted by you has been rejected by the %{partner_name}.
+                    Please meet with your thesis advisor to discuss and make the necessary edits.
+                    Resubmit your thesis when directed by the thesis administrator.
 
+                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
+                    You may also call (814)867-5105, or send mail to:
+                    Millennium Scholars Program
+                    130 Ritenour Building
+                    University Park, PA  16802
+        final_submission_approved:
+          message: |
+                    Your thesis has been been approved for committee review.
+                    You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
+
+                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
+                    You may also call (814)867-5105, or send mail to:
+                    Millennium Scholars Program
+                    130 Ritenour Building
+                    University Park, PA  16802
         format_review_received:
           message: |
-                    Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with
-                    you when the review has been completed.
+                    Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with you when the review has been completed.
                     You will receive the results of the review by email within two weeks.
+
                     If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
                     Millennium Scholars Program
@@ -39,8 +59,9 @@ en:
                     University Park, PA  16802
         final_submission_received:
           message: |
-                    Thank you for submitting your final %{degree_type}.  You will be notified by email of your MSPT approval
-                    or if changes are required within 2-3 weeks after submitting your final.
+                    Thank you for submitting your final %{degree_type}.
+                    You will be notified by email of your thesis approval or if changes are required within 2-3 weeks after submitting your final.
+
                     If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
                     Millennium Scholars Program
@@ -48,9 +69,15 @@ en:
                     University Park, PA  16802
         committee_member_review_requested:
           message: |
-                    Hello %{committee_member_name}
-                    The Millennium Scholars Program and %{full_name} need you to review and digitally sign a proposed work that you have been a part of or have reviewed. Please login to %{review_url} and complete this request.
+                    Hello %{committee_member_name},
+
+                    The Millennium Scholars Program and %{full_name} need you to review and digitally sign a proposed work that you have been a
+                    part of or have reviewed.
+                    Please login to %{review_url} and complete this request.
+                    We ask that you complete this review within two weeks from receipt of this request.
+                    If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
                     If you have any further questions please contact: millennium@psu.edu.
+
                     Sincerely,
                     The Millennium Scholars Program
 
@@ -63,6 +90,7 @@ en:
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
                     Please visit this URL to conduct your final review:
                     %{review_url}
+                    If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
@@ -71,7 +99,8 @@ en:
                     University Park, PA  16802
         committee_rejected_admin:
           message: |
-                    The committee for %{author_name}'s %{degree_type} has rejected their submission.  It is now under review by administrators.
+                    The committee for %{author_name}'s %{degree_type} has rejected their submission.
+                    The submission will automatically be available for the student to edit and resubmit for committee approval.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
@@ -80,26 +109,27 @@ en:
                     University Park, PA  16802
         committee_rejected_author:
           message: |
-                    The committee reviewing your %{degree_type} has rejected your submission.  It is now under review by administrators.
+                    The committee reviewing your %{degree_type} has rejected your submission.
+                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for
+                    your committee to review.
+                    For additional information regarding the rejection please consult your %{degree_type} adviser.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
                     Millennium Scholars Program
                     130 Ritenour Building
                     University Park, PA  16802
-        final_submission_approved:
+        committee_approved:
           message: |
-                    Your MSPT has been reviewed and approved. Everything is in order, and you need do nothing further for our office.
-                    After graduation, the MSPT will be available through Penn State’s MSPT database %{url} and will be sent to ProQuest/UMI Dissertation Services for processing unless you have chosen to restrict access to it. If it is restricted, it will automatically change to Open Access after two years.
-                    The access level for your %{degree_type} is: %{access_level}.
-                    Please accept our congratulations as you complete your degree (commencement information can be found online as http://commencement.psu.edu/).
+                    Congratulations!  Your thesis has been approved by its committee.
+                    Please accept our congratulations as you complete your degree.
+                    (commencement information can be found online as http://commencement.psu.edu/).
+
                     If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
                     Millennium Scholars Program
                     130 Ritenour Building
                     University Park, PA  16802
-                    cc:%{author_email}
-                    %{committee_email_list}
         access_level_updated:
           message: |
                     The Millennium Scholars Program has changed the availability of the following MSPT as shown below:

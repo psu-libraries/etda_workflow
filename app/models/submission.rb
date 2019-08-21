@@ -121,9 +121,9 @@ class Submission < ApplicationRecord
     end
   end
 
-  def reset_committee_member_statuses
-    committee_members.each do |cm|
-      cm.update_attributes!(status: "")
+  def reset_committee_reviews
+    committee_members.each do |committee_member|
+      committee_member.update_attributes! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
     end
   end
 
@@ -323,13 +323,15 @@ class Submission < ApplicationRecord
   end
 
   def send_initial_committee_member_emails
-    voting_committee_members.each do |committee_member|
+    committee_members.each do |committee_member|
+      next if committee_member.committee_role.name == 'Program Head/Chair'
+
       if committee_member.committee_role.name == 'Special Member' || committee_member.committee_role.name == 'Special Signatory'
         WorkflowMailer.special_committee_review_request(self, committee_member).deliver
       else
         WorkflowMailer.committee_member_review_request(self, committee_member).deliver
       end
-      CommitteeReminderWorker.perform_in(10.days, [id, committee_member.id])
+      CommitteeReminderWorker.perform_in(10.days, id, committee_member.id)
     end
   end
 
@@ -369,7 +371,6 @@ class Submission < ApplicationRecord
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
       update_attribute(:committee_review_rejected_at, DateTime.now)
-      reset_committee_review
       committee_rejected_emails
     end
   end
@@ -386,14 +387,7 @@ class Submission < ApplicationRecord
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
       update_attribute(:head_of_program_review_rejected_at, DateTime.now)
-      reset_committee_review
       committee_rejected_emails
-    end
-  end
-
-  def reset_committee_review
-    committee_members.each do |committee_member|
-      committee_member.update_attributes! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
     end
   end
 
@@ -407,7 +401,7 @@ class Submission < ApplicationRecord
   end
 
   def deliver_final_emails
-    WorkflowMailer.final_submission_approved(self, I18n.t("#{current_partner.id}.partner.email.url")).deliver_now if degree.degree_type.approval_configuration.email_authors
+    WorkflowMailer.committee_approved(self).deliver_now if degree.degree_type.approval_configuration.email_authors
     WorkflowMailer.pay_thesis_fee(self).deliver if current_partner.honors?
   end
 end

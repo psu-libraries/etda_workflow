@@ -614,7 +614,7 @@ RSpec.describe Author::SubmissionView do
       before { submission.status = 'waiting for committee review' }
 
       it 'to display results page' do
-        expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[Review Committee Review.*\]/)
+        expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[My Committee Review.*\]/)
       end
     end
 
@@ -622,7 +622,7 @@ RSpec.describe Author::SubmissionView do
       before { submission.status = 'waiting for head of program review' }
 
       it 'to display results page' do
-        expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[Review Committee Review.*\]/)
+        expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[My Committee Review.*\]/)
       end
     end
 
@@ -630,7 +630,15 @@ RSpec.describe Author::SubmissionView do
       before { submission.status = 'waiting for publication release' }
 
       it 'to display results page' do
-        expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[Review Committee Review.*\]/)
+        expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[My Committee Review.*\]/)
+      end
+    end
+
+    context "when waiting for committee review rejected" do
+      before { submission.status = 'waiting for committee review rejected' }
+
+      it 'to display review and update links' do
+        expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[My Committee Review.*\[Update.*\]/)
       end
     end
   end

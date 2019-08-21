@@ -63,16 +63,29 @@
           <%= f.button :submit, "Submit Review" %>
           <% if @review_complete %>
             <div class="review-message">
-              <div class="review-complete">
-                <% completed_on = @submission.head_of_program_review_accepted_at || @submission.head_of_program_review_rejected_at || @submission.committee_review_accepted_at || @submission.committee_review_rejected_at %>
-                <%= completed_on.strftime("Review Completed on %m/%d/%Y at %I:%M%p") %>
-              </div>
-              <div>
-                Committee <%= @approved ? "approved" : "rejected" %> the submission.
-              </div>
-              <div class="altering-submission">
-                If your response needs to be altered, please <%= link_to "contact the site admin.", author_email_contact_form_new_path %>
-              </div>
+              <% if @view.approved? %>
+                <div class="review-complete">
+                  <% completed_on = @submission.head_of_program_review_accepted_at || @submission.committee_review_accepted_at %>
+                  <%= completed_on.strftime("Review Completed on %m/%d/%Y at %I:%M%p") %>
+                </div>
+                <div>
+                  Committee <strong>approved</strong> the submission.
+                </div>
+                <div class="altering-submission">
+                  If your response needs to be altered, please <%= link_to "contact the site admin.", author_email_contact_form_new_path %>
+                </div>
+              <% else %>
+                <div class="review-rejected">
+                  <% completed_on = @submission.head_of_program_review_rejected_at || @submission.committee_review_rejected_at %>
+                  <%= completed_on.strftime("Review Completed on %m/%d/%Y at %I:%M%p") %>
+                </div>
+                <div>
+                  Committee <strong>rejected</strong> the submission.  The student will review any notes the committee left for them, make changes, and resubmit their work.  Upon resubmission, you will be notified to review this work again.
+                </div>
+                <div class="altering-submission">
+                  If you have questions, please <%= link_to "contact the site admin.", author_email_contact_form_new_path %>
+                </div>
+              <% end %>
             </div>
           <% end %>
         </div>

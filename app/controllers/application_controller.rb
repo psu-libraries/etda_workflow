@@ -46,6 +46,10 @@ class ApplicationController < ActionController::Base
     session[:user_name] = current_remote_user if current_remote_user && session[:user_name].blank?
   end
 
+  def docs
+    render '/docs/index.html', layout: 'home'
+  end
+
   def login
     Rails.logger.info 'LOGGING IN APP CONTROLLER'
     # webaccess_login_url = WebAccess.new(request.env['HTTP_REFERER']).login_url

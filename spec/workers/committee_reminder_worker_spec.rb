@@ -9,7 +9,7 @@ RSpec.describe CommitteeReminderWorker do
 
   context "when approval process starts" do
     it 'queues to sidekiq via worker' do
-      expect { described_class.perform_in(5.days, [submission.id, committee_member.id]) }.to change { Sidekiq::Worker.jobs.size }.by(1)
+      expect { described_class.perform_in(5.days, submission.id, committee_member.id) }.to change { Sidekiq::Worker.jobs.size }.by(1)
     end
 
     it 'performs task' do
@@ -22,7 +22,7 @@ RSpec.describe CommitteeReminderWorker do
   context "when submission no longer exists" do
     it 'NoMethodError is returned' do
       Sidekiq::Testing.inline! do
-        expect { described_class.perform_async(submission.id + 1, committee_member.id) }.to raise_error(NoMethodError)
+        expect { described_class.perform_async(submission.id + 1, committee_member.id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

@@ -1,6 +1,6 @@
 Dear <%= @author.full_name %>,
 
-<%= t( "#{current_partner.id}.partner.email.final_submission_approved.message",
+<%= t( "#{current_partner.id}.partner.email.final_submission_rejected.message",
        access_level: @submission.current_access_level.label,
        degree_type: @submission.degree_type,
        partner_name: current_partner.name,

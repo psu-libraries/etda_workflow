@@ -131,6 +131,7 @@ namespace :deploy do
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/ldap.yml #{release_path}/config/ldap.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/sidekiq.yml #{release_path}/config/sidekiq.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/redis.yml #{release_path}/config/redis.yml"
+      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/newrelic.yml #{release_path}/config/newrelic.yml"
       execute "ln -sf /etda_workflow/data/#{fetch(:stage)}/etda_workflow_#{fetch(:partner)}/ #{release_path}/workflow_data_files"
       execute "ln -sf /etda_workflow/data/#{fetch(:stage)}/etda_explore_#{fetch(:partner)}/ #{release_path}/explore_data_files"
     end
@@ -146,7 +147,6 @@ namespace :deploy do
 
   after "deploy:updated", "deploy:migrate"
 
-end
 
 # Used to keep x-1 instances of ruby on a machine.  Ex +4 leaves 3 versions on a machine.  +3 leaves 2 versions
 namespace :rbenv_custom_ruby_cleanup do
@@ -164,7 +164,7 @@ namespace :yarn do
   task :install do
     puts '***running yarn install'
     on roles (:web) do 
-      execute "cd #{release_path} && yarn install"
+      execute "cd #{release_path} && yarn install --ignore-engines"
     end
   end
 

@@ -24,7 +24,7 @@ class Semester
 
   def self.all_years
     this_year = Time.zone.today.year
-    Semester.new.build_year_list(1998, this_year + 3)
+    Semester.new.build_year_list(1998, this_year + 5)
   end
 
   def self.graduation_years

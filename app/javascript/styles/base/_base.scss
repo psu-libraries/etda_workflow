@@ -700,6 +700,10 @@ a.cancel-link{
   color: green;
 }
 
+.review-rejected {
+  color: red;
+}
+
 .altering-submission {
   padding-top: 10px;
   font-style: italic;
@@ -723,7 +727,11 @@ a.cancel-link{
 }
 
 .funding-box {
-  div {
-    margin-left: 20px;
-  }
+    margin-left: 10px;
+}
+
+//Docs page styles
+img.docs-image {
+  border: 10px solid #ddd;
+  border-radius: 5px;
 }

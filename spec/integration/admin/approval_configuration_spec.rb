@@ -2,11 +2,13 @@ RSpec.describe "Editing approval configuration", js: true do
   require 'integration/integration_spec_helper'
 
   let!(:degree) { FactoryBot.create(:degree, name: "Doctor of Philosophy", is_active: true) }
-  let!(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type) }
+  let!(:approval_configuration_1) { FactoryBot.create(:approval_configuration, degree_type: DegreeType.first) }
+
+  let!(:approval_configuration_2) { FactoryBot.create(:approval_configuration, degree_type: DegreeType.second) } if current_partner.graduate?
 
   before do
     webaccess_authorize_admin
-    visit edit_admin_approval_configuration_path(approval_configuration)
+    visit edit_admin_approval_configuration_path(approval_configuration_1)
   end
 
   it 'has approval configuration content' do
@@ -41,10 +43,10 @@ RSpec.describe "Editing approval configuration", js: true do
     sleep 3
     expect(page).to have_content('Manage Approval Configurations')
     # expect(ApprovalConfiguration.find(approval_configuration.id).approval_deadline_on).to eq Date.today # Determining use case for approval configuration
-    expect(ApprovalConfiguration.find(approval_configuration.id).use_percentage).to eq true
-    expect(ApprovalConfiguration.find(approval_configuration.id).configuration_threshold).to eq 80
-    expect(ApprovalConfiguration.find(approval_configuration.id).head_of_program_is_approving).to eq false if current_partner.graduate?
-    expect(ApprovalConfiguration.find(approval_configuration.id).email_admins).to eq true
-    expect(ApprovalConfiguration.find(approval_configuration.id).email_authors).to eq true
+    expect(ApprovalConfiguration.find(approval_configuration_1.id).use_percentage).to eq true
+    expect(ApprovalConfiguration.find(approval_configuration_1.id).configuration_threshold).to eq 80
+    expect(ApprovalConfiguration.find(approval_configuration_1.id).head_of_program_is_approving).to eq false if current_partner.graduate?
+    expect(ApprovalConfiguration.find(approval_configuration_1.id).email_admins).to eq true
+    expect(ApprovalConfiguration.find(approval_configuration_1.id).email_authors).to eq true
   end
 end
