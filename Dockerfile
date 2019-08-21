@@ -22,7 +22,7 @@ RUN echo  "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config &
     gem install bundler
 
 RUN bundle package --all
-RUN bundle install 
+RUN bundle install
 
 FROM ruby:2.4.6
 
@@ -49,7 +49,7 @@ RUN ln -sf /usr/local/bin/node /usr/local/bin/nodejs \
 
 # System Dependencies
 RUN apt-get update && \ 
-  apt-get install --no-install-recommends mariadb-client clamav clamdscan clamav-daemon wget libpng-dev make -y && \
+  apt-get install mariadb-client clamav clamdscan clamav-daemon wget libpng-dev make -y && \
   rm -rf /var/lib/apt/lists/*
 
 # Configure ClamAV
@@ -84,7 +84,11 @@ COPY yarn.lock /etda_workflow
 COPY package.json /etda_workflow
 RUN yarn
 
+
 COPY --chown=etda . /etda_workflow
+
+# Needed for phantomjs to work
+ENV OPENSSL_CONF=/etc/ssl/
 
 RUN mkdir -p tmp && chown etda tmp
 

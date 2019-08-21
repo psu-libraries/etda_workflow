@@ -1,3 +1,4 @@
+public/assets
 vendor/cache
 .git
 .bundle
@@ -5,3 +6,5 @@ vendor/cache
 .yarn
 .cache
 node_modules
+tmp
+
