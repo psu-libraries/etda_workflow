@@ -103,7 +103,7 @@ gem 'carrierwave'
 gem 'clam_scan'
 
 # For image resizing
-gem 'mini_magick'
+gem "mini_magick", ">= 4.9.4"
 
 # Easily handle nested forms
 gem 'cocoon'
