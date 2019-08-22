@@ -59,7 +59,7 @@ class LdapUniversityDirectory
 
     mapped_attributes.first[:access_id]
   rescue UnreachableError
-    return nil
+    nil
   end
 
   def authors_confidential_status(this_access_id)
