@@ -147,6 +147,8 @@ namespace :deploy do
 
   after "deploy:updated", "deploy:migrate"
 
+end
+
 
 # Used to keep x-1 instances of ruby on a machine.  Ex +4 leaves 3 versions on a machine.  +3 leaves 2 versions
 namespace :rbenv_custom_ruby_cleanup do
@@ -195,4 +197,3 @@ namespace :deploy_all do
 end
 
 task deploy_all: 'deploy_all:deploy'
-# after "deploy_all:deploy", "apache:restart"
