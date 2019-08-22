@@ -68,7 +68,8 @@ RUN wget -O /var/lib/clamav/main.cvd http://database.clamav.net/main.cvd && \
   
 RUN sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/clamd.conf && \
     echo "TCPSocket 3310" >> /etc/clamav/clamd.conf && \
-    sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/freshclam.conf
+    sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/freshclam.conf && \
+    sed -i 's/^LocalSocket .*$/LocalSocket \/tmp\/clamd.ctl/g' /etc/clamav/clamd.conf
 
 RUN useradd -u 10000 etda -d /etda_workflow
 RUN usermod -G clamav etda
@@ -78,7 +79,9 @@ RUN chown etda /etda_workflow
 # TODO move this up after figuring it out 
 RUN touch /var/log/clamav/clamav.log && \
     chown clamav:clamav /var/log/clamav/clamav.log && \
-    chmod 775 /var/log/clamav/clamav.log
+    chmod 775 /var/log/clamav/clamav.log && \
+    chown etda /var/run/clamav
+
 
 USER etda
 
