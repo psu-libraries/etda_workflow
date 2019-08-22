@@ -11,7 +11,7 @@ steps:
     channel: djb44-dev
     username: drone
     template: >
-        starting this thing
+      {{build.number}} is starting. ({{build.link}})
 
 
 - name: build
@@ -129,6 +129,7 @@ steps:
     webhook:
       from_secret: slack_webhook
     channel: djb44-dev
+    username: drone
     # template: >
     #   {{#success build.status}}
     #     build {{build.number}} succeeded. Good job.
