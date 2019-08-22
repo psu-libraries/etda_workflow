@@ -7,11 +7,13 @@
 # Ignore bundler config.
 /.bundle
 vendor/gems
+vendor/bundle
 
 .yarn
 .cache
 .config
 .mutagen
+.gem
 
 # Ignore all logfiles and tempfiles.
 /.idea/*
