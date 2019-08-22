@@ -3,6 +3,17 @@ kind: pipeline
 name: default
 
 steps:
+- name: start
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: slack_webhook
+    channel: djb44-dev
+    username: drone
+    template: >
+        starting this thing
+
+
 - name: build
   image: docker
   environment:
