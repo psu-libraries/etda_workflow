@@ -75,6 +75,11 @@ RUN usermod -G clamav etda
 
 RUN chown etda /etda_workflow
 
+# TODO move this up after figuring it out 
+RUN touch /var/log/clamav/clamav.log && \
+    chown clamav:clamav /var/log/clamav/clamav.log && \
+    chmod 775 /var/log/clamav/clamav.log
+
 USER etda
 
 # COPY --from=ruby /usr/local/bundle /usr/local/bundle
@@ -83,7 +88,7 @@ COPY --from=ruby /etda_workflow /etda_workflow
 # Install javascript Dependencies before copying up source code
 COPY yarn.lock /etda_workflow
 COPY package.json /etda_workflow
-RUN yarn --froze-lockfile
+RUN yarn --frozen-lockfile
 
 
 COPY --chown=etda . /etda_workflow
@@ -94,6 +99,7 @@ ENV OPENSSL_CONF=/etc/ssl/
 RUN mkdir -p tmp && chown etda tmp
 
 USER etda
+
 
 # ensure tmp directory exists
 
