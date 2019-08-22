@@ -35,7 +35,7 @@
    2.  `bundle exec PARTNER=honors rspec` tests Honors College instance
    3.  `PARTNER=milsch bundle exec rspec` tests Millennium Scholars instance
 
-   Additionally, there are some integration tests that use  javascript and some component tests that run against Penn State's LDAP directory service: rspec --tag glacial --tag ldap. Glacial are excluded by default when running in development because they are so slow.  Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.  When in development, you must edit the development.rb file in config/environments and change MockUniversityDirectory to LdapUniversityDirectory to test a true ldap call.
+   Additionally, there are some integration tests that use  javascript and some component tests that run against Penn State's LDAP directory service: rspec --tag glacial --tag ldap. Glacial are excluded by default when running in development because they are so slow.  Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.  When in development or testing, you must edit the development.rb or test.rb file in config/environments and change MockUniversityDirectory to LdapUniversityDirectory to test a true ldap call.
 
 * Services (job queues, cache servers, search engines, etc.)
 
