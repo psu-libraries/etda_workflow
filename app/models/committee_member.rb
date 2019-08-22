@@ -87,7 +87,8 @@ class CommitteeMember < ApplicationRecord
 
   def email=(new_email)
     self[:email] = new_email
-    self.access_id = LdapUniversityDirectory.new.retrieve_committee_access_id(new_email)
+    new_access_id = LdapUniversityDirectory.new.retrieve_committee_access_id(new_email)
+    self.access_id = new_access_id unless new_access_id.blank?
   end
 
   def committee_role_id=(new_committee_role_id)

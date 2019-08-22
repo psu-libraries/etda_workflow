@@ -58,6 +58,8 @@ class LdapUniversityDirectory
     return nil if mapped_attributes.blank?
 
     mapped_attributes.first[:access_id]
+  rescue UnreachableError
+    return nil
   end
 
   def authors_confidential_status(this_access_id)
@@ -112,7 +114,7 @@ class LdapUniversityDirectory
                            password: ldap_configuration['password'] }) do |connection|
       yield connection
     end
-  rescue Net::LDAP::LdapError
+  rescue Net::LDAP::Error
     raise UnreachableError
   end
 

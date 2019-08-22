@@ -136,6 +136,15 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.access_id).to eq 'test123'
       end
     end
+
+    context 'when nil is returned' do
+      it "doesn't update access_id" do
+        cm.access_id = 'test123'
+        allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
+        cm.update_attributes email: 'test123@psu.edu'
+        expect(cm.access_id).to eq 'test123'
+      end
+    end
   end
 
   describe 'update_last_reminder_at' do
@@ -221,7 +230,7 @@ RSpec.describe CommitteeMember, type: :model do
     end
   end
 
-  context 'email' do
+  context 'email validation' do
     let(:submission) { FactoryBot.create(:submission) }
     let(:cm) { described_class.new }
     let(:committee_role) { FactoryBot.create(:committee_role) }
