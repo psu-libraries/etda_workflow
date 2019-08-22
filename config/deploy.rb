@@ -166,7 +166,7 @@ namespace :yarn do
   task :install do
     puts '***running yarn install'
     on roles (:web) do 
-      execute "cd #{release_path} && yarn install --ignore-engines"
+      execute "cd #{release_path} && yarn install --frozen-lockfile --production"
     end
   end
 
@@ -174,9 +174,9 @@ namespace :yarn do
   task :check do
     on roles (:web) do 
       puts '***running yarn check'
-      execute "cd #{release_path} && yarn check --integrity"
-      execute "cd #{release_path} && yarn check --verify-tree"
-      execute "cd #{release_path} && yarn check"
+      execute "cd #{release_path} && yarn check --integrity --frozen-lockfile --production"
+      execute "cd #{release_path} && yarn check --verify-tree --frozen-lockfile --production"
+      execute "cd #{release_path} && yarn check --frozen-lockfile --production"
     end
   end
 end
