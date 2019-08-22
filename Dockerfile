@@ -55,7 +55,8 @@ RUN apt-get update && \
 # Configure ClamAV
 RUN mkdir /var/run/clamav && \
     chown clamav:clamav /var/run/clamav && \
-    chmod 750 /var/run/clamav
+    chmod 750 /var/run/clamav && \
+    chmod -R 775 /var/log/clamav
 
 RUN touch  /etc/clamav/clamd.conf
 
