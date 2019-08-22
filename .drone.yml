@@ -87,7 +87,7 @@ steps:
     - export PARTNER=graduate
     - unset CI
     - bundle exec rake drone_prepare
-    - bundle exec rake spec:integration
+    # - bundle exec rake spec:integration
 
 - name: tag
   image: alpine/git
@@ -107,6 +107,13 @@ steps:
     - git add values-$DRONE_BRANCH.yaml
     - git commit -m "[skip ci] adds $DRONE_BUILD_NUMBER"
     - git push -u origin $DRONE_BRANCH
+
+- name: slackity
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: slack_webhook
+    channel: djb44-dev
 
 # - name: audit
 #   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
