@@ -110,6 +110,8 @@ steps:
 
 - name: slackity
   image: plugins/slack
+  when:
+    status: [success, failure]
   depends_on:
   - tag
   settings:
