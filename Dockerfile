@@ -83,7 +83,7 @@ COPY --from=ruby /etda_workflow /etda_workflow
 # Install javascript Dependencies before copying up source code
 COPY yarn.lock /etda_workflow
 COPY package.json /etda_workflow
-RUN yarn
+RUN yarn --froze-lockfile
 
 
 COPY --chown=etda . /etda_workflow
