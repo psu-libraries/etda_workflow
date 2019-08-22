@@ -14,4 +14,14 @@ class Approver < ApplicationRecord
   def self.current=(approver)
     Thread.current[:approver] = approver
   end
+
+  def self.status_merge(committee_member)
+    committee_member.submission.committee_members.each do |member|
+      next if member.id == committee_member.id
+
+      if member.access_id == committee_member.access_id
+        member.update_attribute :status, committee_member.status
+      end
+    end
+  end
 end

@@ -68,8 +68,6 @@ class CommitteeMember < ApplicationRecord
   end
 
   def status=(new_status)
-    return if new_status.blank?
-
     self[:status] = new_status
     case new_status
     when 'pending'
@@ -84,13 +82,6 @@ class CommitteeMember < ApplicationRecord
       self.approval_started_at = Time.zone.now
       self.rejected_at = Time.zone.now
       self.approved_at = nil
-    end
-    submission.committee_members.each do |member|
-      next if member.id == id
-
-      if member.access_id == access_id
-        member.update_attribute :status, new_status unless member.status == new_status
-      end
     end
   end
 

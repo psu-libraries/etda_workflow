@@ -30,6 +30,7 @@ class Approver::ApproversController < ApproverController
       return redirect_to(approver_path(params[:id]))
     end
     @committee_member.update_attributes!(committee_member_params)
+    Approver.status_merge(@committee_member)
     @submission.update_status_from_committee
     redirect_to approver_root_path
     flash[:notice] = 'Review submitted successfully'
