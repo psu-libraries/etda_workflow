@@ -11,7 +11,7 @@ steps:
     channel: djb44-dev
     username: drone
     template: >
-      {{build.number}} is starting. ({{build.link}})
+      build {{build.number}} is starting. ({{build.link}}). ({{build.branch}}) by {{build.author}}
 
 
 - name: build
