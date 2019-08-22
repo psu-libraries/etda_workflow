@@ -114,6 +114,14 @@ steps:
     webhook:
       from_secret: slack_webhook
     channel: djb44-dev
+    template: >
+      {{#success build.status}}
+        build {{build.number}} succeeded. Good job.
+      {{else}}
+        build {{build.number}} failed. Fix me please.
+      {{/success}}
+
+
 
 # - name: audit
 #   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
