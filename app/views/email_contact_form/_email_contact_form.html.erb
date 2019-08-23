@@ -3,7 +3,7 @@
 </div>
 <div class='row'>For assistance, please provide your contact information and a detailed message.  When your message is received, an administrator will contact you. </div>
 <br>
-<%= simple_form_for (@email_contact_form), url: :author_email_contact_form_index, validate: true do |f| %>
+<%= simple_form_for (@email_contact_form), url: :email_contact_form_index, validate: true do |f| %>
   <div class="">
     <div class="row">
       <%= f.input :full_name,  required: true, size: 40, label: 'Your Name' %>
@@ -11,9 +11,11 @@
     <div class="row">
       <%= f.input :email, required: true, size: 40, label: 'Your Email' %>
     </div>
-    <div class="row">
-      <%= f.input :psu_id, required: false, size: 20, label: 'PSU ID Number', readonly: true %>
-    </div>
+    <% if session[:user_role] == 'author' %>
+      <div class="row">
+        <%= f.input :psu_id, required: false, size: 20, label: 'PSU ID Number', readonly: true %>
+      </div>
+    <% end %>
     <div class="row">
       <%= f.input :desc, required: true, size: 40, label: 'Subject' %>
     </div>
@@ -22,7 +24,11 @@
     </div>
     <div class="row">
       <%= f.submit value: "Send", class: 'btn btn-primary' %>
-      <%= link_to 'Cancel', '/', class:  "btn btn-none" %>
+      <% if session[:user_role] == 'approver' %>
+        <%= link_to 'Cancel', '/approver', class:  "btn btn-none" %>
+      <% else %>
+        <%= link_to 'Cancel', '/', class:  "btn btn-none" %>
+      <% end %>
     </div>
 
     <span class="hidden">
