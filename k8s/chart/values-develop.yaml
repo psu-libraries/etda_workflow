@@ -62,6 +62,9 @@ mariadb:
 certmanager:
   enabled: true
 
+healthcheck:
+  enabled: true
+
 global:
   vault:
     enabled: true
