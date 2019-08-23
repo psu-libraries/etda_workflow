@@ -1,10 +1,8 @@
 class EmailContactFormController < ApplicationController
-  before_action :set_user
-
   def new
-    @email_contact_form = EmailContactForm.new(full_name: @email_contact_user.full_name, email: @email_contact_user.psu_email_address, psu_id: @email_contact_user.psu_id) if author?
-    @email_contact_form = EmailContactForm.new(email: @email_contact_user.access_id + '@psu.edu') if approver?
-    @email_contact_form = EmailContactForm.new if @email_contact_user.blank?
+    @email_contact_form = EmailContactForm.new(full_name: email_contact_user.full_name, email: email_contact_user.psu_email_address, psu_id: email_contact_user.psu_id) if author?
+    @email_contact_form = EmailContactForm.new(email: email_contact_user.access_id + '@psu.edu') if approver?
+    @email_contact_form = EmailContactForm.new if email_contact_user.blank?
   end
 
   def create
@@ -26,8 +24,8 @@ class EmailContactFormController < ApplicationController
 
   private
 
-  def set_user
-    approver? ?  @email_contact_user = current_approver : @email_contact_user = current_author
+  def email_contact_user
+    approver? ? current_approver : current_author
   end
 
   def approver?
