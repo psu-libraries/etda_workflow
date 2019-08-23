@@ -6,18 +6,18 @@
 <%= simple_form_for (@email_contact_form), url: :email_contact_form_index, validate: true do |f| %>
   <div class="">
     <div class="row">
-      <%= f.input :full_name,  required: true, size: 40, label: 'Your Name' %>
+      <%= f.input :full_name,  required: true, label: 'Your Name', :input_html => {:style => 'width: 250px'} %>
     </div>
     <div class="row">
-      <%= f.input :email, required: true, size: 40, label: 'Your Email' %>
+      <%= f.input :email, required: true, label: 'Your Email', :input_html => {:style => 'width: 250px'} %>
     </div>
     <% if session[:user_role] == 'author' %>
       <div class="row">
-        <%= f.input :psu_id, required: false, size: 20, label: 'PSU ID Number', readonly: true %>
+        <%= f.input :psu_id, required: false, label: 'PSU ID Number', readonly: true, :input_html => {:style => 'width: 250px'} %>
       </div>
     <% end %>
     <div class="row">
-      <%= f.input :desc, required: true, size: 40, label: 'Subject' %>
+      <%= f.input :desc, required: true, label: 'Subject', :input_html => {:style => 'width: 500px'} %>
     </div>
     <div class="row">
       <%= f.input :message, required: true, as: :text, input_html: {rows: "8", cols: 80}, label: 'Your Message'  %>
