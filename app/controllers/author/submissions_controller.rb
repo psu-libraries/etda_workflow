@@ -4,6 +4,8 @@ class Author::SubmissionsController < AuthorController
 
   def index
     @view = Author::SubmissionsIndexView.new(@author)
+    # TODO: Flash to be removed after 1 year of digital signatures
+    flash[:notice] = "Effective immediately, this site now includes the Digital Signatures feature.  This gives committee members the ability to digitally approve submissions through this site.  Graduate students submitting a thesis or dissertation through the Electronic Thesis and Dissertation Application will have their thesis and dissertation submission digitally signed by their committees via the eTD application.  This capability allows a student to securely share their final document with the committee members and allows committee members the ability to review the document and give their approval electronically.</br></br>Electronic signatures will replace the Signatory Form only.  All other supporting materials must still be submitted to the Office of Theses and Dissertations.".html_safe
   end
 
   def new
