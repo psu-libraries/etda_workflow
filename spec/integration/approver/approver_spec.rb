@@ -11,6 +11,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   let(:committee_role_not_advisor) { FactoryBot.create :committee_role, name: "Just Normal Member" }
 
   before do
+    allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
     submission.final_submission_files << final_submission_file
     submission.degree.degree_type.approval_configuration = approval_configuration
     webaccess_authorize_approver
@@ -18,7 +19,6 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
   context 'approver matches committee member access_id' do
     before do
-      allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
       visit "approver/committee_member/#{committee_member.id}"
     end
 
@@ -78,7 +78,9 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
         expect(page).not_to have_content('Were Federal Funds utilized for this submission?')
       end
     end
+  end
 
+  context 'committee review is complete' do
     context 'approval is approved' do
       it 'displays the committee members response' do
         committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission2, access_id: 'approverflow'
@@ -106,7 +108,6 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
   context 'approver does not match committee_member access_id' do
     it 'redirects to 401 error page when targeting review page' do
-      allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
       committee_member = FactoryBot.create :committee_member, submission: submission, access_id: 'testuser'
 
       visit "approver/committee_member/#{committee_member.id}"
@@ -114,7 +115,6 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
 
     it 'redirects to 401 error page when targeting submission download' do
-      allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
       FactoryBot.create :committee_member, submission: submission, access_id: 'testuser'
 
       visit "approver/files/final_submissions/#{final_submission_file.id}"
@@ -122,20 +122,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
   end
 
-  context 'approver is not in Ldap' do
-    it 'redirects to 401 error page' do
-      committee_member = FactoryBot.create :committee_member, submission: submission, access_id: 'testuser'
-
-      visit "approver/committee_member/#{committee_member.id}"
-      expect(page).to have_current_path('/401')
-    end
-  end
-
   context 'access level tooltip' do
-    before do
-      allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
-    end
-
     let(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow' }
 
     context 'submission is open access' do

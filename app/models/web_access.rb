@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebAccess
-  BASE_LOGIN_URL = 'https://webaccess.psu.edu/?factors=dce.psu.edu&cosign-%s&%s'
+  BASE_LOGIN_URL = 'https://webaccess.psu.edu/?cosign-%s&%s'
   BASE_LOGOUT_URL = 'https://webaccess.psu.edu/cgi-bin/logout?%s'
   def initialize(redirect_url_in = '')
     @redirect_url = redirect_url_in.presence || redirect_url
@@ -16,7 +16,7 @@ class WebAccess
   end
 
   def login_url_path
-    "?factors=dce.psu.edu&cosign-#{service}&#{@redirect_url}"
+    "?cosign-#{service}&#{@redirect_url}"
   end
 
   private
