@@ -7,6 +7,8 @@ class MockUniversityDirectory
 
   COMMITTEE_LDAP_MAP = ::LdapResultsMap::COMMITTEE_LDAP_MAP
 
+  AUTOCOMPLETE_LDAP_MAP = ::LdapResultsMap::AUTOCOMPLETE_LDAP_MAP
+
   KNOWN_ACCESS_IDS = %w[
     ajk5603
     saw140
@@ -59,6 +61,12 @@ class MockUniversityDirectory
     else
       result.except(:administrator, :site_administrator)
     end
+  end
+
+  def retrieve_committee_access_id(psu_email)
+    return psu_email.gsub('@psu.edu', '').strip if psu_email.match?(/.*@psu.edu/)
+
+    nil
   end
 
   def populate_with_ldap_attributes
