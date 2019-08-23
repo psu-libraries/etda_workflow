@@ -98,7 +98,7 @@ steps:
     - export PARTNER=graduate
     - unset CI
     - bundle exec rake drone_prepare
-    # - bundle exec rake spec:integration
+    - bundle exec rake spec:integration
 
 - name: tag
   image: alpine/git
