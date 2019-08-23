@@ -92,12 +92,13 @@ steps:
     - prepare
   commands:
     - cd /etda_workflow
+    # - apt-get install mysql-client -y
     - yarn global add phantomjs-prebuilt
     - export PATH=$PATH:~/.yarn/bin
     - export PARTNER=graduate
     - unset CI
     - bundle exec rake drone_prepare
-    - bundle exec rake spec:integration
+    # - bundle exec rake spec:integration
 
 - name: tag
   image: alpine/git
@@ -112,7 +113,7 @@ steps:
     - cd k8s/chart
     - if [ ! -f values-$DRONE_BRANCH.yaml ]; then echo "no environment to deploy, exiting && exit 0"; fi
     - 'sed -i "/^image:/,/*[^:]*:/s/tag:.*/tag: $DRONE_BUILD_NUMBER/g" values-$DRONE_BRANCH.yaml'
-    - git config user.email "drone@drone-test.dsrd.libaries.psu.edu
+    - git config user.email "drone@drone2test.vmhost.psu.edu"
     - git config user.name "DroneCI"
     - git add values-$DRONE_BRANCH.yaml
     - git commit -m "[skip ci] adds $DRONE_BUILD_NUMBER"
@@ -129,3 +130,17 @@ steps:
       from_secret: slack_webhook
     channel: djb44-dev
     username: drone
+
+services:
+- name: mariadb
+  image: mariadb:10.4.5
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+  
+- name: redis
+  image: redis
+
+volumes:
+- name: docker-sock
+  host:
+    path: /var/run/docker.sock
