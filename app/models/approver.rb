@@ -19,9 +19,7 @@ class Approver < ApplicationRecord
     committee_member.submission.committee_members.each do |member|
       next if member.id == committee_member.id
 
-      if member.access_id == committee_member.access_id
-        member.update_attribute :status, committee_member.status
-      end
+      member.update_attribute :status, committee_member.status if member.access_id == committee_member.access_id
     end
   end
 end
