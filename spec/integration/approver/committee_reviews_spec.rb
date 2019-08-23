@@ -14,7 +14,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
   context 'approver matches committee member access_id' do
     before do
-      allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
+      allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
       visit "approver/committee_member/#{committee_member.id}"
     end
 

@@ -125,7 +125,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
 
     context "when committee reviews" do
       before do
-        allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
+        allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
         webaccess_authorize_approver
       end
 
@@ -298,7 +298,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
 
     context "when committee reviews" do
       before do
-        allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
+        allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
         webaccess_authorize_approver
       end
 
