@@ -238,14 +238,11 @@ RSpec.describe Submission, type: :model do
 
           cm.is_voting = true
           cm.access_id = 'abc123' if index == 1
-          cm.status = 'Pending' if index == 1
           cm.access_id = 'abc123' if index == 2
           cm.access_id = 'abc456' if index == 3
           cm.access_id = 'abc789' if index == 4
           cm.access_id = 'abc321' if index == 5
         end
-        submission.voting_committee_members
-        expect(submission.committee_members[2].status).to eq('Pending') if current_partner.graduate?
         expect(submission.voting_committee_members.count).to eq(submission.committee_members.to_ary.count - 2) if current_partner.graduate?
         expect(submission.voting_committee_members.count).to eq(submission.committee_members.to_ary.count - 1) unless current_partner.graduate?
       end
