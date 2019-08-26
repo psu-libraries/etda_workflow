@@ -96,7 +96,7 @@ module StubbedAuthenticationHelper
     # to ensure we visit pages that belong to the new_owner
     #     Capybara.page.driver.browser.remove_cookie '_etdflow_session'
     Capybara.page.driver.browser.remove_cookie '_etdflow_approver_session'
-    Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_approver_session', path: '/review')
+    Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_approver_session', path: '/approver')
     StubbedAuthenticationStrategy.approver = approver
     Warden::Strategies.add :webaccess_authenticatable, StubbedAuthenticationStrategy
   end
