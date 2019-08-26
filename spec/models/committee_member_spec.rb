@@ -130,20 +130,6 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.rejected_at).to be_nil
       end
     end
-
-    context 'when a committee member is in multiple roles' do
-      before do
-        cm.id = 1
-        cm.id = 2
-        cm.access_id = 'abc123'
-        cm_dup.access_id = 'abc123'
-      end
-
-      it 'updates all statuses the same' do
-        cm.update_attribute :status, 'approved'
-        expect(cm_dup.status).to eq 'approved'
-      end
-    end
   end
 
   describe 'email' do
