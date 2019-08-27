@@ -29,10 +29,6 @@ class WorkflowMailerPreview < ActionMailer::Preview
     def final_submission_approved
       WorkflowMailer.final_submission_approved(@submission, 'http://search-url-honors')
     end
-
-    def pay_thesis_fee
-      WorkflowMailer.pay_thesis_fee(@submission)
-    end
   end
 
   if current_partner.milsch?

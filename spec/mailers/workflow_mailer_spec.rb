@@ -109,40 +109,6 @@ RSpec.describe WorkflowMailer do
     end
   end
 
-  describe '#pay_thesis_fee' do
-    before { allow(Partner).to receive(:current).and_return(partner) }
-
-    let(:email) { described_class.pay_thesis_fee(submission) }
-
-    context "when the current partner is 'graduate'" do
-      let(:partner) { Partner.new('graduate') }
-
-      xit "raises an exception" do
-        expect { email.deliver_now }.to raise_error ActionView::Template::Error
-      end
-    end
-
-    context "when the current partner is 'honors'" do
-      let(:partner) { Partner.new('honors') }
-
-      it "sets an appropriate subject" do
-        expect(email.subject).to match(/thesis processing fee/i)
-      end
-
-      it "is sent from the partner support email address" do
-        expect(email.from).to eq([partner.email_address])
-      end
-
-      it "is sent to the student's PSU email address" do
-        expect(email.to).to eq([author.psu_email_address])
-      end
-
-      it "tells the author to pay thesis processing fee" do
-        expect(email.body).to match(/pay the thesis processing fee/i)
-      end
-    end
-  end
-
   describe '#access_level_updated' do
     let(:email) { described_class.access_level_updated(access_updated_email) }
 
