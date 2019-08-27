@@ -24,6 +24,8 @@ class ApprovalStatus
   end
 
   def status
+    return 'none' unless all_have_voted?
+
     none || approved || rejected || pending
   end
 
@@ -51,5 +53,12 @@ class ApprovalStatus
     else
       voting_committee_members.count - (voting_committee_members.count.to_f * (approval_configuration.configuration_threshold.to_f / 100)).round
     end
+  end
+
+  def all_have_voted?
+    voting_committee_members.each do |member|
+      return false unless member.status == 'approved' || member.status == 'rejected'
+    end
+    true
   end
 end
