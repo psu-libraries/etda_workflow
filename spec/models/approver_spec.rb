@@ -16,4 +16,16 @@ RSpec.describe Approver, type: :model do
 
   it { is_expected.to validate_uniqueness_of(:access_id) }
   it { is_expected.to validate_presence_of(:access_id) }
+
+  describe '#status_merge' do
+    let(:submission) { FactoryBot.create :submission }
+    let(:cm1) { FactoryBot.create :committee_member, access_id: 'abc123', status: 'approved' }
+    let(:cm2) { FactoryBot.create :committee_member, access_id: 'abc123' }
+
+    it 'merges the statuses of committee members with the same access id' do
+      submission.committee_members << [cm1, cm2]
+      described_class.status_merge(cm1)
+      expect(cm2.status).to eq 'approved'
+    end
+  end
 end
