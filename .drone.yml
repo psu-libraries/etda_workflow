@@ -3,6 +3,17 @@ kind: pipeline
 name: default
 
 steps:
+# - name: start
+#   image: plugins/slack
+#   settings:
+#     webhook:
+#       from_secret: slack_webhook
+#     channel: djb44-dev
+#     username: drone
+#     template: >
+#       build {{build.number}} is starting. ({{build.link}}). ({{build.branch}}) by {{build.author}}
+
+
 - name: build
   image: docker
   environment:
@@ -22,6 +33,7 @@ steps:
 
 - name: prepare
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+  user: root
   environment:
     MYSQL_USER: root
     MYSQL_PASSWORD: root
@@ -32,35 +44,14 @@ steps:
   - build
   commands:
     - cd /etda_workflow
-    # - apt-get update 
-    # - apt-get install mariadb-client -y
     - export RAILS_ENV=test
     - unset CI
     # - bundle install --with development test
     - bundle exec rake drone_prepare
 
-# - name: integration-tests
-#   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
-#   environment:
-#     MYSQL_USER: root
-#     MYSQL_PASSWORD: root
-#     MYSQL_DATABASE_TEST: integration_test
-#     MYSQL_DATABASE: integration
-#     MYSQL_HOST: mariadb
-#     REDIS_HOST: redis
-#   depends_on:
-#     - prepare
-#   commands:
-#     - cd /etda_workflow
-#     # - apt-get install mysql-client -y
-#     - yarn global add phantomjs-prebuilt
-#     - export PARTNER=graduate
-#     - unset CI
-#     - bundle exec rake drone_prepare
-#     - bundle exec rake spec:integration
-
 - name: test-grad-0
   image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+  user: root
   environment:
     MYSQL_USER: root
     MYSQL_PASSWORD: root
@@ -72,7 +63,9 @@ steps:
   commands:
     - cd /etda_workflow
     - yarn global add phantomjs-prebuilt
+    - export PATH=$PATH:~/.yarn/bin
     - export RAILS_ENV=test
+    - whoami
     - export PARTNER=graduate
     - unset CI
     - bundle exec rake spec:controllers
@@ -86,26 +79,57 @@ steps:
     - bundle exec rake spec:services
     - bundle exec rake spec:workers
 
+- name: integration-tests
+  image: harbor.dsrd.libraries.psu.edu/library/etda-workflow:ci
+  environment:
+    MYSQL_USER: root
+    MYSQL_PASSWORD: root
+    MYSQL_DATABASE_TEST: integration_test
+    MYSQL_DATABASE: integration
+    MYSQL_HOST: mariadb
+    REDIS_HOST: redis
+  depends_on:
+    - prepare
+  commands:
+    - cd /etda_workflow
+    # - apt-get install mysql-client -y
+    - yarn global add phantomjs-prebuilt
+    - export PATH=$PATH:~/.yarn/bin
+    - export PARTNER=graduate
+    - unset CI
+    - bundle exec rake drone_prepare
+    - bundle exec rake spec:integration
 
-#- name: tag
-#  image: alpine/git
-#  depends_on:
-  #   - prepare
-  #   - test-grad-0
-  # trigger:
-  #   event:
-  #     exclude:
-  #     - pull_request
-  # commands:
-  #   - cd k8s/chart
-  #   - if [ ! -f values-$DRONE_BRANCH.yaml ]; then echo "no environment to deploy, exiting && exit 0"; fi
-  #   - 'sed -i "/^image:/,/*[^:]*:/s/tag:.*/tag: $DRONE_BUILD_NUMBER/g" values-$DRONE_BRANCH.yaml'
-  #   - git config user.email "drone@drone2test.vmhost.psu.edu"
-  #   - git config user.name "DroneCI"
-  #   - git add values-$DRONE_BRANCH.yaml
-  #   - git commit -m "[skip ci] adds $DRONE_BUILD_NUMBER"
-  #   - git push -u origin $DRONE_BRANCH
+- name: tag
+  image: alpine/git
+  depends_on:
+   - prepare
+   - test-grad-0
+  trigger:
+    event:
+      exclude:
+      - pull_request
+  commands:
+    - cd k8s/chart
+    - if [ ! -f values-$DRONE_BRANCH.yaml ]; then echo "no environment to deploy, exiting && exit 0"; fi
+    - 'sed -i "/^image:/,/*[^:]*:/s/tag:.*/tag: $DRONE_BUILD_NUMBER/g" values-$DRONE_BRANCH.yaml'
+    - git config user.email "drone@drone2test.vmhost.psu.edu"
+    - git config user.name "DroneCI"
+    - git add values-$DRONE_BRANCH.yaml
+    - git commit -m "[skip ci] adds $DRONE_BUILD_NUMBER"
+    - git push -u origin $DRONE_BRANCH
 
+# - name: slackity
+#   image: plugins/slack
+#   when:
+#     status: [success, failure]
+#   depends_on:
+#   - tag
+#   settings:
+#     webhook:
+#       from_secret: slack_webhook
+#     channel: djb44-dev
+#     username: drone
 
 services:
 - name: mariadb
