@@ -3,15 +3,15 @@ kind: pipeline
 name: default
 
 steps:
-- name: start
-  image: plugins/slack
-  settings:
-    webhook:
-      from_secret: slack_webhook
-    channel: djb44-dev
-    username: drone
-    template: >
-      build {{build.number}} is starting. ({{build.link}}). ({{build.branch}}) by {{build.author}}
+# - name: start
+#   image: plugins/slack
+#   settings:
+#     webhook:
+#       from_secret: slack_webhook
+#     channel: djb44-dev
+#     username: drone
+#     template: >
+#       build {{build.number}} is starting. ({{build.link}}). ({{build.branch}}) by {{build.author}}
 
 
 - name: build
@@ -119,17 +119,17 @@ steps:
     - git commit -m "[skip ci] adds $DRONE_BUILD_NUMBER"
     - git push -u origin $DRONE_BRANCH
 
-- name: slackity
-  image: plugins/slack
-  when:
-    status: [success, failure]
-  depends_on:
-  - tag
-  settings:
-    webhook:
-      from_secret: slack_webhook
-    channel: djb44-dev
-    username: drone
+# - name: slackity
+#   image: plugins/slack
+#   when:
+#     status: [success, failure]
+#   depends_on:
+#   - tag
+#   settings:
+#     webhook:
+#       from_secret: slack_webhook
+#     channel: djb44-dev
+#     username: drone
 
 services:
 - name: mariadb
