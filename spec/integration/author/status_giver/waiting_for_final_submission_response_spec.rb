@@ -13,6 +13,7 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
     let!(:degree) { FactoryBot.create :degree, degree_type: degree_type }
     let!(:degree_type) { FactoryBot.create :degree_type, approval_configuration: approval_configuration }
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, use_percentage: false, email_admins: true }
+    let!(:committee_members) { [(FactoryBot.create :committee_member), (FactoryBot.create :committee_member)] }
 
     context "visiting the 'Update Program Information' page" do
       it "raises a forbidden access error" do
@@ -83,7 +84,10 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
     end
 
     context "when an admin accepts the final submission files for a submission without a Lion Path Record" do
-      it "updates status to 'waiting for committee review'" do
+      it "updates status to 'waiting for committee review' and emails committee members" do
+        submission.committee_members << committee_members
+        submission.save!
+        submission.reload
         select_year = Date.current.year - 2
         select_month = 'Mar'
         select_day = '1'
@@ -108,10 +112,7 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
         submission.reload
         expect(submission.final_submission_approved_at).not_to be_nil
         expect(formatted_date(submission.defended_at)).to eq(formatted_date(Date.parse("#{select_year}-#{select_month}-#{select_day}"))) if current_partner.graduate?
-      end
-      xit "confirmation email sent to author and all committee members" do
-        expect(page).to have_content('successfully')
-        assert_equal ActionMailer::Base.deliveries.count, submission.committee_members.count + 1
+        expect(WorkflowMailer.deliveries.count).to eq(3)
       end
     end
 
@@ -139,10 +140,6 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
           submission.reload
           expect(submission.final_submission_approved_at).not_to be_nil
           expect(submission.defended_at).to eq(Date.yesterday.in_time_zone) if current_partner.graduate?
-        end
-        xit "confirmation email sent to author and all committee members" do
-          expect(page).to have_content('successfully')
-          it assert_equal ActionMailer::Base.deliveries.count, submission.committee_members.count + 1
         end
       end
     end

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="icon" href="/favicon.ico"/>
+<head>
+  <title>ETDA</title>
+
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+
+  <%= stylesheet_pack_tag 'author', media: 'all' %>
+  <%= javascript_pack_tag 'base' %>
+  <%= javascript_pack_tag 'author' %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="<%= page_classes %>">
+
+<div id="body-container">
+  <%= render 'shared/header' %>
+
+  <%#= HERE IS WHERE login goes for author and one for Admin Users %>
+  <main>
+    <div id="content-container" class="container">
+      <%= render partial: 'shared/flash_messages' unless flash.empty? %>
+      <div id="content-row" class="row">
+        <div class="col-xs-12 col-sm-4">
+          <%#= render 'author/shared/main_navigation' %>
+        </div>
+
+          <%= yield %>
+
+        </div>
+      </div>
+  </main>
+</div>
+
+<%= render 'shared/site_footer' %>
+</body>
+</html>
