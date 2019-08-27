@@ -118,7 +118,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find('#submission_has_agreed_to_terms').click
           click_button 'Submit final files for review'
           sleep 1
-          expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+          expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
         end
       end
     end
