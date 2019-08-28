@@ -41,8 +41,8 @@ RSpec.describe ActionDispatch::Routing, type: :controller do
     end
 
     it 'routes email_contact_form' do
-      expect(get: '/author/email_contact_form').to route_to(controller: 'author/email_contact_form', action: 'new')
-      expect(post: '/author/email_contact_form').to route_to(controller: 'author/email_contact_form', action: 'create')
+      expect(get: 'email_contact_form').to route_to(controller: 'email_contact_form', action: 'new')
+      expect(post: 'email_contact_form').to route_to(controller: 'email_contact_form', action: 'create')
     end
   end
 end
