@@ -84,7 +84,7 @@ spec:
             "-config=/etc/vault/vault-agent-config.hcl",
           ]
         - name: consul-template
-          image: hashicorp/consul-template:alpine
+          image: hashicorp/consul-template:0.20.1-alpine
           imagePullPolicy: Always
           env:
           - name: VAULT_PATH
