@@ -64,7 +64,12 @@ RSpec.describe CommitteeMember, type: :model do
   describe 'status' do
     let(:submission) { FactoryBot.create(:submission) }
     let(:cm) { described_class.new }
+    let(:cm_dup) { described_class.new }
     let(:committee_role) { FactoryBot.create(:committee_role) }
+
+    before do
+      submission.committee_members << [cm, cm_dup]
+    end
 
     context 'when status is nil' do
       before do
@@ -72,7 +77,7 @@ RSpec.describe CommitteeMember, type: :model do
       end
 
       it 'updates status column' do
-        expect(cm.status).to be(nil)
+        expect(cm.status).to be_blank
       end
       it 'updates timestamps' do
         expect(cm.approval_started_at).to be_nil

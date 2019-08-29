@@ -26,6 +26,9 @@ Rails.application.routes.draw do
 
   post '/special_committee/:authentication_token/advance_to_reviews', to: 'special_committee#advance_to_reviews', as: :advance_to_reviews
 
+  post 'email_contact_form', to: 'email_contact_form#create', as: :email_contact_form_index
+  get 'email_contact_form', to: 'email_contact_form#new', as: :email_contact_form_new
+
   namespace :admin do
     resources :admins, except: [:index, :show]
     resources :degrees, except: [:show, :destroy]
@@ -103,8 +106,6 @@ Rails.application.routes.draw do
     get '/files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
     get '/files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
 
-    post 'email_contact_form', to: 'email_contact_form#create', as: :email_contact_form_index
-    get 'email_contact_form', to: 'email_contact_form#new', as: :email_contact_form_new
     root to: 'submissions#index'
     get '/tips', to: 'authors#technical_tips', as: :technical_tips
   end
