@@ -31,7 +31,7 @@ build: ## run development environment
 	SSH_PRIVATE_KEY=$(SSH_PRIVATE_KEY); \
 	docker-compose build --build-arg SSH_PRIVATE_KEY=$$SSH_PRIVATE_KEY;
 
-yarn: ## Build the container
+yarn: ## Run Yarn
 	docker run -v $$PWD:/code -w=/code node:10 'yarn'
 
 logs: ## watch logs
