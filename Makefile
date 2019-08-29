@@ -36,3 +36,8 @@ yarn: ## Run Yarn
 
 logs: ## watch logs
 	docker-compose logs -f
+
+rspec: ## test
+	docker-compose exec -e RAILS_ENV=test web rspec
+
+
