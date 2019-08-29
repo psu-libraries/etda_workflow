@@ -11,6 +11,7 @@ vendor/bundle
 
 .yarn
 .cache
+.bash_history
 .config
 .mutagen
 .local
