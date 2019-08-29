@@ -111,3 +111,5 @@ USER etda
 RUN if [ "$RAILS_ENV" = "development" ]; then echo "skipping assets:precompile"; else RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile; fi
 
 CMD ["./entrypoint.sh"]
+
+ENV PATH=/etda_workflow/.yarn/bin:${PATH}
