@@ -13,6 +13,7 @@ vendor/bundle
 .cache
 .config
 .mutagen
+.local
 .gem
 
 # Ignore all logfiles and tempfiles.
