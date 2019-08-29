@@ -6,8 +6,16 @@
 
 # Ignore bundler config.
 /.bundle
-
 vendor/gems
+vendor/bundle
+
+.yarn
+.cache
+.bash_history
+.config
+.mutagen
+.local
+.gem
 
 # Ignore all logfiles and tempfiles.
 /.idea/*
@@ -29,6 +37,8 @@ node_modules/**/*
 solr_instance
 solr/conf/db-data-config.xml
 solr
+
+app/javascript/app/javascript/packs/**
  
 assets
 public/packs-test/**/*

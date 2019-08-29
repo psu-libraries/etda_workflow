@@ -6,6 +6,7 @@ FactoryBot.define do
     committee_role
     name { "Professor Buck Murphy" }
     email { "buck@hotmail.com" }
+    sequence(:access_id) { |n| "abc#{n}" }
     is_required { true }
     is_voting { true }
     notes { '' }

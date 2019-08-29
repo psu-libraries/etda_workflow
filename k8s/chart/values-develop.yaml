@@ -10,7 +10,7 @@ persistence:
       storage: 8Gi
 image:
   repository: harbor.dsrd.libraries.psu.edu/library/etda-workflow
-  tag: 274
+  tag: 676
   pullPolicy: IfNotPresent
   imagePullSecrets: harbor-dsrd-libraries
 nameOverride: ''
@@ -25,20 +25,20 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/ssl-passthrough: 'true'
   hosts:
-  - host: submit-etda-docker.dsrd.libraries.psu.edu
+  - host: submit-etda-develop.dsrd.libraries.psu.edu
     paths:
     - "/"
   tls:
-  - secretName: submit-etda-docker-dsrd-libraries-psu-edu
+  - secretName: submit-etda-develop-dsrd-libraries-psu-edu
     hosts:
-    - submit-etda-docker.dsrd.libraries.psu.edu
+    - submit-etda-develop.dsrd.libraries.psu.edu
 resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
 webaccess:
   enabled: true
-  cosignService: submit-etda-docker.dsrd.libraries.psu.edu
+  cosignService: submit-etda-develop.dsrd.libraries.psu.edu
 
 redis:
   enabled: true
@@ -47,6 +47,10 @@ redis:
     storageClass: nfs-client
 
 mariadb:
+  backup:
+    enabled: true
+    keep: 5
+    database: etda_workflow
   db:
     user: etda_workflow
     name: etda_workflow
@@ -58,6 +62,9 @@ mariadb:
 certmanager:
   enabled: true
 
+healthcheck:
+  enabled: true
+
 global:
   vault:
     enabled: true
@@ -65,7 +72,4 @@ global:
     mountPath: auth/k8s-dsrd-dev
     path: secret/app/etda_workflow/dev
     role: etda_workflow_dev
-
-healthcheck:
-  enabled: true
 
