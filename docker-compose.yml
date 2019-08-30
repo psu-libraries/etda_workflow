@@ -36,7 +36,6 @@ services:
             rails s"
     ports:
     - "3000:3000"
-    # - "1048:1048"
     depends_on:
     - db
 
