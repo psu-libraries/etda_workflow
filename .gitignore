@@ -11,8 +11,10 @@ vendor/bundle
 
 .yarn
 .cache
+.bash_history
 .config
 .mutagen
+.local
 .gem
 
 # Ignore all logfiles and tempfiles.
@@ -46,3 +48,4 @@ coverage
 /yarn-error.log
 .byebug_history
 .envrc
+.yarnrc

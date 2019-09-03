@@ -20,7 +20,12 @@ down: ## turn this thing off
 
 up: ## run this thing
 	docker-compose up -d
-	mutagen create --ignore .git --ignore vendor/cache --ignore tmp --ignore public -m two-way-resolved --label app=etda-workflow docker://etda_workflow_web_1/etda_workflow .
+	mutagen create --ignore .git --ignore vendor/cache --ignore tmp --ignore public -m two-way-resolved --label app=etda-workflow . docker://etda_workflow_web_1/etda_workflow 
+
+up_milch: ## run this thing
+	docker-compose up -d
+	docker-compose run -e PARTNER=milsch web
+	mutagen create --ignore .git --ignore vendor/cache --ignore tmp --ignore public -m two-way-resolved --label app=etda-workflow . docker://etda_workflow_web_1/etda_workflow 
 
 rebuild: build up ## run build and then up
 
@@ -31,8 +36,16 @@ build: ## run development environment
 	SSH_PRIVATE_KEY=$(SSH_PRIVATE_KEY); \
 	docker-compose build --build-arg SSH_PRIVATE_KEY=$$SSH_PRIVATE_KEY;
 
-yarn: ## Build the container
+yarn: ## Run Yarn
 	docker run -v $$PWD:/code -w=/code node:10 'yarn'
+
+attach: ## Attach to the web container
+	docker attach etda_workflow_web_1
 
 logs: ## watch logs
 	docker-compose logs -f
+
+rspec: ## test
+	docker-compose exec -e RAILS_ENV=test web rspec
+
+
