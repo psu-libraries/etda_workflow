@@ -76,15 +76,15 @@ class SubmissionReleaseService
 
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_release_for_publication?
-      submission.restricted? || submission.restricted_to_institution? ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
-      submission.update_attributes(released_for_publication_at: publication_release_date, released_metadata_at: metadata_release_date, public_id: public_id)
+      submission.restricted? ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
+      submission.update_attributes!(released_for_publication_at: publication_release_date, released_metadata_at: metadata_release_date, public_id: public_id)
       return unless release_files(original_final_files)
 
       @released_submissions += 1
       OutboundLionPathRecord.new(submission: submission).report_status_change
       # Archiver.new(s).create!
-    rescue StandardError
-      record_error("Error occurred processing submission id: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}")
+    rescue StandardError => e
+      record_error("Error occurred processing submission id: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}, #{e}")
     end
 
     def update_restricted_submission_to_open_access(submission, date_to_release, original_final_files)
@@ -97,16 +97,16 @@ class SubmissionReleaseService
 
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_release_for_publication?
-      new_access_level == 'restricted' || new_access_level == 'restricted to institution' ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
-      submission.update_attributes(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
+      new_access_level == 'restricted' || new_access_level == 'restricted to institution' ? return : status_giver.released_for_publication!
+      submission.update_attributes!(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
       return unless release_files(original_final_files)
 
       update_service.send_email(submission)
       @released_submissions += 1
       OutboundLionPathRecord.new(submission: submission).report_status_change
       # Archiver.new(s).create!
-    rescue StandardError
-      record_error("Error occurred processing submission id: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}")
+    rescue StandardError => e
+      record_error("Error occurred processing submission id: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}, #{e}")
     end
 
     def final_results(total_submissions)
