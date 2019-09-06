@@ -29,7 +29,8 @@ services:
       sh -c "yarn install && 
             if [ -f tmp/pids/server.pid ]; then rm tmp/pids/server.pid; fi &&
             echo starting database migrations &&
-            yarn global add phantomjs-prebuilt && 
+            yarn global add phantomjs-prebuilt &&
+            export IP='hostname -i' &&
             rails db:create && 
             rails db:migrate &&
             echo starting rails &&
