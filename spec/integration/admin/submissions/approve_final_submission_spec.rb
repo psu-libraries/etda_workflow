@@ -13,6 +13,6 @@ RSpec.describe "when an admin approves a final submission", js: true do
     accept_confirm do
       click_button 'Approve Final Submission'
     end
-    expect(page.current_path).to eq(admin_submissions_index_path(submission.degree.degree_type, :final_submission_submitted))
+    expect(page).to have_current_path(admin_submissions_index_path(submission.degree.degree_type, :final_submission_submitted))
   end
 end
