@@ -167,7 +167,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
     it "redirects to the advisor page when trying to access the committee member page" do
       visit approver_path committee_member2
-      expect(page.current_path).to eq approver_path committee_member1
+      expect(page).to have_current_path approver_path committee_member1
     end
   end
 end
