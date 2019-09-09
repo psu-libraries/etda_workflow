@@ -155,4 +155,19 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       end
     end
   end
+
+  context "advisor is also a committee member" do
+    let!(:committee_member1) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow' }
+    let!(:committee_member2) { FactoryBot.create :committee_member, committee_role: committee_role_not_advisor, submission: submission, access_id: 'approverflow' }
+
+    before do
+      submission.committee_members << [committee_member2, committee_member1]
+      submission.reload
+    end
+
+    it "redirects to the advisor page when trying to access the committee member page" do
+      visit approver_path committee_member2
+      expect(page.current_path).to eq approver_path committee_member1
+    end
+  end
 end
