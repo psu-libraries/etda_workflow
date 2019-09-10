@@ -46,9 +46,10 @@ class CommitteeMember < ApplicationRecord
   end
 
   def validate_email
+    true_ldap_result = LdapUniversityDirectory.new.autocomplete(name)
     return true if email.blank?
 
-    unless email.nil?
+    unless email.nil? || (is_required == true && true_ldap_result.blank?)
       return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(.*))\z/i)
     end
     errors.add(:email, 'is invalid')

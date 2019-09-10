@@ -52,7 +52,7 @@ RSpec.describe CommitteeMember, type: :model do
     end
 
     it 'is valid' do
-      cm.name = 'Mr. Committee Member'
+      cm.name = 'Professor Buck Murphy'
       cm.email = 'email@psu.edu'
       cm.committee_role_id = committee_role.id
       cm.submission_id = submission.id
@@ -241,7 +241,7 @@ RSpec.describe CommitteeMember, type: :model do
     let(:committee_role) { FactoryBot.create(:committee_role) }
 
     before do
-      cm.name = 'Mr. Committee Member'
+      cm.name = 'Professor Buck Murphy'
       cm.committee_role_id = committee_role.id
       cm.submission_id = submission.id
       cm.is_required = true
@@ -262,6 +262,8 @@ RSpec.describe CommitteeMember, type: :model do
       cm.email = 'email@psuedu'
       expect(cm).not_to be_valid
       cm.email = 'email@ps u.edu'
+      expect(cm).not_to be_valid
+      cm.name = 'A. Fraud'
       expect(cm).not_to be_valid
     end
   end
