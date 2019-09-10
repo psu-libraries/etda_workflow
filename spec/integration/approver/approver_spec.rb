@@ -5,6 +5,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   let(:submission1) { FactoryBot.create :submission, :waiting_for_final_submission_response, created_at: Time.zone.now }
   let(:submission2) { FactoryBot.create :submission, :waiting_for_publication_release, committee_review_accepted_at: DateTime.now, created_at: Time.zone.now }
   let(:submission3) { FactoryBot.create :submission, :waiting_for_publication_release, committee_review_rejected_at: DateTime.now, created_at: Time.zone.now }
+  let(:submission4) { FactoryBot.create :submission, :waiting_for_publication_release, created_at: Time.zone.now }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
   let(:approval_configuration) { FactoryBot.create :approval_configuration, head_of_program_is_approving: false }
   let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor" }
@@ -102,6 +103,17 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
         expect(page).to have_content('rejected')
         expect(page).to have_content('Review Completed on')
+      end
+    end
+
+    context 'submission is legacy' do
+      it 'displays a message' do
+        committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission4, access_id: 'approverflow'
+        submission4.degree.degree_type.approval_configuration = approval_configuration
+        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('none')
+        visit "approver/committee_member/#{committee_member.id}"
+
+        expect(page).to have_content('This submission was processed')
       end
     end
   end
