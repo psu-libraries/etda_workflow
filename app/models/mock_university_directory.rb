@@ -42,7 +42,10 @@ class MockUniversityDirectory
         { id: 'sar3@psu.edu', label: 'Scott Rogers', value: 'Scott Rogers' },
         { id: 'saw140@psu.edu', label: 'Scott Woods', value: 'Scott Woods' }
       ]
-
+    when /Professor Buck Murphy/i
+      [
+        { id: 'buck@hotmail.com', label: 'Professor Buck Murphy', value: 'Professor Buck Murphy', dept: 'University Libraries' }
+      ]
     else
       []
     end
