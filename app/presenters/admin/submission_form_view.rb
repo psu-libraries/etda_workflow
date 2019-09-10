@@ -46,7 +46,6 @@ class Admin::SubmissionFormView < SimpleDelegator
   def form_for_url
     return "/admin/submissions/#{id}/format_review_response" if status_behavior.waiting_for_format_review_response?
     return "/admin/submissions/#{id}/final_submission_response" if status_behavior.waiting_for_final_submission_response?
-    return "/admin/submissions/#{id}/update_final_submission" if status_behavior.waiting_for_committee_review_rejected?
     return "/admin/submissions/#{id}/update_waiting_to_be_released" if status_behavior.waiting_for_publication_release?
     return "/admin/submissions/#{id}/update_released" if status_behavior.released_for_publication?
 
