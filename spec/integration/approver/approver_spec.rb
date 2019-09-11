@@ -20,6 +20,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
   context 'approver matches committee member access_id' do
     before do
+      committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
       visit "approver/committee_member/#{committee_member.id}"
     end
 
@@ -85,6 +86,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     context 'approval is approved' do
       it 'displays the committee members response' do
         committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission2, access_id: 'approverflow'
+        committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
         submission2.degree.degree_type.approval_configuration = approval_configuration
         allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
         visit "approver/committee_member/#{committee_member.id}"
@@ -97,6 +99,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     context 'approval is rejected' do
       it 'displays the committee members response' do
         committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission3, access_id: 'approverflow'
+        committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
         submission3.degree.degree_type.approval_configuration = approval_configuration
         allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
         visit "approver/committee_member/#{committee_member.id}"
@@ -109,6 +112,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     context 'submission is legacy' do
       it 'displays a message' do
         committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission4, access_id: 'approverflow'
+        committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
         submission4.degree.degree_type.approval_configuration = approval_configuration
         allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('none')
         visit "approver/committee_member/#{committee_member.id}"
@@ -136,6 +140,10 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
   context 'access level tooltip' do
     let(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow' }
+
+    before do
+      committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
+    end
 
     context 'submission is open access' do
       it "doesn't display help text" do
@@ -175,6 +183,8 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     before do
       submission.committee_members << [committee_member2, committee_member1]
       submission.reload
+      committee_member1.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
+      committee_member2.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
     end
 
     it "redirects to the advisor page when trying to access the committee member page" do

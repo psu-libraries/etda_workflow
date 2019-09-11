@@ -20,7 +20,7 @@
       </thead>
       <tbody>
       <% @committee_members.each do |committee_member| %>
-        <% next unless committee_member.submission.final_submission_files_uploaded_at %>
+        <% next unless committee_member.submission.status_behavior.beyond_waiting_for_final_submission_response? %>
         <tr>
           <td><%= link_to committee_member.submission.title, approver_path(committee_member) %></td>
           <td><%= committee_member.submission.author.first_name %> <%= committee_member.submission.author.last_name %></td>

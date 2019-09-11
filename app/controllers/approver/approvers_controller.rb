@@ -7,6 +7,7 @@ class Approver::ApproversController < ApproverController
   def index
     @approver = Approver.find_by(access_id: current_approver.access_id)
     @committee_members = @approver.committee_members
+    update_approver_committee_members
   end
 
   def edit
@@ -94,5 +95,14 @@ class Approver::ApproversController < ApproverController
       end
     end
     links.join(" ")
+  end
+
+  def update_approver_committee_members
+    approver = Approver.find_by(access_id: current_approver.access_id)
+    committee_members = CommitteeMember.where(access_id: approver.access_id)
+    committee_members.each do |committee_member|
+      approver.committee_members << committee_member
+    end
+    approver.save!
   end
 end

@@ -127,6 +127,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
       before do
         allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
         webaccess_authorize_approver
+        committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
       end
 
       it "moves forward in process if accepted when head of program is approving" do
@@ -300,6 +301,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
       before do
         allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
         webaccess_authorize_approver
+        head_of_program.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
       end
 
       context "when 'waiting for head of program review'" do
