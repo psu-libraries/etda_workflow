@@ -52,7 +52,7 @@ RSpec.describe CommitteeMember, type: :model do
     end
 
     it 'is valid' do
-      cm.name = 'Mr. Committee Member'
+      cm.name = 'Professor Buck Murphy'
       cm.email = 'email@psu.edu'
       cm.committee_role_id = committee_role.id
       cm.submission_id = submission.id
@@ -64,7 +64,12 @@ RSpec.describe CommitteeMember, type: :model do
   describe 'status' do
     let(:submission) { FactoryBot.create(:submission) }
     let(:cm) { described_class.new }
+    let(:cm_dup) { described_class.new }
     let(:committee_role) { FactoryBot.create(:committee_role) }
+
+    before do
+      submission.committee_members << [cm, cm_dup]
+    end
 
     context 'when status is nil' do
       before do
@@ -72,7 +77,7 @@ RSpec.describe CommitteeMember, type: :model do
       end
 
       it 'updates status column' do
-        expect(cm.status).to be(nil)
+        expect(cm.status).to be_blank
       end
       it 'updates timestamps' do
         expect(cm.approval_started_at).to be_nil
@@ -132,6 +137,15 @@ RSpec.describe CommitteeMember, type: :model do
 
     context 'when email is a psu email' do
       it 'updates access_id' do
+        cm.update_attributes email: 'test123@psu.edu'
+        expect(cm.access_id).to eq 'test123'
+      end
+    end
+
+    context 'when nil is returned' do
+      it "doesn't update access_id" do
+        cm.access_id = 'test123'
+        allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
         cm.update_attributes email: 'test123@psu.edu'
         expect(cm.access_id).to eq 'test123'
       end
@@ -218,6 +232,39 @@ RSpec.describe CommitteeMember, type: :model do
       committee_member2.save!
       expect(described_class.find(committee_member1.id).committee_member_token).not_to be_nil
       expect(described_class.find(committee_member2.id).committee_member_token).to be_nil
+    end
+  end
+
+  context 'email validation' do
+    let(:submission) { FactoryBot.create(:submission) }
+    let(:cm) { described_class.new }
+    let(:committee_role) { FactoryBot.create(:committee_role) }
+
+    before do
+      cm.name = 'Professor Buck Murphy'
+      cm.committee_role_id = committee_role.id
+      cm.submission_id = submission.id
+      cm.is_required = true
+    end
+
+    it 'accepts email' do
+      cm.email = 'email@psu.edu'
+      expect(cm).to be_valid
+      cm.email = 'email@health.sdu.dk'
+      expect(cm).to be_valid
+      cm.email = 'jamesbrown@funky.funktown'
+      expect(cm).to be_valid
+    end
+
+    it 'rejects email' do
+      cm.email = 'emailpsu.edu'
+      expect(cm).not_to be_valid
+      cm.email = 'email@psuedu'
+      expect(cm).not_to be_valid
+      cm.email = 'email@ps u.edu'
+      expect(cm).not_to be_valid
+      cm.name = 'A. Fraud'
+      expect(cm).not_to be_valid
     end
   end
 end

@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-xs-12 col-sm-3 col-lg-2">
           <a id="psu-shield" href="http://www.psu.edu/">
-            <%= image_tag("#{asset_pack_path 'images/PS_HOR_REV_RGB_2C.png'}", alt: "PSU logo", width: '200', height: '100' ) %>
+            <%= image_tag("#{asset_pack_path 'media/images/PS_HOR_REV_RGB_2C.png'}", alt: "PSU logo", width: '200', height: '100' ) %>
           </a>
         </div>
         <div class="col-xs-12 col-sm-9 col-lg-10">
@@ -28,7 +28,7 @@
             </li >
             <% if session[:user_role] == 'author' || session[:user_role] == 'approver' %>
               <li class="<%= top_nav_active?('email') %>">
-              <%= link_to 'Contact Us', author_email_contact_form_new_path, class: 'btn btn-default ' %>
+              <%= link_to 'Contact Us', email_contact_form_new_path, class: 'btn btn-default ' %>
               </li>
             <% end %>
             <% unless controller_name == 'application' && action_name == 'main' %>

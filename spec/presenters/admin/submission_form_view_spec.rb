@@ -208,6 +208,22 @@ RSpec.describe Admin::SubmissionFormView do
         expect(view.form_for_url).to eq admin_submissions_update_released_path(submission)
       end
     end
+
+    context "When the status is 'waiting for committee review'" do
+      before { submission.status = 'waiting for committee review' }
+
+      it "returns the normal update path" do
+        expect(view.form_for_url).to eq admin_submission_path(submission)
+      end
+    end
+
+    context "When the status is 'waiting for committee review rejected'" do
+      before { submission.status = 'waiting for committee review rejected' }
+
+      it "returns the normal update path" do
+        expect(view.form_for_url).to eq admin_submission_path(submission)
+      end
+    end
   end
 
   describe '#cancellation_path' do

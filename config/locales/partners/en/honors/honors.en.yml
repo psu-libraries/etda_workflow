@@ -26,11 +26,11 @@ en:
         url:  'https://honors-explore.libraries.psu.edu'
         address: honorsthesis@psu.edu
         signature: 'Schreyer Honors College<br /> University Park, PA'
-
         final_submission_rejected:
           message: |
                     The electronic honors %{degree_type} submitted by you has been rejected by the %{partner_name}.
                     Review notes from the administrator and resubmit your work here: %{url}
+
                     If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
                     You may also call (814)863-2635, or send mail to:
                     Honors College Records Department
@@ -44,17 +44,42 @@ en:
                     The submission will now proceed to the committee review stage.  Your committee has been notified to begin reviewing your submission.
                     Use the following URL to review your submission: %{url}
                     Click the link "[My Committee Review]" on that page to review your committee.
+
                     If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
                     You may also call (814)863-2635, or send mail to:
                     Honors College Records Department
                     10 Schreyer Honors College
                     The Pennsylvania State University
                     University Park, PA  16802
+        format_review_received:
+          message: |
+                    Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with
+                    you when the review has been completed.
+                    You will receive the results of the review by email within 2-3 weeks.
 
+                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA  16802
+        final_submission_received:
+          message: |
+                    Thank you for submitting your final %{degree_type}.  You will be notified by email of your eTD approval
+                    or if changes are required within 2-3 weeks after submitting your final.
+
+                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
+                    You may also call (814)863-2635, or send mail to:
+                    Honors College Records Department
+                    10 Schreyer Honors College
+                    The Pennsylvania State University
+                    University Park, PA  16802
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
-                    The Schreyer Honors College and %{full_name}  need your prompt attention to review and digitally sign a proposed work that you have been a part of.  Please login to %{review_url} and complete this request within five business days.
+                    The Schreyer Honors College and %{full_name} need your prompt attention to review and digitally sign a proposed work that you
+                    have been a part of.
+                    Please login to %{review_url} and complete this request within five business days.
                     If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
                     If you have any further questions please contact:  Debra Rodgers, Coordinator of Academic Services djr255@psu.edu
                     Sincerely,
@@ -80,7 +105,7 @@ en:
                     University Park, PA 16802
         committee_rejected_admin:
           message: |
-                    The committee for %{author_name}'s %{degree_type} has rejected their submission.  It is now under review by administrators.
+                    The committee for %{author_name}'s %{degree_type} has rejected their submission.
 
                     If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
                     You may also call (814)863-2635, or send mail to:
@@ -90,7 +115,9 @@ en:
                     University Park, PA 16802
         committee_rejected_author:
           message: |
-                    The committee reviewing your %{degree_type} has rejected your submission.  It is now under review by administrators.
+                    The committee reviewing your %{degree_type} has rejected your submission.
+                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review.
+                    For additional information regarding the rejection please consult your %{degree_type} adviser.
 
                     If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
                     You may also call (814)863-2635, or send mail to:
@@ -103,19 +130,24 @@ en:
                     The electronic honors %{degree_type} submitted by you has been approved by the %{partner_name} and your committee.
                     The access level for your %{degree_type} is: %{access_level}
                     Use the following URL to access the available information for Honors Theses: %{url}
+
                     If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
                     You may also call (814)863-2635, or send mail to:
                     Honors College Records Department
                     10 Schreyer Honors College
                     The Pennsylvania State University
                     University Park, PA  16802
-
         pay_thesis_fee:
           message: |
                     Now that your honors %{degree_type} has been approved, you must complete two more steps to finalize the process:
+
                     1. Go to https://www.shc.psu.edu/srs/grad/fee and pay the thesis processing fee.
-                    2.  Bring payment receipt and your signed signatory page to the Honors College, C-4 Atherton Hall. In Summer and Fall, you must make an advance appointment to submit your signature page. In Spring, you must attend during the designated Thesis Days.
+
+                    2.  Bring payment receipt and your signed signatory page to the Honors College, C-4 Atherton Hall.
+                    In Summer and Fall, you must make an advance appointment to submit your signature page. In Spring, you must attend during the
+                    designated Thesis Days.
                     Once fee and signatory page are received, you can hit the GONG and we will celebrate with you.  Congratulations!
+
                     If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
                     You may also call (814)863-2635, or send mail to:
                     Honors College Records Department
@@ -128,14 +160,17 @@ en:
                     you elected to restrict access to it for two years. The time has come to change it to open access.
                     Please acknowledge that you are aware that your eHT will be available as an open document on our
                     eHT Web site (https://honors.libraries.psu.edu/catalog)
+
                     If you or your advisor are in the process of seeking a patent associated with your %{degree_type} and
                     have filed an Invention Disclosure with the Office of Technology Management, we can grant another two-year extension
                     of the restriction. Please let us know immediately if this is the case.
+
                     If you are seeking publication and wish to extend the restriction for that reason, we will allow a change
                     to the 'Penn State Only' option. This will allow the document to be accessed only by those with a valid
                     Penn State Access Account, and will provide an additional two-year period until open access. Please
                     let us know if you need to use this option.
                     In any case, it is important that you respond to this message. Thank you.
+
                     Honors College Records Department
                     10 Schreyer Honors College
                     The Pennsylvania State University

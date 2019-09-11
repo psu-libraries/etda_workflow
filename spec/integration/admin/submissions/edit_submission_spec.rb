@@ -14,7 +14,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     webaccess_authorize_admin
   end
 
-  it "Saves the updated submission data for a submission with status collecting committee" do
+  it "Saves the updated submission data for a submission with status collecting committee", retry: 5 do
     visit admin_edit_submission_path(submission)
     check "Allow completely upper-case words in title"
     fill_in "Title", with: "A Brand New TITLE"
@@ -137,6 +137,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
       click_link 'View Printable Audit'
       expect(page).to have_content("#{final_submission.degree.degree_type.name} Audit")
       expect(page).to have_link(file.asset_identifier.to_s)
+      expect(page).to have_content("Committee Approval Status:")
       expect(page).to have_content("Committee Member Reviews")
     end
   end

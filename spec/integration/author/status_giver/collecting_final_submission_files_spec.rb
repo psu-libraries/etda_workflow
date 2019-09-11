@@ -7,7 +7,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
     end
 
     let!(:author) { current_author }
-    let!(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, lion_path_degree_code: 'PHD', author: author }
+    let!(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, lion_path_degree_code: 'PHD', author: author, degree: degree }
     let!(:inbound_record) { FactoryBot.create :inbound_lion_path_record, author: author }
     let!(:committee_members) { create_committee(submission) }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
@@ -124,12 +124,12 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         submission.reload
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.graduate?
-        expect(WorkflowMailer.deliveries.count).to eq(0) unless current_partner.graduate?
+        expect(WorkflowMailer.deliveries.count).to eq(1) unless current_partner.graduate?
       end
     end
 
     context "when I submit the 'Upload Final Submission Files' form after committee rejection" do
-      it 'resets committee reviews and proceeds to "waiting for committee review"' do
+      it 'proceeds to "waiting for final submission response"' do
         submission.committee_members.first.update_attribute :status, 'rejected'
         submission.status = 'waiting for committee review rejected'
         submission.defended_at = Time.zone.yesterday
@@ -149,12 +149,10 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.committee_members.first.status).to eq ''
-        expect(submission.status).to eq 'waiting for committee review'
+        expect(submission.committee_members.first.status).to eq 'rejected'
+        expect(submission.status).to eq 'waiting for final submission response'
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
-        expect(WorkflowMailer.deliveries.count).to eq(7) if current_partner.graduate?
-        expect(WorkflowMailer.deliveries.count).to eq(2) if current_partner.honors?
-        expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.milsch?
+        expect(WorkflowMailer.deliveries.count).to eq(1)
       end
     end
 

@@ -118,14 +118,14 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find('#submission_has_agreed_to_terms').click
           click_button 'Submit final files for review'
           sleep 1
-          expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+          expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
         end
       end
     end
 
     context "when committee reviews" do
       before do
-        allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
+        allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
         webaccess_authorize_approver
       end
 
@@ -133,7 +133,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         skip 'Graduate Only' unless current_partner.graduate?
 
         submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
-        submission.committee_members << (FactoryBot.create :committee_member, committee_role_id: head_role.id)
+        submission.committee_members << (FactoryBot.create :committee_member, committee_role_id: head_role.id, access_id: 'abc123')
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
           find(:css, "#committee_member_status_approved").set true
@@ -298,7 +298,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
 
     context "when committee reviews" do
       before do
-        allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
+        allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
         webaccess_authorize_approver
       end
 

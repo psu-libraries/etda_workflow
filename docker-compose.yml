@@ -15,6 +15,8 @@ services:
     volumes:
     - db-data:/var/lib/mysql
   web:
+    tty: true
+    stdin_open: true
     environment:
       REDIS_HOST: redis
       MYSQL_HOST: db

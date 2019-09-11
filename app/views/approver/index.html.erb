@@ -12,6 +12,7 @@
       <tr>
         <th>Submission Title</th>
         <th>Author</th>
+        <th>My Committee Role</th>
         <th>Review Started On</th>
         <th>My Review</th>
         <th>Submission Status</th>
@@ -23,6 +24,7 @@
         <tr>
           <td><%= link_to committee_member.submission.title, approver_path(committee_member) %></td>
           <td><%= committee_member.submission.author.first_name %> <%= committee_member.submission.author.last_name %></td>
+          <td><%= committee_member.committee_role.name %></td>
           <td><%= committee_member.submission.final_submission_files_uploaded_at.strftime('%m/%d/%Y') %></td>
           <td><%= committee_member.status.titleize %></td>
           <td><%= committee_member.submission.status.titleize %></td>

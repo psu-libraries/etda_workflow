@@ -18,12 +18,14 @@ class ApprovalStatus
   end
 
   def head_of_program_status
-    return 'approved' if current_submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: current_submission.degree.degree_type).id).blank?
+    return 'approved' if !current_partner.graduate? || current_submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: current_submission.degree.degree_type).id).blank?
 
     current_submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: current_submission.degree.degree_type).id).status
   end
 
   def status
+    return 'none' unless all_have_voted?
+
     none || approved || rejected || pending
   end
 
@@ -51,5 +53,12 @@ class ApprovalStatus
     else
       voting_committee_members.count - (voting_committee_members.count.to_f * (approval_configuration.configuration_threshold.to_f / 100)).round
     end
+  end
+
+  def all_have_voted?
+    voting_committee_members.each do |member|
+      return false unless member.status == 'approved' || member.status == 'rejected'
+    end
+    true
   end
 end

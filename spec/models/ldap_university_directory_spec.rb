@@ -325,6 +325,18 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
   end
 
+  describe "#retrieve_committee_access_id" do
+    let(:result) { directory.retrieve_committee_access_id(psu_email) }
+
+    context "when given a valid psu email" do
+      let(:psu_email) { "ajk5603@psu.edu" }
+
+      it "returns access_id of the committee member" do
+        expect(result).to eq('ajk5603')
+      end
+    end
+  end
+
   describe '#get_psu_id' do
     let(:access_id) { 'ajk5603' }
 

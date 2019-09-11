@@ -4,6 +4,7 @@
   <thead>
   <tr>
     <th>Name</th>
+    <th>Role</th>
     <th>Status</th>
     <th>Notes</th>
     <th>Action</th>
@@ -13,7 +14,8 @@
   <% @submission.committee_members.each do |member| %>
     <tr>
       <td><%= member.name %></td>
-      <td><%= member.status %></td>
+      <td><%= member.committee_role.name %></td>
+      <td><%= member.status ? member.status.capitalize : nil %></td>
       <td><%= member.notes %></td>
       <td><%= button_to 'Send Email Reminder', { controller: author_submissions_path, action: "send_email_reminder", committee_member_id: member.id }, method: :post, disabled: @submission.status_behavior.beyond_waiting_for_head_of_program_review? %></td>
     </tr>

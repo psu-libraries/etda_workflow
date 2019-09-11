@@ -4,11 +4,10 @@ class CommitteeMember < ApplicationRecord
   class ProgramHeadMissing < StandardError; end
 
   # This maps ldap values to one or more values needed for committee member autocomplete
-  validate :validate_committee_member
   validate :validate_email
   validates :committee_role_id,
             :name,
-            :email, presence: true, if: proc { |cm| cm.is_required }
+            :email, presence: true
 
   belongs_to :submission
   belongs_to :committee_role
@@ -46,21 +45,14 @@ class CommitteeMember < ApplicationRecord
     CommitteeMember.where(submission: @submission).find_by(committee_role: CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: @submission.degree.degree_type))
   end
 
-  def validate_committee_member
-    starting_count = errors.count
-    errors.add(:name, "Name can't be blank") if name.blank?
-    errors.add(:email, "Email can't be blank") if email.blank?
-    errors.add(:committee_role_id, "Must choose a role") if committee_role_id.blank?
-    starting_count == errors.count
-  end
-
   def validate_email
-    return true if is_required && (name.blank? && email.blank?)
+    true_ldap_result = LdapUniversityDirectory.new.autocomplete(name)
+    return true if email.blank?
 
-    unless email.nil?
-      return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(com|edu|org|net|gov|mil|biz|info))\z/i)
+    unless email.nil? || (is_required == true && true_ldap_result.blank?)
+      return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(.*))\z/i)
     end
-    errors.add(:email, 'Invalid email address')
+    errors.add(:email, 'is invalid')
     false
   end
 
@@ -96,10 +88,13 @@ class CommitteeMember < ApplicationRecord
 
   def email=(new_email)
     self[:email] = new_email
-    self.access_id = email.gsub('@psu.edu', '').strip if email.match?(/.*@psu.edu/)
+    new_access_id = LdapUniversityDirectory.new.retrieve_committee_access_id(new_email)
+    self.access_id = new_access_id if new_access_id.present?
   end
 
   def committee_role_id=(new_committee_role_id)
+    return if new_committee_role_id.blank?
+
     self[:committee_role_id] = new_committee_role_id
     self[:is_voting] = true unless CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Program Head/Chair'
     self[:is_voting] = false if CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Program Head/Chair'

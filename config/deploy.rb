@@ -131,6 +131,7 @@ namespace :deploy do
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/ldap.yml #{release_path}/config/ldap.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/sidekiq.yml #{release_path}/config/sidekiq.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/redis.yml #{release_path}/config/redis.yml"
+      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/newrelic.yml #{release_path}/config/newrelic.yml"
       execute "ln -sf /etda_workflow/data/#{fetch(:stage)}/etda_workflow_#{fetch(:partner)}/ #{release_path}/workflow_data_files"
       execute "ln -sf /etda_workflow/data/#{fetch(:stage)}/etda_explore_#{fetch(:partner)}/ #{release_path}/explore_data_files"
     end
@@ -146,21 +147,8 @@ namespace :deploy do
 
   after "deploy:updated", "deploy:migrate"
 
-# Placeholder for possible fix.
-# Worked for first partner on deploy but hung on others.  Once added everything worked but alternative solutions already existed.  
-#    before "deploy:assets:precompile", "deploy:yarn_install"
-#    namespace :deploy do
-#      desc 'Run rake yarn:install'
-#      task :yarn_install do
-#        on roles(:web) do
-#          within release_path do
-#            execute("cd #{release_path} && yarn install")
-#          end
-#        end
-#      end
-#    end
-
 end
+
 
 # Used to keep x-1 instances of ruby on a machine.  Ex +4 leaves 3 versions on a machine.  +3 leaves 2 versions
 namespace :rbenv_custom_ruby_cleanup do
@@ -178,7 +166,7 @@ namespace :yarn do
   task :install do
     puts '***running yarn install'
     on roles (:web) do 
-      execute "cd #{release_path} && yarn install"
+      execute "cd #{release_path} && yarn install --frozen-lockfile --production"
     end
   end
 
@@ -186,21 +174,13 @@ namespace :yarn do
   task :check do
     on roles (:web) do 
       puts '***running yarn check'
-      execute "cd #{release_path} && yarn check --integrity"
-      execute "cd #{release_path} && yarn check --verify-tree"
+      execute "cd #{release_path} && yarn check --integrity --frozen-lockfile --production"
+      execute "cd #{release_path} && yarn check --verify-tree --frozen-lockfile --production"
+      execute "cd #{release_path} && yarn check --frozen-lockfile --production"
     end
   end
 end
 
-# namespace :custom_cleanup do
-#   desc 'clean up the yarn cache before building webpack'
-#   task :clean_yarn_cache do
-#     puts '***cleaning yarn'
-#     on roles (:web) do
-#       execute 'yarn cache clean'
-#     end
-#   end
-# end
 
 namespace :deploy_all do
   task :deploy do
@@ -217,4 +197,3 @@ namespace :deploy_all do
 end
 
 task deploy_all: 'deploy_all:deploy'
-# after "deploy_all:deploy", "apache:restart"
