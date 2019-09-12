@@ -77,10 +77,10 @@
               <% else %>
                 <div class="review-rejected">
                   <% completed_on = @submission.head_of_program_review_rejected_at || @submission.committee_review_rejected_at %>
-                  <%= completed_on.strftime("Review Completed on %m/%d/%Y at %I:%M%p") %>
+                  <%= completed_on.present? ? completed_on.strftime("Review Completed on %m/%d/%Y at %I:%M%p") : 'This submission was processed before electronic signatures.'%>
                 </div>
                 <div>
-                  Committee <strong>rejected</strong> the submission.  The student will review any notes the committee left for them, make changes, and resubmit their work.  Upon resubmission, you will be notified to review this work again.
+                  <%= completed_on.present? ? "Committee <strong>rejected</strong> the submission.  The student will review any notes the committee left for them, make changes, and resubmit their work.  Upon resubmission, you will be notified to review this work again.".html_safe : nil %>
                 </div>
                 <div class="altering-submission">
                   If you have questions, please <%= link_to "contact the site admin.", email_contact_form_new_path %>

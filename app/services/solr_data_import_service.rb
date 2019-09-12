@@ -32,7 +32,7 @@ class SolrDataImportService
       SolrLog.info check_results
     end
     check_results
-  rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH => e
+  rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::EADDRNOTAVAIL => e
     Rails.logger.error e.inspect
     SolrLog.info e.inspect unless e.nil?
     SolrLog.info result

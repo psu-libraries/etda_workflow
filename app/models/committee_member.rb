@@ -46,9 +46,10 @@ class CommitteeMember < ApplicationRecord
   end
 
   def validate_email
+    ldap_result = LdapUniversityDirectory.new.retrieve_committee_access_id(email)
     return true if email.blank?
 
-    unless email.nil?
+    unless email.nil? || (is_required == true && ldap_result.blank?)
       return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(.*))\z/i)
     end
     errors.add(:email, 'is invalid')
