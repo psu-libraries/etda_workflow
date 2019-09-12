@@ -5,6 +5,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   let(:submission1) { FactoryBot.create :submission, :waiting_for_final_submission_response, created_at: Time.zone.now }
   let(:submission2) { FactoryBot.create :submission, :waiting_for_publication_release, committee_review_accepted_at: DateTime.now, created_at: Time.zone.now }
   let(:submission3) { FactoryBot.create :submission, :waiting_for_publication_release, committee_review_rejected_at: DateTime.now, created_at: Time.zone.now }
+  let(:submission4) { FactoryBot.create :submission, :waiting_for_publication_release, created_at: Time.zone.now }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
   let(:approval_configuration) { FactoryBot.create :approval_configuration, head_of_program_is_approving: false }
   let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor" }
@@ -19,6 +20,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
   context 'approver matches committee member access_id' do
     before do
+      committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
       visit "approver/committee_member/#{committee_member.id}"
     end
 
@@ -84,6 +86,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     context 'approval is approved' do
       it 'displays the committee members response' do
         committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission2, access_id: 'approverflow'
+        committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
         submission2.degree.degree_type.approval_configuration = approval_configuration
         allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
         visit "approver/committee_member/#{committee_member.id}"
@@ -96,12 +99,25 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     context 'approval is rejected' do
       it 'displays the committee members response' do
         committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission3, access_id: 'approverflow'
+        committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
         submission3.degree.degree_type.approval_configuration = approval_configuration
         allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
         visit "approver/committee_member/#{committee_member.id}"
 
         expect(page).to have_content('rejected')
         expect(page).to have_content('Review Completed on')
+      end
+    end
+
+    context 'submission is legacy' do
+      it 'displays a message' do
+        committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission4, access_id: 'approverflow'
+        committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
+        submission4.degree.degree_type.approval_configuration = approval_configuration
+        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('none')
+        visit "approver/committee_member/#{committee_member.id}"
+
+        expect(page).to have_content('This submission was processed')
       end
     end
   end
@@ -124,6 +140,10 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
   context 'access level tooltip' do
     let(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow' }
+
+    before do
+      committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
+    end
 
     context 'submission is open access' do
       it "doesn't display help text" do
@@ -153,6 +173,23 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
         find('a[data-toggle="tooltip"]').hover
         expect(page).to have_content("Access restricted to")
       end
+    end
+  end
+
+  context "advisor is also a committee member" do
+    let!(:committee_member1) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow' }
+    let!(:committee_member2) { FactoryBot.create :committee_member, committee_role: committee_role_not_advisor, submission: submission, access_id: 'approverflow' }
+
+    before do
+      submission.committee_members << [committee_member2, committee_member1]
+      submission.reload
+      committee_member1.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
+      committee_member2.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
+    end
+
+    it "redirects to the advisor page when trying to access the committee member page" do
+      visit approver_path committee_member2
+      expect(page).to have_current_path approver_path committee_member1
     end
   end
 end

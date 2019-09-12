@@ -2,6 +2,8 @@
 
 Rails.application.configure do
 
+  config.web_console.whitelisted_ips = '192.168.112.1'
+
  # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = true
   # Settings specified here will take precedence over those in config/application.rb.
@@ -75,7 +77,7 @@ Rails.application.configure do
 
   # Mocks
   LionPathConnection = LionPath::MockLionPathConnection
-  LdapUniversityDirectory = MockUniversityDirectory
+  LdapUniversityDirectory = LdapUniversityDirectory
   VirusScanner = MockVirusScanner
   WORKFLOW_BASE_PATH = "tmp/workflow_files/#{Partner.current.id}/"
   EXPLORE_BASE_PATH = "tmp/explore_files/#{Partner.current.id}/"

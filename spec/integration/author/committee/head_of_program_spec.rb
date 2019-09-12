@@ -1,4 +1,4 @@
-RSpec.describe 'The standard committee form for authors', js: true do
+RSpec.describe 'The head of program form for authors', js: true do
   require 'integration/integration_spec_helper'
 
   let(:author) { current_author }
@@ -17,8 +17,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
     submission.required_committee_roles.count.times do |i|
       next if i == 0
 
-      fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
-      page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@example.com'")
+      fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
+      page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'buck@hotmail.com'")
     end
     click_button 'Save and Input Program Head/Chair >>'
     expect(page).to have_content 'Input Program Head/Chair'
@@ -35,8 +35,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
     submission.required_committee_roles.count.times do |i|
       next if i == 0
 
-      fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
-      page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@example.com'")
+      fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
+      page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'buck@hotmail.com'")
     end
     click_button 'Save and Input Program Head/Chair >>'
     expect(page).to have_content 'Input Program Head/Chair'

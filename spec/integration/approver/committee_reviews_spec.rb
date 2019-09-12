@@ -15,6 +15,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   context 'approver matches committee member access_id' do
     before do
       allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
+      committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
       visit "approver/committee_member/#{committee_member.id}"
     end
 
