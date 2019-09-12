@@ -53,7 +53,7 @@ RSpec.describe CommitteeMember, type: :model do
 
     it 'is valid' do
       cm.name = 'Professor Buck Murphy'
-      cm.email = 'email@psu.edu'
+      cm.email = 'buck@hotmail.com'
       cm.committee_role_id = committee_role.id
       cm.submission_id = submission.id
       cm.is_required = true
@@ -244,7 +244,7 @@ RSpec.describe CommitteeMember, type: :model do
       cm.name = 'Professor Buck Murphy'
       cm.committee_role_id = committee_role.id
       cm.submission_id = submission.id
-      cm.is_required = true
+      cm.is_required = false
     end
 
     it 'accepts email' do
@@ -253,6 +253,9 @@ RSpec.describe CommitteeMember, type: :model do
       cm.email = 'email@health.sdu.dk'
       expect(cm).to be_valid
       cm.email = 'jamesbrown@funky.funktown'
+      expect(cm).to be_valid
+      cm.is_required = true
+      cm.email = 'buck@hotmail.com'
       expect(cm).to be_valid
     end
 
@@ -263,6 +266,7 @@ RSpec.describe CommitteeMember, type: :model do
       expect(cm).not_to be_valid
       cm.email = 'email@ps u.edu'
       expect(cm).not_to be_valid
+      cm.is_required = true
       cm.name = 'A. Fraud'
       expect(cm).not_to be_valid
     end

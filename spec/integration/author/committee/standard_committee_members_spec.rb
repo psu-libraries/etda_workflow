@@ -41,7 +41,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
           next if i == 0 && current_partner.graduate?
 
           fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
-          fill_in "submission_committee_members_attributes_#{i}_email", with: "pbm_#{i}@example.com"
+          fill_in "submission_committee_members_attributes_#{i}_email", with: "buck@hotmail.com"
         end
         click_link('Cancel')
         expect(page).to have_content('My Submissions')
@@ -60,8 +60,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
           next if i == 0 && current_partner.graduate?
 
           fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
-          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'pbm_#{i}@psu.edu'")
-          @email_list << "pbm_#{i}@psu.edu"
+          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'buck@hotmail.com'")
+          @email_list << "buck@hotmail.com"
         end
         click_button 'Save and Continue Submission' unless current_partner.graduate?
         click_button 'Save and Input Program Head/Chair >>' if current_partner.graduate?
@@ -72,15 +72,15 @@ RSpec.describe 'The standard committee form for authors', js: true do
         assert_equal submission.committee_email_list, @email_list
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count) unless current_partner.graduate?
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count - 1) if current_partner.graduate?
-        expect(submission.committee_members.first.access_id).to eq('pbm_0') unless current_partner.graduate?
-        expect(submission.committee_members.first.access_id).to eq('pbm_1') if current_partner.graduate?
+        expect(submission.committee_members.first.access_id).to eq('pbm123') unless current_partner.graduate?
+        expect(submission.committee_members.first.access_id).to eq('pbm123') if current_partner.graduate?
         visit author_submission_committee_members_path(submission)
         submission.required_committee_roles.count.times do |i|
           next if i == 0 && current_partner.graduate?
 
           # expect(page).to have_content role.name
           name = "Professor Buck Murphy #{i}"
-          email = "pbm_#{i}@psu.edu"
+          email = "buck@hotmail.com"
           expect(page).to have_content(name)
           expect(page).to have_content(email)
         end
@@ -94,8 +94,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
           next if i == 0 && current_partner.graduate?
 
           fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
-          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'pbm_#{i}@example.com'")
-          @email_list << "pbm_#{i}@example.com"
+          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'buck@hotmail.com'")
+          @email_list << "buck@hotmail.com"
         end
         click_button 'Save and Continue Editing' unless current_partner.graduate?
       end
@@ -146,9 +146,9 @@ RSpec.describe 'The standard committee form for authors', js: true do
         submission.status = 'collecting format review files'
         roles = CommitteeRole.all
         submission.required_committee_roles.count.times do |i|
-          submission.committee_members << FactoryBot.create(:committee_member, name: "Professor Buck Murphy #{i}", email: "pbm_#{i}_@example.com", is_required: true, committee_role_id: roles[i].id)
+          submission.committee_members << FactoryBot.create(:committee_member, name: "Professor Buck Murphy #{i}", email: "buck@hotmail.com", is_required: true, committee_role_id: roles[i].id)
         end
-        submission.committee_members << FactoryBot.create(:committee_member, name: 'I am Special', email: 'special@psu.edu', is_required: false, committee_role_id: CommitteeRole.where(num_required: 0).first.id)
+        submission.committee_members << FactoryBot.create(:committee_member, name: 'I am Special', email: 'special@person.com', is_required: false, committee_role_id: CommitteeRole.where(num_required: 0).first.id)
         submission.save!
         visit edit_author_submission_committee_members_path(submission)
       end

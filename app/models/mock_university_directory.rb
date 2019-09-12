@@ -26,15 +26,10 @@ class MockUniversityDirectory
     when /(alex)/i
       unless Rails.env.test?
         [
-          { id: 'jxd2@psu.edu', label: 'Joni Davis', value: 'Joni Davis', dept: 'Davis Dept' },
-          { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling', dept: 'University Libraries' },
-          { id: 'jjj1@psu.edu', label: 'John James Johnson', value: 'John Johnson', dept: 'Huck Institute' },
-          { id: 'mmm3@psu.edu', label: 'Mark Micheal Murphy', value: 'Mark Murphy', dept: 'Ag Science' },
-          { id: 'mis4@psu.edu', label: 'Maggie I. Smith', value: 'Maggie Smith', dept: 'Earth & Mineral Science' }
+          { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling', dept: 'University Libraries' }
         ]
       end
       [
-        { id: 'jxd2@psu.edu', label: 'Joni Davis', value: 'Joni Davis', dept: 'Davis Dept' },
         { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling', dept: 'University Libraries' }
       ]
     when /(scott)/i
@@ -68,6 +63,8 @@ class MockUniversityDirectory
 
   def retrieve_committee_access_id(psu_email)
     return psu_email.gsub('@psu.edu', '').strip if psu_email.match?(/.*@psu.edu/)
+
+    return 'pbm123' if psu_email == 'buck@hotmail.com'
 
     nil
   end
