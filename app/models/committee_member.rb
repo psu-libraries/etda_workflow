@@ -46,11 +46,10 @@ class CommitteeMember < ApplicationRecord
   end
 
   def validate_email
-    ldap_result = LdapUniversityDirectory.new.autocomplete(name).first
-    ldap_result.present? ? ldap_email_result = ldap_result[:id].to_s : ldap_email_result = nil
+    ldap_result = LdapUniversityDirectory.new.retrieve_committee_access_id(email)
     return true if email.blank?
 
-    unless email.nil? || (is_required == true && ldap_email_result.blank?) || (is_required == true && ldap_email_result != email)
+    unless email.nil? || (is_required == true && ldap_result.blank?)
       return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(.*))\z/i)
     end
     errors.add(:email, 'is invalid')

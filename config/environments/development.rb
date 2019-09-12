@@ -77,7 +77,7 @@ Rails.application.configure do
 
   # Mocks
   LionPathConnection = LionPath::MockLionPathConnection
-  LdapUniversityDirectory = MockUniversityDirectory
+  LdapUniversityDirectory = LdapUniversityDirectory
   VirusScanner = MockVirusScanner
   WORKFLOW_BASE_PATH = "tmp/workflow_files/#{Partner.current.id}/"
   EXPLORE_BASE_PATH = "tmp/explore_files/#{Partner.current.id}/"

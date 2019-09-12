@@ -62,6 +62,8 @@ class MockUniversityDirectory
   end
 
   def retrieve_committee_access_id(psu_email)
+    return nil if psu_email.blank?
+
     return psu_email.gsub('@psu.edu', '').strip if psu_email.match?(/.*@psu.edu/)
 
     return 'pbm123' if psu_email == 'buck@hotmail.com'
