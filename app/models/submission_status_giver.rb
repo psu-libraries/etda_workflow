@@ -56,7 +56,7 @@ class SubmissionStatusGiver
   end
 
   def can_waiting_for_final_submission?
-    validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected]
+    current_partner.honors? ? (validate_current_state! [SubmissionStates::WaitingForCommitteeReview]) : (validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected])
   end
 
   def can_respond_to_final_submission?

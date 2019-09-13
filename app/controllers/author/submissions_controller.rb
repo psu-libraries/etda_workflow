@@ -114,6 +114,7 @@ class Author::SubmissionsController < AuthorController
 
   def update_final_submission
     @submission = find_submission
+    approval_status = ApprovalStatus.new(@submission).status
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
     @submission.update_attributes!(final_submission_params)
@@ -124,6 +125,7 @@ class Author::SubmissionsController < AuthorController
       status_giver.can_waiting_for_committee_review? if current_partner.honors?
       status_giver.waiting_for_committee_review! if current_partner.honors?
       OutboundLionPathRecord.new(submission: @submission).report_status_change
+      @submission.reset_committee_reviews
       @submission.update_final_submission_timestamps!(Time.zone.now)
       redirect_to author_root_path
       WorkflowMailer.final_submission_received(@submission).deliver
@@ -135,6 +137,8 @@ class Author::SubmissionsController < AuthorController
     status_giver.can_waiting_for_committee_review? if current_partner.honors?
     status_giver.waiting_for_committee_review! if current_partner.honors?
     OutboundLionPathRecord.new(submission: @submission).report_status_change
+    @submission.reset_committee_reviews if current_partner.honors?
+    @submission.send_initial_committee_member_emails unless approval_status == 'approved' || !current_partner.honors?
     @submission.update_final_submission_timestamps!(Time.zone.now)
     redirect_to author_root_path
     WorkflowMailer.final_submission_received(@submission).deliver_now

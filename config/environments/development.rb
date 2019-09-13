@@ -2,7 +2,7 @@
 
 Rails.application.configure do
 
-  config.web_console.whitelisted_ips = '172.24.0.1'
+  config.web_console.whitelisted_ips = '172.29.0.1'
 
  # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = true
