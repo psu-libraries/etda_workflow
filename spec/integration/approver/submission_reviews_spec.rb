@@ -1,7 +1,7 @@
 RSpec.describe 'Approver reviews page', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
-  let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, created_at: Time.zone.now, final_submission_files_uploaded_at: DateTime.now }
+  let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, created_at: Time.zone.now, final_submission_files_uploaded_at: DateTime.now, final_submission_approved_at: DateTime.now }
   let(:submission1) { FactoryBot.create :submission, :waiting_for_final_submission_response, created_at: Time.zone.now }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
   let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor" }
@@ -28,7 +28,7 @@ RSpec.describe 'Approver reviews page', type: :integration, js: true do
     expect(page).to have_content('Submission Status')
     expect(page).to have_content('Waiting For Committee Review')
     expect(page).to have_content("#{submission.author.first_name} #{submission.author.last_name}")
-    expect(page).to have_content(submission.final_submission_files_uploaded_at.strftime('%m/%d/%Y'))
+    expect(page).to have_content(submission.final_submission_approved_at.strftime('%m/%d/%Y'))
     expect(page).to have_link(submission.title)
     expect(page).not_to have_link(submission1.title)
     expect(Approver.find_by(access_id: 'approverflow').committee_members.count).to eq 2

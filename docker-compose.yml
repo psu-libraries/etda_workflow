@@ -21,7 +21,6 @@ services:
       REDIS_HOST: redis
       MYSQL_HOST: db
       RAILS_ENV: development
-      PARTNER: honors
     build: 
       context: .
       args:

@@ -56,7 +56,7 @@ class SubmissionStatusGiver
   end
 
   def can_waiting_for_final_submission?
-    current_partner.honors? ? (validate_current_state! [SubmissionStates::WaitingForCommitteeReview]) : (validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected])
+    current_partner.honors? ? (validate_current_state! [SubmissionStates::WaitingForCommitteeReview, SubmissionStates::CollectingFinalSubmissionFilesRejected]) : (validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::WaitingForCommitteeReviewRejected])
   end
 
   def can_respond_to_final_submission?
@@ -76,7 +76,8 @@ class SubmissionStatusGiver
   end
 
   def can_waiting_for_publication_release?
-    submission.head_of_program_is_approving? ? (validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview]) : (validate_current_state! [SubmissionStates::WaitingForCommitteeReview])
+    submission.head_of_program_is_approving? ? (validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview]) : (validate_current_state! [SubmissionStates::WaitingForCommitteeReview]) unless current_partner.honors?
+    validate_current_state! [SubmissionStates::WaitingForFinalSubmissionResponse] if current_partner.honors?
   end
 
   def can_release_for_publication?

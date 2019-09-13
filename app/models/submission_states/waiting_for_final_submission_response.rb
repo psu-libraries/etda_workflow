@@ -6,7 +6,7 @@ module SubmissionStates
 
     def initialize
       @transitions_to = [SubmissionStates::WaitingForCommitteeReview, SubmissionStates::CollectingFinalSubmissionFilesRejected] unless current_partner.honors?
-      @transitions_to = [SubmissionStates::WaitingForPublicationRelease] if current_partner.honors?
+      @transitions_to = [SubmissionStates::WaitingForPublicationRelease, SubmissionStates::CollectingFinalSubmissionFilesRejected] if current_partner.honors?
     end
 
     def status_date(submission)
