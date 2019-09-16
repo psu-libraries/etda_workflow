@@ -1,4 +1,4 @@
-class   FinalSubmissionUpdateService
+class FinalSubmissionUpdateService
   include ActionView::Helpers::UrlHelper
 
   attr_accessor :params
@@ -34,7 +34,12 @@ class   FinalSubmissionUpdateService
     status_giver.can_respond_to_final_submission?
     if update_actions.approved?
       submission.update_attribute :final_submission_approved_at, Time.zone.now
-      unless current_partner.honors?
+      if current_partner.honors?
+        status_giver.can_waiting_for_publication_release?
+        status_giver.waiting_for_publication_release!
+        UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
+        @submission.deliver_final_emails
+      else
         approval_status = ApprovalStatus.new(@submission).status
         status_giver.can_waiting_for_committee_review?
         status_giver.waiting_for_committee_review!
@@ -42,11 +47,6 @@ class   FinalSubmissionUpdateService
         @submission.update_status_from_committee
         WorkflowMailer.final_submission_approved(@submission).deliver
         @submission.send_initial_committee_member_emails unless approval_status == 'approved'
-      else
-        status_giver.can_waiting_for_publication_release?
-        status_giver.waiting_for_publication_release!
-        UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-        @submission.deliver_final_emails
       end
       msg = "The submission\'s final submission information was successfully approved."
     elsif update_actions.rejected?

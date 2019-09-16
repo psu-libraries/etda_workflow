@@ -8,8 +8,9 @@ class Admin::SubmissionsDashboardView
   end
 
   def filters
-    return standard_filters unless current_partner.honors?
     return honors_filters if current_partner.honors?
+
+    standard_filters
   end
 
   private
