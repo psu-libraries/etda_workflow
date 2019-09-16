@@ -2,7 +2,7 @@ RSpec.describe 'Approver reviews page', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, created_at: Time.zone.now, final_submission_files_uploaded_at: DateTime.now, final_submission_approved_at: DateTime.now }
-  let(:submission1) { FactoryBot.create :submission, :waiting_for_final_submission_response, created_at: Time.zone.now }
+  let(:submission1) { FactoryBot.create :submission, :collecting_final_submission_files, created_at: Time.zone.now }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
   let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor" }
   let(:approval_configuration) { FactoryBot.create :approval_configuration }

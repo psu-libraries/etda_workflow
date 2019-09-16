@@ -10,6 +10,8 @@ RSpec.describe "when an admin approves a final submission", js: true do
   end
 
   it 'displays pop-up when admin clicks "Approve Final Submission"' do
+    skip 'Non honors' if current_partner.honors?
+
     accept_confirm do
       click_button 'Approve Final Submission'
     end
