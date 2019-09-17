@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class LdapSearchFilter
-  def initialize(term, limit_faculty_staff)
+  def initialize(term, restrict_to_non_member)
     @term = term
-    @limit_faculty_staff = limit_faculty_staff
+    @restrict_to_non_member = restrict_to_non_member
   end
 
   def create_filter
@@ -25,11 +25,12 @@ class LdapSearchFilter
     ldap_name_attribute = search_words.count == 1 ? 'sn' : 'cn'
     search_string_filter = Net::LDAP::Filter.eq(ldap_name_attribute, ldap_search_string)
 
-    filter = if @limit_faculty_staff
+    filter = if @restrict_to_non_member
                # faculty_filter = Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "FACULTY")
                # staff_filter = Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "STAFF")
                # faculty_staff_filter = Net::LDAP::Filter.intersect(faculty_filter, staff_filter) # yeah, we know
-               Net::LDAP::Filter.join(faculty_staff_filter, search_string_filter)
+
+               Net::LDAP::Filter.join(combined_filter, search_string_filter)
              else
                search_string_filter
              end
@@ -40,5 +41,13 @@ class LdapSearchFilter
 
   def faculty_staff_filter
     Net::LDAP::Filter.intersect(Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'FACULTY'), Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'STAFF'))
+  end
+
+  def emeritus_retired_filter
+    Net::LDAP::Filter.intersect(Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'EMERITUS'), Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'RETIREE'))
+  end
+
+  def combined_filter
+    Net::LDAP::Filter.intersect(faculty_staff_filter, emeritus_retired_filter)
   end
 end
