@@ -44,7 +44,7 @@ class LdapSearchFilter
   end
 
   def emeritus_retired_filter
-    Net::LDAP::Filter.intersect(Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'EMERITUS'), Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'RETIRED'))
+    Net::LDAP::Filter.intersect(Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'EMERITUS'), Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'RETIREE'))
   end
 
   def combined_filter

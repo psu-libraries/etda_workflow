@@ -5,7 +5,7 @@ RSpec.describe LdapSearchFilter, type: :model do
     let(:ldap_faculty) { Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "FACULTY") }
     let(:ldap_staff) { Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "STAFF") }
     let(:ldap_emeritus) { Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "EMERITUS") }
-    let(:ldap_retired) { Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "RETIRED") }
+    let(:ldap_retired) { Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "RETIREE") }
 
     context 'search for first and last name' do
       let(:ldap_search) { Net::LDAP::Filter.eq('cn', 'jim* smith*') }
