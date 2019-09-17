@@ -218,7 +218,6 @@ ActiveRecord::Schema.define(version: 20190710162921) do
     t.integer "legacy_old_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "code"
     t.index ["legacy_id"], name: "index_programs_on_legacy_id"
   end
 

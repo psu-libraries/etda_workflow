@@ -21,20 +21,13 @@ services:
       REDIS_HOST: redis
       MYSQL_HOST: db
       RAILS_ENV: development
+      PARTNER: ${PARTNER:-graduate}
     build: 
       context: .
       args:
         RAILS_ENV: development
     command: >
-      sh -c "yarn install && 
-            if [ -f tmp/pids/server.pid ]; then rm tmp/pids/server.pid; fi &&
-            echo starting database migrations &&
-            yarn global add phantomjs-prebuilt &&
-            export IP='hostname -i' &&
-            rails db:create && 
-            rails db:migrate &&
-            echo starting rails &&
-            rails s"
+      sh -c "/etda_workflow/local_entrypoint.sh"
     ports:
     - "3000:3000"
     depends_on:

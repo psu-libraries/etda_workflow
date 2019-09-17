@@ -22,9 +22,12 @@ up: ## run this thing
 	docker-compose up -d
 	mutagen create --ignore .git --ignore vendor/cache --ignore tmp --ignore public -m two-way-resolved --label app=etda-workflow . docker://etda_workflow_web_1/etda_workflow 
 
-up_milch: ## run this thing
-	docker-compose up -d
-	docker-compose run -e PARTNER=milsch web
+up_milsch: ## run this thing
+	PARTNER=milsch docker-compose up -d
+	mutagen create --ignore .git --ignore vendor/cache --ignore tmp --ignore public -m two-way-resolved --label app=etda-workflow . docker://etda_workflow_web_1/etda_workflow 
+
+up_honors: ## run this thing
+	PARTNER=honors docker-compose up -d
 	mutagen create --ignore .git --ignore vendor/cache --ignore tmp --ignore public -m two-way-resolved --label app=etda-workflow . docker://etda_workflow_web_1/etda_workflow 
 
 rebuild: build up ## run build and then up
