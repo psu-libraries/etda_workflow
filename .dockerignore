@@ -7,4 +7,4 @@ vendor/cache
 .cache
 node_modules
 tmp
-
+log

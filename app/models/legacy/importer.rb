@@ -6,7 +6,7 @@ require 'partner'
 class Legacy::Importer
   def initialize(records_to_import)
     @display_logger = Logger.new(STDOUT)
-    @import_logger = Logger.new("log/#{current_partner.id}_workflow_import.log")
+    @import_logger = Logger.new(STDOUT)
     @records_to_import = records_to_import
     @original_count = @records_to_import.count.to_s
     @count = 0
