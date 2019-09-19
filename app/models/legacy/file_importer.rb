@@ -1,7 +1,7 @@
 class Legacy::FileImporter
   def initialize
     @display_logger = Logger.new(STDOUT)
-    @import_logger = Logger.new(STDOUT)
+    @import_logger = Logger.new("log/#{current_partner.id}_file_import.log")
     @original_count = 0
     @files_copied = 0
     @missing_file_name = 0

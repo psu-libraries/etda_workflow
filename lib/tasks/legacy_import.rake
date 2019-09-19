@@ -3,7 +3,7 @@ require 'mysql2'
 namespace :legacy do
  # these tasks perform the importing of legacy database and files
  namespace(:import) do
-   @import_logger = Logger.new(STDOUT)
+   @import_logger = Logger.new("log/#{EtdaUtilities::Partner.current.id}_workflow_import.log")
 
    desc "import legacy authors"
    task authors: :environment do
