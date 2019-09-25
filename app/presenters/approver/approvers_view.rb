@@ -5,11 +5,11 @@ class Approver::ApproversView
 
   def tooltip_text
     if @submission.restricted?
-      AccessLevel.display[2][:description]
+      "Restricts the entire work for the purpose of filing a patent.   At the end of the two-year period, the status will automatically change to Open Access.  This work should not be duplicated, shared, or used for any reason other than this review."
     elsif @submission.restricted_to_institution?
-      AccessLevel.display[1][:description]
+      "Access restricted to individuals having a valid Penn State Access Account.  Allows restricted access of the entire work beginning immediately after degree conferral.  At the end of the two-year period, the status will automatically change to Open Access.  This work should not be duplicated, shared, or used for any reason other than this review."
     else
-      AccessLevel.display[0][:description]
+      "Allows free worldwide access to the entire work beginning immediately after degree conferral."
     end
   end
 
