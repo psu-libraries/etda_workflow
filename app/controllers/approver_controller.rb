@@ -32,7 +32,6 @@ class ApproverController < ApplicationController
     return if valid_approver_session?
 
     if valid_approver?
-      update_approver_committee_members
       authenticate_approver!
     else
       redirect_to '/401' # unless Rails.env.test?
@@ -53,14 +52,5 @@ class ApproverController < ApplicationController
 
   def approver_ability
     @approver_ability ||= ApproverAbility.new(current_approver, params[:id])
-  end
-
-  def update_approver_committee_members
-    approver = Approver.find_by(access_id: current_approver.access_id)
-    committee_members = CommitteeMember.where(access_id: approver.access_id)
-    committee_members.each do |committee_member|
-      approver.committee_members << committee_member
-    end
-    approver.save!
   end
 end
