@@ -52,7 +52,7 @@ class Approver::ApproversController < ApproverController
 
   def download_final_submission
     file = FinalSubmissionFile.find(params[:id])
-    if file.submission.committee_members.pluck(:access_id).include? current_approver.access_id
+    if file.submission.committee_members.pluck(:approver_id).include? current_approver.id
       send_file file.current_location, disposition: :inline
     else
       redirect_to '/401'

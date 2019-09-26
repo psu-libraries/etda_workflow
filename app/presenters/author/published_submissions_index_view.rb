@@ -7,7 +7,7 @@ class Author::PublishedSubmissionsIndexView
   end
 
   def title_link(submission)
-    "<span class='sr-only'>link to your submission #{submission.cleaned_title} opens in a new tab</span> <a target = blank href = '#{EtdUrls.new.explore}catalog/#{submission.public_id}' class='title'> #{submission.cleaned_title} </a>"
+    "<span class='sr-only'>link to your submission #{submission.cleaned_title} opens in a new tab</span> <a target = blank href = '#{EtdUrls.new.explore}/catalog/#{submission.public_id}' class='title'> #{submission.cleaned_title} </a>"
   end
 
   def release_information(submission)
