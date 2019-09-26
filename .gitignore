@@ -28,7 +28,7 @@ vendor/bundle
 config/locales/test/**/*
 #config/lion_path.yml
 #config/redis.yml
-#config/admin_email_blacklist.yml
+config/admin_email_blacklist.yml
 spec/examples.txt
 
 node_modules/**/*
