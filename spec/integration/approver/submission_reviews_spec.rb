@@ -4,7 +4,7 @@ RSpec.describe 'Approver reviews page', type: :integration, js: true do
   let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, created_at: Time.zone.now, final_submission_files_uploaded_at: DateTime.now }
   let(:submission1) { FactoryBot.create :submission, :waiting_for_final_submission_response, created_at: Time.zone.now }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
-  let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor" }
+  let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor/Co-Advisor" }
   let(:approval_configuration) { FactoryBot.create :approval_configuration }
   let!(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, status: '', access_id: 'approverflow' }
   let!(:committee_member2) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission1, status: '', access_id: 'approverflow' }
