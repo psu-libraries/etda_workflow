@@ -7,9 +7,9 @@ class CommitteeRole < ApplicationRecord
   GRADUATE_ROLES = { 'dissertation' => [
     { name: 'Program Head/Chair', num_required: 1, is_active: true },
     { name: 'Dissertation Advisor/Co-Advisor', num_required: 1, is_active: true },
-    { name: 'Committee Chair/Co-Chair',     num_required: 1, is_active: true },
-    { name: 'Committee Member',    num_required: 2, is_active: true },
-    { name: 'Outside Member',      num_required: 1, is_active: true },
+    { name: 'Committee Chair/Co-Chair', num_required: 1, is_active: true },
+    { name: 'Committee Member', num_required: 2, is_active: true },
+    { name: 'Outside Member', num_required: 1, is_active: true },
     { name: 'Special Member', num_required: 0, is_active: true },
     { name: 'Special Signatory', num_required: 0, is_active: true }
   ],
