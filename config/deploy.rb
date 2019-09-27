@@ -133,6 +133,7 @@ namespace :deploy do
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/redis.yml #{release_path}/config/redis.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/newrelic.yml #{release_path}/config/newrelic.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/admin_email_blacklist.yml #{release_path}/admin_email_blacklist.yml"
+      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/admin_email_blacklist.yml #{release_path}/config/admin_email_blacklist.yml"
       execute "ln -sf /etda_workflow/data/#{fetch(:stage)}/etda_workflow_#{fetch(:partner)}/ #{release_path}/workflow_data_files"
       execute "ln -sf /etda_workflow/data/#{fetch(:stage)}/etda_explore_#{fetch(:partner)}/ #{release_path}/explore_data_files"
     end
