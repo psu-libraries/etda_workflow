@@ -26,7 +26,7 @@ class Author::CommitteeMemberView
   end
 
   def role
-    model.committee_role.present? ? model.committee_role.name : nil
+    model.committee_role.present? ? model.committee_role.name.gsub(/\/Co-(.*)/, '') : nil
   end
 
   def possible_roles
