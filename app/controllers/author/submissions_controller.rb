@@ -120,10 +120,8 @@ class Author::SubmissionsController < AuthorController
     @submission.update_attributes!(final_submission_params)
     @submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
     if @submission.status == 'waiting for committee review rejected'
-      status_giver.can_waiting_for_final_submission? unless current_partner.honors?
-      status_giver.waiting_for_final_submission_response! unless current_partner.honors?
-      status_giver.can_waiting_for_committee_review? if current_partner.honors?
-      status_giver.waiting_for_committee_review! if current_partner.honors?
+      current_partner.honors? ? status_giver.can_waiting_for_committee_review? : status_giver.can_waiting_for_final_submission?
+      current_partner.honors? ? status_giver.waiting_for_committee_review! : status_giver.waiting_for_final_submission_response!
       OutboundLionPathRecord.new(submission: @submission).report_status_change
       @submission.reset_committee_reviews
       @submission.update_final_submission_timestamps!(Time.zone.now)

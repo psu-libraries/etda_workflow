@@ -33,7 +33,7 @@ class FinalSubmissionUpdateService
     status_giver = SubmissionStatusGiver.new(submission)
     status_giver.can_respond_to_final_submission?
     if update_actions.approved?
-      submission.update_attribute :final_submission_approved_at, Time.zone.now
+      @submission.update_attribute :final_submission_approved_at, Time.zone.now
       if current_partner.honors?
         status_giver.can_waiting_for_publication_release?
         status_giver.waiting_for_publication_release!
