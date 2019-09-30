@@ -267,6 +267,26 @@ RSpec.describe Admin::SubmissionFormView do
       end
     end
 
+    context "When the status is 'waiting for committee review'" do
+      let(:session) { { return_to: "/admin/#{submission.degree_type.slug}/final_submission_pending" } }
+
+      before { submission.status = 'waiting for committee review' }
+
+      it "returns submitted final submission path" do
+        expect(view.cancellation_path).to eq admin_submissions_index_path(submission.degree_type, 'final_submission_pending')
+      end
+    end
+
+    context "When the status is 'waiting for committee review rejected'" do
+      let(:session) { { return_to: "/admin/#{submission.degree_type.slug}/committee_review_rejected" } }
+
+      before { submission.status = 'waiting for committee review rejected' }
+
+      it "returns submitted final submission path" do
+        expect(view.cancellation_path).to eq admin_submissions_index_path(submission.degree_type, 'committee_review_rejected')
+      end
+    end
+
     context "When the status is 'waiting for publication release'" do
       let(:session) { { return_to: "/admin/#{submission.degree_type.slug}/final_submission_approved" } }
 

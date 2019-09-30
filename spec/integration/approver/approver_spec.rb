@@ -8,7 +8,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   let(:submission4) { FactoryBot.create :submission, :waiting_for_publication_release, created_at: Time.zone.now }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
   let(:approval_configuration) { FactoryBot.create :approval_configuration, head_of_program_is_approving: false }
-  let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor" }
+  let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor/Co-Advisor" }
   let(:committee_role_not_advisor) { FactoryBot.create :committee_role, name: "Just Normal Member" }
 
   before do
