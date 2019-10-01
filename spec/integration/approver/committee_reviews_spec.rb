@@ -24,6 +24,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     it 'can see other committee members reviews' do
       expect(page).to have_content('Committee Reviews')
       expect(page).to have_content('Name')
+      expect(page).to have_content('Federal Funding Used:')
       expect(page).to have_content('Status')
       expect(page).to have_content('Notes')
     end
