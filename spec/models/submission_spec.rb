@@ -46,6 +46,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:publication_release_terms_agreed_to_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:head_of_program_review_accepted_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:head_of_program_review_rejected_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:federal_funding).of_type(:boolean) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
@@ -161,6 +162,17 @@ RSpec.describe Submission, type: :model do
       expect(submission).not_to be_valid
       submission.author_edit = false
       expect(submission).to be_valid
+    end
+
+    it 'validates federal funding only when authors are editing beyond collecting committee' do
+      submission = FactoryBot.create :submission, :collecting_final_submission_files
+      submission.author_edit = true
+      submission.federal_funding = true
+      expect(submission).to be_valid
+      submission.federal_funding = false
+      expect(submission).to be_valid
+      submission.federal_funding = nil
+      expect(submission).not_to be_valid
     end
 
     context 'invention disclosure' do

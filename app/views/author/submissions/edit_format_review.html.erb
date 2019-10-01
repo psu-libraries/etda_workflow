@@ -18,7 +18,9 @@
           </div>
       <% end %>
       <%= render partial: '/author/submissions/title_and_checkbox', locals: {f: f} %>
-      <%= render partial: '/author/submissions/semester_year', locals: {f: f}  %>  
+      <%= render partial: '/author/submissions/semester_year', locals: {f: f}  %>
+      <%= render partial: 'author/shared/federal_funding_checkbox', locals: {f: f} %>
+      </br>
 
       <div id="format-review-file-fields" class="form-group" aria-labelled-by="h1">
         <%= render partial: 'author/submissions/format_review_file_label' %>

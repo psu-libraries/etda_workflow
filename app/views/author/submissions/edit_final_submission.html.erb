@@ -50,6 +50,8 @@
         <% end %>
       </div>
 
+      <%= render partial: 'author/shared/federal_funding_checkbox', locals: {f: f} %>
+
       <%= render 'shared/copyright_statement' %>
       <%= f.input :has_agreed_to_terms, label: 'I agree to copyright statement', as: :boolean, wrapper: :vertical_boolean, required: true %>
 

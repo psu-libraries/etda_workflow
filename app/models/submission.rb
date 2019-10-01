@@ -51,6 +51,8 @@ class Submission < ApplicationRecord
             length: { maximum: 400 },
             presence: true, if: proc { |s| s.author_edit } # !InboundLionPathRecord.active? }
 
+  validates :federal_funding, inclusion: { in: [ true, false ] }, if: proc { |s| s.status_behavior.beyond_collecting_committee? && s.author_edit }
+
   validates :abstract,
             :keywords,
             :access_level,

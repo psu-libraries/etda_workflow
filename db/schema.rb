@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190710162921) do
+ActiveRecord::Schema.define(version: 20191001131441) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "access_id", default: "", null: false
@@ -218,7 +218,6 @@ ActiveRecord::Schema.define(version: 20190710162921) do
     t.integer "legacy_old_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "code"
     t.index ["legacy_id"], name: "index_programs_on_legacy_id"
   end
 
@@ -266,6 +265,7 @@ ActiveRecord::Schema.define(version: 20190710162921) do
     t.datetime "committee_review_rejected_at"
     t.datetime "head_of_program_review_accepted_at"
     t.datetime "head_of_program_review_rejected_at"
+    t.boolean "federal_funding"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"
