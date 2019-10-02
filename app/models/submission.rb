@@ -49,7 +49,7 @@ class Submission < ApplicationRecord
 
   validates :title,
             length: { maximum: 400 },
-            presence: true, if: proc { |s| s.author_edit } # !InboundLionPathRecord.active? }
+            presence: { message: "Title can't be blank" }, if: proc { |s| s.author_edit } # !InboundLionPathRecord.active? }
 
   validates :abstract,
             :keywords,
