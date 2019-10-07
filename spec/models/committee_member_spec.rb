@@ -317,5 +317,14 @@ RSpec.describe CommitteeMember, type: :model do
       submission.committee_members << cm2
       expect(cm2).not_to be_valid
     end
+
+    it 'does not allow two new head/chairs' do
+      cm1.committee_role = committee_role
+      submission.committee_members << cm1
+      cm2.committee_role = committee_role
+      submission.committee_members << cm2
+      expect(cm1).not_to be_valid
+      expect(cm2).not_to be_valid
+    end
   end
 end
