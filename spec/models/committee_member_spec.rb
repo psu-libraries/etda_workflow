@@ -281,4 +281,41 @@ RSpec.describe CommitteeMember, type: :model do
       expect(cm).not_to be_valid
     end
   end
+
+  describe 'one program head/chair validation' do
+    let(:submission) { FactoryBot.create(:submission) }
+    let(:cm1) { described_class.new }
+    let(:cm2) { described_class.new }
+    let(:committee_role) { FactoryBot.create(:committee_role, name: 'Program Head/Chair') }
+
+    before do
+      cm1.email = 'email@psu.edu'
+      cm2.email = 'email@psu.edu'
+      cm1.name = 'Test'
+      cm2.name = 'Test'
+    end
+
+    it 'updates existing head/chair' do
+      cm1.committee_role = committee_role
+      submission.committee_members << cm1
+      submission.reload
+      cm1.name = 'Test User'
+      expect(cm1).to be_valid
+    end
+
+    it 'allows new head/chair if none exists' do
+      cm1.committee_role = committee_role
+      submission.committee_members << cm1
+      expect(cm1).to be_valid
+    end
+
+    it 'does not allow new head/chair if one exists' do
+      cm1.committee_role = committee_role
+      submission.committee_members << cm1
+      submission.reload
+      cm2.committee_role = committee_role
+      submission.committee_members << cm2
+      expect(cm2).not_to be_valid
+    end
+  end
 end
