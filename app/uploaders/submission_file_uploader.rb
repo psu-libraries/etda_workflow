@@ -40,7 +40,7 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
   end
 
   def extension_blacklist
-    %w(dotx dotm docx doc docm dot)
+    %w[dotx dotm docx doc docm dot]
   end
 
   # private

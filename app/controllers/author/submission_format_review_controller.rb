@@ -20,7 +20,7 @@ class Author::SubmissionFormatReviewController < AuthorController
     redirect_to author_root_path
     WorkflowMailer.format_review_received(@submission).deliver_now
     flash[:notice] = 'Format review files uploaded successfully.'
-  rescue ActiveRecord::RecordInvalid => e
+  rescue ActiveRecord::RecordInvalid
     flash[:alert] = @submission.errors.messages.values.join(" ")
     redirect_to author_submission_edit_format_review_path(@submission)
   rescue SubmissionStatusGiver::AccessForbidden
