@@ -112,7 +112,7 @@ class CommitteeMember < ApplicationRecord
     return true unless committee_role.name == 'Program Head/Chair'
 
     CommitteeMember.head_of_program(submission.id) ? head_committee_member_id = CommitteeMember.head_of_program(submission.id).id : head_committee_member_id = nil
-    return true if head_committee_member_id == self[:id]
+    return true if head_committee_member_id == nil || head_committee_member_id == self[:id]
 
     errors.add(:committee_role_id, 'An author may only have one Program Head/Chair.')
     false

@@ -47,6 +47,10 @@ RSpec.describe CommitteeMember, type: :model do
     let(:cm) { described_class.new }
     let(:committee_role) { FactoryBot.create(:committee_role) }
 
+    before do
+      cm.committee_role_id = committee_role.id
+    end
+
     it 'is not valid' do
       expect(cm).not_to be_valid
     end
@@ -54,7 +58,6 @@ RSpec.describe CommitteeMember, type: :model do
     it 'is valid' do
       cm.name = 'Professor Buck Murphy'
       cm.email = 'buck@hotmail.com'
-      cm.committee_role_id = committee_role.id
       cm.submission_id = submission.id
       cm.is_required = true
       expect(cm).to be_valid
@@ -68,6 +71,8 @@ RSpec.describe CommitteeMember, type: :model do
     let(:committee_role) { FactoryBot.create(:committee_role) }
 
     before do
+      cm.committee_role_id = committee_role.id
+      cm_dup.committee_role_id = committee_role.id
       submission.committee_members << [cm, cm_dup]
     end
 
@@ -134,6 +139,11 @@ RSpec.describe CommitteeMember, type: :model do
 
   describe 'email' do
     let(:cm) { described_class.new }
+    let(:committee_role) { FactoryBot.create :committee_role }
+
+    before do
+      cm.committee_role_id = committee_role.id
+    end
 
     context 'when email is a psu email' do
       it 'updates access_id' do
