@@ -1,7 +1,7 @@
 require 'carrierwave/test/matchers'
 require 'rails_helper'
 
-describe SubmissionFileUploader do
+RSpec.describe SubmissionFileUploader do
   include CarrierWave::Test::Matchers
 
   let(:uploader) { described_class.new }
