@@ -7,7 +7,7 @@ class CommitteeReminderWorker
     committee_member = CommitteeMember.find(committee_member_id)
     return if committee_member.status == 'approved' || committee_member.status == 'rejected'
 
-    if committee_member.committee_role.name == 'Special Signatory' || committee_member.committee_role.name == 'Special Member'
+    if committee_member.committee_member_token.present?
       WorkflowMailer.special_committee_review_request(submission, committee_member).deliver
     else
       WorkflowMailer.committee_member_review_reminder(submission, committee_member).deliver
