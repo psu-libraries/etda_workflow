@@ -224,12 +224,9 @@ RSpec.describe CommitteeMember, type: :model do
   context 'committee_role_id' do
     it 'creates a committee_member_token if special committee member' do
       submission = FactoryBot.create(:submission)
-      committee_role = FactoryBot.create(:committee_role, name: 'Special Member')
-      committee_role.save!
-      committee_member1 = described_class.create(committee_role_id: committee_role.id, name: "I am " + I18n.t("#{current_partner.id}.committee.special_role"), email: 'advisor@psu.edu', submission_id: submission.id)
-      committee_member1.save!
-      committee_member2 = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am " + I18n.t("#{current_partner.id}.committee.special_role"), email: 'advisor@psu.edu', submission_id: submission.id)
-      committee_member2.save!
+      committee_role = FactoryBot.create(:committee_role, name: 'Committee Member')
+      committee_member1 = FactoryBot.create(:committee_member, committee_role_id: committee_role.id, name: "Special", email: 'person@gmail.com', submission_id: submission.id)
+      committee_member2 = FactoryBot.create(:committee_member, committee_role_id: CommitteeRole.advisor_role, name: "Not Special", email: 'advisor@psu.edu', submission_id: submission.id)
       expect(described_class.find(committee_member1.id).committee_member_token).not_to be_nil
       expect(described_class.find(committee_member2.id).committee_member_token).to be_nil
     end
@@ -254,9 +251,6 @@ RSpec.describe CommitteeMember, type: :model do
       expect(cm).to be_valid
       cm.email = 'jamesbrown@funky.funktown'
       expect(cm).to be_valid
-      cm.is_required = true
-      cm.email = 'buck@hotmail.com'
-      expect(cm).to be_valid
     end
 
     it 'rejects email' do
@@ -265,9 +259,6 @@ RSpec.describe CommitteeMember, type: :model do
       cm.email = 'email@psuedu'
       expect(cm).not_to be_valid
       cm.email = 'email@ps u.edu'
-      expect(cm).not_to be_valid
-      cm.is_required = true
-      cm.name = 'A. Fraud'
       expect(cm).not_to be_valid
     end
   end
