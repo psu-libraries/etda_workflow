@@ -21,7 +21,11 @@
           <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="top" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>"></span></a>
         <% end %>
       </div>
-      <%= f.association :committee_role, collection: local_presenter.possible_additional_roles , prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+      <% if controller_name == 'committee_members' %>
+        <%= f.association :committee_role, collection: local_presenter.author_possible_roles , prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+      <% elsif controller_name == 'submissions' %>
+        <%= f.association :committee_role, collection: local_presenter.admin_possible_roles , prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+      <% end %>
     </div>
   <% end %>
   </div>

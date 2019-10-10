@@ -1,14 +1,8 @@
 <div class="nested-fields admin panel panel-default committee-member-information">
   <div class="status-row">
-    <% if f.object.committee_role.name == 'Program Head/Chair' %>
-      <div class="col-sm-6">
-        <%= f.association :committee_role, disabled: true %>
-      </div>
-    <% else %>
-      <div class="col-sm-6">
-        <%= f.association :committee_role, collection: @submission.degree_type.try(&:committee_roles).where.not(name: 'Program Head/Chair').order('name asc') || [] , input_html: {class: 'role'} %>
-      </div>
-    <% end %>
+    <div class="col-sm-6">
+      <%= f.association :committee_role, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || [] , input_html: {class: 'role'} %>
+    </div>
     <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger remove-member'%>
   </div>
   <div class="row committee-details">

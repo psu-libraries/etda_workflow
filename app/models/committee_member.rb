@@ -5,6 +5,7 @@ class CommitteeMember < ApplicationRecord
 
   # This maps ldap values to one or more values needed for committee member autocomplete
   validate :validate_email
+  validate :one_head_of_program_check
   validates :committee_role_id,
             :name,
             :email, presence: true
@@ -103,5 +104,17 @@ class CommitteeMember < ApplicationRecord
     token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)
     self.committee_member_token = token
     committee_member_token.save!
+  end
+
+  private
+
+  def one_head_of_program_check
+    return true unless committee_role.name == 'Program Head/Chair'
+
+    head_committee_member_id = (CommitteeMember.head_of_program(submission.id) ? CommitteeMember.head_of_program(submission.id).id : nil)
+    return true if (head_committee_member_id.nil? || head_committee_member_id == self[:id]) && (submission.committee_members.collect { |n| n.committee_role.name }.count('Program Head/Chair') < 2)
+
+    errors.add(:committee_role_id, 'An author may only have one Program Head/Chair.')
+    false
   end
 end
