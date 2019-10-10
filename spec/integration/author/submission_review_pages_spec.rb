@@ -150,7 +150,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
           expect(page).to have_content('Name')
           expect(page).to have_content('Status')
           expect(page).to have_content('Notes')
-          expect(page).to have_content('Action')
+          expect(page).not_to have_content('Action')
           expect(page).not_to have_button('Send Email Reminder')
         end
       end
