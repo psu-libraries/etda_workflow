@@ -223,4 +223,20 @@ RSpec.describe 'The standard committee form for authors', js: true do
       end
     end
   end
+
+  describe 'email form checkbox' do
+    let!(:committee) { create_committee(submission) }
+
+    it 'toggles email form box readonly/writable' do
+      skip 'Non honors' if current_partner.honors?
+      checkboxes = find_all('#email_form_release_switch')
+      expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_0_email' and @readonly='readonly']") if current_partner.milsch?
+      expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_1_email' and @readonly='readonly']") if current_partner.graduate?
+      checkboxes.first.click
+      expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_0_email']") if current_partner.milsch?
+      expect(page).not_to have_xpath("//input[@id='submission_committee_members_attributes_0_email' and @readonly='readonly']") if current_partner.milsch?
+      expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_1_email']") if current_partner.graduate?
+      expect(page).not_to have_xpath("//input[@id='submission_committee_members_attributes_1_email' and @readonly='readonly']") if current_partner.graduate?
+    end
+  end
 end

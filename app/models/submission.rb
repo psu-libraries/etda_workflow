@@ -334,7 +334,7 @@ class Submission < ApplicationRecord
       seen_access_ids = []
       next if committee_member.committee_role.name == 'Program Head/Chair' || seen_access_ids.include?(committee_member.access_id)
 
-      if committee_member.committee_role.name == 'Special Member' || committee_member.committee_role.name == 'Special Signatory'
+      if committee_member.committee_member_token.present?
         WorkflowMailer.special_committee_review_request(self, committee_member).deliver
       else
         WorkflowMailer.committee_member_review_request(self, committee_member).deliver
