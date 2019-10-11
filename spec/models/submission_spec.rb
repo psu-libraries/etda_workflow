@@ -181,6 +181,24 @@ RSpec.describe Submission, type: :model do
       expect(submission).to be_valid
     end
 
+    it 'validates publication release if author is submitting beyond format review' do
+      submission = FactoryBot.create :submission, :collecting_format_review_files
+      submission2 = FactoryBot.create :submission, :collecting_final_submission_files
+      submission.author.confidential_hold = true
+      submission.author_edit = true
+      submission.has_agreed_to_publication_release = false
+      expect(submission).to be_valid
+      submission.has_agreed_to_publication_release = nil
+      expect(submission).to be_valid
+      submission2.author.confidential_hold = true
+      submission2.author_edit = false
+      submission2.has_agreed_to_publication_release = nil
+      expect(submission2).to be_valid
+      submission2.author_edit = true
+      submission2.has_agreed_to_publication_release = nil
+      expect(submission2).not_to be_valid
+    end
+
     context 'invention disclosure' do
       it 'rejects an empty disclosure number' do
         expect(submission.reject_disclosure_number(id: nil, submission_id: nil, id_number: nil, created_at: nil, updated_at: nil)).to be_falsey
