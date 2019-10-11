@@ -36,6 +36,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
       all('input[type="file"]').last.set(fixture('format_review_file_02.pdf'))
     end
 
+    find('#submission_federal_funding_true').click
     fill_in "Format Review Notes to Student", with: "New review notes"
     fill_in "Admin notes", with: "Some admin notes"
 
@@ -50,6 +51,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     expect(page.find_field("Degree").value).to eq degree.id.to_s
     expect(page.find_field("Semester Intending to Graduate").value).to eq "Fall"
     expect(page.find_field("Graduation Year").value).to eq 1.year.from_now.year.to_s
+    expect(page.find_field("submission_federal_funding_true")).to be_checked
 
     within('#committee') do
       expect(page.find_field("Committee role").value).to eq role.id.to_s
