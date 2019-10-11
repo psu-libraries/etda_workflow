@@ -133,7 +133,8 @@ RSpec.describe WorkflowMailer do
     end
 
     it "tells the author that the final submission has been approved" do
-      expect(email.body).to match(/Congratulations!/i)
+      expect(email.body).to match(/Congratulations!/i) unless current_partner.honors?
+      expect(email.body).to match(/The electronic honors Thesis submitted/i) if current_partner.honors?
     end
   end
 
