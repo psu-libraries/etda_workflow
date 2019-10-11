@@ -144,7 +144,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
       before do
         submission.committee_members = []
         submission.status = 'collecting format review files'
-        roles = CommitteeRole.all
+        roles = CommitteeRole.where(degree_type_id: submission.degree.degree_type.id)
         submission.required_committee_roles.count.times do |i|
           submission.committee_members << FactoryBot.create(:committee_member, name: "Professor Buck Murphy #{i}", email: "buck@hotmail.com", is_required: true, committee_role_id: roles[i].id)
         end
@@ -153,7 +153,6 @@ RSpec.describe 'The standard committee form for authors', js: true do
         visit edit_author_submission_committee_members_path(submission)
       end
 
-      # PROBLEM FINDING THE RemoveLINK
       it "can delete an optional committee member" do
         expect(page).to have_field('Name', with: 'I am Special')
         click_link "Remove Committee Member"

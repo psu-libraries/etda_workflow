@@ -104,19 +104,19 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
   it 'Allows admin to upload multiple final submission files' do
     visit admin_edit_submission_path(final_submission)
     expect(page).not_to have_link('final_submission_file_01.pdf')
-    expect(page).not_to have_link('final_submission_file_02.docx')
+    expect(page).not_to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
       click_link "Additional File"
       all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
 
       click_link "Additional File"
-      all('input[type="file"]').last.set(fixture('final_submission_file_02.docx'))
+      all('input[type="file"]').last.set(fixture('final_submission_file_01.pdf'))
     end
     click_button 'Update Metadata'
     sleep 8
     visit admin_edit_submission_path(final_submission)
     expect(page).to have_link('final_submission_file_01.pdf')
-    expect(page).to have_link('final_submission_file_02.docx')
+    expect(page).to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
       delete_link = find_all('a#file_delete_link').first
       delete_link.trigger('click')
@@ -126,8 +126,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     sleep 5
     visit admin_edit_submission_path(final_submission)
     sleep 8
-    expect(page).not_to have_link('final_submission_file_01.pdf')
-    expect(page).to have_link('final_submission_file_02.docx')
+    expect(page).to have_link('final_submission_file_01.pdf')
   end
   describe 'has link to audit page' do
     let!(:file) { FactoryBot.create :final_submission_file, submission: final_submission }
