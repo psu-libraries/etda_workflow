@@ -142,7 +142,7 @@ class WorkflowMailer < ActionMailer::Base
     @explore_url = EtdUrls.new.explore.to_s
 
     mail to: @author.psu_email_address,
-         cc: @submission.committee_email_list.uniq,
+         cc: [@submission.committee_email_list.uniq, current_partner.email_address].flatten,
          from: current_partner.email_address,
          subject: "Your #{@submission.degree_type} has been approved by committee"
   end
