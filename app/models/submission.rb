@@ -51,11 +51,12 @@ class Submission < ApplicationRecord
             length: { maximum: 400 },
             presence: { message: "Title can't be blank" }, if: proc { |s| s.author_edit } # !InboundLionPathRecord.active? }
 
+  validates :federal_funding, inclusion: { in: [true, false] }, if: proc { |s| s.status_behavior.beyond_collecting_committee? && s.author_edit }
+
   validates :abstract,
             :keywords,
             :access_level,
             :has_agreed_to_terms,
-            # :has_agreed_to_publication_release,
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && s.author_edit }
 
   validates :defended_at,
@@ -70,6 +71,8 @@ class Submission < ApplicationRecord
   validates :access_level, inclusion: { in: AccessLevel::ACCESS_LEVEL_KEYS }, if: proc { |s| s.status_behavior.beyond_collecting_final_submission_files? && s.author_edit }
 
   validates :invention_disclosure, invention_disclosure_number: true, if: proc { |s| s.status_behavior.beyond_collecting_format_review_files? && !s.status_behavior.released_for_publication? }
+
+  validates :has_agreed_to_publication_release, presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && s.author_edit && author.confidential? }
 
   validate :format_review_file_check
 
