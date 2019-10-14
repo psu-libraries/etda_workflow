@@ -47,10 +47,9 @@ class CommitteeMember < ApplicationRecord
   end
 
   def validate_email
-    ldap_result = LdapUniversityDirectory.new.retrieve_committee_access_id(email)
     return true if email.blank?
 
-    unless email.nil? || (is_required == true && ldap_result.blank?)
+    unless email.nil?
       return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(.*))\z/i)
     end
     errors.add(:email, 'is invalid')
@@ -99,7 +98,8 @@ class CommitteeMember < ApplicationRecord
     self[:committee_role_id] = new_committee_role_id
     self[:is_voting] = true unless CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Program Head/Chair'
     self[:is_voting] = false if CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Program Head/Chair'
-    return unless (CommitteeRole.find(new_committee_role_id).name == 'Special Member' || CommitteeRole.find(new_committee_role_id).name == 'Special Signatory') && committee_member_token.blank?
+    ldap_result = LdapUniversityDirectory.new.retrieve_committee_access_id(email)
+    return unless committee_member_token.blank? && ldap_result.blank?
 
     token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)
     self.committee_member_token = token
@@ -109,7 +109,7 @@ class CommitteeMember < ApplicationRecord
   private
 
   def one_head_of_program_check
-    return true unless committee_role.name == 'Program Head/Chair'
+    return true unless committee_role.present? && submission.present? && committee_role.name == 'Program Head/Chair'
 
     head_committee_member_id = (CommitteeMember.head_of_program(submission.id) ? CommitteeMember.head_of_program(submission.id).id : nil)
     return true if (head_committee_member_id.nil? || head_committee_member_id == self[:id]) && (submission.committee_members.collect { |n| n.committee_role.name }.count('Program Head/Chair') < 2)

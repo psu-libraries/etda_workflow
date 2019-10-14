@@ -53,6 +53,7 @@ class Author::SubmissionFormatReviewController < AuthorController
                                          :allow_all_caps_in_title,
                                          :semester,
                                          :year,
+                                         :federal_funding,
                                          format_review_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy])
     end
 end

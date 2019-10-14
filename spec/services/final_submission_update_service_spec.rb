@@ -22,6 +22,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       params[:submission][:committee_members_attributes] = { "0" => submission.committee_members.first.attributes }
       params[:approved] = true
       params[:submission][:title] = 'update this title'
+      params[:submission][:federal_funding] = true
       final_submission_update_service = described_class.new(params, submission, 'testuser123')
       result = final_submission_update_service.respond_final_submission
       expect(result[:msg]).to eql("The submission\'s final submission information was successfully approved.")
@@ -29,6 +30,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.status).to eq('waiting for committee review')
       expect(submission.title).to eq('update this title')
       expect(submission.publication_release_terms_agreed_to_at).not_to be_nil
+      expect(submission.federal_funding).to eq true
       expect(ActionMailer::Base.deliveries.count).to eq(submission.voting_committee_members.count + 1)
     end
 
