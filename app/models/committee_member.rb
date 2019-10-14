@@ -109,7 +109,7 @@ class CommitteeMember < ApplicationRecord
   private
 
   def one_head_of_program_check
-    return true unless committee_role.name == 'Program Head/Chair' && submission.present?
+    return true unless committee_role.present? && submission.present? && committee_role.name == 'Program Head/Chair'
 
     head_committee_member_id = (CommitteeMember.head_of_program(submission.id) ? CommitteeMember.head_of_program(submission.id).id : nil)
     return true if (head_committee_member_id.nil? || head_committee_member_id == self[:id]) && (submission.committee_members.collect { |n| n.committee_role.name }.count('Program Head/Chair') < 2)
