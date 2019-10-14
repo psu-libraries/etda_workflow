@@ -114,6 +114,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         expect(page).to have_css('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
+        find("#submission_federal_funding_false").click
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
         # check 'I agree to release agreement'
@@ -123,6 +124,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         expect(submission.status).to eq 'waiting for final submission response' unless current_partner.honors?
         expect(submission.status).to eq 'waiting for committee review' if current_partner.honors?
         submission.reload
+        expect(submission.federal_funding).to eq false
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         expect(WorkflowMailer.deliveries.count).to eq(1) unless current_partner.honors?
         expect(WorkflowMailer.deliveries.count).to eq(3) if current_partner.honors?
@@ -176,7 +178,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         click_link "Additional File"
-        all('input[type="file"]').last.set(fixture('final_submission_file_02.docx'))
+        all('input[type="file"]').last.set(fixture('final_submission_file_01.pdf'))
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
         # check 'I agree to release agreement'
@@ -188,7 +190,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         expect(submission.final_submission_files.count).to eq(2)
         visit "/author/submissions/#{submission.id}/final_submission"
-        expect(page).to have_link('final_submission_file_02.docx')
+        expect(page).to have_link('final_submission_file_01.pdf')
         expect(page).to have_link('final_submission_file_01.pdf')
       end
     end

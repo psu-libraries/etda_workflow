@@ -272,6 +272,7 @@ class Author::SubmissionsController < AuthorController
                                          :delimited_keywords,
                                          :lion_path_degree_code,
                                          :restricted_notes,
+                                         :federal_funding,
                                          invention_disclosures_attributes: [:id, :submission_id, :id_number, :_destroy],
                                          final_submission_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy])
     end

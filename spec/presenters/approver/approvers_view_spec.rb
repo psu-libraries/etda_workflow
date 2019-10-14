@@ -24,7 +24,7 @@ RSpec.describe Approver::ApproversView do
       it "returns the proper text for restricted" do
         submission.update_attribute :access_level, 'restricted'
 
-        expect(view.tooltip_text).to eq 'Restricts the entire work for patent and/or proprietary purposes.  At the end of the two-year period, the status will automatically change to Open Access.  This work should not be duplicated, shared, or used for any reason other than this review.'
+        expect(view.tooltip_text).to eq 'Restricts the entire work for the purpose of filing a patent.   At the end of the two-year period, the status will automatically change to Open Access.  This work should not be duplicated, shared, or used for any reason other than this review.'
       end
     end
   end

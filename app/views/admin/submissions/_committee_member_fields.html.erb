@@ -1,14 +1,8 @@
 <div class="nested-fields admin panel panel-default committee-member-information">
   <div class="status-row">
-    <% if f.object.committee_role.name == 'Program Head/Chair' %>
-      <div class="col-sm-6">
-        <%= f.association :committee_role, disabled: true %>
-      </div>
-    <% else %>
-      <div class="col-sm-6">
-        <%= f.association :committee_role, collection: @submission.degree_type.try(&:committee_roles).where.not(name: 'Program Head/Chair').order('name asc') || [] , input_html: {class: 'role'} %>
-      </div>
-    <% end %>
+    <div class="col-sm-6">
+      <%= f.association :committee_role, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || [] , input_html: {class: 'role'} %>
+    </div>
     <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger remove-member'%>
   </div>
   <div class="row committee-details">
@@ -16,7 +10,7 @@
     <%= f.input :email %>
     <div class="status-row">
       <%= f.input :status, collection: Hash[CommitteeMember::STATUS.collect{ |item| [item, item.capitalize] }], label_method: :last, value_method: :first, include_blank: true, input_html: { class: "select-status" } %>
-      <% if SubmissionStatus.new(@submission).waiting_for_committee_review? %>
+      <% if (@submission.status_behavior.waiting_for_committee_review? && f.object.committee_role.name != 'Program Head/Chair') || (@submission.status_behavior.waiting_for_head_of_program_review? && f.object.committee_role.name == 'Program Head/Chair') %>
         <button type="button" id="send_email_reminder" value="<%= f.object.id.to_s %>">Send Email Reminder</button>
       <% end %>
     </div>

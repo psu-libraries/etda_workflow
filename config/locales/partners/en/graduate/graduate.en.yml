@@ -242,7 +242,7 @@ en:
         scope: final_restricted_institution
       restricted: 'Restricted'
       restricted_attr:
-        description_html: 'Restricts the entire work for a period of two years, for patent and/or proprietary purposes. At the end of the two-year period, the status will automatically change to Open Access. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final thesis/dissertation, and confirmed by OTM.'
+        description_html: 'Restricts the entire work for the purpose of filing a patent.  At the end of the two-year period, the status will automatically change to Open Access. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final thesis/dissertation, and confirmed by OTM.'
         scope: final_withheld
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
