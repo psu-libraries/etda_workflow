@@ -114,6 +114,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         expect(page).to have_css('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
+        find("#submission_federal_funding_false").click
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
         # check 'I agree to release agreement'
@@ -121,7 +122,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         # expect(page).to have_content('successfully')
         submission.reload
         expect(submission.status).to eq 'waiting for final submission response'
-        submission.reload
+        expect(submission.federal_funding).to eq false
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.graduate?
         expect(WorkflowMailer.deliveries.count).to eq(1) unless current_partner.graduate?
