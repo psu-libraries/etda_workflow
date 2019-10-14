@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
-
-<<<<<<< HEAD
-  config.web_console.whitelisted_ips = '172.30.0.1'
-=======
+  
   config.web_console.whitelisted_ips = ['10.0.0.0/8', '172.20.0.0/12', '192.168.0.0/16']
->>>>>>> develop
 
  # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = true
