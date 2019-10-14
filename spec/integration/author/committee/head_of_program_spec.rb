@@ -23,7 +23,7 @@ RSpec.describe 'The head of program form for authors', js: true do
     click_button 'Save and Input Program Head/Chair >>'
     expect(page).to have_content 'Input Program Head/Chair'
     fill_in "submission_committee_members_attributes_5_name", with: "Name 5"
-    page.execute_script("document.getElementById('submission_committee_members_attributes_5_email').value = 'name_5@example.com'")
+    page.execute_script("document.getElementById('submission_committee_members_attributes_5_email').value = 'name_5@psu.edu'")
     click_button 'Update Program Head/Chair Information'
     expect(page).to have_current_path(author_root_path)
     expect(CommitteeMember.head_of_program(submission.id).name).to eq 'Name 5'
