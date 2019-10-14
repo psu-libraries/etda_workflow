@@ -49,9 +49,9 @@ class Submission < ApplicationRecord
 
   validates :title,
             length: { maximum: 400 },
-            presence: { message: "Title can't be blank" }, if: proc { |s| s.author_edit } # !InboundLionPathRecord.active? }
+            presence: { message: "Title can't be blank." }, if: proc { |s| s.author_edit } # !InboundLionPathRecord.active? }
 
-  validates :federal_funding, inclusion: { in: [true, false] }, if: proc { |s| s.status_behavior.beyond_collecting_committee? && s.author_edit }
+  validates :federal_funding, inclusion: { in: [true, false], message: "Federal funding can't be blank." }, if: proc { |s| s.status_behavior.beyond_collecting_committee? && s.author_edit }
 
   validates :abstract,
             :keywords,
