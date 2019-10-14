@@ -321,7 +321,6 @@ RSpec.describe CommitteeMember, type: :model do
     it 'committee role and submission must be present' do
       submission.committee_members << cm1
       cm2.committee_role = committee_role
-      byebug
       expect(cm1).not_to be_valid
       expect(cm2).not_to be_valid
     end
