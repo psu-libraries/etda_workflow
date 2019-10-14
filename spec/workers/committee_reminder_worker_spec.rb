@@ -26,4 +26,13 @@ RSpec.describe CommitteeReminderWorker do
       end
     end
   end
+
+  context "when committee member already accepted or rejected" do
+    it 'does not deliver an email' do
+      committee_member.update_attribute :status, 'approved'
+      Sidekiq::Testing.inline! do
+        expect { described_class.perform_async(submission.id, committee_member.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
+      end
+    end
+  end
 end

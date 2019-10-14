@@ -20,8 +20,8 @@ class Author::SubmissionFormatReviewController < AuthorController
     redirect_to author_root_path
     WorkflowMailer.format_review_received(@submission).deliver_now
     flash[:notice] = 'Format review files uploaded successfully.'
-  rescue ActiveRecord::RecordInvalid => e
-    flash[:alert] = e.message
+  rescue ActiveRecord::RecordInvalid
+    flash[:alert] = @submission.errors.messages.values.join(" ")
     redirect_to author_submission_edit_format_review_path(@submission)
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path # , alert: 'You are not allowed to visit that page at this time, please contact your administrator'
@@ -53,6 +53,7 @@ class Author::SubmissionFormatReviewController < AuthorController
                                          :allow_all_caps_in_title,
                                          :semester,
                                          :year,
+                                         :federal_funding,
                                          format_review_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy])
     end
 end

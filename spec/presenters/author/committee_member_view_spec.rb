@@ -11,26 +11,16 @@ RSpec.describe Author::CommitteeMemberView do
     it { is_expected.to eq('My Role') }
   end
 
-  describe '#possible_roles' do
-    subject { view.possible_roles }
+  describe '#author_possible_roles' do
+    subject { view.author_possible_roles }
 
     it { is_expected.to eq([role]) }
   end
 
-  describe '#possible_additional_roles' do
-    context 'when head of program' do
-      subject { view.possible_additional_roles }
+  describe '#admin_possible_roles' do
+    subject { view.admin_possible_roles }
 
-      let(:member) { FactoryBot.create :committee_member, :required, committee_role: head_role }
-
-      it { is_expected.to eq([]) }
-    end
-
-    context 'when not head of program' do
-      subject { view.possible_additional_roles }
-
-      it { is_expected.to eq([role]) }
-    end
+    it { is_expected.to eq([role]) }
   end
 
   describe '#head_of_program?' do

@@ -40,8 +40,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
         submission.required_committee_roles.count.times do |i|
           next if i == 0 && current_partner.graduate?
 
-          fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
-          fill_in "submission_committee_members_attributes_#{i}_email", with: "name_#{i}@example.com"
+          fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
+          fill_in "submission_committee_members_attributes_#{i}_email", with: "buck@hotmail.com"
         end
         click_link('Cancel')
         expect(page).to have_content('My Submissions')
@@ -59,9 +59,9 @@ RSpec.describe 'The standard committee form for authors', js: true do
         submission.required_committee_roles.count.times do |i|
           next if i == 0 && current_partner.graduate?
 
-          fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
-          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@psu.edu'")
-          @email_list << "name_#{i}@psu.edu"
+          fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
+          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'buck@hotmail.com'")
+          @email_list << "buck@hotmail.com"
         end
         click_button 'Save and Continue Submission' unless current_partner.graduate?
         click_button 'Save and Input Program Head/Chair >>' if current_partner.graduate?
@@ -72,15 +72,15 @@ RSpec.describe 'The standard committee form for authors', js: true do
         assert_equal submission.committee_email_list, @email_list
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count) unless current_partner.graduate?
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count - 1) if current_partner.graduate?
-        expect(submission.committee_members.first.access_id).to eq('name_0') unless current_partner.graduate?
-        expect(submission.committee_members.first.access_id).to eq('name_1') if current_partner.graduate?
+        expect(submission.committee_members.first.access_id).to eq('pbm123') unless current_partner.graduate?
+        expect(submission.committee_members.first.access_id).to eq('pbm123') if current_partner.graduate?
         visit author_submission_committee_members_path(submission)
         submission.required_committee_roles.count.times do |i|
           next if i == 0 && current_partner.graduate?
 
           # expect(page).to have_content role.name
-          name = "Name #{i}"
-          email = "name_#{i}@psu.edu"
+          name = "Professor Buck Murphy #{i}"
+          email = "buck@hotmail.com"
           expect(page).to have_content(name)
           expect(page).to have_content(email)
         end
@@ -93,9 +93,9 @@ RSpec.describe 'The standard committee form for authors', js: true do
         submission.required_committee_roles.count.times do |i|
           next if i == 0 && current_partner.graduate?
 
-          fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
-          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'name_#{i}@example.com'")
-          @email_list << "name_#{i}@example.com"
+          fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
+          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'buck@hotmail.com'")
+          @email_list << "buck@hotmail.com"
         end
         click_button 'Save and Continue Editing' unless current_partner.graduate?
       end
@@ -144,16 +144,15 @@ RSpec.describe 'The standard committee form for authors', js: true do
       before do
         submission.committee_members = []
         submission.status = 'collecting format review files'
-        roles = CommitteeRole.all
+        roles = CommitteeRole.where(degree_type_id: submission.degree.degree_type.id)
         submission.required_committee_roles.count.times do |i|
-          submission.committee_members << FactoryBot.create(:committee_member, name: "Name_#{i}", email: "name_#{i}_@example.com", is_required: true, committee_role_id: roles[i].id)
+          submission.committee_members << FactoryBot.create(:committee_member, name: "Professor Buck Murphy #{i}", email: "buck@hotmail.com", is_required: true, committee_role_id: roles[i].id)
         end
-        submission.committee_members << FactoryBot.create(:committee_member, name: 'I am Special', email: 'special@psu.edu', is_required: false, committee_role_id: CommitteeRole.where(num_required: 0).first.id)
+        submission.committee_members << FactoryBot.create(:committee_member, name: 'I am Special', email: 'special@person.com', is_required: false, committee_role_id: CommitteeRole.where(num_required: 0).first.id)
         submission.save!
         visit edit_author_submission_committee_members_path(submission)
       end
 
-      # PROBLEM FINDING THE RemoveLINK
       it "can delete an optional committee member" do
         expect(page).to have_field('Name', with: 'I am Special')
         click_link "Remove Committee Member"
@@ -186,8 +185,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
 
       before do
         (1..submission.required_committee_roles.count - 1).each do |i|
-          fill_in "submission_committee_members_attributes_#{i}_name", with: "Name #{i}"
-          fill_in "submission_committee_members_attributes_#{i}_email", with: "email#{i}@psu.edu"
+          fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
+          fill_in "submission_committee_members_attributes_#{i}_email", with: "pbm#{i}@psu.edu"
         end
         # Send individual characters one at a time to trigger autocomplete
         # Ref: https://github.com/teampoltergeist/poltergeist/issues/439#issuecomment-66871147
@@ -222,6 +221,22 @@ RSpec.describe 'The standard committee form for authors', js: true do
         find('.fa-exclamation-circle').hover
         expect(page).to have_css('.tooltip')
       end
+    end
+  end
+
+  describe 'email form checkbox' do
+    let!(:committee) { create_committee(submission) }
+
+    it 'toggles email form box readonly/writable' do
+      skip 'Non honors' if current_partner.honors?
+      checkboxes = find_all('#email_form_release_switch')
+      expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_0_email' and @readonly='readonly']") if current_partner.milsch?
+      expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_1_email' and @readonly='readonly']") if current_partner.graduate?
+      checkboxes.first.click
+      expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_0_email']") if current_partner.milsch?
+      expect(page).not_to have_xpath("//input[@id='submission_committee_members_attributes_0_email' and @readonly='readonly']") if current_partner.milsch?
+      expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_1_email']") if current_partner.graduate?
+      expect(page).not_to have_xpath("//input[@id='submission_committee_members_attributes_1_email' and @readonly='readonly']") if current_partner.graduate?
     end
   end
 end

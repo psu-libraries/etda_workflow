@@ -20,20 +20,18 @@ RSpec.describe "Editing committee member information for format reviews and fina
     find("div[data-target='#committee']").click
     within('#committee') do
       expect(find("select[id='submission_committee_members_attributes_0_committee_role_id']").value).to eq role.id.to_s
-      expect(find("select[id='submission_committee_members_attributes_0_committee_role_id']").disabled?).to eq true if current_partner.graduate?
-      expect(find("select[id='submission_committee_members_attributes_1_committee_role_id']").disabled?).to eq false
       within("select#submission_committee_members_attributes_1_committee_role_id") do
         CommitteeRole.where(degree_type: degree.degree_type).each do |option|
-          expect(find("option[value='#{option[:id]}']").text).to eq(option[:name]) unless option[:name] == 'Program Head/Chair'
-          expect { find("option[value='#{option[:id]}']").text }.to raise_error Capybara::ElementNotFound if option[:name] == 'Program Head/Chair'
+          expect(find("option[value='#{option[:id]}']").text).to eq(option[:name])
         end
       end
+      sleep 1
       first_committee_member_remove = find_all("a", text: "Remove Committee Member").first
       find("select#submission_committee_members_attributes_1_status").find(:option, 'Pending').select_option
       first_committee_member_remove.trigger('click')
     end
     click_button 'Update Metadata'
-    sleep 5
+    submission.reload
     expect(page).to have_content("Waiting for Committee Review")
     expect(submission.committee_members.count).to eq(committee_size.to_i - 1)
     expect(submission.committee_members.first.status).to eq 'pending'

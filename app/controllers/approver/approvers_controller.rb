@@ -7,6 +7,7 @@ class Approver::ApproversController < ApproverController
   def index
     @approver = Approver.find_by(access_id: current_approver.access_id)
     @committee_members = @approver.committee_members
+    update_approver_committee_members
   end
 
   def edit
@@ -16,6 +17,9 @@ class Approver::ApproversController < ApproverController
     @author = @submission.author
     @most_relevant_file_links = most_relevant_file_links
     @view = Approver::ApproversView.new(@submission)
+    @submission.committee_members.each do |member|
+      redirect_to approver_path(member) if (member.access_id == @committee_member.access_id) && (member.id != @committee_member.id) && (member.committee_role.name.include? 'Advisor')
+    end
   end
 
   def update
@@ -48,7 +52,7 @@ class Approver::ApproversController < ApproverController
 
   def download_final_submission
     file = FinalSubmissionFile.find(params[:id])
-    if file.submission.committee_members.pluck(:access_id).include? current_approver.access_id
+    if file.submission.committee_members.pluck(:approver_id).include? current_approver.id
       send_file file.current_location, disposition: :inline
     else
       redirect_to '/401'
@@ -91,5 +95,14 @@ class Approver::ApproversController < ApproverController
       end
     end
     links.join(" ")
+  end
+
+  def update_approver_committee_members
+    approver = Approver.find_by(access_id: current_approver.access_id)
+    committee_members = CommitteeMember.where(access_id: approver.access_id)
+    committee_members.each do |committee_member|
+      approver.committee_members << committee_member
+    end
+    approver.save!
   end
 end

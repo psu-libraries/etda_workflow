@@ -36,6 +36,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
       all('input[type="file"]').last.set(fixture('format_review_file_02.pdf'))
     end
 
+    find('#submission_federal_funding_true').click
     fill_in "Format Review Notes to Student", with: "New review notes"
     fill_in "Admin notes", with: "Some admin notes"
 
@@ -50,6 +51,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     expect(page.find_field("Degree").value).to eq degree.id.to_s
     expect(page.find_field("Semester Intending to Graduate").value).to eq "Fall"
     expect(page.find_field("Graduation Year").value).to eq 1.year.from_now.year.to_s
+    expect(page.find_field("submission_federal_funding_true")).to be_checked
 
     within('#committee') do
       expect(page.find_field("Committee role").value).to eq role.id.to_s
@@ -104,19 +106,19 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
   it 'Allows admin to upload multiple final submission files' do
     visit admin_edit_submission_path(final_submission)
     expect(page).not_to have_link('final_submission_file_01.pdf')
-    expect(page).not_to have_link('final_submission_file_02.docx')
+    expect(page).not_to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
       click_link "Additional File"
       all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
 
       click_link "Additional File"
-      all('input[type="file"]').last.set(fixture('final_submission_file_02.docx'))
+      all('input[type="file"]').last.set(fixture('final_submission_file_01.pdf'))
     end
     click_button 'Update Metadata'
     sleep 8
     visit admin_edit_submission_path(final_submission)
     expect(page).to have_link('final_submission_file_01.pdf')
-    expect(page).to have_link('final_submission_file_02.docx')
+    expect(page).to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
       delete_link = find_all('a#file_delete_link').first
       delete_link.trigger('click')
@@ -126,9 +128,26 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     sleep 5
     visit admin_edit_submission_path(final_submission)
     sleep 8
-    expect(page).not_to have_link('final_submission_file_01.pdf')
-    expect(page).to have_link('final_submission_file_02.docx')
+    expect(page).to have_link('final_submission_file_01.pdf')
   end
+
+  it 'Allows admin to edit final submission content' do
+    visit admin_edit_submission_path(final_submission)
+    within('#final-submission-information') do
+      click_link "Additional File"
+      all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
+    end
+    find('#submission_access_level_restricted').click
+    find('#submission_federal_funding_false').click
+    fill_in 'submission_invention_disclosures_attributes_0_id_number', with: 12345
+    fill_in 'Admin notes', with: 'Some Notes', exact: true
+    click_button 'Update Metadata'
+    sleep 1
+    expect(Submission.find(final_submission.id).admin_notes).to eq 'Some Notes'
+    expect(Submission.find(final_submission.id).federal_funding).to eq false
+    expect(Submission.find(final_submission.id).restricted?).to eq true
+  end
+
   describe 'has link to audit page' do
     let!(:file) { FactoryBot.create :final_submission_file, submission: final_submission }
 
@@ -137,6 +156,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
       click_link 'View Printable Audit'
       expect(page).to have_content("#{final_submission.degree.degree_type.name} Audit")
       expect(page).to have_link(file.asset_identifier.to_s)
+      expect(page).to have_content("Committee Approval Status:")
       expect(page).to have_content("Committee Member Reviews")
     end
   end

@@ -46,7 +46,6 @@ class Admin::SubmissionFormView < SimpleDelegator
   def form_for_url
     return "/admin/submissions/#{id}/format_review_response" if status_behavior.waiting_for_format_review_response?
     return "/admin/submissions/#{id}/final_submission_response" if status_behavior.waiting_for_final_submission_response?
-    return "/admin/submissions/#{id}/update_final_submission" if status_behavior.waiting_for_committee_review_rejected?
     return "/admin/submissions/#{id}/update_waiting_to_be_released" if status_behavior.waiting_for_publication_release?
     return "/admin/submissions/#{id}/update_released" if status_behavior.released_for_publication?
 
@@ -153,6 +152,8 @@ class Admin::SubmissionFormView < SimpleDelegator
       return "/admin/#{degree_type.slug}/format_review_completed" if status_behavior.collecting_final_submission_files? && !status_behavior.final_submission_rejected?
       return "/admin/#{degree_type.slug}/final_submission_incomplete" if status_behavior.collecting_final_submission_files? && status_behavior.final_submission_rejected?
       return "/admin/#{degree_type.slug}/final_submission_submitted" if status_behavior.waiting_for_final_submission_response?
+      return "/admin/#{degree_type.slug}/final_submission_pending" if status_behavior.waiting_for_committee_review?
+      return "/admin/#{degree_type.slug}/committee_review_rejected" if status_behavior.waiting_for_committee_review_rejected?
       return "/admin/#{degree_type.slug}/final_submission_approved" if status_behavior.waiting_for_publication_release?
       #  return "/admin/#{degree_type}/released_for_publication" if status_behavior.released_for_publication? && open_access?  TOO SLOW; RETURN TO DASHBOARD
       return "/admin/#{degree_type.slug}" if status_behavior.released_for_publication? && open_access?

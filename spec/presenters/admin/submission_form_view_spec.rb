@@ -208,6 +208,22 @@ RSpec.describe Admin::SubmissionFormView do
         expect(view.form_for_url).to eq admin_submissions_update_released_path(submission)
       end
     end
+
+    context "When the status is 'waiting for committee review'" do
+      before { submission.status = 'waiting for committee review' }
+
+      it "returns the normal update path" do
+        expect(view.form_for_url).to eq admin_submission_path(submission)
+      end
+    end
+
+    context "When the status is 'waiting for committee review rejected'" do
+      before { submission.status = 'waiting for committee review rejected' }
+
+      it "returns the normal update path" do
+        expect(view.form_for_url).to eq admin_submission_path(submission)
+      end
+    end
   end
 
   describe '#cancellation_path' do
@@ -248,6 +264,26 @@ RSpec.describe Admin::SubmissionFormView do
 
       it "returns submitted final submission path" do
         expect(view.cancellation_path).to eq admin_submissions_index_path(submission.degree_type, 'final_submission_submitted')
+      end
+    end
+
+    context "When the status is 'waiting for committee review'" do
+      let(:session) { { return_to: "/admin/#{submission.degree_type.slug}/final_submission_pending" } }
+
+      before { submission.status = 'waiting for committee review' }
+
+      it "returns submitted final submission path" do
+        expect(view.cancellation_path).to eq admin_submissions_index_path(submission.degree_type, 'final_submission_pending')
+      end
+    end
+
+    context "When the status is 'waiting for committee review rejected'" do
+      let(:session) { { return_to: "/admin/#{submission.degree_type.slug}/committee_review_rejected" } }
+
+      before { submission.status = 'waiting for committee review rejected' }
+
+      it "returns submitted final submission path" do
+        expect(view.cancellation_path).to eq admin_submissions_index_path(submission.degree_type, 'committee_review_rejected')
       end
     end
 
