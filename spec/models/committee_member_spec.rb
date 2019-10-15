@@ -47,6 +47,10 @@ RSpec.describe CommitteeMember, type: :model do
     let(:cm) { described_class.new }
     let(:committee_role) { FactoryBot.create(:committee_role) }
 
+    before do
+      cm.committee_role_id = committee_role.id
+    end
+
     it 'is not valid' do
       expect(cm).not_to be_valid
     end
@@ -54,7 +58,6 @@ RSpec.describe CommitteeMember, type: :model do
     it 'is valid' do
       cm.name = 'Professor Buck Murphy'
       cm.email = 'buck@hotmail.com'
-      cm.committee_role_id = committee_role.id
       cm.submission_id = submission.id
       cm.is_required = true
       expect(cm).to be_valid
@@ -68,6 +71,8 @@ RSpec.describe CommitteeMember, type: :model do
     let(:committee_role) { FactoryBot.create(:committee_role) }
 
     before do
+      cm.committee_role_id = committee_role.id
+      cm_dup.committee_role_id = committee_role.id
       submission.committee_members << [cm, cm_dup]
     end
 
@@ -134,6 +139,11 @@ RSpec.describe CommitteeMember, type: :model do
 
   describe 'email' do
     let(:cm) { described_class.new }
+    let(:committee_role) { FactoryBot.create :committee_role }
+
+    before do
+      cm.committee_role_id = committee_role.id
+    end
 
     context 'when email is a psu email' do
       it 'updates access_id' do
@@ -224,12 +234,9 @@ RSpec.describe CommitteeMember, type: :model do
   context 'committee_role_id' do
     it 'creates a committee_member_token if special committee member' do
       submission = FactoryBot.create(:submission)
-      committee_role = FactoryBot.create(:committee_role, name: 'Special Member')
-      committee_role.save!
-      committee_member1 = described_class.create(committee_role_id: committee_role.id, name: "I am " + I18n.t("#{current_partner.id}.committee.special_role"), email: 'advisor@psu.edu', submission_id: submission.id)
-      committee_member1.save!
-      committee_member2 = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am " + I18n.t("#{current_partner.id}.committee.special_role"), email: 'advisor@psu.edu', submission_id: submission.id)
-      committee_member2.save!
+      committee_role = FactoryBot.create(:committee_role, name: 'Committee Member')
+      committee_member1 = FactoryBot.create(:committee_member, committee_role_id: committee_role.id, name: "Special", email: 'person@gmail.com', submission_id: submission.id)
+      committee_member2 = FactoryBot.create(:committee_member, committee_role_id: CommitteeRole.advisor_role, name: "Not Special", email: 'advisor@psu.edu', submission_id: submission.id)
       expect(described_class.find(committee_member1.id).committee_member_token).not_to be_nil
       expect(described_class.find(committee_member2.id).committee_member_token).to be_nil
     end
@@ -254,9 +261,6 @@ RSpec.describe CommitteeMember, type: :model do
       expect(cm).to be_valid
       cm.email = 'jamesbrown@funky.funktown'
       expect(cm).to be_valid
-      cm.is_required = true
-      cm.email = 'buck@hotmail.com'
-      expect(cm).to be_valid
     end
 
     it 'rejects email' do
@@ -266,9 +270,59 @@ RSpec.describe CommitteeMember, type: :model do
       expect(cm).not_to be_valid
       cm.email = 'email@ps u.edu'
       expect(cm).not_to be_valid
-      cm.is_required = true
-      cm.name = 'A. Fraud'
-      expect(cm).not_to be_valid
+    end
+  end
+
+  describe 'one program head/chair validation' do
+    let(:submission) { FactoryBot.create(:submission) }
+    let(:cm1) { described_class.new }
+    let(:cm2) { described_class.new }
+    let(:committee_role) { FactoryBot.create(:committee_role, name: 'Program Head/Chair') }
+
+    before do
+      cm1.email = 'email@psu.edu'
+      cm2.email = 'email@psu.edu'
+      cm1.name = 'Test'
+      cm2.name = 'Test'
+    end
+
+    it 'updates existing head/chair' do
+      cm1.committee_role = committee_role
+      submission.committee_members << cm1
+      submission.reload
+      cm1.name = 'Test User'
+      expect(cm1).to be_valid
+    end
+
+    it 'allows new head/chair if none exists' do
+      cm1.committee_role = committee_role
+      submission.committee_members << cm1
+      expect(cm1).to be_valid
+    end
+
+    it 'does not allow new head/chair if one exists' do
+      cm1.committee_role = committee_role
+      submission.committee_members << cm1
+      submission.reload
+      cm2.committee_role = committee_role
+      submission.committee_members << cm2
+      expect(cm2).not_to be_valid
+    end
+
+    it 'does not allow two new head/chairs' do
+      cm1.committee_role = committee_role
+      submission.committee_members << cm1
+      cm2.committee_role = committee_role
+      submission.committee_members << cm2
+      expect(cm1).not_to be_valid
+      expect(cm2).not_to be_valid
+    end
+
+    it 'committee role and submission must be present' do
+      submission.committee_members << cm1
+      cm2.committee_role = committee_role
+      expect(cm1).not_to be_valid
+      expect(cm2).not_to be_valid
     end
   end
 end

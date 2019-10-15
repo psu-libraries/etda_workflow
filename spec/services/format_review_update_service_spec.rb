@@ -15,6 +15,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       params[:approved] = true
       params[:submission][:committee_members_attributes]["0"]['is_voting'] = false
       params[:submission][:committee_members_attributes]["0"]['status'] = 'approved'
+      params[:submission][:federal_funding] = false
       title = submission.title
       format_review_update_service = described_class.new(params, submission, 'testuser123')
       result = format_review_update_service.respond_format_review
@@ -25,6 +26,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       expect(submission.committee_members.first.is_voting).to eq(false)
       expect(submission.committee_members.first.status).to eq('approved')
       expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Review Status to 'Approved' at: .*\n\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
+      expect(submission.federal_funding).to eq false
     end
   end
 

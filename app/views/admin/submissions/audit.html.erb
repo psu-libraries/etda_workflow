@@ -22,14 +22,17 @@
       <div class="access-level-warning"><strong>Access Level - </strong> <%=@submission.current_access_level.label %></div>
     <% end %>
     </br>
-    <% approval_status = ApprovalStatus.new(@submission) %>
-    <% if approval_status.status == 'approved' && approval_status.head_of_program_status == 'approved' %>
-      <p><strong>Committee Approval Status:</strong> Approved</p>
-    <% elsif approval_status.status == 'rejected' || approval_status.head_of_program_status == 'rejected' %>
-      <p><strong>Committee Approval Status:</strong> Rejected</p>
-    <% else %>
-      <p><strong>Committee Approval Status:</strong> Pending</p>
-    <% end %>
+    <div class="submission_info">
+      <div><strong>Federal Funding Used: </strong><%= @submission.federal_funding ? 'Yes' : 'No' %></div>
+      <% approval_status = ApprovalStatus.new(@submission) %>
+      <% if approval_status.status == 'approved' && approval_status.head_of_program_status == 'approved' %>
+        <p><strong>Committee Approval Status:</strong> Approved</p>
+      <% elsif approval_status.status == 'rejected' || approval_status.head_of_program_status == 'rejected' %>
+        <p><strong>Committee Approval Status:</strong> Rejected</p>
+      <% else %>
+        <p><strong>Committee Approval Status:</strong> Pending</p>
+      <% end %>
+    </div>
 
     <div class="row">
       <div class="col-xs-12 col-sm-9">

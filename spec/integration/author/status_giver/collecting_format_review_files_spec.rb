@@ -85,6 +85,7 @@ RSpec.describe 'Step 3: Collecting Format Review Files', js: true do
           select Time.zone.now.next_year.year, from: 'Graduation Year'
           select 'Spring', from: 'Semester Intending to Graduate'
         end
+        find("#submission_federal_funding_true").click
         expect(page).to have_content('Select one or more files to upload')
         expect(page).to have_css '#format-review-file-fields .nested-fields div.form-group div:first-child input[type="file"]'
         first_input_id = first('#format-review-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
@@ -92,8 +93,8 @@ RSpec.describe 'Step 3: Collecting Format Review Files', js: true do
         click_button 'Submit files for review'
         # expect(page).to have_content('successfully')
         submission.reload
+        expect(submission.federal_funding).to eq true
         expect(submission.status).to eq 'waiting for format review response'
-        submission.reload
         expect(submission.format_review_files_uploaded_at).not_to be_nil
       end
     end
