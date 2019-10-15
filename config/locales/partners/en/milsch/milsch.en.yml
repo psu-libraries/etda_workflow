@@ -130,6 +130,27 @@ en:
                     Millennium Scholars Program
                     130 Ritenour Building
                     University Park, PA  16802
+        release_for_publication:
+          message: |
+                    Your %{degree_type} titled "%{title}" has been released with the access level of Open Access.
+                    You can view your published submission at: %{url}.
+
+                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
+                    You may also call (814)867-5105, or send mail to:
+                    Millennium Scholars Program
+                    130 Ritenour Building
+                    University Park, PA  16802
+        release_for_publication_metadata_only:
+          message: |
+                    The metadata for your %{degree_type} titled "%{title}" has been released.
+                    You can view this information at: %{url}.
+                    It retains its access level of %{access_level}.  The full publication will be released in two years.
+
+                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
+                    You may also call (814)867-5105, or send mail to:
+                    Millennium Scholars Program
+                    130 Ritenour Building
+                    University Park, PA  16802
         access_level_updated:
           message: |
                     The Millennium Scholars Program has changed the availability of the following MSPT as shown below:

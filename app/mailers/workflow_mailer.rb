@@ -40,10 +40,21 @@ class WorkflowMailer < ActionMailer::Base
   def release_for_publication(submission)
     @submission = submission
     @author = submission.author
+    @explore_url = "#{EtdUrls.new.explore}/catalog/#{submission.public_id}"
 
-    mail to: @author.psu_email_address,
+    mail to: [@author.psu_email_address, @author.alternate_email_address],
          from: current_partner.email_address,
-         subject: "Your #{@submission.degree_type} is ready for release"
+         subject: "Your #{@submission.degree_type} has been released"
+  end
+
+  def release_for_publication_metadata_only(submission)
+    @submission = submission
+    @author = submission.author
+    @explore_url = "#{EtdUrls.new.explore}/catalog/#{submission.public_id}"
+
+    mail to: [@author.psu_email_address, @author.alternate_email_address],
+         from: current_partner.email_address,
+         subject: "Your #{@submission.degree_type}'s metadata has been released"
   end
 
   def pay_thesis_fee(submission)
