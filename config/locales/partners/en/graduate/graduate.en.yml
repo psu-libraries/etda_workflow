@@ -25,6 +25,7 @@ en:
       email:
         url: 'https://etda-explore.libraries.psu.edu'
         address: gradthesis@psu.edu
+        list: 'ul-etda-graduate-admin@pennstateoffice365.onmicrosoft.com'
         signature: 'Graduate School <br />Keller Building<br /> University Park, PA'
         final_submission_rejected:
           message: |

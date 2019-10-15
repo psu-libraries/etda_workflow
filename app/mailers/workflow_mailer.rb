@@ -126,12 +126,11 @@ class WorkflowMailer < ActionMailer::Base
          subject: "Committee Rejected Final Submission"
   end
 
-  def committee_rejected_admin(submission, admin)
+  def committee_rejected_admin(submission)
     @submission = submission
-    @admin = admin
     @author = submission.author
 
-    mail to: @admin.psu_email_address,
+    mail to: current_partner.email_list,
          from: current_partner.email_address,
          subject: "Committee Rejected Final Submission"
   end

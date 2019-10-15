@@ -404,11 +404,7 @@ class Submission < ApplicationRecord
   end
 
   def committee_rejected_emails
-    if degree.degree_type.approval_configuration.email_admins
-      Admin.find_each do |admin|
-        WorkflowMailer.committee_rejected_admin(self, admin).deliver unless YAML.safe_load(File.open('config/admin_email_blacklist.yml')).include? admin.access_id.to_s
-      end
-    end
+    WorkflowMailer.committee_rejected_admin(self).deliver if degree.degree_type.approval_configuration.email_admins
     WorkflowMailer.committee_rejected_author(self).deliver if degree.degree_type.approval_configuration.email_authors
   end
 

@@ -25,6 +25,7 @@ en:
       email:
         url:  'https://honors-explore.libraries.psu.edu'
         address: honorsthesis@psu.edu
+        list: 'ul-etda-honors-admin@pennstateoffice365.onmicrosoft.com'
         signature: 'Schreyer Honors College<br /> University Park, PA'
         final_submission_rejected:
           message: |
