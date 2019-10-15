@@ -171,7 +171,7 @@ RSpec.describe WorkflowMailer do
       end
     end
   end
-  
+
   describe '#access_level_updated' do
     let(:email) { described_class.access_level_updated(access_updated_email) }
 
