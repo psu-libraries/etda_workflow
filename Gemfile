@@ -83,10 +83,10 @@ gem 'seedbank'
 
 gem 'enumerize'
 
+gem 'rubyzip', '>= 1.3.0'
+
 # Virus scanning for file uploads
 gem 'clam_scan'
-
-gem 'simple_form'
 
 gem 'rest-client'
 
@@ -94,7 +94,7 @@ gem 'prawn'
 gem 'caracal'  # for creating docx documents
 
 # # Form builder
-gem 'simple_form'
+gem 'simple_form', '>= 5.0.0'
 
 # File uploads
 gem 'carrierwave'
