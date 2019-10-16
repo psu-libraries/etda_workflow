@@ -28,7 +28,7 @@ up_milsch: ## run this thing
 
 up_honors: ## run this thing
 	PARTNER=honors docker-compose up -d
-	mutagen create --ignore .git --ignore vendor/cache --ignore tmp --ignore public -m two-way-resolved --label app=etda-workflow . docker://etda_workflow_web_1/etda_workflow 
+	mutagen create --ignore .git --ignore vendor/cache --ignore tmp --ignore public -m two-way-resolved --label app=etda-workflow . docker://etda_workflow_web_1/etda_workflow
 
 rebuild: build up ## run build and then up
 

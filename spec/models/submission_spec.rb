@@ -363,9 +363,9 @@ RSpec.describe Submission, type: :model do
             submission = FactoryBot.create :submission, :waiting_for_committee_review
             allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
             submission.update_status_from_committee
-            expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
-            expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.honors?
-            expect(WorkflowMailer.deliveries.count).to eq 0 if current_partner.milsch?
+            expect(Submission.find(submission.id).status).to eq 'waiting for publication release' unless current_partner.honors?
+            expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' if current_partner.honors?
+            expect(WorkflowMailer.deliveries.count).to eq 0
           end
 
           it 'proceeds to waiting for publication release and does not send email when head of program is already approved' do

@@ -107,6 +107,7 @@ Metrics/PerceivedComplexity:
   - app/presenters/author/committee_member_view.rb
   - app/models/committee_member.rb
   - app/services/final_submission_update_service.rb
+  - app/controllers/author/submissions_controller.rb
 
 Layout/MultilineBlockLayout:
   Exclude:
