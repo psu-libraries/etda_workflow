@@ -349,7 +349,6 @@ class Submission < ApplicationRecord
 
   def deliver_final_emails
     WorkflowMailer.committee_approved(self).deliver_now if degree.degree_type.approval_configuration.email_authors
-    WorkflowMailer.pay_thesis_fee(self).deliver if current_partner.honors?
   end
 
   private

@@ -114,7 +114,7 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
         expect(submission.final_submission_approved_at).not_to be_nil
         expect(formatted_date(submission.defended_at)).to eq(formatted_date(Date.parse("#{select_year}-#{select_month}-#{select_day}"))) if current_partner.graduate?
         expect(WorkflowMailer.deliveries.count).to eq(3) unless current_partner.honors?
-        expect(WorkflowMailer.deliveries.count).to eq(2) if current_partner.honors?
+        expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.honors?
       end
     end
 

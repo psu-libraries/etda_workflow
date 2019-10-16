@@ -46,15 +46,6 @@ class WorkflowMailer < ActionMailer::Base
          subject: "Your #{@submission.degree_type} is ready for release"
   end
 
-  def pay_thesis_fee(submission)
-    @submission = submission
-    @author = submission.author
-
-    mail to: @author.psu_email_address,
-         from: current_partner.email_address,
-         subject: "Pay Thesis Processing Fee"
-  end
-
   def access_level_updated(email)
     @email = email
     mail to: @email[:author_alternate_email_address].presence || @email[:author_psu_email_address],
