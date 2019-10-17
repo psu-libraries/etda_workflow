@@ -15,7 +15,7 @@ class Admin::ApprovalConfigurationsController < AdminController
     redirect_to admin_approval_configurations_path
     flash[:notice] = 'Approval Configuration successfully updated'
   rescue ActiveRecord::RecordInvalid => e
-    flash[:error] = e.message
+    flash[:error] = e.record.errors.values.join(" ")
     render :edit
   end
 

@@ -39,7 +39,7 @@ class Approver::ApproversController < ApproverController
     redirect_to approver_root_path
     flash[:notice] = 'Review submitted successfully'
   rescue ActiveRecord::RecordInvalid => e
-    flash[:error] = e.message
+    flash[:error] = e.record.errors.values.join(" ")
     redirect_to approver_path(params[:id])
   end
 
