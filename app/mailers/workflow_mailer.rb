@@ -20,7 +20,7 @@ class WorkflowMailer < ActionMailer::Base
   def final_submission_approved(submission)
     @submission = submission
     @author = submission.author
-    @url = "#{EtdUrls.new.workflow}/author"
+    @url = EtdUrls.new.explore.to_s
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
