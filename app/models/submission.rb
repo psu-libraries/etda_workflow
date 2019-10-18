@@ -348,7 +348,8 @@ class Submission < ApplicationRecord
   end
 
   def deliver_final_emails
-    WorkflowMailer.committee_approved(self).deliver_now if degree.degree_type.approval_configuration.email_authors
+    WorkflowMailer.committee_approved(self).deliver_now if degree.degree_type.approval_configuration.email_authors && !current_partner.honors?
+    WorkflowMailer.final_submission_approved(self).deliver_now if current_partner.honors?
   end
 
   private
@@ -384,6 +385,7 @@ class Submission < ApplicationRecord
         status_giver.waiting_for_final_submission_response! if current_partner.honors?
         update_attribute(:committee_review_accepted_at, DateTime.now)
         deliver_final_emails unless current_partner.honors?
+        WorkflowMailer.committee_approved(self).deliver_now if degree.degree_type.approval_configuration.email_authors && current_partner.honors?
       end
     elsif submission_status.status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?

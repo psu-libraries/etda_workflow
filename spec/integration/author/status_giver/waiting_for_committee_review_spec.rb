@@ -170,8 +170,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for publication release' unless current_partner.honors?
         expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' if current_partner.honors?
-        expect(WorkflowMailer.deliveries.count).to eq 1 unless current_partner.honors?
-        expect(WorkflowMailer.deliveries.count).to eq 0 if current_partner.honors?
+        expect(WorkflowMailer.deliveries.count).to eq 1
       end
 
       it "moves forward in process if accepted when head of program is not approving but does not send email" do
@@ -190,6 +189,8 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
 
       it "proceeds to 'waiting for committee review rejected' if rejected" do
         FactoryBot.create :admin
+        degree.degree_type.approval_configuration.email_admins = true
+        degree.degree_type.approval_configuration.email_authors = true
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
           find(:css, "#committee_member_status_rejected").set true
