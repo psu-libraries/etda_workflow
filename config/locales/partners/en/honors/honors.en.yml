@@ -40,7 +40,7 @@ en:
         final_submission_approved:
           message: |
                     Your honors %{degree_type} has been approved by Schreyer Honors College.    
-                    After graduation, the eHT will be available through Penn State’s eHT database %{url} and unless you have chosen to restrict access to it.
+                    After graduation, the eHT will be available through Penn State’s eHT database %{url} unless you have chosen to restrict access to it.
                     If it is restricted, it will automatically change to Open Access after two years.
 
                     The access level for your %{degree_type} is: %{access_level}.
