@@ -28,132 +28,116 @@ en:
         signature: 'Schreyer Honors College<br /> University Park, PA'
         final_submission_rejected:
           message: |
-                    The electronic honors %{degree_type} submitted by you has been rejected by the %{partner_name}.
-                    Review notes from the administrator and resubmit your work here: %{url}
+                    Your final %{degree_type} has been rejected by Schreyer Honors College.
+                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type}.
 
-                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
-                    You may also call (814)863-2635, or send mail to:
-                    Honors College Records Department
-                    10 Schreyer Honors College
-                    The Pennsylvania State University
-                    University Park, PA  16802
-
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    honorsthesis@psu.edu 
+                    814-867-2505
         final_submission_approved:
           message: |
-                    The electronic honors %{degree_type} submitted by you has been approved by the %{partner_name}.
-                    The submission will now proceed to the committee review stage.  Your committee has been notified to begin reviewing your submission.
-                    Use the following URL to review your submission: %{url}
-                    Click the link "[My Committee Review]" on that page to review your committee.
+                    Your honors %{degree_type} has been approved by Schreyer Honors College.    
+                    After graduation, the eHT will be available through Penn State’s eHT database %{url} unless you have chosen to restrict access to it.
+                    If it is restricted, it will automatically change to Open Access after two years.
 
-                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
-                    You may also call (814)863-2635, or send mail to:
-                    Honors College Records Department
-                    10 Schreyer Honors College
-                    The Pennsylvania State University
-                    University Park, PA  16802
+                    The access level for your %{degree_type} is: %{access_level}.
+                    Please accept our congratulations as you complete your degree (commencement information can be found online as http://commencement.psu.edu/).
+
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    honorsthesis@psu.edu 
+                    814-867-2505
         format_review_received:
           message: |
                     Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with
                     you when the review has been completed.
-                    You will receive the results of the review by email within 2-3 weeks.
+                    You will receive the results of the review by email within two weeks.
 
-                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
-                    You may also call (814)863-2635, or send mail to:
-                    Honors College Records Department
-                    10 Schreyer Honors College
-                    The Pennsylvania State University
-                    University Park, PA  16802
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    honorsthesis@psu.edu 
+                    814-867-2505
         final_submission_received:
           message: |
-                    Thank you for submitting your final %{degree_type}.  You will be notified by email of your eTD approval
-                    or if changes are required within 2-3 weeks after submitting your final.
+                    Thank you for submitting your final %{degree_type}. 
+                    You will be notified by email of your Honors thesis approval or if changes are required
+                    within 2-3 weeks after submitting your final.
 
-                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
-                    You may also call (814)863-2635, or send mail to:
-                    Honors College Records Department
-                    10 Schreyer Honors College
-                    The Pennsylvania State University
-                    University Park, PA  16802
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    honorsthesis@psu.edu 
+                    814-867-2505
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
-                    The Schreyer Honors College and %{full_name} need your prompt attention to review and digitally sign a proposed work that you
-                    have been a part of.
-                    Please login to %{review_url} and complete this request within five business days.
-                    If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
-                    If you have any further questions please contact:  Debra Rodgers, Coordinator of Academic Services djr255@psu.edu
+                    The Schreyer Honors College and %{full_name} need your prompt attention to review and digitally sign
+                    a proposed work that you have been a part of.  Please login to %{review_url} and complete this request
+                    within five business days.
+
                     Sincerely,
                     The Schreyer Honors College
-
-                    You may also call (814)863-2635, or send mail to:
-                    Honors College Records Department
-                    10 Schreyer Honors College
-                    The Pennsylvania State University
-                    University Park, PA 16802
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    honorsthesis@psu.edu 
+                    814-867-2505
         committee_member_review_reminder:
           message: |
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
                     Please visit this URL to conduct your final review:
                     %{review_url}
-                    If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
 
-                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
-                    You may also call (814)863-2635, or send mail to:
-                    Honors College Records Department
-                    10 Schreyer Honors College
-                    The Pennsylvania State University
-                    University Park, PA 16802
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    honorsthesis@psu.edu 
+                    814-867-2505
         committee_rejected_admin:
           message: |
                     The committee for %{author_name}'s %{degree_type} has rejected their submission.
+                    The submission will automatically be available for the student to edit and resubmit for committee approval.
 
-                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
-                    You may also call (814)863-2635, or send mail to:
-                    Honors College Records Department
-                    10 Schreyer Honors College
-                    The Pennsylvania State University
-                    University Park, PA 16802
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    honorsthesis@psu.edu 
+                    814-867-2505
         committee_rejected_author:
           message: |
                     The committee reviewing your %{degree_type} has rejected your submission.
-                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review.
+                    You will need to make the necessary revisions or corrections to your document and resubmit
+                    your %{degree_type} for your committee to review.
                     For additional information regarding the rejection please consult your %{degree_type} adviser.
 
-                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
-                    You may also call (814)863-2635, or send mail to:
-                    Honors College Records Department
-                    10 Schreyer Honors College
-                    The Pennsylvania State University
-                    University Park, PA 16802
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    honorsthesis@psu.edu 
+                    814-867-2505
         committee_approved:
           message: |
-                    The electronic honors %{degree_type} submitted by you has been approved by the %{partner_name} and your committee.
-                    The access level for your %{degree_type} is: %{access_level}
-                    Use the following URL to access the available information for Honors Theses: %{url}
+                    Congratulations! Your honors %{degree_type} has been reviewed by your commiteee and it is approved.
+                    The next step is to have your final submission reviewed by the Schreyer Honors College.
+                    In Summer and Fall, you must make an advance appointment with Ms Rodgers.
+                    In Spring, you must attend during the designated Theses Days.
 
-                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
-                    You may also call (814)863-2635, or send mail to:
-                    Honors College Records Department
-                    10 Schreyer Honors College
-                    The Pennsylvania State University
-                    University Park, PA  16802
-        pay_thesis_fee:
-          message: |
-                    Now that your honors %{degree_type} has been approved, you must complete two more steps to finalize the process:
-
-                    1. Go to https://www.shc.psu.edu/srs/grad/fee and pay the thesis processing fee.
-
-                    2.  Bring payment receipt and your signed signatory page to the Honors College, C-4 Atherton Hall.
-                    In Summer and Fall, you must make an advance appointment to submit your signature page. In Spring, you must attend during the
-                    designated Thesis Days.
-                    Once fee and signatory page are received, you can hit the GONG and we will celebrate with you.  Congratulations!
-
-                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
-                    You may also call (814)863-2635, or send mail to:
-                    Honors College Records Department
-                    10 Schreyer Honors College
-                    The Pennsylvania State University
-                    University Park, PA 16802
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    honorsthesis@psu.edu 
+                    814-867-2505
         release_for_publication:
           message: |
                     When you submitted your electronic %{degree_type} (eHT) to the %{partner_name} in %{submission_year},
@@ -171,9 +155,12 @@ en:
                     let us know if you need to use this option.
                     In any case, it is important that you respond to this message. Thank you.
 
-                    Honors College Records Department
-                    10 Schreyer Honors College
-                    The Pennsylvania State University
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    honorsthesis@psu.edu 
+                    814-867-2505
         access_level_updated:
           message: |
                     The Schreyer Honors College has changed the availability of the following honor thesis as shown below:
@@ -182,12 +169,13 @@ en:
                     New Availability - %{new_access_level}
                     Old Availability - %{old_access_level}
                     Graduation Year - %{graduation_year}
-                    If you have questions or comments, please email the Honors College Records Department at honorsthesis@psu.edu.
-                    You may also call (814)863-2635, or send mail to:
-                    Honors College Records Department
-                    10 Schreyer Honors College
-                    The Pennsylvania State University
-                    University Park, PA 16802
+
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    honorsthesis@psu.edu 
+                    814-867-2505
     program:
       label: Area of Honors
     committee:

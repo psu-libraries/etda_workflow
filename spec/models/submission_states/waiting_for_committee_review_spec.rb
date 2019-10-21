@@ -5,14 +5,17 @@ require 'model_spec_helper'
 RSpec.describe SubmissionStates::WaitingForCommitteeReview do
   describe 'instance methods' do
     it "transitions to WaitingForPublicationRelease, WaitingForCommitteeReviewRejected, WaitingForHeadOfProgramReview" do
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease)
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForHeadOfProgramReview)
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease) unless current_partner.honors?
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease) if current_partner.honors?
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForHeadOfProgramReview) unless current_partner.honors?
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForHeadOfProgramReview) if current_partner.honors?
       expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForCommitteeReviewRejected)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingCommittee)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFiles)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFilesRejected)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingProgramInformation)
-      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse) unless current_partner.honors?
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse) if current_partner.honors?
       expect(described_class.new).not_to be_valid_state_change(described_class)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFormatReviewResponse)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::ReleasedForPublication)
@@ -47,13 +50,15 @@ RSpec.describe SubmissionStates::WaitingForCommitteeReview do
     context 'when submission status WaitingForFinalSubmissionResponse' do
       let(:status) { SubmissionStates::WaitingForFinalSubmissionResponse.name }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be_truthy } unless current_partner.honors?
+      it { is_expected.to be_falsey } if current_partner.honors?
     end
 
     context 'when submission status CollectingFinalSubmissionFiles' do
       let(:status) { SubmissionStates::CollectingFinalSubmissionFiles.name }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be_falsey } unless current_partner.honors?
+      it { is_expected.to be_truthy } if current_partner.honors?
     end
 
     context 'when submission status WaitingForHeadOfProgramReview' do

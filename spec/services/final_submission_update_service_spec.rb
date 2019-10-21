@@ -27,11 +27,13 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       result = final_submission_update_service.respond_final_submission
       expect(result[:msg]).to eql("The submission\'s final submission information was successfully approved.")
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/final_submission_submitted")
-      expect(submission.status).to eq('waiting for committee review')
+      expect(submission.status).to eq('waiting for committee review') unless current_partner.honors?
+      expect(submission.status).to eq('waiting for publication release') if current_partner.honors?
       expect(submission.title).to eq('update this title')
       expect(submission.publication_release_terms_agreed_to_at).not_to be_nil
       expect(submission.federal_funding).to eq true
-      expect(ActionMailer::Base.deliveries.count).to eq(submission.voting_committee_members.count + 1)
+      expect(ActionMailer::Base.deliveries.count).to eq(submission.voting_committee_members.count + 1) unless current_partner.honors?
+      expect(ActionMailer::Base.deliveries.count).to eq(1) if current_partner.honors?
     end
 
     it 'approves a final submission and proceeds to publication release if committee approved' do
@@ -51,7 +53,7 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       expect(submission.title).to eq('update this title')
       expect(submission.publication_release_terms_agreed_to_at).not_to be_nil
       expect(WorkflowMailer.deliveries.count).to eq(2) unless current_partner.honors?
-      expect(WorkflowMailer.deliveries.count).to eq(3) if current_partner.honors?
+      expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.honors?
     end
 
     it 'rejects a final submission' do

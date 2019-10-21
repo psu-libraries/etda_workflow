@@ -20,7 +20,7 @@ class WorkflowMailer < ActionMailer::Base
   def final_submission_approved(submission)
     @submission = submission
     @author = submission.author
-    @url = "#{EtdUrls.new.workflow}/author"
+    @url = EtdUrls.new.explore.to_s
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
@@ -44,15 +44,6 @@ class WorkflowMailer < ActionMailer::Base
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
          subject: "Your #{@submission.degree_type} is ready for release"
-  end
-
-  def pay_thesis_fee(submission)
-    @submission = submission
-    @author = submission.author
-
-    mail to: @author.psu_email_address,
-         from: current_partner.email_address,
-         subject: "Pay Thesis Processing Fee"
   end
 
   def access_level_updated(email)
