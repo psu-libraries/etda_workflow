@@ -106,7 +106,10 @@ setup_datatables = function() {
     );
 
     $('#approver-committees-index.datatable').dataTable(
-        common_options
+        (approver_options = {
+            order: [[3, 'desc']]
+        }),
+        $.extend(approver_options, common_options)
     );
 
     const column_options = () =>
