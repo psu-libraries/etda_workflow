@@ -1,8 +1,8 @@
 object false
 
 node(:data) do
-  table = @committee_members.map do |member|
-    row = [
+  @committee_members.map do |member|
+    [
       "<a href=#{approver_path(member)}>#{member.submission.title}</a>",
       "#{member.submission.author.first_name} #{member.submission.author.last_name}",
       member.committee_role.name,
