@@ -100,11 +100,16 @@ setup_datatables = function() {
         author_sort_options
     );
 
-
-
     $('#authors-email-contact-list.datatable').dataTable(
         common_options,
         author_sort_options
+    );
+
+    $('#approver-committees-index.datatable').dataTable(
+        (approver_options = {
+            order: [[3, 'desc']]
+        }),
+        $.extend(approver_options, common_options)
     );
 
     const column_options = () =>
