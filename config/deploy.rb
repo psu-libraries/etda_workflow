@@ -93,8 +93,6 @@ namespace :sidekiq do
   after "deploy:published", "sidekiq:start"
 end
 
-
-
 # Apache namespace to control apache
 namespace :apache do
   %i[stop start restart reload].each do |action|
@@ -132,15 +130,10 @@ namespace :deploy do
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/sidekiq.yml #{release_path}/config/sidekiq.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/redis.yml #{release_path}/config/redis.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/newrelic.yml #{release_path}/config/newrelic.yml"
-      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/admin_email_blacklist.yml #{release_path}/admin_email_blacklist.yml"
-      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/admin_email_blacklist.yml #{release_path}/config/admin_email_blacklist.yml"
       execute "ln -sf /etda_workflow/data/#{fetch(:stage)}/etda_workflow_#{fetch(:partner)}/ #{release_path}/workflow_data_files"
       execute "ln -sf /etda_workflow/data/#{fetch(:stage)}/etda_explore_#{fetch(:partner)}/ #{release_path}/explore_data_files"
     end
   end
-
-
-
 
   before "deploy:assets:precompile", "deploy:symlink_shared"
   before "deploy:assets:precompile", "yarn:install"
@@ -148,7 +141,6 @@ namespace :deploy do
   # before "deploy:migrate", "deploy:symlink_shared"
 
   after "deploy:updated", "deploy:migrate"
-
 end
 
 

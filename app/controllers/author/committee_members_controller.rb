@@ -18,7 +18,7 @@ class Author::CommitteeMembersController < AuthorController
     flash[:notice] = 'Committee saved successfully'
     redirect_to author_root_path
   rescue ActiveRecord::RecordInvalid => e
-    flash[:alert] = e.message
+    flash[:alert] = e.record.errors.values.join(" ")
     render :new
   rescue SubmissionStatusGiver::AccessForbidden
     flash.now[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
@@ -48,7 +48,7 @@ class Author::CommitteeMembersController < AuthorController
       redirect_to edit_author_submission_committee_members_path(@submission)
     end
   rescue ActiveRecord::RecordInvalid => e
-    flash[:alert] = e.message
+    flash[:alert] = e.record.errors.values.join(" ")
     if params[:commit] == "Update Program Head/Chair Information"
       redirect_to author_submission_head_of_program_path(@submission)
     else

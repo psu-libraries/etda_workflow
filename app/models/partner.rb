@@ -5,6 +5,10 @@ class Partner < EtdaUtilities::Partner
     I18n.t("#{id}.partner.email.address")
   end
 
+  def email_list
+    I18n.t("#{id}.partner.email.list")
+  end
+
   def name
     I18n.t("#{id}.partner.name")
   end

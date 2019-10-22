@@ -3,8 +3,8 @@
     <div class="col-xs-12">
       <div class="alert alert-danger" role="alert" aria-labelledby="alert-message">
         <ul>
-          <% for message in object.errors.full_messages %>
-            <li><%= message %></li>
+          <% for message in object.errors.values %>
+            <li><%= message.first %></li>
           <% end %>
         </ul>
       </div>
