@@ -139,7 +139,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_for_committee_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_for_committee_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden) unless current_partner.honors?
+        expect { giver.can_waiting_for_committee_review? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden) if current_partner.honors?
       end
     end
 
@@ -157,7 +158,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_for_committee_review? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_for_committee_review? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden) unless current_partner.honors?
+        expect { giver.can_waiting_for_committee_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden) if current_partner.honors?
       end
     end
 
@@ -1842,7 +1844,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_for_committee_review! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_for_committee_review! }.to raise_error(SubmissionStatusGiver::InvalidTransition) unless current_partner.honors?
+        expect { giver.waiting_for_committee_review! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition) if current_partner.honors?
       end
     end
   end
@@ -1889,8 +1892,10 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "updates status to 'waiting for final submission response' unless graduate" do
         giver = described_class.new(submission)
-        giver.waiting_for_final_submission_response!
-        expect(submission.status).to eq 'waiting for final submission response'
+        giver.waiting_for_final_submission_response! unless current_partner.honors?
+        giver.waiting_for_committee_review! if current_partner.honors?
+        expect(submission.status).to eq 'waiting for final submission response' unless current_partner.honors?
+        expect(submission.status).to eq 'waiting for committee review' if current_partner.honors?
       end
     end
 
@@ -1899,7 +1904,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition) unless current_partner.honors?
+        expect { giver.waiting_for_final_submission_response! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition) if current_partner.honors?
       end
     end
 
@@ -1992,8 +1998,10 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "updates status to 'waiting for publication release'" do
         giver = described_class.new(submission)
-        giver.waiting_for_publication_release!
-        expect(submission.status).to eq 'waiting for publication release'
+        giver.waiting_for_publication_release! unless current_partner.honors?
+        giver.waiting_for_final_submission_response! if current_partner.honors?
+        expect(submission.status).to eq 'waiting for publication release' unless current_partner.honors?
+        expect(submission.status).to eq 'waiting for final submission response' if current_partner.honors?
       end
     end
 
@@ -2012,7 +2020,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_for_publication_release! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_for_publication_release! }.to raise_error(SubmissionStatusGiver::InvalidTransition) unless current_partner.honors?
+        expect { giver.waiting_for_publication_release! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition) if current_partner.honors?
       end
     end
 
@@ -2182,8 +2191,10 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "changes the status to 'waiting for publication release'" do
         giver = described_class.new(submission)
-        giver.unreleased_for_publication!
-        expect(submission.status).to eq 'waiting for publication release'
+        giver.unreleased_for_publication! unless current_partner.honors?
+        giver.waiting_for_final_submission_response! if current_partner.honors?
+        expect(submission.status).to eq 'waiting for publication release' unless current_partner.honors?
+        expect(submission.status).to eq 'waiting for final submission response' if current_partner.honors?
       end
     end
 
@@ -2191,6 +2202,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       before { submission.status = 'waiting for head of program review' }
 
       it "changes the status to 'waiting for publication release'" do
+        skip 'Non honors' if current_partner.honors?
+
         giver = described_class.new(submission)
         giver.unreleased_for_publication!
         expect(submission.status).to eq 'waiting for publication release'
@@ -2202,7 +2215,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.unreleased_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.unreleased_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition) unless current_partner.honors?
+        expect { giver.unreleased_for_publication! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition) if current_partner.honors?
       end
     end
 
