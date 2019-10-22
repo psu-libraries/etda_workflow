@@ -32,10 +32,10 @@ RSpec.describe InventionDisclosure, type: :model do
       it 'is not valid' do
         submission.access_level = 'restricted'
         submission.valid?
-        expect(submission.errors[:invention_disclosure]).to eql(['number is required for Restricted submissions.'])
+        expect(submission.errors[:invention_disclosure]).to eql(['Invention Disclosure Number is required for Restricted submissions.'])
         submission.invention_disclosure.id_number = '       '
         submission.valid?
-        expect(submission.errors[:invention_disclosure]).to eql(["number is required for Restricted submissions."])
+        expect(submission.errors[:invention_disclosure]).to eql(["Invention Disclosure Number is required for Restricted submissions."])
       end
     end
 
