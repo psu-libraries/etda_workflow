@@ -18,7 +18,7 @@ class InventionDisclosureNumberValidator < ActiveModel::EachValidator
   private
 
   def valid_id_number?(record, attribute, number)
-    record.errors[attribute] << 'number is required for Restricted submissions.' unless number_is_valid? number
+    record.errors[attribute] << 'Invention Disclosure Number is required for Restricted submissions.' unless number_is_valid? number
   end
 
   def number_is_valid?(number)
@@ -34,7 +34,7 @@ class InventionDisclosureNumberValidator < ActiveModel::EachValidator
     return true if number.nil?
     return true if number.blank?
 
-    record.errors[attribute] << ' number should only be entered when Restricted access is selected.  Please remove the Invention Disclosure Number or select restricted access.'
+    record.errors[attribute] << 'Invention Disclosure Number should only be entered when Restricted access is selected.  Please remove the Invention Disclosure Number or select restricted access.'
     false
   end
 end
