@@ -109,6 +109,46 @@ RSpec.describe WorkflowMailer do
     end
   end
 
+  describe '#release_for_publication' do
+    let(:email) { described_class.release_for_publication(submission) }
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to match(/has been released/i)
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "is sent to the student's PSU email address" do
+      expect(email.to).to eq([author.psu_email_address, author.alternate_email_address])
+    end
+
+    it "tells the author that the submission has been released" do
+      expect(email.body).to match(/has been released with the access level of Open Access/i)
+    end
+  end
+
+  describe '#release_for_publication_metadata_only' do
+    let(:email) { described_class.release_for_publication_metadata_only(submission) }
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to match(/metadata has been released/i)
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "is sent to the student's PSU email address" do
+      expect(email.to).to eq([author.psu_email_address, author.alternate_email_address])
+    end
+
+    it "tells the author that the submission's metadata is released" do
+      expect(email.body).to match(/It retains its access level of/i)
+    end
+  end
+
   describe '#committee_approved' do
     let(:email) { described_class.committee_approved(submission) }
 

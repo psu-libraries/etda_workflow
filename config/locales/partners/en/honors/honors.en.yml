@@ -141,20 +141,20 @@ en:
                     814-867-2505
         release_for_publication:
           message: |
-                    When you submitted your electronic %{degree_type} (eHT) to the %{partner_name} in %{submission_year},
-                    you elected to restrict access to it for two years. The time has come to change it to open access.
-                    Please acknowledge that you are aware that your eHT will be available as an open document on our
-                    eHT Web site (https://honors.libraries.psu.edu/catalog)
+                    Your %{degree_type} titled "%{title}" has been released with the access level of Open Access.
+                    You can view your published submission at: %{url}.
 
-                    If you or your advisor are in the process of seeking a patent associated with your %{degree_type} and
-                    have filed an Invention Disclosure with the Office of Technology Management, we can grant another two-year extension
-                    of the restriction. Please let us know immediately if this is the case.
-
-                    If you are seeking publication and wish to extend the restriction for that reason, we will allow a change
-                    to the 'Penn State Only' option. This will allow the document to be accessed only by those with a valid
-                    Penn State Access Account, and will provide an additional two-year period until open access. Please
-                    let us know if you need to use this option.
-                    In any case, it is important that you respond to this message. Thank you.
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    honorsthesis@psu.edu 
+                    814-867-2505
+        release_for_publication_metadata_only:
+          message: |
+                    The metadata for your %{degree_type} titled "%{title}" has been released.
+                    You can view this information at: %{url}.
+                    It retains its access level of %{access_level}.  The full publication will be released in two years.
 
                     Sincerely,
                     The Schreyer Honors College
