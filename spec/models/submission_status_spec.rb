@@ -155,7 +155,8 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.status = 'waiting for head of program review'
     expect(described_class.new(submission)).to be_beyond_waiting_for_committee_review
     submission.status = 'waiting for final submission response'
-    expect(described_class.new(submission)).not_to be_beyond_waiting_for_committee_review
+    expect(described_class.new(submission)).not_to be_beyond_waiting_for_committee_review unless current_partner.honors?
+    expect(described_class.new(submission)).to be_beyond_waiting_for_committee_review if current_partner.honors?
     submission.status = 'waiting for format review response'
     expect(described_class.new(submission)).not_to be_beyond_waiting_for_committee_review
     submission.status = 'waiting for publication release'
@@ -165,7 +166,8 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.status = 'waiting for publication release'
     expect(described_class.new(submission)).to be_beyond_waiting_for_head_of_program_review
     submission.status = 'waiting for final submission response'
-    expect(described_class.new(submission)).not_to be_beyond_waiting_for_head_of_program_review
+    expect(described_class.new(submission)).not_to be_beyond_waiting_for_head_of_program_review unless current_partner.honors?
+    expect(described_class.new(submission)).to be_beyond_waiting_for_head_of_program_review if current_partner.honors?
     submission.status = 'waiting for format review response'
     expect(described_class.new(submission)).not_to be_beyond_waiting_for_head_of_program_review
     submission.status = 'waiting for publication release'

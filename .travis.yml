@@ -31,7 +31,6 @@ before_script:
 - "cp config/secrets.yml.travis config/secrets.yml"
 - "cp config/lion_path.yml.travis config/lion_path.yml"
 - "cp config/redis.yml.travis config/redis.yml"
-- "cp config/admin_email_blacklist.yml.travis config/admin_email_blacklist.yml"
 - redis-cli info
 # cache:
 #  yarn: true

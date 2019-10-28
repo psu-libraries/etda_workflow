@@ -25,6 +25,7 @@ en:
       email:
         url: 'https://millennium-scholars-explore.libraries.psu.edu'
         address: millennium@psu.edu
+        list: 'ul-etda-milsch-admin@pennstateoffice365.onmicrosoft.com'
         signature: 'Millennium Scholars Program <br />130 Ritenour Building<br /> University Park, PA 16802'
         final_submission_rejected:
           message: |

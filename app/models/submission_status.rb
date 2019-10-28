@@ -102,11 +102,11 @@ class SubmissionStatus
   end
 
   def beyond_collecting_final_submission_files?
-    waiting_for_final_submission_response? || beyond_waiting_for_final_submission_response?
+    current_partner.honors? ? (waiting_for_committee_review? || beyond_waiting_for_committee_review?) : (waiting_for_final_submission_response? || beyond_waiting_for_final_submission_response?)
   end
 
   def beyond_waiting_for_final_submission_response?
-    waiting_for_committee_review? || beyond_waiting_for_committee_review?
+    current_partner.honors? ? (waiting_for_publication_release? || released_for_publication?) : (waiting_for_committee_review? || beyond_waiting_for_committee_review?)
   end
 
   def beyond_waiting_for_committee_review?
@@ -118,7 +118,7 @@ class SubmissionStatus
   end
 
   def beyond_waiting_for_committee_review_rejected?
-    waiting_for_publication_release? || released_for_publication?
+    current_partner.honors? ? (waiting_for_final_submission_response? || beyond_waiting_for_final_submission_response?) : (waiting_for_publication_release? || released_for_publication?)
   end
 
   def format_review_rejected?

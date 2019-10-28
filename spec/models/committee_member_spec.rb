@@ -323,6 +323,8 @@ RSpec.describe CommitteeMember, type: :model do
       cm2.committee_role = committee_role
       expect(cm1).not_to be_valid
       expect(cm2).not_to be_valid
+      submission.committee_members << cm2
+      expect(cm2).to be_valid
     end
   end
 end

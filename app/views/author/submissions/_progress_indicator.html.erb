@@ -68,12 +68,13 @@
       </div>
     </div>
   </div>
-  <div class="step step-6 <%= @submission_view.step_six_class %>"><%= @submission_view.step_info(6) %>
+  <div class="step step-6 <%= current_partner.honors? ?  @submission_view.step_seven_class : @submission_view.step_six_class%>"><%= current_partner.honors? ? @submission_view.step_info(7) : @submission_view.step_info(6) %>
     <div class="information">
-      <div class="description"><%= I18n.t("#{current_partner.id}.partner.name") %> approves Final Submission files
+      <div class="description"><%= current_partner.honors? ? @submission_view.step_seven_description : I18n.t("#{current_partner.id}.partner.name").html_safe + " approves Final Submission files".html_safe %>
         <div class="status">
-          <% status = @submission_view.step_six_status %>
-          <%= render(status[:partial_name], step_number: 6, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(6)) unless status[:partial_name].blank? %>
+          <% current_partner.honors? ? status = @submission_view.step_seven_status : status = @submission_view.step_six_status %>
+          <%= render(status[:partial_name], step_number: 6, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(6)) unless status[:partial_name].blank? || current_partner.honors? %>
+          <%= render(status[:partial_name], step_number: 7, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(7)) unless status[:partial_name].blank? || !current_partner.honors? %>
         </div>
       </div>
       <div class='number-arrow' >
@@ -82,12 +83,13 @@
       </div>
     </div>
   </div>
-  <div class="step step-7 <%= @submission_view.step_seven_class %>"><%= @submission_view.step_info(7) %>
+  <div class="step step-7 <%= current_partner.honors? ? @submission_view.step_six_class : @submission_view.step_seven_class %>"><%= current_partner.honors? ? @submission_view.step_info(6) : @submission_view.step_info(7) %>
     <div class="information">
-      <div class="description"><%= @submission_view.step_seven_description %>
+      <div class="description"><%= current_partner.honors? ? I18n.t("#{current_partner.id}.partner.name").html_safe + " approves Final Submission files".html_safe : @submission_view.step_seven_description %>
         <div class="status">
-          <% status = @submission_view.step_seven_status %>
-          <%= render(status[:partial_name], step_number: 7, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(7)) unless status[:partial_name].blank? %>
+          <% current_partner.honors? ? status = @submission_view.step_six_status : status = @submission_view.step_seven_status %>
+          <%= render(status[:partial_name], step_number: 7, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(7)) unless status[:partial_name].blank? || current_partner.honors? %>
+          <%= render(status[:partial_name], step_number: 6, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(6)) unless status[:partial_name].blank? || !current_partner.honors? %>
         </div>
       </div>
       <div class='number-arrow' >

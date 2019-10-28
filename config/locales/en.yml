@@ -49,9 +49,27 @@ en:
     errors:
       models:
         submission:
+          blank: "%{attribute} can't be blank."
           attributes:
             title:
               capitalization: "Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."
+            year:
+              not_a_number: "Please select a year from the dropdown."
+            federal_funding:
+              inclusion: "Federal Funding can't be blank."
+        committee_member:
+          blank: "Committee member's %{attribute} can't be blank."
+          required: "%{attribute} must exist."
+        final_submission_file:
+          blank: "You must upload a Final Submission File."
+        format_review_file:
+          blank: "You must upload a Format Review File."
+        program:
+          blank: "%{attribute} can't be blank."
+        degree:
+          blank: "%{attribute} can't be blank."
+        approval_configuration:
+          blank: "%{attribute} can't be blank."
 
     attributes:
       final_submission_files:

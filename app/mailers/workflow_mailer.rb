@@ -20,7 +20,7 @@ class WorkflowMailer < ActionMailer::Base
   def final_submission_approved(submission)
     @submission = submission
     @author = submission.author
-    @url = "#{EtdUrls.new.workflow}/author"
+    @url = EtdUrls.new.explore.to_s
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
@@ -55,15 +55,6 @@ class WorkflowMailer < ActionMailer::Base
     mail to: [@author.psu_email_address, @author.alternate_email_address],
          from: current_partner.email_address,
          subject: "Your #{@submission.degree_type}'s metadata has been released"
-  end
-
-  def pay_thesis_fee(submission)
-    @submission = submission
-    @author = submission.author
-
-    mail to: @author.psu_email_address,
-         from: current_partner.email_address,
-         subject: "Pay Thesis Processing Fee"
   end
 
   def access_level_updated(email)
@@ -137,12 +128,11 @@ class WorkflowMailer < ActionMailer::Base
          subject: "Committee Rejected Final Submission"
   end
 
-  def committee_rejected_admin(submission, admin)
+  def committee_rejected_admin(submission)
     @submission = submission
-    @admin = admin
     @author = submission.author
 
-    mail to: @admin.psu_email_address,
+    mail to: current_partner.email_list,
          from: current_partner.email_address,
          subject: "Committee Rejected Final Submission"
   end
