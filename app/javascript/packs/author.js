@@ -8,6 +8,7 @@
 require('bootstrap3/dist/css/bootstrap.css');
 require('../author/invention_disclosure.js');
 require('../author/lionpath_degree.js');
+require('../author/committee_members');
 require('../styles/author/committee.scss');
 require('../styles/author/screen.scss');
 // Must be included last in order for close icon to appear on keyword tag
