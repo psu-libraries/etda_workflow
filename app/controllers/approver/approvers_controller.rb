@@ -5,9 +5,10 @@ class Approver::ApproversController < ApproverController
   include ActionView::Helpers::UrlHelper
 
   def index
-    @approver = Approver.find_by(access_id: current_approver.access_id)
-    @committee_members = @approver.committee_members
     update_approver_committee_members
+    @approver = Approver.find_by(access_id: current_approver.access_id)
+    @committee_members = @approver.committee_members.select { |n| n if n.submission.status_behavior.beyond_collecting_final_submission_files? } if current_partner.honors?
+    @committee_members = @approver.committee_members.select { |n| n if n.submission.status_behavior.beyond_waiting_for_final_submission_response? } unless current_partner.honors?
   end
 
   def edit
@@ -39,7 +40,7 @@ class Approver::ApproversController < ApproverController
     redirect_to approver_root_path
     flash[:notice] = 'Review submitted successfully'
   rescue ActiveRecord::RecordInvalid => e
-    flash[:error] = e.message
+    flash[:error] = e.record.errors.values.join(" ")
     redirect_to approver_path(params[:id])
   end
 

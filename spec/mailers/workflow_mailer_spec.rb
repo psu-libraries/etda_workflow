@@ -109,37 +109,51 @@ RSpec.describe WorkflowMailer do
     end
   end
 
-  describe '#pay_thesis_fee' do
-    before { allow(Partner).to receive(:current).and_return(partner) }
+  describe '#committee_approved' do
+    let(:email) { described_class.committee_approved(submission) }
 
-    let(:email) { described_class.pay_thesis_fee(submission) }
-
-    context "when the current partner is 'graduate'" do
-      let(:partner) { Partner.new('graduate') }
-
-      xit "raises an exception" do
-        expect { email.deliver_now }.to raise_error ActionView::Template::Error
-      end
+    before do
+      submission.committee_members << committee_member
     end
 
-    context "when the current partner is 'honors'" do
-      let(:partner) { Partner.new('honors') }
+    it "sets an appropriate subject" do
+      expect(email.subject).to match(/has been approved by committee/i)
+    end
 
-      it "sets an appropriate subject" do
-        expect(email.subject).to match(/thesis processing fee/i)
-      end
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
 
-      it "is sent from the partner support email address" do
-        expect(email.from).to eq([partner.email_address])
-      end
+    it "is sent to the student's PSU email address" do
+      expect(email.to).to eq([author.psu_email_address])
+    end
 
-      it "is sent to the student's PSU email address" do
-        expect(email.to).to eq([author.psu_email_address])
-      end
+    it "is cc'd to committee and partner email" do
+      expect(email.cc).to eq([submission.committee_email_list, current_partner.email_address].flatten)
+    end
 
-      it "tells the author to pay thesis processing fee" do
-        expect(email.body).to match(/pay the thesis processing fee/i)
-      end
+    it "tells the author that the final submission has been approved" do
+      expect(email.body).to match(/Congratulations!/i)
+    end
+  end
+
+  describe '#committee_rejected_admin' do
+    let(:email) { described_class.committee_rejected_admin(submission) }
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq "Committee Rejected Final Submission"
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "is sent to the student's PSU email address" do
+      expect(email.to).to eq([current_partner.email_list])
+    end
+
+    it "tells the author that the final submission has been approved" do
+      expect(email.body).to match(/has rejected their submission/i)
     end
   end
 

@@ -29,12 +29,12 @@ class Author::CommitteeMemberView
     model.committee_role.present? ? model.committee_role.name.gsub(/\/Co-(.*)/, '') : nil
   end
 
-  def possible_roles
-    model.submission.degree_type.try(&:committee_roles).order('name asc') || []
+  def author_possible_roles
+    model.submission.degree_type.try(&:committee_roles).where.not(name: 'Program Head/Chair').order('name asc') || []
   end
 
-  def possible_additional_roles
-    model.submission.degree_type.try(&:committee_roles).where.not(name: 'Program Head/Chair').order('name asc') || []
+  def admin_possible_roles
+    model.submission.degree_type.try(&:committee_roles).order('name asc') || []
   end
 
   def committee_members_tooltip_text

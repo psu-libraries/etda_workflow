@@ -114,22 +114,40 @@ class Author::SubmissionsController < AuthorController
 
   def update_final_submission
     @submission = find_submission
+    approval_status = ApprovalStatus.new(@submission).status
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
     @submission.update_attributes!(final_submission_params)
     @submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
     if @submission.status == 'waiting for committee review rejected'
+      current_partner.honors? ? status_giver.can_waiting_for_committee_review? : status_giver.can_waiting_for_final_submission?
+      current_partner.honors? ? status_giver.waiting_for_committee_review! : status_giver.waiting_for_final_submission_response!
+      OutboundLionPathRecord.new(submission: @submission).report_status_change
+      @submission.reset_committee_reviews
+      @submission.update_final_submission_timestamps!(Time.zone.now)
+      redirect_to author_root_path
+      WorkflowMailer.final_submission_received(@submission).deliver
+      flash[:notice] = 'Final submission files uploaded successfully.'
+      return
+    elsif @submission.status == 'collecting final submission files rejected' && current_partner.honors?
+      status_giver.can_waiting_for_final_submission?
       status_giver.waiting_for_final_submission_response!
       OutboundLionPathRecord.new(submission: @submission).report_status_change
       @submission.update_final_submission_timestamps!(Time.zone.now)
-      @submission.update_attribute :final_submission_approved_at, Time.zone.now
       redirect_to author_root_path
       WorkflowMailer.final_submission_received(@submission).deliver
       flash[:notice] = 'Final submission files uploaded successfully.'
       return
     end
-    status_giver.can_waiting_for_final_submission?
-    status_giver.waiting_for_final_submission_response!
+    if current_partner.honors?
+      status_giver.can_waiting_for_committee_review?
+      status_giver.waiting_for_committee_review!
+      @submission.reset_committee_reviews
+      @submission.send_initial_committee_member_emails unless approval_status == 'approved'
+    else
+      status_giver.can_waiting_for_final_submission?
+      status_giver.waiting_for_final_submission_response!
+    end
     OutboundLionPathRecord.new(submission: @submission).report_status_change
     @submission.update_final_submission_timestamps!(Time.zone.now)
     redirect_to author_root_path
@@ -254,6 +272,7 @@ class Author::SubmissionsController < AuthorController
                                          :delimited_keywords,
                                          :lion_path_degree_code,
                                          :restricted_notes,
+                                         :federal_funding,
                                          invention_disclosures_attributes: [:id, :submission_id, :id_number, :_destroy],
                                          final_submission_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy])
     end

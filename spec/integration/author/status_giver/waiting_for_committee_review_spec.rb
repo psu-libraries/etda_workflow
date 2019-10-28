@@ -118,7 +118,8 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find('#submission_has_agreed_to_terms').click
           click_button 'Submit final files for review'
           sleep 1
-          expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
+          expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' unless current_partner.honors?
+          expect(Submission.find(submission.id).status).to eq 'waiting for committee review' if current_partner.honors?
         end
       end
     end
@@ -167,9 +168,9 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         end
         click_button 'Submit Review'
         sleep 3
-        expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
-        expect(WorkflowMailer.deliveries.count).to eq 1 unless current_partner.honors?
-        expect(WorkflowMailer.deliveries.count).to eq 2 if current_partner.honors?
+        expect(Submission.find(submission.id).status).to eq 'waiting for publication release' unless current_partner.honors?
+        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' if current_partner.honors?
+        expect(WorkflowMailer.deliveries.count).to eq 1
       end
 
       it "moves forward in process if accepted when head of program is not approving but does not send email" do
@@ -181,13 +182,15 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         end
         click_button 'Submit Review'
         sleep 3
-        expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
-        expect(WorkflowMailer.deliveries.count).to eq 0 unless current_partner.honors?
-        expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.honors?
+        expect(Submission.find(submission.id).status).to eq 'waiting for publication release' unless current_partner.honors?
+        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' if current_partner.honors?
+        expect(WorkflowMailer.deliveries.count).to eq 0
       end
 
       it "proceeds to 'waiting for committee review rejected' if rejected" do
         FactoryBot.create :admin
+        degree.degree_type.approval_configuration.email_admins = true
+        degree.degree_type.approval_configuration.email_authors = true
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
           find(:css, "#committee_member_status_rejected").set true

@@ -144,7 +144,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
       before do
         submission.committee_members = []
         submission.status = 'collecting format review files'
-        roles = CommitteeRole.all
+        roles = CommitteeRole.where(degree_type_id: submission.degree.degree_type.id)
         submission.required_committee_roles.count.times do |i|
           submission.committee_members << FactoryBot.create(:committee_member, name: "Professor Buck Murphy #{i}", email: "buck@hotmail.com", is_required: true, committee_role_id: roles[i].id)
         end
@@ -153,7 +153,6 @@ RSpec.describe 'The standard committee form for authors', js: true do
         visit edit_author_submission_committee_members_path(submission)
       end
 
-      # PROBLEM FINDING THE RemoveLINK
       it "can delete an optional committee member" do
         expect(page).to have_field('Name', with: 'I am Special')
         click_link "Remove Committee Member"
@@ -222,6 +221,22 @@ RSpec.describe 'The standard committee form for authors', js: true do
         find('.fa-exclamation-circle').hover
         expect(page).to have_css('.tooltip')
       end
+    end
+  end
+
+  describe 'email form checkbox' do
+    let!(:committee) { create_committee(submission) }
+
+    it 'toggles email form box readonly/writable' do
+      skip 'Non honors' if current_partner.honors?
+      checkboxes = find_all('#email_form_release_switch')
+      expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_0_email' and @readonly='readonly']") if current_partner.milsch?
+      expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_1_email' and @readonly='readonly']") if current_partner.graduate?
+      checkboxes.first.click
+      expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_0_email']") if current_partner.milsch?
+      expect(page).not_to have_xpath("//input[@id='submission_committee_members_attributes_0_email' and @readonly='readonly']") if current_partner.milsch?
+      expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_1_email']") if current_partner.graduate?
+      expect(page).not_to have_xpath("//input[@id='submission_committee_members_attributes_1_email' and @readonly='readonly']") if current_partner.graduate?
     end
   end
 end

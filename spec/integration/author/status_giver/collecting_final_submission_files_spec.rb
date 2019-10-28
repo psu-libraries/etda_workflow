@@ -114,22 +114,25 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         expect(page).to have_css('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
+        find("#submission_federal_funding_false").click
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
         # check 'I agree to release agreement'
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.status).to eq 'waiting for final submission response'
+        expect(submission.status).to eq 'waiting for final submission response' unless current_partner.honors?
+        expect(submission.status).to eq 'waiting for committee review' if current_partner.honors?
         submission.reload
+        expect(submission.federal_funding).to eq false
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
-        expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.graduate?
-        expect(WorkflowMailer.deliveries.count).to eq(1) unless current_partner.graduate?
+        expect(WorkflowMailer.deliveries.count).to eq(1) unless current_partner.honors?
+        expect(WorkflowMailer.deliveries.count).to eq(3) if current_partner.honors?
       end
     end
 
     context "when I submit the 'Upload Final Submission Files' form after committee rejection" do
-      it 'proceeds to "waiting for final submission response"' do
+      it 'proceeds to "waiting for final submission response" and resets committee reviews' do
         submission.committee_members.first.update_attribute :status, 'rejected'
         submission.status = 'waiting for committee review rejected'
         submission.defended_at = Time.zone.yesterday
@@ -149,8 +152,9 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.committee_members.first.status).to eq 'rejected'
-        expect(submission.status).to eq 'waiting for final submission response'
+        expect(submission.committee_members.first.status).to eq ''
+        expect(submission.status).to eq 'waiting for final submission response' unless current_partner.honors?
+        expect(submission.status).to eq 'waiting for committee review' if current_partner.honors?
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         expect(WorkflowMailer.deliveries.count).to eq(1)
       end
@@ -174,18 +178,19 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         click_link "Additional File"
-        all('input[type="file"]').last.set(fixture('final_submission_file_02.docx'))
+        all('input[type="file"]').last.set(fixture('final_submission_file_01.pdf'))
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
         # check 'I agree to release agreement'
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.status).to eq 'waiting for final submission response'
+        expect(submission.status).to eq 'waiting for final submission response' unless current_partner.honors?
+        expect(submission.status).to eq 'waiting for committee review' if current_partner.honors?
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         expect(submission.final_submission_files.count).to eq(2)
         visit "/author/submissions/#{submission.id}/final_submission"
-        expect(page).to have_link('final_submission_file_02.docx')
+        expect(page).to have_link('final_submission_file_01.pdf')
         expect(page).to have_link('final_submission_file_01.pdf')
       end
     end
@@ -217,7 +222,8 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
         click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.status).to eq 'waiting for final submission response'
+        expect(submission.status).to eq 'waiting for final submission response' unless current_partner.honors?
+        expect(submission.status).to eq 'waiting for committee review' if current_partner.honors?
         submission.reload
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
       end

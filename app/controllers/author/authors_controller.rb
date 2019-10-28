@@ -33,7 +33,7 @@ class Author::AuthorsController < AuthorController
   #   redirect_to root_path
   #   flash[:notice] = 'You are not authorized to edit that page'
   rescue ActiveRecord::RecordInvalid => e
-    flash.now[:alert] = e.message
+    flash.now[:alert] = e.record.errors.values.join(" ")
     render :edit
   rescue Author::NotAuthorizedToEdit
     redirect_to '/401'

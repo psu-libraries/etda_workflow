@@ -33,15 +33,21 @@ class FinalSubmissionUpdateService
     status_giver = SubmissionStatusGiver.new(submission)
     status_giver.can_respond_to_final_submission?
     if update_actions.approved?
-      approval_status = ApprovalStatus.new(@submission).status
-      submission.update_attribute :final_submission_approved_at, Time.zone.now
-      status_giver.can_waiting_for_committee_review?
-      status_giver.waiting_for_committee_review!
-      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-      @submission.reset_committee_reviews
-      @submission.update_status_from_committee
-      WorkflowMailer.final_submission_approved(@submission).deliver
-      @submission.send_initial_committee_member_emails unless approval_status == 'approved'
+      @submission.update_attribute :final_submission_approved_at, Time.zone.now
+      if current_partner.honors?
+        status_giver.can_waiting_for_publication_release?
+        status_giver.waiting_for_publication_release!
+        UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
+        @submission.deliver_final_emails
+      else
+        approval_status = ApprovalStatus.new(@submission).status
+        status_giver.can_waiting_for_committee_review?
+        status_giver.waiting_for_committee_review!
+        UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
+        @submission.update_status_from_committee
+        WorkflowMailer.final_submission_approved(@submission).deliver
+        @submission.send_initial_committee_member_emails unless approval_status == 'approved'
+      end
       msg = "The submission\'s final submission information was successfully approved."
     elsif update_actions.rejected?
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
@@ -148,8 +154,8 @@ class FinalSubmissionUpdateService
       :has_agreed_to_publication_release,
       :lion_path_degree_code,
       :restricted_notes,
-      :federal_funding_used,
-      committee_members_attributes: [:id, :committee_role_id, :name, :email, :status, :notes, :is_required, :is_voting, :_destroy],
+      :federal_funding,
+      committee_members_attributes: [:id, :committee_role_id, :name, :email, :status, :notes, :is_required, :is_voting, :federal_funding_used, :_destroy],
       format_review_files_attributes: [:asset, :asset_cache, :id, :_destroy],
       final_submission_files_attributes: [:asset, :asset_cache, :id, :_destroy],
       keywords_attributes: [:word, :id, :_destroy],

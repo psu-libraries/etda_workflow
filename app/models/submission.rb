@@ -51,11 +51,12 @@ class Submission < ApplicationRecord
             length: { maximum: 400 },
             presence: true, if: proc { |s| s.author_edit } # !InboundLionPathRecord.active? }
 
+  validates :federal_funding, inclusion: { in: [true, false] }, if: proc { |s| s.status_behavior.beyond_collecting_committee? && s.author_edit }
+
   validates :abstract,
             :keywords,
             :access_level,
             :has_agreed_to_terms,
-            # :has_agreed_to_publication_release,
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && s.author_edit }
 
   validates :defended_at,
@@ -70,6 +71,8 @@ class Submission < ApplicationRecord
   validates :access_level, inclusion: { in: AccessLevel::ACCESS_LEVEL_KEYS }, if: proc { |s| s.status_behavior.beyond_collecting_final_submission_files? && s.author_edit }
 
   validates :invention_disclosure, invention_disclosure_number: true, if: proc { |s| s.status_behavior.beyond_collecting_format_review_files? && !s.status_behavior.released_for_publication? }
+
+  validates :has_agreed_to_publication_release, presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && s.author_edit && author.confidential? }
 
   validate :format_review_file_check
 
@@ -334,7 +337,7 @@ class Submission < ApplicationRecord
       seen_access_ids = []
       next if committee_member.committee_role.name == 'Program Head/Chair' || seen_access_ids.include?(committee_member.access_id)
 
-      if committee_member.committee_role.name == 'Special Member' || committee_member.committee_role.name == 'Special Signatory'
+      if committee_member.committee_member_token.present?
         WorkflowMailer.special_committee_review_request(self, committee_member).deliver
       else
         WorkflowMailer.committee_member_review_request(self, committee_member).deliver
@@ -342,6 +345,11 @@ class Submission < ApplicationRecord
       CommitteeReminderWorker.perform_in(10.days, id, committee_member.id)
       seen_access_ids << committee_member.access_id
     end
+  end
+
+  def deliver_final_emails
+    WorkflowMailer.committee_approved(self).deliver_now if degree.degree_type.approval_configuration.email_authors && !current_partner.honors?
+    WorkflowMailer.final_submission_approved(self).deliver_now if current_partner.honors?
   end
 
   private
@@ -371,10 +379,13 @@ class Submission < ApplicationRecord
         WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id)).deliver unless submission_status.head_of_program_status == 'approved'
         update_status_from_head_of_program
       else
-        status_giver.can_waiting_for_publication_release?
-        status_giver.waiting_for_publication_release!
+        status_giver.can_waiting_for_publication_release? unless current_partner.honors?
+        status_giver.waiting_for_publication_release! unless current_partner.honors?
+        status_giver.can_waiting_for_final_submission? if current_partner.honors?
+        status_giver.waiting_for_final_submission_response! if current_partner.honors?
         update_attribute(:committee_review_accepted_at, DateTime.now)
-        deliver_final_emails
+        deliver_final_emails unless current_partner.honors?
+        WorkflowMailer.committee_approved(self).deliver_now if degree.degree_type.approval_configuration.email_authors && current_partner.honors?
       end
     elsif submission_status.status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
@@ -401,16 +412,7 @@ class Submission < ApplicationRecord
   end
 
   def committee_rejected_emails
-    if degree.degree_type.approval_configuration.email_admins
-      Admin.find_each do |admin|
-        WorkflowMailer.committee_rejected_admin(self, admin).deliver unless YAML.safe_load(File.open('config/admin_email_blacklist.yml')).include? admin.access_id.to_s
-      end
-    end
+    WorkflowMailer.committee_rejected_admin(self).deliver if degree.degree_type.approval_configuration.email_admins
     WorkflowMailer.committee_rejected_author(self).deliver if degree.degree_type.approval_configuration.email_authors
-  end
-
-  def deliver_final_emails
-    WorkflowMailer.committee_approved(self).deliver_now if degree.degree_type.approval_configuration.email_authors
-    WorkflowMailer.pay_thesis_fee(self).deliver if current_partner.honors?
   end
 end

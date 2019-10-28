@@ -46,6 +46,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:publication_release_terms_agreed_to_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:head_of_program_review_accepted_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:head_of_program_review_rejected_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:federal_funding).of_type(:boolean) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
@@ -161,6 +162,41 @@ RSpec.describe Submission, type: :model do
       expect(submission).not_to be_valid
       submission.author_edit = false
       expect(submission).to be_valid
+    end
+
+    it 'validates federal funding only when authors are editing beyond collecting committee' do
+      submission = FactoryBot.create :submission, :collecting_final_submission_files
+      submission2 = FactoryBot.create :submission, :collecting_program_information
+      submission.author_edit = true
+      submission.federal_funding = true
+      expect(submission).to be_valid
+      submission.federal_funding = false
+      expect(submission).to be_valid
+      submission.federal_funding = nil
+      expect(submission).not_to be_valid
+      submission2.federal_funding = nil
+      expect(submission2).to be_valid
+      submission.author_edit = false
+      submission.federal_funding = nil
+      expect(submission).to be_valid
+    end
+
+    it 'validates publication release if author is submitting beyond format review' do
+      submission = FactoryBot.create :submission, :collecting_format_review_files
+      submission2 = FactoryBot.create :submission, :collecting_final_submission_files
+      submission.author.confidential_hold = true
+      submission.author_edit = true
+      submission.has_agreed_to_publication_release = false
+      expect(submission).to be_valid
+      submission.has_agreed_to_publication_release = nil
+      expect(submission).to be_valid
+      submission2.author.confidential_hold = true
+      submission2.author_edit = false
+      submission2.has_agreed_to_publication_release = nil
+      expect(submission2).to be_valid
+      submission2.author_edit = true
+      submission2.has_agreed_to_publication_release = nil
+      expect(submission2).not_to be_valid
     end
 
     context 'invention disclosure' do
@@ -327,9 +363,9 @@ RSpec.describe Submission, type: :model do
             submission = FactoryBot.create :submission, :waiting_for_committee_review
             allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
             submission.update_status_from_committee
-            expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
-            expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.honors?
-            expect(WorkflowMailer.deliveries.count).to eq 0 if current_partner.milsch?
+            expect(Submission.find(submission.id).status).to eq 'waiting for publication release' unless current_partner.honors?
+            expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' if current_partner.honors?
+            expect(WorkflowMailer.deliveries.count).to eq 0
           end
 
           it 'proceeds to waiting for publication release and does not send email when head of program is already approved' do

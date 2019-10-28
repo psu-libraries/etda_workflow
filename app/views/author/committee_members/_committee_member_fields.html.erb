@@ -5,12 +5,13 @@
   <div class="row committee-role">
   <% if local_presenter.required? %>
     <div class="col-sm-12">
-      <h2 class="h2-small"><%= local_presenter.role %> <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="right" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>"></span></a></h2>
+      <h2 class="h2-small block-header"><%= local_presenter.role %> <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="right" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>"></span></a></h2>
+      <% unless current_partner.honors? %>
+        <p class="email_form_checkbox"><%= check_box 'email_form_release', "switch" %><small> Committee member is not in dropdown list</small></p>
+      <% end %>
       <%= f.association :committee_role, as: :hidden, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || []  %>
       <% unless local_presenter.head_of_program? %>
         <%= f.input :is_voting, as: :hidden, :input_html => { value: 1, readonly: true } %>
-      <% else %>
-        <p>You can find the head of your program here: <a href="https://secure.gradsch.psu.edu/gpms/" target="_blank">Graduate Program Search</a></p>
       <% end %>
     </div>
   <% else %>
@@ -21,7 +22,11 @@
           <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="top" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>"></span></a>
         <% end %>
       </div>
-      <%= f.association :committee_role, collection: local_presenter.possible_additional_roles , prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+      <% if controller_name == 'committee_members' %>
+        <%= f.association :committee_role, collection: local_presenter.author_possible_roles , prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+      <% elsif controller_name == 'submissions' %>
+        <%= f.association :committee_role, collection: local_presenter.admin_possible_roles , prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+      <% end %>
     </div>
   <% end %>
   </div>
