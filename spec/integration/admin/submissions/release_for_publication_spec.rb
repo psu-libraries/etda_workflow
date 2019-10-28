@@ -51,6 +51,7 @@ RSpec.describe "when an admin releases the submission for publication", js: true
       expect(released_count.to_i).to eql(initial_released_count + 1)
       FileUtilityHelper.new.remove_test_file(released_location)
       expect(WorkflowMailer.deliveries.first.subject).to match(/has been released/i)
+      expect(WorkflowMailer.deliveries.count).to eq 1
     end
   end
 
@@ -94,6 +95,7 @@ RSpec.describe "when an admin releases the submission for publication", js: true
       expect(released_count.to_i).to eql(initial_released_count + 1)
       FileUtilityHelper.new.remove_test_file(released_location)
       expect(WorkflowMailer.deliveries.first.subject).to match(/metadata has been released/i)
+      expect(WorkflowMailer.deliveries.count).to eq 1
     end
 
     it 'does not change access_level should it accidentally be released again' do
