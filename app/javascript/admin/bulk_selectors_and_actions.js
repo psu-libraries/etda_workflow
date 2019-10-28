@@ -51,6 +51,19 @@ setup_bulk_selectors_and_actions = function() {
         return array;
     };
 
+    const selected_names = function() {
+        const array = [];
+        const data_table = new $.fn.dataTable.Api(table);
+        data_table.rows().nodes().to$().each( function() {
+            const first_name = $(this).children()[4].firstChild.data;
+            const last_name = $(this).children()[3].firstChild.data;
+            if ($(this).find('.row-checkbox').prop('checked')) {
+                return array.push(`- ${first_name} ${last_name}\n`);
+            }
+        });
+        return array.join("");
+    };
+
     const update_selected_submission_ids_field = function() {
         const fields = bulk_actions.find('input[name="submission_ids"]');
         const ids = selected_ids();
@@ -75,6 +88,13 @@ setup_bulk_selectors_and_actions = function() {
         return delete_submits.attr('data-confirm', confirm_message);
     };
 
+    const update_confirm_release_messages = function() {
+        const names = selected_names();
+        const confirm_message = `Are you sure you want to release the submissions(s) for authors:\n\n${names}\n as Open Access?`;
+        const release_as_open_access = bulk_actions.find('input[value="Release as Open Access"].release-btn');
+        return release_as_open_access.attr('data-confirm', confirm_message);
+    };
+
     const update_bulk_actions = function() {
         const selected = number_of_rows_selected();
         bulk_actions.find('h5 .number-of-selected-rows').html(selected);
@@ -92,6 +112,7 @@ setup_bulk_selectors_and_actions = function() {
 
     table.on('change', 'tr .row-checkbox', function() {
         update_selected_submission_ids_field();
+        update_confirm_release_messages();
         return update_bulk_actions();
     });
 
