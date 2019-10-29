@@ -39,7 +39,7 @@ RSpec.describe "when an admin releases a restricted submission for publication a
       msg = page.accept_confirm do
         click_button 'Release as Open Access'
       end
-      expect(msg).to match /#{author.first_name} #{author.last_name}/
+      expect(msg).to match(/#{author.first_name} #{author.last_name}/)
       # expect(page).to have_content "successfully"
       submission.reload
       expect(submission.status).to eq('released for publication')
