@@ -90,14 +90,7 @@ class FinalSubmissionUpdateService
   end
 
   def respond_released_submission
-    if update_actions.record_updated?
-      message = 'The submission was successfully updated.'
-      update_service = UpdateSubmissionService.new
-      update_service.send_email(submission)
-      update_results = update_service.solr_delta_update(submission)
-      message = update_results[:message] if update_results[:error]
-      result = { msg: message, redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
-    elsif update_actions.rejected?
+    if update_actions.rejected?
       # Unpublish/unrelease this submission
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_unrelease_for_publication?

@@ -149,49 +149,20 @@ RSpec.describe FinalSubmissionUpdateService, type: :model do
       # no email updates for moving submission out of waiting to be released (this has not been published yet)
       expect(ActionMailer::Base.deliveries.count).to eq(start_count)
     end
-    it 'edits a released submission but does not change the access level and does not send emails' do
-      allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
-      start_count = ActionMailer::Base.deliveries.count
-      submission = FactoryBot.create :submission, :released_for_publication, committee_members: [committee_member]
-      params = ActionController::Parameters.new
-      params[:submission] = submission.attributes
-      params[:submission][:committee_members_attributes] = { "0" => submission.committee_members.first.attributes }
-      params[:update_final] = true
-      params[:submission][:title] = 'a different title for released submission'
-      params[:submission][:abstract] = 'a different abstract'
-      params[:submission][:committee_members_attributes]["0"]['is_voting'] = false
-      final_submission_update_service = described_class.new(params, submission, 'testuser123')
-      result = final_submission_update_service.respond_released_submission
-      expect(result[:msg]).to eql("The submission was successfully updated.")
-      expect(result[:redirect_path]).to eql(admin_edit_submission_path(submission.id.to_s))
-      # ("/admin/submissions/#{submission.id}/edit")
-      expect(submission.status).to eq('released for publication')
-      expect(submission.title).to eq('a different title for released submission')
-      expect(submission.abstract).to eq('a different abstract')
-      expect(submission.committee_members.first.is_voting).to eq(false)
-      expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
-      expect(ActionMailer::Base.deliveries.count).to be == start_count + 0
-    end
     it 'removes a submission from publication and does not send an email - access_level does not change' do
       allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
-      start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission, :released_for_publication, committee_members: [committee_member]
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
-      params[:submission][:committee_members_attributes] = { "0" => submission.committee_members.first.attributes }
       params[:rejected] = true
       params[:submission][:abstract] = 'I am an abstract!!!!!'
-      params[:submission][:committee_members_attributes]["0"]['notes'] = 'Some note'
-      params[:submission][:committee_members_attributes]["0"]['is_voting'] = false
       final_submission_update_service = described_class.new(params, submission, 'testuser123')
       result = final_submission_update_service.respond_released_submission
       expect(result[:msg]).to eql("Submission for #{submission.author.first_name} #{submission.author.last_name} was successfully un-published.")
       expect(result[:redirect_path]).to eq(admin_edit_submission_path(submission.id.to_s))
       expect(submission.status).to eq('waiting for publication release')
-      expect(submission.abstract).to eq('I am an abstract!!!!!')
-      expect(submission.committee_members.first.is_voting).to eq(false)
-      expect(submission.committee_members.first.notes).to match(/Some note\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
-      expect(ActionMailer::Base.deliveries.count).to be == start_count + 0
+      expect(submission.abstract).to eq("my abstract")
+      expect(WorkflowMailer.deliveries.count).to eq 0
     end
     it 'updates a final submission without changing the status' do
       allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
