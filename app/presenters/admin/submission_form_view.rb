@@ -117,7 +117,7 @@ class Admin::SubmissionFormView < SimpleDelegator
   def withdraw_message
     return '' unless status_behavior.released_for_publication?
 
-    '<div class="withdraw-msg">In order to update a published submission, it must be withdrawn from publication. After withdrawing, the submission can be edited and re-published.   The withdraw button is at the bottom of the page.</div>'.html_safe
+    '<div class="withdraw-msg">In order to update a published submission, it must be withdrawn from publication.  After withdrawing, the submission can be edited and re-published.   Any changes made to the submission while it is released will <strong>NOT</strong> be saved.  The withdraw button is at the bottom of the page.</div>'.html_safe
   end
 
   def form_section_heading(section_heading)

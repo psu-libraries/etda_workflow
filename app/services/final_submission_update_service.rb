@@ -92,7 +92,6 @@ class FinalSubmissionUpdateService
   def respond_released_submission
     if update_actions.record_updated?
       message = 'The submission was successfully updated.'
-      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       update_service = UpdateSubmissionService.new
       update_service.send_email(submission)
       update_results = update_service.solr_delta_update(submission)
@@ -106,7 +105,6 @@ class FinalSubmissionUpdateService
       original_final_files = submission_release_service.final_files_for_submission(submission)
       file_verification_results = submission_release_service.file_verification(original_final_files)
       # return unless file_verification_results
-      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       # status_giver.unreleased_for_publication!
       submission.update_attributes(released_for_publication_at: nil, released_metadata_at: nil, status: 'waiting for publication release')
       SubmissionReleaseService.new.unpublish(original_final_files) if file_verification_results[:valid]
