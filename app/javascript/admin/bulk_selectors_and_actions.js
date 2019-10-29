@@ -88,11 +88,9 @@ setup_bulk_selectors_and_actions = function() {
         return delete_submits.attr('data-confirm', confirm_message);
     };
 
-    const update_confirm_release_messages = function() {
+    const confirm_release_message = function() {
         const names = selected_names();
-        const confirm_message = `Are you sure you want to release the submissions(s) for authors:\n\n${names}\n as Open Access?`;
-        const release_as_open_access = bulk_actions.find('input[value="Release as Open Access"].release-btn');
-        return release_as_open_access.attr('data-confirm', confirm_message);
+        return confirm(`Are you sure you want to release the submissions(s) for authors:\n\n${names}\n as Open Access?`);
     };
 
     const update_bulk_actions = function() {
@@ -112,7 +110,6 @@ setup_bulk_selectors_and_actions = function() {
 
     table.on('change', 'tr .row-checkbox', function() {
         update_selected_submission_ids_field();
-        update_confirm_release_messages();
         return update_bulk_actions();
     });
 
@@ -123,7 +120,9 @@ setup_bulk_selectors_and_actions = function() {
     const select_visible_buttons = $('.select-visible-button');
     const deselect_visible_buttons = $('.deselect-visible-button');
     const select_releasable_buttons = $('.select-releasable-button');
+    const release_as_open_access_button = bulk_actions.find('input[value="Release as Open Access"].release-btn');
 
+    release_as_open_access_button.on('click', confirm_release_message);
 
     select_visible_buttons.on('click', function() {
         $('.row-checkbox').prop('checked', true);
