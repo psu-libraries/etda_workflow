@@ -17,6 +17,10 @@
       </div>
     <% end %>
     <div class="row">
+      <p><%= f.label :issue_type %><a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="top" data-html="true" title="<%=  f.object.tooltip_message %>"></span></a></p>
+      <%= f.input :issue_type, as: :select, required: true, label: false, collection: [["General formatting/data issues", :formatting],['Failures to upload, access, or submit', :technical]], prompt: 'Please select an issue type', :input_html => {:style => 'width: 300px'} %>
+    </div>
+    <div class="row">
       <%= f.input :desc, required: true, label: 'Subject', :input_html => {:style => 'width: 500px'} %>
     </div>
     <div class="row">
