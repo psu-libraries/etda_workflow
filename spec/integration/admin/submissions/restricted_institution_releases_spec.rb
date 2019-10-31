@@ -37,7 +37,10 @@ RSpec.describe "when an admin releases a restricted to institution submission fo
       click_button 'Select Visible'
       sleep(4)
       expect(page).to have_content(I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.title"), wait: 8)
-      click_button 'Release as Open Access'
+      msg = page.accept_confirm do
+        click_button 'Release as Open Access'
+      end
+      expect(msg).to match(/#{author.first_name} #{author.last_name}/)
       submission.reload
       expect(submission.status).to eq('released for publication')
       submission.reload

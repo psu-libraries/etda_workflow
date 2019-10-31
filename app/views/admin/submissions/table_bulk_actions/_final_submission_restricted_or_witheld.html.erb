@@ -1,8 +1,9 @@
+
 <div class="action date-submitter release">
   <%= button_to 'Release as Open Access', admin_submissions_release_final_submission_approved_path,
       method: 'patch',
       params: { submission_ids: '', date_to_release: Time.zone.today.strftime('%-m/%-d/%Y'), release_type: 'Release as Open Access' },
-      data: { confirm: "Are you sure you want to release the selected submission(s)?", date_prefix: 'selected_date' },
+      data: { date_prefix: 'selected_date' },
       class: 'btn btn-primary release-btn' %>
 </div>
 <div class="action date-submitter extend">
