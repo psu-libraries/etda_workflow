@@ -57,6 +57,11 @@
     The following example deploys the branch named ETDA-1111 to the QA server:
     `cap qa deploy_all BRANCH_NAME=ETDA-1111`
     
+    To run rake tasks on the server, use the "invoke" or "invoke_all" capistrano tasks.  "invoke" will invoke a rake task for a single specified stage + partner.  "invoke_all" will invoke a rake task across all partners for a specified stage.  Ex:
+    `cap dev invoke_all[db:seed:essential]`
+    
+    If using ssh to run tasks on the server, be sure to set the PARTNER environment variable for partner specific tasks.
+    
 * When updating rails versions, be sure to rebuild webpack binary `bundle exec bin/rails webpacker:binstubs
 ` respond with 'Y' to overwrite existing webpack & webpacker binaries    
 
