@@ -26,6 +26,12 @@ RSpec.describe "Email Contact Form", js: true do
     it "displays a service header" do
       expect(page).to have_selector('h1', text: 'Contact Us')
     end
+    it "has issue type tooltip" do
+      tooltip = find('span[data-toggle="tooltip"]')
+      tooltip.hover
+      expect(page).to have_content('Your email will be directed to IT support')
+      expect(page).to have_css('div.tooltip')
+    end
     it "displays the contact email form initialized with author information" do
       expect(page).to have_xpath("//input[@value='Send']")
       expect(page).to have_link('Cancel')
@@ -54,6 +60,7 @@ RSpec.describe "Email Contact Form", js: true do
       expect(page).to have_current_path(main_page_path)
       # expect(page).to have_content('Thank you for your message')
     end
+
     it 'displays an error when message field is blank' do
       fill_in "Your Message", with: ''
       click_button "Send"
