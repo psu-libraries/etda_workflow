@@ -8,6 +8,7 @@
 require('bootstrap3/dist/css/bootstrap.css');
 require('../author/invention_disclosure.js');
 require('../author/lionpath_degree.js');
+require('../author/committee_members');
 require('../author/toggle_committee_email_form.js');
 require('../styles/author/committee.scss');
 require('../styles/author/screen.scss');

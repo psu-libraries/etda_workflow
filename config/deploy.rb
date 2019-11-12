@@ -191,3 +191,29 @@ namespace :deploy_all do
 end
 
 task deploy_all: 'deploy_all:deploy'
+
+
+# Commands for running rake tasks through capistrano
+task :invoke, [:command] => 'deploy:set_rails_env' do |task, args|
+  desc 'Invoke a rake command on the remote server'
+  on roles(:app) do
+    within current_path do
+      rails_env = fetch(:rails_env, 'production')
+      partner = fetch(:partner)
+
+      execute :rake, "#{args[:command]} PARTNER=#{partner} RAILS_ENV=#{rails_env}"
+    end
+  end
+end
+
+task :invoke_all, [:command] => 'deploy:set_rails_env' do |task, args|
+  desc 'Invoke a rake command on the remote server for all partners'
+  on roles(:app) do
+    files = Dir.glob("config/deploy/#{fetch(:stage)}.*.rb")
+    files.each do |file|
+      file = file.sub('config/deploy/', '').sub('.rb', '')
+      info "Running rake task for #{file} to #{fetch(:stage)}"
+      system("cap #{file} 'invoke[#{args[:command]}]'")
+    end
+  end
+end

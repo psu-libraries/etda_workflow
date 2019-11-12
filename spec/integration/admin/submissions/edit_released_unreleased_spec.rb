@@ -41,10 +41,10 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     fill_in "Admin notes", with: "Some admin notes"
   end
 
-  it 'Displays a message indicating the submission must be withdrawn to edit', retry: 5 do
+  it "Displays a message indicating the submission must be withdrawn to edit, and doesn't update changes", retry: 5 do
     allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
 
-    expect(page).to have_content('In order to update a published submission, it must be withdrawn from publication. After withdrawing, the submission can be edited and re-published. The withdraw button is at the bottom of the page.')
+    expect(page).to have_content('In order to update a published submission, it must be withdrawn from publication. After withdrawing, the submission can be edited and re-published. Any changes made to the submission while it is released will NOT be saved. The withdraw button is at the bottom of the page.')
     expect(page).to have_button('Withdraw Publication')
     expect(page).not_to have_button('Update Metadata')
     expect(field_labeled('Date Defended', disabled: true)).to be_truthy if submission.using_lionpath?
@@ -78,48 +78,40 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     expect(page).to have_button('Update Metadata')
     expect(page).to have_current_path(admin_edit_submission_path(submission))
 
-    expect(page.find_field("Title").value).to eq "A Brand New TITLE"
-    expect(page.find_field("Allow completely upper-case words in title")).to be_checked
+    expect(page.find_field("Title").value).to eq submission.title
+    expect(page.find_field("Allow completely upper-case words in title")).not_to be_checked
     page.find('div[data-target="#program-information"]').click
-    expect(page.find_field(current_partner.program_label.to_s).value).to eq program.id.to_s
-    expect(page.find_field("Degree").value).to eq degree.id.to_s
+    expect(page.find_field(current_partner.program_label.to_s).value).to eq submission.program.id.to_s
+    expect(page.find_field("Degree").value).to eq submission.degree.id.to_s
     expect(page.find_field("Semester Intending to Graduate").value).to eq "Fall"
-    expect(page.find_field("Graduation Year").value).to eq 1.year.from_now.year.to_s
+    expect(page.find_field("Graduation Year").value).to eq DateTime.now.year.to_s
     page.find('div[data-target="#committee"]').click
 
-    # within('#committee') do
+    within('#committee') do
+      expect { find("Committee role") }.to raise_error Capybara::ElementNotFound
+    end
 
-    # puts "LOOK AT ME"
-    # puts page.find_field("Committee role").value
+    within('div.format') do
+      page.find('div[data-target="#format-review-files"]').click
+      expect { find('a', text: 'format_review_file_01.pdf', visible: true) }.to raise_error Capybara::ElementNotFound
+    end
 
-    # expect(page.find_field("Committee role").value).to eq role.id.to_s
-    # puts page.body
-    # expect(page.find_field("Name").value).to eq "Bob Tester"
-    # expect(page.find_field("Email").value).to eq "bob@email.com"
-    # end
-    # within('div.format') do
-    # page.find('div[data-target="#format-review-files"]').click
-    # expect(page.find('a', text: 'format_review_file_01.pdf', visible: true)).to be_truthy
-    # expect(page).to have_link "format_review_file_01.pdf"
-    # end
+    expect(page.find_field("Format Review Notes to Student").value).to eq submission.format_review_notes.to_s
+    expect(page.find_field("Admin notes").value).to eq ""
+    expect(field_labeled('Date Defended', disabled: true)).to be_truthy if submission.using_lionpath?
+    expect(page.find_field("Abstract").value).to eq submission.abstract.to_s
 
-    # expect(page.find_field("Format Review Notes to Student").value).to eq "New review notes"
-    # expect(page.find_field("Admin notes").value).to eq "Some admin notes"
-    # expect(field_labeled('Date Defended', disabled: true)).to be_truthy if submission.using_lionpath?
-    # expect(page.find_field("Abstract").value).to eq "New abstract text"
+    within('#keyword-fields') do
+      expect(page.all('textarea').last.value).to eq submission.keywords.last.word.to_s
+    end
 
-    # within('#keyword-fields') do
-    #   expect(page.all('textarea').last.value).to eq "Bananas"
-    # end
+    expect(page.find_field('submission_access_level_restricted')).not_to be_checked
 
-    # page continues to remain as open access; can't figure out why the radio can't be clicked; has to do with invention disclosure
-    # expect(page.find_field('submission_access_level_restricted')).to be_checked
+    within('#final-submission-file-fields') do
+      expect(page).not_to have_link "final_submission_file_01.pdf"
+    end
 
-    # within('#final-submission-file-fields') do
-    #   expect(page).to have_link "final_submission_file_01.pdf"
-    # end
-
-    # expect(page.find_field("Final Submission Notes to Student").value).to eq "New final notes"
+    expect(page.find_field("Final Submission Notes to Student").value).to eq submission.final_submission_notes.to_s
   end
 
   describe "Remove from  submission to be released", js: true do

@@ -21,7 +21,7 @@ RSpec.describe "Unrelease a submission", js: true do
     fill_in "Title", with: "A Better Title"
   end
 
-  it "Changes the status to unreleased and also saves any updates" do
+  it "Changes the status to unreleased and doesn't save any updates" do
     released_location = Rails.root.join(final_submission_file.current_location)
     click_button "Withdraw Publication"
     submission.reload
@@ -37,7 +37,7 @@ RSpec.describe "Unrelease a submission", js: true do
     FileUtilityHelper.new.remove_test_file(unreleased_location)
     # FileUtils.remove_file(unreleased_location, true)
     visit admin_submissions_index_path(degree_type: DegreeType.default, scope: 'final_submission_approved')
-    expect(page).to have_content "A Better Title"
+    expect(page).to have_content submission.title.to_s
   end
 end
 
