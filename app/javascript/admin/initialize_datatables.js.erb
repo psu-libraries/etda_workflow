@@ -20,7 +20,6 @@ setup_datatables = function() {
     if (table === null) { return; }
 
     const common_options = {
-        ajax: table.attr('data-ajax-url'),
         deferRender: true,
         processing: true,
         lengthMenu: [[25, 50, 100, 200, 500, -1], [25, 50, 100, 200, 500, "All"]],
@@ -44,12 +43,14 @@ setup_datatables = function() {
         }
     };
 
-    const author_sort_options = {
-        order: [[ 1, "asc" ]]
+    const author_options = {
+        order: [[ 1, "asc" ]],
+        ajax: table.attr('data-ajax-url')
     };
 
     $('#programs-index.datatable').dataTable(
         (program_options = {
+            ajax: table.attr('data-ajax-url'),
             rowCallback(row, program_data) {
                 const program_status = program_data[1];
                 if (program_status === "No") {
@@ -85,6 +86,7 @@ setup_datatables = function() {
 
     $('#degrees-index.datatable').dataTable(
         (degree_options = {
+            ajax: table.attr('data-ajax-url'),
             rowCallback(row, degree_data) {
                 const degree_status = degree_data[1];
                 if (degree_status === "No") {
@@ -96,18 +98,17 @@ setup_datatables = function() {
     );
 
     $('#authors-index.datatable').dataTable(
-        common_options,
-        author_sort_options
+        $.extend(author_options, common_options)
     );
 
     $('#authors-email-contact-list.datatable').dataTable(
-        common_options,
-        author_sort_options
+        $.extend(author_options, common_options)
     );
 
     $('#approver-committees-index.datatable').dataTable(
         (approver_options = {
-            order: [[3, 'desc']]
+            order: [[3, 'desc']],
+            ajax: table.attr('data-ajax-url')
         }),
         $.extend(approver_options, common_options)
     );
@@ -118,36 +119,53 @@ setup_datatables = function() {
             return { "name": column.data('name'), "orderable": column.data('orderable'), "visible": column.data('visible') };})
     ;
 
+    // Provisioning for admin-submissions-index datatables
+    function generate_semesters() {
+        var semesters = [];
+        var current_time = new Date()
+        var current_year = current_time.getFullYear();
+        for (i = current_year - 5; i < current_year + 5; i++) {
+            semesters.push(`${i} Spring`);
+            semesters.push(`${i} Summer`);
+            semesters.push(`${i} Fall`);
+        }
+        semesters.push(`All Semesters`)
+        return semesters;
+    }
+
+    const semesters = generate_semesters()
+    const $filters = $("#row-selection-buttons");
+    const select = $('<select class="form-control input-sm semester">');
+
+    if ($('.admin-submissions-index.datatable').length) {
+        const current_semester = $('.admin-submissions-index.datatable').data('current-semester');
+        $filters.append($('<label class="pull-right"></label>').append(select));
+        for (i = 0; i < semesters.length; i++) {
+            select.append(`<option value="${semesters[i]}">${semesters[i]}</option>`)
+        }
+        select.val(current_semester);
+    }
+
+    // Admin-submissions-index datatables
     $('.admin-submissions-index.datatable').dataTable(
         (admin_submission_options = {
+            ajax: { url: table.attr('data-ajax-url'),
+                    data: { semester: function selected_semester() {
+                                return select.val().toString();
+                        }
+                    }
+                },
             columns: column_options(),
             rowCallback(row, submission_data) {
                 const id = submission_data[0];
                 return $(row).attr('data-submission-id', id);
             },
             initComplete() {
-                const column = this.api().column("graduation_semester:name");
-                const current_semester = $(this).data('current-semester');
-                const select = $('<select class="form-control input-sm semester"><option value="">All Semesters</option></select>').on('change', function() {
-                    const val = $.fn.dataTable.util.escapeRegex($(this).val() || '');
-                    column.search( (val ? `^${val}$` : '') , true, false).draw();
+                select.change(function(){
+                    const table = $('.admin-submissions-index.datatable').DataTable()
+                    table.clear().draw();
+                    table.ajax.reload();
                 });
-
-                //it is possible that current_semester is not contained in the list
-                //of submissions so default to 'All Semesters'; otherwise list-drop
-                //down is blank when page loads
-                let selected_item = '';
-                column.data().unique().sort().each(function(d, j) {
-                    if (current_semester === d) { selected_item = d; }
-                    return select.append(`<option value="${d}">${d}</option>`);
-                });
-
-                select.val(selected_item).change();
-
-                const $filters = $("#row-selection-buttons"); //$(@api().table().container()).find('.dataTables_filter')
-                $filters.append( $('<label class="pull-right"></label>').append(select) );
-
-                return select.val(selected_item).prop('selected', true);
             }
         }),
         $.extend(admin_submission_options, common_options)
