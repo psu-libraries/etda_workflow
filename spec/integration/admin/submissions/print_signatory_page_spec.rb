@@ -2,7 +2,7 @@ RSpec.describe "Printing a graduate signatory page as an admin", js: true do
   require 'integration/integration_spec_helper'
 
   let(:submission_author) { FactoryBot.create :author }
-  let(:submission) { FactoryBot.create(:submission, :waiting_for_format_review_response) }
+  let(:submission) { FactoryBot.create(:submission, :waiting_for_format_review_response, semester: Semester.current.split(" ")[1], year: Semester.current.split(" ")[0]) }
   let(:admin) { FactoryBot.create :admin }
 
   before do
