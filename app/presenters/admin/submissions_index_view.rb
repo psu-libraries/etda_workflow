@@ -11,7 +11,7 @@ class Admin::SubmissionsIndexView
   def submission_views(semester)
     return submissions if semester == 'All Semesters'
 
-    submissions.collect{ |submission| submission if submission.year.to_s == semester.split(" ")[0].to_s && submission.semester.to_s == semester.split(" ")[1].to_s}.compact
+    submissions.collect { |submission| submission if submission.year.to_s == semester.split(" ")[0].to_s && submission.semester.to_s == semester.split(" ")[1].to_s }.compact
   end
 
   def table_header_partial_path
