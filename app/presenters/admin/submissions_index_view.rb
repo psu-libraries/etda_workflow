@@ -8,8 +8,10 @@ class Admin::SubmissionsIndexView
     @submissions = Submission.joins(:degree).includes(:author).where('degrees.degree_type_id' => @degree_type.id).send(scope_method).map { |s| Admin::SubmissionView.new(s, context) }
   end
 
-  def submission_views
-    submissions
+  def submission_views(semester)
+    return submissions if semester == 'All Semesters'
+
+    submissions.collect { |submission| submission if submission.year.to_s == semester.split(" ")[0].to_s && submission.semester.to_s == semester.split(" ")[1].to_s }.compact
   end
 
   def table_header_partial_path
