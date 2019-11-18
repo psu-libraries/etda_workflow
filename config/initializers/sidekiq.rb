@@ -17,45 +17,54 @@
 # Sidekiq.configure_client do |config|
 #   config.redis = sidekiq_config
 # end
+redis_config = Rails.application.config_for(:redis)
+sidekiq_config = Hash.new
+sidekiq_config['password'] = redis_config['password'] if redis_config['password']
 
 Sidekiq.configure_server do |config|
   config.redis = {
       url: 'redis://127.0.0.1:6379/1',
-      db: 1
+      db: 1,
+      password: sidekiq_config['password']
   }
 end
 
 Sidekiq.configure_client do |config|
   config.redis = {
       url: 'redis://127.0.0.1:6379/1',
-      db: 1
+      db: 1,
+      password: sidekiq_config['password']
   }
 end
 
 Sidekiq.configure_server do |config|
   config.redis = {
       url: 'redis://127.0.0.1:6379/2',
-      db: 2
+      db: 2,
+      password: sidekiq_config['password']
   }
 end
 
 Sidekiq.configure_client do |config|
   config.redis = {
       url: 'redis://127.0.0.1:6379/2',
-      db: 2
+      db: 2,
+      password: sidekiq_config['password']
   }
 end
 
 Sidekiq.configure_server do |config|
   config.redis = {
       url: 'redis://127.0.0.1:6379/3',
-      db: 3
+      db: 3,
+      password: sidekiq_config['password']
   }
 end
 
 Sidekiq.configure_client do |config|
   config.redis = {
       url: 'redis://127.0.0.1:6379/3',
-      db: 3
+      db: 3,
+      password: sidekiq_config['password']
   }
 end
