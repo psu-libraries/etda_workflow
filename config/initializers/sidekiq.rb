@@ -37,6 +37,8 @@ if current_partner.graduate?
         password: sidekiq_config['password']
     }
   end
+end
+
 if current_partner.honors?
   Sidekiq.configure_server do |config|
     config.redis = {
@@ -53,6 +55,8 @@ if current_partner.honors?
         password: sidekiq_config['password']
     }
   end
+end
+
 if current_partner.milsch?
   Sidekiq.configure_server do |config|
     config.redis = {
