@@ -37,7 +37,7 @@ if current_partner.graduate?
         password: sidekiq_config['password']
     }
   end
-elsif current_partner.honors?
+if current_partner.honors?
   Sidekiq.configure_server do |config|
     config.redis = {
         url: 'redis://127.0.0.1:6379/2',
@@ -53,7 +53,7 @@ elsif current_partner.honors?
         password: sidekiq_config['password']
     }
   end
-elsif current_partner.milsch?
+if current_partner.milsch?
   Sidekiq.configure_server do |config|
     config.redis = {
         url: 'redis://127.0.0.1:6379/3',
