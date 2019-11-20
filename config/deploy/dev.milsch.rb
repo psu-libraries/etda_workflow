@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 # config/deploy/dev.milsch.rb
+
+set :default_env, {
+    'PARTNER' => 'milsch'
+}
+
 set :stage, 'dev'
 set :partner, 'milsch'
 set :deploy_to, "/opt/deploy/etda_workflow_milsch"
