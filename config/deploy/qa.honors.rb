@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 # config/deploy/qa.honors.rb
+
+set :default_env, {
+    'PARTNER' => 'honors'
+}
+
 set :stage, 'qa'
 set :partner, 'honors'
 set :deploy_to, "/opt/deploy/etda_workflow_honors"
