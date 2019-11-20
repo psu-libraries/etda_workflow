@@ -11,17 +11,20 @@ namespace :redis_migrate do
     schedule_key = redis.keys("schedule")
     graduate_schedule_key_contents = []
     honors_schedule_key_contents = []
-    old_schedule_key_contents = redis.zrange(schedule_key, 0, -1)
+    old_schedule_key_contents = Hash.new
+    redis.zscan_each(schedule_key) do |value, score|
+      old_schedule_key_contents[score] = value
+    end
 
     count = 0
     grad_count = 0
     honors_count = 0
-    old_schedule_key_contents.each do |record|
-      if eval(record)[:args][0] > 10000
-        graduate_schedule_key_contents << [grad_count, record]
+    old_schedule_key_contents.each do |score, value|
+      if eval(value)[:args][0] > 10000
+        graduate_schedule_key_contents << [score, value]
         grad_count += 1
       else
-        honors_schedule_key_contents << [honors_count, record]
+        honors_schedule_key_contents << [score, value]
         honors_count += 1
       end
       count += 1
