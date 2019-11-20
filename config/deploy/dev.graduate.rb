@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
 # config/deploy/dev.graduate.rb
-set :stage, 'dev'
+
+set :default_env, {
+    'PARTNER' => 'graduate'
+}
+
 set :partner, 'graduate'
+set :stage, 'dev'
 set :deploy_to, "/opt/deploy/etda_workflow_graduate"
 set :tmp_dir, "/opt/deploy/etda_workflow_graduate/tmp"
 role :web, %w[deploy@etdaworkflow1dev.vmhost.psu.edu:1855]
