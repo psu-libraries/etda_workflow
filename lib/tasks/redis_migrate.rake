@@ -34,7 +34,6 @@ namespace :redis_migrate do
 
     redis.zadd([graduate_ns, schedule_key].join(""), graduate_schedule_key_contents)
     redis.zadd([honors_ns, schedule_key].join(""), honors_schedule_key_contents)
-    redis.zadd([milsch_ns, schedule_key].join(""), [[0, ""]])
 
     puts "Process completed in #{(Time.now - start)} sec.  #{count} records migrated.  #{grad_count} records migrated to graduate namespace. #{honors_count} records migrated to honors namespace."
   end
