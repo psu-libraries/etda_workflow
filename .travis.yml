@@ -37,6 +37,7 @@ before_script:
 #  yarn: true
 #  directories: node_modules
 script:
+- "export PARTNER=graduate"
 - "bundle exec rake db:create"
 - "bundle exec rake db:test:load"
 - "bundle exec rake db:migrate RAILS_ENV=test"
