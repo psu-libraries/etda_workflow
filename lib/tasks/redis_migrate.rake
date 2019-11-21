@@ -5,7 +5,6 @@ namespace :redis_migrate do
     start = Time.now
     graduate_ns = "etda_workflow_graduate:"
     honors_ns = "etda_workflow_honors:"
-    milsch_ns = "etda_workflow_milsch:"
     redis = Redis.current
 
     schedule_key = redis.keys("schedule")
