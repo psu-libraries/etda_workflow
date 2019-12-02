@@ -191,5 +191,15 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       visit approver_path committee_member2
       expect(page).to have_current_path approver_path committee_member1
     end
+
+    it "does not redirect if already advisor" do
+      committee_member3 = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow'
+      submission.committee_members << committee_member3
+      submission.reload
+      committee_member3.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
+
+      visit approver_path committee_member3
+      expect(page).to have_current_path approver_path committee_member3
+    end
   end
 end

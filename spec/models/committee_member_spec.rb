@@ -327,4 +327,46 @@ RSpec.describe CommitteeMember, type: :model do
       expect(cm2).to be_valid
     end
   end
+
+  describe 'advisor_duplicate_check validation' do
+    let(:submission) { FactoryBot.create(:submission) }
+    let(:cm1) { described_class.new }
+    let(:cm2) { described_class.new }
+    let(:committee_role) { FactoryBot.create(:committee_role, name: 'Thesis Advisor/Co-Advisor') }
+
+    before do
+      cm1.name = "Test1"
+      cm2.name = "Test2"
+      cm1.email = "Test1@psu.edu"
+      cm2.email = "Test2@psu.edu"
+      cm1.access_id = "test1"
+      cm2.access_id = "test2"
+      cm1.committee_role = committee_role
+      cm2.committee_role = committee_role
+      submission.committee_members << [cm1, cm2]
+    end
+
+    it 'is valid when advisor does not serve duplicate roles' do
+      expect(cm1).to be_valid
+      expect(cm2).to be_valid
+      cm2.name = cm1.name
+      cm2.committee_role = FactoryBot.create(:committee_role)
+      expect(cm1).to be_valid
+      expect(cm2).to be_valid
+    end
+
+    it 'is invalid when advisor does serve duplicate roles' do
+      cm2.name = cm1.name
+      expect(cm1).to be_invalid
+      expect(cm2).to be_invalid
+      cm2.name = "Test2"
+      cm2.email = cm1.email
+      expect(cm1).to be_invalid
+      expect(cm2).to be_invalid
+      cm2.email = "Test2@psu.edu"
+      cm2.access_id = cm1.access_id
+      expect(cm1).to be_invalid
+      expect(cm2).to be_invalid
+    end
+  end
 end

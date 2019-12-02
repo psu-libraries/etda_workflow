@@ -18,8 +18,10 @@ class Approver::ApproversController < ApproverController
     @author = @submission.author
     @most_relevant_file_links = most_relevant_file_links
     @view = Approver::ApproversView.new(@submission)
+    return if @committee_member.committee_role.name.include? 'Advisor'
+
     @submission.committee_members.each do |member|
-      redirect_to approver_path(member) if (member.access_id == @committee_member.access_id) && (member.id != @committee_member.id) && (member.committee_role.name.include? 'Advisor')
+      redirect_to approver_path(member) if (member.access_id == @committee_member.access_id) && (member.committee_role.name.include? 'Advisor')
     end
   end
 
