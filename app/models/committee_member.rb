@@ -6,7 +6,6 @@ class CommitteeMember < ApplicationRecord
   # This maps ldap values to one or more values needed for committee member autocomplete
   validate :validate_email
   validate :one_head_of_program_check
-  validate :advisor_duplicate_check
   validates :committee_role_id,
             :name,
             :email, presence: true
@@ -117,14 +116,5 @@ class CommitteeMember < ApplicationRecord
 
     errors.add(:committee_role_id, 'An author may only have one Program Head/Chair.')
     false
-  end
-
-  def advisor_duplicate_check
-    return unless submission.present? && committee_role.present? && committee_role.name.include?('Advisor')
-
-    return unless submission.committee_members.select { |member| member.committee_role_id == committee_role_id && ((member.name == name && !name.nil) || member.access_id == access_id || member.email == email) }.count > 1
-
-    errors.add(:committee_role, 'Committee members cannot be listed as an Advisor twice.')
-    true
   end
 end
