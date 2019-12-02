@@ -66,7 +66,7 @@ class MockUniversityDirectory
 
     return psu_email.gsub('@psu.edu', '').strip if psu_email.match?(/.*@psu.edu/)
 
-    return 'pbm123' if psu_email == 'buck@hotmail.com'
+    return "pbm#{psu_email.scan(/\d/).join('')}" if psu_email.match /buck[0-9]+@hotmail.com/
 
     nil
   end

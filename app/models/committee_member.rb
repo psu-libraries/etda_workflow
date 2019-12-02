@@ -122,7 +122,7 @@ class CommitteeMember < ApplicationRecord
   def committee_duplicate_check
     return if submission.blank?
 
-    return unless submission.committee_members.select { |member| member.committee_role_id == committee_role_id && (member.access_id == access_id || member.name == name || member.email == email) }.count > 1
+    return unless submission.committee_members.select { |member| member.committee_role_id == committee_role_id && ((member.access_id == access_id && access_id != nil) || member.name == name || member.email == email) }.count > 1
 
     errors.add(:committee_role, 'Committee members cannot serve in the same role twice.')
     false

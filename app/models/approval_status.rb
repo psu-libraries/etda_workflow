@@ -24,6 +24,7 @@ class ApprovalStatus
   end
 
   def status
+    byebug
     return 'none' unless all_have_voted?
 
     none || approved || rejected || pending

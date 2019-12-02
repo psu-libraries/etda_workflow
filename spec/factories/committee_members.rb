@@ -4,8 +4,8 @@ FactoryBot.define do
   factory :committee_member do |_cm|
     submission
     committee_role
-    name { "Professor Buck Murphy" }
-    email { "buck@hotmail.com" }
+    sequence(:name) { |n| "Professor Buck Murphy#{n}" }
+    sequence(:email) { |n| "buck#{n}@hotmail.com" }
     sequence(:access_id) { |n| "abc#{n}" }
     is_required { true }
     is_voting { true }
