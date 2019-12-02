@@ -6,6 +6,7 @@ class CommitteeMember < ApplicationRecord
   # This maps ldap values to one or more values needed for committee member autocomplete
   validate :validate_email
   validate :one_head_of_program_check
+  validate :committee_duplicate_check
   validates :committee_role_id,
             :name,
             :email, presence: true
@@ -89,7 +90,7 @@ class CommitteeMember < ApplicationRecord
   def email=(new_email)
     self[:email] = new_email
     new_access_id = LdapUniversityDirectory.new.retrieve_committee_access_id(new_email)
-    self.access_id = new_access_id if new_access_id.present?
+    new_access_id.present? ? self.access_id = new_access_id : self.access_id = nil
   end
 
   def committee_role_id=(new_committee_role_id)
@@ -115,6 +116,15 @@ class CommitteeMember < ApplicationRecord
     return true if (head_committee_member_id.nil? || head_committee_member_id == self[:id]) && (submission.committee_members.collect { |n| n.committee_role.present? ? n.committee_role.name : nil }.count('Program Head/Chair') < 2)
 
     errors.add(:committee_role_id, 'An author may only have one Program Head/Chair.')
+    false
+  end
+
+  def committee_duplicate_check
+    return unless submission.present?
+
+    return unless (submission.committee_members.select {|member| member.committee_role_id == committee_role_id && (member.access_id == access_id || member.name == name || member.email == email) }.count > 1)
+
+    errors.add(:committee_role, 'Committee members cannot serve in the same role twice.')
     false
   end
 end

@@ -153,11 +153,11 @@ RSpec.describe CommitteeMember, type: :model do
     end
 
     context 'when nil is returned' do
-      it "doesn't update access_id" do
+      it "updates access_id to nil" do
         cm.access_id = 'test123'
         allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
         cm.update_attributes email: 'test123@psu.edu'
-        expect(cm.access_id).to eq 'test123'
+        expect(cm.access_id).to eq nil
       end
     end
   end
@@ -325,6 +325,48 @@ RSpec.describe CommitteeMember, type: :model do
       expect(cm2).not_to be_valid
       submission.committee_members << cm2
       expect(cm2).to be_valid
+    end
+  end
+
+  describe 'committee_duplicate_check validation' do
+    let(:submission) { FactoryBot.create(:submission) }
+    let(:cm1) { described_class.new }
+    let(:cm2) { described_class.new }
+    let(:committee_role) { FactoryBot.create(:committee_role, name: 'Thesis Advisor/Co-Advisor') }
+
+    before do
+      cm1.name = "Test1"
+      cm2.name = "Test2"
+      cm1.email = "Test1@psu.edu"
+      cm2.email = "Test2@psu.edu"
+      cm1.access_id = "test1"
+      cm2.access_id = "test2"
+      cm1.committee_role = committee_role
+      cm2.committee_role = committee_role
+      submission.committee_members << [cm1, cm2]
+    end
+
+    it 'is valid when committee members do not serve duplicate roles' do
+      expect(cm1).to be_valid
+      expect(cm2).to be_valid
+      cm2.name = cm1.name
+      cm2.committee_role = FactoryBot.create(:committee_role)
+      expect(cm1).to be_valid
+      expect(cm2).to be_valid
+    end
+
+    it 'is invalid when committee members do serve duplicate roles' do
+      cm2.name = cm1.name
+      expect(cm1).to be_invalid
+      expect(cm2).to be_invalid
+      cm2.name = "Test2"
+      cm2.email = cm1.email
+      expect(cm1).to be_invalid
+      expect(cm2).to be_invalid
+      cm2.email = "Test2@psu.edu"
+      cm2.access_id = cm1.access_id
+      expect(cm1).to be_invalid
+      expect(cm2).to be_invalid
     end
   end
 end
