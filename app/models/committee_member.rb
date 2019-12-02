@@ -90,7 +90,7 @@ class CommitteeMember < ApplicationRecord
   def email=(new_email)
     self[:email] = new_email
     new_access_id = LdapUniversityDirectory.new.retrieve_committee_access_id(new_email)
-    new_access_id.present? ? self.access_id = new_access_id : self.access_id = nil
+    self.access_id = (new_access_id.presence ? new_access_id : nil)
   end
 
   def committee_role_id=(new_committee_role_id)
@@ -120,9 +120,9 @@ class CommitteeMember < ApplicationRecord
   end
 
   def committee_duplicate_check
-    return unless submission.present?
+    return if submission.blank?
 
-    return unless (submission.committee_members.select {|member| member.committee_role_id == committee_role_id && (member.access_id == access_id || member.name == name || member.email == email) }.count > 1)
+    return unless submission.committee_members.select { |member| member.committee_role_id == committee_role_id && (member.access_id == access_id || member.name == name || member.email == email) }.count > 1
 
     errors.add(:committee_role, 'Committee members cannot serve in the same role twice.')
     false
