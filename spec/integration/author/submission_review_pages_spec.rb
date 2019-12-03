@@ -113,6 +113,10 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
   end
 
   context 'author can review committee member review information' do
+    before do
+      ActionMailer::Base.deliveries = []
+    end
+
     context 'while waiting for committee review' do
       it 'has content' do
         visit "/author/submissions/#{submission2.id}/committee_review"
@@ -125,21 +129,37 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
         end
       end
 
-      it 'sends email reminder' do
-        visit "/author/submissions/#{submission2.id}/committee_review"
-        expect { find('table#committee_member_table').first(:button, "Send Email Reminder").click }.to(change { CommitteeMember.find(committee_member3.id).last_reminder_at })
-        expect(page).to have_current_path(author_submission_committee_review_path(submission2.id))
-        # expect(page).to have_content("Email successfully sent.")
-        expect(WorkflowMailer.deliveries.first.to).to eq [committee_member1.email]
-        expect(WorkflowMailer.deliveries.first.from).to eq [current_partner.email_address]
-        expect(WorkflowMailer.deliveries.first.subject).to eq "Honors #{submission2.degree_type} Needs Approval" if current_partner.honors?
-        expect(WorkflowMailer.deliveries.first.subject).to eq "#{submission2.degree_type} Needs Approval" if current_partner.graduate?
-        expect(WorkflowMailer.deliveries.first.subject).to eq "Millennium Scholars #{submission2.degree_type} Review" if current_partner.milsch?
-        expect(WorkflowMailer.deliveries.first.body).to match(/Reminder:/)
-        expect { find('table#committee_member_table').first(:button, "Send Email Reminder").click }.not_to(change { CommitteeMember.find(committee_member3.id).last_reminder_at })
-        expect(page).to have_current_path(author_submission_committee_review_path(submission2.id))
-        # expect(page).to have_content("Email was not sent.")
-        expect(WorkflowMailer.deliveries.count).to eq 1
+      context 'when committee member does not have a token' do
+        it 'sends email reminder' do
+          visit "/author/submissions/#{submission2.id}/committee_review"
+          expect { find('table#committee_member_table').first(:button, "Send Email Reminder").click }.to(change { CommitteeMember.find(committee_member3.id).last_reminder_at })
+          expect(page).to have_current_path(author_submission_committee_review_path(submission2.id))
+          # expect(page).to have_content("Email successfully sent.")
+          expect(WorkflowMailer.deliveries.first.to).to eq [committee_member3.email]
+          expect(WorkflowMailer.deliveries.first.from).to eq [current_partner.email_address]
+          expect(WorkflowMailer.deliveries.first.subject).to eq "Honors #{submission2.degree_type} Needs Approval" if current_partner.honors?
+          expect(WorkflowMailer.deliveries.first.subject).to eq "#{submission2.degree_type} Needs Approval" if current_partner.graduate?
+          expect(WorkflowMailer.deliveries.first.subject).to eq "Millennium Scholars #{submission2.degree_type} Review" if current_partner.milsch?
+          expect(WorkflowMailer.deliveries.first.body).to match(/Reminder:/)
+          expect { find('table#committee_member_table').first(:button, "Send Email Reminder").click }.not_to(change { CommitteeMember.find(committee_member3.id).last_reminder_at })
+          expect(page).to have_current_path(author_submission_committee_review_path(submission2.id))
+          # expect(page).to have_content("Email was not sent.")
+          expect(WorkflowMailer.deliveries.count).to eq 1
+        end
+      end
+
+      context 'when committee member does have a token' do
+        it 'sends email reminder' do
+          skip 'Graduate Only' unless current_partner.graduate?
+
+          FactoryBot.create :committee_member_token, committee_member_id: committee_member3.id
+          visit "/author/submissions/#{submission2.id}/committee_review"
+          find('table#committee_member_table').first(:button, "Send Email Reminder").click
+          expect(WorkflowMailer.deliveries.first.to).to eq [committee_member3.email]
+          expect(WorkflowMailer.deliveries.first.from).to eq [current_partner.email_address]
+          expect(WorkflowMailer.deliveries.count).to eq 1
+          expect(WorkflowMailer.deliveries.first.body).to match(/\/special_committee\//)
+        end
       end
     end
 
