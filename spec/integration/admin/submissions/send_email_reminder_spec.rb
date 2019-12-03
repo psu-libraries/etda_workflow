@@ -8,6 +8,7 @@ RSpec.describe "Sending an email reminder", js: true do
   let(:committee_member2) { FactoryBot.create(:committee_member) }
 
   before do
+    ActionMailer::Base.deliveries = []
     submission1.committee_members << committee_member1
     submission2.committee_members << committee_member2
     webaccess_authorize_admin
@@ -26,6 +27,7 @@ RSpec.describe "Sending an email reminder", js: true do
         click_button 'Send Email Reminder'
       end
       expect { page.accept_confirm }.to change { WorkflowMailer.deliveries.count }.by 1
+      expect(WorkflowMailer.deliveries.first.body).to match /Reminder:/
     end
 
     it 'does not send an email reminder if not authorized to' do
@@ -52,6 +54,25 @@ RSpec.describe "Sending an email reminder", js: true do
         expect(page).to have_content('Committee role')
         expect(page).not_to have_content('Send Email Reminder')
       end
+    end
+  end
+
+  context 'when committee member has a token' do
+    before do
+      visit admin_edit_submission_path(submission1)
+    end
+
+    it 'delivers the special committee email' do
+      FactoryBot.create :committee_member_token, committee_member_id: committee_member1.id
+
+      find("div[data-target='#committee']").click
+
+      within('#committee') do
+        expect(page).to have_content('Committee role')
+        click_button 'Send Email Reminder'
+      end
+      expect { page.accept_confirm }.to change { WorkflowMailer.deliveries.count }.by 1
+      expect(WorkflowMailer.deliveries.first.body).to match /\/special_committee\//
     end
   end
 end
