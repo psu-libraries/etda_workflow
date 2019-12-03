@@ -27,7 +27,7 @@ RSpec.describe "Sending an email reminder", js: true do
         click_button 'Send Email Reminder'
       end
       expect { page.accept_confirm }.to change { WorkflowMailer.deliveries.count }.by 1
-      expect(WorkflowMailer.deliveries.first.body).to match /Reminder:/
+      expect(WorkflowMailer.deliveries.first.body).to match(/Reminder:/)
     end
 
     it 'does not send an email reminder if not authorized to' do
@@ -72,7 +72,7 @@ RSpec.describe "Sending an email reminder", js: true do
         click_button 'Send Email Reminder'
       end
       expect { page.accept_confirm }.to change { WorkflowMailer.deliveries.count }.by 1
-      expect(WorkflowMailer.deliveries.first.body).to match /\/special_committee\//
+      expect(WorkflowMailer.deliveries.first.body).to match(/\/special_committee\//)
     end
   end
 end
