@@ -8,7 +8,7 @@ class Author < ApplicationRecord
   devise :webaccess_authenticatable, :rememberable, :trackable, :registerable
 
   has_many :submissions, dependent: :nullify
-
+  has_many :confidential_hold_histories, dependent: :destroy
   has_one :inbound_lion_path_record, dependent: :destroy
 
   # validate for author
