@@ -48,7 +48,7 @@ class ConfidentialHoldUpdateService
 
   def assign_updater(action_locality)
     localities = ['login_controller', 'daily_report']
-    raise InvalidActionLocality, "The value of the action_locality parameter must be in this list: #{localities.to_s}." unless localities.include? action_locality
+    raise InvalidActionLocality, "The value of the action_locality parameter must be in this list: #{localities}." unless localities.include? action_locality
 
     action_locality
   end
