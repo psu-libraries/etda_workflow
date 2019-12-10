@@ -25,8 +25,10 @@ class ConfidentialHoldUpdateService
   def update_confidential_hold(conf_hold_result)
     if conf_hold_result == true && @author.confidential_hold == false
       set_conf_hold
+      Rails.logger.info "#{@author.first_name} #{@author.last_name}'s confidential hold status was changed from 'false' to 'true'."
     elsif conf_hold_result != true && @author.confidential_hold == true
       remove_conf_hold
+      Rails.logger.info "#{@author.first_name} #{@author.last_name}'s confidential hold status was changed from 'true' to 'false'."
     end
   end
 
