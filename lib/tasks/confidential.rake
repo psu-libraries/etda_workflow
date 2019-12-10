@@ -14,4 +14,12 @@ namespace :confidential do
       printf("Author with id: %s %s has a confidential hold\n", author.access_id, author.psu_email_address) if results[:confidential_hold] == true
     end
   end
+
+  desc 'Update authors that have a confidential hold status in ldap'
+  task update: :environment do
+    Author.all.each do |author|
+      conf_hold_update_service = ConfidentialHoldUpdateService.new author, 'rake_task'
+      conf_hold_update_service.update
+    end
+  end
 end
