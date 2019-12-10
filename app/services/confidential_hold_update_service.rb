@@ -10,6 +10,8 @@ class ConfidentialHoldUpdateService
 
   def update
     ldap_result = grab_ldap_results
+    return if ldap_result.empty?
+
     update_confidential_hold(ldap_result[:confidential_hold])
   end
 
@@ -17,10 +19,7 @@ class ConfidentialHoldUpdateService
 
   def grab_ldap_results
     directory = LdapUniversityDirectory.new
-    results = directory.retrieve(@author.access_id, LdapResultsMap::AUTHOR_LDAP_MAP)
-    return if results == {}
-
-    results
+    directory.retrieve(@author.access_id, LdapResultsMap::AUTHOR_LDAP_MAP)
   end
 
   def update_confidential_hold(conf_hold_result)
