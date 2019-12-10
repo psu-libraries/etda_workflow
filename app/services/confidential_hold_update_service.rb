@@ -47,7 +47,7 @@ class ConfidentialHoldUpdateService
   end
 
   def assign_updater(action_locality)
-    localities = ['login_controller', 'daily_report']
+    localities = ['login_controller', 'rake_task']
     raise InvalidActionLocality, "The value of the action_locality parameter must be in this list: #{localities}." unless localities.include? action_locality
 
     action_locality

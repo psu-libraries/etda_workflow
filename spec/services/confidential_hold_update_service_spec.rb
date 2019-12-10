@@ -61,9 +61,9 @@ RSpec.describe ConfidentialHoldUpdateService do
   context 'when daily report updates' do
     it 'updates confidential hold history with daily report metadata' do
       allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve).and_return(confidential_hold: true)
-      conf_hold_update_service = described_class.new(author, 'daily_report')
+      conf_hold_update_service = described_class.new(author, 'rake_task')
       conf_hold_update_service.update
-      expect(Author.find(author.id).confidential_hold_histories.first.set_by).to eq 'daily_report'
+      expect(Author.find(author.id).confidential_hold_histories.first.set_by).to eq 'rake_task'
     end
   end
 end
