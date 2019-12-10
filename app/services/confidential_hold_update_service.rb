@@ -1,10 +1,10 @@
 class ConfidentialHoldUpdateService
   class InvalidActionLocality < StandardError; end
-  attr_reader :updater
   attr_accessor :author
+  attr_reader :updater
 
   def initialize(author, action_locality)
-    @action_locality = action_locality
+    @updater = assign_updater(action_locality.to_s)
     @author = author
   end
 
@@ -15,12 +15,6 @@ class ConfidentialHoldUpdateService
 
   private
 
-  def updater
-    raise InvalidActionLocality, "action_locality must be 'login_controller' or 'daily_report'." unless ['login_controller', 'daily_report'].include? @action_locality.to_s
-
-    @action_locality.to_s
-  end
-
   def grab_ldap_results
     directory = LdapUniversityDirectory.new
     results = directory.retrieve(@author.access_id, LdapResultsMap::AUTHOR_LDAP_MAP)
@@ -30,20 +24,32 @@ class ConfidentialHoldUpdateService
   end
 
   def update_confidential_hold(conf_hold_result)
-    case
-    when conf_hold_result == true && @author.confidential_hold == false
-      @author.update_attributes confidential_hold: true, confidential_hold_set_at: DateTime.now
-      @author.confidential_hold_histories << ConfidentialHoldHistory.create(set_at: DateTime.now, set_by: updater)
-    when conf_hold_result != true && @author.confidential_hold == true
-      @author.update_attributes confidential_hold: false, confidential_hold_set_at: nil
-      last_conf_hold = @author.confidential_hold_histories.last
-      if last_conf_hold.present?
-        last_conf_hold.update_attributes(removed_at: DateTime.now, removed_by: updater)
-      else
-        @author.confidential_hold_histories << ConfidentialHoldHistory.create(removed_at: DateTime.now, removed_by: updater)
-      end
-    else
-      return
+    if conf_hold_result == true && @author.confidential_hold == false
+      set_conf_hold
+    elsif conf_hold_result != true && @author.confidential_hold == true
+      remove_conf_hold
     end
+  end
+
+  def set_conf_hold
+    @author.update_attributes confidential_hold: true, confidential_hold_set_at: DateTime.now
+    @author.confidential_hold_histories << ConfidentialHoldHistory.create(set_at: DateTime.now, set_by: updater)
+  end
+
+  def remove_conf_hold
+    @author.update_attributes confidential_hold: false, confidential_hold_set_at: nil
+    last_conf_hold = @author.confidential_hold_histories.last
+    if last_conf_hold.present?
+      last_conf_hold.update_attributes(removed_at: DateTime.now, removed_by: updater)
+    else
+      @author.confidential_hold_histories << ConfidentialHoldHistory.create(removed_at: DateTime.now, removed_by: updater)
+    end
+  end
+
+  def assign_updater(action_locality)
+    localities = ['login_controller', 'daily_report']
+    raise InvalidActionLocality, "The value of the action_locality parameter must be in this list: #{localities.to_s}." unless localities.include? action_locality
+
+    action_locality
   end
 end

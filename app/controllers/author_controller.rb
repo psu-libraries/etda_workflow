@@ -35,7 +35,7 @@ class AuthorController < ApplicationController
       authenticate_author!
       update_confidential_hold
     elsif current_remote_user.present? && valid_author_session?
-      return
+      nil
     else
       redirect_to '/401' unless Rails.env.test?
     end
