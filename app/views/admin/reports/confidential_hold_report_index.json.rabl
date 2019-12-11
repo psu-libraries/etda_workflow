@@ -3,6 +3,7 @@ object false
 node(:data) do
   table = @authors.map do |author|
     row = [
+      author.id,
       "<input type='checkbox' class='row-checkbox' />",
       author.last_name,
       author.first_name,

@@ -75,6 +75,7 @@ setup_report_tables = function() {
                 return $(row).attr('data-submission-id', id);
             },
             initComplete() {
+                this.api().column( 0 ).visible( false );
                 const column = this.api().column("semester_year:name");
                 const current_semester = $(this).data('current-semester');
                 const select = $('.semester').on('change', function() {

@@ -29,9 +29,10 @@
   </div>
 </div>
 
-<table id="committee-report-index" class="table table-striped committee-report-index datatable bulk-actions" data-ajax-url="<%= admin_confidential_hold_report_index_path %>">
+<table id="custom-report-index" class="table table-striped custom-report-index datatable bulk-actions" data-ajax-url="<%= admin_confidential_hold_report_index_path %>">
   <thead>
   <tr>
+    <th data-name="id" data-orderable="false"> </th><%# for the hidden id %>
     <th data-name="checkbox" data-orderable="false"> </th><%# for the checkbox %>
     <th data-name="last_name" data-orderable="true">Last Name</th>
     <th data-name="first_name" data-orderable="true">First Name</th>
