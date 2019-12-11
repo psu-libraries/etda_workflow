@@ -18,7 +18,7 @@ class ExportCsv
       column_list = ['Last Name', 'First Name', 'Id', 'Title', 'Degree', 'Access Level', 'Date', 'Status']
       column_list.append('Invention Disclosure Number')
     when 'confidential_hold_report'
-      column_list = ['ID', 'Last Name', 'First Name', 'Middle Name', 'Access ID', 'PSU Email Address', 'Alternate Email Address', 'PSU ID', 'Confidential Hold', 'Confidential Hold Set At']
+      column_list = ['ID', 'Last Name', 'First Name', 'Middle Name', 'Access ID', 'PSU Email Address', 'Alternate Email Address', 'PSU ID', 'Confidential Hold Set At']
     else
       column_list = nil
     end
@@ -32,7 +32,7 @@ class ExportCsv
 
     case query_type
     when 'final_submission_approved'
-      field_list = [r.author.access_id, r.cleaned_title, r.id, r.author.last_name, r.author.first_name, r.author.middle_name, r.program_name, CommitteeMember.advisor_name(s), r.current_access_level.label]
+      field_list = [r.author.access_id, r.cleaned_title, r.id, r.author.last_name, r.author.first_name, r.author.middle_name, r.program_name, CommitteeMember.advisor_name(r), r.current_access_level.label]
       field_list = [r.cleaned_title, r.id, r.author.last_name, r.author.first_name, r.author.middle_name, r.program_name, r.committee_members.map(&:name).join('; '), r.current_access_level.label] if current_partner.graduate?
     when 'committee_report'
       field_list = [r.author.last_name, r.author.first_name, r.author.psu_email_address, r.author.alternate_email_address, r.id, r.cleaned_title, r.degree_type.name, r.program.name, r.semester_and_year, r.committee_members.map { |cm| "#{cm.committee_role.name}, #{cm.name}, #{cm.email}" }.join('; '), CommitteeMember.advisors(r).map { |cm| "#{cm.committee_role.name}, #{cm.name}, #{cm.email}" }.join('; ')]
