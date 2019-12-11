@@ -12,7 +12,6 @@ node(:data) do
       author.psu_email_address,
       author.alternate_email_address,
       author.psu_idn,
-      author.confidential_hold,
       author.confidential_hold_set_at
     ]
   end
