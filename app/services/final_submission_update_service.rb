@@ -40,13 +40,12 @@ class FinalSubmissionUpdateService
         UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
         @submission.deliver_final_emails
       else
-        approval_status = ApprovalStatus.new(@submission).status
         status_giver.can_waiting_for_committee_review?
         status_giver.waiting_for_committee_review!
         UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
         @submission.update_status_from_committee
         WorkflowMailer.final_submission_approved(@submission).deliver
-        @submission.send_initial_committee_member_emails unless approval_status == 'approved'
+        @submission.send_initial_committee_member_emails if @submission.status_behavior.waiting_for_committee_review?
       end
       msg = "The submission\'s final submission information was successfully approved."
     elsif update_actions.rejected?
