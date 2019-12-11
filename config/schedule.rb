@@ -18,3 +18,7 @@ end
 every :day, at: '1am', roles: [:app]  do
   rake 'tokens:remove_expired'
 end
+
+every :day, at: '1am', roles: [:app]  do
+  rake 'confidential:update'
+end

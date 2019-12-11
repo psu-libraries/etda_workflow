@@ -8,7 +8,7 @@ class Author < ApplicationRecord
   devise :webaccess_authenticatable, :rememberable, :trackable, :registerable
 
   has_many :submissions, dependent: :nullify
-
+  has_many :confidential_hold_histories, dependent: :destroy
   has_one :inbound_lion_path_record, dependent: :destroy
 
   # validate for author
@@ -61,7 +61,6 @@ class Author < ApplicationRecord
   end
 
   def populate_attributes
-    refresh_confidential_status(access_id)
     populate_with_ldap_attributes
     populate_lion_path_record psu_idn, access_id
     self
@@ -108,7 +107,6 @@ class Author < ApplicationRecord
     self.psu_email_address = refresh(psu_email_address, ldap_attributes[:psu_email_address])
     self.psu_idn = refresh(psu_idn, ldap_attributes[:psu_idn])
     save(validate: false)
-    refresh_confidential_status(access_id)
     populate_lion_path_record(psu_idn, access_id)
     self
   end
@@ -167,17 +165,6 @@ class Author < ApplicationRecord
       return original_val if new_val.blank?
 
       new_val
-    end
-
-    def refresh_confidential_status(login_id)
-      confidential_hold_status = ConfidentialHoldUtility.new(login_id, confidential_hold)
-      return unless confidential_hold_status.changed?
-
-      # send emails and save the new status
-      # confidential_hold_status.send_confidential_status_notifications(self)
-      self.confidential_hold = confidential_hold_status.new_confidential_status
-      self.confidential_hold_set_at = confidential_hold_status.hold_set_at(confidential_hold_set_at, confidential_hold_status.new_confidential_status)
-      save(validate: false)
     end
 
     def save_mapped_attributes(mapped_attributes)

@@ -40,6 +40,8 @@ Rails.application.routes.draw do
     patch '/custom_report_export', to: 'reports#custom_report_export', defaults: { format: 'csv' }, as: :custom_report_export
     get '/committee_report', to: 'reports#committee_report_index', as: :committee_report_index
     patch '/committee_report_export', to: 'reports#committee_report_export', defaults: { format: 'csv' }, as: :committee_report_export
+    get '/confidential_hold_report', to: 'reports#confidential_hold_report_index', as: :confidential_hold_report_index
+    patch '/confidential_hold_report_export', to: 'reports#confidential_hold_report_export', defaults: { format: 'csv' }, as: :confidential_hold_report_export
 
     get '/authors/contact_list', to: 'authors#email_contact_list', as: :email_contact_list
 

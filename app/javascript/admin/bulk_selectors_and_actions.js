@@ -70,6 +70,12 @@ setup_bulk_selectors_and_actions = function() {
         return fields.val(ids);
     };
 
+    const update_selected_author_ids_field = function() {
+        const fields = bulk_actions.find('input[name="author_ids"]');
+        const ids = selected_ids();
+        return fields.val(ids);
+    };
+
     const update_selected_release_date = function() {
         const parent_form = $(this).closest('form');
         const date_field = parent_form.find('input[name="date_to_release"]');
@@ -110,6 +116,7 @@ setup_bulk_selectors_and_actions = function() {
 
     table.on('change', 'tr .row-checkbox', function() {
         update_selected_submission_ids_field();
+        update_selected_author_ids_field();
         return update_bulk_actions();
     });
 
@@ -127,12 +134,14 @@ setup_bulk_selectors_and_actions = function() {
     select_visible_buttons.on('click', function() {
         $('.row-checkbox').prop('checked', true);
         update_selected_submission_ids_field();
+        update_selected_author_ids_field();
         return update_bulk_actions();
     });
 
     deselect_visible_buttons.on('click', function() {
         $('.row-checkbox').prop('checked', false);
         update_selected_submission_ids_field();
+        update_selected_author_ids_field();
         return update_bulk_actions();
     });
 
@@ -144,6 +153,7 @@ setup_bulk_selectors_and_actions = function() {
             return $(node).find('.row-checkbox').prop('checked', ok_to_release);
         });
         update_selected_submission_ids_field();
+        update_selected_author_ids_field();
         update_bulk_actions();
         return $(this).blur();
     });

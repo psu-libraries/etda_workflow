@@ -1,10 +1,10 @@
 class ExportCsv
   attr_accessor :query_type
-  attr_reader :submissions
+  attr_reader :records
 
-  def initialize(query_type, submissions)
+  def initialize(query_type, records)
     @query_type = query_type
-    @submissions = submissions
+    @records = records
   end
 
   def columns
@@ -17,26 +17,30 @@ class ExportCsv
     when 'custom_report'
       column_list = ['Last Name', 'First Name', 'Id', 'Title', 'Degree', 'Access Level', 'Date', 'Status']
       column_list.append('Invention Disclosure Number')
+    when 'confidential_hold_report'
+      column_list = ['ID', 'Last Name', 'First Name', 'Middle Name', 'Access ID', 'PSU Email Address', 'Alternate Email Address', 'PSU ID', 'Confidential Hold Set At']
     else
       column_list = nil
     end
     column_list
   end
 
-  def fields(submission)
-    return nil if submission.nil?
+  def fields(record)
+    return nil if record.nil?
 
-    s = submission
+    r = record
 
     case query_type
     when 'final_submission_approved'
-      field_list = [s.author.access_id, s.cleaned_title, s.id, s.author.last_name, s.author.first_name, s.author.middle_name, s.program_name, CommitteeMember.advisor_name(s), s.current_access_level.label]
-      field_list = [s.cleaned_title, s.id, s.author.last_name, s.author.first_name, s.author.middle_name, s.program_name, s.committee_members.map(&:name).join('; '), s.current_access_level.label] if current_partner.graduate?
+      field_list = [r.author.access_id, r.cleaned_title, r.id, r.author.last_name, r.author.first_name, r.author.middle_name, r.program_name, CommitteeMember.advisor_name(r), r.current_access_level.label]
+      field_list = [r.cleaned_title, r.id, r.author.last_name, r.author.first_name, r.author.middle_name, r.program_name, r.committee_members.map(&:name).join('; '), r.current_access_level.label] if current_partner.graduate?
     when 'committee_report'
-      field_list = [s.author.last_name, s.author.first_name, s.author.psu_email_address, s.author.alternate_email_address, s.id, s.cleaned_title, s.degree_type.name, s.program.name, s.semester_and_year, s.committee_members.map { |cm| "#{cm.committee_role.name}, #{cm.name}, #{cm.email}" }.join('; '), CommitteeMember.advisors(s).map { |cm| "#{cm.committee_role.name}, #{cm.name}, #{cm.email}" }.join('; ')]
+      field_list = [r.author.last_name, r.author.first_name, r.author.psu_email_address, r.author.alternate_email_address, r.id, r.cleaned_title, r.degree_type.name, r.program.name, r.semester_and_year, r.committee_members.map { |cm| "#{cm.committee_role.name}, #{cm.name}, #{cm.email}" }.join('; '), CommitteeMember.advisors(r).map { |cm| "#{cm.committee_role.name}, #{cm.name}, #{cm.email}" }.join('; ')]
     when 'custom_report'
-      field_list = [s.author.last_name, s.author.first_name, s.id, s.cleaned_title, s.degree_type.name, s.current_access_level.label, s.semester_and_year, s.status]
-      #      field_list.append(s.invention_disclosure.first.id_number) if current_partner.graduate? && !s.invention_disclosure.nil?
+      field_list = [r.author.last_name, r.author.first_name, r.id, r.cleaned_title, r.degree_type.name, r.current_access_level.label, r.semester_and_year, r.status]
+      #      field_list.append(r.invention_disclosure.first.id_number) if current_partner.graduate? && !r.invention_disclosure.nil?
+    when 'confidential_hold_report'
+      field_list = [r.id, r.last_name, r.first_name, r.middle_name, r.access_id, r.psu_email_address, r.alternate_email_address, r.psu_idn, r.confidential_hold_set_at]
     else
       field_list = nil
     end

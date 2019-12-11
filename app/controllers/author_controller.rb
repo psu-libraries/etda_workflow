@@ -31,8 +31,11 @@ class AuthorController < ApplicationController
   end
 
   def authenticate_or_redirect
-    if current_remote_user.present?
-      authenticate_author! unless valid_author_session?
+    if current_remote_user.present? && !valid_author_session?
+      authenticate_author!
+      update_confidential_hold
+    elsif current_remote_user.present? && valid_author_session?
+      nil
     else
       redirect_to '/401' unless Rails.env.test?
     end
@@ -44,5 +47,10 @@ class AuthorController < ApplicationController
 
   def author_ability
     @author_ability ||= AuthorAbility.new(current_author, nil, nil)
+  end
+
+  def update_confidential_hold
+    update_service = ConfidentialHoldUpdateService.new(@author, 'login_controller')
+    update_service.update
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191001131441) do
+ActiveRecord::Schema.define(version: 20191209181245) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "access_id", default: "", null: false
@@ -132,6 +132,17 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.integer "num_required", default: 0, null: false
     t.boolean "is_active", default: true, null: false
     t.index ["degree_type_id"], name: "committee_roles_degree_type_id_fk"
+  end
+
+  create_table "confidential_hold_histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.bigint "author_id", null: false
+    t.datetime "set_at"
+    t.datetime "removed_at"
+    t.string "set_by"
+    t.string "removed_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_confidential_hold_histories_on_author_id"
   end
 
   create_table "degree_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
@@ -283,6 +294,7 @@ ActiveRecord::Schema.define(version: 20191001131441) do
   add_foreign_key "committee_members", "committee_roles", name: "committee_members_committee_role_id_fk"
   add_foreign_key "committee_members", "submissions", name: "committee_members_submission_id_fk"
   add_foreign_key "committee_roles", "degree_types", name: "committee_roles_degree_type_id_fk"
+  add_foreign_key "confidential_hold_histories", "authors", name: "confidential_hold_histories_author_id_fk"
   add_foreign_key "final_submission_files", "submissions", name: "final_submission_files_submission_id_fk"
   add_foreign_key "format_review_files", "submissions", name: "format_review_files_submission_id_fk"
   add_foreign_key "inbound_lion_path_records", "authors", name: "inbound_lion_path_records_author_id_fk"

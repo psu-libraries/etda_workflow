@@ -49,4 +49,23 @@ class Admin::ReportsController < AdminController
       headers['Content-Type'] ||= 'text/xls'
     end
   end
+
+  def confidential_hold_report_index
+    @authors = Author.all.where(confidential_hold: 1)
+    respond_to do |format|
+      format.html
+      format.json
+    end
+  end
+
+  def confidential_hold_report_export
+    ids = params[:author_ids].split(',').map(&:to_i)
+    @csv_report_export = ExportCsv.new('confidential_hold_report', Author.where(id: ids))
+    respond_to do |format|
+      format.csv { render template: 'admin/reports/csv_export_report.csv.erb' }
+      headers['Content-Disposition'] = 'attachment; filename="confidential_hold_report.csv"'
+      headers['Content-Type'] ||= 'text/csv'
+      headers['Content-Type'] ||= 'text/xls'
+    end
+  end
 end

@@ -7,6 +7,7 @@ RSpec.describe "Admins can run reports", js: true do
   let(:degree_type) { FactoryBot.create :degree_type, name: 'Dissertation', slug: 'dissertation' }
   let!(:author1) { FactoryBot.create :author, access_id: 'xyz321', psu_email_address: 'xyz321@psu.edu', first_name: 'Author', last_name: 'One' }
   let!(:author2) { FactoryBot.create :author, access_id: 'abc987', psu_email_address: 'abc987@psu.edu', first_name: 'Author', last_name: 'Two' }
+  let!(:author3) { FactoryBot.create :author, access_id: 'abc123', psu_email_address: 'abc123@psu.edu', first_name: 'Author', last_name: 'Three', confidential_hold: 1, confidential_hold_set_at: DateTime.now }
   # let(:degree) { Degree.first }
   let!(:degree) { FactoryBot.create :degree, degree_type_id: DegreeType.default.id, name: 'PHD', description: 'PHD', is_active: true }
   let!(:submission1) { FactoryBot.create :submission, :released_for_publication, author: author1, year: submission_year, semester: submission_semester, title: 'Submission1', degree_id: degree.id, access_level: 'open_access' }
@@ -38,6 +39,7 @@ RSpec.describe "Admins can run reports", js: true do
       page.find('a#reports_menu').trigger('click')
       sleep(5)
       expect(page).to have_link('Custom Report')
+      expect(page).to have_link('Confidential Hold Report')
     end
   end
 
@@ -127,6 +129,25 @@ RSpec.describe "Admins can run reports", js: true do
       click_button 'Export CSV'
       sleep(4)
       expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="final_submission_report.csv"'
+    end
+  end
+
+  context 'confidential hold report index' do
+    before do
+      visit admin_submissions_dashboard_path(DegreeType.first)
+      click_link('Reports')
+      click_link('Confidential Hold Report')
+    end
+
+    it 'displays the confidential hold report' do
+      expect(page).to have_content('Confidential Hold Report')
+      expect(page).to have_content('abc123@psu.edu')
+      click_button('Select Visible')
+      sleep(1)
+      expect(page).to have_button('Export CSV')
+      click_button 'Export CSV'
+      sleep(1)
+      expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="confidential_hold_report.csv"'
     end
   end
 end
