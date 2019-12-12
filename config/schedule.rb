@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 set :environment, :production
-set :partner, ENV['PARTNER']
 # Use this file to easily define all of your cron jobs.
 set :output, "#{path}/log/wheneveroutput.log"
 
@@ -8,18 +7,20 @@ set :output, "#{path}/log/wheneveroutput.log"
   # rake 'etda:dih:delta_import'
 # end
 
+job_type :partner_rake,    "cd :path && :environment_variable=:environment PARTNER=:partner bundle exec rake :task --silent :output"
+
 every :day, roles: [:audit]  do
-  rake 'audit:gems', PARTNER: :partner
+  partner_rake 'audit:gems'
 end
 
 every :sunday, at: '1am', roles: [:app] do
-  rake 'final_files:verify', PARTNER: :partner
+  partner_rake 'final_files:verify'
 end
 
 every :day, at: '1am', roles: [:app]  do
-  rake 'tokens:remove_expired', PARTNER: :partner
+  partner_rake 'tokens:remove_expired'
 end
 
 every :day, at: '1am', roles: [:app]  do
-  rake 'confidential:update', PARTNER: :partner
+  partner_rake 'confidential:update'
 end
