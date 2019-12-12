@@ -143,6 +143,17 @@ namespace :deploy do
   after "deploy:updated", "deploy:migrate"
 end
 
+# #Set whenever (crontab tasks) PARTNER variable
+# namespace :whenever do
+#   desc "Update the crontab file"
+#   task :update_crontab do
+#     on roles(:app) do
+#       execute "cd #{release_path}; bundle exec whenever --update-crontab #{fetch(:whenever_identifier)} --set PARTNER=#{fetch(:partner)} --roles=web,app,db"
+#     end
+#   end
+#
+#   after 'deploy:symlink_shared', 'whenever:update_crontab'
+# end
 
 # Used to keep x-1 instances of ruby on a machine.  Ex +4 leaves 3 versions on a machine.  +3 leaves 2 versions
 namespace :rbenv_custom_ruby_cleanup do
