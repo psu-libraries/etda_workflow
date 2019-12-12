@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 set :environment, :production
-env 'PARTNER', ENV['PARTNER']
+set :partner, ENV['PARTNER']
 # Use this file to easily define all of your cron jobs.
 set :output, "#{path}/log/wheneveroutput.log"
 
@@ -9,17 +9,17 @@ set :output, "#{path}/log/wheneveroutput.log"
 # end
 
 every :day, roles: [:audit]  do
-  rake 'audit:gems'
+  rake 'audit:gems', PARTNER: :partner
 end
 
 every :sunday, at: '1am', roles: [:app] do
-  rake 'final_files:verify'
+  rake 'final_files:verify', PARTNER: :partner
 end
 
 every :day, at: '1am', roles: [:app]  do
-  rake 'tokens:remove_expired'
+  rake 'tokens:remove_expired', PARTNER: :partner
 end
 
 every :day, at: '1am', roles: [:app]  do
-  rake 'confidential:update'
+  rake 'confidential:update', PARTNER: :partner
 end
