@@ -50,7 +50,7 @@ set :default_env, { 'NODE_ENV' => 'production' }
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:partner)}" }
 set :whenever_roles, %i[audit app]
 set :whenever_variables, -> do
-  "'partner=#{fetch(:partner)}'"
+  "PARTNER=#{fetch(:partner)}"
 end
 
 set :log_level, :debug

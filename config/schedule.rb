@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 set :environment, :production
-env 'PARTNER', :partner
 # Use this file to easily define all of your cron jobs.
 set :output, "#{path}/log/wheneveroutput.log"
 
