@@ -5,10 +5,9 @@ node(:data) do
     row = [
       author.id,
       "<input type='checkbox' class='row-checkbox' />",
+      "<a href=#{edit_admin_author_path(author)}>#{author.access_id}</a>",
       author.last_name,
       author.first_name,
-      author.middle_name,
-      author.access_id,
       author.psu_email_address,
       author.alternate_email_address,
       author.psu_idn,

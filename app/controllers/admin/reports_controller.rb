@@ -51,7 +51,7 @@ class Admin::ReportsController < AdminController
   end
 
   def confidential_hold_report_index
-    @authors = Author.all.where(confidential_hold: 1)
+    @authors = Author.joins(:submissions).group('id').where(confidential_hold: 1)
     respond_to do |format|
       format.html
       format.json
