@@ -18,7 +18,7 @@ class ExportCsv
       column_list = ['Last Name', 'First Name', 'Id', 'Title', 'Degree', 'Access Level', 'Date', 'Status']
       column_list.append('Invention Disclosure Number')
     when 'confidential_hold_report'
-      column_list = ['ID', 'Last Name', 'First Name', 'Middle Name', 'Access ID', 'PSU Email Address', 'Alternate Email Address', 'PSU ID', 'Confidential Hold Set At']
+      column_list = ['ID', 'Access ID', 'Last Name', 'First Name', 'PSU Email Address', 'Alternate Email Address', 'PSU ID', 'Confidential Hold Set At']
     else
       column_list = nil
     end
@@ -40,7 +40,7 @@ class ExportCsv
       field_list = [r.author.last_name, r.author.first_name, r.id, r.cleaned_title, r.degree_type.name, r.current_access_level.label, r.semester_and_year, r.status]
       #      field_list.append(r.invention_disclosure.first.id_number) if current_partner.graduate? && !r.invention_disclosure.nil?
     when 'confidential_hold_report'
-      field_list = [r.id, r.last_name, r.first_name, r.middle_name, r.access_id, r.psu_email_address, r.alternate_email_address, r.psu_idn, r.confidential_hold_set_at]
+      field_list = [r.id, r.access_id, r.last_name, r.first_name, r.psu_email_address, r.alternate_email_address, r.psu_idn, r.confidential_hold_set_at]
     else
       field_list = nil
     end

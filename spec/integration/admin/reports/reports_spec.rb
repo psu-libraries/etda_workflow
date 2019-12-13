@@ -134,6 +134,7 @@ RSpec.describe "Admins can run reports", js: true do
 
   context 'confidential hold report index' do
     before do
+      author3.submissions << submission1
       visit admin_submissions_dashboard_path(DegreeType.first)
       click_link('Reports')
       click_link('Confidential Hold Report')
@@ -141,13 +142,18 @@ RSpec.describe "Admins can run reports", js: true do
 
     it 'displays the confidential hold report' do
       expect(page).to have_content('Confidential Hold Report')
-      expect(page).to have_content('abc123@psu.edu')
+      expect(page).to have_content(author3.psu_email_address)
       click_button('Select Visible')
       sleep(1)
       expect(page).to have_button('Export CSV')
       click_button 'Export CSV'
       sleep(1)
       expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="confidential_hold_report.csv"'
+    end
+
+    it "links to author's page" do
+      click_link author3.access_id
+      expect(page).to have_current_path(edit_admin_author_path(author3))
     end
   end
 end
