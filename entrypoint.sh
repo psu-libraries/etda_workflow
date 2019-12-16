@@ -13,4 +13,4 @@ rails db:create
 rails db:migrate
 rails db:seed:essential
 
-bundle exec puma
+bundle exec puma -v

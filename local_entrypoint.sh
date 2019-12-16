@@ -7,4 +7,4 @@ yarn global add phantomjs-prebuilt &&
 rails db:create &&
 rails db:migrate &&
 echo starting rails &&
-bundle exec puma
+bundle exec puma -v
