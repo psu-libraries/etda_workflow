@@ -85,9 +85,6 @@ gem 'enumerize'
 
 gem 'rubyzip', '>= 1.3.0'
 
-# Virus scanning for file uploads
-gem 'clam_scan'
-
 gem 'rest-client'
 
 gem 'prawn'
