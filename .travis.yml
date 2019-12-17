@@ -40,7 +40,7 @@ script:
 - "bundle exec rake db:create"
 - "bundle exec rake db:test:load"
 - "bundle exec rake db:migrate RAILS_ENV=test"
-- "yarn install --frozen-lockfile --production"
+- "yarn install --ignore-engines"
 - "echo $(date)"
 - "bundle exec rake ci"
 services:
