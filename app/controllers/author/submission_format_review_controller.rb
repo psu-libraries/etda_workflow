@@ -1,5 +1,6 @@
 class Author::SubmissionFormatReviewController < AuthorController
   before_action :find_submission
+  include MailerActionService
 
   def edit
     status_giver = SubmissionStatusGiver.new(@submission)
@@ -18,7 +19,7 @@ class Author::SubmissionFormatReviewController < AuthorController
     @submission.update_format_review_timestamps!(Time.zone.now)
     OutboundLionPathRecord.new(submission: @submission).report_status_change
     redirect_to author_root_path
-    WorkflowMailer.format_review_received(@submission).deliver_now
+    send_format_review_received_email(@submission)
     flash[:notice] = 'Format review files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid
     flash[:alert] = @submission.errors.messages.values.join(" ")
