@@ -2,6 +2,7 @@
 class SubmissionReleaseService
   attr_accessor :new_access_level
   attr_accessor :previous_access_level
+  include MailerActionService
 
   def initialize
     @error_message = []
@@ -78,8 +79,7 @@ class SubmissionReleaseService
       status_giver.can_release_for_publication?
       submission.restricted? ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
       submission.update_attributes!(released_for_publication_at: publication_release_date, released_metadata_at: metadata_release_date, public_id: public_id)
-      WorkflowMailer.release_for_publication(submission).deliver if submission.open_access?
-      WorkflowMailer.release_for_publication_metadata_only(submission).deliver unless submission.open_access?
+      send_publication_release_messages(submission)
       return unless release_files(original_final_files)
 
       @released_submissions += 1

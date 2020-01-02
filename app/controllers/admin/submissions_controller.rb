@@ -1,6 +1,7 @@
 class Admin::SubmissionsController < AdminController
   skip_before_action :verify_authenticity_token, only: [:send_email_reminder]
   include ActionView::Helpers::UrlHelper
+  include MailerActionService
 
   def redirect_to_default_dashboard
     redirect_to admin_submissions_dashboard_path(DegreeType.default)
@@ -237,11 +238,7 @@ class Admin::SubmissionsController < AdminController
     @committee_member = @submission.committee_members.find(params[:committee_member_id])
     raise 'Email was not sent.' unless @committee_member.reminder_email_authorized?
 
-    if @committee_member.committee_member_token.present?
-      WorkflowMailer.special_committee_review_request(@submission, @committee_member).deliver
-    else
-      WorkflowMailer.committee_member_review_reminder(@submission, @committee_member).deliver
-    end
+    send_committee_review_reminders(@submission, @committee_member)
   end
 
   private

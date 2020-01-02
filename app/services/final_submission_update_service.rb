@@ -1,5 +1,6 @@
 class FinalSubmissionUpdateService
   include ActionView::Helpers::UrlHelper
+  include MailerActionService
 
   attr_accessor :params
   attr_accessor :submission
@@ -44,7 +45,7 @@ class FinalSubmissionUpdateService
         status_giver.waiting_for_committee_review!
         UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
         @submission.update_status_from_committee
-        WorkflowMailer.final_submission_approved(@submission).deliver
+        send_final_submission_approved_email(@submission)
         @submission.send_initial_committee_member_emails if @submission.status_behavior.waiting_for_committee_review?
       end
       msg = "The submission\'s final submission information was successfully approved."
@@ -56,7 +57,7 @@ class FinalSubmissionUpdateService
       submission.final_submission_rejected_at = Time.zone.now
       submission.save
       status_giver.collecting_final_submission_files_rejected!
-      WorkflowMailer.final_submission_rejected(@submission).deliver
+      send_final_submission_rejected_email(@submission)
       msg = "The submission\'s final submission information was successfully rejected and returned to the author for revision."
     end
     if update_actions.record_updated?
