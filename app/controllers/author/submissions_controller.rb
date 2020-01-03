@@ -1,6 +1,7 @@
 class Author::SubmissionsController < AuthorController
   class MissingLionPathRecordError < StandardError; end
   before_action :find_submission, except: [:index, :new, :create, :published_submissions_index]
+  include MailerActionService
 
   def index
     @view = Author::SubmissionsIndexView.new(@author)
@@ -126,7 +127,7 @@ class Author::SubmissionsController < AuthorController
       @submission.reset_committee_reviews
       @submission.update_final_submission_timestamps!(Time.zone.now)
       redirect_to author_root_path
-      WorkflowMailer.final_submission_received(@submission).deliver
+      send_final_submission_received_email(@submission)
       flash[:notice] = 'Final submission files uploaded successfully.'
       return
     elsif @submission.status == 'collecting final submission files rejected' && current_partner.honors?
@@ -135,7 +136,7 @@ class Author::SubmissionsController < AuthorController
       OutboundLionPathRecord.new(submission: @submission).report_status_change
       @submission.update_final_submission_timestamps!(Time.zone.now)
       redirect_to author_root_path
-      WorkflowMailer.final_submission_received(@submission).deliver
+      send_final_submission_received_email(@submission)
       flash[:notice] = 'Final submission files uploaded successfully.'
       return
     end
@@ -151,7 +152,7 @@ class Author::SubmissionsController < AuthorController
     OutboundLionPathRecord.new(submission: @submission).report_status_change
     @submission.update_final_submission_timestamps!(Time.zone.now)
     redirect_to author_root_path
-    WorkflowMailer.final_submission_received(@submission).deliver_now
+    send_final_submission_received_email(@submission)
     flash[:notice] = 'Final submission files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid
     @view = Author::FinalSubmissionFilesView.new(@submission)
@@ -208,11 +209,7 @@ class Author::SubmissionsController < AuthorController
   def send_email_reminder
     @committee_member = @submission.committee_members.find(params[:committee_member_id])
     if @committee_member.reminder_email_authorized?
-      if @committee_member.committee_member_token.present?
-        WorkflowMailer.special_committee_review_request(@submission, @committee_member).deliver
-      else
-        WorkflowMailer.committee_member_review_reminder(@submission, @committee_member).deliver
-      end
+      send_committee_review_reminders(@submission, @committee_member)
       redirect_to author_submission_committee_review_path(@submission.id)
       flash[:notice] = 'Email successfully sent.'
     else
