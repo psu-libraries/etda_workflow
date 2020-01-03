@@ -51,8 +51,8 @@ class WorkflowMailerPreview < ActionMailer::Preview
     WorkflowMailer.access_level_updated('author_full_name': @submission.author_full_name, 'title': @submission.title, 'degree_type': @submission.degree_type.name, 'new_access_level_label': 'Open Access', 'old_access_level_label': 'Restricted', 'graduation_year': @submission.year)
   end
 
-  def gem_audit_email
+  def vulnerability_audit_email
     audit_results = 'Vulnerable Gem Found\n A fake gem to test\n CVE-bogus1234'
-    WorkflowMailer.gem_audit_email(audit_results)
+    WorkflowMailer.vulnerability_audit_email(audit_results)
   end
 end

@@ -65,11 +65,11 @@ class WorkflowMailer < ActionMailer::Base
          subject: "Access Level for your submission has been updated"
   end
 
-  def gem_audit_email(audit_results)
+  def vulnerability_audit_email(audit_results)
     @audit_results = audit_results
     mail to: 'ajk5603@psu.edu',
          from: 'ajk5603@psu.edu',
-         subject: 'BUNDLE AUDIT: Vulnerable Gems Found'
+         subject: 'BUNDLE & YARN AUDIT: Vulnerabilities Found'
   end
 
   def verify_files_email(verify_files_results)
