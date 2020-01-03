@@ -1,5 +1,6 @@
 class FinalSubmissionUpdateService
   include ActionView::Helpers::UrlHelper
+  include MailerActionService
 
   attr_accessor :params
   attr_accessor :submission
@@ -19,15 +20,6 @@ class FinalSubmissionUpdateService
     { msg: "The submission was successfully updated.", redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
   end
 
-  def respond_send_back_to_final_submission
-    return unless update_actions.send_back_to_final_submission?
-
-    status_giver = SubmissionStatusGiver.new(submission)
-    status_giver.can_upload_final_submission_files?
-    status_giver.collecting_final_submission_files!
-    { msg: 'The submission was sent back to waiting for final submission.', redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
-  end
-
   def respond_final_submission
     msg = ''
     status_giver = SubmissionStatusGiver.new(submission)
@@ -44,7 +36,7 @@ class FinalSubmissionUpdateService
         status_giver.waiting_for_committee_review!
         UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
         @submission.update_status_from_committee
-        WorkflowMailer.final_submission_approved(@submission).deliver
+        send_final_submission_approved_email(@submission)
         @submission.send_initial_committee_member_emails if @submission.status_behavior.waiting_for_committee_review?
       end
       msg = "The submission\'s final submission information was successfully approved."
@@ -56,7 +48,7 @@ class FinalSubmissionUpdateService
       submission.final_submission_rejected_at = Time.zone.now
       submission.save
       status_giver.collecting_final_submission_files_rejected!
-      WorkflowMailer.final_submission_rejected(@submission).deliver
+      send_final_submission_rejected_email(@submission)
       msg = "The submission\'s final submission information was successfully rejected and returned to the author for revision."
     end
     if update_actions.record_updated?

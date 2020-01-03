@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Submission < ApplicationRecord
+  include MailerActionService
   extend Enumerize
   belongs_to :author
   belongs_to :program
@@ -337,19 +338,15 @@ class Submission < ApplicationRecord
       seen_access_ids = []
       next if committee_member.committee_role.name == 'Program Head/Chair' || seen_access_ids.include?(committee_member.access_id)
 
-      if committee_member.committee_member_token.present?
-        WorkflowMailer.special_committee_review_request(self, committee_member).deliver
-      else
-        WorkflowMailer.committee_member_review_request(self, committee_member).deliver
-      end
+      send_committee_review_requests(self, committee_member)
+
       CommitteeReminderWorker.perform_in(10.days, id, committee_member.id)
       seen_access_ids << committee_member.access_id
     end
   end
 
   def deliver_final_emails
-    WorkflowMailer.committee_approved(self).deliver_now if degree.degree_type.approval_configuration.email_authors && !current_partner.honors?
-    WorkflowMailer.final_submission_approved(self).deliver_now if current_partner.honors?
+    send_final_emails(self)
   end
 
   private
@@ -376,7 +373,7 @@ class Submission < ApplicationRecord
         status_giver.can_waiting_for_head_of_program_review?
         status_giver.waiting_for_head_of_program_review!
         update_attribute(:committee_review_accepted_at, DateTime.now)
-        WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id)).deliver unless submission_status.head_of_program_status == 'approved'
+        send_head_of_program_review_request(self, submission_status)
         update_status_from_head_of_program
       else
         status_giver.can_waiting_for_publication_release? unless current_partner.honors?
@@ -385,7 +382,7 @@ class Submission < ApplicationRecord
         status_giver.waiting_for_final_submission_response! if current_partner.honors?
         update_attribute(:committee_review_accepted_at, DateTime.now)
         deliver_final_emails unless current_partner.honors?
-        WorkflowMailer.committee_approved(self).deliver_now if degree.degree_type.approval_configuration.email_authors && current_partner.honors?
+        send_committee_approved_email(self)
       end
     elsif submission_status.status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
@@ -412,7 +409,6 @@ class Submission < ApplicationRecord
   end
 
   def committee_rejected_emails
-    WorkflowMailer.committee_rejected_admin(self).deliver if degree.degree_type.approval_configuration.email_admins
-    WorkflowMailer.committee_rejected_author(self).deliver if degree.degree_type.approval_configuration.email_authors
+    send_committee_rejected_emails(self)
   end
 end
