@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
-  
+
+  # Allow webconsole in docker containers
   config.web_console.whitelisted_ips = ['10.0.0.0/8', '172.20.0.0/12', '192.168.0.0/16']
+
+  # Log rails output to stdout
+  config.logger = ActiveSupport::TaggedLogging.new(ActiveSupport::Logger.new(STDOUT))
 
  # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = true
