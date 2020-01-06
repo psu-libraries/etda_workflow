@@ -1,4 +1,5 @@
 <h2><%= @view.title %></h2>
+<%= render partial: 'email_template_link', locals: { submission: @submission } %>
 
 <strong><%= "#{@view.withdraw_message}".html_safe %></strong>
 <%= render partial: 'shared/error_messages', locals: { object: @submission } %>
