@@ -7,7 +7,7 @@ RSpec.describe "Sending an email reminder", js: true do
   let(:submission2) { FactoryBot.create(:submission, :collecting_format_review_files, author: author, degree: degree) }
   let(:committee_member1) { FactoryBot.create(:committee_member) }
   let(:committee_member2) { FactoryBot.create(:committee_member) }
-  let(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type)}
+  let(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type) }
 
   before do
     ActionMailer::Base.deliveries = []
