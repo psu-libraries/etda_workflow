@@ -10,9 +10,8 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
     let!(:author) { current_author }
     let!(:admin)  { current_admin }
     let!(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response, author: author, degree: degree }
-    let!(:degree) { FactoryBot.create :degree, degree_type: degree_type }
-    let!(:degree_type) { FactoryBot.create :degree_type, approval_configuration: approval_configuration }
-    let!(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, use_percentage: false, email_admins: true }
+    let!(:degree) { FactoryBot.create :degree }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, configuration_threshold: 0, email_authors: true, use_percentage: false, email_admins: true }
     let!(:committee_members) { [(FactoryBot.create :committee_member), (FactoryBot.create :committee_member)] }
 
     context "visiting the 'Update Program Information' page" do
@@ -113,7 +112,7 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
         submission.reload
         expect(submission.final_submission_approved_at).not_to be_nil
         expect(formatted_date(submission.defended_at)).to eq(formatted_date(Date.parse("#{select_year}-#{select_month}-#{select_day}"))) if current_partner.graduate?
-        expect(WorkflowMailer.deliveries.count).to eq(3) unless current_partner.honors?
+        expect(WorkflowMailer.deliveries.count).to eq(8) unless current_partner.honors?
         expect(WorkflowMailer.deliveries.count).to eq(1) if current_partner.honors?
       end
     end

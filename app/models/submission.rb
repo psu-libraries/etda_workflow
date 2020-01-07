@@ -35,6 +35,10 @@ class Submission < ApplicationRecord
     SubmissionStatus.new(self)
   end
 
+  def approval_status_behavior
+    ApprovalStatus.new(self)
+  end
+
   after_initialize :set_status_to_collecting_program_information
   after_initialize :initialize_access_level
 
