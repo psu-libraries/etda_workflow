@@ -7,17 +7,23 @@
   </div>
   </br>
 
-  <div id="approver-select-reviews"></div>
-  <table id="approver-committees-index" class="table table-striped datatable" data-ajax-url="<%= approver_root_path %>">
-    <thead>
-      <tr>
-        <th>Submission Title</th>
-        <th>Author</th>
-        <th>My Committee Role</th>
-        <th>Review Started On</th>
-        <th>My Review</th>
-        <th>Submission Status</th>
-      </tr>
-    </thead>
-  </table>
+  <div class="row">
+    <div id="approver-select-reviews" class="select-reviews">
+    </div>
+    <p class="pull-right"><strong>Filter by:</strong></p>
+  </div>
+  <div>
+    <table id="approver-committees-index" class="approver-committees-index table table-striped datatable" data-ajax-url="<%= approver_root_path %>">
+      <thead>
+        <tr>
+          <th>Submission Title</th>
+          <th>Author</th>
+          <th>My Committee Role</th>
+          <th>Review Started On</th>
+          <th>My Review</th>
+          <th>Submission Status</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
 </div>

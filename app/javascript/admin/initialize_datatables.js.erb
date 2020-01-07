@@ -108,10 +108,10 @@ setup_datatables = function() {
     const $approver_select_reviews = $("#approver-select-reviews");
     const approver_select = $('<select class="form-control input-sm">');
     if ($('.approver-committees-index.datatable').length) {
-        $approver_select_reviews.append($('<label class="pull-right"></label>').append(approver_select));
-        approver_select.append(`<option value="Active Reviews"</option>`);
-        approver_select.append(`<option value="Finished Reviews"</option>`);
-        approver_select.append(`<option value="All Reviews"</option>`);
+        $approver_select_reviews.append(approver_select);
+        approver_select.append(`<option value="Active Reviews">Active Reviews</option>`);
+        approver_select.append(`<option value="Finished Reviews">Finished Reviews</option>`);
+        approver_select.append(`<option value="All Reviews">All Reviews</option>`);
     }
 
     $('#approver-committees-index.datatable').dataTable(
