@@ -126,7 +126,7 @@ setup_datatables = function() {
                     if (val === 'Active Reviews') {
                         column.search("Waiting For Committee Review( Rejected)?|Waiting For Head Of Program Review", true, false).draw();
                     } else if (val === 'Finished Reviews') {
-                        column.search("Waiting For Publication Release|Released For Publication|Waiting For Final Submission Response", true, false).draw();
+                        column.search("Waiting For Publication Release|Released For Publication( Metadata Only)?|Waiting For Final Submission Response", true, false).draw();
                     } else {
                         column.search('').draw();
                     }
