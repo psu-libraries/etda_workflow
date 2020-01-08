@@ -43,4 +43,21 @@ RSpec.describe 'Approver datatables', type: :integration, js: true do
     click_on submission.title
     expect(page).to have_current_path(approver_path(committee_member))
   end
+
+  it 'can filter on completeness of submissions' do
+    completed_submission = FactoryBot.create :submission, :waiting_for_publication_release, created_at: Time.zone.now, final_submission_files_uploaded_at: DateTime.now, final_submission_approved_at: DateTime.now
+    FactoryBot.create :committee_member, committee_role: committee_role, submission: completed_submission, status: 'Approved', access_id: 'approverflow'
+    visit '/approver/reviews'
+    expect(page).to have_link(submission.title)
+    expect(page).not_to have_link(completed_submission.title)
+    select 'Finished Reviews', from: 'reviews-select'
+    expect(page).not_to have_link(submission.title)
+    expect(page).to have_link(completed_submission.title)
+    select 'All Reviews', from: 'reviews-select'
+    expect(page).to have_link(submission.title)
+    expect(page).to have_link(completed_submission.title)
+    select 'Active Reviews', from: 'reviews-select'
+    expect(page).to have_link(submission.title)
+    expect(page).not_to have_link(completed_submission.title)
+  end
 end
