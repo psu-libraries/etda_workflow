@@ -54,7 +54,7 @@ class SubmissionStatus
   end
 
   def collecting_final_submission_files_rejected?
-    current_submission.status.include?('collecting final submission files') && !current_submission.final_submission_rejected_at.nil? && current_submission.final_submission_approved_at.nil?
+    current_submission.status.include?('collecting final submission files') && !current_submission.final_submission_rejected_at.nil? && current_submission.final_submission_approved_at.nil? && current_status != 'waiting for committee review rejected'
   end
 
   def waiting_for_final_submission_response?
