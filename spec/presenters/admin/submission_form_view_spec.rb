@@ -449,4 +449,92 @@ RSpec.describe Admin::SubmissionFormView do
       end
     end
   end
+
+  describe '#button_message' do
+    let!(:degree) { FactoryBot.create :degree }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type }
+
+    context 'when committee has not approved or rejected' do
+      before do
+        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('none')
+        allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('none')
+      end
+
+      it 'returns the next workflow step' do
+        submission = FactoryBot.create :submission, status: 'waiting for final submission response', degree: degree
+        view = described_class.new(submission, session)
+        expect(view.button_message).to eq 'Final Submission is Pending'
+      end
+    end
+
+    context 'when committee has approved' do
+      before do
+        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
+        allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('approved')
+      end
+
+      it 'returns the next workflow step' do
+        submission = FactoryBot.create :submission, status: 'waiting for final submission response', degree: degree
+        view = described_class.new(submission, session)
+        expect(view.button_message).to eq 'Final Submission to be Released'
+      end
+    end
+
+    context 'when committee has rejected' do
+      before do
+        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
+        allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('rejected')
+      end
+
+      it 'returns the next workflow step' do
+        submission = FactoryBot.create :submission, status: 'waiting for final submission response', degree: degree
+        view = described_class.new(submission, session)
+        expect(view.button_message).to eq 'Committee Review Rejected'
+      end
+    end
+  end
+
+  describe '#confirmation_message' do
+    let!(:degree) { FactoryBot.create :degree }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type }
+
+    context 'when committee has not approved or rejected' do
+      before do
+        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('none')
+        allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('none')
+      end
+
+      it 'returns a message' do
+        submission = FactoryBot.create :submission, status: 'waiting for final submission response', degree: degree
+        view = described_class.new(submission, session)
+        expect(view.confirmation_message).to eq "Are you sure you would like to approve this submission?  This will initiate the committee review stage, which will send emails out to members of the committee."
+      end
+    end
+
+    context 'when committee has approved' do
+      before do
+        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
+        allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('approved')
+      end
+
+      it 'returns a message' do
+        submission = FactoryBot.create :submission, status: 'waiting for final submission response', degree: degree
+        view = described_class.new(submission, session)
+        expect(view.confirmation_message).to eq "The committee for this submission has already approved.  Move this submission to 'Final Submission to be Released' and skip the committee review?"
+      end
+    end
+
+    context 'when committee has rejected' do
+      before do
+        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
+        allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('rejected')
+      end
+
+      it 'returns a message' do
+        submission = FactoryBot.create :submission, status: 'waiting for final submission response', degree: degree
+        view = described_class.new(submission, session)
+        expect(view.confirmation_message).to eq "The committee for this submission has already rejected.  Move this submission to 'Committee Review Rejected' and skip the committee review?"
+      end
+    end
+  end
 end
