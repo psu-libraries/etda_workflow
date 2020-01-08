@@ -105,10 +105,33 @@ setup_datatables = function() {
         $.extend(author_options, common_options)
     );
 
+    const $approver_select_reviews = $("#approver-select-reviews");
+    const approver_select = $('<select id="reviews-select" class="form-control input-sm">');
+    if ($('.approver-committees-index.datatable').length) {
+        $approver_select_reviews.append(approver_select);
+        approver_select.append(`<option value="Active Reviews">Active Reviews</option>`);
+        approver_select.append(`<option value="Finished Reviews">Finished Reviews</option>`);
+        approver_select.append(`<option value="All Reviews">All Reviews</option>`);
+    }
+
     $('#approver-committees-index.datatable').dataTable(
         (approver_options = {
             order: [[3, 'desc']],
-            ajax: table.attr('data-ajax-url')
+            ajax: table.attr('data-ajax-url'),
+            initComplete() {
+                const column = this.api().column("submission_status:name");
+                column.search("Waiting For Committee Review( Rejected)?|Waiting For Head Of Program Review", true, false).draw();
+                approver_select.on('change', function() {
+                    const val = $.fn.dataTable.util.escapeRegex($(this).val() || '');
+                    if (val === 'Active Reviews') {
+                        column.search("Waiting For Committee Review( Rejected)?|Waiting For Head Of Program Review", true, false).draw();
+                    } else if (val === 'Finished Reviews') {
+                        column.search("Waiting For Publication Release|Released For Publication( Metadata Only)?|Waiting For Final Submission Response", true, false).draw();
+                    } else {
+                        column.search('').draw();
+                    }
+                });
+            }
         }),
         $.extend(approver_options, common_options)
     );
