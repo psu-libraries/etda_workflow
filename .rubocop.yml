@@ -72,6 +72,7 @@ Metrics/ClassLength:
   - app/services/submission_release_service.rb
   - app/models/submission_status.rb
   - app/mailers/workflow_mailer.rb
+  - app/controllers/approver/approvers_controller.rb
 
 
 Metrics/CyclomaticComplexity:
