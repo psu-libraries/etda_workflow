@@ -206,7 +206,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
         FactoryBot.create :submission, :collecting_format_review_files
         FactoryBot.create :submission, :waiting_for_format_review_response
         FactoryBot.create :submission, :collecting_final_submission_files, final_submission_rejected_at: nil
-        FactoryBot.create :submission, :collecting_final_submission_files, final_submission_rejected_at: 1.day.ago
+        FactoryBot.create :submission, :collecting_final_submission_files_rejected, final_submission_rejected_at: 1.day.ago
         FactoryBot.create :submission, :waiting_for_committee_review
         FactoryBot.create :submission, :waiting_for_committee_review_rejected
         FactoryBot.create :submission, :waiting_for_final_submission_response
@@ -226,7 +226,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
             a_hash_including(
               id: 'format-review-incomplete',
               path: admin_submissions_index_path(degree_type, 'format_review_incomplete'),
-              count: '12'
+              count: '11'
             ),
             a_hash_including(
               id: 'format-review-submitted',
@@ -281,7 +281,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
             a_hash_including(
               id: 'format-review-incomplete',
               path: admin_submissions_index_path(degree_type, 'format_review_incomplete'),
-              count: '12'
+              count: '11'
             ),
             a_hash_including(
               id: 'format-review-submitted',
