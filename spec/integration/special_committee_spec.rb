@@ -46,8 +46,8 @@ RSpec.describe 'Special committee page', type: :integration, js: true do
   end
 
   it 'marries an approver and multiple committee member records via token when clicking advance button' do
-    committee_member_2 = FactoryBot.create :committee_member, submission: submission, status: '', email: 'approverflow@gmail.com'
-    committee_member_token_2 = FactoryBot.create :committee_member_token, committee_member: committee_member_2, authentication_token: '2'
+    committee_member_two = FactoryBot.create :committee_member, submission: submission, status: '', email: 'approverflow@gmail.com'
+    committee_member_token_two = FactoryBot.create :committee_member_token, committee_member: committee_member_two, authentication_token: '2'
     visit '/special_committee/1'
     allow_any_instance_of(Devise::Strategies::WebaccessAuthenticatable).to receive(:remote_user).and_return('approverflow')
     allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
@@ -58,7 +58,7 @@ RSpec.describe 'Special committee page', type: :integration, js: true do
     expect(Approver.find_by(access_id: 'approverflow').committee_members.first.access_id).to eq 'approverflow'
     expect(Approver.find_by(access_id: 'approverflow').committee_members.second.access_id).to eq 'approverflow'
     expect { CommitteeMemberToken.find(committee_member_token.id) }.to raise_error ActiveRecord::RecordNotFound
-    expect { CommitteeMemberToken.find(committee_member_token_2.id) }.to raise_error ActiveRecord::RecordNotFound
+    expect { CommitteeMemberToken.find(committee_member_token_two.id) }.to raise_error ActiveRecord::RecordNotFound
     expect(page).to have_current_path(approver_approver_reviews_path)
     expect(page).to have_link(submission.title)
   end
