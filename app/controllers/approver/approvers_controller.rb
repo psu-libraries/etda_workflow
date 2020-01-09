@@ -102,6 +102,8 @@ class Approver::ApproversController < ApproverController
     approver = Approver.find_by(access_id: current_approver.access_id)
     committee_members = CommitteeMember.where(access_id: approver.access_id)
     committee_members.each do |committee_member|
+      next if committee_member.approver.present?
+
       approver.committee_members << committee_member
     end
     approver.save!
