@@ -80,9 +80,7 @@ class Approver::ApproversController < ApproverController
   def marry_via_token(committee_member_token)
     committee_member = committee_member_token.committee_member
     approver = Approver.find_by(access_id: current_remote_user)
-    approver.committee_members << committee_member
-    approver.save!
-    CommitteeMemberToken.find(committee_member_token.id).destroy
+    update_approver_committee_members_on_marry(approver, committee_member)
   end
 
   def committee_member_params
@@ -105,6 +103,17 @@ class Approver::ApproversController < ApproverController
     committee_members = CommitteeMember.where(access_id: approver.access_id)
     committee_members.each do |committee_member|
       approver.committee_members << committee_member
+    end
+    approver.save!
+  end
+
+  def update_approver_committee_members_on_marry(approver, initial_committee_member)
+    committee_member_email = initial_committee_member.email
+    committee_members = CommitteeMember.where(email: committee_member_email)
+    committee_members.each do |committee_member|
+      committee_member.update_attribute :access_id, approver.access_id
+      approver.committee_members << committee_member
+      committee_member.committee_member_token ? CommitteeMemberToken.find(committee_member.committee_member_token.id).destroy : next
     end
     approver.save!
   end
