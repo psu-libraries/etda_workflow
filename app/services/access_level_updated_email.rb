@@ -2,11 +2,11 @@ class AccessLevelUpdatedEmail
 attr_reader :old_submission
 
 def self.cataloging_email_address
-  'ul-etda-released@pennstateoffice365.onmicrosoft.com'
+  I18n.t('external_contacts.ul_cataloging.email_address')
 end
 
 def self.otm_email_address
-  'otminfo@psu.edu'
+  I18n.t('external_contacts.otm.email_address')
 end
 
 def initialize(submission, partner = current_partner, mail_sender = WorkflowMailer)

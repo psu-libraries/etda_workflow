@@ -1,8 +1,20 @@
 en:
   libraries_help_link:  https://libraries.psu.edu/website-feedback
+  service_desk_email_address: 'etda@servicedesk.css.psu.edu'
   released_message:
     success: '%{released_count} %{submissions} successfully released for publication.  '
     base_error:  'Submissions not released:  '
     submission_error: 'ID: %{id} %{last_name}, %{first_name} '
   display_alternate_email:
     label: 'Display your alternate email address on your %{slug} document summary page?'
+  devs:
+    lead:
+      primary_email_address: 'ajk5603@psu.edu'
+  webaccess:
+    base_login_url: 'https://webaccess.psu.edu/?cosign-%s&%s'
+    base_logout_url: 'https://webaccess.psu.edu/cgi-bin/logout?%s'
+  external_contacts:
+    ul_cataloging:
+      email_address: 'ul-etda-released@pennstateoffice365.onmicrosoft.com'
+    otm:
+      email_address: 'otminfo@psu.edu'
