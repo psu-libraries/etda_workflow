@@ -10,7 +10,8 @@ RSpec.describe "Editing committee member information for format reviews and fina
 
   before do
     create_committee submission
-    submission.committee_members << FactoryBot.create(:committee_member, committee_role: role) if current_partner.milsch?
+    submission.committee_members << FactoryBot.create(:committee_member, committee_role: role) unless current_partner.graduate?
+    submission.committee_members << FactoryBot.create(:committee_member, committee_role: role) unless current_partner.graduate?
     webaccess_authorize_admin
   end
 
@@ -32,7 +33,7 @@ RSpec.describe "Editing committee member information for format reviews and fina
     end
     click_button 'Update Metadata'
     submission.reload
-    expect(page).to have_content("Edit Final Submission to be Released")
+    expect(page).to have_content("Waiting for Committee Review")
     find("div[data-target='#committee']").click
     within('#committee') do
       expect(page).to have_content("Approved at: ")
