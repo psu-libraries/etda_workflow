@@ -158,6 +158,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
       expect(page).to have_link(file.asset_identifier.to_s)
       expect(page).to have_content("Committee Approval Status:")
       expect(page).to have_content("Committee Member Reviews")
+      expect(page).to have_content("Approved at")
     end
   end
 end
