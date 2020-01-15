@@ -14,6 +14,7 @@
         <button type="button" id="send_email_reminder" value="<%= f.object.id.to_s %>">Send Email Reminder</button>
       <% end %>
     </div>
+    <%= "<p class='hint'>Approved at: #{f.object.approved_at.strftime("%B %d, %Y")} #{f.object.approved_at.strftime("%H:%M %p")}</p>".html_safe if f.object.status == 'approved' %>
     <%= f.input :notes %>
     <% if f.object.committee_role && f.object.committee_role.name.include?("Advisor") %>
       <%= f.input :federal_funding_used, as: :radio_buttons, collection: [["Yes", true],["No", false]], wrapper: :federal_funding_radios if current_partner.graduate? %>
