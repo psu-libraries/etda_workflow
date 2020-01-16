@@ -8,7 +8,7 @@ node(:data) do
       "#{member.submission.author.first_name} #{member.submission.author.last_name}",
       member.committee_role.name,
       "<span>#{review_started_on ? review_started_on.strftime('%Y%m%d') : ''}</span>#{review_started_on ? review_started_on.strftime('%m/%d/%Y') : ''}",
-      member.status.titleize,
+      (member.status ? member.status.titleize : ""),
       member.submission.status.titleize
     ]
   end
