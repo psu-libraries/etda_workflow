@@ -39,40 +39,36 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(results.first[:label]).to eq("Alex James Kiessling")
       end
       it "returns the person's department" do
-        expect(results.first[:dept]).to eq("ITS Services & Solutions")
+        expect(results.first[:dept]).to eq("University Libraries")
       end
       it "returns the person's email as the id" do
         expect(results.first[:id]).to eq("ajk5603@psu.edu")
       end
     end
 
-    pending('do not have data to test this condition one') do
-      context "when the matching person has no email address" do
-        let(:search_string) { "Scott Aaron Woods" }
-
-        it "still returns their name" do
-          expect(results.first[:label]).to eq("Scott Aaron Woods")
-        end
-        it "returns a message in the id field" do
-          expect(results.first[:id]).to match(/not available/)
-        end
+    context "when the matching person has no email address" do
+      let(:search_string) { "John Fred Williams" }
+      it "still returns their name" do
+        expect(results.first[:label]).to eq("John Fred Williams")
+      end
+      it "returns a message in the id field" do
+        expect(results.first[:id]).to match(/not available/)
       end
     end
-    pending('do not have data to test this condition two') do
-      context "when the matching person has no deparment" do
-        pending("Scott is not available with faculty/staff filter; do not have an example to test this condition")
-        let(:search_string) { "Scott Aaron Woods" }
 
-        it "still returns their name" do
-          expect(results.first[:label]).to eq("Scott Aaron Woods")
-        end
-        it "returns a message in the dept field" do
-          expect(results.first[:dept]).to match(/not available/)
-        end
+    context "when the matching person has no deparment" do
+      let(:search_string) { "John Fred Williams" }
+
+      it "still returns their name" do
+        expect(results.first[:label]).to eq("John Fred Williams")
+      end
+      it "returns a message in the dept field" do
+        expect(results.first[:dept]).to match(/not available/)
       end
     end
+
     context "when given a person's complete name in all lowercase" do
-      let(:search_string) { "joni lee barnoff" }
+      let(:search_string) { "alex james kiessling" }
 
       it "returns only the entry for that person" do
         expect(results.count).to eq(1)
@@ -81,7 +77,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
 
     context "when given a person's complete name without their middle name" do
-      let(:search_string) { "joni barnoff" }
+      let(:search_string) { "alex kiessling" }
 
       it "returns only the entry for that person" do
         expect(results.count).to eq(1)
@@ -91,20 +87,13 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
 
     context "when given an exact last name" do
       context "that is very short" do
-        let(:search_string) { "Li" }
-        let(:matching_entry) { results.detect { |r| r[:label] == "Zhao Li" } }
+        let(:search_string) { "Kiessling" }
+        let(:matching_entry) { results.detect { |r| r[:label] == "Alex Kiessling" } }
 
         it "does not return an entry for that person but does return a list of others" do
           expect(matching_entry).not_to be_present
         end
       end
-      # context "when given more specific information for the last name that is very short (include first name)" do
-      #   let(:search_string) { "Zhao Li" }
-      #   let(:matching_entry) { results.detect { |r| r[:label] == "Zhao Li" } }
-      #   it "returns an entry for that person" do
-      #     expect(matching_entry).to be_present
-      #   end
-      # end
 
       context "that has an apostrophe" do
         let(:search_string) { "O'Brien" }
@@ -116,7 +105,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       end
 
       context "with trailing whitespace" do
-        let(:search_string) { "barnoff " }
+        let(:search_string) { "kiessling " }
         let(:matching_entry) { results.detect { |r| r[:label] == "Alex James Kiessling" } }
 
         it "returns an entry for that person" do
@@ -302,12 +291,12 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(result[:first_name]).to eq('Alex')
         expect(result[:middle_name]).to eq('James')
         expect(result[:last_name]).to eq('Kiessling')
-        expect(result[:address_1]).to eq('0116 H Technology Sppt Bldg')
+        expect(result[:address_1]).to eq('University Libraries')
         expect(result[:city]).to eq('University Park')
         expect(result[:state]).to eq('PA')
         expect(result[:zip]).to eq('16802')
         expect(result[:country]).to eq('US')
-        expect(result[:phone_number]).to eq('814-865-4845')
+        expect(result[:phone_number]).to eq('555-555-5555')
         expect(result[:psu_idn]).to eq('9')
       end
     end

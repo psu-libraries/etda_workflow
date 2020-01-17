@@ -169,18 +169,11 @@ RSpec.describe 'The standard committee form for authors', js: true do
       # end
     end
 
-    # following works when this data is returned from ldap_lookup controller:
-    # results = [
-    #     { id: 'saw3@psu.edu', label: 'Steve Wilson', value: 'Steve Wilson' },
-    #     { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling' },
-    #     { id: 'saw140@psu.edu', label: 'Scott Woods', value: 'Scott Woods' },
-    # ]
-
     describe "typing in part of a known committee member's name", :ldap do
       let(:dropdown_items) { page.all("ul.ui-autocomplete li") }
 
       let(:dropdown_item_for_joni) do
-        dropdown_items.find { |option| option.text =~ /Joni Lee Barnoff/ }
+        dropdown_items.find { |option| option.text =~ /Alex James Kiessling/ }
       end
 
       before do
@@ -188,9 +181,10 @@ RSpec.describe 'The standard committee form for authors', js: true do
           fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
           fill_in "submission_committee_members_attributes_#{i}_email", with: "pbm#{i}@psu.edu"
         end
+        puts page.body
         # Send individual characters one at a time to trigger autocomplete
         # Ref: https://github.com/teampoltergeist/poltergeist/issues/439#issuecomment-66871147
-        find("#submission_committee_members_attributes_0_name").native.send_keys(*"Barn".chars)
+        find("#submission_committee_members_attributes_0_name").native.send_keys(*"Alex".chars)
         sleep 3 # Autocomplete delays before sending/displaying results
       end
 

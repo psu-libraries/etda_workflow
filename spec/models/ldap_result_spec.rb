@@ -12,12 +12,12 @@ RSpec.describe LdapResult, type: :model do
         expect(mapped_record.first[:last_name]).to eq 'Barnoff'
         expect(mapped_record.first[:first_name]).to eq 'Joni'
         expect(mapped_record.first[:middle_name]).to eq 'Lee'
-        expect(mapped_record.first[:phone_number]).to eq '814-865-4845'
-        expect(mapped_record.first[:address_1]).to eq '003 E Paterno Library'
+        expect(mapped_record.first[:phone_number]).to eq '555-555-5555'
+        expect(mapped_record.first[:address_1]).to eq 'Paterno Library'
         expect(mapped_record.first[:city]).to eq 'University Park'
         expect(mapped_record.first[:state]).to eq 'PA'
         expect(mapped_record.first[:zip]).to eq '16802'
-        expect(mapped_record.first[:psu_idn]).to eq('987654321')
+        expect(mapped_record.first[:psu_idn]).to eq('999999999')
       end
     end
   end
@@ -80,9 +80,9 @@ RSpec.describe LdapResult, type: :model do
       it 'returns a list containing key-value pairs mapped to ETD Author labels' do
         expect(mapped_record.first[:last_name]).to eq 'Barnoff'
         expect(mapped_record.first[:first_name]).to eq 'Joni'
-        expect(mapped_record.first[:phone_number]).to eq '814-865-4845'
-        expect(mapped_record.first[:address_1]).to eq '003 E Paterno Library'
-        expect(mapped_record.first[:psu_idn]).to eq('987654321')
+        expect(mapped_record.first[:phone_number]).to eq '555-555-5555'
+        expect(mapped_record.first[:address_1]).to eq 'Paterno Library'
+        expect(mapped_record.first[:psu_idn]).to eq('999999999')
         expect(mapped_record.first[:administrator]).to be_truthy
       end
     end
