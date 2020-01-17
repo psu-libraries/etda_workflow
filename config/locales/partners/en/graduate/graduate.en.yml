@@ -81,7 +81,7 @@ en:
                     The Graduate School and %{full_name} require you to review and digitally sign a proposed work for which you have been
                     listed as a committee member.
                     Please login to %{review_url} and complete this request.
-                    If you are serving on this committee in multiple roles, you will only need to submit your review once per submission.
+                    If you are serving on this committee in multiple roles, you will only need to submit your review once.
                     If you have any further questions please contact gradthesis@psu.edu.
                     Sincerely,
                     The Graduate School
@@ -114,7 +114,7 @@ en:
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
                     Please visit this URL to conduct your final review:
                     %{review_url}
-                    If you are serving on this committee in multiple roles, you will only need to submit your review once per submission.
+                    If you are serving on this committee in multiple roles, you will only need to submit your review once.
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:

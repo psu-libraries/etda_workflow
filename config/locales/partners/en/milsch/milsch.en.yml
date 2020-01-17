@@ -76,7 +76,7 @@ en:
                     part of or have reviewed.
                     Please login to %{review_url} and complete this request.
                     We ask that you complete this review within two weeks from receipt of this request.
-                    If you are serving on this committee in multiple roles, you will only need to submit your review once per submission.
+                    If you are serving on this committee in multiple roles, you will only need to submit your review once.
                     If you have any further questions please contact: millennium@psu.edu.
 
                     Sincerely,
@@ -91,7 +91,7 @@ en:
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
                     Please visit this URL to conduct your final review:
                     %{review_url}
-                    If you are serving on this committee in multiple roles, you will only need to submit your review once per submission.
+                    If you are serving on this committee in multiple roles, you will only need to submit your review once.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
