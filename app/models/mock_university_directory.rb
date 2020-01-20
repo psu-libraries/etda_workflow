@@ -11,8 +11,6 @@ class MockUniversityDirectory
 
   KNOWN_ACCESS_IDS = %w[
     ajk5603
-    saw140
-    ajk5603
     amg32
     xxb13
     conf123
@@ -35,7 +33,7 @@ class MockUniversityDirectory
     when /(john)/i
       [
         { id: 'jkl123@psu.edu', label: 'John Smith', value: 'John Smith' },
-        { id: 'jkl456@psu.edu', label: 'John Fred Williams', value: 'John Fred Williams' }
+        { id: 'Email not available', label: 'John Fred Williams', value: 'John Fred Williams', dept: 'Department not available' }
       ]
     when /Professor Buck Murphy/i
       [

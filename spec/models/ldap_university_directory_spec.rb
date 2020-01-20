@@ -2,6 +2,8 @@
 
 # This tests a live LDAP connection
 # To run this, comment out line in config/environments/test.rb that sets MockUniversityDirectory
+# In order to protect people's privacy, bogus names and info were used to create these tests
+# Because of this, they will likely fail, but the specs still outline what the outcomes should be
 #
 require 'model_spec_helper'
 require 'support/ldap_lookup'
@@ -49,10 +51,10 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     context "when the matching person has no email address" do
       let(:search_string) { "John Fred Williams" }
       it "still returns their name" do
-        expect(results.first[:label]).to eq("John Fred Williams")
+        expect(results.second[:label]).to eq("John Fred Williams")
       end
       it "returns a message in the id field" do
-        expect(results.first[:id]).to match(/not available/)
+        expect(results.second[:id]).to match(/not available/)
       end
     end
 
@@ -60,10 +62,10 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       let(:search_string) { "John Fred Williams" }
 
       it "still returns their name" do
-        expect(results.first[:label]).to eq("John Fred Williams")
+        expect(results.second[:label]).to eq("John Fred Williams")
       end
       it "returns a message in the dept field" do
-        expect(results.first[:dept]).to match(/not available/)
+        expect(results.second[:dept]).to match(/not available/)
       end
     end
 
@@ -97,7 +99,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
 
       context "that has an apostrophe" do
         let(:search_string) { "O'Brien" }
-        let(:matching_entry) { results.detect { |r| r[:label] == "Edward Patrick O'Brien Jr." } }
+        let(:matching_entry) { results.detect { |r| r[:label] == "Conan O'Brien" } }
 
         it "returns an entry for that person (among others)" do
           expect(matching_entry).to be_present
@@ -123,8 +125,8 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       end
 
       context "and that person does not have a middle name" do
-        let(:search_string) { "Cory Smith" }
-        let(:matching_entry) { results.detect { |r| r[:label] == "Cory Smith" } }
+        let(:search_string) { "John Smith" }
+        let(:matching_entry) { results.detect { |r| r[:label] == "John Smith" } }
 
         # This person may disappear from LDAP at some point.
         it "includes the entry for that person" do
@@ -133,8 +135,8 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       end
 
       context "and that person has a roman numeral after their last name" do
-        let(:search_string) { "sayers miller" }
-        let(:matching_entry) { results.detect { |r| r[:label] == "Sayers John Miller III" } }
+        let(:search_string) { "king george" }
+        let(:matching_entry) { results.detect { |r| r[:label] == "King George VI" } }
 
         it "includes entry for the person with roman numerals after last name" do
           expect(matching_entry).to be_present
@@ -167,8 +169,8 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     # end
 
     context "when given an exact first name" do
-      let(:search_string) { "Mairead" }
-      let(:matching_entry) { results.detect { |r| r[:label] == "Mairead Martin" } }
+      let(:search_string) { "Alex" }
+      let(:matching_entry) { results.detect { |r| r[:label] == "Alex James Kiessling" } }
 
       it "does not include an entry for that person" do
         # We don't search for just first names
@@ -177,8 +179,8 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
 
     context "when given a partial first name" do
-      let(:search_string) { "Mair" }
-      let(:matching_entry) { results.detect { |r| r[:label] == "Mairead Martin" } }
+      let(:search_string) { "Prof" }
+      let(:matching_entry) { results.detect { |r| r[:label] == "Professor Buck Murphy" } }
 
       it "does not include an entry for that person" do
         # We don't search for just first names
@@ -228,7 +230,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
     end
 
     context "when LDAP is down" do
-      let(:search_string) { "joni" }
+      let(:search_string) { "alex" }
 
       before do
         allow(Net::LDAP).to receive(:new).and_raise(Net::LDAP::LdapError)
