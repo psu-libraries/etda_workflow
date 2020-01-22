@@ -50,3 +50,5 @@ coverage
 .byebug_history
 .envrc
 .yarnrc
+
+config/locales/**/*
