@@ -51,8 +51,7 @@ addons:
 notifications:
   email:
     recipients:
-    - ajk5603@psu.edu
-    - amg32@psu.edu
+      secure: "LuUuyH+QWfjj+DozRW7rsWLUTGJtzu7xLVKKbR8PhfpmRzpMSzTolOy0v2sdBXxiBwB5Hk1NNHq4eqWkm/VF0FVz1RyAFaH5T9xI+XXyN68elAVbsuZ1sug1dYUGuuWhTVcVEbUS34ZrXgysQ29PJhhOwZ+uVWMHzGGQotnZJE/CF8IWPvsIcSgWt514QAk0uV6VyhAp9abzDhN/kcZK1Mr3rxIDMjDeG6q/Aqq5RkkGaiLiB8NIdL+maw++bxlzttue67c5saZclpWjxSX/6zFW/1MWr1WhslCDvJzTFMfMIXNtFUiDTMU7dkcU7TZa8HQKyaYAu6IQ8scWMB5Q8uqMJcSAqPWQd8gAP2TyDiuC3rr1IWZACxJtBJqee09VB1sFHOmNS/ceNDWquLOTOgWNDQLmMCpHba4ur0Eyzhe4sKbf7JK6hJPN1yn9j9g3BIH0cyBSopNbA+CjnxBe5g2ZhnsrzSSyB5hZ13/pQGAd7Z/h7YXqWiKWFUZBhkfOXBwGzPz4+n+clIK2ZjX2oGuoJvtBruAfX/R9wJunkrud77Fh5h9aG2UzZ/NPLKnoqswSkQjM/lna8lBdOkkW/NUNuqSWKCKGbCRkztPzTByw58IzKyR6yiVFy68LxoXLOxnSoIyERciIGlW2p4Dd+18a/2ivTNlXR9yblvR7fzs="
     on_success: change
     on_failure: always
   irc:
