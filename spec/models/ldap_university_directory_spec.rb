@@ -50,6 +50,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
 
     context "when the matching person has no email address" do
       let(:search_string) { "John Fred Williams" }
+
       it "still returns their name" do
         expect(results.second[:label]).to eq("John Fred Williams")
       end
