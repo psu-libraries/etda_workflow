@@ -25,6 +25,7 @@ class Admin::SubmissionsDashboardView
         final_submission_is_pending_filter,
         committee_review_is_rejected_filter,
         final_submission_is_approved_filter,
+        final_submission_is_on_hold_filter,
         released_for_publication_filter,
         final_is_restricted_institution_filter,
         final_is_withheld_filter
@@ -41,6 +42,7 @@ class Admin::SubmissionsDashboardView
         final_submission_is_submitted_filter,
         final_submission_is_incomplete_filter,
         final_submission_is_approved_filter,
+        final_submission_is_on_hold_filter,
         released_for_publication_filter,
         final_is_restricted_institution_filter,
         final_is_withheld_filter
@@ -132,6 +134,17 @@ class Admin::SubmissionsDashboardView
         description: description_for('final_submission_approved'),
         path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_submission_approved",
         count: submissions.empty? ? nil : submissions.count.to_s
+      }
+    end
+
+    def final_submission_is_on_hold_filter
+      submissions = Submission.joins(:degree).where('degrees.degree_type_id' => @degree_type.id).final_submission_is_on_hold
+      {
+          id: 'final-submission-on-hold',
+          title: title_for('final_submission_on_hold'),
+          description: description_for('final_submission_on_hold'),
+          path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_submission_on_hold",
+          count: submissions.empty? ? nil : submissions.count.to_s
       }
     end
 

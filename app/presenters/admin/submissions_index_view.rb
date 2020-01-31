@@ -35,6 +35,7 @@ class Admin::SubmissionsIndexView
     return 'committee-review-rejected-submissions-index' if committee_review_rejected?
     return 'submitted-final-submission-submissions-index' if final_submission_submitted?
     return 'approved-final-submission-submissions-index' if final_submission_approved?
+    return 'hold-final-submission-submissions-index' if final_submission_on_hold?
     return 'final-restricted-institution-index' if final_restricted_institution?
     return 'final-withheld-index' if final_withheld?
 
@@ -125,6 +126,10 @@ class Admin::SubmissionsIndexView
       @scope == 'final_submission_approved'
     end
 
+    def final_submission_on_hold?
+      @scope == 'final_submission_on_hold'
+    end
+
     def released_for_publication?
       @scope == 'released_for_publication'
     end
@@ -146,6 +151,7 @@ class Admin::SubmissionsIndexView
       return 'committee_review_is_rejected' if committee_review_rejected?
       return 'final_submission_is_submitted' if final_submission_submitted?
       return 'final_submission_is_approved' if final_submission_approved?
+      return 'final_submission_is_on_hold' if final_submission_on_hold?
       return 'final_is_restricted_institution' if final_restricted_institution?
       return 'final_is_withheld' if final_withheld?
 
