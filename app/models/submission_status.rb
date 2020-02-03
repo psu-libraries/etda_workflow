@@ -79,7 +79,7 @@ class SubmissionStatus
   end
 
   def waiting_in_final_submission_hold?
-    current_status == 'waiting in final submission hold'
+    current_status == 'waiting in final submission on hold'
   end
 
   def released_for_publication?
