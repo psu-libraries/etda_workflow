@@ -110,7 +110,7 @@ RSpec.describe Admin::SubmissionFormView do
       end
     end
 
-    context "When the status is 'waiting in final submission hold'" do
+    context "When the status is 'waiting in final submission on hold'" do
       before { submission.status = 'waiting in final submission on hold' }
 
       it "returns 'on_hold_actions'" do
@@ -210,10 +210,10 @@ RSpec.describe Admin::SubmissionFormView do
     end
 
     context "When the status is 'waiting in final submission on hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "returns the waiting to be released update path" do
-        expect(view.form_for_url).to eq admin_submission_path(submission)
+        expect(view.form_for_url).to eq admin_submissions_update_waiting_to_be_released_path(submission)
       end
     end
 
@@ -314,7 +314,7 @@ RSpec.describe Admin::SubmissionFormView do
     end
 
     context "When the status is 'waiting in final submission on hold'" do
-      let(:session) { { return_to: "/admin/#{submission.degree_type.slug}/final_submission_hold" } }
+      let(:session) { { return_to: "/admin/#{submission.degree_type.slug}/final_submission_on_hold" } }
 
       before { submission.status = 'waiting in final submission on hold' }
 

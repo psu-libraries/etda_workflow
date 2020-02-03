@@ -26,11 +26,11 @@ RSpec.describe SubmissionStates::WaitingInFinalSubmissionHold do
   describe 'name' do
     let(:subject) { described_class.name }
 
-    it { is_expected.to eq 'waiting in final submission hold' }
+    it { is_expected.to eq 'waiting in final submission on hold' }
   end
 
   describe 'status_date' do
-    let(:submission) { FactoryBot.create :submission, :waiting_in_final_submission_hold, placed_on_hold_at: DateTime.now }
+    let(:submission) { FactoryBot.create :submission, :waiting_in_final_submission_on_hold, placed_on_hold_at: DateTime.now }
     let(:subject) { described_class.new.status_date(submission) }
 
     it { is_expected.to eq(submission.placed_on_hold_at) }

@@ -225,7 +225,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
         FactoryBot.create :submission, :waiting_for_committee_review_rejected
         FactoryBot.create :submission, :waiting_for_final_submission_response
         FactoryBot.create :submission, :waiting_for_publication_release
-        FactoryBot.create :submission, :waiting_in_final_submission_hold
+        FactoryBot.create :submission, :waiting_in_final_submission_on_hold
         FactoryBot.create :submission, :released_for_publication
         FactoryBot.create :submission, :final_is_restricted_to_institution, released_for_publication_at: 1.day.ago
         FactoryBot.create :submission, :final_is_restricted_to_institution, released_for_publication_at: 1.day.from_now

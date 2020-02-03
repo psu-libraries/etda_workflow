@@ -25,7 +25,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'Committee Review Rejected' if status_behavior.waiting_for_committee_review_rejected?
     return 'Final Submission Evaluation' if status_behavior.waiting_for_final_submission_response?
     return 'Edit Final Submission to be Released' if status_behavior.waiting_for_publication_release?
-    return 'Edit Final Submission On Hold' if status_behavior.waiting_in_final_submission_hold?
+    return 'Edit Final Submission On Hold' if status_behavior.waiting_in_final_submission_on_hold?
     return 'Edit Released Submission' if status_behavior.released_for_publication? && open_access?
     return 'Edit Restricted Theses' if status_behavior.released_for_publication_metadata_only? && restricted?
     return 'Edit Final Submission is Restricted to Penn State' if status_behavior.released_for_publication? && access_level == 'restricted_to_institution'
@@ -40,7 +40,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'restricted_actions' if status_behavior.released_for_publication_metadata_only?
     return 'restricted_institution_actions' if status_behavior.released_for_publication? && !(access_level.open_access? || access_level.restricted?)
     return 'to_be_released_actions' if status_behavior.waiting_for_publication_release?
-    return 'on_hold_actions' if status_behavior.waiting_in_final_submission_hold?
+    return 'on_hold_actions' if status_behavior.waiting_in_final_submission_on_hold?
 
     'standard_actions'
   end
@@ -48,7 +48,7 @@ class Admin::SubmissionFormView < SimpleDelegator
   def form_for_url
     return "/admin/submissions/#{id}/format_review_response" if status_behavior.waiting_for_format_review_response?
     return "/admin/submissions/#{id}/final_submission_response" if status_behavior.waiting_for_final_submission_response?
-    return "/admin/submissions/#{id}/update_waiting_to_be_released" if status_behavior.waiting_for_publication_release?
+    return "/admin/submissions/#{id}/update_waiting_to_be_released" if status_behavior.waiting_for_publication_release? || status_behavior.waiting_in_final_submission_on_hold?
     return "/admin/submissions/#{id}/update_released" if status_behavior.released_for_publication?
 
     "/admin/submissions/#{id}"
@@ -181,7 +181,7 @@ class Admin::SubmissionFormView < SimpleDelegator
       return "/admin/#{degree_type.slug}/final_submission_pending" if status_behavior.waiting_for_committee_review?
       return "/admin/#{degree_type.slug}/committee_review_rejected" if status_behavior.waiting_for_committee_review_rejected?
       return "/admin/#{degree_type.slug}/final_submission_approved" if status_behavior.waiting_for_publication_release?
-      return "/admin/#{degree_type.slug}/final_submission_on_hold" if status_behavior.waiting_in_final_submission_hold?
+      return "/admin/#{degree_type.slug}/final_submission_on_hold" if status_behavior.waiting_in_final_submission_on_hold?
       #  return "/admin/#{degree_type}/released_for_publication" if status_behavior.released_for_publication? && open_access?  TOO SLOW; RETURN TO DASHBOARD
       return "/admin/#{degree_type.slug}" if status_behavior.released_for_publication? && open_access?
       return "/admin/#{degree_type.slug}/final_withheld" if status_behavior.released_for_publication_metadata_only? && restricted?

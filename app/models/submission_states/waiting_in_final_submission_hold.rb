@@ -2,7 +2,7 @@
 
 module SubmissionStates
   class WaitingInFinalSubmissionHold < SubmissionState
-    @name = 'waiting in final submission hold'
+    @name = 'waiting in final submission on hold'
 
     def initialize
       @transitions_to = [SubmissionStates::WaitingForPublicationRelease]

@@ -110,11 +110,11 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.status = 'waiting for publication'
     expect(described_class.new(submission)).not_to be_waiting_for_publication_release
   end
-  it 'responds to #waiting_in_final_submission_hold?' do
-    submission.status = 'waiting in final submission hold'
-    expect(described_class.new(submission)).to be_waiting_in_final_submission_hold
+  it 'responds to #waiting_in_final_submission_on_hold?' do
+    submission.status = 'waiting in final submission on hold'
+    expect(described_class.new(submission)).to be_waiting_in_final_submission_on_hold
     submission.status = 'final submission hold'
-    expect(described_class.new(submission)).not_to be_waiting_in_final_submission_hold
+    expect(described_class.new(submission)).not_to be_waiting_in_final_submission_on_hold
   end
   it 'responds to #released_for_publication?' do
     submission.status = 'released for publication'

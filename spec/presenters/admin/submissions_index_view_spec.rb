@@ -153,8 +153,8 @@ RSpec.describe Admin::SubmissionsIndexView do
     context "when scope is final submission is on hold" do
       let(:scope) { 'final_submission_on_hold' }
 
-      it "returns 'hold-final-submission-submissions-index'" do
-        expect(view.id).to eq 'hold-final-submission-submissions-index'
+      it "returns 'on-hold-final-submission-submissions-index'" do
+        expect(view.id).to eq 'on-hold-final-submission-submissions-index'
       end
     end
 

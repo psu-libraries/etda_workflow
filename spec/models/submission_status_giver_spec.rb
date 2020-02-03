@@ -87,8 +87,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -181,8 +181,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -282,8 +282,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -383,8 +383,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -484,8 +484,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -585,8 +585,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -686,8 +686,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -787,8 +787,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -888,8 +888,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -989,8 +989,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -1090,8 +1090,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -1200,8 +1200,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -1301,8 +1301,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -1402,8 +1402,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -1503,8 +1503,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -1604,8 +1604,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -1707,8 +1707,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -1793,8 +1793,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -1896,8 +1896,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -1999,8 +1999,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -2029,8 +2029,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -2126,8 +2126,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -2233,8 +2233,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -2253,13 +2253,13 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     end
   end
 
-  describe '#waiting_in_final_submission_hold!' do
+  describe '#waiting_in_final_submission_on_hold!' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_in_final_submission_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_in_final_submission_on_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -2268,7 +2268,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_in_final_submission_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_in_final_submission_on_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -2277,7 +2277,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_in_final_submission_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_in_final_submission_on_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -2286,7 +2286,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_in_final_submission_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_in_final_submission_on_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -2295,7 +2295,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_in_final_submission_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_in_final_submission_on_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -2304,7 +2304,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_in_final_submission_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_in_final_submission_on_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -2313,7 +2313,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_in_final_submission_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_in_final_submission_on_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -2322,7 +2322,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_in_final_submission_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_in_final_submission_on_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -2331,17 +2331,17 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_in_final_submission_hold! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_in_final_submission_on_hold! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "does not change the status" do
         giver = described_class.new(submission)
-        giver.waiting_in_final_submission_hold!
-        expect(submission.status).to eq 'waiting in final submission hold'
+        giver.waiting_in_final_submission_on_hold!
+        expect(submission.status).to eq 'waiting in final submission on hold'
       end
     end
 
@@ -2350,18 +2350,18 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_in_final_submission_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        expect { giver.waiting_in_final_submission_on_hold! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
   end
 
-  describe '#can_waiting_in_final_submission_hold?' do
+  describe '#can_waiting_in_final_submission_on_hold?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_in_final_submission_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_in_final_submission_on_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -2370,7 +2370,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_in_final_submission_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_in_final_submission_on_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -2379,7 +2379,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_in_final_submission_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_in_final_submission_on_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -2388,7 +2388,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_in_final_submission_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_in_final_submission_on_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -2397,7 +2397,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_in_final_submission_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_in_final_submission_on_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -2406,7 +2406,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_in_final_submission_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_in_final_submission_on_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -2415,7 +2415,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_in_final_submission_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_in_final_submission_on_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -2424,7 +2424,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_in_final_submission_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_in_final_submission_on_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -2433,16 +2433,16 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_in_final_submission_hold? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_in_final_submission_on_hold? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_in_final_submission_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_in_final_submission_on_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -2451,7 +2451,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_in_final_submission_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_in_final_submission_on_hold? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
   end
@@ -2539,8 +2539,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)
@@ -2649,8 +2649,8 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'waiting in final submission hold'" do
-      before { submission.status = 'waiting in final submission hold' }
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "raises an exception" do
         giver = described_class.new(submission)

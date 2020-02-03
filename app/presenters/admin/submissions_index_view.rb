@@ -35,7 +35,7 @@ class Admin::SubmissionsIndexView
     return 'committee-review-rejected-submissions-index' if committee_review_rejected?
     return 'submitted-final-submission-submissions-index' if final_submission_submitted?
     return 'approved-final-submission-submissions-index' if final_submission_approved?
-    return 'hold-final-submission-submissions-index' if final_submission_on_hold?
+    return 'on-hold-final-submission-submissions-index' if final_submission_on_hold?
     return 'final-restricted-institution-index' if final_restricted_institution?
     return 'final-withheld-index' if final_withheld?
 

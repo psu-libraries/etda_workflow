@@ -80,7 +80,7 @@ class SubmissionStatusGiver
     validate_current_state! [SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingInFinalSubmissionHold] if current_partner.honors?
   end
 
-  def can_waiting_in_final_submission_hold?
+  def can_waiting_in_final_submission_on_hold?
     validate_current_state! [SubmissionStates::WaitingForPublicationRelease]
   end
 
@@ -140,7 +140,7 @@ class SubmissionStatusGiver
     transition_to SubmissionStates::WaitingForPublicationRelease
   end
 
-  def waiting_in_final_submission_hold!
+  def waiting_in_final_submission_on_hold!
     transition_to SubmissionStates::WaitingInFinalSubmissionHold
   end
 

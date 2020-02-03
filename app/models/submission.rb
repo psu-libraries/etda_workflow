@@ -112,7 +112,7 @@ class Submission < ApplicationRecord
   scope :final_submission_is_incomplete, -> { where(status: "collecting final submission files rejected").where.not(final_submission_rejected_at: nil) }
   scope :final_submission_is_submitted, -> { where(status: 'waiting for final submission response') }
   scope :final_submission_is_approved, -> { where(status: 'waiting for publication release') }
-  scope :final_submission_is_on_hold, -> { where(status: 'waiting in final submission hold') }
+  scope :final_submission_is_on_hold, -> { where(status: 'waiting in final submission on hold') }
   scope :released_for_publication, -> { where('status LIKE "released for publication%"') }
   scope :final_is_restricted_institution, -> { where(status: 'released for publication', access_level: 'restricted_to_institution') }
   scope :final_is_withheld, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted') }

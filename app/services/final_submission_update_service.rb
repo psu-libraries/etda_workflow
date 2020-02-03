@@ -54,8 +54,8 @@ class FinalSubmissionUpdateService
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       submission.placed_on_hold_at = DateTime.now
       submission.save
-      status_giver.can_waiting_in_final_submission_hold?
-      status_giver.waiting_in_final_submission_hold!
+      status_giver.can_waiting_in_final_submission_on_hold?
+      status_giver.waiting_in_final_submission_on_hold!
       msg = "The submission was successfully placed on hold."
     end
     if update_actions.record_updated?
@@ -88,8 +88,8 @@ class FinalSubmissionUpdateService
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       submission.placed_on_hold_at = DateTime.now
       submission.save
-      status_giver.can_waiting_in_final_submission_hold?
-      status_giver.waiting_in_final_submission_hold!
+      status_giver.can_waiting_in_final_submission_on_hold?
+      status_giver.waiting_in_final_submission_on_hold!
       { msg: "The submission was successfully placed on hold.", redirect_path: Rails.application.routes.url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_on_hold') }
     elsif update_actions.remove_hold?
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
@@ -97,7 +97,7 @@ class FinalSubmissionUpdateService
       submission.save
       status_giver.can_waiting_for_publication_release?
       status_giver.waiting_for_publication_release!
-      { msg: "The submission was successfully removed from hold and is waiting to be released.", redirect_path: Rails.application.routes.url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_approved') }
+      { msg: "The submission was successfully removed from its hold and is waiting to be released.", redirect_path: Rails.application.routes.url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_approved') }
     end
   end
 

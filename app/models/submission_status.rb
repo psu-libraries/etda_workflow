@@ -17,7 +17,7 @@ class SubmissionStatus
       'waiting for head of program review',
       'waiting for committee review rejected',
       'waiting for publication release',
-      'waiting in final submission hold',
+      'waiting in final submission on hold',
       'released for publication metadata only',
       'released for publication',
       'format review accepted' # this is legacy FR fix
@@ -78,7 +78,7 @@ class SubmissionStatus
     current_status == 'waiting for publication release'
   end
 
-  def waiting_in_final_submission_hold?
+  def waiting_in_final_submission_on_hold?
     current_status == 'waiting in final submission on hold'
   end
 
@@ -111,7 +111,7 @@ class SubmissionStatus
   end
 
   def beyond_waiting_for_final_submission_response?
-    current_partner.honors? ? (waiting_for_publication_release? || released_for_publication? || waiting_in_final_submission_hold?) : (waiting_for_committee_review? || beyond_waiting_for_committee_review?)
+    current_partner.honors? ? (waiting_for_publication_release? || released_for_publication? || waiting_in_final_submission_on_hold?) : (waiting_for_committee_review? || beyond_waiting_for_committee_review?)
   end
 
   def beyond_waiting_for_committee_review?
@@ -123,7 +123,7 @@ class SubmissionStatus
   end
 
   def beyond_waiting_for_committee_review_rejected?
-    current_partner.honors? ? (waiting_for_final_submission_response? || beyond_waiting_for_final_submission_response?) : (waiting_for_publication_release? || released_for_publication? || waiting_in_final_submission_hold?)
+    current_partner.honors? ? (waiting_for_final_submission_response? || beyond_waiting_for_final_submission_response?) : (waiting_for_publication_release? || released_for_publication? || waiting_in_final_submission_on_hold?)
   end
 
   def format_review_rejected?
