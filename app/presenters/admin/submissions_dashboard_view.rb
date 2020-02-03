@@ -140,11 +140,11 @@ class Admin::SubmissionsDashboardView
     def final_submission_is_on_hold_filter
       submissions = Submission.joins(:degree).where('degrees.degree_type_id' => @degree_type.id).final_submission_is_on_hold
       {
-          id: 'final-submission-on-hold',
-          title: title_for('final_submission_on_hold'),
-          description: description_for('final_submission_on_hold'),
-          path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_submission_on_hold",
-          count: submissions.empty? ? nil : submissions.count.to_s
+        id: 'final-submission-on-hold',
+        title: title_for('final_submission_on_hold'),
+        description: description_for('final_submission_on_hold'),
+        path: submissions.empty? ? nil : "/admin/#{@degree_type.slug}/final_submission_on_hold",
+        count: submissions.empty? ? nil : submissions.count.to_s
       }
     end
 
