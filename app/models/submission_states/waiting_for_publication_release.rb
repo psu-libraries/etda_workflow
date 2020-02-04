@@ -5,7 +5,7 @@ module SubmissionStates
     @name = 'waiting for publication release'
 
     def initialize
-      @transitions_to = [SubmissionStates::ReleasedForPublication, SubmissionStates::ReleasedForPublicationMetadataOnly, SubmissionStates::WaitingForFinalSubmissionResponse] # SubmissionStates::CollectingFinalSubmissionFiles]
+      @transitions_to = [SubmissionStates::ReleasedForPublication, SubmissionStates::ReleasedForPublicationMetadataOnly, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingInFinalSubmissionOnHold]
     end
 
     def status_date(submission)

@@ -2,15 +2,15 @@
 
 require 'model_spec_helper'
 
-RSpec.describe SubmissionStates::WaitingForPublicationRelease do
+RSpec.describe SubmissionStates::WaitingInFinalSubmissionOnHold do
   describe 'instance methods' do
     let(:subject) { described_class.new }
 
-    it "transitions to ReleasedForPublication, ReleasedForPublicationMetadataOnly WaitingForFinalSubmissionResponse, WaitingInFinalSubmissionOnHold" do
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::ReleasedForPublication)
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingInFinalSubmissionOnHold)
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::ReleasedForPublicationMetadataOnly)
+    it "transitions to WaitingForPublicationRelease" do
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease)
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::ReleasedForPublication)
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::ReleasedForPublicationMetadataOnly)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingCommittee)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFiles)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFilesRejected)
@@ -26,32 +26,28 @@ RSpec.describe SubmissionStates::WaitingForPublicationRelease do
   describe 'name' do
     let(:subject) { described_class.name }
 
-    it { is_expected.to eq 'waiting for publication release' }
+    it { is_expected.to eq 'waiting in final submission on hold' }
   end
 
   describe 'status_date' do
-    context 'when head of program is approving' do
-      let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, head_of_program_review_accepted_at: DateTime.now }
-      let(:subject) { described_class.new.status_date(submission) }
+    let(:submission) { FactoryBot.create :submission, :waiting_in_final_submission_on_hold, placed_on_hold_at: DateTime.now }
+    let(:subject) { described_class.new.status_date(submission) }
 
-      it { is_expected.to eq(submission.head_of_program_review_accepted_at) } if current_partner.graduate?
-    end
-
-    context 'when head of program is not approving' do
-      let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, committee_review_accepted_at: DateTime.now, final_submission_approved_at: DateTime.now }
-      let(:subject) { described_class.new.status_date(submission) }
-
-      it { is_expected.to eq(submission.committee_review_accepted_at) } unless current_partner.honors?
-      it { is_expected.to eq(submission.final_submission_approved_at) } if current_partner.honors?
-    end
+    it { is_expected.to eq(submission.placed_on_hold_at) }
   end
 
   describe '#transition' do
     let(:submission) { FactoryBot.create :submission, :final_is_restricted, status: status }
     let(:subject) { described_class.transition submission }
 
-    context 'when submission status WaitingForPublicationRelease' do
+    context 'when submission status WaitingInFinalSubmissionOnHold' do
       let(:status) { described_class.name }
+
+      it { is_expected.to be_truthy }
+    end
+
+    context 'when submission status WaitingForPublicationRelease' do
+      let(:status) { SubmissionStates::WaitingForPublicationRelease.name }
 
       it { is_expected.to be_truthy }
     end
@@ -59,20 +55,19 @@ RSpec.describe SubmissionStates::WaitingForPublicationRelease do
     context 'when submission status ReleasedForPublication' do
       let(:status) { SubmissionStates::ReleasedForPublication.name }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status ReleasedForPublicationMetadataOnly' do
       let(:status) { SubmissionStates::ReleasedForPublicationMetadataOnly.name }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status WaitingForFinalSubmissionResponse' do
       let(:status) { SubmissionStates::WaitingForFinalSubmissionResponse.name }
 
-      it { is_expected.to be_falsey } unless current_partner.honors?
-      it { is_expected.to be_truthy } if current_partner.honors?
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status CollectingProgramInformation' do
@@ -102,14 +97,13 @@ RSpec.describe SubmissionStates::WaitingForPublicationRelease do
     context 'when submission status WaitingForCommitteeReview' do
       let(:status) { SubmissionStates::WaitingForCommitteeReview.name }
 
-      it { is_expected.to be_truthy } unless current_partner.honors?
-      it { is_expected.to be_falsey } if current_partner.honors?
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status WaitingForHeadOfProgramReview' do
       let(:status) { SubmissionStates::WaitingForHeadOfProgramReview.name }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status CollectingFinalSubmissionFilesRejected' do
