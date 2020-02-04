@@ -2,7 +2,7 @@
 
 require 'model_spec_helper'
 
-RSpec.describe SubmissionStates::WaitingInFinalSubmissionHold do
+RSpec.describe SubmissionStates::WaitingInFinalSubmissionOnHold do
   describe 'instance methods' do
     let(:subject) { described_class.new }
 
@@ -40,7 +40,7 @@ RSpec.describe SubmissionStates::WaitingInFinalSubmissionHold do
     let(:submission) { FactoryBot.create :submission, :final_is_restricted, status: status }
     let(:subject) { described_class.transition submission }
 
-    context 'when submission status WaitingInFinalSubmissionHold' do
+    context 'when submission status WaitingInFinalSubmissionOnHold' do
       let(:status) { described_class.name }
 
       it { is_expected.to be_truthy }

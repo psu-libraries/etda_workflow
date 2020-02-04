@@ -6,9 +6,9 @@ RSpec.describe SubmissionStates::WaitingForPublicationRelease do
   describe 'instance methods' do
     let(:subject) { described_class.new }
 
-    it "transitions to ReleasedForPublication, ReleasedForPublicationMetadataOnly WaitingForFinalSubmissionResponse, WaitingInFinalSubmissionHold" do
+    it "transitions to ReleasedForPublication, ReleasedForPublicationMetadataOnly WaitingForFinalSubmissionResponse, WaitingInFinalSubmissionOnHold" do
       expect(described_class.new).to be_valid_state_change(SubmissionStates::ReleasedForPublication)
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingInFinalSubmissionHold)
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingInFinalSubmissionOnHold)
       expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
       expect(described_class.new).to be_valid_state_change(SubmissionStates::ReleasedForPublicationMetadataOnly)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingCommittee)

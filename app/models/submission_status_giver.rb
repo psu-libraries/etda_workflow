@@ -26,7 +26,7 @@ class SubmissionStatusGiver
   end
 
   def can_review_program_information?
-    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::WaitingInFinalSubmissionHold, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFormatReviewFilesRejected]
+    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::WaitingInFinalSubmissionOnHold, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFormatReviewFilesRejected]
   end
 
   def can_create_or_edit_committee?
@@ -36,11 +36,11 @@ class SubmissionStatusGiver
 
   def can_review_committee?
     validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected,
-                             SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::WaitingInFinalSubmissionHold, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::CollectingFinalSubmissionFilesRejected] # , submission.beyond_collecting_format_review_files?
+                             SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::WaitingInFinalSubmissionOnHold, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::CollectingFinalSubmissionFilesRejected] # , submission.beyond_collecting_format_review_files?
   end
 
   def can_review_format_review_files?
-    validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::WaitingInFinalSubmissionHold, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFinalSubmissionFilesRejected]
+    validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::WaitingInFinalSubmissionOnHold, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFinalSubmissionFilesRejected]
   end
 
   def can_upload_final_submission_files?
@@ -48,7 +48,7 @@ class SubmissionStatusGiver
   end
 
   def can_review_final_submission_files?
-    validate_current_state! [SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::WaitingInFinalSubmissionHold, SubmissionStates::ReleasedForPublication]
+    validate_current_state! [SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::WaitingInFinalSubmissionOnHold, SubmissionStates::ReleasedForPublication]
   end
 
   def can_respond_to_format_review?
@@ -76,8 +76,8 @@ class SubmissionStatusGiver
   end
 
   def can_waiting_for_publication_release?
-    submission.head_of_program_is_approving? ? (validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingInFinalSubmissionHold]) : (validate_current_state! [SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingInFinalSubmissionHold]) unless current_partner.honors?
-    validate_current_state! [SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingInFinalSubmissionHold] if current_partner.honors?
+    submission.head_of_program_is_approving? ? (validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingInFinalSubmissionOnHold]) : (validate_current_state! [SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingInFinalSubmissionOnHold]) unless current_partner.honors?
+    validate_current_state! [SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingInFinalSubmissionOnHold] if current_partner.honors?
   end
 
   def can_waiting_in_final_submission_on_hold?
@@ -141,7 +141,7 @@ class SubmissionStatusGiver
   end
 
   def waiting_in_final_submission_on_hold!
-    transition_to SubmissionStates::WaitingInFinalSubmissionHold
+    transition_to SubmissionStates::WaitingInFinalSubmissionOnHold
   end
 
   def remove_from_waiting_to_be_released!

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module SubmissionStates
-  class WaitingInFinalSubmissionHold < SubmissionState
+  class WaitingInFinalSubmissionOnHold < SubmissionState
     @name = 'waiting in final submission on hold'
 
     def initialize

@@ -318,7 +318,7 @@ RSpec.describe Admin::SubmissionFormView do
 
       before { submission.status = 'waiting in final submission on hold' }
 
-      it "returns final submission hold path" do
+      it "returns final submission on hold path" do
         expect(view.cancellation_path).to eq admin_submissions_index_path(submission.degree_type, 'final_submission_on_hold')
       end
     end
