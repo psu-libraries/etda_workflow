@@ -126,7 +126,7 @@ class Author::SubmissionsController < AuthorController
       @submission.reset_committee_reviews
       @submission.update_final_submission_timestamps!(Time.zone.now)
       redirect_to author_root_path
-      WorkflwoMailer.send_final_submission_received_email(@submission)
+      WorkflowMailer.send_final_submission_received_email(@submission)
       flash[:notice] = 'Final submission files uploaded successfully.'
       return
     elsif @submission.status == 'collecting final submission files rejected' && current_partner.honors?
