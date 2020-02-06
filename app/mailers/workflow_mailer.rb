@@ -1,4 +1,6 @@
 class WorkflowMailer < ActionMailer::Base
+  extend MailerActions
+
   def format_review_received(submission)
     @submission = submission
     @author = submission.author
