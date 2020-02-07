@@ -143,7 +143,7 @@ class Author::SubmissionsController < AuthorController
       status_giver.can_waiting_for_committee_review?
       status_giver.waiting_for_committee_review!
       @submission.reset_committee_reviews
-      @submission.send_initial_committee_member_emails unless approval_status == 'approved'
+      @submission.committee_review_requests_init unless approval_status == 'approved'
     else
       status_giver.can_waiting_for_final_submission?
       status_giver.waiting_for_final_submission_response!

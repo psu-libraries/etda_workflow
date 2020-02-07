@@ -337,7 +337,7 @@ class Submission < ApplicationRecord
     degree.degree_type.approval_configuration.head_of_program_is_approving
   end
 
-  def send_initial_committee_member_emails
+  def committee_review_requests_init
     committee_members.each do |committee_member|
       seen_access_ids = []
       next if committee_member.committee_role.name == 'Program Head/Chair' || seen_access_ids.include?(committee_member.access_id)
@@ -381,7 +381,7 @@ class Submission < ApplicationRecord
         status_giver.can_waiting_for_final_submission? if current_partner.honors?
         status_giver.waiting_for_final_submission_response! if current_partner.honors?
         update_attribute(:committee_review_accepted_at, DateTime.now)
-        deliver_final_emails
+        WorkflowMailer.send_final_emails(self)
         WorkflowMailer.send_committee_approved_email(self)
       end
     elsif submission_status.status == 'rejected'
