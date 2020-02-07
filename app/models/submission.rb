@@ -388,7 +388,7 @@ class Submission < ApplicationRecord
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
       update_attribute(:committee_review_rejected_at, DateTime.now)
-      committee_rejected_emails
+      WorkflowMailer.committee_rejected_emails
     end
   end
 
