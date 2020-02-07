@@ -381,7 +381,7 @@ class Submission < ApplicationRecord
         status_giver.can_waiting_for_final_submission? if current_partner.honors?
         status_giver.waiting_for_final_submission_response! if current_partner.honors?
         update_attribute(:committee_review_accepted_at, DateTime.now)
-        WorkflowMailer.send_final_emails(self)
+        WorkflowMailer.send_final_emails(self) unless current_partner.honors?
         WorkflowMailer.send_committee_approved_email(self)
       end
     elsif submission_status.status == 'rejected'
