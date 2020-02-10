@@ -1,6 +1,5 @@
 class FinalSubmissionUpdateService
   include ActionView::Helpers::UrlHelper
-  include MailerActionService
 
   attr_accessor :params
   attr_accessor :submission
@@ -30,14 +29,14 @@ class FinalSubmissionUpdateService
         status_giver.can_waiting_for_publication_release?
         status_giver.waiting_for_publication_release!
         UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-        @submission.deliver_final_emails
+        WorkflowMailer.send_final_emails(@submission)
       else
         status_giver.can_waiting_for_committee_review?
         status_giver.waiting_for_committee_review!
         UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
         @submission.update_status_from_committee
-        send_final_submission_approved_email(@submission)
-        @submission.send_initial_committee_member_emails if @submission.status_behavior.waiting_for_committee_review?
+        WorkflowMailer.send_final_submission_approved_email(@submission)
+        @submission.committee_review_requests_init if @submission.status_behavior.waiting_for_committee_review?
       end
       msg = "The submission\'s final submission information was successfully approved."
     elsif update_actions.rejected?
@@ -48,7 +47,7 @@ class FinalSubmissionUpdateService
       submission.final_submission_rejected_at = Time.zone.now
       submission.save
       status_giver.collecting_final_submission_files_rejected!
-      send_final_submission_rejected_email(@submission)
+      WorkflowMailer.send_final_submission_rejected_email(@submission)
       msg = "The submission\'s final submission information was successfully rejected and returned to the author for revision."
     elsif update_actions.send_to_hold?
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)

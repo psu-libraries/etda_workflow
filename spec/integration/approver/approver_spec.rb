@@ -60,7 +60,6 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
         find(:css, "#committee_member_federal_funding_used_true").set true if current_partner.graduate?
       end
       click_button 'Submit Review'
-      sleep 3
       expect(page).to have_current_path(approver_root_path)
       expect(CommitteeMember.find(committee_member.id).status).to eq 'approved'
       expect(CommitteeMember.find(committee_member.id).notes).to eq 'Some notes.'
