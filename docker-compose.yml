@@ -1,5 +1,28 @@
-version: '3.2'
+version: '3.5'
 services:
+  # chrome:
+  #   image: selenium/node-chrome:3.141.59
+  #   volumes:
+  #     - /dev/shm:/dev/shm
+  #   depends_on:
+  #     - selenium
+  #   environment:
+  #     HUB_HOST: selenium
+  # firefox:
+  #   image: selenium/node-firefox:3.14.0-gallium
+  #   volumes:
+  #     - /dev/shm:/dev/shm
+  #   depends_on:
+  #     - selenium
+  #   environment:
+  #     HUB_HOST: selenium
+  selenium:
+    image: selenium/standalone-chrome-debug:3.141.59-xenon
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - "4444:4444"
+      - "5901:5900"
   redis:
     image: redis:5.0.5
     volumes:
@@ -17,17 +40,18 @@ services:
   web:
     tty: true
     stdin_open: true
+    user: root
+    build:
+      context: . 
+      target: base
     environment:
       REDIS_HOST: redis
+      APP_HOST: web
       MYSQL_HOST: db
       RAILS_ENV: development
       PARTNER: ${PARTNER:-graduate}
-    build: 
-      context: .
-      args:
-        RAILS_ENV: development
     command: >
-      sh -c "/etda_workflow/local_entrypoint.sh"
+      sh -c "/etda_workflow/entrypoint.sh"
     ports:
     - "3000:3000"
     depends_on:
@@ -35,6 +59,15 @@ services:
     volumes:
     - workflow_files:/etda_workflow/tmp/workflow_files
     - explore_files:/etda_workflow/tmp/explore_files
+    - /etda_workflow/vendor/bundle
+    - /etda_workflow/node_modules
+    - type: bind
+      source: $HOME/.ssh
+      target: /etda_workflow/.ssh
+    - type: bind
+      consistency: cached
+      source: .
+      target: /etda_workflow/
 
 volumes:
   db-data:
