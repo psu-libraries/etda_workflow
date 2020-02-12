@@ -67,11 +67,7 @@ gem "devise", ">= 4.7.1"
 
 gem 'sprockets', '~> 3.7.2'
 
-if ENV['CI']
-  gem 'etda_utilities', '>= 0.8.0', branch: 'master', git: "https://#{ENV['ETDA_UTILITIES_TOKEN']}@github.com/psu-stewardship/etda_utilities.git"
-else
-  gem 'etda_utilities', '>= 0.8.0', branch: 'master', git: "git@github.com:psu-stewardship/etda_utilities.git"
-end
+gem 'etda_utilities', '>= 0.8.0', branch: 'master', git: "https://github.com/psu-stewardship/etda_utilities.git"
 
 gem 'rake', '< 11.0'
 
