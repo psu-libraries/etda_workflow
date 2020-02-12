@@ -88,3 +88,5 @@ FROM base as production
 
 RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
 
+CMD ["./entrypoint.sh"]
+
