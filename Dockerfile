@@ -79,6 +79,7 @@ CMD ["./entrypoint.sh"]
 
 USER root
 RUN chmod -R 775 /var/log/clamav
+RUN chmod -R 775 /var/run/clamav
 USER etda
 
 FROM base as rspec
