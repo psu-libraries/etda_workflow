@@ -28,4 +28,16 @@ class SubmissionUpdateActions
 
     false
   end
+
+  def send_to_hold?
+    return true if params[:send_to_hold]
+
+    false
+  end
+
+  def remove_hold?
+    return true if params[:remove_hold]
+
+    false
+  end
 end

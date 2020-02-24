@@ -44,6 +44,7 @@ FactoryBot.define do
     end
 
     trait :collecting_final_submission_files_rejected do
+      status { "collecting final submission files rejected" }
       final_submission_rejected_at { Time.zone.now }
     end
 
@@ -83,6 +84,11 @@ FactoryBot.define do
 
     trait :waiting_for_publication_release do
       status { "waiting for publication release" }
+      final_submission_traits
+    end
+
+    trait :waiting_in_final_submission_on_hold do
+      status { "waiting in final submission on hold" }
       final_submission_traits
     end
 

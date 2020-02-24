@@ -1,6 +1,5 @@
 class CommitteeReminderWorker
   include Sidekiq::Worker
-  include MailerActionService
   sidekiq_options queue: 'mailers'
 
   def perform(submission_id, committee_member_id)
@@ -10,6 +9,6 @@ class CommitteeReminderWorker
 
     return if committee_member.status == 'approved' || committee_member.status == 'rejected'
 
-    send_committee_review_reminders(submission, committee_member)
+    WorkflowMailer.send_committee_review_reminders(submission, committee_member)
   end
 end

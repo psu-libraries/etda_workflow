@@ -1,9 +1,9 @@
 GIT
-  remote: git@github.com:psu-stewardship/etda_utilities.git
-  revision: 8a62694532bb04977a24507af89758e881d67946
+  remote: https://github.com/psu-stewardship/etda_utilities.git
+  revision: 5b64d987f85a745c1f5d05b5f400673f00a42a93
   branch: master
   specs:
-    etda_utilities (0.9.0)
+    etda_utilities (0.10.0)
 
 GIT
   remote: https://github.com/stefanpenner/country_select.git
@@ -494,7 +494,7 @@ DEPENDENCIES
   devise (>= 4.7.1)
   ed25519
   enumerize
-  etda_utilities (>= 0.8.0)!
+  etda_utilities!
   factory_bot_rails
   faker
   font-awesome-rails

@@ -11,12 +11,6 @@ class EtdUrls
     workflow_url
   end
 
-  def popup
-    return "alert('Millennium Scholars Explore Coming Soon'); return false;" if Partner.current.milsch?
-
-    ''
-  end
-
   private
 
   def explore_url

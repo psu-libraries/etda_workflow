@@ -110,6 +110,14 @@ RSpec.describe Admin::SubmissionFormView do
       end
     end
 
+    context "When the status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
+
+      it "returns 'on_hold_actions'" do
+        expect(view.actions_partial_name).to eq 'on_hold_actions'
+      end
+    end
+
     context "When the status is 'released for publication'" do
       before do
         submission.status = 'released for publication'
@@ -195,6 +203,14 @@ RSpec.describe Admin::SubmissionFormView do
 
     context "When the status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
+
+      it "returns the waiting to be released update path" do
+        expect(view.form_for_url).to eq admin_submissions_update_waiting_to_be_released_path(submission)
+      end
+    end
+
+    context "When the status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
 
       it "returns the waiting to be released update path" do
         expect(view.form_for_url).to eq admin_submissions_update_waiting_to_be_released_path(submission)
@@ -294,6 +310,16 @@ RSpec.describe Admin::SubmissionFormView do
 
       it "returns approved final submission path" do
         expect(view.cancellation_path).to eq admin_submissions_index_path(submission.degree_type, 'final_submission_approved')
+      end
+    end
+
+    context "When the status is 'waiting in final submission on hold'" do
+      let(:session) { { return_to: "/admin/#{submission.degree_type.slug}/final_submission_on_hold" } }
+
+      before { submission.status = 'waiting in final submission on hold' }
+
+      it "returns final submission on hold path" do
+        expect(view.cancellation_path).to eq admin_submissions_index_path(submission.degree_type, 'final_submission_on_hold')
       end
     end
 

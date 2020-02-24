@@ -214,6 +214,9 @@ en:
       final_submission_approved:
         title: Final Submission to be Released
         description: Approved by committee and waiting to be released
+      final_submission_on_hold:
+        title: Final Submission is On Hold
+        description: Submissions that have been approved but are now being held from release
       released_for_publication:
         title: Released Theses
         description: Manage theses which have already been released

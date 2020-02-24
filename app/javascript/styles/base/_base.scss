@@ -719,7 +719,7 @@ a.cancel-link{
 }
 
 #committee_member_table_audit {
-  width: 70%;
+  width: 80%;
 }
 
 .submission_committee_members_federal_funding_used {
@@ -742,8 +742,16 @@ a.contact-support-link {
   padding-bottom: 20px;
 }
 
+.approved-at-column {
+  width: 100px;
+}
+
 // Approver styles
 .select-reviews {
   float: right;
   margin:0 20px 10px 0;
+}
+
+#approver-committees-index span {
+  display:none;
 }

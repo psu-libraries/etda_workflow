@@ -57,6 +57,8 @@ en:
               not_a_number: "Please select a year from the dropdown."
             federal_funding:
               inclusion: "Federal Funding can't be blank."
+            has_agreed_to_terms:
+              blank: "If you agree to the copyright terms, please check the box to submit."
         committee_member:
           blank: "Committee member's %{attribute} can't be blank."
           required: "%{attribute} must exist."
