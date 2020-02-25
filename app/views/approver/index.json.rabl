@@ -2,7 +2,6 @@ object false
 
 node(:data) do
   @committee_members.map do |member|
-    review_started_on = member.approval_started_at
     [
       "<a href=#{approver_path(member)}>#{member.submission.title.truncate(30)}</a>",
       "#{member.submission.author.first_name} #{member.submission.author.last_name}",
