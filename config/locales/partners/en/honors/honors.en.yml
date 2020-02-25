@@ -183,6 +183,10 @@ en:
       label: Thesis Supervisor
       list:
         label: Thesis Supervisors
+        thesis:
+          thesis_supervisor: A professor in the area in which the thesis is written, who the student works closely with.
+          thesis_honors_adviser: Faculty member who oversees the thesis work and confirms it is indeed honors work in their area of expertise.
+          faculty_reader: This role is only required if the Honors Advisor and Thesis Supervisor are the same person.  This is a faculty member in the discipline in which the thesis is written.
       author_instructions:
         The honors college only requires two people to read and approve the thesis, an Honors Advisor and Thesis Supervisor. The only time a "Faculty Reader" is required is if the honors advisor and thesis supervisor are the same person.
       special_role: supervisor
