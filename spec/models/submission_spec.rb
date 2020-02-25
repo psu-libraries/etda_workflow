@@ -417,5 +417,17 @@ RSpec.describe Submission, type: :model do
         end
       end
     end
+
+    describe "#committee_review_requests_init" do
+      it 'sets approval_started_at timestamp for committee members' do
+        submission = FactoryBot.create :submission
+        create_committee submission
+        submission.reload
+        expect(submission.committee_members.first.approval_started_at).to be_falsey
+        submission.committee_review_requests_init
+        submission.reload
+        expect(submission.committee_members.first.approval_started_at).to be_truthy
+      end
+    end
   end
 end
