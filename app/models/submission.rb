@@ -339,6 +339,7 @@ class Submission < ApplicationRecord
 
   def committee_review_requests_init
     committee_members.each do |committee_member|
+      committee_member.update_attribute :approval_started_at, DateTime.now
       seen_access_ids = []
       next if committee_member.committee_role.name == 'Program Head/Chair' || seen_access_ids.include?(committee_member.access_id)
 

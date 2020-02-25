@@ -85,7 +85,6 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.status).to be_blank
       end
       it 'updates timestamps' do
-        expect(cm.approval_started_at).to be_nil
         expect(cm.approved_at).to be_nil
         expect(cm.rejected_at).to be_nil
       end
@@ -100,7 +99,6 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.status).to eq("approved")
       end
       it 'updates timestamps' do
-        expect(cm.approval_started_at).to be_truthy
         expect(cm.approved_at).to be_truthy
         expect(cm.rejected_at).to be_nil
       end
@@ -115,7 +113,6 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.status).to eq("rejected")
       end
       it 'updates timestamps' do
-        expect(cm.approval_started_at).to be_truthy
         expect(cm.approved_at).to be_nil
         expect(cm.rejected_at).to be_truthy
       end
@@ -130,7 +127,6 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.status).to eq("pending")
       end
       it 'updates timestamps' do
-        expect(cm.approval_started_at).to be_truthy
         expect(cm.approved_at).to be_nil
         expect(cm.rejected_at).to be_nil
       end
