@@ -72,15 +72,12 @@ class CommitteeMember < ApplicationRecord
     self[:status] = new_status
     case new_status
     when 'pending'
-      self.approval_started_at = Time.zone.now
       self.approved_at = nil
       self.rejected_at = nil
     when 'approved'
-      self.approval_started_at = Time.zone.now
       self.approved_at = Time.zone.now
       self.rejected_at = nil
     when 'rejected'
-      self.approval_started_at = Time.zone.now
       self.rejected_at = Time.zone.now
       self.approved_at = nil
     end
