@@ -1,6 +1,6 @@
 if [ $RAILS_ENV = "development" ]; then
     yarn install 
-    yarn add phantomjs-prebuilt
+    yarn global add phantomjs-prebuilt
     bundle check || bundle install --path=vendor/bundle
 fi
 

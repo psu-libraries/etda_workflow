@@ -47,6 +47,8 @@ RUN sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/clamd.conf && \
     sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/freshclam.conf
 
 ENV TZ=America/New_York
+# needed for phantomjs
+ENV OPENSSL_CONF=/etc/ssl
 
 WORKDIR /etda_workflow
 
