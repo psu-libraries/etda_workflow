@@ -63,7 +63,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
     end
 
     context "when given an access ID that is part of the fake data" do
-      let(:access_id) { "saw140" }
+      let(:access_id) { "ajk5603" }
 
       it "returns an array of hashes for an author record" do
         expect(result).to be_a_kind_of(Hash)

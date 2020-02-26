@@ -120,7 +120,7 @@ RSpec.describe Author, type: :model do
   end
 
   context '#refresh_important_attributes' do
-    let(:author_update_results) { { access_id: 'testid', first_name: ' ', middle_name: 'Yhoo', last_name: 'Ilast', address_1: '0116 H Technology Sppt Bldg', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '814-865-4845', psu_idn: '988888888', confidential_hold: true } }
+    let(:author_update_results) { { access_id: 'testid', first_name: ' ', middle_name: 'Yhoo', last_name: 'Ilast', address_1: '0116 H Technology Sppt Bldg', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '814-456-7890', psu_idn: '988888888', confidential_hold: true } }
 
     it 'populates PSU id number if it is not present' do
       allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
@@ -198,7 +198,7 @@ RSpec.describe Author, type: :model do
   describe '#populate_attributes' do
     author = described_class.new(access_id: 'xyz123', psu_email_address: 'xyz123')
     author.save validate: false
-    let(:author_ldap_results) { { access_id: 'xyz123', first_name: 'Xyzlaphon', middle_name: 'Yhoo', last_name: 'Zebra', address_1: '0116 H Technology Sppt Bldg', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '814-865-4845', psu_idn: '988888888', confidential_hold: false } }
+    let(:author_ldap_results) { { access_id: 'xyz123', first_name: 'Xyzlaphon', middle_name: 'Yhoo', last_name: 'Zebra', address_1: 'University Libraries', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '814-123-4567', psu_idn: '988888888', confidential_hold: false } }
 
     it 'updates author attributes using LDAP information ' do
       expect(author.last_name).to be_blank
@@ -206,7 +206,7 @@ RSpec.describe Author, type: :model do
       allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('xyz123', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_ldap_results)
       author.populate_attributes
       expect(author.last_name).to eql('Zebra')
-      expect(author.phone_number).to eql('814-865-4845')
+      expect(author.phone_number).to eql('814-123-4567')
       expect(author.full_name).to eql("#{author.first_name} #{author.middle_name} #{author.last_name}")
     end
   end
