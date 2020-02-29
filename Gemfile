@@ -69,7 +69,7 @@ gem 'sprockets', '~> 3.7.2'
 
 gem 'etda_utilities', git: "https://github.com/psu-stewardship/etda_utilities.git", branch: 'master'
 
-gem 'rake', '< 11.0'
+gem 'rake', '< 13.0'
 
 gem 'net-ldap', '~> 0.16.1'
 
