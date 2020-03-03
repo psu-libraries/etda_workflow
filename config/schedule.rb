@@ -11,7 +11,7 @@ set :partner, ENV['PARTNER']
 job_type :partner_rake, "cd :path && :environment_variable=:environment PARTNER=:partner bundle exec rake :task --silent :output"
 
 every :day, roles: [:audit]  do
-  partner_rake 'audit:gems'
+  partner_rake 'audit:vulnerabilities'
 end
 
 every :sunday, at: '1am', roles: [:app] do
