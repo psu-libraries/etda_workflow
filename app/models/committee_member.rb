@@ -84,8 +84,8 @@ class CommitteeMember < ApplicationRecord
   end
 
   def email=(new_email)
-    self[:email] = new_email
-    new_access_id = LdapUniversityDirectory.new.retrieve_committee_access_id(new_email)
+    self[:email] = new_email.strip
+    new_access_id = LdapUniversityDirectory.new.retrieve_committee_access_id(self[:email])
     self.access_id = new_access_id if new_access_id.present?
   end
 
@@ -101,6 +101,10 @@ class CommitteeMember < ApplicationRecord
     token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)
     self.committee_member_token = token
     committee_member_token.save!
+  end
+
+  def name=(new_name)
+    super(new_name.strip)
   end
 
   private
