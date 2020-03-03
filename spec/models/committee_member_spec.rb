@@ -156,6 +156,14 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.access_id).to eq 'test123'
       end
     end
+
+    context 'when trailing and leading whitespace' do
+      it 'strips whitespace' do
+        cm.update_attributes email: '       test123@psu.edu       '
+        expect(cm.email).to eq 'test123@psu.edu'
+        expect(cm.access_id).to eq 'test123'
+      end
+    end
   end
 
   describe 'update_last_reminder_at' do
@@ -321,6 +329,17 @@ RSpec.describe CommitteeMember, type: :model do
       expect(cm2).not_to be_valid
       submission.committee_members << cm2
       expect(cm2).to be_valid
+    end
+  end
+
+  describe 'name' do
+    let(:cm) { described_class.new }
+
+    context 'when trailing and leading whitespace' do
+      it 'strips whitespace' do
+        cm.update_attribute :name, '     Test Tester      '
+        expect(cm.name).to eq 'Test Tester'
+      end
     end
   end
 end
