@@ -1,5 +1,6 @@
 public/assets
 vendor/cache
+vendor/bundle
 .git
 .bundle
 .mutagen
@@ -7,4 +8,4 @@ vendor/cache
 .cache
 node_modules
 tmp
-/log/*
+log/*
