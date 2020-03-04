@@ -515,7 +515,7 @@ DEPENDENCIES
   okcomputer
   poltergeist
   prawn
-  puma (>= 3.12.2)
+  puma (>= 4.3.3)
   rabl
   rabl-rails
   rails (~> 5.1.6.1)
