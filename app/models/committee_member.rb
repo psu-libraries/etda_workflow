@@ -43,7 +43,8 @@ class CommitteeMember < ApplicationRecord
 
   def self.head_of_program(submission_id)
     @submission = Submission.find(submission_id)
-    CommitteeMember.where(submission: @submission).find_by(committee_role: CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: @submission.degree.degree_type))
+    program_head_role = CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: @submission.degree.degree_type)
+    CommitteeMember.where(submission: @submission).find_by(committee_role: program_head_role)
   end
 
   def validate_email
