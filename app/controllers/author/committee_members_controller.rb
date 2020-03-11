@@ -78,7 +78,7 @@ class Author::CommitteeMembersController < AuthorController
 
   def head_of_program
     status_giver.can_update_committee?
-    @submission.committee_members.build(committee_role: @submission.degree_type.committee_roles.find_by(name: 'Program Head/Chair'), is_required: true) if CommitteeMember.head_of_program(@submission.id).blank?
+    @submission.committee_members.build(committee_role: @submission.degree_type.committee_roles.find_by(name: 'Program Head/Chair'), is_required: true) if CommitteeMember.head_of_program(@submission).blank?
     render :head_of_program_form
   rescue SubmissionStatusGiver::AccessForbidden
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
