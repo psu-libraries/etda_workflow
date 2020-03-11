@@ -33,6 +33,12 @@ services:
     depends_on:
     - db
     volumes:
+    - type: bind
+      consistency: cached
+      source: .
+      target: /etda_workflow/
+    - /etda_workflow/vendor/bundle
+    - /etda_workflow/node_modules
     - workflow_files:/etda_workflow/tmp/workflow_files
     - explore_files:/etda_workflow/tmp/explore_files
 

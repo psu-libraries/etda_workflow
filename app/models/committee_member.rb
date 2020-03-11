@@ -41,9 +41,9 @@ class CommitteeMember < ApplicationRecord
     CommitteeMember.where(submission_id: submission_id).pluck(:committee_role_id, :is_required, :name, :email)
   end
 
-  def self.head_of_program(submission_id)
-    @submission = Submission.find(submission_id)
-    CommitteeMember.where(submission: @submission).find_by(committee_role: CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: @submission.degree.degree_type))
+  def self.head_of_program(submission)
+    program_head_role = CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: submission.degree.degree_type)
+    CommitteeMember.where(submission: submission).find_by(committee_role: program_head_role)
   end
 
   def validate_email
@@ -112,7 +112,7 @@ class CommitteeMember < ApplicationRecord
   def one_head_of_program_check
     return true unless committee_role.present? && submission.present? && committee_role.name == 'Program Head/Chair'
 
-    head_committee_member_id = (CommitteeMember.head_of_program(submission.id) ? CommitteeMember.head_of_program(submission.id).id : nil)
+    head_committee_member_id = (CommitteeMember.head_of_program(submission) ? CommitteeMember.head_of_program(submission).id : nil)
     return true if (head_committee_member_id.nil? || head_committee_member_id == self[:id]) && (submission.committee_members.collect { |n| n.committee_role.present? ? n.committee_role.name : nil }.count('Program Head/Chair') < 2)
 
     errors.add(:committee_role_id, 'An author may only have one Program Head/Chair.')
