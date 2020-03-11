@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20200131173551) do
     t.index ["access_id"], name: "index_admins_on_access_id", unique: true
   end
 
-  create_table "approval_configurations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "approval_configurations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "degree_type_id"
     t.date "approval_deadline_on"
     t.integer "configuration_threshold"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20200131173551) do
     t.index ["degree_type_id"], name: "degree_type_id_fk"
   end
 
-  create_table "approvers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "approvers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "access_id", default: "", null: false
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 20200131173551) do
     t.index ["legacy_id"], name: "index_authors_on_legacy_id"
   end
 
-  create_table "committee_member_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "committee_member_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "authentication_token"
     t.bigint "committee_member_id"
     t.datetime "created_at", null: false
@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 20200131173551) do
     t.index ["degree_type_id"], name: "committee_roles_degree_type_id_fk"
   end
 
-  create_table "confidential_hold_histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "confidential_hold_histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "author_id", null: false
     t.datetime "set_at"
     t.datetime "removed_at"

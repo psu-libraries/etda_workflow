@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApprovalStatus
-  attr_reader :current_submission, :voting_committee_members,
+  attr_reader :current_submission, :voting_committee_members, :committee_members,
               :approval_configuration, :head_of_program
 
   WORKFLOW_STATUS =
@@ -15,6 +15,7 @@ class ApprovalStatus
   def initialize(submission)
     @current_submission = submission
     @voting_committee_members = submission.voting_committee_members
+    @committee_members = submission.committee_members
     @approval_configuration = submission.degree.degree_type.approval_configuration
     @head_of_program = CommitteeMember.head_of_program current_submission
   end
