@@ -3,7 +3,6 @@ vendor/cache
 vendor/bundle
 .git
 .bundle
-.mutagen
 .yarn
 .cache
 node_modules
