@@ -59,8 +59,8 @@
     
     To run tasks on the server, use the "invoke" namespace and the "rake" or "command" tasks to run rake tasks or bash commands respectively.  "rake" or "command" will invoke a rake task or bash command for a single specified stage + partner.  "rake_all" or "command_all" will invoke a rake task or bash command across all partners for a specified stage.  Ex:
     
-        `cap dev invoke:rake_all[db:seed:essential]`
-        `cap dev.graduate invoke:command['cat Gemfile.lock']`
+        cap dev invoke:rake_all[db:seed:essential]
+        cap dev.graduate invoke:command['cat Gemfile.lock']
         
     *Note: When running bash commands, the parameter to "invoke:command[]" should be in single quotes.*
     
