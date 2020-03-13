@@ -57,6 +57,10 @@ header {
     margin: 0 auto;
   }
 
+  #psu-shield img{
+    padding-top: 35px;
+  }
+
   #logo-old {
     a {
       color: #fff;
@@ -177,6 +181,10 @@ footer {
     min-height: 40px;
     margin-bottom: 0px;
     border-radius: 0px;
+
+    .text {
+      margin-top: 9px;
+    }
 
     .version,
     a {

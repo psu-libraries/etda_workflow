@@ -27,6 +27,7 @@ require('../base/ldap_lookup.js');
 require('../base/tagit.js');
 require('../base/toggle_caret.js');
 require('../images/PS_HOR_REV_RGB_2C.png');
+require('../images/PS_UL_REV_RGB_2C.png');
 require('../images/ETD-Grad.png');
 require('../images/ETD-Honors.png');
 require('../images/ETD-Milsch.png');
