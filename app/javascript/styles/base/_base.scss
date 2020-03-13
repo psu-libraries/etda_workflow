@@ -41,14 +41,20 @@ html {
 }
 
 header {
+  background-color: #000000;
+  padding-bottom: 40px;
+  margin-bottom: 30px;
 
   .navbar-default {
+    position: absolute;
+    height: 30px;
+    top: 110px;
+
     .navbar-text {
-      color: #727272;
+      color: #ffffff;
     }
   }
 
-  background-color: $dark-blue;
 
   #shield-and-logo img{
     margin: 0 auto;
@@ -59,6 +65,7 @@ header {
       color: #fff;
       font-size: $font-size-h1;
       line-height: 2;
+      padding-left: 15%;
 
       &:hover {
         text-decoration: none;
@@ -67,31 +74,31 @@ header {
   }
 
   #account-navigation {
-    margin: 0px;
-    min-height: 38px;
+    margin-left: 370px;
     border-radius: 0px;
+    border: 0px;
+    background-color: $medium-blue-bright;
 
     .navbar-btn.btn-sm {
-      margin-top: 3px;
-      margin-bottom: 3px;
+      color: #ffffff;
+      font-size: $font-size-base;
+      padding: 0px;
+      border-radius: 0px;
+
+      &:hover {
+        color: #000000;
+      }
     }
 
     @media (min-width: 768px) {
       .navbar-text.small {
-        margin-top: 10px;
-        margin-bottom: 9px;
+        color: #000000;
       }
     }
     #top-navigation ul {
-      li a {
-        background-color: whitesmoke;
-      }
       li.active a {
         font-weight: bold;
-        color: $brand-primary;
-        background-color: white;
-        border-color: $brand-primary;
-        border-width: 2px;
+        color: $dark-blue;
       }
     }
   }
@@ -157,17 +164,21 @@ ul.navbar-list {
 
 footer {
   bottom: 0px;
+  height: 100%;
   width: 100%;
   padding-top: 20px;
 
   .navbar-default .navbar-nav > li > a {
-    color: #727272;
+    color: #ffffff;
+  }
+  .version {
+    color: $gray-light;
   }
 
   #courtesy-navigation {
+    background-color: #000000;
     min-height: 40px;
     margin-bottom: 0px;
-    border-bottom: 0px;
     border-radius: 0px;
 
     .version,

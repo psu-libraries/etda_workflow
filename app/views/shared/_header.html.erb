@@ -9,7 +9,7 @@
         </div>
         <div class="col-xs-12 col-sm-9 col-lg-10">
         <span id="logo-old">
-          <a href="/"><%= I18n.t("#{current_partner.id}.header.title") %></a>
+          <a href="/"><%= image_tag("#{asset_pack_path 'media/images/ETD-Grad.png'}", alt: "ETD Grad Header", width: '475', height: '100' ) %></a>
         </span>
         </div>
       </div>
@@ -18,42 +18,41 @@
   <nav id="account-navigation" class="navbar navbar-default" role="navigation" aria-labelledby="top-navigation">
     <div class="container">
       <div class="row">
-        <div id=top-navigation class="col-xs-8 col-sm-7">
+        <div id=top-navigation class="col-sm-7">
           <ul class="list-inline navbar-list">
             <li class= "<%= top_nav_active?('main') %>">
-              <%= link_to 'Home', main_page_path, class: 'btn btn-default ' %>
+              <%= link_to 'Home', main_page_path, class: 'btn btn-sm navbar-btn' %>
             </li>
             <li class="<%= top_nav_active?('about') %>">
-              <%= link_to 'About', about_page_path, class: 'btn btn-default navbar-btn' %>
+              <%= link_to 'About', about_page_path, class: 'btn btn-sm navbar-btn' %>
             </li >
             <% if session[:user_role] == 'author' || session[:user_role] == 'approver' %>
               <li class="<%= top_nav_active?('email') %>">
-              <%= link_to 'Contact Us', email_contact_form_new_path, class: 'btn btn-default ' %>
+              <%= link_to 'Contact Us', email_contact_form_new_path, class: 'btn btn-sm navbar-btn ' %>
               </li>
             <% end %>
             <% unless controller_name == 'application' && action_name == 'main' %>
               <li>
-              <%= link_to 'Explore', EtdUrls.new.explore, class: 'btn btn-default navbar-btn' %>
+              <%= link_to 'Explore', EtdUrls.new.explore, class: 'btn btn-sm navbar-btn' %>
               </li>
             <% end  %>
           </ul>
         </div>
 
 
-        <div class="col-xs-4 col-sm-5">
-          <!--<div class="pull-right">-->
+        <div class="col-sm-5">
+          <div class="pull-right">
           <% unless controller_name == 'special_committee' %>
             <% unless session[:user_name].present? %>
-              <%= link_to 'Log In', :login, class: "btn btn-default btn-sm navbar-btn" %>
+              <%= link_to 'Log In', :login, class: "btn btn-sm navbar-btn log-btn" %>
             <% else %>
               <span class="navbar-text small hidden-xs">Logged in as <%= session[:user_name] || current_author.access_id || current_admin.access_id || current_approver.access_id %></span>
-              <%= link_to 'Log Out', :logout, class: "btn btn-default btn-sm navbar-btn" %>
+              <%= link_to 'Log Out', :logout, class: "btn btn-sm navbar-btn log-btn" %>
             <% end %>
           <% end %>
-          <!--</div>-->
+          </div>
         </div>
       </div>
-      <!-- /.col-* -->
     </div>
   </nav>
   <%= render partial: '/google_analytics' unless Rails.env.development? %>
