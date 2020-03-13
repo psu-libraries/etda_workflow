@@ -42,13 +42,10 @@ html {
 
 header {
   background-color: #000000;
-  padding-bottom: 40px;
-  margin-bottom: 30px;
 
   .navbar-default {
-    position: absolute;
-    height: 30px;
-    top: 110px;
+    min-height: 30px;
+    top: 20px;
 
     .navbar-text {
       color: #ffffff;
@@ -64,7 +61,6 @@ header {
     a {
       color: #fff;
       font-size: $font-size-h1;
-      line-height: 2;
       padding-left: 15%;
 
       &:hover {
@@ -74,7 +70,8 @@ header {
   }
 
   #account-navigation {
-    margin-left: 370px;
+    margin-left: 19.3%;
+    margin-right: 19.3%;
     border-radius: 0px;
     border: 0px;
     background-color: $medium-blue-bright;
@@ -118,7 +115,7 @@ ul.navbar-list {
 }
 
 .navbar-list li{
-  margin-top: 3px;
+  margin-bottom: -5px;
   .btn {
     width: 8em;
   }
@@ -667,7 +664,7 @@ a.cancel-link{
 
 #admin-col{
   margin-left: 3rem;
-  background-color: $dark-blue;
+  background-color: #000000;
   border-radius: 5px;
 }
 
