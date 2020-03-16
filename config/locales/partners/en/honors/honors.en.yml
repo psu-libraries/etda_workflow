@@ -5,6 +5,7 @@ en:
         medium: '%b %-d, %Y %l:%M %P'
     header:
       title: Electronic Theses for Schreyer Honors College
+      image: ETD-Honors.png
     submission:
       create:
         success: Your Graduate School submission was created successfully.

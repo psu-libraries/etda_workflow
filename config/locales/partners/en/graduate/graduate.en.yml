@@ -5,6 +5,7 @@ en:
         medium: '%b %-d, %Y %l:%M %P'
     header:
       title: Electronic Theses and Dissertations for Graduate School
+      image: ETD-Grad.png
     submission:
       create:
         success: Your Graduate School submission was created successfully.

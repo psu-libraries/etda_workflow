@@ -96,4 +96,8 @@ module ApplicationHelper
 
     " <span class='confidential-alert xxs' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='confidential hold'><span class='fa fa-warning'></span></span><span class='sr-only'>#{author.first_name} #{author.last_name} has a confidential hold</span>"
   end
+
+  def header_image
+    I18n.t("#{current_partner.id}.header.image")
+  end
 end
