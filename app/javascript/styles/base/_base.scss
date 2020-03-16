@@ -42,6 +42,7 @@ html {
 
 header {
   background-color: #000000;
+  margin-bottom: 20px;
 
   .navbar-default {
     min-height: 30px;
@@ -74,8 +75,8 @@ header {
   }
 
   #account-navigation {
-    margin-left: 19.3%;
-    margin-right: 19.3%;
+    margin:0 auto;
+    max-width: 1175px;
     border-radius: 0px;
     border: 0px;
     background-color: $medium-blue-bright;
@@ -89,6 +90,11 @@ header {
       &:hover {
         color: #000000;
       }
+    }
+
+    .log-div {
+      padding-right: 20px;
+      float: right;
     }
 
     @media (min-width: 768px) {
