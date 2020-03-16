@@ -6,7 +6,6 @@ en:
     header:
       title: Electronic Theses and Dissertations for Graduate School
       image: ETD-Grad.png
-      alt: ETD Graduate Header
     submission:
       create:
         success: Your Graduate School submission was created successfully.

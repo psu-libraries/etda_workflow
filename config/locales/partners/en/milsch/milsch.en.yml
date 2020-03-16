@@ -6,7 +6,6 @@ en:
     header:
       title: Electronic Theses for Millennium Scholars Program
       image: ETD-Milsch.png
-      alt: ETD Millennium Scholars Header
     submission:
       create:
         success: Your Millennium Scholars Program submission was created successfully.

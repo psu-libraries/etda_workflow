@@ -6,7 +6,6 @@ en:
     header:
       title: Electronic Theses for Schreyer Honors College
       image: ETD-Honors.png
-      alt: ETD Honors Header
     submission:
       create:
         success: Your Graduate School submission was created successfully.
