@@ -1,4 +1,4 @@
-class FinalSubmissionUpdateService
+class AdminFinalSubmissionUpdateService
   include ActionView::Helpers::UrlHelper
 
   attr_accessor :params
