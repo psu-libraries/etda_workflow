@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'shoulda-matchers'
 
-RSpec.describe AdminFinalSubmissionUpdateService, type: :model do
+RSpec.describe FinalSubmissionUpdateService do
   let(:final_count) { Partner.current.id == 'honors' ? 2 : 1 }
   let(:solr_result_success) {
     { error: false, solr_result:
@@ -28,11 +28,10 @@ RSpec.describe AdminFinalSubmissionUpdateService, type: :model do
 
   let(:committee_member) { FactoryBot.create :committee_member, created_at: DateTime.yesterday }
   let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-  let!(:approval_configuration) { FactoryBot.create :approval_configuration,
-                                                    configuration_threshold: 0,
-                                                    email_authors: true,
-                                                    use_percentage: false,
-                                                    email_admins: true }
+  let!(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0,
+                                                                                   email_authors: true,
+                                                                                   use_percentage: false,
+                                                                                   email_admins: true }
 
   before do
     WorkflowMailer.deliveries = []
@@ -189,6 +188,7 @@ RSpec.describe AdminFinalSubmissionUpdateService, type: :model do
       # no email updates for moving submission out of waiting to be released (this has not been published yet)
       expect(ActionMailer::Base.deliveries.count).to eq(start_count)
     end
+
     it 'removes a submission from publication and does not send an email - access_level does not change' do
       allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
       submission = FactoryBot.create :submission,
@@ -207,9 +207,9 @@ RSpec.describe AdminFinalSubmissionUpdateService, type: :model do
       expect(submission.abstract).to eq("my abstract")
       expect(WorkflowMailer.deliveries.count).to eq 0
     end
+
     it 'updates a final submission without changing the status' do
       allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
-
       start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission,
                                      :collecting_final_submission_files,
