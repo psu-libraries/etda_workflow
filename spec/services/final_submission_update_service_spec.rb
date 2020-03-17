@@ -5,33 +5,34 @@ require 'shoulda-matchers'
 
 RSpec.describe FinalSubmissionUpdateService do
   let(:final_count) { Partner.current.id == 'honors' ? 2 : 1 }
-  let(:solr_result_success) {
-    { error: false, solr_result:
-        { "responseHeader" => { "status" => 0, "QTime" => 2 },
-          "initArgs" => ["defaults", ["config", "db-data-config.xml"]],
-          "command" => "delta-import",
-          "status" => "idle",
-          "importResponse" => "",
-          "statusMessages" => { "Total Requests made to DataSource" => "8",
-                                "Total Rows Fetched" => "0",
-                                "Total Documents Processed" => "0",
-                                "Total Documents Skipped" => "0",
-                                "Delta Dump started" => "2018-07-19 21:37:30",
-                                "Identifying Delta" => "2018-07-19 21:37:30",
-                                "Deltas Obtained" => "2018-07-19 21:37:30",
-                                "Building documents" => "2018-07-19 21:37:30",
-                                "Total Changed Documents" => "0",
-                                "Time taken" => "0:0:0.354" }
-        }
-    }
-  }
+  let(:solr_result_success) do
+    { error: false,
+      solr_result:
+      { "responseHeader" => { "status" => 0, "QTime" => 2 },
+        "initArgs" => ["defaults", ["config", "db-data-config.xml"]],
+        "command" => "delta-import",
+        "status" => "idle",
+        "importResponse" => "",
+        "statusMessages" => { "Total Requests made to DataSource" => "8",
+                              "Total Rows Fetched" => "0",
+                              "Total Documents Processed" => "0",
+                              "Total Documents Skipped" => "0",
+                              "Delta Dump started" => "2018-07-19 21:37:30",
+                              "Identifying Delta" => "2018-07-19 21:37:30",
+                              "Deltas Obtained" => "2018-07-19 21:37:30",
+                              "Building documents" => "2018-07-19 21:37:30",
+                              "Total Changed Documents" => "0",
+                              "Time taken" => "0:0:0.354" } } }
+  end
 
   let(:committee_member) { FactoryBot.create :committee_member, created_at: DateTime.yesterday }
   let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-  let!(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0,
-                                                                                   email_authors: true,
-                                                                                   use_percentage: false,
-                                                                                   email_admins: true }
+  let!(:approval_configuration) do
+    FactoryBot.create :approval_configuration, configuration_threshold: 0,
+                                               email_authors: true,
+                                               use_percentage: false,
+                                               email_admins: true
+  end
 
   before do
     WorkflowMailer.deliveries = []
