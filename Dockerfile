@@ -15,7 +15,6 @@ RUN curl -Lo /tmp/envconsul.zip https://releases.hashicorp.com/envconsul/0.9.2/e
     unzip /tmp/envconsul.zip -d /bin && \
     rm /tmp/envconsul.zip
 
-
 RUN . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION \
     && nvm alias default $NODE_VERSION \

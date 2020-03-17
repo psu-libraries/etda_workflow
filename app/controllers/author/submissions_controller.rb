@@ -1,7 +1,6 @@
 class Author::SubmissionsController < AuthorController
   class MissingLionPathRecordError < StandardError; end
   before_action :find_submission, except: [:index, :new, :create, :published_submissions_index]
-  include MailerActionService
 
   def index
     @view = Author::SubmissionsIndexView.new(@author)
@@ -104,7 +103,7 @@ class Author::SubmissionsController < AuthorController
     @submission.access_level = 'open_access' if (current_partner.honors? || current_partner.milsch?) && @submission.access_level.blank?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
-    raise CommitteeMember::ProgramHeadMissing if @submission.head_of_program_is_approving? && CommitteeMember.head_of_program(@submission.id).blank?
+    raise CommitteeMember::ProgramHeadMissing if @submission.head_of_program_is_approving? && CommitteeMember.head_of_program(@submission).blank?
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
@@ -127,7 +126,7 @@ class Author::SubmissionsController < AuthorController
       @submission.reset_committee_reviews
       @submission.update_final_submission_timestamps!(Time.zone.now)
       redirect_to author_root_path
-      send_final_submission_received_email(@submission)
+      WorkflowMailer.send_final_submission_received_email(@submission)
       flash[:notice] = 'Final submission files uploaded successfully.'
       return
     elsif @submission.status == 'collecting final submission files rejected' && current_partner.honors?
@@ -136,7 +135,7 @@ class Author::SubmissionsController < AuthorController
       OutboundLionPathRecord.new(submission: @submission).report_status_change
       @submission.update_final_submission_timestamps!(Time.zone.now)
       redirect_to author_root_path
-      send_final_submission_received_email(@submission)
+      WorkflowMailer.send_final_submission_received_email(@submission)
       flash[:notice] = 'Final submission files uploaded successfully.'
       return
     end
@@ -144,7 +143,7 @@ class Author::SubmissionsController < AuthorController
       status_giver.can_waiting_for_committee_review?
       status_giver.waiting_for_committee_review!
       @submission.reset_committee_reviews
-      @submission.send_initial_committee_member_emails unless approval_status == 'approved'
+      @submission.committee_review_requests_init unless approval_status == 'approved'
     else
       status_giver.can_waiting_for_final_submission?
       status_giver.waiting_for_final_submission_response!
@@ -152,7 +151,7 @@ class Author::SubmissionsController < AuthorController
     OutboundLionPathRecord.new(submission: @submission).report_status_change
     @submission.update_final_submission_timestamps!(Time.zone.now)
     redirect_to author_root_path
-    send_final_submission_received_email(@submission)
+    WorkflowMailer.send_final_submission_received_email(@submission)
     flash[:notice] = 'Final submission files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid
     @view = Author::FinalSubmissionFilesView.new(@submission)
@@ -209,7 +208,7 @@ class Author::SubmissionsController < AuthorController
   def send_email_reminder
     @committee_member = @submission.committee_members.find(params[:committee_member_id])
     if @committee_member.reminder_email_authorized?
-      send_committee_review_reminders(@submission, @committee_member)
+      WorkflowMailer.send_committee_review_reminders(@submission, @committee_member)
       redirect_to author_submission_committee_review_path(@submission.id)
       flash[:notice] = 'Email successfully sent.'
     else

@@ -87,6 +87,11 @@ FactoryBot.define do
       final_submission_traits
     end
 
+    trait :waiting_in_final_submission_on_hold do
+      status { "waiting in final submission on hold" }
+      final_submission_traits
+    end
+
     trait :released_for_publication do
       status { "released for publication" }
       released_for_publication_at { Time.zone.yesterday }

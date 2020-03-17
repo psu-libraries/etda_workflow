@@ -1,6 +1,5 @@
 class FinalSubmissionUpdateService
   include ActionView::Helpers::UrlHelper
-  include MailerActionService
 
   attr_accessor :params
   attr_accessor :submission
@@ -30,14 +29,14 @@ class FinalSubmissionUpdateService
         status_giver.can_waiting_for_publication_release?
         status_giver.waiting_for_publication_release!
         UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-        @submission.deliver_final_emails
+        WorkflowMailer.send_final_emails(@submission)
       else
         status_giver.can_waiting_for_committee_review?
         status_giver.waiting_for_committee_review!
         UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
         @submission.update_status_from_committee
-        send_final_submission_approved_email(@submission)
-        @submission.send_initial_committee_member_emails if @submission.status_behavior.waiting_for_committee_review?
+        WorkflowMailer.send_final_submission_approved_email(@submission)
+        @submission.committee_review_requests_init if @submission.status_behavior.waiting_for_committee_review?
       end
       msg = "The submission\'s final submission information was successfully approved."
     elsif update_actions.rejected?
@@ -48,8 +47,15 @@ class FinalSubmissionUpdateService
       submission.final_submission_rejected_at = Time.zone.now
       submission.save
       status_giver.collecting_final_submission_files_rejected!
-      send_final_submission_rejected_email(@submission)
+      WorkflowMailer.send_final_submission_rejected_email(@submission)
       msg = "The submission\'s final submission information was successfully rejected and returned to the author for revision."
+    elsif update_actions.send_to_hold?
+      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
+      submission.placed_on_hold_at = DateTime.now
+      submission.save
+      status_giver.can_waiting_in_final_submission_on_hold?
+      status_giver.waiting_in_final_submission_on_hold!
+      msg = "The submission was successfully placed on hold."
     end
     if update_actions.record_updated?
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
@@ -61,6 +67,7 @@ class FinalSubmissionUpdateService
   end
 
   def respond_waiting_to_be_released
+    status_giver = SubmissionStatusGiver.new(submission)
     if update_actions.record_updated?
       # Editing a submission that is waiting to be released for publication
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
@@ -68,7 +75,6 @@ class FinalSubmissionUpdateService
     elsif update_actions.rejected?
       # Move back to Waiting for final submission approval (final submission submitted)
       # No file path changes necessary here; submission not released yet; files are still in workflow
-      status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_remove_from_waiting_to_be_released?
       status_giver.waiting_for_final_submission_response!
       # @submission.update_attribute :final_submission_rejected_at, Time.zone.now  #this causes it to go into final rejected - WAS ERROR
@@ -77,6 +83,20 @@ class FinalSubmissionUpdateService
       submission.final_submission_rejected_at = nil
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
       { msg: 'Submission was removed from waiting to be released', redirect_path: Rails.application.routes.url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_approved') }
+    elsif update_actions.send_to_hold?
+      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
+      submission.placed_on_hold_at = DateTime.now
+      submission.save
+      status_giver.can_waiting_in_final_submission_on_hold?
+      status_giver.waiting_in_final_submission_on_hold!
+      { msg: "The submission was successfully placed on hold.", redirect_path: Rails.application.routes.url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_on_hold') }
+    elsif update_actions.remove_hold?
+      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
+      submission.removed_hold_at = DateTime.now
+      submission.save
+      status_giver.can_waiting_for_publication_release?
+      status_giver.waiting_for_publication_release!
+      { msg: "The submission was successfully removed from its hold and is waiting to be released.", redirect_path: Rails.application.routes.url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_approved') }
     end
   end
 

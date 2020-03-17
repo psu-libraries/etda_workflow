@@ -47,6 +47,8 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:head_of_program_review_accepted_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:head_of_program_review_rejected_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:federal_funding).of_type(:boolean) }
+  it { is_expected.to have_db_column(:placed_on_hold_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:removed_hold_at).of_type(:datetime) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
@@ -349,7 +351,7 @@ RSpec.describe Submission, type: :model do
             allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
             allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('')
             submission = FactoryBot.create :submission, :waiting_for_committee_review
-            allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
+            allow(CommitteeMember).to receive(:head_of_program).with(submission).and_return(FactoryBot.create(:committee_member))
             submission.update_status_from_committee
             expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
             expect(WorkflowMailer.deliveries.count).to eq 1
@@ -361,7 +363,7 @@ RSpec.describe Submission, type: :model do
             allow_any_instance_of(Submission).to receive(:head_of_program_is_approving?).and_return false
             allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
             submission = FactoryBot.create :submission, :waiting_for_committee_review
-            allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
+            allow(CommitteeMember).to receive(:head_of_program).with(submission).and_return(FactoryBot.create(:committee_member))
             submission.update_status_from_committee
             expect(Submission.find(submission.id).status).to eq 'waiting for publication release' unless current_partner.honors?
             expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' if current_partner.honors?
@@ -374,7 +376,7 @@ RSpec.describe Submission, type: :model do
             allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
             allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('approved')
             submission = FactoryBot.create :submission, :waiting_for_committee_review
-            allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
+            allow(CommitteeMember).to receive(:head_of_program).with(submission).and_return(FactoryBot.create(:committee_member))
             submission.update_status_from_committee
             expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
             expect(WorkflowMailer.deliveries.count).to eq 0
@@ -413,6 +415,18 @@ RSpec.describe Submission, type: :model do
             expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
           end
         end
+      end
+    end
+
+    describe "#committee_review_requests_init" do
+      it 'sets approval_started_at timestamp for committee members' do
+        submission = FactoryBot.create :submission
+        create_committee submission
+        submission.reload
+        expect(submission.committee_members.first.approval_started_at).to be_falsey
+        submission.committee_review_requests_init
+        submission.reload
+        expect(submission.committee_members.first.approval_started_at).to be_truthy
       end
     end
   end

@@ -18,7 +18,6 @@ bundle: ## run bundle install in container
 
 down: ## turn this thing off
 	docker-compose down
-	mutagen terminate --label-selector app=etda-workflow
 
 up: ## run this thing
 	docker-compose up -d
@@ -35,7 +34,7 @@ dev: ## build and run locally
 	docker-compose up --build
 
 build: ## run development environment
-	docker-compose build;
+	docker-compose build
 
 yarn: ## Run Yarn
 	docker run -v $$PWD:/code -w=/code node:10 'yarn'

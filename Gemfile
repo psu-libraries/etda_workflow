@@ -18,7 +18,7 @@ gem 'rails', '~> 5.1.6.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '>= 0.3.18', '< 0.4.11'
 # Use Puma as the app server
-gem 'puma', ">= 3.12.2"
+gem 'puma', ">= 4.3.3"
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'webpacker'
 
@@ -67,9 +67,9 @@ gem "devise", ">= 4.7.1"
 
 gem 'sprockets', '~> 3.7.2'
 
-gem 'etda_utilities', '>= 0.8.0', branch: 'master', git: "https://github.com/psu-stewardship/etda_utilities.git"
+gem 'etda_utilities', git: "https://github.com/psu-stewardship/etda_utilities.git", branch: 'master'
 
-gem 'rake', '< 11.0'
+gem 'rake', '>= 12.3.3'
 
 gem 'net-ldap', '~> 0.16.1'
 

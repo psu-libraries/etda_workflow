@@ -11,8 +11,6 @@ class MockUniversityDirectory
 
   KNOWN_ACCESS_IDS = %w[
     ajk5603
-    saw140
-    ajk5603
     amg32
     xxb13
     conf123
@@ -30,12 +28,12 @@ class MockUniversityDirectory
         ]
       end
       [
-        { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling', dept: 'University Libraries' }
+        { id: 'ajk5603@psu.edu', label: 'Alex James Kiessling', value: 'Alex James Kiessling', dept: 'University Libraries' }
       ]
-    when /(scott)/i
+    when /(john)/i
       [
-        { id: 'sar3@psu.edu', label: 'Scott Rogers', value: 'Scott Rogers' },
-        { id: 'saw140@psu.edu', label: 'Scott Woods', value: 'Scott Woods' }
+        { id: 'jkl123@psu.edu', label: 'John Smith', value: 'John Smith' },
+        { id: 'Email not available', label: 'John Fred Williams', value: 'John Fred Williams', dept: 'Department not available' }
       ]
     when /Professor Buck Murphy/i
       [
@@ -122,16 +120,9 @@ class MockUniversityDirectory
       { access_id: 'amg32', first_name: 'Andrew', middle_name: 'Michael',
         last_name: 'Gearhart', address_1: 'Pattee Library',
         city: 'University Park', state: 'PA',
-        zip: '16802', phone_number: '814-867-5373',
-        country: 'US', psu_idn: '987654321', confidential_hold: false,
+        zip: '16802', phone_number: '555-555-5555',
+        country: 'US', psu_idn: '999999999', confidential_hold: false,
         administrator: true, site_administrator: true }
-    when /(saw140)/i
-      { access_id: 'saw140', first_name: 'Scott', middle_name: 'Aaron',
-        last_name: 'Woods', address_1: 'Allenway Bldg.',
-        city: 'State College', state: 'PA',
-        zip: '16801', phone_number: '666-666-6666',
-        country: 'US', psu_idn: '981818181', confidential_hold: false,
-        administrator: false, site_administrator: false }
     when /(xxb13)/i
       { access_id: 'testid', first_name: 'testfirst', middle_name: 'testmiddle',
         last_name: 'testlast', address_1: 'Anywhere',

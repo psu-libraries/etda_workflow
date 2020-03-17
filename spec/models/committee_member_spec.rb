@@ -85,7 +85,6 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.status).to be_blank
       end
       it 'updates timestamps' do
-        expect(cm.approval_started_at).to be_nil
         expect(cm.approved_at).to be_nil
         expect(cm.rejected_at).to be_nil
       end
@@ -100,7 +99,6 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.status).to eq("approved")
       end
       it 'updates timestamps' do
-        expect(cm.approval_started_at).to be_truthy
         expect(cm.approved_at).to be_truthy
         expect(cm.rejected_at).to be_nil
       end
@@ -115,7 +113,6 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.status).to eq("rejected")
       end
       it 'updates timestamps' do
-        expect(cm.approval_started_at).to be_truthy
         expect(cm.approved_at).to be_nil
         expect(cm.rejected_at).to be_truthy
       end
@@ -130,7 +127,6 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.status).to eq("pending")
       end
       it 'updates timestamps' do
-        expect(cm.approval_started_at).to be_truthy
         expect(cm.approved_at).to be_nil
         expect(cm.rejected_at).to be_nil
       end
@@ -157,6 +153,14 @@ RSpec.describe CommitteeMember, type: :model do
         cm.access_id = 'test123'
         allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
         cm.update_attributes email: 'test123@psu.edu'
+        expect(cm.access_id).to eq 'test123'
+      end
+    end
+
+    context 'when trailing and leading whitespace' do
+      it 'strips whitespace' do
+        cm.update_attributes email: '       test123@psu.edu       '
+        expect(cm.email).to eq 'test123@psu.edu'
         expect(cm.access_id).to eq 'test123'
       end
     end
@@ -325,6 +329,17 @@ RSpec.describe CommitteeMember, type: :model do
       expect(cm2).not_to be_valid
       submission.committee_members << cm2
       expect(cm2).to be_valid
+    end
+  end
+
+  describe 'name' do
+    let(:cm) { described_class.new }
+
+    context 'when trailing and leading whitespace' do
+      it 'strips whitespace' do
+        cm.update_attribute :name, '     Test Tester      '
+        expect(cm.name).to eq 'Test Tester'
+      end
     end
   end
 end

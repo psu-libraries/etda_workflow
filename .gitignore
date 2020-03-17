@@ -14,7 +14,6 @@ vendor/bundle
 .cache
 .bash_history
 .config
-.mutagen
 .local
 .gem
 

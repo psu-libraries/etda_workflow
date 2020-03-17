@@ -34,9 +34,9 @@
  
 
    To run the tests: 
-   1.  `bundle exec rspec` tests Graduate School instance   
-   2.  `bundle exec PARTNER=honors rspec` tests Honors College instance
-   3.  `PARTNER=milsch bundle exec rspec` tests Millennium Scholars instance
+   1.  `RAILS_ENV=test bundle exec rspec` tests Graduate School instance   
+   2.  `RAILS_ENV=test bundle exec PARTNER=honors rspec` tests Honors College instance
+   3.  `RAILS_ENV=test PARTNER=milsch bundle exec rspec` tests Millennium Scholars instance
 
    Additionally, there are some integration tests that use  javascript and some component tests that run against Penn State's LDAP directory service: rspec --tag glacial --tag ldap. Glacial are excluded by default when running in development because they are so slow.  Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.  When in development or testing, you must edit the development.rb or test.rb file in config/environments and change MockUniversityDirectory to LdapUniversityDirectory to test a true ldap call.
 
@@ -57,8 +57,12 @@
     The following example deploys the branch named ETDA-1111 to the QA server:
     `cap qa deploy_all BRANCH_NAME=ETDA-1111`
     
-    To run rake tasks on the server, use the "invoke" or "invoke_all" capistrano tasks.  "invoke" will invoke a rake task for a single specified stage + partner.  "invoke_all" will invoke a rake task across all partners for a specified stage.  Ex:
-    `cap dev invoke_all[db:seed:essential]`
+    To run tasks on the server, use the "invoke" namespace and the "rake" or "command" tasks to run rake tasks or bash commands respectively.  "rake" or "command" will invoke a rake task or bash command for a single specified stage + partner.  "rake_all" or "command_all" will invoke a rake task or bash command across all partners for a specified stage.  Ex:
+    
+        cap dev invoke:rake_all[db:seed:essential]
+        cap dev.graduate invoke:command['cat Gemfile.lock']
+        
+    *Note: When running bash commands, the parameter to "invoke:command[]" should be in single quotes.*
     
     If using ssh to run tasks on the server, be sure to set the PARTNER environment variable for partner specific tasks.
     

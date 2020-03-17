@@ -53,14 +53,13 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
 
     it 'can edit status and notes' do
-      allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
+      allow(CommitteeMember).to receive(:head_of_program).with(submission).and_return(FactoryBot.create(:committee_member))
       within("form#edit_committee_member_#{committee_member.id}") do
         find(:css, "#committee_member_status_approved").set true
         fill_in "committee_member_notes", with: 'Some notes.'
         find(:css, "#committee_member_federal_funding_used_true").set true if current_partner.graduate?
       end
       click_button 'Submit Review'
-      sleep 3
       expect(page).to have_current_path(approver_root_path)
       expect(CommitteeMember.find(committee_member.id).status).to eq 'approved'
       expect(CommitteeMember.find(committee_member.id).notes).to eq 'Some notes.'

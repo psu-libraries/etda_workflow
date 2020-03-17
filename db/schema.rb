@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191209181245) do
+ActiveRecord::Schema.define(version: 20200131173551) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "access_id", default: "", null: false
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20191209181245) do
     t.index ["access_id"], name: "index_admins_on_access_id", unique: true
   end
 
-  create_table "approval_configurations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "approval_configurations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "degree_type_id"
     t.date "approval_deadline_on"
     t.integer "configuration_threshold"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20191209181245) do
     t.index ["degree_type_id"], name: "degree_type_id_fk"
   end
 
-  create_table "approvers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "approvers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "access_id", default: "", null: false
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 20191209181245) do
     t.index ["legacy_id"], name: "index_authors_on_legacy_id"
   end
 
-  create_table "committee_member_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "committee_member_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "authentication_token"
     t.bigint "committee_member_id"
     t.datetime "created_at", null: false
@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 20191209181245) do
     t.index ["degree_type_id"], name: "committee_roles_degree_type_id_fk"
   end
 
-  create_table "confidential_hold_histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "confidential_hold_histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "author_id", null: false
     t.datetime "set_at"
     t.datetime "removed_at"
@@ -277,6 +277,8 @@ ActiveRecord::Schema.define(version: 20191209181245) do
     t.datetime "head_of_program_review_accepted_at"
     t.datetime "head_of_program_review_rejected_at"
     t.boolean "federal_funding"
+    t.datetime "placed_on_hold_at"
+    t.datetime "removed_hold_at"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"
