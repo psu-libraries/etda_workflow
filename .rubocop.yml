@@ -63,7 +63,6 @@ Metrics/ClassLength:
   - app/controllers/admin/submissions_controller.rb
   - app/presenters/admin/submissions_dashboard_view.rb
   - app/presenters/admin/submissions_index_view.rb
-  - app/controllers/author/submissions_controller.rb
   - app/presenters/author/submission_view.rb
   - app/presenters/admin/submission_form_view.rb
   - app/models/legacy/file_importer.rb
@@ -72,7 +71,7 @@ Metrics/ClassLength:
   - app/models/submission_status.rb
   - app/mailers/workflow_mailer.rb
   - app/controllers/approver/approvers_controller.rb
-
+  - app/controllers/author/submissions_controller.rb
 
 Metrics/CyclomaticComplexity:
   Exclude:
@@ -87,7 +86,6 @@ Metrics/CyclomaticComplexity:
   - app/models/submission.rb
   - app/presenters/author/submission_view.rb
   - app/controllers/author/committee_members_controller.rb
-  - app/controllers/author/submissions_controller.rb
   - app/presenters/author/committee_member_view.rb
   - app/models/committee_member.rb
 
@@ -105,7 +103,6 @@ Metrics/PerceivedComplexity:
   - app/controllers/author/committee_members_controller.rb
   - app/presenters/author/committee_member_view.rb
   - app/models/committee_member.rb
-  - app/controllers/author/submissions_controller.rb
 
 Layout/MultilineBlockLayout:
   Exclude:
