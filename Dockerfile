@@ -1,107 +1,94 @@
-FROM node:10 as nodejs
+# syntax=docker/dockerfile:experimental
+FROM ruby:2.6.5 as base
 
-FROM ruby:2.4.6 as ruby
+## NodeJS
+ENV NODE_VERSION 10.17.0
+RUN mkdir /usr/local/nvm
+ENV NVM_DIR /usr/local/nvm
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-COPY Gemfile Gemfile.lock  /etda_workflow/
-WORKDIR /etda_workflow
+### Envconsul
+RUN curl -Lo /tmp/envconsul.zip https://releases.hashicorp.com/envconsul/0.9.2/envconsul_0.9.2_linux_amd64.zip && \
+    unzip /tmp/envconsul.zip -d /bin && \
+    rm /tmp/envconsul.zip
 
-ARG RAILS_ENV
-ENV RAILS_ENV=$RAILS_ENV
-ENV GEM_HOME=/etda_workflow/vendor/bundle
-ENV GEM_PATH=/etda_workflow/vendor/bundle
-ENV BUNDLE_PATH=/etda_workflow/vendor/bundle
+RUN . $NVM_DIR/nvm.sh \
+    && nvm install $NODE_VERSION \
+    && nvm alias default $NODE_VERSION \
+    && nvm use default
 
-RUN gem install bundler
+RUN npm install -g yarn@1.19.1
 
-RUN bundle package --all
-RUN bundle install
-
-FROM ruby:2.4.6
-
-ARG RAILS_ENV
-ENV RAILS_ENV=$RAILS_ENV
-ENV GEM_HOME=/etda_workflow/vendor/bundle
-ENV GEM_PATH=/etda_workflow/vendor/bundle
-ENV BUNDLE_PATH=/etda_workflow/vendor/bundle
-ENV PATH="/etda_workflow/vendor/bundle/bin:${PATH}"
-WORKDIR /etda_workflow
-
-ENV TZ=America/New_York
-
-## Install Node from the node container.
-COPY --from=nodejs /usr/local/bin/node /usr/local/bin/
-COPY --from=nodejs /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --from=nodejs /opt/ /opt/
-
-RUN ln -sf /usr/local/bin/node /usr/local/bin/nodejs \
-  && ln -sf ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
-  && ln -sf ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx \
-  && ln -sf /opt/yarn*/bin/yarn /usr/local/bin/yarn \
-  && ln -sf /opt/yarn*/bin/yarnpkg /usr/local/bin/yarnpkg
-
-# System Dependencies
+# Clam AV 
 RUN apt-get update && \ 
-  apt-get install mariadb-client clamav clamdscan clamav-daemon wget libpng-dev make -y && \
+  apt-get install --no-install-recommends mariadb-client clamav clamdscan clamav-daemon wget libpng-dev make -y && \
   rm -rf /var/lib/apt/lists/*
 
-# Configure ClamAV
 RUN mkdir /var/run/clamav && \
     chown clamav:clamav /var/run/clamav && \
-    chmod 750 /var/run/clamav && \
-    chmod -R 775 /var/log/clamav
+    chmod 750 /var/run/clamav
 
 RUN touch  /etc/clamav/clamd.conf
 
-# Seed cve database. this get cached, so we also run freshclam as part of entrypoint
-RUN wget -O /var/lib/clamav/main.cvd http://database.clamav.net/main.cvd && \
-    wget -O /var/lib/clamav/daily.cvd http://database.clamav.net/daily.cvd && \
-    wget -O /var/lib/clamav/bytecode.cvd http://database.clamav.net/bytecode.cvd && \
-    chown clamav:clamav /var/lib/clamav/*.cvd
+RUN curl -Lo /var/lib/clamav/main.cvd http://database.clamav.net/main.cvd && \
+    curl -Lo /var/lib/clamav/daily.cvd http://database.clamav.net/daily.cvd && \
+    curl -Lo /var/lib/clamav/bytecode.cvd http://database.clamav.net/bytecode.cvd && \
+    chown clamav:clamav /var/lib/clamav/*.cvd && \
+    chown clamav:clamav /var/log/clamav/*
+
+RUN chmod g+w /var/lib/clamav
   
 RUN sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/clamd.conf && \
     echo "TCPSocket 3310" >> /etc/clamav/clamd.conf && \
-    sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/freshclam.conf && \
-    sed -i 's/^LocalSocket .*$/LocalSocket \/tmp\/clamd.ctl/g' /etc/clamav/clamd.conf
+    sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/freshclam.conf
+
+ENV TZ=America/New_York
+# needed for phantomjs
+ENV OPENSSL_CONF=/etc/ssl
+
+WORKDIR /etda_workflow
+
+COPY Gemfile Gemfile.lock /etda_workflow/
+
+ARG SSH_PRIVATE_KEY
+ARG RAILS_ENV
+ENV RAILS_ENV=$RAILS_ENV
+ENV SSH_PRIVATE_KEY_ENV=$SSH_PRIVATE_KEY
 
 RUN useradd -u 10000 etda -d /etda_workflow
 RUN usermod -G clamav etda
-
-RUN chown etda /etda_workflow
-
-# TODO move this up after figuring it out 
-RUN touch /var/log/clamav/clamav.log && \
-    chown clamav:clamav /var/log/clamav/clamav.log && \
-    chmod 775 /var/log/clamav/clamav.log && \
-    chown etda /var/run/clamav
-
+RUN mkdir -p /etda_workflow/.ssh
+RUN chown -R etda /etda_workflow
+RUN chown -R etda /etda_workflow/.ssh
 
 USER etda
+RUN gem install bundler:2.0.2
+RUN bundle install --path vendor/bundle
 
-# COPY --from=ruby /usr/local/bundle /usr/local/bundle
-COPY --from=ruby /etda_workflow /etda_workflow
-
-# Install javascript Dependencies before copying up source code
-COPY --chown=etda yarn.lock /etda_workflow
-COPY --chown=etda package.json /etda_workflow
-RUN yarn --frozen-lockfile
-
+COPY yarn.lock /etda_workflow
+COPY package.json /etda_workflow
+RUN yarn
 
 COPY --chown=etda . /etda_workflow
 
-# Needed for phantomjs to work
-ENV OPENSSL_CONF=/etc/ssl/
-
-RUN mkdir -p tmp && chown etda tmp
-
-USER etda
-
-
-# ensure tmp directory exists
-
-# Precompile assets as part of build to speed up runtime startup, and identify any problems before runtime
-# RUN RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
-RUN if [ "$RAILS_ENV" = "development" ]; then echo "skipping assets:precompile"; else RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile; fi
+RUN mkdir -p tmp/cache
 
 CMD ["./entrypoint.sh"]
 
-ENV PATH=/etda_workflow/.yarn/bin:${PATH}
+USER root
+RUN chmod -R 775 /var/log/clamav
+RUN chmod -R 775 /var/run/clamav
+USER etda
+
+FROM base as rspec
+CMD ["/etda_workflow/bin/ci-rspec"]
+
+FROM base as production
+
+RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
+
+CMD ["./entrypoint.sh"]
+

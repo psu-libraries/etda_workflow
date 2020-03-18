@@ -9,6 +9,7 @@
 vendor/gems
 vendor/bundle
 
+.npm
 .yarn
 .cache
 .bash_history
@@ -22,7 +23,6 @@ vendor/bundle
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-config/sidekiq.yml
 #config/secrets.yml
 #config/database.yml
 config/locales/test/**/*

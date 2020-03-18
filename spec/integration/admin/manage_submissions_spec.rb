@@ -13,6 +13,7 @@ RSpec.describe "Manage Submissions", js: true do
   before do
     webaccess_authorize_admin
     visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')
+    sleep 1
   end
 
   describe 'Admin Delete submissions' do
