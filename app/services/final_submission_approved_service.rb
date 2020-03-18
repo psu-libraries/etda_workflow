@@ -52,6 +52,10 @@ class FinalSubmissionApprovedService
     url_helpers.admin_edit_submission_path(submission.id.to_s)
   end
 
+  def admin_hold_sub_index_path
+    url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_on_hold')
+  end
+
   def admin_approved_sub_index_path
     url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_approved')
   end

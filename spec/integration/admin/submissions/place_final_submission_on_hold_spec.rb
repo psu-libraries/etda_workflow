@@ -26,16 +26,19 @@ RSpec.describe "Placing a final submission on hold as an admin", js: true do
       click_button 'Place this Submission On Hold'
       expect(Submission.find(submission.id).placed_on_hold_at).to be_truthy
       expect(Submission.find(submission.id).removed_hold_at).to be_falsey
+      expect(page).to have_current_path admin_submissions_index_path(submission.degree_type.slug, 'final_submission_on_hold')
     end
   end
 
   context 'when submission is waiting in final submission in on hold' do
     it 'moves submission to waiting in final submission to be released' do
+      allow_any_instance_of(Submission).to receive(:head_of_program_is_approving?).and_return false
       visit admin_submissions_index_path(DegreeType.default, 'final_submission_on_hold')
       click_link hold_submission.title
       click_button 'Remove from Hold'
       expect(Submission.find(hold_submission.id).removed_hold_at).to be_truthy
       expect(Submission.find(hold_submission.id).placed_on_hold_at).to be_falsey
+      expect(page).to have_current_path admin_submissions_index_path(submission.degree_type.slug, 'final_submission_approved')
     end
   end
 end
