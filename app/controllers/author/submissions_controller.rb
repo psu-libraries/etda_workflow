@@ -1,7 +1,6 @@
 class Author::SubmissionsController < AuthorController
   class MissingLionPathRecordError < StandardError; end
   before_action :find_submission, except: [:index, :new, :create, :published_submissions_index]
-  before_action :missing_head_redirect, only: :edit_final_submission
 
   def index
     @view = Author::SubmissionsIndexView.new(@author)
@@ -104,6 +103,7 @@ class Author::SubmissionsController < AuthorController
     @submission.access_level = 'open_access' if (current_partner.honors? || current_partner.milsch?) && @submission.access_level.blank?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
+    missing_head_redirect
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
