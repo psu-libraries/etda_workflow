@@ -1,0 +1,15 @@
+<div id="content-container" class="container">
+  <span><h2>Submission Details</h2></span>
+  <div class="row">
+    <div class="col-xs-6 submission_info">
+      <p>
+      <div><strong>Submission Title: </strong><%=@committee_member.submission.title%></div>
+      <div><strong>Graduation Semester: </strong><%= @submission.semester + ' ' + @submission.year.to_s %></div>
+      <div><strong>Federal Funding Used: </strong><%= @submission.federal_funding ? 'Yes' : 'No' %></div>
+      <div><strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %></div>
+      <div><strong>Phone:</strong> <%= @author.phone_number %></div>
+      <div><strong>Email:</strong> <%= @author.psu_email_address %></div>
+      </p>
+    </div>
+  </div>
+</div>

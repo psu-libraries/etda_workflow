@@ -1,31 +1,28 @@
 <div id="content-container" class="container">
-  <div id="content-row" class="row">
-      <div class="row">
-        <div class="col-xs-12 col-sm-9">
-          <h2>Committee Reviews</h2>
-        </div>
-        <br />
-        <table id="committee_member_table" class="table">
-          <thead>
-          <tr>
-            <th>Name</th>
-            <th>Committee Role</th>
-            <th>Review Status</th>
-            <th>Notes</th>
-          </tr>
-          </thead>
-          <tbody>
-          <% @submission.committee_members.each do |member| %>
-            <tr>
-              <td><%= member.name %></td>
-              <td><%= member.committee_role.name %></td>
-              <td><%= member.status ? member.status.capitalize : nil %></td>
-              <td><%= member.notes %></td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
-      </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-9">
+      <h2>Committee Reviews</h2>
     </div>
+    <br />
+    <table id="committee_member_table" class="table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Committee Role</th>
+        <th>Review Status</th>
+        <th>Notes</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @submission.committee_members.each do |member| %>
+        <tr>
+          <td><%= member.name %></td>
+          <td><%= member.committee_role.name %></td>
+          <td><%= member.status ? member.status.capitalize : nil %></td>
+          <td><%= member.notes %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
   </div>
-
+</div>

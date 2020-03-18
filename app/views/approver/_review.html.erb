@@ -1,0 +1,9 @@
+<div id="content-container" class="container">
+  <h2>My Final Review</h2>
+  <div class="row">
+    <div class="col-sm-12"><h4>This submission's access level is <a data-toggle="tooltip" data-placement="top" title="<%= @view.tooltip_text %>"><%=@committee_member.submission.current_access_level.label %></a></h4></div>
+  </div>
+  </br>
+  <%= render 'review_form' %>
+  <%= render 'return_link' %>
+</div>
