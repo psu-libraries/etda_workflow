@@ -298,7 +298,7 @@ class Submission < ApplicationRecord
 
   def self.release_for_publication(submission_ids, date_to_release, release_type)
     # Submission.transaction do
-    SubmissionReleasedService.new.publish(submission_ids, date_to_release, release_type)
+    SubmissionReleaseService.new.publish(submission_ids, date_to_release, release_type)
     # end
   end
 

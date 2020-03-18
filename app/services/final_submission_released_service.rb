@@ -1,4 +1,4 @@
-class FinalSubmissionReleasedService
+class FinalSubmissionReleaseService
   attr_accessor :submission
 
   def initialize(submission)

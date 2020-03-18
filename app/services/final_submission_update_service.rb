@@ -54,7 +54,7 @@ class FinalSubmissionUpdateService
 
     status_giver = SubmissionStatusGiver.new(submission)
     status_giver.can_unrelease_for_publication?
-    release_service = FinalSubmissionReleasedService.new(submission)
+    release_service = FinalSubmissionReleaseService.new(submission)
     release_service.released_unpublish
   end
 
