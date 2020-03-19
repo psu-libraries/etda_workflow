@@ -107,8 +107,8 @@ class Admin::SubmissionsController < AdminController
 
   def update_final_submission
     @submission = Submission.find(params[:id])
-    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
-    response = final_submission_update_service.waiting_for_final_submission
+    update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
+    response = update_service.waiting_for_final_submission
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
@@ -124,8 +124,8 @@ class Admin::SubmissionsController < AdminController
 
   def record_final_submission_response
     @submission = Submission.find(params[:id])
-    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
-    response = final_submission_update_service.respond_final_submission
+    update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
+    response = update_service.respond_final_submission
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
