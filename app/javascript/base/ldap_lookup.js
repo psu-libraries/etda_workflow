@@ -44,9 +44,19 @@ autocomplete_it = function(input_fields) {
             complete_email(ui, last_selected_ui, this);
             return last_selected_ui;
         },
+        response: function(event, ui) {
+            if (!ui.content.length) {
+                var noResult = { label: "No results found: Please do not include titles, only formal names for the search" };
+                ui.content.push(noResult);
+            }
+        },
         create: function() {
             $(this).data('ui-autocomplete')._renderItem = function(ul, item) {
-                 return $("<li>").append("<span class='cte-item'>" + item.label + ",  " + item.dept + "</span>").appendTo(ul);
+                if (item.label.match(/No results found/)) {
+                    return $("<li style='pointer-events: none'>").append("<p class='hint'>" + item.label + "</p>").appendTo(ul);
+                } else {
+                    return $("<li>").append("<span class='cte-item'>" + item.label + ",  " + item.dept + "</span>").appendTo(ul);
+                }
             };
         }
     });
