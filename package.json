@@ -29,6 +29,7 @@
     "jquery-ui": "^1.12.1",
     "jquery-ujs": "^1.2.2",
     "liquid-fire": "^0.29.2",
+    "mkdirp": "^1.0.0",
     "node-sass": "^4.13.1",
     "npm": "^6.13.4",
     "popper.js": "^1.14.3",
