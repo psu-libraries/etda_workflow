@@ -20,7 +20,7 @@ gem 'mysql2', '>= 0.3.18', '< 0.4.11'
 # Use Puma as the app server
 gem 'puma', ">= 4.3.3"
 # See https://github.com/rails/execjs#readme for more supported runtimes
-gem 'webpacker'
+gem 'webpacker', '~> 3.5.5'
 
 gem 'therubyracer', platforms: :ruby
 
