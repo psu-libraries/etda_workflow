@@ -66,6 +66,7 @@ RUN chown -R etda /etda_workflow/.ssh
 
 USER etda
 RUN gem install bundler:2.0.2
+COPY ./vendor/ /etda_workflow/vendor
 RUN bundle install --path vendor/bundle
 
 COPY yarn.lock /etda_workflow
@@ -87,6 +88,8 @@ FROM base as rspec
 CMD ["/etda_workflow/bin/ci-rspec"]
 
 FROM base as production
+
+RUN bundle install --without development test
 
 RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
 
