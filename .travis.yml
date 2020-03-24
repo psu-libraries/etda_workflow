@@ -3,7 +3,7 @@ language: ruby
 bundler_args: "--without development debug"
 # sudo: required
 #rvm:
-#- 2.4.3
+#- 2.6.0
 jdk:
 - oraclejdk12
 env:
