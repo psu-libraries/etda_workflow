@@ -90,7 +90,7 @@ gem 'caracal'  # for creating docx documents
 gem 'simple_form', '>= 5.0.0'
 
 # File uploads
-gem 'carrierwave'
+gem 'carrierwave', '~> 1.2.3'
 
 # Virus scanning for file uploads
 gem 'clam_scan'
