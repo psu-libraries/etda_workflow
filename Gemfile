@@ -117,8 +117,8 @@ gem 'byebug', platforms: %i[mri mingw x64_mingw]
 group :development, :test do
 
   gem 'rspec-rails'
-  gem 'rubocop'
-  gem 'rubocop-rspec'
+  gem 'rubocop', '~> 0.61.1'
+  gem 'rubocop-rspec', '~>  1.30.1'
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.18'
