@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM ruby:2.6.5 as base
+FROM ruby:2.6.0 as base
 
 ## NodeJS
 ENV NODE_VERSION 10.17.0
