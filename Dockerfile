@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM ruby:2.6.5 as base
+FROM ruby:2.6.0 as base
 
 ## NodeJS
 ENV NODE_VERSION 10.17.0
@@ -87,6 +87,8 @@ FROM base as rspec
 CMD ["/etda_workflow/bin/ci-rspec"]
 
 FROM base as production
+
+RUN bundle install --without development test
 
 RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
 

@@ -20,7 +20,7 @@ gem 'mysql2', '>= 0.3.18', '< 0.4.11'
 # Use Puma as the app server
 gem 'puma', ">= 4.3.3"
 # See https://github.com/rails/execjs#readme for more supported runtimes
-gem 'webpacker'
+gem 'webpacker', '~> 3.5.5'
 
 gem 'therubyracer', platforms: :ruby
 
@@ -90,7 +90,7 @@ gem 'caracal'  # for creating docx documents
 gem 'simple_form', '>= 5.0.0'
 
 # File uploads
-gem 'carrierwave'
+gem 'carrierwave', '~> 1.2.3'
 
 # Virus scanning for file uploads
 gem 'clam_scan'
@@ -117,14 +117,14 @@ gem 'byebug', platforms: %i[mri mingw x64_mingw]
 group :development, :test do
 
   gem 'rspec-rails'
-  gem 'rubocop'
-  gem 'rubocop-rspec'
+  gem 'rubocop', '~> 0.61.1'
+  gem 'rubocop-rspec', '~>  1.30.1'
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.18'
   gem 'capybara-email'
 
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '~> 4.11.1'
   gem 'faker'
 
   gem 'simplecov', require: false
