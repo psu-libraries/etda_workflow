@@ -41,6 +41,9 @@ gem 'sidekiq'
 # Used to schedule cron jobs on the servers
 gem 'whenever'
 
+# Datadog APM
+gem 'ddtrace', '~> 0.33'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 
