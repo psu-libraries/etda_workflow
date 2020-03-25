@@ -1,6 +1,4 @@
 version: 2.1
-# orbs:
-#   slack: circleci/slack@3.4.2
 
 jobs:
   build:
@@ -22,6 +20,25 @@ jobs:
         root: .
         paths:
           - etda-workflow.tar
+  rubocop:
+    docker:
+      - image: devago/docker-compose
+    environment:
+      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      DOCKER_USERNAME: 'robot$circleci'
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+    - setup_remote_docker
+    - checkout
+    - run:
+        name: "Rubocop"
+        command: |
+          docker load -i /tmp/workspace/etda-workflow.tar
+          export TAG=${CIRCLE_SHA1}
+          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+          RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
   test:
     docker:
       - image: devago/docker-compose
@@ -43,7 +60,7 @@ jobs:
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          RAILS_ENV=test docker-compose run --name=test --service-ports test /app/bin/ci-rspec
+          RAILS_ENV=test docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
           # docker cp test:/app/vendor .
     # - save_cache:
     #     paths:
@@ -92,6 +109,9 @@ workflows:
   etda-workflow:
     jobs:
       - build
+      - rubocop:
+          requires:
+            - build
       - test:
           requires:
             - build
