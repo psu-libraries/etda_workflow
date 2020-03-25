@@ -63,9 +63,6 @@ services:
     - bundle-data:/etda_workflow/vendor/bundle
     - node-data:/etda_workflow/node_modules
     - type: bind
-      source: $HOME/.ssh
-      target: /etda_workflow/.ssh
-    - type: bind
       consistency: cached
       source: .
       target: /etda_workflow/
