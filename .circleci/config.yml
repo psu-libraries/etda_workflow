@@ -133,14 +133,16 @@ workflows:
             - build
       - deploy-qa:
           requires:
-            - test
+            - test_grad
+            - test_milch
           filters:
             branches:
                only:
                 - master
       - deploy-preview:
           requires:
-            - test
+            - test_grad
+            - test_milch
           filters:
             branches:
               only:
