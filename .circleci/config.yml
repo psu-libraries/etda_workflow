@@ -65,7 +65,7 @@ jobs:
           docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $REGISTRY_HOST
           docker push $REGISTRY_URL:$CIRCLE_SHA1
-  test_milch:
+  test_milsch:
     docker:
       - image: devago/docker-compose
     environment:
@@ -78,12 +78,32 @@ jobs:
     - setup_remote_docker
     - checkout
     - run:
-        name: "Test Graduate"
+        name: "Test Milsch"
         command: |
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          RAILS_ENV=test PARTNER=milch docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          RAILS_ENV=test PARTNER=milsch docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          # docker cp test:/app/vendor .
+  test_honors:
+    docker:
+      - image: devago/docker-compose
+    environment:
+      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      DOCKER_USERNAME: 'robot$circleci'
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+    - setup_remote_docker
+    - checkout
+    - run:
+        name: "Test Honors"
+        command: |
+          docker load -i /tmp/workspace/etda-workflow.tar
+          export TAG=${CIRCLE_SHA1}
+          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+          RAILS_ENV=test PARTNER=honors docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
           # docker cp test:/app/vendor .
   deploy-qa:
     docker:
@@ -128,13 +148,17 @@ workflows:
       - test_grad:
           requires:
             - build
-      - test_milch:
+      - test_milsch:
+          requires:
+            - build
+      - test_honors:
           requires:
             - build
       - deploy-qa:
           requires:
             - test_grad
-            - test_milch
+            - test_milsch
+            - test_honors
           filters:
             branches:
                only:
@@ -142,7 +166,8 @@ workflows:
       - deploy-preview:
           requires:
             - test_grad
-            - test_milch
+            - test_milsch
+            - test_honors
           filters:
             branches:
               only:
