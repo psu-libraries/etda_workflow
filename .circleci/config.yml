@@ -33,7 +33,7 @@ jobs:
     - attach_workspace:
         at: /tmp/workspace
     - setup_remote_docker
-    # - checkout
+    - checkout
     # - restore_cache:
     #     keys:
     #       - bundle-{{ checksum "Gemfile.lock" }}
