@@ -2,8 +2,6 @@ require 'rails_helper'
 require 'shoulda-matchers'
 
 RSpec.describe CommitteeReminderWorker do
-  Sidekiq::Logging.logger = nil
-
   let(:submission) { FactoryBot.create :submission }
   let(:committee_member) { FactoryBot.create :committee_member, submission: submission }
   let(:detached_member) { FactoryBot.create :committee_member }

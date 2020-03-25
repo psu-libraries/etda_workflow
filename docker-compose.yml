@@ -37,6 +37,38 @@ services:
     - "3306:3306"
     volumes:
     - db-data:/var/lib/mysql
+  test:
+    tty: true
+    stdin_open: true
+    user: root
+    image: etda_workflow_web:latest
+    # build:
+      # context: . 
+      # target: base
+    environment:
+      REDIS_HOST: redis
+      APP_HOST: web
+      MYSQL_HOST: db
+      RAILS_ENV: test
+      PARTNER: ${PARTNER:-graduate}
+    command: >
+      sh -c "bundle check || bundle 
+      && bundle exec rake db:migrate
+      && bundle exec guard"
+    depends_on:
+    - db
+    volumes:
+    - workflow_files:/etda_workflow/tmp/workflow_files
+    - explore_files:/etda_workflow/tmp/explore_files
+    - bundle-data:/etda_workflow/vendor/bundle
+    - node-data:/etda_workflow/node_modules
+    - type: bind
+      source: $HOME/.ssh
+      target: /etda_workflow/.ssh
+    - type: bind
+      consistency: cached
+      source: .
+      target: /etda_workflow/
   web:
     tty: true
     stdin_open: true
@@ -59,8 +91,8 @@ services:
     volumes:
     - workflow_files:/etda_workflow/tmp/workflow_files
     - explore_files:/etda_workflow/tmp/explore_files
-    - /etda_workflow/vendor/bundle
-    - /etda_workflow/node_modules
+    - bundle-data:/etda_workflow/vendor/bundle
+    - node-data:/etda_workflow/node_modules
     - type: bind
       source: $HOME/.ssh
       target: /etda_workflow/.ssh
@@ -70,6 +102,8 @@ services:
       target: /etda_workflow/
 
 volumes:
+  node-data:
+  bundle-data:
   db-data:
   redis-data:
   workflow_files:
