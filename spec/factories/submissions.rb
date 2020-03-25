@@ -55,7 +55,6 @@ FactoryBot.define do
       has_agreed_to_terms { 1 }
       has_agreed_to_publication_release { 1 }
       final_submission_notes { "Final submission notes" }
-      keywords { [create(:keyword)] }
       defended_at { Time.zone.yesterday if current_partner.graduate? }
       year { Time.zone.today.year }
       semester { Semester.current.split.last }
@@ -129,6 +128,10 @@ FactoryBot.define do
       released_for_publication_at { nil }
       released_metadata_at { Time.zone.yesterday }
       final_submission_traits
+    end
+
+    after(:create) do |submission|
+      create_list(:keyword, 2, submission: submission)
     end
   end
 end
