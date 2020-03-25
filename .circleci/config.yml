@@ -11,9 +11,6 @@ jobs:
     steps:
     - setup_remote_docker
     - checkout
-    # - restore_cache:
-    #     keys:
-    #       - bundle-{{ checksum "Gemfile.lock" }}
     - run:
         name: "Build Container"
         command: |
@@ -23,10 +20,6 @@ jobs:
         root: .
         paths:
           - etda-workflow.tar
-    # - save_cache:
-    #     paths:
-    #       - vendor/bundle
-    #     key: bundle-{{ checksum "Gemfile.lock" }} 
   rubocop:
     docker:
       - image: devago/docker-compose
@@ -46,7 +39,7 @@ jobs:
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
-  test:
+  test_grad:
     docker:
       - image: devago/docker-compose
     environment:
@@ -72,6 +65,26 @@ jobs:
           docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $REGISTRY_HOST
           docker push $REGISTRY_URL:$CIRCLE_SHA1
+  test_milch:
+    docker:
+      - image: devago/docker-compose
+    environment:
+      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      DOCKER_USERNAME: 'robot$circleci'
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+    - setup_remote_docker
+    - checkout
+    - run:
+        name: "Test Graduate"
+        command: |
+          docker load -i /tmp/workspace/etda-workflow.tar
+          export TAG=${CIRCLE_SHA1}
+          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+          RAILS_ENV=test PARTNER=milch docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          # docker cp test:/app/vendor .
   deploy-qa:
     docker:
       - image: harbor.dsrd.libraries.psu.edu/public/drone-utils:latest
@@ -112,7 +125,10 @@ workflows:
       - rubocop:
           requires:
             - build
-      - test:
+      - test_grad:
+          requires:
+            - build
+      - test_milch:
           requires:
             - build
       - deploy-qa:
