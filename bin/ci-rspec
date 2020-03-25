@@ -1,0 +1,10 @@
+#!/bin/bash
+export RAILS_ENV=test
+
+# adds phantomjs for testing
+
+yarn global add phantomjs-prebuilt
+
+
+echo "Running Rspec for ${PARTNER}"
+PARTNER=${PARTNER} bundle exec rspec
