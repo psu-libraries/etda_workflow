@@ -32,7 +32,7 @@ jobs:
         command: |
           docker build -t $REGISTRY_URL:$CIRCLE_SHA1 -t etda_workflow_web:latest --target base .
           docker save -o etda-workflow.tar etda_workflow_web:latest
-          docker run --name=cache $REGISTRY_URL:$CIRCLE_SHA1 bash
+          docker run --name=cache etda-workflow:latest bash
           docker cp cache:/etda_workflow/vendor .
     - save_cache:
         paths:
