@@ -11,19 +11,19 @@ jobs:
     steps:
     - setup_remote_docker
     - checkout
-    - restore_cache:
-        keys:
-          - docker-image
+    # - restore_cache:
+    #     keys:
+    #       - docker-image
     - run:
         name: "Build Container"
         command: |
           if [ -f etda-workflow.tar ]; then docker load -i etda-workflow.tar; fi
           docker build -t $REGISTRY_URL:$CIRCLE_SHA1 -t etda_workflow_web:latest --target base .
           docker save -o etda-workflow.tar etda_workflow_web:latest
-    - save_cache:
-        paths:
-          - etda-workflow.tar
-        key: docker-image
+    # - save_cache:
+    #     paths:
+    #       - etda-workflow.tar
+    #     key: docker-image
     - persist_to_workspace:
         root: .
         paths:
