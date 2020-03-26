@@ -13,18 +13,17 @@ jobs:
     - checkout
     - restore_cache:
         keys:
-          - bundle-{{ checksum "Gemfile.lock" }}
+          - docker-image
     - run:
         name: "Build Container"
         command: |
+          if [ -f etda-workflow.tar ]; then docker load -i etda-workflow.tar; fi
           docker build -t $REGISTRY_URL:$CIRCLE_SHA1 -t etda_workflow_web:latest --target base .
           docker save -o etda-workflow.tar etda_workflow_web:latest
-          docker run --name=cache etda-workflow_web:latest bash
-          docker cp cache:/etda_workflow/vendor .
     - save_cache:
         paths:
-          - vendor/bundle
-        key: bundle-{{ checksum "Gemfile.lock" }}
+          - etda-workflow.tar
+        key: docker-image
     - persist_to_workspace:
         root: .
         paths:
