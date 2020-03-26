@@ -5,8 +5,8 @@ jobs:
   prepare:
     docker:
       - image: circleci/ruby:2.6.0-jessie-node
-    environment:
-      BUNDLE_PATH: vendor/bundle
+      environment:
+        BUNDLE_PATH: vendor/bundle
     steps:
     - setup_remote_docker
     - checkout
@@ -62,31 +62,4 @@ workflows:
       - rubocop:
           requires:
             - prepare
-      - test_grad:
-          requires:
-            - build
-      - test_milsch:
-          requires:
-            - build
-      - test_honors:
-          requires:
-            - build
-      - deploy-qa:
-          requires:
-            - test_grad
-            - test_milsch
-            - test_honors
-          filters:
-            branches:
-               only:
-                - master
-      - deploy-preview:
-          requires:
-            - test_grad
-            - test_milsch
-            - test_honors
-          filters:
-            branches:
-              only:
-                - /preview\/.*/
-                - develop
+      - test_grad
