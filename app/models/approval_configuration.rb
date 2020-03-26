@@ -5,14 +5,29 @@ class ApprovalConfiguration < ApplicationRecord
 
   validates :degree_type_id, :configuration_threshold, presence: true
 
-  GRADUATE_CONFIGURATION = { 'dissertation' => { approval_deadline_on: Date.today, configuration_threshold: 1, email_admins: 1, email_authors: 1, use_percentage: 0, head_of_program_is_approving: 1 },
-                             'master_thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 1, email_authors: 1, use_percentage: 0, head_of_program_is_approving: 1 } }.freeze
+  GRADUATE_CONFIGURATION = { 'dissertation' => { approval_deadline_on: Date.today, configuration_threshold: 1,
+                                                 email_admins: 1, email_authors: 1, use_percentage: 0,
+                                                 head_of_program_is_approving: 1 },
+                             'master_thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0,
+                                                  email_admins: 1, email_authors: 1, use_percentage: 0,
+                                                  head_of_program_is_approving: 1 } }.freeze
 
-  HONORS_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 1, email_authors: 1, use_percentage: 0, head_of_program_is_approving: 0 } }.freeze
+  HONORS_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0,
+                                         email_admins: 1, email_authors: 1, use_percentage: 0,
+                                         head_of_program_is_approving: 0 } }.freeze
 
-  MILSCH_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0, email_admins: 1, email_authors: 1, use_percentage: 0, head_of_program_is_approving: 0 } }.freeze
+  MILSCH_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0,
+                                         email_admins: 1, email_authors: 1, use_percentage: 0,
+                                         head_of_program_is_approving: 0 } }.freeze
 
-  CONFIGURATIONS = { 'graduate' => ApprovalConfiguration::GRADUATE_CONFIGURATION, 'honors' => ApprovalConfiguration::HONORS_CONFIGURATION, 'milsch' => ApprovalConfiguration::MILSCH_CONFIGURATION }.freeze
+  SSET_CONFIGURATION = { 'thesis' => { approval_deadline_on: Date.today, configuration_threshold: 0,
+                                       email_admins: 1, email_authors: 1, use_percentage: 0,
+                                       head_of_program_is_approving: 0 } }.freeze
+
+  CONFIGURATIONS = { 'graduate' => ApprovalConfiguration::GRADUATE_CONFIGURATION,
+                     'honors' => ApprovalConfiguration::HONORS_CONFIGURATION,
+                     'milsch' => ApprovalConfiguration::MILSCH_CONFIGURATION,
+                     'sset' => ApprovalConfiguration::SSET_CONFIGURATION }.freeze
 
   def self.seed
     ApprovalConfiguration::CONFIGURATIONS[current_partner.id].each do |degree_type, configuration|

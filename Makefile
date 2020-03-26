@@ -28,6 +28,9 @@ up_milsch: ## run this thing
 up_honors: ## run this thing
 	PARTNER=honors docker-compose up -d
 
+up_sset: ## run this thing
+	PARTNER=sset docker-compose up -d
+
 rebuild: build up ## run build and then up
 
 dev: ## build and run locally 
