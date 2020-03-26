@@ -31,6 +31,7 @@ require('../images/PS_UL_REV_RGB_2C.png');
 require('../images/ETD-Grad.png');
 require('../images/ETD-Honors.png');
 require('../images/ETD-Milsch.png');
+require('../images/ETD-Sset.png');
 require('../admin/edit_submission_form.js');
 require('../base/committee_member_focus.js');
 require('../base/initialize_tooltips.js');
