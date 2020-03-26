@@ -67,12 +67,23 @@ jobs:
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test PARTNER=graduate docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
           # docker cp test:/app/vendor .
-    - run:
-        name: "Publishing the image"
-        command: |
-          docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $REGISTRY_HOST
-          docker push $REGISTRY_URL:$CIRCLE_SHA1
+  publish:
+    docker:
+      - image: devago/docker-compose
+    environment:
+      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      DOCKER_USERNAME: 'robot$circleci'   
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: "Publish The Image"
+          command: |
+            docker load -i /tmp/workspace/etda-workflow.tar
+            docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $REGISTRY_HOST
+            docker push $REGISTRY_URL:$CIRCLE_SHA1
   test_milsch:
     docker:
       - image: devago/docker-compose
@@ -162,20 +173,19 @@ workflows:
       - test_honors:
           requires:
             - build
-      - deploy-qa:
+      - publish:
           requires:
             - test_grad
-            - test_milsch
-            - test_honors
+      - deploy-qa:
+          requires:
+            - publish
           filters:
             branches:
                only:
                 - master
       - deploy-preview:
           requires:
-            - test_grad
-            - test_milsch
-            - test_honors
+            - publish
           filters:
             branches:
               only:
