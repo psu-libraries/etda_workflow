@@ -1,18 +1,5 @@
 version: 2.1
 
-common_test: &common_test
-  docker:
-    - image: devago/docker-compose
-  environment:
-    REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-    REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
-    DOCKER_USERNAME: 'robot$circleci'
-  steps:
-  - attach_workspace:
-      at: /tmp/workspace
-  - setup_remote_docker
-  - checkout
-
 jobs:
   build:
     docker:
@@ -24,17 +11,36 @@ jobs:
     steps:
     - setup_remote_docker
     - checkout
+    - restore_cache:
+        keys:
+          - bundle-{{ checksum "Gemfile.lock" }}
     - run:
         name: "Build Container"
         command: |
           docker build -t $REGISTRY_URL:$CIRCLE_SHA1 -t etda_workflow_web:latest --target base .
           docker save -o etda-workflow.tar etda_workflow_web:latest
+          docker run --name=cache etda-workflow_web:latest bash
+          docker cp cache:/etda_workflow/vendor .
+    - save_cache:
+        paths:
+          - vendor/bundle
+        key: bundle-{{ checksum "Gemfile.lock" }}
     - persist_to_workspace:
         root: .
         paths:
           - etda-workflow.tar
   rubocop:
-    <<: *common_test
+    docker:
+      - image: devago/docker-compose
+    environment:
+      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      DOCKER_USERNAME: 'robot$circleci'
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+    - setup_remote_docker
+    - checkout
     - run:
         name: "Rubocop"
         command: |
@@ -43,7 +49,17 @@ jobs:
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
   test_grad:
-    <<: *common_test
+    docker:
+      - image: devago/docker-compose
+    environment:
+      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      DOCKER_USERNAME: 'robot$circleci'
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+    - setup_remote_docker
+    - checkout
     - run:
         name: "Test Graduate"
         command: |
@@ -59,7 +75,17 @@ jobs:
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $REGISTRY_HOST
           docker push $REGISTRY_URL:$CIRCLE_SHA1
   test_milsch:
-    <<: *common_test
+    docker:
+      - image: devago/docker-compose
+    environment:
+      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      DOCKER_USERNAME: 'robot$circleci'
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+    - setup_remote_docker
+    - checkout
     - run:
         name: "Test Milsch"
         command: |
@@ -69,7 +95,17 @@ jobs:
           RAILS_ENV=test PARTNER=milsch docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
           # docker cp test:/app/vendor .
   test_honors:
-    <<: *common_test
+    docker:
+      - image: devago/docker-compose
+    environment:
+      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      DOCKER_USERNAME: 'robot$circleci'
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+    - setup_remote_docker
+    - checkout
     - run:
         name: "Test Honors"
         command: |
