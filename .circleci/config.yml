@@ -5,8 +5,8 @@ jobs:
   prepare:
     docker:
       - image: circleci/ruby:2.6.0-jessie-node
-      environment:
-        BUNDLE_PATH: vendor/bundle
+        environment:
+          BUNDLE_PATH: vendor/bundle
     steps:
     - setup_remote_docker
     - checkout
