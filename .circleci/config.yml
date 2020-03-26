@@ -1,66 +1,157 @@
 version: 2.1
 
+common_test: &common_test
+  docker:
+    - image: devago/docker-compose
+  environment:
+    REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+    REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+    DOCKER_USERNAME: 'robot$circleci'
+  steps:
+  - attach_workspace:
+      at: /tmp/workspace
+  - setup_remote_docker
+  - checkout
 
 jobs:
-  prepare:
+  build:
     docker:
-      - image: circleci/ruby:2.6.0-node-browsers
-        environment:
-          BUNDLE_PATH: vendor/bundle
+      - image: devago/docker-compose
+    environment:
+      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      DOCKER_USERNAME: 'robot$circleci'
     steps:
     - setup_remote_docker
     - checkout
-
     - restore_cache:
         keys:
           - bundle-{{ checksum "Gemfile.lock" }}
-
     - run:
-        name: "Install Ruby Dependencies"
+        name: "Build Container"
         command: |
-          gem install bundler:2.0.2
-          bundle check --path vendor/bundle || bundle
-
+          docker build -t $REGISTRY_URL:$CIRCLE_SHA1 -t etda_workflow_web:latest --target base .
+          docker save -o etda-workflow.tar etda_workflow_web:latest
+          docker run --name=cache $REGISTRY_URL:$CIRCLE_SHA1 bash
+          docker cp cache:/etda_workflow/vendor .
     - save_cache:
-        key: bundle-{{ checksum "Gemfile.lock" }}
         paths:
           - vendor/bundle
-
-    - restore_cache:
-        keys:
-          - yarn-{{ checksum "yarn.lock" }}
-
-    - run:
-        name: "Yarn Install"
-        command: yarn install --cache-folder ~/.cache/yarn
-
-    - save_cache:
-        key: yarn-{{ checksum "yarn.lock" }}
-        paths:
-          - ~/.cache/yarn
-
+        key: bundle-{{ checksum "Gemfile.lock" }}
     - persist_to_workspace:
         root: .
         paths:
-          - vendor/bundle
-          - node_modules
+          - etda-workflow.tar
   rubocop:
-    docker:
-      - image: circleci/ruby:2.6.0-node-browsers
-        environment:
-          BUNDLE_PATH: vendor/bundle
-    steps:
+    <<: *common_test
     - run:
         name: "Rubocop"
         command: |
-          bundle exec rubocop
+          docker load -i /tmp/workspace/etda-workflow.tar
+          export TAG=${CIRCLE_SHA1}
+          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+          RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
+  test_grad:
+    <<: *common_test
+    - run:
+        name: "Test Graduate"
+        command: |
+          docker load -i /tmp/workspace/etda-workflow.tar
+          export TAG=${CIRCLE_SHA1}
+          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+          RAILS_ENV=test PARTNER=graduate docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          # docker cp test:/app/vendor .
+    - run:
+        name: "Publishing the image"
+        command: |
+          docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $REGISTRY_HOST
+          docker push $REGISTRY_URL:$CIRCLE_SHA1
+  test_milsch:
+    <<: *common_test
+    - run:
+        name: "Test Milsch"
+        command: |
+          docker load -i /tmp/workspace/etda-workflow.tar
+          export TAG=${CIRCLE_SHA1}
+          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test PARTNER=milsch docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          # docker cp test:/app/vendor .
+  test_honors:
+    <<: *common_test
+    - run:
+        name: "Test Honors"
+        command: |
+          docker load -i /tmp/workspace/etda-workflow.tar
+          export TAG=${CIRCLE_SHA1}
+          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+          RAILS_ENV=test PARTNER=honors docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          # docker cp test:/app/vendor .
+  deploy-qa:
+    docker:
+      - image: harbor.dsrd.libraries.psu.edu/public/drone-utils:latest
+    environment:
+      CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
+      CONFIG_ENV: qa
+      IMAGE_REPOSITORY: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+    steps:
+    - add_ssh_keys
+    - run:
+        name: "Updating Config Repo"
+        command: |
+            ssh-keyscan github.com > ~/.ssh/known_hosts
+            git clone $CONFIG_REPO
+            cd etda-workflow-config
+            ./generate_circle_application.sh
+  deploy-preview:
+    docker:
+      - image: harbor.dsrd.libraries.psu.edu/public/drone-utils:latest
+    environment:
+      CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
+      IMAGE_REPOSITORY: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+    steps:
+    - add_ssh_keys
+    - run:
+        name: "Updating Config Repo"
+        command: |
+           ssh-keyscan github.com > ~/.ssh/known_hosts
+           git clone $CONFIG_REPO
+           cd etda-workflow-config
+           ./generate_circle_application.sh
 
 workflows:
   version: 2
   etda-workflow:
     jobs:
-      - prepare
+      - build
       - rubocop:
           requires:
-            - prepare
+            - build
+      - test_grad:
+          requires:
+            - build
+      - test_milsch:
+          requires:
+            - build
+      - test_honors:
+          requires:
+            - build
+      - deploy-qa:
+          requires:
+            - test_grad
+            - test_milsch
+            - test_honors
+          filters:
+            branches:
+               only:
+                - master
+      - deploy-preview:
+          requires:
+            - test_grad
+            - test_milsch
+            - test_honors
+          filters:
+            branches:
+              only:
+                - /preview\/.*/
+                - develop
