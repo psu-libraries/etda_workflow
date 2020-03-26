@@ -63,4 +63,3 @@ workflows:
       - rubocop:
           requires:
             - prepare
-      - test_grad
