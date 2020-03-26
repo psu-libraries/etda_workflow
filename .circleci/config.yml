@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   prepare:
     docker:
-      - image: circleci/ruby:2.6.0-jessie-node
+      - image: circleci/ruby:2.6.0-node-browsers
         environment:
           BUNDLE_PATH: vendor/bundle
     steps:
@@ -45,7 +45,7 @@ jobs:
           - node_modules
   rubocop:
     docker:
-      - image: circleci/ruby:2.6.0-jessie-node
+      - image: circleci/ruby:2.6.0-node-browsers
         environment:
           BUNDLE_PATH: vendor/bundle
     steps:
