@@ -241,7 +241,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
             a_hash_including(
               id: 'format-review-incomplete',
               path: admin_submissions_index_path(degree_type, 'format_review_incomplete'),
-              count: '12'
+              count: '3'
             ),
             a_hash_including(
               id: 'format-review-submitted',
@@ -301,7 +301,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
             a_hash_including(
               id: 'format-review-incomplete',
               path: admin_submissions_index_path(degree_type, 'format_review_incomplete'),
-              count: '12'
+              count: '3'
             ),
             a_hash_including(
               id: 'format-review-submitted',
