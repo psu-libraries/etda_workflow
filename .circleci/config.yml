@@ -75,6 +75,8 @@ jobs:
       REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'   
     steps:
+      - setup_remote_docker
+      - checkout
       - attach_workspace:
           at: /tmp/workspace
       - run:
