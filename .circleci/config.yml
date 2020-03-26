@@ -48,6 +48,7 @@ jobs:
       - image: circleci/ruby:2.6.0-jessie-node
         environment:
           BUNDLE_PATH: vendor/bundle
+    steps:
     - run:
         name: "Rubocop"
         command: |
