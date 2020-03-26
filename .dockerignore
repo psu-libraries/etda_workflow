@@ -1,6 +1,5 @@
 public/assets
 vendor/cache
-vendor/bundle
 .git
 .bundle
 .yarn
