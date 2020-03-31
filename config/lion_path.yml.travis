@@ -10,4 +10,7 @@ test:
   milsch:
     :lion_path_outbound: false
     :lion_path_inbound: false
+  sset:
+    :lion_path_outbound: false
+    :lion_path_inbound: false
 
