@@ -24,6 +24,7 @@ RSpec.describe "Author Navigation", js: true do
     expect(page).to have_content(current_partner.slug.to_s)
     expect(page).to have_content('Important Things')
     expect(page).to have_content('Expand Creative Possibilities')
+    expect(page).to have_content('Format Standards and Process')
   end
 
   it 'has a main page' do

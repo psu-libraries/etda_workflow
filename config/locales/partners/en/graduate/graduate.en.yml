@@ -304,6 +304,7 @@ en:
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
     admin:
+      umg: 'cn=umg/psu.sas.etda-graduate-admins,dc=psu,dc=edu'
       submission:
         edit:
           author-information: Author Information
