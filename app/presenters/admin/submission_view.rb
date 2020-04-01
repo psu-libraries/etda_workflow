@@ -32,9 +32,17 @@ class Admin::SubmissionView < SimpleDelegator
 
   def most_relevant_file_links
     if final_submission_files.any?
-      final_submission_files.map { |f| context.link_to_if !f.asset_identifier.nil?, f.asset_identifier, context.admin_final_submission_file_path(f.id), 'data-no-turbolink': true }
+      final_submission_files.map do |f|
+        context.link_to_if !f.asset_identifier.nil?,
+                           f.asset_identifier.truncate(30, omission: "...#{f.asset_identifier[-7..]}"),
+                           context.admin_final_submission_file_path(f.id), 'data-no-turbolink': true
+      end
     elsif format_review_files.any?
-      format_review_files.map { |f| context.link_to_if !f.asset_identifier.nil?, f.asset_identifier, context.admin_format_review_file_path(f.id), 'data-no-turbolink': true }
+      format_review_files.map do |f|
+        context.link_to_if !f.asset_identifier.nil?,
+                           f.asset_identifier.truncate(30, omission: "...#{f.asset_identifier[-7..]}"),
+                           context.admin_format_review_file_path(f.id), 'data-no-turbolink': true
+      end
     else
       []
     end
