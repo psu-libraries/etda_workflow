@@ -208,17 +208,35 @@ en:
       label: Committee Member
       list:
         label: Committee Members
-        thesis:
-          thesis_advisor: The professor responsible for supervising a MS student through the writing of their thesis.
-          committee_member: A professor who serves a variety of roles in the student’s thesis and is a member of the committee.
+        master_thesis:
+          thesis_advisor:
+            name: Thesis Advisor
+            description: The professor responsible for supervising a MS student through the writing of their thesis.
+          committee_member:
+            name: Committee Member
+            description: A professor who serves a variety of roles in the student’s thesis and is a member of the committee.
         dissertation:
-          dissertation_advisor: Graduate Faculty member(s) principally responsible for day-to-day guidance of the student’s dissertation research and academic/professional development.
-          committee_chair: The Committee Chair must be a member of the Graduate Faculty and the student’s major Graduate Program.  The Committee Chair is responsible for arranging and conducting all committee meetings and ensuring that all requirements relative to the doctoral degree are met.
-          committee_member: A member of the Graduate Faculty who is in position to contribute to the student’s education.
-          outside_member: The Outside Member must have their primary academic appointment in an administrative unit different than the Ph.D. Committee Chair(s) and Dissertation Adviser(s).
-          special_signatory: A person outside the university with expertise in a particular field who is unable to attend the final defense.
-          special_member: A member of the student’s Ph.D. Committee who is not a member of the Graduate Faculty of Penn State, but whose expertise and insights would provide substantial benefit to the student’s dissertation research and the Ph.D. Committee.
-          program_head: Faculty member responsible for leadership in developing the department’s academic programs.
+          dissertation_advisor:
+            name: Dissertation Advisor
+            description: Graduate Faculty member(s) principally responsible for day-to-day guidance of the student’s dissertation research and academic/professional development.
+          committee_chair:
+            name: Committee Chair
+            description: The Committee Chair must be a member of the Graduate Faculty and the student’s major Graduate Program.  The Committee Chair is responsible for arranging and conducting all committee meetings and ensuring that all requirements relative to the doctoral degree are met.
+          committee_member:
+            name: Committee Member
+            description: A member of the Graduate Faculty who is in position to contribute to the student’s education.
+          outside_member:
+            name: Outside Member
+            description: The Outside Member must have their primary academic appointment in an administrative unit different than the Ph.D. Committee Chair(s) and Dissertation Adviser(s).
+          special_signatory:
+            name: Special Signatory
+            description: A person outside the university with expertise in a particular field who is unable to attend the final defense.
+          special_member:
+            name: Special Member
+            description: A member of the student’s Ph.D. Committee who is not a member of the Graduate Faculty of Penn State, but whose expertise and insights would provide substantial benefit to the student’s dissertation research and the Ph.D. Committee.
+          program_head:
+            name: Program Head
+            description: Faculty member responsible for leadership in developing the department’s academic programs.
       author_instructions:
         The committee for a Master's thesis must consist of at least one Thesis Advisor and two Committee Members.  The committee for a Dissertation must include one Dissertation Advisor, one Committee Chair, two Committee Members, and one Outside Member.
       author_notice:

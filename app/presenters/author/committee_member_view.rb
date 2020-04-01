@@ -38,25 +38,10 @@ class Author::CommitteeMemberView
   end
 
   def committee_members_tooltip_text
-    if current_partner.graduate? && model.submission.degree_type.name == "Master Thesis"
-      "<p><strong>Thesis Advisor</strong> - #{I18n.t('graduate.committee.list.thesis.thesis_advisor')}</p>
-       <p><strong>Committee Member</strong> - #{I18n.t('graduate.committee.list.thesis.committee_member')}</p>".html_safe
-    elsif current_partner.graduate? && model.submission.degree_type.name == "Dissertation"
-      "<p><strong>Dissertation Advisor</strong> - #{I18n.t('graduate.committee.list.dissertation.dissertation_advisor')}</p>
-       <p><strong>Committee Chair</strong> - #{I18n.t('graduate.committee.list.dissertation.committee_chair')}</p>
-       <p><strong>Committee Member</strong> - #{I18n.t('graduate.committee.list.dissertation.committee_member')}</p>
-       <p><strong>Outside Member</strong> - #{I18n.t('graduate.committee.list.dissertation.outside_member')}</p>
-       <p><strong>Special Signatory</strong> - #{I18n.t('graduate.committee.list.dissertation.special_signatory')}</p>
-       <p><strong>Special Member</strong> - #{I18n.t('graduate.committee.list.dissertation.special_member')}</p>
-       <p><strong>Program Head/Chair</strong> - #{I18n.t('graduate.committee.list.dissertation.program_head')}</p>".html_safe
-    elsif current_partner.honors?
-      "<p><strong>Thesis Supervisor</strong> - #{I18n.t('honors.committee.list.thesis.thesis_supervisor')}</p>
-       <p><strong>Thesis Honors Adviser</strong> - #{I18n.t('honors.committee.list.thesis.thesis_honors_adviser')}</p>
-       <p><strong>Faculty Reader</strong> - #{I18n.t('honors.committee.list.thesis.faculty_reader')}</p>".html_safe
-    elsif current_partner.milsch?
-      "<p><strong>Thesis Supervisor</strong> - #{I18n.t('milsch.committee.list.thesis.thesis_supervisor')}</p>
-       <p><strong>Advisor</strong> - #{I18n.t('milsch.committee.list.thesis.advisor')}</p>
-       <p><strong>Honors Advisor</strong> - #{I18n.t('milsch.committee.list.thesis.honors_advisor')}</p>".html_safe
+    output = ''
+    I18n.t("#{current_partner.id}.committee.list.#{model.submission.degree_type.slug}").each do |k, v|
+      output << "<p><strong>#{v[:name]}</strong> - #{v[:description]}</p>"
     end
+    output.html_safe
   end
 end
