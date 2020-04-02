@@ -216,11 +216,14 @@ class Admin::SubmissionsController < AdminController
   end
 
   def send_email_reminder
+    fail_message = 'Email was not sent. Email reminders may only be sent once a day; a reminder was recently sent to this committee member.'.html_safe
+    success_message = 'Email successfully sent.'.html_safe
     @submission = Submission.find(params[:id])
     @committee_member = @submission.committee_members.find(params[:committee_member_id])
-    raise 'Email was not sent.' unless @committee_member.reminder_email_authorized?
+    return render plain: fail_message unless @committee_member.reminder_email_authorized?
 
     WorkflowMailer.send_committee_review_reminders(@submission, @committee_member)
+    render plain: success_message
   end
 
   private
