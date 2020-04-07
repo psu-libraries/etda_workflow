@@ -1,5 +1,3 @@
-![Penn State Libraries Logo](https://raw.githubusercontent.com/psu-stewardship/etda_workflow/master/app/javascript/images/PS_UL_REV_RGB_2C.png)
-
 # Electronic Theses and Dissertations Workflow [![Build Status](https://travis-ci.com/psu-stewardship/etda_workflow.svg?token=aQpc68FoUpxpqgvP9XN9&branch=master)](https://travis-ci.com/psu-stewardship/etda_workflow)
 
 * Ruby version: 2.6.0
