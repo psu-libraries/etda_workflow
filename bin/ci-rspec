@@ -1,0 +1,14 @@
+#!/bin/bash
+export RAILS_ENV=test
+
+# adds phantomjs for testing
+yarn global add phantomjs-prebuilt
+
+bundle exec rails db:create
+bundle exec rails db:migrate
+
+echo "================================="
+echo "Running Rspec for ${PARTNER}"
+echo "================================="
+
+PARTNER=${PARTNER} bundle exec rspec
