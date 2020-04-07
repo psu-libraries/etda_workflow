@@ -1,6 +1,6 @@
-# Electronic Theses and Dissertations Workflow
+![Penn State Libraries Logo](https://raw.githubusercontent.com/psu-stewardship/etda_workflow/master/app/javascript/images/PS_UL_REV_RGB_2C.png)
 
-[![Build Status](https://travis-ci.com/psu-stewardship/etda_workflow.svg?token=aQpc68FoUpxpqgvP9XN9&branch=master)](https://travis-ci.com/psu-stewardship/etda_workflow)
+# Electronic Theses and Dissertations Workflow [![Build Status](https://travis-ci.com/psu-stewardship/etda_workflow.svg?token=aQpc68FoUpxpqgvP9XN9&branch=master)](https://travis-ci.com/psu-stewardship/etda_workflow)
 
 * Ruby version: 2.6.0
 * Node version 10.17.0 (using yarn@1.19.1 as npm)
@@ -9,7 +9,7 @@
 
 Clone the repo to your local device and `cd` to the project root directory
 
-#### Docker
+### Docker
 
 *Run `make` or view the Makefile for target definitions*
 
@@ -41,7 +41,7 @@ To seed data:
     
 You're good to go from here!  Any changes made in the project files on your local machine will automatically be updated in the container.  Run `make restart` to restart the puma server if changes do not appear in the web browser.  Remember to check the Makefile for more commands.  If you are running a shell in the web container, you can run all of the rails commands you would normally use for development: ie `rspec, rails restart, rails c, etc.`
 
-###Not Docker
+### Not Docker
 
 * System dependencies
   * rbenv 
