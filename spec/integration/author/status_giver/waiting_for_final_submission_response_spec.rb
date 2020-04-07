@@ -83,7 +83,7 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
     end
 
     context "when an admin accepts the final submission files for a submission without a Lion Path Record" do
-      it "updates status to 'waiting for committee review' and emails committee members" do
+      it "updates status to 'waiting for committee review' and emails committee members", honors: true, milsch: true do
         submission.committee_members << committee_members
         submission.save!
         submission.reload

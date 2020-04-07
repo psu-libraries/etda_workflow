@@ -6,7 +6,7 @@ RSpec.describe SubmissionStates::CollectingFinalSubmissionFiles do
   describe 'instance methods' do
     let(:subject) { described_class.new }
 
-    it "transitions to Waiting For Final Submission Response" do
+    it "transitions to Waiting For Final Submission Response", honors: true do
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview) unless current_partner.honors?
       expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview) if current_partner.honors?
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForCommitteeReviewRejected)

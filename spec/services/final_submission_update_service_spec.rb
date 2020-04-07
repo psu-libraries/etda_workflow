@@ -39,7 +39,7 @@ RSpec.describe FinalSubmissionUpdateService do
   end
 
   describe 'it processes approved final submissions' do
-    it 'approves a final submission' do
+    it 'approves a final submission', honors: true do
       submission = FactoryBot.create :submission,
                                      :waiting_for_final_submission_response,
                                      committee_members: [committee_member]
@@ -63,7 +63,7 @@ RSpec.describe FinalSubmissionUpdateService do
       expect(mailer_count).to eq(1) if current_partner.honors?
     end
 
-    it 'approves a final submission and proceeds to publication release if committee approved' do
+    it 'approves a final submission and proceeds to publication release if committee approved', honors: true do
       submission = FactoryBot.create :submission,
                                      :waiting_for_final_submission_response,
                                      committee_members: [committee_member]

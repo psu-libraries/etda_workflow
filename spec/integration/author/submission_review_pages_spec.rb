@@ -130,7 +130,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
       end
 
       context 'when committee member does not have a token' do
-        it 'sends email reminder' do
+        it 'sends email reminder', honors: true, milsch: true do
           visit "/author/submissions/#{submission2.id}/committee_review"
           expect { find('table#committee_member_table').first(:button, "Send Email Reminder").click }.to(change { CommitteeMember.find(committee_member3.id).last_reminder_at })
           expect(page).to have_current_path(author_submission_committee_review_path(submission2.id))

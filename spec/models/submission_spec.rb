@@ -267,7 +267,7 @@ RSpec.describe Submission, type: :model do
     end
 
     context '#voting_committee_members' do
-      it 'returns a list of voting committee members' do
+      it 'returns a list of voting committee members', honors: true, milsch: true do
         degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
         submission = Submission.new(degree: degree)
         submission.build_committee_members_for_partners
@@ -357,7 +357,7 @@ RSpec.describe Submission, type: :model do
             expect(WorkflowMailer.deliveries.count).to eq 1
           end
 
-          it 'changes status to waiting for publication release unless graduate school' do
+          it 'changes status to waiting for publication release unless graduate school', milsch: true, honors: true do
             skip 'Non Graduate' if current_partner.graduate?
 
             allow_any_instance_of(Submission).to receive(:head_of_program_is_approving?).and_return false

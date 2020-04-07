@@ -1,4 +1,4 @@
-RSpec.describe "Editing committee member information for format reviews and final submissions", js: true do
+RSpec.describe "Editing committee member information for format reviews and final submissions", js: true, honors: true, milsch: true do
   require 'integration/integration_spec_helper'
 
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
