@@ -11,4 +11,8 @@ echo "================================="
 echo "Running Rspec for ${PARTNER}"
 echo "================================="
 
-PARTNER=${PARTNER} bundle exec rspec
+if [ ${PARTNER} == "graduate" ]; then
+   PARTNER=${PARTNER} bundle exec rspec
+else
+   PARTNER=${PARTNER} bundle exec rspec --tag ${PARTNER}
+fi
