@@ -103,7 +103,7 @@ RSpec.describe WorkflowMailer do
       expect(email.to).to eq([author.psu_email_address])
     end
 
-    it "tells the author that the final submission has been approved" do
+    it "tells the author that the final submission has been approved", honors: true, milsch: true do
       expect(email.body).to match(/It will now be automatically sent to your committee/i) if current_partner.graduate?
       expect(email.body).to match(/has been approved/i) if current_partner.honors?
     end
@@ -252,7 +252,7 @@ RSpec.describe WorkflowMailer do
       expect(email.from).to eq([partner_email])
     end
 
-    it "sets an appropriate subject" do
+    it "sets an appropriate subject", honors: true, milsch: true do
       expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
       expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
       expect(email.subject).to eq("Millennium Scholars #{submission.degree_type} Review") if current_partner.milsch?
@@ -275,7 +275,7 @@ RSpec.describe WorkflowMailer do
       expect(email.from).to eq([partner_email])
     end
 
-    it "sets an appropriate subject" do
+    it "sets an appropriate subject", honors: true, milsch: true do
       expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
       expect(email.subject).to eq("Honors Thesis Needs Approval") if current_partner.honors?
       expect(email.subject).to eq("Millennium Scholars Thesis Review") if current_partner.milsch?
@@ -300,7 +300,7 @@ RSpec.describe WorkflowMailer do
         expect(email.from).to eq([partner_email])
       end
 
-      it "sets an appropriate subject" do
+      it "sets an appropriate subject", honors: true, milsch: true do
         expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
         expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
         expect(email.subject).to eq("Millennium Scholars #{submission.degree_type} Review") if current_partner.milsch?
@@ -308,6 +308,7 @@ RSpec.describe WorkflowMailer do
 
       it "has desired content" do
         skip 'Graduate Only' unless current_partner.graduate?
+
         expect(email.body).to match(/\/special_committee\/#{commmittee_member_token.authentication_token.to_s}/)
         expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
       end
@@ -318,6 +319,7 @@ RSpec.describe WorkflowMailer do
 
       it "has an 'X' in the url in place of a token" do
         skip 'Graduate Only' unless current_partner.graduate?
+
         expect(email.body).to match(/\/special_committee\/X/)
         expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
       end

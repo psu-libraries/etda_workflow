@@ -14,7 +14,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
 
     context "when I submit the 'Upload Final Submission Files' form" do
-      it 'loads the page' do
+      it 'loads the page', honors: true do
         submission.defended_at = Time.zone.yesterday
         submission.save(validate: false)
         submission.reload
@@ -47,7 +47,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     end
 
     context "when I submit the 'Upload Final Submission Files' form after committee rejection" do
-      it 'proceeds to "waiting for final submission response" and resets committee reviews' do
+      it 'proceeds to "waiting for final submission response" and resets committee reviews', honors: true do
         submission.committee_members.first.update_attribute :status, 'rejected'
         submission.status = 'waiting for committee review rejected'
         submission.defended_at = Time.zone.yesterday
@@ -76,7 +76,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     end
 
     context "when I submit the 'Upload Final Submission Files' form with multiple files" do
-      it 'uploads two files' do
+      it 'uploads two files', honors: true do
         submission.defended_at = Time.zone.yesterday
         submission.save(validate: false)
         submission.reload

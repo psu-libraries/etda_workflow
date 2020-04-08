@@ -30,7 +30,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
 
   describe '#filters' do
     context 'when no submissions exist for each filter' do
-      it "returns a set of placeholders according to submission status" do
+      it "returns a set of placeholders according to submission status", honors: true do
         if current_partner.honors?
           expect(view.filters).to eq [
             {
@@ -233,7 +233,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
         FactoryBot.create :submission, :final_is_restricted, released_for_publication_at: 1.day.from_now
       end
 
-      it "returns a set of links according to submission status" do
+      it "returns a set of links according to submission status", honors: true do
         # use a_hash_including here so we don't duplicate the specs on title, description
 
         if current_partner.honors?
@@ -241,7 +241,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
             a_hash_including(
               id: 'format-review-incomplete',
               path: admin_submissions_index_path(degree_type, 'format_review_incomplete'),
-              count: '12'
+              count: '3'
             ),
             a_hash_including(
               id: 'format-review-submitted',
@@ -301,7 +301,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
             a_hash_including(
               id: 'format-review-incomplete',
               path: admin_submissions_index_path(degree_type, 'format_review_incomplete'),
-              count: '12'
+              count: '3'
             ),
             a_hash_including(
               id: 'format-review-submitted',

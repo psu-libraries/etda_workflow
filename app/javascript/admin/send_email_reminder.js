@@ -16,15 +16,8 @@ send_email_reminder = function() {
             data: {
                 committee_member_id: $(this).val()
             },
-            success: function (result) {
-                alert('Email successfully sent.');
-            },
-            error: function (xhr) {
-                if (xhr.status == '500') {
-                    alert('Email was not sent.  Email reminders may only be sent once a day; a reminder was recently sent to this committee member.');
-                } else {
-                    alert("An error occured: " + xhr.status + " " + xhr.statusText);
-                }
+            success: function(data) {
+                alert(data);
             }
         });
     });

@@ -51,6 +51,8 @@ ENV OPENSSL_CONF=/etc/ssl
 
 WORKDIR /etda_workflow
 
+COPY bin/vaultshell /usr/local/bin/
+
 COPY Gemfile Gemfile.lock /etda_workflow/
 
 ARG SSH_PRIVATE_KEY

@@ -17,7 +17,7 @@ RSpec.describe "Author Navigation", js: true do
     expect(page).to have_link('Log Out')
   end
 
-  it 'has an about page' do
+  it 'has an about page', honors: true, milsch: true do
     click_link 'About'
     expect(page).to have_link('Thesis and Dissertation Guide') if current_partner.graduate?
     expect(page).to have_link('Thesis Guide') unless current_partner.graduate?
