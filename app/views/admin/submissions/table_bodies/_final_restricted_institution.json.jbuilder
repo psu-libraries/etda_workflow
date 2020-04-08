@@ -2,7 +2,7 @@ json.array! [
   submission_view.id,
   "<input type='checkbox' class='row-checkbox' />",
   submission_view.ok_to_release?,
-  link_to_if(submission_view.admin_can_edit?, submission_view.title.presence || '[Title not available]', admin_edit_submission_path(submission_view.id)),
+  link_to_if(submission_view.admin_can_edit? && submission_view.title.present?, submission_view.title.truncate(30) || '[Title not available]', admin_edit_submission_path(submission_view.id)),
   submission_view.author.last_name,
   submission_view.author.first_name,
   "<span class='label release-label #{submission_view.ok_to_release? ? 'label-primary' : 'label-none'}'>#{submission_view.released_for_publication_date}</span>",
