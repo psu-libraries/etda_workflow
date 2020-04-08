@@ -174,9 +174,15 @@ en:
       list:
         label: Thesis Supervisor
         thesis:
-          thesis_supervisor: The faculty member or researcher who is the principal investigator of the lab where the student conducted the research. The thesis supervisor also acts as a research mentor regarding the thesis project.
-          advisor: Faculty member who reviews the thesis and confirms that it is an acceptable undergraduate thesis.
-          honors_advisor: Faculty member who reviews the thesis and confirms that it meets the criteria for honors designation.
+          thesis_supervisor:
+            name: Thesis Supervisor
+            description: The faculty member or researcher who is the principal investigator of the lab where the student conducted the research. The thesis supervisor also acts as a research mentor regarding the thesis project.
+          advisor:
+            name: Advisor
+            description: Faculty member who reviews the thesis and confirms that it is an acceptable undergraduate thesis.
+          honors_advisor:
+            name: Honors Advisor
+            description: Faculty member who reviews the thesis and confirms that it meets the criteria for honors designation.
       author_instructions:
         Students will be required to enter one name as thesis supervisor.
         Students may enter additional names as advisor or honors advisor, but this is not required.
@@ -238,6 +244,7 @@ en:
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
     admin:
+      umg: 'cn=umg/psu.dsrd.etda_milsch_admin_users,dc=psu,dc=edu'
       submission:
         edit:
           author-information: Author Information

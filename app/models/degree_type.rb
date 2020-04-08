@@ -18,6 +18,9 @@ class DegreeType < ApplicationRecord
     ],
     'milsch' => [
       "Thesis"
+    ],
+    'sset' => [
+      "Thesis"
     ]
   }.freeze
 

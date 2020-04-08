@@ -134,7 +134,7 @@ class LdapResult
   end
 
   def user_in_admin_group?(ldap_value)
-    return true if ldap_value.include?("cn=umg/psu.sas.etda-#{current_partner.id}-admins,dc=psu,dc=edu") || ldap_value.include?("cn=umg/psu.dsrd.etda_#{current_partner.id}_admin_users,dc=psu,dc=edu")
+    return true if ldap_value.include?(I18n.t("#{current_partner.id}.admin.umg"))
 
     false
   end
