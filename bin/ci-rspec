@@ -12,7 +12,7 @@ echo "Running Rspec for ${PARTNER}"
 echo "================================="
 
 if [ ${PARTNER} == "graduate" ]; then
-   PARTNER=${PARTNER} bundle exec rspec
+   PARTNER=${PARTNER} COVERAGE=true bundle exec rspec
 else
    PARTNER=${PARTNER} bundle exec rspec --tag ${PARTNER}
 fi
