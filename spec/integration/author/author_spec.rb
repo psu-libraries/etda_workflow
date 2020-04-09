@@ -38,7 +38,7 @@ RSpec.describe 'Author submission page', type: :integration, js: true do
   end
 
   context 'Author submission display when author has one submission' do
-    it "displays 'submission found'" do
+    it "displays 'submission found'", honors: true, milsch: true do
       FactoryBot.create :submission, :collecting_committee, author: author
       visit author_submissions_path
       expect(page).to have_content('Existing submission found. The status of your previously submitted document is listed below.')

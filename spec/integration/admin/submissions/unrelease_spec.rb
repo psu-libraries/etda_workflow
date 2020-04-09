@@ -1,4 +1,4 @@
-RSpec.describe "Unrelease a submission", js: true do
+RSpec.describe "Unrelease a submission", js: true, honors: true, milsch: true do
   require 'integration/integration_spec_helper'
 
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
@@ -41,7 +41,7 @@ RSpec.describe "Unrelease a submission", js: true do
   end
 end
 
-RSpec.describe 'Unrelease a submission with errors', js: true do
+RSpec.describe 'Unrelease a submission with errors', js: true, honors: true, milsch: true do
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true) }
   let!(:role) { CommitteeRole.first.name }
@@ -63,7 +63,7 @@ RSpec.describe 'Unrelease a submission with errors', js: true do
   end
 end
 
-RSpec.describe 'Unrelease a legacy submission without missing data', js: true do
+RSpec.describe 'Unrelease a legacy submission without missing data', js: true, honors: true, milsch: true do
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true) }
   let!(:role) { CommitteeRole.first.name }

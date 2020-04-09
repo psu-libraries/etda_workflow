@@ -1,4 +1,4 @@
-RSpec.describe "Release a submission with a public id", js: true do
+RSpec.describe "Release a submission with a public id", js: true, honors: true, milsch: true do
   require 'integration/integration_spec_helper'
 
   let(:degree_type) { current_partner.graduate? ? 'dissertation' : 'thesis' }

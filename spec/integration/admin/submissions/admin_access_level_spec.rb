@@ -18,7 +18,7 @@ RSpec.describe 'Admin submission access_level', js: true do
     sleep 3
   end
 
-  context 'admin users can choose the access level' do
+  context 'admin users can choose the access level', milsch: true do
     it 'has an open_access radio button' do
       page.find("input#submission_access_level_open_access").trigger('click')
       expect(find("#submission_access_level_open_access")).to be_checked
