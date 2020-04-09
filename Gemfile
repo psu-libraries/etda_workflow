@@ -33,7 +33,11 @@ gem 'redis'
 gem 'resque-pool'
 
 # SideKiq for queueing jobs
-gem 'sidekiq'
+gem 'sidekiq', '~> 5.2.8'
+
+# When downgrading Sidekiq, rack needed to be downgraded as well.
+# This can be removed for Sidekiq 6 or greater.
+gem 'rack', '= 2.0.8'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
