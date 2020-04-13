@@ -129,9 +129,8 @@ en:
                     814-867-2505
         committee_approved:
           message: |
-                    Congratulations! Your honors %{degree_type} has been reviewed by your commiteee and it is approved.
-                    The next step is to have your final submission reviewed by the Schreyer Honors College.
-                    In Summer and Fall, you must make an advance appointment with Ms Rodgers.
+                    Congratulations! Your honors %{degree_type} has been reviewed by your committee and it is approved.
+                    The next step is to have your final submission reviewed by the Schreyer Honors College; you will receive an email once it is approved.
 
                     Sincerely,
                     The Schreyer Honors College
