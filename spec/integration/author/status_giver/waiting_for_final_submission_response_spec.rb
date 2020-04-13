@@ -177,7 +177,6 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
         sleep 2
         find_link('[delete]').click
         expect(page).to have_no_link('[delete]', wait: Capybara.default_max_wait_time * 4)
-        # visit admin_edit_submission_path(submission)
         find_link('Additional File').click
         expect(page).not_to have_content('new_admin_file.pdf')
         expect(page).to have_css '#format-review-file-fields .nested-fields:last-child input[type="file"]'
@@ -185,40 +184,9 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
         attach_file last_input_id, Rails.root.join('spec', 'fixtures', 'new_admin_file.pdf')
         click_button 'Update Metadata Only'
         expect(page).to have_content('Format review information was successfully edited by an administrator')
-        # visit admin_edit_submission_path(submission)
         file_name = first('#format-review-file-fields .nest-fields:last-child').find('a.file-link').text
         expect(file_name).to start_with('new_admin_file.pdf')
       end
     end
   end
-  # describe 'an admin deletes a final submission file that is waiting for approval', js: true do
-  #   it 'deletes the file' do
-  #   submission. status = 'waiting for final submission response'
-  #   before do
-  #     create :final_submission_file, submission: submission
-  #     sleep 1.0 # adding sleep in becuase I am desparate to get travis stable...
-  #     expect(submission.final_submission_files.count).to eq(1)
-  #     visit admin_edit_submission_path(submission)
-  #     sleep 2
-  #     expect(page).to have_link('delete')
-  #     click_link 'delete'
-  #     expect(page).to have_no_link('delete', wait: Capybara.default_max_wait_time * 4)
-  #   end
-  #   context 'admin uploads a different file' do
-  #     before do
-  #       find_link('Additional File').click
-  #       expect(page).to have_content('[remove]')
-  #       expect(page).to have_css '#final-submission-file-fields .nested-fields:last-child input[type="file"]'
-  #       last_input_id = first('#final-submission-file-fields .nested-fields:last-child input[type="file"]')[:id]
-  #       attach_file last_input_id, fixture('new_admin_file.pdf')
-  #       click_button 'Update Metadata Only'
-  #       expect(page).to have_content('Final submission information was successfully edited by an administrator')
-  #       visit admin_edit_submission_path(submission)
-  #     end
-  #     it "it should be successful and uploaded file should be present" do
-  #       expect(page).to have_content('Files')
-  #       file_name = first('#final-submission-file-fields .nested-fields').find('a.file-link').text
-  #       expect(file_name).to start_with('new_admin_file.pdf')
-  #     end
-  #   end
 end

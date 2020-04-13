@@ -47,8 +47,6 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
   config.webpacker.check_yarn_integrity = false
 
-  Time.zone = 'UTC' if ENV['TRAVIS']
-
   # Mocks
   LionPathConnection = LionPath::MockLionPathConnection
   LdapUniversityDirectory = MockUniversityDirectory

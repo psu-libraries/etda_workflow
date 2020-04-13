@@ -1,5 +1,0 @@
-test:
-  domain_name: example.com 
-  secret_key_base: <%= ENV['DEVISE_SECRET_KEY'] %>
-
- 
