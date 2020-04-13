@@ -1,6 +1,6 @@
 ENV['RAILS_ENV'] ||= 'test'
 
-if ENV['COVERAGE'] || ENV['TRAVIS']
+if ENV['COVERAGE']
   require 'simplecov'
   SimpleCov.root(File.expand_path('../..', __FILE__))
   SimpleCov.start('rails') do

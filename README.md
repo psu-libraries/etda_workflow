@@ -1,4 +1,4 @@
-# Electronic Theses and Dissertations Workflow [![Build Status](https://travis-ci.com/psu-stewardship/etda_workflow.svg?token=aQpc68FoUpxpqgvP9XN9&branch=master)](https://travis-ci.com/psu-stewardship/etda_workflow)
+# Electronic Theses and Dissertations Workflow 
 
 * Ruby version: 2.6.0
 * Node version 10.17.0 (using yarn@1.19.1 as npm)

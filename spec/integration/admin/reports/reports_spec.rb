@@ -80,34 +80,31 @@ RSpec.describe "Admins can run reports", js: true do
     end
 
     it 'displays the invention disclosure number and access level' do
-      unless ENV['TRAVIS']
-        expect(page).to have_link('Custom Report')
-        click_link('Custom Report')
-        sleep(10)
-        expect(page).to have_content(invention_number) if current_partner.graduate?
-        expect(page).to have_content('Restricted')
-      end
+      expect(page).to have_link('Custom Report')
+      click_link('Custom Report')
+      sleep(10)
+      expect(page).to have_content(invention_number) if current_partner.graduate?
+      expect(page).to have_content('Restricted')
     end
+
     it 'displays the Custom Report page' do
-      unless ENV['TRAVIS']
-        expect(page).to have_link('Custom Report')
-        click_link('Custom Report')
-        sleep(5)
-        expect(page).to have_content('Custom Report')
-        expect(page).to have_button('Select Visible')
-        expect(page).to have_content('Submission3')
-        click_button 'Select Visible'
-        page.assert_selector('tbody .row-checkbox')
-        ckbox = all('tbody .row-checkbox')
-        assert_equal(Submission.where(year: submission_year, semester: submission_semester).count, ckbox.count)
-        ckbox.each do |cb|
-          expect(have_checked_field(cb)).to be_truthy
-        end
-        expect(page).to have_button('Export CSV')
-        click_button('Export CSV')
-        sleep(4)
-        expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="custom_report.csv"'
+      expect(page).to have_link('Custom Report')
+      click_link('Custom Report')
+      sleep(5)
+      expect(page).to have_content('Custom Report')
+      expect(page).to have_button('Select Visible')
+      expect(page).to have_content('Submission3')
+      click_button 'Select Visible'
+      page.assert_selector('tbody .row-checkbox')
+      ckbox = all('tbody .row-checkbox')
+      assert_equal(Submission.where(year: submission_year, semester: submission_semester).count, ckbox.count)
+      ckbox.each do |cb|
+        expect(have_checked_field(cb)).to be_truthy
       end
+      expect(page).to have_button('Export CSV')
+      click_button('Export CSV')
+      sleep(4)
+      expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="custom_report.csv"'
     end
   end
 
