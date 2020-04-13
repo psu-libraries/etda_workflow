@@ -49,13 +49,13 @@ setup_report_tables = function() {
             },
             initComplete() {
                 const column = this.api().column("semester_year:name");
-                const current_semester = $(this).data('current-semester');
+                const default_semester = $(this).data('default-semester');
                 const select = $('.semester').on('change', function() {
                     const val = $.fn.dataTable.util.escapeRegex($(this).val() || '');
                     column.search( (val ? `^${val}$` : '') , true, false).draw();
                 });
 
-                const selected_item = current_semester;
+                const selected_item = default_semester;
 
                 select.val(selected_item).change();
 
@@ -77,13 +77,13 @@ setup_report_tables = function() {
             initComplete() {
                 this.api().column( 0 ).visible( false );
                 const column = this.api().column("semester_year:name");
-                const current_semester = $(this).data('current-semester');
+                const default_semester = $(this).data('default-semester');
                 const select = $('.semester').on('change', function() {
                     const val = $.fn.dataTable.util.escapeRegex($(this).val() || '');
                     column.search( (val ? `^${val}$` : '') , true, false).draw();
                 });
 
-                const selected_item = current_semester;
+                const selected_item = default_semester;
 
                 select.val(selected_item).change();
 

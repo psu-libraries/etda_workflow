@@ -1,11 +1,12 @@
 class Admin::SubmissionsIndexView
-  attr_reader :submissions
+  attr_reader :submissions, :session_semester
   attr_reader :degree_type, :scope
 
-  def initialize(degree_type, scope, context)
+  def initialize(degree_type, scope, context, session_semester)
     @degree_type = DegreeType.find_by!(slug: degree_type)
     @scope = scope
     @submissions = Submission.joins(:degree).includes(:author).where('degrees.degree_type_id' => @degree_type.id).send(scope_method).map { |s| Admin::SubmissionView.new(s, context) }
+    @session_semester = session_semester
   end
 
   def submission_views(semester)
@@ -88,8 +89,8 @@ class Admin::SubmissionsIndexView
     false
   end
 
-  def current_semester
-    @current_semester ||= Semester.current
+  def default_semester
+    @default_semester = (session_semester || Semester.current)
   end
 
   private
