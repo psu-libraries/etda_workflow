@@ -1,7 +1,28 @@
 require 'presenters/presenters_spec_helper'
 RSpec.describe Admin::SubmissionsIndexView do
   let(:degree_type) { DegreeType.default.slug }
-  let(:view) { described_class.new(degree_type, scope, nil) }
+  let(:semester) { Semester.current }
+  let(:view) { described_class.new(degree_type, scope, nil, semester) }
+
+  describe '#default_semester' do
+    context 'when semester is nil' do
+      let(:scope) { 'format_review_incomplete' }
+      let(:semester) { nil }
+
+      it 'returns current semester' do
+        expect(view.default_semester).to eq Semester.current.to_s
+      end
+    end
+
+    context 'when semester is given' do
+      let(:scope) { 'format_review_incomplete' }
+      let(:semester) { "Fall 2018" }
+
+      it 'returns given semester' do
+        expect(view.default_semester).to eq "Fall 2018"
+      end
+    end
+  end
 
   describe '#table_header_partial_path' do
     let(:scope) { 'format_review_incomplete' }
