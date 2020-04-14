@@ -7,6 +7,8 @@ class Admin::SubmissionsController < AdminController
   end
 
   def dashboard
+    # Reset session semester to current semester when returning to dashboard
+    session[:semester] = Semester.current
     degree_type = params[:degree_type] || DegreeType.default
     @view = Admin::SubmissionsDashboardView.new(degree_type)
   end
@@ -37,7 +39,7 @@ class Admin::SubmissionsController < AdminController
 
   def index
     session[:return_to] = request.referer
-    @view = Admin::SubmissionsIndexView.new(params[:degree_type], params[:scope], view_context)
+    @view = Admin::SubmissionsIndexView.new(params[:degree_type], params[:scope], view_context, session[:semester])
   end
 
   def audit

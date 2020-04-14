@@ -161,12 +161,12 @@ setup_datatables = function() {
     const select = $('<select class="form-control input-sm semester">');
 
     if ($('.admin-submissions-index.datatable').length) {
-        const current_semester = $('.admin-submissions-index.datatable').data('current-semester');
+        const default_semester = $('.admin-submissions-index.datatable').data('default-semester');
         $filters.append($('<label class="pull-right"></label>').append(select));
         for (i = 0; i < semesters.length; i++) {
             select.append(`<option value="${semesters[i]}">${semesters[i]}</option>`)
         }
-        select.val(current_semester);
+        select.val(default_semester);
     }
 
     // Admin-submissions-index datatables
