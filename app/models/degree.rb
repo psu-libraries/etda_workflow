@@ -57,6 +57,8 @@ class Degree < ApplicationRecord
 
   DEGREES = { graduate: GRADUATE_DEGREES, honors: HONORS_DEGREES, milsch: MILSCH_DEGREES, sset: SSET_DEGREES }.freeze
 
+  # Due to the possibility of this seed interfering with production data
+  # it should only be used to seed development environments
   def self.seed
     DEGREES[current_partner.id.to_sym].each do |degree_type, degrees|
       degrees.each do |degree|
