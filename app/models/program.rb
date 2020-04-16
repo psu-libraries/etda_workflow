@@ -15,7 +15,7 @@ class Program < ApplicationRecord
                    "Computer Engineering (CMPEN)", "Computer Science (CMPSC)", "Data Sciences (DATSC)",
                    "Electrical Engineering (EE)", "Engineering Science (ESC)", "Industrial Engineering (IE)",
                    "Mechanical Engineering (ME)", "Microbiology (MICRB)", "Nuclear Engineering (NUCE)", "Physics (PYS)",
-                   "Planetary Science and Astronomy (PASTR)", "Statistics (STAT)"]
+                   "Planetary Science and Astronomy (PASTR)", "Statistics (STAT)"].freeze
 
   # Seeds for development.
   # These values can be changed by admins, so running this seed in production may interfere with their changes.
@@ -29,7 +29,7 @@ class Program < ApplicationRecord
     end
 
     DEFAULT_NAMES.each do |program|
-      find_or_create_by(name: program) do |record|
+      find_or_create_by!(name: program.to_s) do |record|
         record.is_active = true unless record.persisted?
       end
     end
