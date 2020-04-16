@@ -43,4 +43,11 @@ RSpec.describe Program, type: :model do
       expect(testprogram.is_active).to be_truthy
     end
   end
+
+  describe "#seed" do
+    it "seeds db with default program data" do
+      Program.seed
+      expect(Program.count).to eq 23
+    end
+  end
 end
