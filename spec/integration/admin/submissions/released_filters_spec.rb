@@ -12,15 +12,12 @@ RSpec.describe "Released submission filter with semester dropdown", js: true do
 
   it 'defaults to current semester and can filter by semester' do
     page.find('a#released-for-publication').click
-    sleep 1
     expect(page).to have_content submission1.title
     expect(page).not_to have_content submission2.title
     find('select.semester').find(:option, "#{submission2.year} #{submission2.semester}").select_option
-    sleep 1
     expect(page).not_to have_content submission1.title
     expect(page).to have_content submission2.title
     find('select.semester').find(:option, "All Semesters").select_option
-    sleep 1
     expect(page).to have_content submission1.title
     expect(page).to have_content submission2.title
   end

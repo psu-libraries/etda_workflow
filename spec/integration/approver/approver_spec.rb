@@ -47,7 +47,6 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       within("div#file_links") do
         final_link = page.find("a")
         final_link.trigger('click')
-        sleep(3)
       end
       expect(page.driver.browser.window_handles.count).to eql(num_windows + 1)
     end

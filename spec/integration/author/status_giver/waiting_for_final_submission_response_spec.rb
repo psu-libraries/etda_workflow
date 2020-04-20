@@ -96,7 +96,6 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
         FactoryBot.create :format_review_file, submission: submission
         FactoryBot.create :final_submission_file, submission: submission
         visit admin_edit_submission_path(submission)
-        sleep 2
         fill_in 'Final Submission Notes to Student', with: 'Note on paper is approved'
         if current_partner.graduate?
           select select_year, from: 'submission[defended_at(1i)]'
@@ -128,7 +127,6 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
           FactoryBot.create :final_submission_file, submission: submission
           create_committee(submission)
           visit admin_edit_submission_path(submission)
-          sleep 2
           fill_in 'Final Submission Notes to Student', with: 'Note on paper is approved'
           if current_partner.graduate?
             expect(page.find('#defense_date').find('#submission_defended_at', visible: false)).to be_truthy
@@ -174,7 +172,6 @@ RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
     context 'admin deletes the format review file' do
       xit 'removes the file' do
         visit admin_edit_submission_path(submission)
-        sleep 2
         find_link('[delete]').click
         expect(page).to have_no_link('[delete]', wait: Capybara.default_max_wait_time * 4)
         find_link('Additional File').click

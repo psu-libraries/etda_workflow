@@ -30,7 +30,6 @@ RSpec.describe "Rake::Task['db_update:dups']", :import_test, type: :task do
     original_count = Author.all.count
     Rake::Task['db_update:dups:fix_authors'].reenable
     Rake::Task['db_update:dups:fix_authors'].invoke('legacy')
-    sleep(3)
     finish_count = Author.all.count
     expect(finish_count).to eq(original_count-2)
     expect(Author.where(access_id: 'ggg555').count).to eq(1)
