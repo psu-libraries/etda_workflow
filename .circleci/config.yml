@@ -47,7 +47,7 @@ jobs:
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
-  test_grad:
+  integration_test_grad:
     docker:
       - image: devago/docker-compose
     environment:
@@ -60,13 +60,33 @@ jobs:
     - setup_remote_docker
     - checkout
     - run:
-        name: "Test Graduate"
+        name: "Integration Test Graduate"
         command: |
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          RAILS_ENV=test PARTNER=graduate docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          RAILS_ENV=test PARTNER=graduate JS=true docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
           # docker cp test:/app/vendor .
+  unit_test_grad:
+    docker:
+      - image: devago/docker-compose
+    environment:
+      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
+      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      DOCKER_USERNAME: 'robot$circleci'
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: "Unit Test Graduate"
+          command: |
+            docker load -i /tmp/workspace/etda-workflow.tar
+            export TAG=${CIRCLE_SHA1}
+            export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+            RAILS_ENV=test PARTNER=graduate JS=false docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+            # docker cp test:/app/vendor .
   publish:
     docker:
       - image: devago/docker-compose
@@ -86,7 +106,7 @@ jobs:
             docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $REGISTRY_HOST
             docker push $REGISTRY_URL:$CIRCLE_SHA1
-  test_milsch:
+  test_partners:
     docker:
       - image: devago/docker-compose
     environment:
@@ -99,32 +119,12 @@ jobs:
     - setup_remote_docker
     - checkout
     - run:
-        name: "Test Milsch"
+        name: "Test Partners"
         command: |
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          RAILS_ENV=test PARTNER=milsch docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
-          # docker cp test:/app/vendor .
-  test_honors:
-    docker:
-      - image: devago/docker-compose
-    environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
-      DOCKER_USERNAME: 'robot$circleci'
-    steps:
-    - attach_workspace:
-        at: /tmp/workspace
-    - setup_remote_docker
-    - checkout
-    - run:
-        name: "Test Honors"
-        command: |
-          docker load -i /tmp/workspace/etda-workflow.tar
-          export TAG=${CIRCLE_SHA1}
-          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          RAILS_ENV=test PARTNER=honors docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          RAILS_ENV=test docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
           # docker cp test:/app/vendor .
   deploy-qa:
     docker:
@@ -166,13 +166,13 @@ workflows:
       - rubocop:
           requires:
             - build
-      - test_grad:
+      - integration_test_grad:
           requires:
             - build
-      - test_milsch:
+      - unit_test_grad:
           requires:
             - build
-      - test_honors:
+      - test_partners:
           requires:
             - build
       - publish:

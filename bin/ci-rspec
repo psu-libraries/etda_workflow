@@ -4,15 +4,32 @@ export RAILS_ENV=test
 # adds phantomjs for testing
 yarn global add phantomjs-prebuilt
 
-bundle exec rails db:create
-bundle exec rails db:migrate
-
-echo "================================="
-echo "Running Rspec for ${PARTNER}"
-echo "================================="
+PARTNER=graduate bundle exec rails db:create
+PARTNER=graduate bundle exec rails db:migrate
 
 if [ ${PARTNER} == "graduate" ]; then
-   PARTNER=${PARTNER} COVERAGE=true bundle exec rspec
+    if [ ${JS} == true ]; then
+        echo "======================================"
+        echo "Running Integration Tests for Graduate"
+        echo "======================================"
+        PARTNER=graduate COVERAGE=true bundle exec rspec --tag js
+    else
+        echo "======================================"
+        echo "Running Unit Tests for Graduate"
+        echo "======================================"
+        PARTNER=graduate COVERAGE=true bundle exec rspec --tag ~js
+    fi
 else
-   PARTNER=${PARTNER} bundle exec rspec --tag ${PARTNER}
+    echo "======================================"
+    echo "Running Honors Specific Tests"
+    echo "======================================"
+    PARTNER=honors bundle exec rspec --tag honors
+    echo "======================================"
+    echo "Running Milsch Specific Tests"
+    echo "======================================"
+    PARTNER=milsch bundle exec rspec --tag milsch
+    echo "======================================"
+    echo "Running Sset Specific Tests"
+    echo "======================================"
+    PARTNER=sset bundle exec rspec --tag sset
 fi
