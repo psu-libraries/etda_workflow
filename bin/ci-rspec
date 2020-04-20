@@ -4,8 +4,8 @@ export RAILS_ENV=test
 # adds phantomjs for testing
 yarn global add phantomjs-prebuilt
 
-PARTNER=graduate bundle exec rails db:create
-PARTNER=graduate bundle exec rails db:migrate
+bundle exec rails db:create
+bundle exec rails db:migrate
 
 if [ ${PARTNER} == "graduate" ]; then
     if [ ${JS} == true ]; then
