@@ -177,7 +177,9 @@ workflows:
             - build
       - publish:
           requires:
-            - test_grad
+            - unit_test_grad
+            - integration_test_grad
+            - test_partners
       - deploy-qa:
           requires:
             - publish
