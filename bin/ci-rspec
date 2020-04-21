@@ -7,8 +7,8 @@ yarn global add phantomjs-prebuilt
 bundle exec rails db:create
 bundle exec rails db:migrate
 
-if [ ${PARTNER} == "graduate" ]; then
-    if [ ${INTEGRATION} == "true" ]; then
+if [[ $PARTNER == "graduate" ]]; then
+    if [[ $INTEGRATION == "true" ]]; then
         echo "======================================"
         echo "Running Integration Tests for Graduate"
         echo "======================================"
