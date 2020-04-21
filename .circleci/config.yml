@@ -180,6 +180,7 @@ workflows:
             - unit_test_grad
             - integration_test_grad
             - test_partners
+            - rubocop
       - deploy-qa:
           requires:
             - publish
