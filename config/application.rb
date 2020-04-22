@@ -29,6 +29,8 @@ module EtdaWorkflow
     # Initialize configuration defaults for originally generated Rails version.
 
     config.load_defaults "6.0"
+    # Rails 6 uses zeitwerk to autoload
+    # Use classic autoloader to avoid errors
     config.autoloader = :classic
 
     # Logging
@@ -66,6 +68,8 @@ module EtdaWorkflow
       Rails.root.join('app/presenters')
     ]
     config.autoload_paths += Dir["#{config.root}/lib"]
+
+    config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
 
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'partners', I18n.default_locale.to_s, '*', '*.*{rb,yml}').to_s]
 

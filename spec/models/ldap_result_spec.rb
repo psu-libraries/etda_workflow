@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'model_spec_helper'
+
 RSpec.describe LdapResult, type: :model do
   describe 'AUTHOR_LDAP_MAP' do
     context 'Parsed LDAP attributes are returned for author' do
