@@ -29,7 +29,7 @@ module EtdaWorkflow
     # Initialize configuration defaults for originally generated Rails version.
 
     config.load_defaults "6.0"
-    # Rails 6 uses zeitwerk to autoload
+    # Rails 6 uses zeitwerk's autoloader as default
     # Use classic autoloader to avoid errors
     config.autoloader = :classic
 

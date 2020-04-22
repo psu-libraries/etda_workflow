@@ -10,7 +10,7 @@ class FinalSubmissionSubmitService
 
   def submit_final_submission
     status_giver.can_upload_final_submission_files?
-    submission.update_attributes!(final_submission_params)
+    submission.update!(final_submission_params)
     submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
     if submission.status == 'waiting for committee review rejected'
       committee_reject_submit

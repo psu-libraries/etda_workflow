@@ -61,10 +61,10 @@ class Author::SubmissionsController < AuthorController
     status_giver.can_update_program_information?
     outbound_lionpath_record = OutboundLionPathRecord.new(submission: @submission, original_title: @submission.title, original_alternate_email: @submission.author.alternate_email_address)
     if @submission.using_lionpath?
-      @submission.update_attributes!(lionpath_program_params)
+      @submission.update!(lionpath_program_params)
       @submission.update_attribute(:defended_at, LionPath::Crosswalk.convert_to_datetime(params[:submission][:defended_at])) if @submission.using_lionpath? && current_partner.graduate?
     else
-      @submission.update_attributes!(standard_program_params)
+      @submission.update!(standard_program_params)
     end
     outbound_lionpath_record.report_title_change
     redirect_to author_root_path

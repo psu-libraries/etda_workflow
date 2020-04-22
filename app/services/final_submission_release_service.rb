@@ -11,9 +11,9 @@ class FinalSubmissionReleaseService
     file_verification_results = release_service.file_verification(original_final_files)
     # return unless file_verification_results
     # status_giver.unreleased_for_publication!
-    submission.update_attributes(released_for_publication_at: nil,
-                                 released_metadata_at: nil,
-                                 status: 'waiting for publication release')
+    submission.update(released_for_publication_at: nil,
+                      released_metadata_at: nil,
+                      status: 'waiting for publication release')
     release_service.unpublish(original_final_files) if file_verification_results[:valid]
     # update the index after the paper has been unreleased
     solr_result = UpdateSubmissionService.new.solr_delta_update(submission)

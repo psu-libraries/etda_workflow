@@ -174,7 +174,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
       end
 
       it "moves forward in process if accepted when head of program is not approving but does not send email", honors: true do
-        submission.degree.degree_type.approval_configuration.update_attributes head_of_program_is_approving: false, email_admins: false, email_authors: false
+        submission.degree.degree_type.approval_configuration.update head_of_program_is_approving: false, email_admins: false, email_authors: false
         FactoryBot.create :admin
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do
@@ -341,7 +341,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           skip 'Graduate only' unless current_partner.graduate?
 
           FactoryBot.create :admin
-          approval_configuration.update_attributes email_admins: false, email_authors: false
+          approval_configuration.update email_admins: false, email_authors: false
           visit approver_path(head_of_program)
           within("form#edit_committee_member_#{head_of_program.id}") do
             find(:css, "#committee_member_status_rejected").set true

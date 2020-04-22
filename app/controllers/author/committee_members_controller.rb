@@ -34,7 +34,7 @@ class Author::CommitteeMembersController < AuthorController
   end
 
   def update
-    @submission.update_attributes!(submission_params)
+    @submission.update!(submission_params)
     status_giver.collecting_format_review_files! if @submission.status_behavior.collecting_committee?
     @submission.update_attribute :committee_provided_at, Time.zone.now
     flash[:notice] = 'Committee updated successfully'
