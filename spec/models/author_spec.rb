@@ -149,7 +149,6 @@ RSpec.describe Author, type: :model do
       author.confidential_hold = nil
       author.save(validate: false)
       author.refresh_important_attributes
-      puts author.inspect
       expect(author.psu_idn).not_to eq('xxxxxxxxx')
       expect(author.psu_idn).to eq('988888888')
       expect(author.last_name).to eq('Ilast')
