@@ -28,7 +28,7 @@ module EtdaWorkflow
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
 
-    config.load_defaults 5.1
+    config.load_defaults "6.0"
 
     # Logging
     logging_config = Rails.application.config_for(:logging)
