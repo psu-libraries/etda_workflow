@@ -76,8 +76,6 @@ Rails.application.routes.draw do
     get '/files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
 
     root to: 'submissions#redirect_to_default_dashboard'
-
-    root to: 'admin#index'
   end
 
   namespace :author do

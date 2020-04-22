@@ -29,6 +29,7 @@ module EtdaWorkflow
     # Initialize configuration defaults for originally generated Rails version.
 
     config.load_defaults "6.0"
+    config.autoloader = :classic
 
     # Logging
     logging_config = Rails.application.config_for(:logging)
@@ -64,12 +65,7 @@ module EtdaWorkflow
     config.autoload_paths += [
       Rails.root.join('app/presenters')
     ]
-    config.autoload_paths += Dir["#{config.root}/lib/**/*"]
-
-    # config.autoload_paths << Rails.root.join("lib")
-    # config.eager_load_paths << Rails.root.join("lib")
-    # config.eager_load_paths << Rails.root.join("app", "services", '*', '*.rb')
-    config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each { |l| require l }
+    config.autoload_paths += Dir["#{config.root}/lib"]
 
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'partners', I18n.default_locale.to_s, '*', '*.*{rb,yml}').to_s]
 
