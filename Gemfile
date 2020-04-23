@@ -16,7 +16,7 @@ gem 'logstash-event'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
 # Use mysql as the database for Active Record
-gem 'mysql2', '>= 0.3.18', '< 0.4.11'
+gem 'mysql2'
 # Use Puma as the app server
 gem 'puma', ">= 4.3.3"
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -173,15 +173,12 @@ end
 group :test do
   gem 'rails-controller-testing'
 
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  # gem 'byebug', platforms: %i[mri mingw x64_mingw]
-
   gem 'launchy'
   gem 'poltergeist'
 
   gem "database_cleaner"
 
-  gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
+  gem 'shoulda-matchers'
 
   gem 'rspec-activemodel-mocks'
   gem 'rspec-retry'
