@@ -6,7 +6,7 @@ class InboundLionPathRecord < ApplicationRecord
   validates :lion_path_degree_code, presence: :lp_valid_degrees
 
   def self.active?
-    @lion_path_inbound_active ||= Rails.application.config_for(:lion_path)[current_partner.id.to_s][:lion_path_inbound]
+    @lion_path_inbound_active ||= Rails.application.config_for(:lion_path)[current_partner.id.to_sym][:lion_path_inbound]
   end
 
   def self.etd_role(cm_role)

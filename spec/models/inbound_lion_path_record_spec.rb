@@ -118,7 +118,7 @@ RSpec.describe InboundLionPathRecord, type: :model, lionpath: true do
     end
     context '#active?' do
       it 'returns value from lion_path.yml' do
-        expect(described_class.active?).to eql(Rails.application.config_for(:lion_path)[current_partner.id.to_s][:lion_path_inbound])
+        expect(described_class.active?).to eql(Rails.application.config_for(:lion_path)[current_partner.id.to_sym][:lion_path_inbound])
       end
     end
 

@@ -8,7 +8,7 @@ RSpec.describe "Manage Submissions", js: true do
   let!(:submission1) { FactoryBot.create :submission, :waiting_for_publication_release, author: author1 }
   let!(:submission2) { FactoryBot.create :submission, :waiting_for_publication_release, author: author2 }
 
-  outbound_active = Rails.application.config_for(:lion_path)[current_partner.id.to_s][:lion_path_outbound]
+  outbound_active = Rails.application.config_for(:lion_path)[current_partner.id.to_sym][:lion_path_outbound]
 
   before do
     webaccess_authorize_admin
