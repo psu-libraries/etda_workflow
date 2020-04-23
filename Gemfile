@@ -49,7 +49,7 @@ gem 'whenever'
 gem 'ddtrace', '~> 0.33'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sassc-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 # gem 'uglifier', '>= 2.7.2'
@@ -64,8 +64,6 @@ gem 'jquery-ui-rails'
 gem 'oj'
 gem 'rabl'
 gem 'rabl-rails'
-
-# gem 'bootstrap-sass'
 
 # FontAwesome sass integration
 gem 'font-awesome-rails'
