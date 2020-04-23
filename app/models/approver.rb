@@ -6,7 +6,7 @@ class Approver < ApplicationRecord
   has_many :committee_members, dependent: :nullify
 
   validates :access_id, presence: true,
-            uniqueness: { case_sensitive: true }
+                        uniqueness: { case_sensitive: true }
 
   def self.current
     Thread.current[:approver]

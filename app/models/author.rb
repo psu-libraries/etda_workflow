@@ -23,7 +23,8 @@ class Author < ApplicationRecord
 
   validates :psu_idn,
             :legacy_id, allow_blank: true,
-            allow_nil: true, uniqueness: { case_sensitive: true }
+                        allow_nil: true,
+                        uniqueness: { case_sensitive: true }
 
   # validate for graduate authors only
   validates :phone_number,
