@@ -100,9 +100,9 @@ class Approver::ApproversController < ApproverController
 
   def update_approver_committee_members(approver_access_id)
     approver = Approver.find_by(access_id: approver_access_id)
-    committee_members = CommitteeMember.where(access_id: approver_access_id, approver_id: nil)
+    committee_members = CommitteeMember.where(access_id: approver.access_id, approver_id: nil)
     committee_members.each do |committee_member|
-      approver.committee_members << committee_member if approver_access_id == committee_member.access_id
+      approver.committee_members << committee_member if approver.access_id == committee_member.access_id
     end
     approver.save!
   end
