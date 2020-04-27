@@ -147,7 +147,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     end
   end
 
-  describe "Remove legacy record from  submission to be released", js: true, retry: 5 do
+  describe "Remove legacy record from  submission to be released", js: true, retry: 10 do
     it "Changes the status to 'final submission submitted' and also saves any updates" do
       # degree_type = current_partner.graduate? ? 'dissertation' : 'thesis'
       # program = FactoryBot.create(:program, name: "Any Program", is_active: true)
