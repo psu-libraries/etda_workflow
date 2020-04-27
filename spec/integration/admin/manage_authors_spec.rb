@@ -8,7 +8,6 @@ RSpec.describe "Manage Authors", js: true do
   before do
     webaccess_authorize_admin
     visit admin_authors_path
-    sleep(5)
   end
 
   it 'has a list of authors' do
@@ -18,7 +17,6 @@ RSpec.describe "Manage Authors", js: true do
     allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
     allow_any_instance_of(Author).to receive(:populate_with_ldap_attributes).and_return(true)
     expect(page).to have_current_path(admin_authors_path)
-    sleep(3)
     expect(page).to have_content('Authors')
     expect(page).to have_content('Access ID')
     expect(page).to have_content('Last Name')
@@ -32,7 +30,6 @@ RSpec.describe "Manage Authors", js: true do
     expect(page).to have_content(author2.alternate_email_address)
     expect(page).to have_content(author1.psu_email_address)
     click_link(author1.access_id.to_s)
-    sleep(3)
     expect(page).to have_button('Update Author')
     expect(page).to have_current_path(edit_admin_author_path(author1))
     expect(page).to have_content(author1.psu_idn)
@@ -52,7 +49,6 @@ RSpec.describe "Manage Authors", js: true do
     expect(page).to have_field('Alternate email address', with: author1.alternate_email_address)
     expect(page).to have_field('Display your alternate email address on your eTD document summary page?') if current_partner.graduate?
     page.find('div.form-section-heading').trigger('click')
-    sleep(4)
     expect(page).to have_link(submission1.title.to_s)
     expect(page).to have_content('released for publication')
     expect(page).to have_link(submission2.title.to_s)
@@ -61,13 +57,11 @@ RSpec.describe "Manage Authors", js: true do
     expect(page).to have_link('Cancel')
     fill_in('First name', with: 'correctname')
     click_button('Update Author')
-    sleep 2
     expect(page).to have_content('Author successfully updated')
     author1.reload
     visit edit_admin_author_path(author1)
     expect(page).to have_field('First name', with: 'correctname')
     click_link('Cancel')
-    sleep 2
     expect(page).to have_content('Authors')
     expect(page).to have_content('Showing')
     expect(page).to have_content('PSU Email')

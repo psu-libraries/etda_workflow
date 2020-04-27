@@ -94,7 +94,6 @@ RSpec.describe 'Step 4: Waiting for Format Review Response', js: true do
         expect(submission.format_review_approved_at).to be_nil
         FactoryBot.create :format_review_file, submission: submission
         visit admin_edit_submission_path(submission)
-        sleep 3 # Allow animations to complete, so the click_button doesn't move
         fill_in 'Format Review Notes to Student', with: 'Note on format review'
         click_button 'Format Review Completed'
         # expect(page).to have_content('successfully')
@@ -111,7 +110,6 @@ RSpec.describe 'Step 4: Waiting for Format Review Response', js: true do
         expect(submission.format_review_rejected_at).to be_nil
         FactoryBot.create :format_review_file, submission: submission
         visit admin_edit_submission_path(submission)
-        sleep 2 # Allow animations to complete, so the click_button doesn't move
         fill_in 'Format Review Notes to Student', with: 'Note on need for revisions'
         click_button 'Reject & request revisions'
         expect(page).to have_content('successfully')

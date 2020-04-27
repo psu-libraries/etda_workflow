@@ -19,7 +19,6 @@ RSpec.describe "Printing a graduate signatory page as an admin", js: true, honor
 
     it "displays the submission print page when partner is graduate" do
       click_link "Print Page"
-      sleep(5)
       # page.find('div#print-button')
       expect(page).to have_content('INTENT')
       expect(page).to have_content(submission.author.last_name)
