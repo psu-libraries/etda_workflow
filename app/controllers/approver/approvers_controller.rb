@@ -79,7 +79,7 @@ class Approver::ApproversController < ApproverController
 
   def marry_via_token(committee_member_token)
     committee_member = committee_member_token.committee_member
-    approver = Approver.find_by(access_id: current_remote_user)
+    approver = Approver.find_by(access_id: current_approver.access_id)
     update_approver_committee_members_on_marry(approver, committee_member)
   end
 
