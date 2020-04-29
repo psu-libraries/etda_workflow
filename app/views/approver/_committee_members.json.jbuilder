@@ -1,4 +1,4 @@
-json.array!  [
+json.array! [
   "<a href=#{approver_path(member)}>#{member.submission.title.truncate(30)}</a>",
   "#{member.submission.author.first_name} #{member.submission.author.last_name}",
   member.committee_role.name,
