@@ -61,9 +61,6 @@ gem 'jquery-rails'
 
 # jQuery user interface widgets
 gem 'jquery-ui-rails'
-gem 'oj'
-gem 'rabl'
-gem 'rabl-rails'
 
 # FontAwesome sass integration
 gem 'font-awesome-rails'
