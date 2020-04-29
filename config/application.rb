@@ -31,7 +31,7 @@ module EtdaWorkflow
     config.load_defaults "6.0"
     # Rails 6 uses zeitwerk's autoloader as default
     # Use classic autoloader to avoid errors
-    config.autoloader = :classic
+    # config.autoloader = :classic
 
     # Logging
     logging_config = Rails.application.config_for(:logging)
