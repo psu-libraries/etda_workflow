@@ -3,6 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe Admin::SubmissionsController, type: :controller do
+
+  before do
+    # Need to authenticate as an admin for these controller specs to work
+    headers = { 'REMOTE_USER' => 'xxb13', 'REQUEST_URI' => '/admin/degrees' }
+    expect(Admin.find_by(access_id: 'xxb13')).to be_nil
+    request.headers.merge! headers
+    Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate!
+  end
+
   describe '#redirect_to_default_dashboard' do
     it 'redirects to default dashboard' do
       expect(get: admin_root_path).to route_to(controller: 'admin/submissions', action: 'redirect_to_default_dashboard')
@@ -135,7 +144,7 @@ RSpec.describe Admin::SubmissionsController, type: :controller do
 
   describe 'raising errors' do
     it 'raises RecordInvalid' do
-      expect { visit 'admin/submissions/0/edit' }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { get :edit, params: { id: 0 } }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end
