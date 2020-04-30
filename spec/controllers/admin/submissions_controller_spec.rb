@@ -3,11 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Admin::SubmissionsController, type: :controller do
-
   before do
     # Need to authenticate as an admin for these controller specs to work
     headers = { 'REMOTE_USER' => 'xxb13', 'REQUEST_URI' => '/admin/degrees' }
-    expect(Admin.find_by(access_id: 'xxb13')).to be_nil
     request.headers.merge! headers
     Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate!
   end

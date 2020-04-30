@@ -3,12 +3,20 @@ RSpec.describe "when admin responds to final submission", js: true do
 
   let!(:author) { FactoryBot.create :author }
   let!(:degree) { FactoryBot.create :degree }
-  let!(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response,
-                                        author: author, degree: degree }
-  let!(:committee_members) { [(FactoryBot.create :committee_member), (FactoryBot.create :committee_member)] }
-  let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type,
-                                                    configuration_threshold: 0, email_authors: true,
-                                                    use_percentage: false, email_admins: true }
+  let!(:submission) do
+    FactoryBot.create :submission, :waiting_for_final_submission_response, author: author, degree: degree
+  end
+
+  let!(:committee_members) do
+    [(FactoryBot.create :committee_member),
+     (FactoryBot.create :committee_member)]
+  end
+
+  let!(:approval_configuration) do
+    FactoryBot.create :approval_configuration, degree_type: degree.degree_type,
+                                               configuration_threshold: 0, email_authors: true,
+                                               use_percentage: false, email_admins: true
+  end
 
   before do
     webaccess_authorize_admin
@@ -93,7 +101,6 @@ RSpec.describe "when admin responds to final submission", js: true do
       expect(submission.final_submission_rejected_at).not_to be_nil
     end
   end
-
 
   describe 'an admin deletes a format review file that is waiting for approval', js: true do
     let!(:submission) { FactoryBot.create :submission, :waiting_for_format_review_response }
