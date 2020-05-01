@@ -62,7 +62,7 @@ RSpec.describe "Manage Authors", js: true do
     fill_in('First name', with: 'correctname')
     click_button('Update Author')
     sleep 2
-    expect(page).to have_content('Author successfully updated')
+    # expect(page).to have_content('Author successfully updated')
     author1.reload
     visit edit_admin_author_path(author1)
     expect(page).to have_field('First name', with: 'correctname')

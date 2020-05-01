@@ -61,12 +61,8 @@ module EtdaWorkflow
     config.active_record.default_timezone = :local
     config.active_record.time_zone_aware_attributes = false
 
-    config.autoload_paths += [
-      Rails.root.join('app/presenters')
-    ]
-
+    config.autoload_paths += Dir[Rails.root.join('app/presenters')]
     config.autoload_paths += Dir["#{config.root}/lib"]
-
     config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
 
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'partners', I18n.default_locale.to_s, '*', '*.*{rb,yml}').to_s]
