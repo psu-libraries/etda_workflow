@@ -48,6 +48,7 @@ Rails.application.configure do
   config.webpacker.check_yarn_integrity = false
 
   # Mocks
+  # TODO Remove constants from initializer (autoload to deprecate in future Rails versions)
   LionPathConnection = LionPath::MockLionPathConnection
   LdapUniversityDirectory = MockUniversityDirectory
   VirusScanner = MockVirusScanner
