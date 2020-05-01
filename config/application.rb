@@ -28,7 +28,7 @@ module EtdaWorkflow
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
 
-    config.load_defaults "6.0"
+    config.load_defaults "6.0" # enables zeitwerk mode in CRuby
 
     # Logging
     logging_config = Rails.application.config_for(:logging)

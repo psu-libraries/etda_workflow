@@ -45,8 +45,7 @@ gem 'rack', '= 2.0.8'
 # Used to schedule cron jobs on the servers
 gem 'whenever'
 
-# Datadog APM
-gem 'ddtrace', '~> 0.33'
+
 
 # Use SCSS for stylesheets
 gem 'sassc-rails'
@@ -179,4 +178,9 @@ group :test do
   gem 'rspec-retry'
 
   gem 'webmock'
+end
+
+group :production do
+  # Datadog APM
+  gem 'ddtrace', '~> 0.33'
 end
