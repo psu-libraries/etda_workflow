@@ -8,6 +8,14 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
 
   self.base_dir = Rails.root
 
+  def move_to_cache
+    true
+  end
+
+  def move_to_store
+    true
+  end
+
   def store_dir
     base_dir.join(identity_subdir)
   end
