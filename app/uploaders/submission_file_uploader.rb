@@ -9,10 +9,12 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
   self.base_dir = Rails.root
 
   def move_to_cache
+    false if Rails.env.test?
     true
   end
 
   def move_to_store
+    false if Rails.env.test?
     true
   end
 
