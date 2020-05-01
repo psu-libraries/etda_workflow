@@ -98,4 +98,7 @@ RSpec.configure do |config|
       Capybara.reset!
     end
   end
+
+  # FactoryBot configuration
+  config.include FactoryBot::Syntax::Methods
 end
