@@ -10,7 +10,6 @@
     "bootstrap": ">=3.4.1",
     "bootstrap-loader": "^3.0.4",
     "bootstrap-sass": "^3.3.7",
-    "bootstrap3": "^3.3.5",
     "breakpoints": "^0.0.0",
     "caniuse-lite": "^1.0.30000824",
     "cocoon": "github:nathanvda/cocoon",

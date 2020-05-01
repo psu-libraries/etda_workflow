@@ -5,7 +5,7 @@
 //var $ = require('jquery');
 //window.jQuery = $;
 
-require('bootstrap3/dist/css/bootstrap.css');
+require('bootstrap/dist/css/bootstrap.css');
 require('../author/invention_disclosure.js');
 require('../author/lionpath_degree.js');
 require('../author/committee_members');

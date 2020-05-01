@@ -5,7 +5,6 @@
  */
 var $ = require('jquery');
 window.jQuery = $;
-require('bootstrap3/js/tooltip.js');
 
 const initialize_tooltips = function () {
     $('[data-toggle="tooltip"]').tooltip();

@@ -2138,11 +2138,6 @@ bootstrap-sass@^3.3.7:
   resolved "https://registry.yarnpkg.com/bootstrap-sass/-/bootstrap-sass-3.4.1.tgz#6843c73b1c258a0ac5cb2cc6f6f5285b664a8e9a"
   integrity sha512-p5rxsK/IyEDQm2CwiHxxUi0MZZtvVFbhWmyMOt4lLkA4bujDA1TGoKT0i1FKIWiugAdP+kK8T5KMDFIKQCLYIA==
 
-bootstrap3@^3.3.5:
-  version "3.3.5"
-  resolved "https://registry.yarnpkg.com/bootstrap3/-/bootstrap3-3.3.5.tgz#496a4ef6c087214fa96838196d60de645e82591a"
-  integrity sha1-SWpO9sCHIU+paDgZbWDeZF6CWRo=
-
 bootstrap@>=3.4.1:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.4.1.tgz#8582960eea0c5cd2bede84d8b0baf3789c3e8b01"

@@ -4,8 +4,8 @@
 //require('popper.js');
 require('../admin/bulk_selectors_and_actions.js');
 //require('../admin/edit_submission_form.js');
-require('bootstrap3/dist/css/bootstrap.min.css');
-require('bootstrap3/dist/css/bootstrap.css');
+require('bootstrap/dist/css/bootstrap.min.css');
+require('bootstrap/dist/css/bootstrap.css');
 require('../admin/initialize_datatables.js');
 require('../styles/admin/datatable_images.css.scss');
 require( 'datatables.net-bs' );
