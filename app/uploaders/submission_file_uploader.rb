@@ -10,11 +10,13 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
 
   def move_to_cache
     return false if Rails.env.test?
+
     true
   end
 
   def move_to_store
     return false if Rails.env.test?
+
     true
   end
 
