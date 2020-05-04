@@ -4,11 +4,9 @@ RSpec.describe 'Step 4: Waiting for Format Review Response', js: true do
   describe "When status is 'waiting for format review response'" do
     before do
       webaccess_authorize_author
-      webaccess_authorize_admin
     end
 
     let!(:author) { current_author }
-    let!(:admin)  { current_admin }
     let!(:submission) { FactoryBot.create :submission, :waiting_for_format_review_response, author: author }
 
     context "visiting the 'Author Submissions Index Page' page" do
@@ -86,37 +84,6 @@ RSpec.describe 'Step 4: Waiting for Format Review Response', js: true do
         visit author_submission_final_submission_path(submission)
         # expect(page).to have_content 'You are not allowed to visit that page at this time, please contact your administrator'
         expect(page).to have_current_path(author_root_path)
-      end
-    end
-
-    context "when an admin accepts the format review files" do
-      it "changes status to 'collecting final submission files'" do
-        expect(submission.format_review_approved_at).to be_nil
-        FactoryBot.create :format_review_file, submission: submission
-        visit admin_edit_submission_path(submission)
-        fill_in 'Format Review Notes to Student', with: 'Note on format review'
-        click_button 'Format Review Completed'
-        # expect(page).to have_content('successfully')
-        submission.reload
-        expect(submission.status).to eq 'collecting final submission files'
-        submission.reload
-        expect(submission.format_review_approved_at).not_to be_nil
-      end
-    end
-
-    context "when an admin rejects the format review files" do
-      # before do
-      it "changes status to 'collecting format review files rejected'" do
-        expect(submission.format_review_rejected_at).to be_nil
-        FactoryBot.create :format_review_file, submission: submission
-        visit admin_edit_submission_path(submission)
-        fill_in 'Format Review Notes to Student', with: 'Note on need for revisions'
-        click_button 'Reject & request revisions'
-        expect(page).to have_content('successfully')
-        submission.reload
-        expect(submission.status).to eq 'collecting format review files rejected'
-        submission.reload
-        expect(submission.format_review_rejected_at).not_to be_nil
       end
     end
   end

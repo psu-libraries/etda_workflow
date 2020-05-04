@@ -67,7 +67,7 @@ class Submission < ApplicationRecord
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit } # && !InboundLionPathRecord.active? }
 
   validates :public_id,
-            uniqueness: true,
+            uniqueness: { case_sensitive: true },
             allow_nil: true
 
   validate :check_title_capitalization
@@ -131,7 +131,7 @@ class Submission < ApplicationRecord
 
   def reset_committee_reviews
     committee_members.each do |committee_member|
-      committee_member.update_attributes! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
+      committee_member.update! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
     end
   end
 

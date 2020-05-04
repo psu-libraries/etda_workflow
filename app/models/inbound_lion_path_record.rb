@@ -6,7 +6,7 @@ class InboundLionPathRecord < ApplicationRecord
   validates :lion_path_degree_code, presence: :lp_valid_degrees
 
   def self.active?
-    @lion_path_inbound_active ||= Rails.application.config_for(:lion_path)[current_partner.id.to_s][:lion_path_inbound]
+    @lion_path_inbound_active ||= Rails.application.config_for(:lion_path)[current_partner.id.to_sym][:lion_path_inbound]
   end
 
   def self.etd_role(cm_role)
@@ -66,7 +66,7 @@ class InboundLionPathRecord < ApplicationRecord
     return true unless submission.using_lionpath?
 
     refreshed_plan = LionPath::LpEtdPlan.new(submission.academic_plan.selected)
-    submission.update_attributes(degree_id: refreshed_plan.etd_degree_id, program_id: refreshed_plan.etd_program_id, year: refreshed_plan.etd_year, semester: refreshed_plan.etd_semester, defended_at: refreshed_plan.etd_defense_date_time)
+    submission.update(degree_id: refreshed_plan.etd_degree_id, program_id: refreshed_plan.etd_program_id, year: refreshed_plan.etd_year, semester: refreshed_plan.etd_semester, defended_at: refreshed_plan.etd_defense_date_time)
     true
   rescue ActiveRecord::RecordInvalid
     false

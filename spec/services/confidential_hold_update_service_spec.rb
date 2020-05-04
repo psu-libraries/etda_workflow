@@ -21,7 +21,7 @@ RSpec.describe ConfidentialHoldUpdateService do
     end
 
     it 'removes confidential hold and sets history' do
-      author.update_attributes confidential_hold: true, confidential_hold_set_at: DateTime.now
+      author.update confidential_hold: true, confidential_hold_set_at: DateTime.now
       FactoryBot.create :confidential_hold_history, author: author
       allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve).and_return(confidential_hold: false)
       conf_hold_update_service = described_class.new(author, 'login_controller')
@@ -46,7 +46,7 @@ RSpec.describe ConfidentialHoldUpdateService do
     end
 
     it 'updates last history record' do
-      author.update_attributes confidential_hold: true, confidential_hold_set_at: DateTime.now
+      author.update confidential_hold: true, confidential_hold_set_at: DateTime.now
       FactoryBot.create :confidential_hold_history, author: author, removed_at: DateTime.now, removed_by: 'login_controller'
       FactoryBot.create :confidential_hold_history, author: author
       allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve).and_return(confidential_hold: false)

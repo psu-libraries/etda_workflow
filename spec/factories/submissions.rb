@@ -9,7 +9,7 @@ FactoryBot.define do
     semester { "Spring" }
     year { Time.zone.today.next_year.year }
     access_level { 'open_access' }
-    defended_at Time.zone.tomorrow if current_partner.graduate?
+    defended_at { Time.zone.tomorrow if current_partner.graduate? }
     federal_funding { false }
     #    lion_path_degree_code { LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN].first[LionPath::LpKeys::DEGREE_CODE] }
 

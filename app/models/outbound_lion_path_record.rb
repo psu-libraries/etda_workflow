@@ -10,7 +10,7 @@ class OutboundLionPathRecord < ApplicationRecord
   # #AuthorSerializer.new(s).attributes.merge(academic_plan: SubmissionSerializer.author_submission(s))
 
   def self.active?
-    @lion_path_outbound_active ||= Rails.application.config_for(:lion_path)[current_partner.id.to_s][:lion_path_outbound]
+    @lion_path_outbound_active ||= Rails.application.config_for(:lion_path)[current_partner.id.to_sym][:lion_path_outbound]
   end
 
   def report_status_change

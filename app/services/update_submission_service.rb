@@ -11,7 +11,6 @@ class UpdateSubmissionService
   end
 
   def send_email(submission)
-    # submission.update_attributes!(submission_params)
     return { error: false, msg: 'No updates required; access level did not change' } unless submission.access_level != submission.previous_access_level
 
     email = AccessLevelUpdatedEmail.new(Admin::SubmissionView.new(submission, nil))

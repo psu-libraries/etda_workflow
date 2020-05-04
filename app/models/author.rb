@@ -19,10 +19,12 @@ class Author < ApplicationRecord
             :alternate_email_address,
             :psu_idn, presence: true
 
-  validates :access_id, uniqueness: true
+  validates :access_id, uniqueness: { case_sensitive: true }
 
   validates :psu_idn,
-            :legacy_id, allow_blank: true, allow_nil: true, uniqueness: true
+            :legacy_id, allow_blank: true,
+                        allow_nil: true,
+                        uniqueness: { case_sensitive: true }
 
   # validate for graduate authors only
   validates :phone_number,
@@ -82,7 +84,7 @@ class Author < ApplicationRecord
 
     #  Be sure there is data before continuing???
     if inbound_lion_path_record.present?
-      inbound_lion_path_record.update_attribute(:current_data, lp_record_data)
+      inbound_lion_path_record.update(:current_data, lp_record_data)
     else
       build_inbound_lion_path_record(author_id: id, current_data: lp_record_data) # create a lp record
       inbound_lion_path_record.save(validate: false)
@@ -173,7 +175,7 @@ class Author < ApplicationRecord
         mapped_attributes[:first_name] = access_id if mapped_attributes[:first_name].blank?
         mapped_attributes[:last_name] = 'No Associated Name' if mapped_attributes[:last_name].blank?
       end
-      update_attributes(mapped_attributes)
+      update(mapped_attributes)
       save(validate: false)
     end
 end

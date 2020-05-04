@@ -2,11 +2,11 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
@@ -167,7 +167,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
 
   create_table "final_submission_files", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
-    t.text "asset", limit: 16777215
+    t.text "asset", size: :medium
     t.integer "legacy_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -177,7 +177,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
 
   create_table "format_review_files", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
-    t.text "asset", limit: 16777215
+    t.text "asset", size: :medium
     t.integer "legacy_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -188,7 +188,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
   create_table "inbound_lion_path_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "author_id"
     t.string "lion_path_degree_code"
-    t.text "current_data", limit: 16777215
+    t.text "current_data", size: :medium
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["author_id"], name: "inbound_lion_path_records_author_id_fk"
@@ -204,7 +204,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
 
   create_table "keywords", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
-    t.text "word", limit: 16777215
+    t.text "word", size: :medium
     t.integer "legacy_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -213,7 +213,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
   end
 
   create_table "outbound_lion_path_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.text "status_data", limit: 16777215
+    t.text "status_data", size: :medium
     t.boolean "received"
     t.string "transaction_id"
     t.bigint "submission_id"
@@ -240,10 +240,10 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.integer "year"
     t.string "status"
     t.string "title", limit: 400
-    t.text "format_review_notes", limit: 16777215
-    t.text "final_submission_notes", limit: 16777215
+    t.text "format_review_notes", size: :medium
+    t.text "final_submission_notes", size: :medium
     t.datetime "defended_at"
-    t.text "abstract", limit: 16777215
+    t.text "abstract", size: :medium
     t.string "access_level"
     t.boolean "has_agreed_to_terms"
     t.datetime "committee_provided_at"
@@ -267,7 +267,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.datetime "format_review_files_first_uploaded_at"
     t.datetime "final_submission_files_first_uploaded_at"
     t.string "lion_path_degree_code"
-    t.text "restricted_notes", limit: 16777215
+    t.text "restricted_notes", size: :medium
     t.datetime "publication_release_terms_agreed_to_at"
     t.boolean "has_agreed_to_publication_release"
     t.datetime "created_at", null: false

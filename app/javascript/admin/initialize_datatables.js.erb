@@ -45,12 +45,12 @@ setup_datatables = function() {
 
     const author_options = {
         order: [[ 1, "asc" ]],
-        ajax: table.attr('data-ajax-url')
+        ajax: (table.attr('data-ajax-url') + '.json')
     };
 
     $('#programs-index.datatable').dataTable(
         (program_options = {
-            ajax: table.attr('data-ajax-url'),
+            ajax: (table.attr('data-ajax-url') + '.json'),
             rowCallback(row, program_data) {
                 const program_status = program_data[1];
                 if (program_status === "No") {
@@ -86,7 +86,7 @@ setup_datatables = function() {
 
     $('#degrees-index.datatable').dataTable(
         (degree_options = {
-            ajax: table.attr('data-ajax-url'),
+            ajax: (table.attr('data-ajax-url') + '.json'),
             rowCallback(row, degree_data) {
                 const degree_status = degree_data[1];
                 if (degree_status === "No") {
@@ -117,7 +117,7 @@ setup_datatables = function() {
     $('#approver-committees-index.datatable').dataTable(
         (approver_options = {
             order: [[3, 'desc']],
-            ajax: table.attr('data-ajax-url'),
+            ajax: (table.attr('data-ajax-url') + '.json'),
             initComplete() {
                 const column = this.api().column("submission_status:name");
                 column.search("Waiting For Committee Review( Rejected)?|Waiting For Head Of Program Review", true, false).draw();
@@ -172,7 +172,7 @@ setup_datatables = function() {
     // Admin-submissions-index datatables
     $('.admin-submissions-index.datatable').dataTable(
         (admin_submission_options = {
-            ajax: { url: table.attr('data-ajax-url'),
+            ajax: { url: (table.attr('data-ajax-url') + '.json'),
                     data: { semester: function selected_semester() {
                                 return select.val().toString();
                         }
