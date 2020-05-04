@@ -12,9 +12,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
   before do
     webaccess_authorize_admin
     visit admin_edit_submission_path(submission)
-    sleep(3)
     page.find('div[data-target="#program-information"]').click
-    sleep(3)
     fill_in "Title", with: "A Brand New TITLE"
     check "Allow completely upper-case words in title"
     select program.name, from: current_partner.program_label.to_s
@@ -22,7 +20,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     select "Fall", from: "Semester Intending to Graduate"
     select 1.year.from_now.year, from: "Graduation Year"
     page.find('div[data-target="#committee"]').click
-    sleep(2)
+    sleep 1
     within('div.format') do
       within('#committee') do
         click_link("Add Committee Member")
@@ -68,11 +66,9 @@ RSpec.describe "Editing a released submission as an admin", js: true do
 
     fill_in "Final Submission Notes to Student", with: "New final notes"
     click_button "Withdraw Publication"
-    sleep(4)
     # expect(page).to have_content "Submission for #{submission.author.first_name} #{submission.author.last_name} was successfully un-published"
 
     visit admin_edit_submission_path(submission)
-    sleep(3)
     submission.reload
     expect(submission.status).to eq('waiting for publication release')
     expect(page).to have_button('Update Metadata')
@@ -114,7 +110,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     expect(page.find_field("Final Submission Notes to Student").value).to eq submission.final_submission_notes.to_s
   end
 
-  describe "Remove from  submission to be released", js: true do
+  describe "Remove from  submission to be released", js: true, retry: 5 do
     # let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
     # let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", degree_type: DegreeType.default, is_active: true) }
     let(:author) { FactoryBot.create(:author, :no_lionpath_record) }
@@ -139,7 +135,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
       expect(page).not_to have_content "A Better Title"
 
       visit admin_submissions_index_path(degree_type: DegreeType.default, scope: 'final_submission_submitted')
-      sleep(3)
+      sleep 1
       expect(page).to have_content('Final Submission is Submitted')
       expect(page).to have_content author_name
       click_link "A Better Title"
@@ -151,7 +147,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     end
   end
 
-  describe "Remove legacy record from  submission to be released", js: true do
+  describe "Remove legacy record from  submission to be released", js: true, retry: 10 do
     it "Changes the status to 'final submission submitted' and also saves any updates" do
       # degree_type = current_partner.graduate? ? 'dissertation' : 'thesis'
       # program = FactoryBot.create(:program, name: "Any Program", is_active: true)
@@ -174,7 +170,6 @@ RSpec.describe "Editing a released submission as an admin", js: true do
       visit admin_submissions_index_path(degree_type: DegreeType.default, scope: 'final_submission_submitted')
 
       expect(page).to have_content legacy_submission.author.last_name
-      sleep(4)
       visit admin_edit_submission_path(legacy_submission)
       expect(page).to have_content 'Final Submission Evaluation'
       expect(find(:css, 'input#submission_title').value).to eq('')

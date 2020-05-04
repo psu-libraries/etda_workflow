@@ -9,7 +9,6 @@ RSpec.describe "Manage Programs", js: true do
   before do
     webaccess_authorize_admin
     visit admin_programs_path
-    sleep(3)
   end
 
   it 'has a list of programs' do

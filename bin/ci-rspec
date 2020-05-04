@@ -1,18 +1,33 @@
 #!/bin/bash
 export RAILS_ENV=test
 
+# List of non-graduate partners
+other_partners=(honors milsch sset)
+
 # adds phantomjs for testing
 yarn global add phantomjs-prebuilt
 
 bundle exec rails db:create
 bundle exec rails db:migrate
 
-echo "================================="
-echo "Running Rspec for ${PARTNER}"
-echo "================================="
-
 if [ ${PARTNER} == "graduate" ]; then
-   PARTNER=${PARTNER} COVERAGE=true bundle exec rspec
+    if [ ${JS} == true ]; then
+        echo "======================================"
+        echo "Running integration tests for graduate"
+        echo "======================================"
+        PARTNER=graduate bundle exec rspec --tag js
+    else
+        echo "======================================"
+        echo "Running unit tests for graduate"
+        echo "======================================"
+        PARTNER=graduate bundle exec rspec --tag ~js
+    fi
 else
-   PARTNER=${PARTNER} bundle exec rspec --tag ${PARTNER}
+    for partner in ${other_partners[*]}
+    do
+        echo "======================================"
+        echo "Running $partner specific tests"
+        echo "======================================"
+        PARTNER=$partner bundle exec rspec --tag $partner
+    done
 fi

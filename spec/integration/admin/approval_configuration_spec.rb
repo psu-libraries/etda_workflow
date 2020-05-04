@@ -40,7 +40,6 @@ RSpec.describe "Editing approval configuration", js: true, honors: true, milsch:
     find('#approval_configuration_email_admins_true').click
     find('#approval_configuration_email_authors_true').click
     click_on 'Update Approval Configuration'
-    sleep 3
     expect(page).to have_content('Manage Approval Configurations')
     # expect(ApprovalConfiguration.find(approval_configuration.id).approval_deadline_on).to eq Date.today # Determining use case for approval configuration
     expect(ApprovalConfiguration.find(approval_configuration_1.id).use_percentage).to eq true

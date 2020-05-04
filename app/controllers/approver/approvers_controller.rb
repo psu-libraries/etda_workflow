@@ -5,8 +5,8 @@ class Approver::ApproversController < ApproverController
   include ActionView::Helpers::UrlHelper
 
   def index
-    update_approver_committee_members
     @approver = Approver.find_by(access_id: current_approver.access_id)
+    update_approver_committee_members(@approver)
     @committee_members = @approver.committee_members.select { |n| n if n.submission.status_behavior.beyond_collecting_final_submission_files? } if current_partner.honors?
     @committee_members = @approver.committee_members.select { |n| n if n.submission.status_behavior.beyond_waiting_for_final_submission_response? } unless current_partner.honors?
   end
@@ -79,7 +79,7 @@ class Approver::ApproversController < ApproverController
 
   def marry_via_token(committee_member_token)
     committee_member = committee_member_token.committee_member
-    approver = Approver.find_by(access_id: current_remote_user)
+    approver = Approver.find_by(access_id: current_approver.access_id)
     update_approver_committee_members_on_marry(approver, committee_member)
   end
 
@@ -98,15 +98,14 @@ class Approver::ApproversController < ApproverController
     links.join(" ")
   end
 
-  def update_approver_committee_members
-    approver = Approver.find_by(access_id: current_approver.access_id)
+  def update_approver_committee_members(approver)
     committee_members = CommitteeMember.where(access_id: approver.access_id)
     committee_members.each do |committee_member|
-      next if committee_member.approver.present?
+      next if committee_member.approver_id == approver.id
 
-      approver.committee_members << committee_member
+      committee_member.approver_id = approver.id
+      committee_member.save!
     end
-    approver.save!
   end
 
   def update_approver_committee_members_on_marry(approver, initial_committee_member)

@@ -9,7 +9,6 @@ RSpec.describe "Manage Degrees", js: true do
   before do
      webaccess_authorize_admin
      visit admin_degrees_path
-     sleep(5)
   end
 
   it 'has a list of degrees' do

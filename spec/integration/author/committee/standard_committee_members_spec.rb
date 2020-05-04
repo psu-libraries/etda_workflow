@@ -66,7 +66,6 @@ RSpec.describe 'The standard committee form for authors', js: true do
         end
         click_button 'Save and Continue Submission' unless current_partner.graduate?
         click_button 'Save and Input Program Head/Chair >>' if current_partner.graduate?
-        sleep(3)
         expect(page).to have_content('My Submissions') unless current_partner.graduate?
         expect(page).to have_content('Input Program Head/Chair') if current_partner.graduate?
         submission.reload
@@ -156,7 +155,6 @@ RSpec.describe 'The standard committee form for authors', js: true do
       it "can delete an optional committee member" do
         expect(page).to have_field('Name', with: 'I am Special')
         click_link "Remove Committee Member"
-        sleep(2)
         click_button 'Save and Continue Editing'
         # expect(page).to have_content('successfully')
         submission.reload
@@ -184,7 +182,6 @@ RSpec.describe 'The standard committee form for authors', js: true do
         # Send individual characters one at a time to trigger autocomplete
         # Ref: https://github.com/teampoltergeist/poltergeist/issues/439#issuecomment-66871147
         find("#submission_committee_members_attributes_1_name").native.send_keys(*"alex".chars)
-        sleep 3 # Autocomplete delays before sending/displaying results
       end
 
       it "allows me to autocomplete that committee member's information from LDAP" do

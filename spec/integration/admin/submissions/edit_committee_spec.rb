@@ -26,7 +26,6 @@ RSpec.describe "Editing committee member information for format reviews and fina
           expect(find("option[value='#{option[:id]}']").text).to eq(option[:name])
         end
       end
-      sleep 1
       first_committee_member_remove = find_all("a", text: "Remove Committee Member").first
       find("select#submission_committee_members_attributes_1_status").find(:option, 'Approved').select_option
       first_committee_member_remove.trigger('click')

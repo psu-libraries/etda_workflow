@@ -18,7 +18,7 @@ RSpec.describe "Manage Submissions", js: true do
 
   describe 'Admin Delete submissions' do
     context 'bulk deletes submissions' do
-      it 'deletes the submissions and creates outbound lion path records' do
+      it 'deletes the submissions and creates outbound lion path records', lionpath: true do
         FactoryBot.create :submission, :waiting_for_publication_release, author: author1
         expect(page).to have_content('Final Submission to be Released')
         expect(page).to have_content('Showing')
@@ -38,7 +38,7 @@ RSpec.describe "Manage Submissions", js: true do
     end
 
     context 'delete one submission' do
-      it 'deletes one submission and creates one outbound lion path record' do
+      it 'deletes one submission and creates one outbound lion path record', lionpath: true do
         outbound_records = OutboundLionPathRecord.all.count
         submission_count = Submission.all.count
         find(:css, "input.row-checkbox", match: :first).set(true)

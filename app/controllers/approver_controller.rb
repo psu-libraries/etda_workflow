@@ -47,7 +47,11 @@ class ApproverController < ApplicationController
   end
 
   def valid_approver_session?
-    session[:user_role] == 'approver'
+    user_access_id = current_remote_user.downcase
+    approver_access_id = current_approver.access_id.downcase
+    return false if session[:user_role] != 'approver'
+
+    approver_access_id == user_access_id
   end
 
   def approver_ability

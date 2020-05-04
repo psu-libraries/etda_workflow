@@ -9,7 +9,6 @@ RSpec.describe "Author Navigation", js: true do
   let(:author) { current_author }
 
   it 'has top navigation' do
-    sleep 3
     expect(page).to have_link('Home')
     expect(page).to have_link('About')
     expect(page).to have_link('Contact Us')

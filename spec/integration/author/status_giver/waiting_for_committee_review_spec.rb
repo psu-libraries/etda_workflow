@@ -117,7 +117,6 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           end
           find('#submission_has_agreed_to_terms').click
           click_button 'Submit final files for review'
-          sleep 1
           expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' unless current_partner.honors?
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review' if current_partner.honors?
         end
@@ -141,7 +140,6 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find(:css, "#committee_member_status_approved").set true
         end
         click_button 'Submit Review'
-        sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
       end
 
@@ -155,7 +153,6 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find(:css, "#committee_member_status_approved").set true
         end
         click_button 'Submit Review'
-        sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
       end
 
@@ -167,7 +164,6 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find(:css, "#committee_member_status_approved").set true
         end
         click_button 'Submit Review'
-        sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for publication release' unless current_partner.honors?
         expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' if current_partner.honors?
         expect(WorkflowMailer.deliveries.count).to eq 1
@@ -181,7 +177,6 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find('#committee_member_status_approved').click
         end
         click_button 'Submit Review'
-        sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for publication release' unless current_partner.honors?
         expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' if current_partner.honors?
         expect(WorkflowMailer.deliveries.count).to eq 0
@@ -196,7 +191,6 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find(:css, "#committee_member_status_rejected").set true
         end
         click_button 'Submit Review'
-        sleep 3
         expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
         expect(WorkflowMailer.deliveries.count).to eq 2
       end
@@ -318,7 +312,6 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
             find(:css, "#committee_member_status_approved").set true
           end
           click_button 'Submit Review'
-          sleep 3
           expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
           expect(WorkflowMailer.deliveries.count).to eq 1
         end
@@ -332,7 +325,6 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
             find('#committee_member_status_rejected').click
           end
           click_button 'Submit Review'
-          sleep 3
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
           expect(WorkflowMailer.deliveries.count).to eq 2
         end
@@ -347,7 +339,6 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
             find(:css, "#committee_member_status_rejected").set true
           end
           click_button 'Submit Review'
-          sleep 3
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
           expect(WorkflowMailer.deliveries.count).to eq 0
         end
