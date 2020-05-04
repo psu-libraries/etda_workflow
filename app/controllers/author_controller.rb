@@ -31,18 +31,31 @@ class AuthorController < ApplicationController
   end
 
   def authenticate_or_redirect
-    if current_remote_user.present? && !valid_author_session?
+    return if valid_author_session?
+
+    if valid_author?
       authenticate_author!
       update_confidential_hold
-    elsif current_remote_user.present? && valid_author_session?
-      nil
     else
-      redirect_to '/401' unless Rails.env.test?
+      redirect_to '/401'
     end
   end
 
+  def valid_author?
+    return false unless current_remote_user.present?
+
+    session[:user_role] = 'author'
+    true
+  end
+
   def valid_author_session?
-    session[:user_role] == 'author'
+    return false if session[:user_role] != 'author'
+
+    current_user_check
+  end
+
+  def current_user_check
+    current_remote_user.downcase == current_author.access_id.downcase
   end
 
   def author_ability

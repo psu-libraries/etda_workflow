@@ -47,7 +47,13 @@ class AdminController < ApplicationController
   end
 
   def valid_admin_session?
-    session[:user_role] == 'admin'
+    return false if session[:user_role] != 'admin'
+
+    current_user_check
+  end
+
+  def current_user_check
+    current_remote_user.downcase == current_admin.access_id.downcase
   end
 
   def current_ability
