@@ -23,7 +23,7 @@ module SubmissionStates
 
       state = SubmissionStates::StateGenerator.state_for_name(submission.status)
       if state.valid_state_change? self
-        submission.update_attribute :status, name
+        submission.update! status: name
       else
         false # no transition made
       end

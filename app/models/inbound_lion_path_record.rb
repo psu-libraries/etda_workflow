@@ -25,7 +25,7 @@ class InboundLionPathRecord < ApplicationRecord
 
       inbound_record = submission.author.inbound_lion_path_record
       lp_degree_code = inbound_record.initialize_lion_path_degree_code(submission)
-      submission.update_attribute :lion_path_degree_code, lp_degree_code unless lp_degree_code.nil?
+      submission.update! lion_path_degree_code: lp_degree_code unless lp_degree_code.nil?
       inbound_record.refresh_academic_plan(submission)
       submission.academic_plan.committee_members_refresh if submission.status_behavior.beyond_collecting_committee?
     end
@@ -66,7 +66,7 @@ class InboundLionPathRecord < ApplicationRecord
     return true unless submission.using_lionpath?
 
     refreshed_plan = LionPath::LpEtdPlan.new(submission.academic_plan.selected)
-    submission.update(degree_id: refreshed_plan.etd_degree_id, program_id: refreshed_plan.etd_program_id, year: refreshed_plan.etd_year, semester: refreshed_plan.etd_semester, defended_at: refreshed_plan.etd_defense_date_time)
+    submission.update!(degree_id: refreshed_plan.etd_degree_id, program_id: refreshed_plan.etd_program_id, year: refreshed_plan.etd_year, semester: refreshed_plan.etd_semester, defended_at: refreshed_plan.etd_defense_date_time)
     true
   rescue ActiveRecord::RecordInvalid
     false

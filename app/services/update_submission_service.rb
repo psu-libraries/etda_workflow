@@ -1,6 +1,6 @@
 class UpdateSubmissionService
   def self.admin_update_submission(submission, current_remote_user, params)
-    submission.update params
+    submission.update! params
     submission.committee_members.each do |committee_member|
       next if committee_member.created_at == committee_member.updated_at
 

@@ -84,7 +84,7 @@ class Author < ApplicationRecord
 
     #  Be sure there is data before continuing???
     if inbound_lion_path_record.present?
-      inbound_lion_path_record.update(:current_data, lp_record_data)
+      inbound_lion_path_record.update!(current_data: lp_record_data)
     else
       build_inbound_lion_path_record(author_id: id, current_data: lp_record_data) # create a lp record
       inbound_lion_path_record.save(validate: false)
