@@ -27,7 +27,6 @@ class AuthorController < ApplicationController
     # only logout if the REMOTE_USER is not set in the HTTP headers and a user is set within warden
     #  logout clears the entire session including flash messages
     request.env['warden'].logout if current_remote_user.nil? || !valid_author_session?
-    session[:user_role] = 'author'
   end
 
   def authenticate_or_redirect
@@ -55,7 +54,7 @@ class AuthorController < ApplicationController
   end
 
   def current_user_check
-    current_remote_user.downcase == current_author.access_id.downcase
+    current_remote_user == current_author.access_id
   end
 
   def author_ability

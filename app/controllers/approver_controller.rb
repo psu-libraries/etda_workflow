@@ -52,7 +52,7 @@ class ApproverController < ApplicationController
   end
 
   def current_user_check
-    current_remote_user.downcase == current_approver.access_id.downcase
+    current_remote_user == current_approver.access_id
   end
 
   def approver_ability

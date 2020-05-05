@@ -53,7 +53,7 @@ class AdminController < ApplicationController
   end
 
   def current_user_check
-    current_remote_user.downcase == current_admin.access_id.downcase
+    current_remote_user == current_admin.access_id
   end
 
   def current_ability
