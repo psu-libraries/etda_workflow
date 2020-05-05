@@ -303,7 +303,7 @@ class Submission < ApplicationRecord
   end
 
   def self.extend_publication_date(submission_ids, date_to_release)
-    where(id: submission_ids).each { |s| s.update!(released_for_publication_at: date_to_release) }
+    where(id: submission_ids).find_each { |s| s.update!(released_for_publication_at: date_to_release) }
     submission_ids.each do |s_id|
       OutboundLionPathRecord.new(submission: Submission.find(s_id)).report_status_change
     end
