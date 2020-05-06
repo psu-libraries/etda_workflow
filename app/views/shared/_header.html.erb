@@ -1,18 +1,18 @@
 <header class="<%= page_classes %>" >
-  <div id="shield-and-logo">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-1">
-          <a id="psu-shield" href="http://libraries.psu.edu/">
-            <%= image_tag("#{asset_pack_path 'media/images/PS_UL_REV_RGB_2C.png'}", alt: "PSU Libraries logo", width: '120', height: '55' ) %>
-          </a>
-        </div>
-        <div id="logo-old" class="col-sm-8">
-          <a href="/">Electronic Theses and Dissertations for Graduate School</a>
-        </div>
+  <div class="container-fluid">
+    <div id="shield-and-logo" class="row">
+      <div class="col-sm-1">
+        <a id="psu-shield" href="http://libraries.psu.edu/">
+          <%= image_tag("#{asset_pack_path 'media/images/PS_UL_REV_RGB_2C.png'}", alt: "PSU Libraries logo", width: '120', height: '55' ) %>
+        </a>
+      </div>
+      <div id="logo-old" class="col-sm-8">
+        <a href="/">Electronic Theses and Dissertations for Graduate School</a>
       </div>
     </div>
+    <div class="row">
+      <%= render partial: 'shared/nav_bar' %>
+      <%= render partial: '/google_analytics' unless Rails.env.development? %>
+    </div>
   </div>
-  <%= render partial: 'shared/nav_bar' %>
-  <%= render partial: '/google_analytics' unless Rails.env.development? %>
 </header>

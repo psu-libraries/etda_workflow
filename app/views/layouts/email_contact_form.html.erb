@@ -13,10 +13,9 @@
 </head>
 <body class="<%= page_classes %>">
 
-<div id="body-container" class="container-fluid">
-  <%= render 'shared/header' %>
+<%= render 'shared/header' %>
 
-  <%#= HERE IS WHERE login goes for author and one for Admin Users %>
+<div id="body-container" class="container-fluid">
   <main>
     <div id="content-container" class="container-fluid">
       <%= render partial: 'shared/flash_messages' unless flash.empty? %>

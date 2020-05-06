@@ -35,7 +35,6 @@ $brand-primary: $medium-blue;
 $grid-float-breakpoint: 992px;
 
 html {
-  position: relative;
   min-height: 100%;
 }
 
@@ -72,16 +71,11 @@ header {
   }
 
   #account-navigation {
-    margin:0 auto;
-    border-radius: 0px;
-    border: 0px;
     background-color: $medium-blue-bright;
 
     .navbar-btn.btn-sm {
       color: #ffffff;
       font-size: $font-size-base;
-      padding: 0px;
-      border-radius: 0px;
 
       &:hover {
         color: #000000;
@@ -89,7 +83,7 @@ header {
     }
 
     .log-div {
-      padding-right: 20px;
+      margin-right: -50px;
       float: right;
     }
 

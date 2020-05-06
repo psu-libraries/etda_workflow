@@ -12,8 +12,10 @@
   <%= csrf_meta_tags %>
 </head>
 <body class='<%= page_classes %>'>
+
+<%= render 'shared/header' %>
+
 <div id="body-container" class="container-fluid">
-  <%= render 'shared/header' %>
   <main>
     <div class="container-fluid">
       <%= render partial: 'shared/flash_messages' unless flash.empty? %>

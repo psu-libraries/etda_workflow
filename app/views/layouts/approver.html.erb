@@ -15,9 +15,9 @@
 
 <body class='<%= page_classes %>'>
 
-<div id="body-container">
+<%= render 'shared/header' %>
 
-  <%= render 'shared/header' %>
+<div id="body-container">
   <main>
     <div id="content-container" class="container">
       <%= render partial: 'shared/flash_messages' unless flash.empty? %>
