@@ -10,7 +10,6 @@ RSpec.describe 'Approver datatables', type: :integration, js: true do
   let!(:committee_member2) { FactoryBot.create :committee_member, committee_role: committee_role, approval_started_at: DateTime.now, submission: submission1, status: '', access_id: 'approverflow' }
 
   before do
-    allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
     submission.final_submission_files << final_submission_file
     submission.degree.degree_type.approval_configuration = approval_configuration
     webaccess_authorize_approver

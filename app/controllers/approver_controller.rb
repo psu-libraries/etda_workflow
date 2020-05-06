@@ -34,24 +34,25 @@ class ApproverController < ApplicationController
     if valid_approver?
       authenticate_approver!
     else
-      redirect_to '/401' # unless Rails.env.test?
+      redirect_to '/401'
     end
   end
 
   def valid_approver?
-    this_approver = current_remote_user
-    return false if this_approver.blank?
+    return false if current_remote_user.blank?
 
     session[:user_role] = 'approver'
     true
   end
 
   def valid_approver_session?
-    user_access_id = current_remote_user.downcase
-    approver_access_id = current_approver.access_id.downcase
     return false if session[:user_role] != 'approver'
 
-    approver_access_id == user_access_id
+    current_user_check
+  end
+
+  def current_user_check
+    current_remote_user == current_approver.access_id
   end
 
   def approver_ability
