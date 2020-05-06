@@ -1,5 +1,4 @@
 // Base Color Palette
-//yarn add bootstrap@3
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/mixins';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/_type';
@@ -42,30 +41,29 @@ html {
 
 header {
   background-color: #000000;
-  margin-bottom: 20px;
 
   .navbar-default {
-    min-height: 30px;
-    top: 20px;
+    height: 50px;
 
     .navbar-text {
       color: #ffffff;
     }
   }
 
-
   #shield-and-logo img{
     margin: 0 auto;
   }
 
   #psu-shield img{
-    padding-top: 35px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
   #logo-old {
+    padding-top: 9px;
     a {
-      color: #fff;
-      font-size: $font-size-h1;
+      color: #ffffff;
+      font-size: $font-size-h3;
 
       &:hover {
         text-decoration: none;
@@ -75,7 +73,6 @@ header {
 
   #account-navigation {
     margin:0 auto;
-    max-width: 1175px;
     border-radius: 0px;
     border: 0px;
     background-color: $medium-blue-bright;
