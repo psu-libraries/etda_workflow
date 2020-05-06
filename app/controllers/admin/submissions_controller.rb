@@ -191,7 +191,7 @@ class Admin::SubmissionsController < AdminController
     return if params[:id].nil?
 
     @submission = Submission.find(params[:id])
-    @submission.update_attribute :is_printed, 1 unless @submission.is_printed?
+    @submission.update! is_printed: 1 unless @submission.is_printed?
     redirect_to admin_submissions_index_path(@submission.degree_type.slug, 'format_review_submitted')
     flash[:notice] = "Printed submission information for #{@submission.author.first_name} #{@submission.author.last_name}"
   end

@@ -14,7 +14,7 @@ class Author::CommitteeMembersController < AuthorController
     status_giver.can_provide_new_committee?
     @submission.save!(submission_params)
     status_giver.collecting_format_review_files!
-    @submission.update_attribute :committee_provided_at, Time.zone.now
+    @submission.update! committee_provided_at: Time.zone.now
     flash[:notice] = 'Committee saved successfully'
     redirect_to author_root_path
   rescue ActiveRecord::RecordInvalid => e
@@ -36,7 +36,7 @@ class Author::CommitteeMembersController < AuthorController
   def update
     @submission.update!(submission_params)
     status_giver.collecting_format_review_files! if @submission.status_behavior.collecting_committee?
-    @submission.update_attribute :committee_provided_at, Time.zone.now
+    @submission.update! committee_provided_at: Time.zone.now
     flash[:notice] = 'Committee updated successfully'
     if params[:commit] == "Save and Continue Submission" || params[:commit] == 'Verify Committee'
       redirect_to author_root_path
