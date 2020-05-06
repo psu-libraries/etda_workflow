@@ -41,7 +41,7 @@ class AuthorController < ApplicationController
   end
 
   def valid_author?
-    return false unless current_remote_user.present?
+    return false if current_remote_user.blank?
 
     session[:user_role] = 'author'
     true
