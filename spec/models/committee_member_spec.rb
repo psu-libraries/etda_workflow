@@ -27,7 +27,7 @@ RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_index(:approver_id) }
   it { is_expected.to belong_to(:submission).class_name('Submission') }
   it { is_expected.to belong_to(:committee_role).class_name('CommitteeRole') }
-  it { is_expected.to belong_to(:approver).class_name('Approver') }
+  it { is_expected.to belong_to(:approver).class_name('Approver').optional }
   it { is_expected.to have_one(:committee_member_token).class_name('CommitteeMemberToken') }
 
   describe 'defaults' do
@@ -143,7 +143,7 @@ RSpec.describe CommitteeMember, type: :model do
 
     context 'when email is a psu email' do
       it 'updates access_id' do
-        cm.update_attributes email: 'test123@psu.edu'
+        cm.update email: 'test123@psu.edu'
         expect(cm.access_id).to eq 'test123'
       end
     end
@@ -152,14 +152,14 @@ RSpec.describe CommitteeMember, type: :model do
       it "doesn't update access_id" do
         cm.access_id = 'test123'
         allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
-        cm.update_attributes email: 'test123@psu.edu'
+        cm.update email: 'test123@psu.edu'
         expect(cm.access_id).to eq 'test123'
       end
     end
 
     context 'when trailing and leading whitespace' do
       it 'strips whitespace' do
-        cm.update_attributes email: '       test123@psu.edu       '
+        cm.update email: '       test123@psu.edu       '
         expect(cm.email).to eq 'test123@psu.edu'
         expect(cm.access_id).to eq 'test123'
       end

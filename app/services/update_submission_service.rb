@@ -1,6 +1,6 @@
 class UpdateSubmissionService
   def self.admin_update_submission(submission, current_remote_user, params)
-    submission.update params
+    submission.update! params
     submission.committee_members.each do |committee_member|
       next if committee_member.created_at == committee_member.updated_at
 
@@ -11,7 +11,6 @@ class UpdateSubmissionService
   end
 
   def send_email(submission)
-    # submission.update_attributes!(submission_params)
     return { error: false, msg: 'No updates required; access level did not change' } unless submission.access_level != submission.previous_access_level
 
     email = AccessLevelUpdatedEmail.new(Admin::SubmissionView.new(submission, nil))

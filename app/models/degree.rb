@@ -9,7 +9,7 @@ class Degree < ApplicationRecord
             :degree_type_id,
             presence: true
 
-  validates :name, uniqueness: true
+  validates :name, uniqueness: { case_sensitive: true }
 
   after_initialize :set_is_active_to_true
 

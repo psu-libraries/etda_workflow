@@ -27,12 +27,12 @@ class FormatReviewUpdateService
     msg = ''
     if update_actions.approved?
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params)
-      submission.update_attribute :format_review_approved_at, Time.zone.now
+      submission.update! format_review_approved_at: Time.zone.now
       status_giver.collecting_final_submission_files!
       msg = "The submission\'s format review information was successfully approved and returned to the author to collect final submission information."
     elsif update_actions.rejected?
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params)
-      submission.update_attribute :format_review_rejected_at, Time.zone.now
+      submission.update! format_review_rejected_at: Time.zone.now
       status_giver.collecting_format_review_files_rejected!
       msg = "The submission\'s format review information was successfully rejected and returned to the author for revision."
     end

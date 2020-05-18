@@ -19,8 +19,6 @@ class FinalSubmissionApprovedService
     # No file path changes necessary here; submission not released yet; files are still in workflow
     status_giver.can_remove_from_waiting_to_be_released?
     status_giver.waiting_for_final_submission_response!
-    # @submission.update_attribute :final_submission_rejected_at, Time.zone.now  #this causes it to go into final rejected - WAS ERROR
-    # submission.update_attributes! final_submission_params
     submission.final_submission_approved_at = nil
     submission.final_submission_rejected_at = nil
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)

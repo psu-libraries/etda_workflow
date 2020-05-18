@@ -67,7 +67,7 @@ class Submission < ApplicationRecord
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit } # && !InboundLionPathRecord.active? }
 
   validates :public_id,
-            uniqueness: true,
+            uniqueness: { case_sensitive: true },
             allow_nil: true
 
   validate :check_title_capitalization
@@ -131,7 +131,7 @@ class Submission < ApplicationRecord
 
   def reset_committee_reviews
     committee_members.each do |committee_member|
-      committee_member.update_attributes! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
+      committee_member.update! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
     end
   end
 
@@ -303,7 +303,7 @@ class Submission < ApplicationRecord
   end
 
   def self.extend_publication_date(submission_ids, date_to_release)
-    where(id: submission_ids).update_all(released_for_publication_at: date_to_release)
+    where(id: submission_ids).find_each { |s| s.update!(released_for_publication_at: date_to_release) }
     submission_ids.each do |s_id|
       OutboundLionPathRecord.new(submission: Submission.find(s_id)).report_status_change
     end
@@ -339,7 +339,7 @@ class Submission < ApplicationRecord
 
   def committee_review_requests_init
     committee_members.each do |committee_member|
-      committee_member.update_attribute :approval_started_at, DateTime.now
+      committee_member.update! approval_started_at: DateTime.now
       seen_access_ids = []
       next if committee_member.committee_role.name == 'Program Head/Chair' || seen_access_ids.include?(committee_member.access_id)
 

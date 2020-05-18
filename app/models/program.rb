@@ -4,7 +4,7 @@ class Program < ApplicationRecord
   has_many :submissions
 
   validates :name, presence: true,
-                   uniqueness: true
+                   uniqueness: { case_sensitive: true }
 
   after_initialize :set_is_active_to_true
 

@@ -14,9 +14,9 @@ gem 'lograge-sql'
 gem 'logstash-event'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.4'
+gem 'rails', '~> 6.0.0'
 # Use mysql as the database for Active Record
-gem 'mysql2', '>= 0.3.18', '< 0.4.11'
+gem 'mysql2'
 # Use Puma as the app server
 gem 'puma', ">= 4.3.3"
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -45,11 +45,10 @@ gem 'rack', '= 2.0.8'
 # Used to schedule cron jobs on the servers
 gem 'whenever'
 
-# Datadog APM
-gem 'ddtrace', '~> 0.33'
+
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sassc-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 # gem 'uglifier', '>= 2.7.2'
@@ -61,11 +60,6 @@ gem 'jquery-rails'
 
 # jQuery user interface widgets
 gem 'jquery-ui-rails'
-gem 'oj'
-gem 'rabl'
-gem 'rabl-rails'
-
-# gem 'bootstrap-sass'
 
 # FontAwesome sass integration
 gem 'font-awesome-rails'
@@ -131,7 +125,7 @@ group :development, :test do
   gem 'capybara', '~> 2.18'
   gem 'capybara-email'
 
-  gem 'factory_bot_rails', '~> 4.11.1'
+  gem 'factory_bot_rails', '~> 5.0'
   gem 'faker'
 
   gem 'simplecov', require: false
@@ -173,18 +167,20 @@ end
 group :test do
   gem 'rails-controller-testing'
 
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  # gem 'byebug', platforms: %i[mri mingw x64_mingw]
-
   gem 'launchy'
   gem 'poltergeist'
 
   gem "database_cleaner"
 
-  gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
+  gem 'shoulda-matchers'
 
   gem 'rspec-activemodel-mocks'
   gem 'rspec-retry'
 
   gem 'webmock'
+end
+
+group :production do
+  # Datadog APM
+  gem 'ddtrace', '~> 0.33'
 end

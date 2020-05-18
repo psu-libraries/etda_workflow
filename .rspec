@@ -2,6 +2,5 @@
 --color
 --tty
 --tag ~ldap
---tag ~glacial
 --tag ~import_test
 --tag ~lionpath

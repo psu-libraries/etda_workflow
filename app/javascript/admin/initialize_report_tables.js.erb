@@ -16,7 +16,7 @@ setup_report_tables = function() {
     if (!table.length) { return; }
 
     const report_common_options = {
-        ajax: table.attr('data-ajax-url'),
+        ajax: (table.attr('data-ajax-url') + '.json'),
         deferRender: true,
         processing: true,
         pageLength: 25,

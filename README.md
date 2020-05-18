@@ -3,6 +3,10 @@
 
 * Ruby version: 2.6.0
 * Node version 10.17.0 (using yarn@1.19.1 as npm)
+* Rails 6.0.2.2
+* Redis 3.2.12
+* Sidekiq 5.2.8
+* Mariadb 10.2
  
 ## Setup
 
@@ -42,25 +46,25 @@ You're good to go from here!  Any changes made in the project files on your loca
 
 ### Not Docker
 
-* System dependencies
+System dependencies
   * rbenv 
   * mysql
   * yarn - `brew install yarn` for Mac OSX
  
-* To create the database, configure it in database.yml and then run the following commands (skip 'db:seed:essential' if importing an existing database) 
+To create the database, configure it in database.yml and then run the following commands (skip 'db:seed:essential' if importing an existing database) 
     * `rails db:create`
     * `rails db:migrate`
     * `rails db:seed:essential`  
     
-* To drop the database, run `rails db:drop`
+To drop the database, run `rails db:drop`
 
-* After creating the database, run `yarn` to download packages needed for assets
+After creating the database, run `yarn` to download packages needed for assets
   In development `webpack-dev-server` can be run to watch live updating of the assets files.
   Running `RAILS_ENV=production bin/webpack` will build the manifest for production,`RAILS_ENV=development bin/webpack`, and `RAILS_ENV=test bin/webpack` for development and test manifests.  Production manifest is saved in public/assets, development manifest in public/packs and test manifest in public/packs-test.  Configuration file is config/webpacker.yml
   
   The configuration file `webpack.config.js` contains loaders and plugins for compiling css, jquery, bootstrap, etc.  It also defines where the application source files are located (app/assets/javascript/).  ETD has three sets of assets:  author, admin, and base.  Author assets are used in the author layout, Admin assets in admin, and base is used throughout the application.  The approver pack pulls from all three assets, and is used in the approver layout.
   
-* To generate mocked files run `rake etda_files:create:empty_files[my_file_directory]` from the root directory.  If "my_file_directory" is not specified, the generated files will be placed in the /tmp directory by default.  
+To generate mocked files run `rake etda_files:create:empty_files[my_file_directory]` from the root directory.  If "my_file_directory" is not specified, the generated files will be placed in the /tmp directory by default.  
 
 ## Testing
  
@@ -75,14 +79,7 @@ You're good to go from here!  Any changes made in the project files on your loca
    1. `RAILS_ENV=test PARTNER=milsch bundle exec rspec --tag milsch`
    1. `RAILS_ENV=test PARTNER=honors bundle exec rspec --tag honors`
 
-   Additionally, there are some integration tests that use javascript and some component tests that run against Penn State's LDAP directory service: rspec --tag glacial --tag ldap. Glacial are excluded by default when running in development because they are so slow.  Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.  When in development or testing, you must edit the development.rb or test.rb file in config/environments and change MockUniversityDirectory to LdapUniversityDirectory to test a true ldap call.
-
-## Services
-    
-- Redis (for storing Sidekiq queues)
-- Sidekiq (for delayed mailers)
-- Mariadb
-    
+   Additionally, there are some integration tests that use javascript and some component tests that run against Penn State's LDAP directory service: rspec --tag ldap. Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.  When in development or testing, you must edit the development.rb or test.rb file in config/environments and change MockUniversityDirectory to LdapUniversityDirectory to test a true ldap call.
 
 ## Deployment instructions
 

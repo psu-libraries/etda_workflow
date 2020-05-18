@@ -54,7 +54,7 @@ RSpec.describe "when an admin releases the submission for publication", js: true
     let(:initial_released_count) { Submission.where(degree: DegreeType.default).released_for_publication.count }
 
     it 'updates the number of released submissions should not change access_level' do
-      submission.update_attributes(access_level: 'restricted_to_institution')
+      submission.update(access_level: 'restricted_to_institution')
       unreleased_location = Rails.root.join(final_submission_file.current_location)
       expect(File).to be_exist(unreleased_location)
       expect(Submission.where(degree: DegreeType.default).released_for_publication.count).to eq(initial_released_count)
@@ -90,7 +90,7 @@ RSpec.describe "when an admin releases the submission for publication", js: true
 
     it 'does not change access_level should it accidentally be released again' do
       allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(nil)
-      submission.update_attributes(access_level: 'restricted_to_institution')
+      submission.update(access_level: 'restricted_to_institution')
       unreleased_location = Rails.root.join(final_submission_file.current_location)
       expect(File).to be_exist(unreleased_location)
       expect(Submission.where(degree: DegreeType.default).released_for_publication.count).to eq(initial_released_count)

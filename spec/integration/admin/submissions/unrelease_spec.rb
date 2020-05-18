@@ -79,14 +79,14 @@ RSpec.describe 'Unrelease a legacy submission without missing data', js: true, h
     visit admin_edit_submission_path(legacy_submission)
     allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
     fill_in "Title", with: "A new title"
-    click_button "Withdraw Publication", wait: 5
   end
 
   it 'withdraws the publication successfully' do
+    click_button "Withdraw Publication"
+    # expect(page).to have_content("Submission for #{author_first_name} #{author_last_name} was successfully un-published")
+
     legacy_submission.reload
     expect(legacy_submission.legacy_id).not_to be_blank
     expect(page).to have_current_path(admin_edit_submission_path(legacy_submission))
-
-    expect(page).to have_content("Submission for #{author_first_name} #{author_last_name} was successfully un-published")
   end
 end

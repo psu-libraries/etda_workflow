@@ -24,7 +24,7 @@ class Admin::DegreesController < AdminController
 
   def update
     @degree = Degree.find(params[:id])
-    @degree.update_attributes!(degree_params)
+    @degree.update!(degree_params)
     redirect_to admin_degrees_path
     flash[:notice] = 'Degree successfully updated'
   rescue ActiveRecord::RecordInvalid

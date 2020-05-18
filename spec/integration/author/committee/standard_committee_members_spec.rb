@@ -100,7 +100,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         click_button 'Save and Continue Editing' unless current_partner.graduate?
       end
 
-      it 'allows an additional committee member to be added' do
+      it 'allows an additional committee member to be added', js: true do
         # expect(page).to have_content('successfully')
         expect(page).to have_link('Add Committee Member')
         assert_equal submission.committee_email_list, @email_list unless current_partner.graduate?

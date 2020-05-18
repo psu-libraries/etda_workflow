@@ -33,7 +33,7 @@ RSpec.describe "Sending an email reminder", js: true do
     end
 
     it 'does not send an email reminder if not authorized to' do
-      committee_member1.update_attributes(last_reminder_at: DateTime.now)
+      committee_member1.update(last_reminder_at: DateTime.now)
       find("div[data-target='#committee']").click
 
       within('#committee') do

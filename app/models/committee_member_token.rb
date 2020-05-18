@@ -1,7 +1,7 @@
 class CommitteeMemberToken < ApplicationRecord
   validates :authentication_token, presence: true
 
-  belongs_to :committee_member, optional: true
+  belongs_to :committee_member
 
   def authentication_token=(new_token)
     self[:authentication_token] = new_token

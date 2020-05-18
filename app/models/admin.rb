@@ -13,7 +13,7 @@ class Admin < ApplicationRecord
             :administrator,
             presence: true
 
-  validates :access_id, uniqueness: true
+  validates :access_id, uniqueness: { case_sensitive: true }
 
   def self.current
     Thread.current[:admin]
@@ -42,7 +42,7 @@ class Admin < ApplicationRecord
   end
 
   def save_mapped_attributes(mapped_attributes)
-    update_attributes(mapped_attributes)
+    update(mapped_attributes)
     save(validate: false)
   end
 
