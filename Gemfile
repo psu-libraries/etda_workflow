@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-# git_source(:github) do |repo_name|
-#   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
-#   "https://github.com/#{repo_name}.git"
-# end
+
+ruby '2.6.0'
 
 # Health Checks!
 gem 'okcomputer'
-
-gem 'lograge'
-gem 'lograge-sql'
-gem 'logstash-event'
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
 # Use mysql as the database for Active Record
@@ -21,162 +14,114 @@ gem 'mysql2'
 gem 'puma', ">= 4.3.3"
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'webpacker', '~> 3.5.5'
-
-gem 'therubyracer', platforms: :ruby
-
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 gem 'redis'
-
-# Resque Pool
-gem 'resque-pool'
-
 # SideKiq for queueing jobs
 gem 'sidekiq', '~> 5.2.8'
-
 # When downgrading Sidekiq, rack needed to be downgraded as well.
 # This can be removed for Sidekiq 6 or greater.
 gem 'rack', '= 2.0.8'
-
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
 # Used to schedule cron jobs on the servers
 gem 'whenever'
-
-
-
 # Use SCSS for stylesheets
 gem 'sassc-rails'
-
-# Use Uglifier as compressor for JavaScript assets
-# gem 'uglifier', '>= 2.7.2'
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
-
+# Jquery for rails
 gem 'jquery-rails'
-
 # jQuery user interface widgets
 gem 'jquery-ui-rails'
-
 # FontAwesome sass integration
 gem 'font-awesome-rails'
-
+# Authentication gem
 gem "devise", ">= 4.7.1"
-
-gem 'sprockets', '~> 3.7.2'
-
+# Shared libraries for workflow and explore
 gem 'etda_utilities', git: "https://github.com/psu-stewardship/etda_utilities.git", branch: 'master'
-
-gem 'rake', '>= 12.3.3'
-
+# Ldap client
 gem 'net-ldap', '~> 0.16.1'
-
+# Country drop-downs
 gem 'country_select', git: 'https://github.com/stefanpenner/country_select.git', branch: 'master'
-
-gem 'seedbank'
-
-gem 'enumerize'
-
-gem 'rubyzip', '>= 1.3.0'
-
-gem 'rest-client'
-
-gem 'prawn'
-gem 'caracal'  # for creating docx documents
-
-# # Form builder
+# Form builder
 gem 'simple_form', '>= 5.0.0'
-
 # File uploads
 gem 'carrierwave', '~> 1.2.3'
-
 # Virus scanning for file uploads
 gem 'clam_scan'
-
 # For image resizing
 gem "mini_magick", ">= 4.9.4"
-
 # Easily handle nested forms
 gem 'cocoon'
-
+# User authorization
 gem 'cancancan'
-
+# Easy email forms
 gem 'mail_form'
-
+# Audit gems
 gem 'bundler-audit'
-
-gem 'sinatra','~>  2.0.2'
-
+# Logging
+gem 'logstash-event'
+gem 'lograge'
+gem 'lograge-sql'
+# Ruby client for Apache solr
 gem 'rsolr'
-
+# Enumerated attributes with I18n
+gem 'enumerize'
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 gem 'byebug', platforms: %i[mri mingw x64_mingw]
 
 group :development, :test do
-
-  gem 'rspec-rails'
+  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'listen', '>= 3.0.5', '< 3.2'
+  # Linter
   gem 'rubocop', '~> 0.61.1'
   gem 'rubocop-rspec', '~>  1.30.1'
-
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 2.18'
-  gem 'capybara-email'
-
-  gem 'factory_bot_rails', '~> 5.0'
-  gem 'faker'
-
-  gem 'simplecov', require: false
-
-  # manages solr 5 for development (using latest version from master as of 11/12/2015)
-  gem 'solr_wrapper'
-
+  # Coverage report
+  gem 'simplecov'
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  # Debugging with byebug/pry with web-console
   gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-
+  # Deployment software
   gem "capistrano", "~> 3.10"
-  gem 'capistrano-bundler', '~> 1.2', require: false
-  gem 'capistrano-rails', '~> 1.2', require: false
-  gem 'capistrano-rbenv', '~> 2.1', require: false
+  gem 'capistrano-bundler', '~> 1.2'
+  gem 'capistrano-rails', '~> 1.2'
+  gem 'capistrano-rbenv', '~> 2.1'
   gem 'capistrano-rbenv-install'
-  gem 'capistrano-resque', '~> 0.2.1', require: false
   gem 'capistrano-passenger'
-
   # Support for newer ssh keys on newer machines
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
-
   # ------------
   # gem 'net-sftp', '2.1.2'
   # gem 'net-ssh-gateway', '1.2.0'
   # ------------
-
-  gem 'better_errors'
-  gem 'binding_of_caller'
 end
 
 group :test do
+  # Adds support for Capybara system testing and selenium driver
+  gem 'capybara', '~> 2.18'
+  gem 'capybara-email'
+  # Fakes and factories for testing
+  gem 'factory_bot_rails', '~> 5.0'
+  gem 'faker'
+  # Rspec for rails
+  gem 'rspec-rails'
+  # Use older controller testing methods
   gem 'rails-controller-testing'
-
+  # Open webpage in browser
   gem 'launchy'
+  # Web driver
   gem 'poltergeist'
-
+  # Database cleaning
   gem "database_cleaner"
-
+  # Extra matchers for rspec
   gem 'shoulda-matchers'
-
-  gem 'rspec-activemodel-mocks'
+  # Retry on failure for finicky spec
   gem 'rspec-retry'
-
+  # Stub http requests
   gem 'webmock'
 end
 
