@@ -4,8 +4,6 @@ source 'https://rubygems.org'
 
 ruby '2.6.0'
 
-# Health Checks!
-gem 'okcomputer'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
 # Use mysql as the database for Active Record
@@ -18,6 +16,8 @@ gem 'webpacker', '~> 3.5.5'
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 gem 'redis'
+# Resque pool
+gem 'resque-pool'
 # SideKiq for queueing jobs
 gem 'sidekiq', '~> 5.2.8'
 # When downgrading Sidekiq, rack needed to be downgraded as well.
@@ -57,7 +57,8 @@ gem 'cancancan'
 gem 'mail_form'
 # Audit gems
 gem 'bundler-audit'
-# Logging
+# Logging & Health Checks!
+gem 'okcomputer'
 gem 'logstash-event'
 gem 'lograge'
 gem 'lograge-sql'
@@ -69,6 +70,14 @@ gem 'enumerize'
 gem 'byebug', platforms: %i[mri mingw x64_mingw]
 # Restclient for http requests
 gem 'rest-client'
+# For db seeding
+gem 'seedbank'
+# Loading assets
+gem 'sprockets', '~> 3.7.2'
+# Create pdf documents
+gem 'prawn'
+# Create docx documents
+gem 'caracal'
 
 group :development, :test do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
