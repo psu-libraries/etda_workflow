@@ -67,6 +67,8 @@ gem 'rsolr'
 gem 'enumerize'
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 gem 'byebug', platforms: %i[mri mingw x64_mingw]
+# Restclient for http requests
+gem 'rest-client'
 
 group :development, :test do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
