@@ -140,3 +140,8 @@ group :production do
   # Datadog APM
   gem 'ddtrace', '~> 0.33'
 end
+
+group :production do
+  # Datadog APM
+  gem 'ddtrace', '~> 0.33'
+end
