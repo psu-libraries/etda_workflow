@@ -15,24 +15,24 @@ gem 'webpacker', '~> 3.5.5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
-gem 'redis'
+gem 'redis', '~> 4.1.0'
 # Resque pool
-gem 'resque-pool'
+gem 'resque-pool', '~> 0.7.0'
 # SideKiq for queueing jobs
 gem 'sidekiq', '~> 5.2.8'
 # When downgrading Sidekiq, rack needed to be downgraded as well.
 # This can be removed for Sidekiq 6 or greater.
 gem 'rack', '= 2.0.8'
 # Used to schedule cron jobs on the servers
-gem 'whenever'
+gem 'whenever', '~> 1.0.0'
 # Use SCSS for stylesheets
-gem 'sassc-rails'
+gem 'sassc-rails', '~> 2.1.0'
 # Jquery for rails
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 4.3.0'
 # jQuery user interface widgets
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '~> 6.0.0'
 # FontAwesome sass integration
-gem 'font-awesome-rails'
+gem 'font-awesome-rails', '~> 4.7.0.0'
 # Authentication gem
 gem "devise", ">= 4.7.1"
 # Shared libraries for workflow and explore
@@ -46,38 +46,38 @@ gem 'simple_form', '>= 5.0.0'
 # File uploads
 gem 'carrierwave', '~> 1.2.3'
 # Virus scanning for file uploads
-gem 'clam_scan'
+gem 'clam_scan', '~> 0.0.0'
 # For image resizing
 gem "mini_magick", ">= 4.9.4"
 # Easily handle nested forms
-gem 'cocoon'
+gem 'cocoon', '~> 1.2.0'
 # User authorization
-gem 'cancancan'
+gem 'cancancan', '~> 3.1.0'
 # Easy email forms
-gem 'mail_form'
+gem 'mail_form', '~> 1.8.0'
 # Audit gems
-gem 'bundler-audit'
+gem 'bundler-audit', '~> 0.6.0'
 # Logging & Health Checks!
-gem 'okcomputer'
-gem 'logstash-event'
-gem 'lograge'
-gem 'lograge-sql'
+gem 'okcomputer', '~> 1.18.0'
+gem 'logstash-event', '~> 1.2.0'
+gem 'lograge', '~> 0.11.0'
+gem 'lograge-sql', '~> 1.1.0'
 # Ruby client for Apache solr
-gem 'rsolr'
+gem 'rsolr', '~> 2.3.0'
 # Enumerated attributes with I18n
-gem 'enumerize'
+gem 'enumerize', '~> 2.3.0'
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-gem 'byebug', platforms: %i[mri mingw x64_mingw]
+gem 'byebug', '~> 11.1.0', platforms: %i[mri mingw x64_mingw]
 # Restclient for http requests
-gem 'rest-client'
+gem 'rest-client', '~> 2.1.0'
 # For db seeding
-gem 'seedbank'
+gem 'seedbank', '~> 0.5.0'
 # Loading assets
 gem 'sprockets', '~> 3.7.2'
 # Create pdf documents
-gem 'prawn'
+gem 'prawn', '~> 2.2.0'
 # Create docx documents
-gem 'caracal'
+gem 'caracal', '~> 1.4.0'
 
 group :development, :test do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
@@ -86,25 +86,25 @@ group :development, :test do
   gem 'rubocop', '~> 0.61.1'
   gem 'rubocop-rspec', '~>  1.30.1'
   # Coverage report
-  gem 'simplecov'
+  gem 'simplecov', '~> 0.18.0'
 end
 
 group :development do
   # Debugging with byebug/pry with web-console
   gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
+  gem 'spring', '~> 2.1.0'
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Deployment software
   gem "capistrano", "~> 3.10"
   gem 'capistrano-bundler', '~> 1.2'
   gem 'capistrano-rails', '~> 1.2'
   gem 'capistrano-rbenv', '~> 2.1'
-  gem 'capistrano-rbenv-install'
-  gem 'capistrano-passenger'
+  gem 'capistrano-rbenv-install', '~> 1.2.0'
+  gem 'capistrano-passenger', '~> 0.2.0'
   # Support for newer ssh keys on newer machines
-  gem 'ed25519'
-  gem 'bcrypt_pbkdf'
+  gem 'ed25519', '~> 1.2.4'
+  gem 'bcrypt_pbkdf', '~> 1.0.0'
   # ------------
   # gem 'net-sftp', '2.1.2'
   # gem 'net-ssh-gateway', '1.2.0'
@@ -117,23 +117,23 @@ group :test do
   gem 'capybara-email'
   # Fakes and factories for testing
   gem 'factory_bot_rails', '~> 5.0'
-  gem 'faker'
+  gem 'faker', '~> 2.11.0'
   # Rspec for rails
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 4.0.0'
   # Use older controller testing methods
-  gem 'rails-controller-testing'
+  gem 'rails-controller-testing', '~> 1.0.0'
   # Open webpage in browser
-  gem 'launchy'
+  gem 'launchy', '~> 2.5.0'
   # Web driver
-  gem 'poltergeist'
+  gem 'poltergeist', '~> 1.18.0'
   # Database cleaning
-  gem "database_cleaner"
+  gem "database_cleaner", '~> 1.8.0'
   # Extra matchers for rspec
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', '~> 4.3.0'
   # Retry on failure for finicky spec
-  gem 'rspec-retry'
+  gem 'rspec-retry', '~> 0.6.0'
   # Stub http requests
-  gem 'webmock'
+  gem 'webmock', '~> 3.8.0'
 end
 
 group :production do
