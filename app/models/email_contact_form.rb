@@ -8,7 +8,12 @@ class EmailContactForm < MailForm::Base
   attribute :nickname,       captcha: true
 
   def tooltip_message
-    "<strong>General formatting/data issues:</strong> Your email will be directed to The #{current_partner.name}.  If you are unsure about what data to input, the next steps to take, or need data to be changed by an administrator, please select this option.<br/><br/><strong>Failures to upload, access, or submit:</strong>  Your email will be directed to IT support staff.  If you are encountering website issues, having trouble accessing pages, not seeing data that should be displayed, or any other technical issues, please select this option.".html_safe
+    "<strong>General formatting/data issues:</strong> Your email will be directed to The #{current_partner.name}.
+     If you are unsure about what data to input, the next steps to take, or need data to be changed by an administrator,
+     please select this option.<br/><br/><strong>Failures to upload, access, or submit:
+     </strong>  Your email will be directed to IT support staff.
+     If you are encountering website issues, having trouble accessing pages, not seeing data that should be displayed,
+     or any other technical issues, please select this option.".html_safe
   end
 
   # Declare the e-mail headers. It accepts anything the mail method
