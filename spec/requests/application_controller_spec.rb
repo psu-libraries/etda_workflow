@@ -14,12 +14,12 @@ RSpec.describe 'Devise Login', type: :request do
   end
 
   it 'signs author in and out' do
-    headers = { 'REMOTE_USER' => 'saw140', 'REQUEST_URI' => '/author/submissions' }
-    expect(Author.find_by(access_id: 'saw140')).to be_nil
+    headers = { 'REMOTE_USER' => 'ajk5603', 'REQUEST_URI' => '/author/submissions' }
+    expect(Author.find_by(access_id: 'ajk5603')).to be_nil
     request.headers.merge! headers
     Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate!
     get root_path
-    expect(Author.find_by(access_id: 'saw140')).not_to be_nil
+    expect(Author.find_by(access_id: 'ajk5603')).not_to be_nil
   end
 
   it 'signs admin in and out' do

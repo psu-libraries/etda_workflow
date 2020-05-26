@@ -34,6 +34,10 @@ class Submission < ApplicationRecord
     SubmissionStatus.new(self)
   end
 
+  def approval_status_behavior
+    ApprovalStatus.new(self)
+  end
+
   after_initialize :set_status_to_collecting_program_information
   after_initialize :initialize_access_level
 
@@ -63,7 +67,7 @@ class Submission < ApplicationRecord
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit } # && !InboundLionPathRecord.active? }
 
   validates :public_id,
-            uniqueness: true,
+            uniqueness: { case_sensitive: true },
             allow_nil: true
 
   validate :check_title_capitalization
@@ -104,9 +108,10 @@ class Submission < ApplicationRecord
 
   scope :final_submission_is_pending, -> { where(status: ['waiting for committee review', 'waiting for head of program review']) }
   scope :committee_review_is_rejected, -> { where(status: 'waiting for committee review rejected') }
-  scope :final_submission_is_incomplete, -> { where('status LIKE "collecting final submission files%" OR status = "waiting for committee review rejected"').where.not(final_submission_rejected_at: nil) }
+  scope :final_submission_is_incomplete, -> { where(status: "collecting final submission files rejected").where.not(final_submission_rejected_at: nil) }
   scope :final_submission_is_submitted, -> { where(status: 'waiting for final submission response') }
   scope :final_submission_is_approved, -> { where(status: 'waiting for publication release') }
+  scope :final_submission_is_on_hold, -> { where(status: 'waiting in final submission on hold') }
   scope :released_for_publication, -> { where('status LIKE "released for publication%"') }
   scope :final_is_restricted_institution, -> { where(status: 'released for publication', access_level: 'restricted_to_institution') }
   scope :final_is_withheld, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted') }
@@ -126,7 +131,7 @@ class Submission < ApplicationRecord
 
   def reset_committee_reviews
     committee_members.each do |committee_member|
-      committee_member.update_attributes! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
+      committee_member.update! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
     end
   end
 
@@ -298,7 +303,7 @@ class Submission < ApplicationRecord
   end
 
   def self.extend_publication_date(submission_ids, date_to_release)
-    where(id: submission_ids).update_all(released_for_publication_at: date_to_release)
+    where(id: submission_ids).find_each { |s| s.update!(released_for_publication_at: date_to_release) }
     submission_ids.each do |s_id|
       OutboundLionPathRecord.new(submission: Submission.find(s_id)).report_status_change
     end
@@ -332,24 +337,17 @@ class Submission < ApplicationRecord
     degree.degree_type.approval_configuration.head_of_program_is_approving
   end
 
-  def send_initial_committee_member_emails
+  def committee_review_requests_init
     committee_members.each do |committee_member|
+      committee_member.update! approval_started_at: DateTime.now
       seen_access_ids = []
       next if committee_member.committee_role.name == 'Program Head/Chair' || seen_access_ids.include?(committee_member.access_id)
 
-      if committee_member.committee_member_token.present?
-        WorkflowMailer.special_committee_review_request(self, committee_member).deliver
-      else
-        WorkflowMailer.committee_member_review_request(self, committee_member).deliver
-      end
+      WorkflowMailer.send_committee_review_requests(self, committee_member)
+
       CommitteeReminderWorker.perform_in(10.days, id, committee_member.id)
       seen_access_ids << committee_member.access_id
     end
-  end
-
-  def deliver_final_emails
-    WorkflowMailer.committee_approved(self).deliver_now if degree.degree_type.approval_configuration.email_authors && !current_partner.honors?
-    WorkflowMailer.final_submission_approved(self).deliver_now if current_partner.honors?
   end
 
   private
@@ -376,7 +374,7 @@ class Submission < ApplicationRecord
         status_giver.can_waiting_for_head_of_program_review?
         status_giver.waiting_for_head_of_program_review!
         update_attribute(:committee_review_accepted_at, DateTime.now)
-        WorkflowMailer.committee_member_review_request(self, CommitteeMember.head_of_program(id)).deliver unless submission_status.head_of_program_status == 'approved'
+        WorkflowMailer.send_head_of_program_review_request(self, submission_status)
         update_status_from_head_of_program
       else
         status_giver.can_waiting_for_publication_release? unless current_partner.honors?
@@ -384,14 +382,14 @@ class Submission < ApplicationRecord
         status_giver.can_waiting_for_final_submission? if current_partner.honors?
         status_giver.waiting_for_final_submission_response! if current_partner.honors?
         update_attribute(:committee_review_accepted_at, DateTime.now)
-        deliver_final_emails unless current_partner.honors?
-        WorkflowMailer.committee_approved(self).deliver_now if degree.degree_type.approval_configuration.email_authors && current_partner.honors?
+        WorkflowMailer.send_final_emails(self) unless current_partner.honors?
+        WorkflowMailer.send_committee_approved_email(self)
       end
     elsif submission_status.status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
       update_attribute(:committee_review_rejected_at, DateTime.now)
-      committee_rejected_emails
+      WorkflowMailer.send_committee_rejected_emails(self)
     end
   end
 
@@ -402,17 +400,12 @@ class Submission < ApplicationRecord
       status_giver.can_waiting_for_publication_release?
       status_giver.waiting_for_publication_release!
       update_attribute(:head_of_program_review_accepted_at, DateTime.now)
-      deliver_final_emails
+      WorkflowMailer.send_final_emails(self)
     elsif submission_head_of_program_status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
       update_attribute(:head_of_program_review_rejected_at, DateTime.now)
-      committee_rejected_emails
+      WorkflowMailer.send_committee_rejected_emails(self)
     end
-  end
-
-  def committee_rejected_emails
-    WorkflowMailer.committee_rejected_admin(self).deliver if degree.degree_type.approval_configuration.email_admins
-    WorkflowMailer.committee_rejected_author(self).deliver if degree.degree_type.approval_configuration.email_authors
   end
 end

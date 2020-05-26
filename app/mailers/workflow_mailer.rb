@@ -1,4 +1,6 @@
 class WorkflowMailer < ActionMailer::Base
+  extend MailerActions
+
   def format_review_received(submission)
     @submission = submission
     @author = submission.author
@@ -65,17 +67,17 @@ class WorkflowMailer < ActionMailer::Base
          subject: "Access Level for your submission has been updated"
   end
 
-  def gem_audit_email(audit_results)
+  def vulnerability_audit_email(audit_results)
     @audit_results = audit_results
-    mail to: 'ajk5603@psu.edu',
-         from: 'ajk5603@psu.edu',
-         subject: 'BUNDLE AUDIT: Vulnerable Gems Found'
+    mail to: I18n.t('devs.lead.primary_email_address').to_s,
+         from: I18n.t('devs.lead.primary_email_address').to_s,
+         subject: 'BUNDLE & YARN AUDIT: Vulnerabilities Found'
   end
 
   def verify_files_email(verify_files_results)
     @verify_files_results = verify_files_results
-    mail to: 'ajk5603@psu.edu',
-         from: 'ajk5603@psu.edu',
+    mail to: I18n.t('devs.lead.primary_email_address').to_s,
+         from: I18n.t('devs.lead.primary_email_address').to_s,
          subject: 'VERIFY FILES: Misplaced files found'
   end
 

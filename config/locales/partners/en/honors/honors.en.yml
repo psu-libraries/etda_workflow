@@ -5,6 +5,7 @@ en:
         medium: '%b %-d, %Y %l:%M %P'
     header:
       title: Electronic Theses for Schreyer Honors College
+      image: ETD-Honors.png
     submission:
       create:
         success: Your Graduate School submission was created successfully.
@@ -128,10 +129,8 @@ en:
                     814-867-2505
         committee_approved:
           message: |
-                    Congratulations! Your honors %{degree_type} has been reviewed by your commiteee and it is approved.
-                    The next step is to have your final submission reviewed by the Schreyer Honors College.
-                    In Summer and Fall, you must make an advance appointment with Ms Rodgers.
-                    In Spring, you must attend during the designated Theses Days.
+                    Congratulations! Your honors %{degree_type} has been reviewed by your committee and it is approved.
+                    The next step is to have your final submission reviewed by the Schreyer Honors College; you will receive an email once it is approved.
 
                     Sincerely,
                     The Schreyer Honors College
@@ -183,6 +182,16 @@ en:
       label: Thesis Supervisor
       list:
         label: Thesis Supervisors
+        thesis:
+          thesis_supervisor:
+            name: Thesis Supervisor
+            description: A professor in the area in which the thesis is written, who the student works closely with.
+          thesis_honors_adviser:
+            name: Thesis Honors Advisor
+            description: Faculty member who oversees the thesis work and confirms it is indeed honors work in their area of expertise.
+          faculty_reader:
+            name: Faculty Reader
+            description: This role is only required if the Honors Advisor and Thesis Supervisor are the same person.  This is a faculty member in the discipline in which the thesis is written.
       author_instructions:
         The honors college only requires two people to read and approve the thesis, an Honors Advisor and Thesis Supervisor. The only time a "Faculty Reader" is required is if the honors advisor and thesis supervisor are the same person.
       special_role: supervisor
@@ -214,6 +223,9 @@ en:
       final_submission_approved:
         title: Final Submission to be Released
         description: Approved by committee and waiting to be released
+      final_submission_on_hold:
+        title: Final Submission is On Hold
+        description: Submissions that have been approved but are now being held from release
       released_for_publication:
         title: Released Theses
         description: Manage theses which have already been released
@@ -239,6 +251,7 @@ en:
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
     admin:
+      umg: 'cn=umg/psu.sas.etda-honors-admins,dc=psu,dc=edu'
       submission:
         edit:
           author-information: Author Information

@@ -45,6 +45,7 @@
           <th>Name</th>
           <th>Role</th>
           <th>Status</th>
+          <th>Approved at</th>
           <th>Notes</th>
         </tr>
         </thead>
@@ -54,6 +55,7 @@
             <td><%= member.name %></td>
             <td><%= member.committee_role.name %></td>
             <td><%= member.status ? member.status.capitalize : nil %></td>
+            <td class="approved-at-column"><%= member.approved_at ? member.approved_at.strftime("%B %d, %Y %I:%M %p") : nil %></td>
             <td><%= member.notes %></td>
           </tr>
         <% end %>

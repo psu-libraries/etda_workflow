@@ -23,10 +23,16 @@
             <li class="list-group-item">
               <%= link_to 'Custom Report', admin_custom_report_index_path, id: 'custom_report' %>
             </li>
+            <li class="list-group-item">
+              <%= link_to 'Confidential Hold Report', admin_confidential_hold_report_index_path, id: 'confidential_hold_report' %>
+            </li>
           </ul>
         </li>
         <li class="<%= admin_nav_active?('approval_configurations') %>">
           <%= link_to 'Approval Configuration', admin_approval_configurations_path %>
+        </li>
+        <li>
+          <%= link_to 'FAQ', 'https://sites.psu.edu/etdinfo/', target: :_blank %>
         </li>
       </ul>
     </div>

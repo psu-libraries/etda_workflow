@@ -5,6 +5,7 @@ en:
         medium: '%b %-d, %Y %l:%M %P'
     header:
       title: Electronic Theses for Millennium Scholars Program
+      image: ETD-Milsch.png
     submission:
       create:
         success: Your Millennium Scholars Program submission was created successfully.
@@ -76,7 +77,7 @@ en:
                     part of or have reviewed.
                     Please login to %{review_url} and complete this request.
                     We ask that you complete this review within two weeks from receipt of this request.
-                    If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
+                    If you are serving on this committee in multiple roles, you will only need to submit your review once.
                     If you have any further questions please contact: millennium@psu.edu.
 
                     Sincerely,
@@ -91,7 +92,7 @@ en:
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
                     Please visit this URL to conduct your final review:
                     %{review_url}
-                    If you are serving on this committee in multiple roles you will need to review and approve the submission for each role.
+                    If you are serving on this committee in multiple roles, you will only need to submit your review once.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
@@ -172,6 +173,16 @@ en:
       label: Thesis Supervisor
       list:
         label: Thesis Supervisor
+        thesis:
+          thesis_supervisor:
+            name: Thesis Supervisor
+            description: The faculty member or researcher who is the principal investigator of the lab where the student conducted the research. The thesis supervisor also acts as a research mentor regarding the thesis project.
+          advisor:
+            name: Advisor
+            description: Faculty member who reviews the thesis and confirms that it is an acceptable undergraduate thesis.
+          honors_advisor:
+            name: Honors Advisor
+            description: Faculty member who reviews the thesis and confirms that it meets the criteria for honors designation.
       author_instructions:
         Students will be required to enter one name as thesis supervisor.
         Students may enter additional names as advisor or honors advisor, but this is not required.
@@ -205,6 +216,9 @@ en:
       final_submission_approved:
         title: Final Submission to be Released
         description: Approved by committee and waiting to be released
+      final_submission_on_hold:
+        title: Final Submission is On Hold
+        description: Submissions that have been approved but are now being held from release
       released_for_publication:
         title: Released Theses
         description: Manage theses which have already been released
@@ -230,6 +244,7 @@ en:
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
     admin:
+      umg: 'cn=umg/psu.dsrd.etda_milsch_admin_users,dc=psu,dc=edu'
       submission:
         edit:
           author-information: Author Information

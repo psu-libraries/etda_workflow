@@ -10,6 +10,9 @@ default: &default
   graduate:
     lion_path_outbound: <%= ENV.fetch("GRADUATE_LIONPATH_OUTBOUND", false) %>
     lion_path_inbound: <%= ENV.fetch("GRADUATE_LIONPATH_OUTBOUND", false) %>
+  sset:
+    lion_path_outbound: <%= ENV.fetch("SSET_LIONPATH_OUTBOUND", false) %>
+    lion_path_inbound: <%= ENV.fetch("SSET_LIONPATH_OUTBOUND", false) %>
 
 development:
   <<: *default

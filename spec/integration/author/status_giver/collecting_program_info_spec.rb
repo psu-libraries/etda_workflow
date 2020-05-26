@@ -109,7 +109,6 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
       expect(new_submission.status).to eq 'collecting committee'
       expect(new_submission.program.id).to eq(Program.where(name: 'Information Sciences and Technology').first.id)
       visit "/author/submissions/#{new_submission.id}/edit"
-      sleep(3)
       select second_program.name, from: current_partner.program_label.to_s
       second_program_id = Program.where(name: second_program.name).first.id
       find_button('Update Program Information').click

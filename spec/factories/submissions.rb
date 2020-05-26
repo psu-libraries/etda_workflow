@@ -9,7 +9,7 @@ FactoryBot.define do
     semester { "Spring" }
     year { Time.zone.today.next_year.year }
     access_level { 'open_access' }
-    defended_at Time.zone.tomorrow if current_partner.graduate?
+    defended_at { Time.zone.tomorrow if current_partner.graduate? }
     federal_funding { false }
     #    lion_path_degree_code { LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN].first[LionPath::LpKeys::DEGREE_CODE] }
 
@@ -44,6 +44,7 @@ FactoryBot.define do
     end
 
     trait :collecting_final_submission_files_rejected do
+      status { "collecting final submission files rejected" }
       final_submission_rejected_at { Time.zone.now }
     end
 
@@ -54,7 +55,6 @@ FactoryBot.define do
       has_agreed_to_terms { 1 }
       has_agreed_to_publication_release { 1 }
       final_submission_notes { "Final submission notes" }
-      keywords { [create(:keyword)] }
       defended_at { Time.zone.yesterday if current_partner.graduate? }
       year { Time.zone.today.year }
       semester { Semester.current.split.last }
@@ -83,6 +83,11 @@ FactoryBot.define do
 
     trait :waiting_for_publication_release do
       status { "waiting for publication release" }
+      final_submission_traits
+    end
+
+    trait :waiting_in_final_submission_on_hold do
+      status { "waiting in final submission on hold" }
       final_submission_traits
     end
 
@@ -123,6 +128,10 @@ FactoryBot.define do
       released_for_publication_at { nil }
       released_metadata_at { Time.zone.yesterday }
       final_submission_traits
+    end
+
+    after(:create) do |submission|
+      create_list(:keyword, 2, submission: submission)
     end
   end
 end

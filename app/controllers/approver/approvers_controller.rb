@@ -5,8 +5,8 @@ class Approver::ApproversController < ApproverController
   include ActionView::Helpers::UrlHelper
 
   def index
-    update_approver_committee_members
     @approver = Approver.find_by(access_id: current_approver.access_id)
+    update_approver_committee_members(@approver)
     @committee_members = @approver.committee_members.select { |n| n if n.submission.status_behavior.beyond_collecting_final_submission_files? } if current_partner.honors?
     @committee_members = @approver.committee_members.select { |n| n if n.submission.status_behavior.beyond_waiting_for_final_submission_response? } unless current_partner.honors?
   end
@@ -18,8 +18,10 @@ class Approver::ApproversController < ApproverController
     @author = @submission.author
     @most_relevant_file_links = most_relevant_file_links
     @view = Approver::ApproversView.new(@submission)
+    return if @committee_member.committee_role.name.include? 'Advisor'
+
     @submission.committee_members.each do |member|
-      redirect_to approver_path(member) if (member.access_id == @committee_member.access_id) && (member.id != @committee_member.id) && (member.committee_role.name.include? 'Advisor')
+      redirect_to approver_path(member) if (member.access_id == @committee_member.access_id) && (member.committee_role.name.include? 'Advisor')
     end
   end
 
@@ -34,7 +36,7 @@ class Approver::ApproversController < ApproverController
       flash[:error] = 'Validation Failed: As an Advisor, you must indicate if federal funding was utilized for this submission.'
       return redirect_to(approver_path(params[:id]))
     end
-    @committee_member.update_attributes!(committee_member_params)
+    @committee_member.update!(committee_member_params)
     Approver.status_merge(@committee_member)
     @submission.update_status_from_committee
     redirect_to approver_root_path
@@ -77,10 +79,8 @@ class Approver::ApproversController < ApproverController
 
   def marry_via_token(committee_member_token)
     committee_member = committee_member_token.committee_member
-    approver = Approver.find_by(access_id: current_remote_user)
-    approver.committee_members << committee_member
-    approver.save!
-    CommitteeMemberToken.find(committee_member_token.id).destroy
+    approver = Approver.find_by(access_id: current_approver.access_id)
+    update_approver_committee_members_on_marry(approver, committee_member)
   end
 
   def committee_member_params
@@ -98,11 +98,23 @@ class Approver::ApproversController < ApproverController
     links.join(" ")
   end
 
-  def update_approver_committee_members
-    approver = Approver.find_by(access_id: current_approver.access_id)
+  def update_approver_committee_members(approver)
     committee_members = CommitteeMember.where(access_id: approver.access_id)
     committee_members.each do |committee_member|
+      next if committee_member.approver_id == approver.id
+
+      committee_member.approver_id = approver.id
+      committee_member.save!
+    end
+  end
+
+  def update_approver_committee_members_on_marry(approver, initial_committee_member)
+    committee_member_email = initial_committee_member.email
+    committee_members = CommitteeMember.where(email: committee_member_email)
+    committee_members.each do |committee_member|
+      committee_member.update_attribute :access_id, approver.access_id
       approver.committee_members << committee_member
+      committee_member.committee_member_token ? CommitteeMemberToken.find(committee_member.committee_member_token.id).destroy : next
     end
     approver.save!
   end

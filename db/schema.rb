@@ -2,17 +2,17 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191001131441) do
+ActiveRecord::Schema.define(version: 2020_01_31_173551) do
 
-  create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["access_id"], name: "index_admins_on_access_id", unique: true
   end
 
-  create_table "approval_configurations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "approval_configurations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "degree_type_id"
     t.date "approval_deadline_on"
     t.integer "configuration_threshold"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["degree_type_id"], name: "degree_type_id_fk"
   end
 
-  create_table "approvers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "approvers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["access_id"], name: "index_approvers_on_access_id", unique: true
   end
 
-  create_table "authors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "authors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["legacy_id"], name: "index_authors_on_legacy_id"
   end
 
-  create_table "committee_member_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "committee_member_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "authentication_token"
     t.bigint "committee_member_id"
     t.datetime "created_at", null: false
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["committee_member_id"], name: "index_committee_member_tokens_on_committee_member_id"
   end
 
-  create_table "committee_members", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "committee_members", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
     t.bigint "committee_role_id"
     t.string "name"
@@ -126,7 +126,7 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["submission_id"], name: "committee_members_submission_id_fk"
   end
 
-  create_table "committee_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "committee_roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "degree_type_id", null: false
     t.string "name", null: false
     t.integer "num_required", default: 0, null: false
@@ -134,14 +134,25 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["degree_type_id"], name: "committee_roles_degree_type_id_fk"
   end
 
-  create_table "degree_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "confidential_hold_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "author_id", null: false
+    t.datetime "set_at"
+    t.datetime "removed_at"
+    t.string "set_by"
+    t.string "removed_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_confidential_hold_histories_on_author_id"
+  end
+
+  create_table "degree_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
     t.index ["name"], name: "index_degree_types_on_name", unique: true
     t.index ["slug"], name: "index_degree_types_on_slug", unique: true
   end
 
-  create_table "degrees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "degrees", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.boolean "is_active"
@@ -154,9 +165,9 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["legacy_id"], name: "index_degrees_on_legacy_id"
   end
 
-  create_table "final_submission_files", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "final_submission_files", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
-    t.text "asset", limit: 16777215
+    t.text "asset", size: :medium
     t.integer "legacy_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -164,9 +175,9 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["submission_id"], name: "final_submission_files_submission_id_fk"
   end
 
-  create_table "format_review_files", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "format_review_files", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
-    t.text "asset", limit: 16777215
+    t.text "asset", size: :medium
     t.integer "legacy_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -174,16 +185,16 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["submission_id"], name: "format_review_files_submission_id_fk"
   end
 
-  create_table "inbound_lion_path_records", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "inbound_lion_path_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "author_id"
     t.string "lion_path_degree_code"
-    t.text "current_data", limit: 16777215
+    t.text "current_data", size: :medium
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["author_id"], name: "inbound_lion_path_records_author_id_fk"
   end
 
-  create_table "invention_disclosures", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "invention_disclosures", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
     t.string "id_number"
     t.datetime "created_at", null: false
@@ -191,9 +202,9 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["submission_id"], name: "invention_disclosures_submission_id_fk"
   end
 
-  create_table "keywords", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "keywords", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
-    t.text "word", limit: 16777215
+    t.text "word", size: :medium
     t.integer "legacy_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -201,8 +212,8 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["submission_id"], name: "keywords_submission_id_fk"
   end
 
-  create_table "outbound_lion_path_records", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
-    t.text "status_data", limit: 16777215
+  create_table "outbound_lion_path_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.text "status_data", size: :medium
     t.boolean "received"
     t.string "transaction_id"
     t.bigint "submission_id"
@@ -210,7 +221,7 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.datetime "updated_at"
   end
 
-  create_table "programs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "programs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.boolean "is_active"
@@ -221,7 +232,7 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.index ["legacy_id"], name: "index_programs_on_legacy_id"
   end
 
-  create_table "submissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "submissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "author_id"
     t.bigint "program_id"
     t.bigint "degree_id"
@@ -229,10 +240,10 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.integer "year"
     t.string "status"
     t.string "title", limit: 400
-    t.text "format_review_notes", limit: 16777215
-    t.text "final_submission_notes", limit: 16777215
+    t.text "format_review_notes", size: :medium
+    t.text "final_submission_notes", size: :medium
     t.datetime "defended_at"
-    t.text "abstract", limit: 16777215
+    t.text "abstract", size: :medium
     t.string "access_level"
     t.boolean "has_agreed_to_terms"
     t.datetime "committee_provided_at"
@@ -256,7 +267,7 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.datetime "format_review_files_first_uploaded_at"
     t.datetime "final_submission_files_first_uploaded_at"
     t.string "lion_path_degree_code"
-    t.text "restricted_notes", limit: 16777215
+    t.text "restricted_notes", size: :medium
     t.datetime "publication_release_terms_agreed_to_at"
     t.boolean "has_agreed_to_publication_release"
     t.datetime "created_at", null: false
@@ -266,6 +277,8 @@ ActiveRecord::Schema.define(version: 20191001131441) do
     t.datetime "head_of_program_review_accepted_at"
     t.datetime "head_of_program_review_rejected_at"
     t.boolean "federal_funding"
+    t.datetime "placed_on_hold_at"
+    t.datetime "removed_hold_at"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"
@@ -283,6 +296,7 @@ ActiveRecord::Schema.define(version: 20191001131441) do
   add_foreign_key "committee_members", "committee_roles", name: "committee_members_committee_role_id_fk"
   add_foreign_key "committee_members", "submissions", name: "committee_members_submission_id_fk"
   add_foreign_key "committee_roles", "degree_types", name: "committee_roles_degree_type_id_fk"
+  add_foreign_key "confidential_hold_histories", "authors", name: "confidential_hold_histories_author_id_fk"
   add_foreign_key "final_submission_files", "submissions", name: "final_submission_files_submission_id_fk"
   add_foreign_key "format_review_files", "submissions", name: "format_review_files_submission_id_fk"
   add_foreign_key "inbound_lion_path_records", "authors", name: "inbound_lion_path_records_author_id_fk"

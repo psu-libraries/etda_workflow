@@ -1,10 +1,7 @@
 class FinalSubmissionUpdateService
   include ActionView::Helpers::UrlHelper
 
-  attr_accessor :params
-  attr_accessor :submission
-  attr_accessor :update_actions
-  attr_accessor :current_remote_user
+  attr_accessor :params, :submission, :update_actions, :current_remote_user
 
   def initialize(params, submission, current_remote_user)
     @submission = submission
@@ -16,122 +13,63 @@ class FinalSubmissionUpdateService
 
   def update_record
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-    { msg: "The submission was successfully updated.", redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
-  end
-
-  def respond_send_back_to_final_submission
-    return unless update_actions.send_back_to_final_submission?
-
-    status_giver = SubmissionStatusGiver.new(submission)
-    status_giver.can_upload_final_submission_files?
-    status_giver.collecting_final_submission_files!
-    { msg: 'The submission was sent back to waiting for final submission.', redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
+    { msg: "The submission was successfully updated.", redirect_path: admin_edit_sub_path }
   end
 
   def respond_final_submission
     msg = ''
     status_giver = SubmissionStatusGiver.new(submission)
     status_giver.can_respond_to_final_submission?
+    action_service = FinalSubmissionSubmittedService.new(submission, current_remote_user,
+                                                         status_giver, final_submission_params)
+    lionpath_outbound = OutboundLionPathRecord.new(submission: submission)
     if update_actions.approved?
-      @submission.update_attribute :final_submission_approved_at, Time.zone.now
-      if current_partner.honors?
-        status_giver.can_waiting_for_publication_release?
-        status_giver.waiting_for_publication_release!
-        UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-        @submission.deliver_final_emails
-      else
-        approval_status = ApprovalStatus.new(@submission).status
-        status_giver.can_waiting_for_committee_review?
-        status_giver.waiting_for_committee_review!
-        UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-        @submission.update_status_from_committee
-        WorkflowMailer.final_submission_approved(@submission).deliver
-        @submission.send_initial_committee_member_emails unless approval_status == 'approved'
-      end
-      msg = "The submission\'s final submission information was successfully approved."
+      msg = action_service.final_submission_approved
     elsif update_actions.rejected?
-      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-      submission.has_agreed_to_publication_release = false
-      submission.publication_release_terms_agreed_to_at = nil
-      submission.has_agreed_to_terms = false
-      submission.final_submission_rejected_at = Time.zone.now
-      submission.save
-      status_giver.collecting_final_submission_files_rejected!
-      WorkflowMailer.final_submission_rejected(@submission).deliver
-      msg = "The submission\'s final submission information was successfully rejected and returned to the author for revision."
+      msg = action_service.final_submission_rejected
+    elsif update_actions.record_updated?
+      msg += action_service.final_submission_updated
     end
-    if update_actions.record_updated?
-      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-      msg += " Final submission information was successfully edited by an administrator"
-    end
-    OutboundLionPathRecord.new(submission: submission).report_status_change if update_actions.approved? || update_actions.rejected?
-    { msg: msg, redirect_path: Rails.application.routes.url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_submitted') }
-    #  "/admin/#{submission.degree_type.slug}/final_submission_submitted" }
+    lionpath_outbound.report_status_change if update_actions.approved? || update_actions.rejected?
+    { msg: msg, redirect_path: admin_submitted_sub_index_path }
   end
 
   def respond_waiting_to_be_released
+    status_giver = SubmissionStatusGiver.new(submission)
+    approved_service = FinalSubmissionApprovedService.new(submission, current_remote_user,
+                                                          status_giver, final_submission_params)
     if update_actions.record_updated?
-      # Editing a submission that is waiting to be released for publication
-      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-      { msg: 'The submission was successfully updated.', redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
+      approved_service.release_updated
     elsif update_actions.rejected?
-      # Move back to Waiting for final submission approval (final submission submitted)
-      # No file path changes necessary here; submission not released yet; files are still in workflow
-      status_giver = SubmissionStatusGiver.new(submission)
-      status_giver.can_remove_from_waiting_to_be_released?
-      status_giver.waiting_for_final_submission_response!
-      # @submission.update_attribute :final_submission_rejected_at, Time.zone.now  #this causes it to go into final rejected - WAS ERROR
-      # submission.update_attributes! final_submission_params
-      submission.final_submission_approved_at = nil
-      submission.final_submission_rejected_at = nil
-      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-      { msg: 'Submission was removed from waiting to be released', redirect_path: Rails.application.routes.url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_approved') }
+      approved_service.release_rejected
+    elsif update_actions.send_to_hold?
+      approved_service.release_sent_to_hold
+    elsif update_actions.remove_hold?
+      approved_service.release_remove_hold
     end
   end
 
   def respond_released_submission
-    if update_actions.record_updated?
-      message = 'The submission was successfully updated.'
-      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-      update_service = UpdateSubmissionService.new
-      update_service.send_email(submission)
-      update_results = update_service.solr_delta_update(submission)
-      message = update_results[:message] if update_results[:error]
-      result = { msg: message, redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
-    elsif update_actions.rejected?
-      # Unpublish/unrelease this submission
-      status_giver = SubmissionStatusGiver.new(submission)
-      status_giver.can_unrelease_for_publication?
-      submission_release_service = SubmissionReleaseService.new
-      original_final_files = submission_release_service.final_files_for_submission(submission)
-      file_verification_results = submission_release_service.file_verification(original_final_files)
-      # return unless file_verification_results
-      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-      # status_giver.unreleased_for_publication!
-      submission.update_attributes(released_for_publication_at: nil, released_metadata_at: nil, status: 'waiting for publication release')
-      SubmissionReleaseService.new.unpublish(original_final_files) if file_verification_results[:valid]
-      solr_result = UpdateSubmissionService.new.solr_delta_update(submission) # update the index after the paper has been unreleased
-      result = { msg: final_unrelease_message(solr_result, file_verification_results, submission), redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
-    end
-    result
+    return unless update_actions.rejected?
+
+    status_giver = SubmissionStatusGiver.new(submission)
+    status_giver.can_unrelease_for_publication?
+    release_service = FinalSubmissionReleaseService.new(submission)
+    release_service.released_unpublish
   end
 
   private
 
-  def final_unrelease_message(solr_result, file_verification_results, submission)
-    solr_error_msg = "Solr indexing error occurred when un-publishing submission for #{submission.author_first_name} #{submission.author_last_name}" if solr_result[:error]
-    success_msg = "Submission for #{submission.author_first_name} #{submission.author_last_name} was successfully un-published."
-    msg = solr_result[:error] ? solr_error_msg : success_msg
-    file_error_message = "\nError occurred relocating file for submission id #{submission.id}.  Please contact an administrator:  "
-    # the following loop prints full file path details.  After app is stable, consider removing this.
-    # The same information is also printed in production.log
-    unless file_verification_results[:valid]
-      msg << file_error_message
-      file_verification_results[:file_error_list].each do |error_msg|
-        msg << error_msg
-      end
-    end
-    msg
+  def admin_submitted_sub_index_path
+    url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_submitted')
+  end
+
+  def admin_edit_sub_path
+    url_helpers.admin_edit_submission_path(submission.id.to_s)
+  end
+
+  def url_helpers
+    Rails.application.routes.url_helpers
   end
 
   def final_submission_params
@@ -155,7 +93,8 @@ class FinalSubmissionUpdateService
       :lion_path_degree_code,
       :restricted_notes,
       :federal_funding,
-      committee_members_attributes: [:id, :committee_role_id, :name, :email, :status, :notes, :is_required, :is_voting, :federal_funding_used, :_destroy],
+      committee_members_attributes: [:id, :committee_role_id, :name, :email, :status, :notes, :is_required,
+                                     :is_voting, :federal_funding_used, :_destroy],
       format_review_files_attributes: [:asset, :asset_cache, :id, :_destroy],
       final_submission_files_attributes: [:asset, :asset_cache, :id, :_destroy],
       keywords_attributes: [:word, :id, :_destroy],

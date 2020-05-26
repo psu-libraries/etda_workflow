@@ -1,8 +1,8 @@
-RSpec.describe "Printing a graduate signatory page as an admin", js: true do
+RSpec.describe "Printing a graduate signatory page as an admin", js: true, honors: true, milsch: true do
   require 'integration/integration_spec_helper'
 
   let(:submission_author) { FactoryBot.create :author }
-  let(:submission) { FactoryBot.create(:submission, :waiting_for_format_review_response) }
+  let(:submission) { FactoryBot.create(:submission, :waiting_for_format_review_response, semester: Semester.current.split(" ")[1], year: Semester.current.split(" ")[0]) }
   let(:admin) { FactoryBot.create :admin }
 
   before do
@@ -19,7 +19,6 @@ RSpec.describe "Printing a graduate signatory page as an admin", js: true do
 
     it "displays the submission print page when partner is graduate" do
       click_link "Print Page"
-      sleep(5)
       # page.find('div#print-button')
       expect(page).to have_content('INTENT')
       expect(page).to have_content(submission.author.last_name)

@@ -7,6 +7,8 @@ class Admin::SubmissionsController < AdminController
   end
 
   def dashboard
+    # Reset session semester to current semester when returning to dashboard
+    session[:semester] = Semester.current
     degree_type = params[:degree_type] || DegreeType.default
     @view = Admin::SubmissionsDashboardView.new(degree_type)
   end
@@ -37,7 +39,7 @@ class Admin::SubmissionsController < AdminController
 
   def index
     session[:return_to] = request.referer
-    @view = Admin::SubmissionsIndexView.new(params[:degree_type], params[:scope], view_context)
+    @view = Admin::SubmissionsIndexView.new(params[:degree_type], params[:scope], view_context, session[:semester])
   end
 
   def audit
@@ -107,8 +109,8 @@ class Admin::SubmissionsController < AdminController
 
   def update_final_submission
     @submission = Submission.find(params[:id])
-    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
-    response = final_submission_update_service.waiting_for_final_submission
+    update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
+    response = update_service.waiting_for_final_submission
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
@@ -124,25 +126,8 @@ class Admin::SubmissionsController < AdminController
 
   def record_final_submission_response
     @submission = Submission.find(params[:id])
-    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
-    response = final_submission_update_service.respond_final_submission
-    redirect_to response[:redirect_path]
-    flash[:notice] = response[:msg]
-  rescue ActiveRecord::RecordInvalid
-    @view = Admin::SubmissionFormView.new(@submission, session)
-    render :edit
-  rescue SubmissionStatusGiver::AccessForbidden
-    redirect_to session.delete(:return_to)
-    flash[:alert] = 'This submission\'s final submission information has already been evaluated.'
-  rescue SubmissionStatusGiver::InvalidTransition
-    redirect_to session.delete(:return_to)
-    flash[:alert] = 'Oops! You may have submitted invalid final submission data. Please check that the submission\'s final submission information is correct.'
-  end
-
-  def record_send_back_to_final_submission
-    @submission = Submission.find(params[:id])
-    final_submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
-    response = final_submission_update_service.respond_send_back_to_final_submission
+    update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
+    response = update_service.respond_final_submission
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
@@ -206,7 +191,7 @@ class Admin::SubmissionsController < AdminController
     return if params[:id].nil?
 
     @submission = Submission.find(params[:id])
-    @submission.update_attribute :is_printed, 1 unless @submission.is_printed?
+    @submission.update! is_printed: 1 unless @submission.is_printed?
     redirect_to admin_submissions_index_path(@submission.degree_type.slug, 'format_review_submitted')
     flash[:notice] = "Printed submission information for #{@submission.author.first_name} #{@submission.author.last_name}"
   end
@@ -233,15 +218,14 @@ class Admin::SubmissionsController < AdminController
   end
 
   def send_email_reminder
+    fail_message = 'Email was not sent. Email reminders may only be sent once a day; a reminder was recently sent to this committee member.'.html_safe
+    success_message = 'Email successfully sent.'.html_safe
     @submission = Submission.find(params[:id])
     @committee_member = @submission.committee_members.find(params[:committee_member_id])
-    raise 'Email was not sent.' unless @committee_member.reminder_email_authorized?
+    return render plain: fail_message unless @committee_member.reminder_email_authorized?
 
-    if @committee_member.committee_role.name == 'Special Member' || @committee_member.committee_role.name == 'Special Signatory'
-      WorkflowMailer.special_committee_review_request(@submission, @committee_member).deliver
-    else
-      WorkflowMailer.committee_member_review_reminder(@submission, @committee_member).deliver
-    end
+    WorkflowMailer.send_committee_review_reminders(@submission, @committee_member)
+    render plain: success_message
   end
 
   private

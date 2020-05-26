@@ -32,4 +32,16 @@ RSpec.describe Admin::ReportsController, type: :controller do
       expect(patch: admin_export_final_submission_approved_path(DegreeType.default.slug)).to route_to(controller: 'admin/reports', action: 'final_submission_approved', degree_type: DegreeType.default.slug)
     end
   end
+
+  describe '#confidential_hold_report_index' do
+    it 'displays confidential hold report' do
+      expect(get: admin_confidential_hold_report_index_path).to route_to(controller: 'admin/reports', action: 'confidential_hold_report_index')
+    end
+  end
+
+  describe '#confidential_hold_report_export' do
+    it 'exports the confidential hold report information in CSV format' do
+      expect(patch: admin_confidential_hold_report_export_path).to route_to(controller: 'admin/reports', action: 'confidential_hold_report_export', format: 'csv')
+    end
+  end
 end

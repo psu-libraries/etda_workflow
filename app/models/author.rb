@@ -8,7 +8,7 @@ class Author < ApplicationRecord
   devise :webaccess_authenticatable, :rememberable, :trackable, :registerable
 
   has_many :submissions, dependent: :nullify
-
+  has_many :confidential_hold_histories, dependent: :destroy
   has_one :inbound_lion_path_record, dependent: :destroy
 
   # validate for author
@@ -19,10 +19,12 @@ class Author < ApplicationRecord
             :alternate_email_address,
             :psu_idn, presence: true
 
-  validates :access_id, uniqueness: true
+  validates :access_id, uniqueness: { case_sensitive: true }
 
   validates :psu_idn,
-            :legacy_id, allow_blank: true, allow_nil: true, uniqueness: true
+            :legacy_id, allow_blank: true,
+                        allow_nil: true,
+                        uniqueness: { case_sensitive: true }
 
   # validate for graduate authors only
   validates :phone_number,
@@ -61,7 +63,6 @@ class Author < ApplicationRecord
   end
 
   def populate_attributes
-    refresh_confidential_status(access_id)
     populate_with_ldap_attributes
     populate_lion_path_record psu_idn, access_id
     self
@@ -83,7 +84,7 @@ class Author < ApplicationRecord
 
     #  Be sure there is data before continuing???
     if inbound_lion_path_record.present?
-      inbound_lion_path_record.update_attribute(:current_data, lp_record_data)
+      inbound_lion_path_record.update!(current_data: lp_record_data)
     else
       build_inbound_lion_path_record(author_id: id, current_data: lp_record_data) # create a lp record
       inbound_lion_path_record.save(validate: false)
@@ -108,7 +109,6 @@ class Author < ApplicationRecord
     self.psu_email_address = refresh(psu_email_address, ldap_attributes[:psu_email_address])
     self.psu_idn = refresh(psu_idn, ldap_attributes[:psu_idn])
     save(validate: false)
-    refresh_confidential_status(access_id)
     populate_lion_path_record(psu_idn, access_id)
     self
   end
@@ -169,24 +169,13 @@ class Author < ApplicationRecord
       new_val
     end
 
-    def refresh_confidential_status(login_id)
-      confidential_hold_status = ConfidentialHoldUtility.new(login_id, confidential_hold)
-      return unless confidential_hold_status.changed?
-
-      # send emails and save the new status
-      # confidential_hold_status.send_confidential_status_notifications(self)
-      self.confidential_hold = confidential_hold_status.new_confidential_status
-      self.confidential_hold_set_at = confidential_hold_status.hold_set_at(confidential_hold_set_at, confidential_hold_status.new_confidential_status)
-      save(validate: false)
-    end
-
     def save_mapped_attributes(mapped_attributes)
       if mapped_attributes[:confidential_hold]
         # name unavailable bc of confidential hold; use access id
         mapped_attributes[:first_name] = access_id if mapped_attributes[:first_name].blank?
         mapped_attributes[:last_name] = 'No Associated Name' if mapped_attributes[:last_name].blank?
       end
-      update_attributes(mapped_attributes)
+      update(mapped_attributes)
       save(validate: false)
     end
 end

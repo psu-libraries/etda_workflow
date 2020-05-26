@@ -1,6 +1,6 @@
 ENV['RAILS_ENV'] ||= 'test'
 
-if ENV['COVERAGE'] || ENV['TRAVIS']
+if ENV['COVERAGE']
   require 'simplecov'
   SimpleCov.root(File.expand_path('../..', __FILE__))
   SimpleCov.start('rails') do
@@ -8,8 +8,10 @@ if ENV['COVERAGE'] || ENV['TRAVIS']
     add_filter '/tasks'
     add_filter '/channels'
     add_filter '/jobs'
-    add_filter '/app/models/lion_path/*'
-    # add_filter '/app/models/outbound_lion_path_record.rb'
+    add_filter '/app/models/legacy'
+    add_filter '/app/models/lion_path'
+    add_filter '/app/models/outbound_lion_path_record.rb'
+    add_filter '/app/models/inbound_lion_path_record.rb'
     add_filter '/app/models/ldap_university_directory.rb'
   end
   SimpleCov.command_name 'spec'
@@ -96,4 +98,7 @@ RSpec.configure do |config|
       Capybara.reset!
     end
   end
+
+  # FactoryBot configuration
+  config.include FactoryBot::Syntax::Methods
 end

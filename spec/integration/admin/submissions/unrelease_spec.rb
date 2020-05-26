@@ -1,4 +1,4 @@
-RSpec.describe "Unrelease a submission", js: true do
+RSpec.describe "Unrelease a submission", js: true, honors: true, milsch: true do
   require 'integration/integration_spec_helper'
 
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
@@ -21,7 +21,7 @@ RSpec.describe "Unrelease a submission", js: true do
     fill_in "Title", with: "A Better Title"
   end
 
-  it "Changes the status to unreleased and also saves any updates" do
+  it "Changes the status to unreleased and doesn't save any updates" do
     released_location = Rails.root.join(final_submission_file.current_location)
     click_button "Withdraw Publication"
     submission.reload
@@ -37,11 +37,11 @@ RSpec.describe "Unrelease a submission", js: true do
     FileUtilityHelper.new.remove_test_file(unreleased_location)
     # FileUtils.remove_file(unreleased_location, true)
     visit admin_submissions_index_path(degree_type: DegreeType.default, scope: 'final_submission_approved')
-    expect(page).to have_content "A Better Title"
+    expect(page).to have_content submission.title.to_s
   end
 end
 
-RSpec.describe 'Unrelease a submission with errors', js: true do
+RSpec.describe 'Unrelease a submission with errors', js: true, honors: true, milsch: true do
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true) }
   let!(:role) { CommitteeRole.first.name }
@@ -63,7 +63,7 @@ RSpec.describe 'Unrelease a submission with errors', js: true do
   end
 end
 
-RSpec.describe 'Unrelease a legacy submission without missing data', js: true do
+RSpec.describe 'Unrelease a legacy submission without missing data', js: true, honors: true, milsch: true do
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true) }
   let!(:role) { CommitteeRole.first.name }
@@ -79,14 +79,14 @@ RSpec.describe 'Unrelease a legacy submission without missing data', js: true do
     visit admin_edit_submission_path(legacy_submission)
     allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
     fill_in "Title", with: "A new title"
-    click_button "Withdraw Publication", wait: 5
   end
 
   it 'withdraws the publication successfully' do
+    click_button "Withdraw Publication"
+    # expect(page).to have_content("Submission for #{author_first_name} #{author_last_name} was successfully un-published")
+
     legacy_submission.reload
     expect(legacy_submission.legacy_id).not_to be_blank
     expect(page).to have_current_path(admin_edit_submission_path(legacy_submission))
-
-    expect(page).to have_content("Submission for #{author_first_name} #{author_last_name} was successfully un-published")
   end
 end

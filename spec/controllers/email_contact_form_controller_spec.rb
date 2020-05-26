@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Author::EmailContactFormController, type: :controller do
+RSpec.describe EmailContactFormController, type: :controller do
   describe '#new' do
     it 'opens the email contact form for an authenticated user' do
       expect(get: email_contact_form_new_path).to route_to(controller: 'email_contact_form', action: 'new')

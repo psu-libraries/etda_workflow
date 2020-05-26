@@ -9,11 +9,11 @@
 vendor/gems
 vendor/bundle
 
+.npm
 .yarn
 .cache
 .bash_history
 .config
-.mutagen
 .local
 .gem
 

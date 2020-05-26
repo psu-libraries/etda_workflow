@@ -1,7 +1,28 @@
 require 'presenters/presenters_spec_helper'
 RSpec.describe Admin::SubmissionsIndexView do
   let(:degree_type) { DegreeType.default.slug }
-  let(:view) { described_class.new(degree_type, scope, nil) }
+  let(:semester) { Semester.current }
+  let(:view) { described_class.new(degree_type, scope, nil, semester) }
+
+  describe '#default_semester' do
+    context 'when semester is nil' do
+      let(:scope) { 'format_review_incomplete' }
+      let(:semester) { nil }
+
+      it 'returns current semester' do
+        expect(view.default_semester).to eq Semester.current.to_s
+      end
+    end
+
+    context 'when semester is given' do
+      let(:scope) { 'format_review_incomplete' }
+      let(:semester) { "Fall 2018" }
+
+      it 'returns given semester' do
+        expect(view.default_semester).to eq "Fall 2018"
+      end
+    end
+  end
 
   describe '#table_header_partial_path' do
     let(:scope) { 'format_review_incomplete' }
@@ -64,6 +85,14 @@ RSpec.describe Admin::SubmissionsIndexView do
       let(:scope) { 'final_submission_approved' }
 
       it "returns 'Final Submission is Approved'" do
+        expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title")
+      end
+    end
+
+    context "when scope is final submission on hold" do
+      let(:scope) { 'final_submission_on_hold' }
+
+      it "returns 'Final Submission is On Hold'" do
         expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title")
       end
     end
@@ -142,6 +171,14 @@ RSpec.describe Admin::SubmissionsIndexView do
       end
     end
 
+    context "when scope is final submission is on hold" do
+      let(:scope) { 'final_submission_on_hold' }
+
+      it "returns 'on-hold-final-submission-submissions-index'" do
+        expect(view.id).to eq 'on-hold-final-submission-submissions-index'
+      end
+    end
+
     context "when scope is released for publication" do
       let(:scope) { 'released_for_publication' }
 
@@ -213,6 +250,14 @@ RSpec.describe Admin::SubmissionsIndexView do
 
       it "returns true" do
         expect(view).to be_render_additional_bulk_actions
+      end
+    end
+
+    context "when scope is final submission is on hold" do
+      let(:scope) { 'final_submission_on_hold' }
+
+      it "returns true" do
+        expect(view).not_to be_render_additional_bulk_actions
       end
     end
 
@@ -290,6 +335,14 @@ RSpec.describe Admin::SubmissionsIndexView do
       end
     end
 
+    context "when scope is final submission is on hold" do
+      let(:scope) { 'final_submission_on_hold' }
+
+      it "returns 'table_bulk_actions/final_submission_on_hold'" do
+        expect(view.additional_bulk_actions_path).to be_nil
+      end
+    end
+
     context "when scope is released for publication" do
       let(:scope) { 'released_for_publication' }
 
@@ -364,6 +417,14 @@ RSpec.describe Admin::SubmissionsIndexView do
       end
     end
 
+    context "when scope is final submission is on hold" do
+      let(:scope) { 'final_submission_on_hold' }
+
+      it "returns false" do
+        expect(view).not_to be_render_additional_selections
+      end
+    end
+
     context "when scope is released for publication" do
       let(:scope) { 'released_for_publication' }
 
@@ -432,6 +493,14 @@ RSpec.describe Admin::SubmissionsIndexView do
 
     context "when scope is final submission is approved" do
       let(:scope) { 'final_submission_approved' }
+
+      it "returns nil" do
+        expect(view.additional_selections_path).to be_nil
+      end
+    end
+
+    context "when scope is final submission is on hold" do
+      let(:scope) { 'final_submission_on_hold' }
 
       it "returns nil" do
         expect(view.additional_selections_path).to be_nil
@@ -518,6 +587,15 @@ RSpec.describe Admin::SubmissionsIndexView do
       end
     end
 
+    context "when scope is final submission is on hold" do
+      let(:scope) { 'final_submission_on_hold' }
+
+      it "returns false" do
+        expect(view).to be_render_delete_button
+        expect(view.delete_button_partial).to eq('admin/submissions/table_bulk_actions/delete_button')
+      end
+    end
+
     context "when scope is released for publication" do
       let(:scope) { 'released_for_publication' }
 
@@ -594,6 +672,15 @@ RSpec.describe Admin::SubmissionsIndexView do
 
     context "when scope is final submission is approved" do
       let(:scope) { 'final_submission_approved' }
+
+      it "returns false" do
+        expect(view).to be_render_select_visible_buttons
+        expect(view.select_visible_buttons_partial).to eq('admin/submissions/table_bulk_actions/select_visible_buttons')
+      end
+    end
+
+    context "when scope is final submission is on hold" do
+      let(:scope) { 'final_submission_on_hold' }
 
       it "returns false" do
         expect(view).to be_render_select_visible_buttons

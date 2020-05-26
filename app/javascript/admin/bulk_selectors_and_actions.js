@@ -51,8 +51,27 @@ setup_bulk_selectors_and_actions = function() {
         return array;
     };
 
+    const selected_names = function() {
+        const array = [];
+        const data_table = new $.fn.dataTable.Api(table);
+        data_table.rows().nodes().to$().each( function() {
+            const first_name = $(this).children()[4].firstChild.data;
+            const last_name = $(this).children()[3].firstChild.data;
+            if ($(this).find('.row-checkbox').prop('checked')) {
+                return array.push(`- ${first_name} ${last_name}\n`);
+            }
+        });
+        return array.join("");
+    };
+
     const update_selected_submission_ids_field = function() {
         const fields = bulk_actions.find('input[name="submission_ids"]');
+        const ids = selected_ids();
+        return fields.val(ids);
+    };
+
+    const update_selected_author_ids_field = function() {
+        const fields = bulk_actions.find('input[name="author_ids"]');
         const ids = selected_ids();
         return fields.val(ids);
     };
@@ -75,6 +94,11 @@ setup_bulk_selectors_and_actions = function() {
         return delete_submits.attr('data-confirm', confirm_message);
     };
 
+    const confirm_release_message = function() {
+        const names = selected_names();
+        return confirm(`Are you sure you want to release the submissions(s) for authors:\n\n${names}\n as Open Access?`);
+    };
+
     const update_bulk_actions = function() {
         const selected = number_of_rows_selected();
         bulk_actions.find('h5 .number-of-selected-rows').html(selected);
@@ -92,6 +116,7 @@ setup_bulk_selectors_and_actions = function() {
 
     table.on('change', 'tr .row-checkbox', function() {
         update_selected_submission_ids_field();
+        update_selected_author_ids_field();
         return update_bulk_actions();
     });
 
@@ -102,17 +127,21 @@ setup_bulk_selectors_and_actions = function() {
     const select_visible_buttons = $('.select-visible-button');
     const deselect_visible_buttons = $('.deselect-visible-button');
     const select_releasable_buttons = $('.select-releasable-button');
+    const release_as_open_access_button = bulk_actions.find('input[value="Release as Open Access"].release-btn');
 
+    release_as_open_access_button.on('click', confirm_release_message);
 
     select_visible_buttons.on('click', function() {
         $('.row-checkbox').prop('checked', true);
         update_selected_submission_ids_field();
+        update_selected_author_ids_field();
         return update_bulk_actions();
     });
 
     deselect_visible_buttons.on('click', function() {
         $('.row-checkbox').prop('checked', false);
         update_selected_submission_ids_field();
+        update_selected_author_ids_field();
         return update_bulk_actions();
     });
 
@@ -124,6 +153,7 @@ setup_bulk_selectors_and_actions = function() {
             return $(node).find('.row-checkbox').prop('checked', ok_to_release);
         });
         update_selected_submission_ids_field();
+        update_selected_author_ids_field();
         update_bulk_actions();
         return $(this).blur();
     });

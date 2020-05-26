@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class ApprovalStatus
-  attr_reader :current_submission, :voting_committee_members, :approval_configuration
+  attr_reader :current_submission, :voting_committee_members, :committee_members,
+              :approval_configuration, :head_of_program
 
   WORKFLOW_STATUS =
     [
@@ -14,13 +15,15 @@ class ApprovalStatus
   def initialize(submission)
     @current_submission = submission
     @voting_committee_members = submission.voting_committee_members
+    @committee_members = submission.committee_members
     @approval_configuration = submission.degree.degree_type.approval_configuration
+    @head_of_program = CommitteeMember.head_of_program current_submission
   end
 
   def head_of_program_status
-    return 'approved' if !current_partner.graduate? || current_submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: current_submission.degree.degree_type).id).blank?
+    return 'approved' if !current_partner.graduate? || head_of_program.blank?
 
-    current_submission.committee_members.find_by(committee_role_id: CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: current_submission.degree.degree_type).id).status
+    head_of_program.status
   end
 
   def status
@@ -32,15 +35,15 @@ class ApprovalStatus
   private
 
   def none
-    return 'none' if voting_committee_members.count.zero?
+    'none' if voting_committee_members.count.zero?
   end
 
   def approved
-    return 'approved' unless (voting_committee_members.collect { |m| m.status == 'approved' }).count(false) > rejections_permitted
+    'approved' unless (voting_committee_members.collect { |m| m.status == 'approved' }).count(false) > rejections_permitted
   end
 
   def rejected
-    return 'rejected' if (voting_committee_members.collect { |m| m.status == 'rejected' }).count(true) > rejections_permitted
+    'rejected' if (voting_committee_members.collect { |m| m.status == 'rejected' }).count(true) > rejections_permitted
   end
 
   def pending
@@ -48,15 +51,21 @@ class ApprovalStatus
   end
 
   def rejections_permitted
-    if approval_configuration.use_percentage == false
-      approval_configuration.configuration_threshold
+    if approval_configuration.use_percentage
+      voting_committee_members.count - num_approved_required
     else
-      voting_committee_members.count - (voting_committee_members.count.to_f * (approval_configuration.configuration_threshold.to_f / 100)).round
+      approval_configuration.configuration_threshold
     end
   end
 
+  def num_approved_required
+    (voting_committee_members.count.to_f * (approval_configuration.configuration_threshold.to_f / 100)).round
+  end
+
   def all_have_voted?
-    voting_committee_members.each do |member|
+    committee_members.each do |member|
+      next if member == head_of_program
+
       return false unless member.status == 'approved' || member.status == 'rejected'
     end
     true

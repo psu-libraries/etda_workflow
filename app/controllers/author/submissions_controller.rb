@@ -26,7 +26,7 @@ class Author::SubmissionsController < AuthorController
     @submission.author_edit = true
 
     @submission.save!
-    @submission.update_attribute(:defended_at, LionPath::Crosswalk.convert_to_datetime(params[:submission][:defended_at])) if @submission.using_lionpath? && current_partner.graduate?
+    @submission.update!(defended_at: LionPath::Crosswalk.convert_to_datetime(params[:submission][:defended_at])) if @submission.using_lionpath? && current_partner.graduate?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.collecting_committee!
     OutboundLionPathRecord.new(submission: @submission).report_status_change
@@ -61,10 +61,10 @@ class Author::SubmissionsController < AuthorController
     status_giver.can_update_program_information?
     outbound_lionpath_record = OutboundLionPathRecord.new(submission: @submission, original_title: @submission.title, original_alternate_email: @submission.author.alternate_email_address)
     if @submission.using_lionpath?
-      @submission.update_attributes!(lionpath_program_params)
-      @submission.update_attribute(:defended_at, LionPath::Crosswalk.convert_to_datetime(params[:submission][:defended_at])) if @submission.using_lionpath? && current_partner.graduate?
+      @submission.update!(lionpath_program_params)
+      @submission.update!(defended_at: LionPath::Crosswalk.convert_to_datetime(params[:submission][:defended_at])) if @submission.using_lionpath? && current_partner.graduate?
     else
-      @submission.update_attributes!(standard_program_params)
+      @submission.update!(standard_program_params)
     end
     outbound_lionpath_record.report_title_change
     redirect_to author_root_path
@@ -103,7 +103,7 @@ class Author::SubmissionsController < AuthorController
     @submission.access_level = 'open_access' if (current_partner.honors? || current_partner.milsch?) && @submission.access_level.blank?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
-    raise CommitteeMember::ProgramHeadMissing if @submission.head_of_program_is_approving? && CommitteeMember.head_of_program(@submission.id).blank?
+    missing_head_redirect
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
@@ -116,42 +116,10 @@ class Author::SubmissionsController < AuthorController
     @submission = find_submission
     approval_status = ApprovalStatus.new(@submission).status
     status_giver = SubmissionStatusGiver.new(@submission)
-    status_giver.can_upload_final_submission_files?
-    @submission.update_attributes!(final_submission_params)
-    @submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
-    if @submission.status == 'waiting for committee review rejected'
-      current_partner.honors? ? status_giver.can_waiting_for_committee_review? : status_giver.can_waiting_for_final_submission?
-      current_partner.honors? ? status_giver.waiting_for_committee_review! : status_giver.waiting_for_final_submission_response!
-      OutboundLionPathRecord.new(submission: @submission).report_status_change
-      @submission.reset_committee_reviews
-      @submission.update_final_submission_timestamps!(Time.zone.now)
-      redirect_to author_root_path
-      WorkflowMailer.final_submission_received(@submission).deliver
-      flash[:notice] = 'Final submission files uploaded successfully.'
-      return
-    elsif @submission.status == 'collecting final submission files rejected' && current_partner.honors?
-      status_giver.can_waiting_for_final_submission?
-      status_giver.waiting_for_final_submission_response!
-      OutboundLionPathRecord.new(submission: @submission).report_status_change
-      @submission.update_final_submission_timestamps!(Time.zone.now)
-      redirect_to author_root_path
-      WorkflowMailer.final_submission_received(@submission).deliver
-      flash[:notice] = 'Final submission files uploaded successfully.'
-      return
-    end
-    if current_partner.honors?
-      status_giver.can_waiting_for_committee_review?
-      status_giver.waiting_for_committee_review!
-      @submission.reset_committee_reviews
-      @submission.send_initial_committee_member_emails unless approval_status == 'approved'
-    else
-      status_giver.can_waiting_for_final_submission?
-      status_giver.waiting_for_final_submission_response!
-    end
-    OutboundLionPathRecord.new(submission: @submission).report_status_change
-    @submission.update_final_submission_timestamps!(Time.zone.now)
+    submit_service = FinalSubmissionSubmitService.new(@submission, status_giver,
+                                                      approval_status, final_submission_params)
+    submit_service.submit_final_submission
     redirect_to author_root_path
-    WorkflowMailer.final_submission_received(@submission).deliver_now
     flash[:notice] = 'Final submission files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid
     @view = Author::FinalSubmissionFilesView.new(@submission)
@@ -208,11 +176,7 @@ class Author::SubmissionsController < AuthorController
   def send_email_reminder
     @committee_member = @submission.committee_members.find(params[:committee_member_id])
     if @committee_member.reminder_email_authorized?
-      if @committee_member.committee_role.name == 'Special Member' || @committee_member.committee_role.name == 'Special Signatory'
-        WorkflowMailer.special_committee_review_request(@submission, @committee_member).deliver
-      else
-        WorkflowMailer.committee_member_review_reminder(@submission, @committee_member).deliver
-      end
+      WorkflowMailer.send_committee_review_reminders(@submission, @committee_member)
       redirect_to author_submission_committee_review_path(@submission.id)
       flash[:notice] = 'Email successfully sent.'
     else
@@ -222,6 +186,14 @@ class Author::SubmissionsController < AuthorController
   end
 
   private
+
+    def missing_head_redirect
+      raise CommitteeMember::ProgramHeadMissing if program_head_missing
+    end
+
+    def program_head_missing
+      @submission.head_of_program_is_approving? && CommitteeMember.head_of_program(@submission).blank?
+    end
 
     def find_submission
       @submission = @author.submissions.find(params[:submission_id] || params[:id])

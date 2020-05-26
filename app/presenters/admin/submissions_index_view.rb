@@ -1,15 +1,18 @@
 class Admin::SubmissionsIndexView
-  attr_reader :submissions
+  attr_reader :submissions, :session_semester
   attr_reader :degree_type, :scope
 
-  def initialize(degree_type, scope, context)
+  def initialize(degree_type, scope, context, session_semester)
     @degree_type = DegreeType.find_by!(slug: degree_type)
     @scope = scope
     @submissions = Submission.joins(:degree).includes(:author).where('degrees.degree_type_id' => @degree_type.id).send(scope_method).map { |s| Admin::SubmissionView.new(s, context) }
+    @session_semester = session_semester
   end
 
-  def submission_views
-    submissions
+  def submission_views(semester)
+    return submissions if semester == 'All Semesters'
+
+    submissions.collect { |submission| submission if submission.year.to_s == semester.split(" ")[0].to_s && submission.semester.to_s == semester.split(" ")[1].to_s }.compact
   end
 
   def table_header_partial_path
@@ -33,6 +36,7 @@ class Admin::SubmissionsIndexView
     return 'committee-review-rejected-submissions-index' if committee_review_rejected?
     return 'submitted-final-submission-submissions-index' if final_submission_submitted?
     return 'approved-final-submission-submissions-index' if final_submission_approved?
+    return 'on-hold-final-submission-submissions-index' if final_submission_on_hold?
     return 'final-restricted-institution-index' if final_restricted_institution?
     return 'final-withheld-index' if final_withheld?
 
@@ -85,8 +89,8 @@ class Admin::SubmissionsIndexView
     false
   end
 
-  def current_semester
-    @current_semester ||= Semester.current
+  def default_semester
+    @default_semester = (session_semester || Semester.current)
   end
 
   private
@@ -123,6 +127,10 @@ class Admin::SubmissionsIndexView
       @scope == 'final_submission_approved'
     end
 
+    def final_submission_on_hold?
+      @scope == 'final_submission_on_hold'
+    end
+
     def released_for_publication?
       @scope == 'released_for_publication'
     end
@@ -144,6 +152,7 @@ class Admin::SubmissionsIndexView
       return 'committee_review_is_rejected' if committee_review_rejected?
       return 'final_submission_is_submitted' if final_submission_submitted?
       return 'final_submission_is_approved' if final_submission_approved?
+      return 'final_submission_is_on_hold' if final_submission_on_hold?
       return 'final_is_restricted_institution' if final_restricted_institution?
       return 'final_is_withheld' if final_withheld?
 

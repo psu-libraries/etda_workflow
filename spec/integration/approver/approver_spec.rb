@@ -12,7 +12,6 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   let(:committee_role_not_advisor) { FactoryBot.create :committee_role, name: "Just Normal Member" }
 
   before do
-    allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
     submission.final_submission_files << final_submission_file
     submission.degree.degree_type.approval_configuration = approval_configuration
     webaccess_authorize_approver
@@ -47,20 +46,18 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       within("div#file_links") do
         final_link = page.find("a")
         final_link.trigger('click')
-        sleep(3)
       end
       expect(page.driver.browser.window_handles.count).to eql(num_windows + 1)
     end
 
     it 'can edit status and notes' do
-      allow(CommitteeMember).to receive(:head_of_program).with(submission.id).and_return(FactoryBot.create(:committee_member))
+      allow(CommitteeMember).to receive(:head_of_program).with(submission).and_return(FactoryBot.create(:committee_member))
       within("form#edit_committee_member_#{committee_member.id}") do
         find(:css, "#committee_member_status_approved").set true
         fill_in "committee_member_notes", with: 'Some notes.'
         find(:css, "#committee_member_federal_funding_used_true").set true if current_partner.graduate?
       end
       click_button 'Submit Review'
-      sleep 3
       expect(page).to have_current_path(approver_root_path)
       expect(CommitteeMember.find(committee_member.id).status).to eq 'approved'
       expect(CommitteeMember.find(committee_member.id).notes).to eq 'Some notes.'
@@ -190,6 +187,16 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     it "redirects to the advisor page when trying to access the committee member page" do
       visit approver_path committee_member2
       expect(page).to have_current_path approver_path committee_member1
+    end
+
+    it "does not redirect if already advisor" do
+      committee_member3 = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow'
+      submission.committee_members << committee_member3
+      submission.reload
+      committee_member3.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
+
+      visit approver_path committee_member3
+      expect(page).to have_current_path approver_path committee_member3
     end
   end
 end

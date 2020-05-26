@@ -16,7 +16,7 @@ RSpec.describe 'Author submission access_level', js: true do
     visit author_submission_edit_final_submission_path(submission)
   end
 
-  context 'graduate an honors authors can choose the access level' do
+  context 'graduate an honors authors can choose the access level', milsch: true do
     unless current_partner.milsch?
       it 'has an open_access radio button' do
         expect(page).not_to have_content('Access Level for this paper:')
@@ -36,20 +36,18 @@ RSpec.describe 'Author submission access_level', js: true do
         expect(page).not_to have_content('Enter justification')
         expect(page).to have_field('submission_invention_disclosures_attributes_0_id_number')
         click_button('Submit final files for review')
-        sleep(3)
         expect(page).to have_content('Invention disclosure number is required for Restricted submissions.')
         inventions = page.find(:css, 'div.form-group.string.optional.submission_invention_disclosures_id_number')
         within inventions do
           fill_in 'Invention Disclosure Number (Required for Restricted Access)', with: '1234'
         end
         click_button('Submit final files for review')
-        sleep(3)
         expect(page).not_to have_content('Invention disclosure number is required for Restricted submissions.')
       end
     end
   end
 
-  context 'milsch authors cannot choose the access level' do
+  context 'milsch authors cannot choose the access level', milsch: true do
     if current_partner.milsch?
       it 'has an open_access description' do
         expect(page).to have_content('Access Level for this paper: Open Access')

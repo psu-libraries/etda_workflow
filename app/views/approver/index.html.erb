@@ -2,21 +2,28 @@
   <div class="row">
     <div class="col-xs-12">
       <h1>My Reviews</h1>
-      <p>Review and approve submissions that you have been a part of.  If you are serving on a committee in multiple roles, you will only need to submit your review once per submission.</p>
+      <p>Review and approve submissions that you have been a part of.  If you are serving on a committee in multiple roles, you will only need to submit your review once.</p>
     </div>
   </div>
   </br>
 
-  <table id="approver-committees-index" class="table table-striped datatable" data-ajax-url="<%= approver_root_path %>">
-    <thead>
-      <tr>
-        <th>Submission Title</th>
-        <th>Author</th>
-        <th>My Committee Role</th>
-        <th>Review Started On</th>
-        <th>My Review</th>
-        <th>Submission Status</th>
-      </tr>
-    </thead>
-  </table>
+  <div class="row">
+    <div id="approver-select-reviews" class="select-reviews">
+    </div>
+    <p class="pull-right"><strong>Filter by:</strong></p>
+  </div>
+  <div>
+    <table id="approver-committees-index" class="approver-committees-index table table-striped datatable" data-ajax-url="<%= approver_root_path %>">
+      <thead>
+        <tr>
+          <th data-name="submission_title">Submission Title</th>
+          <th data-name="author">Author</th>
+          <th data-name="my_committee_role">My Committee Role</th>
+          <th data-name="review_started_on">Review Started On</th>
+          <th data-name="my_review">My Review</th>
+          <th data-name="submission_status">Submission Status</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
 </div>

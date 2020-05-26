@@ -78,4 +78,19 @@ RSpec.describe Degree, type: :model do
       expect(described_class.etd_degree_slug(200)).to be_nil
     end
   end
+
+  describe "#seed" do
+    it "seeds db with default degrees", honors: true, milsch: true, sset: true do
+      Degree.seed
+      if current_partner.graduate?
+        expect(Degree.count).to eq 7
+      elsif current_partner.milsch?
+        expect(Degree.count).to eq 1
+      elsif current_partner.honors?
+        expect(Degree.count).to eq 11
+      elsif current_partner.sset?
+        expect(Degree.count).to eq 1
+      end
+    end
+  end
 end

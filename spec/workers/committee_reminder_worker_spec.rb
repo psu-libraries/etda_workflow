@@ -2,10 +2,9 @@ require 'rails_helper'
 require 'shoulda-matchers'
 
 RSpec.describe CommitteeReminderWorker do
-  Sidekiq::Logging.logger = nil
-
   let(:submission) { FactoryBot.create :submission }
   let(:committee_member) { FactoryBot.create :committee_member, submission: submission }
+  let(:detached_member) { FactoryBot.create :committee_member }
 
   context "when approval process starts" do
     it 'queues to sidekiq via worker' do
@@ -32,6 +31,14 @@ RSpec.describe CommitteeReminderWorker do
       committee_member.update_attribute :status, 'approved'
       Sidekiq::Testing.inline! do
         expect { described_class.perform_async(submission.id, committee_member.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
+      end
+    end
+  end
+
+  context "when submission does not match committee member" do
+    it 'does not deliver an email' do
+      Sidekiq::Testing.inline! do
+        expect { described_class.perform_async(submission.id, detached_member.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
       end
     end
   end

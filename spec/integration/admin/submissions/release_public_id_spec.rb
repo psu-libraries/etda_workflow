@@ -1,4 +1,4 @@
-RSpec.describe "Release a submission with a public id", js: true do
+RSpec.describe "Release a submission with a public id", js: true, honors: true, milsch: true do
   require 'integration/integration_spec_helper'
 
   let(:degree_type) { current_partner.graduate? ? 'dissertation' : 'thesis' }
@@ -23,8 +23,8 @@ RSpec.describe "Release a submission with a public id", js: true do
     expect(submission.public_id).to be_blank
     released_count = Submission.released_for_publication.count
     visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')
-    sleep(3)
-    click_button 'Select Visible', wait: 3
+    sleep 1
+    click_button 'Select Visible'
     expect(page).to have_content('Showing', wait: 3)
     # page.find('.btn.btn-primary.release-button', wait: 5).trigger('click')
     click_button 'Release selected for publication'
@@ -46,12 +46,11 @@ RSpec.describe "Release a submission with a public id", js: true do
     submission_1.update_attribute(:status, 'waiting for publication release')
     released_count = Submission.released_for_publication.count
     visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')
-    sleep(3)
+    sleep 1
     click_button 'Select Visible'
     expect(page).to have_content('Showing')
     click_button 'Release selected for publication'
     # page.find('.btn.btn-primary.release-button', wait: 5).trigger('click')
-    sleep(2)
     submission_1.reload
     expect(page).to have_content('No submissions successfully released for publication.')
     expect(page).to have_content("Error occurred processing submission id: #{submission_1.id}, #{submission_1.author.last_name}, #{submission_1.author.first_name}")

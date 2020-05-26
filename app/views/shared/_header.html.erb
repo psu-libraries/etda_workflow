@@ -2,60 +2,19 @@
   <div id="shield-and-logo">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-sm-3 col-lg-2">
-          <a id="psu-shield" href="http://www.psu.edu/">
-            <%= image_tag("#{asset_pack_path 'media/images/PS_HOR_REV_RGB_2C.png'}", alt: "PSU logo", width: '200', height: '100' ) %>
+        <div class="col-sm-4">
+          <a id="psu-shield" href="http://libraries.psu.edu/">
+            <%= image_tag("#{asset_pack_path 'media/images/PS_UL_REV_RGB_2C.png'}", alt: "PSU Libraries logo", width: '200', height: '90' ) %>
           </a>
         </div>
-        <div class="col-xs-12 col-sm-9 col-lg-10">
+        <div class="col-sm-8">
         <span id="logo-old">
-          <a href="/"><%= I18n.t("#{current_partner.id}.header.title") %></a>
+          <a href="/"><%= image_tag("#{asset_pack_path "media/images/#{header_image}"}", alt: I18n.t("#{current_partner.id}.header.title").to_s, width: '475', height: '100' ) %></a>
         </span>
         </div>
       </div>
     </div>
   </div>
-  <nav id="account-navigation" class="navbar navbar-default" role="navigation" aria-labelledby="top-navigation">
-    <div class="container">
-      <div class="row">
-        <div id=top-navigation class="col-xs-8 col-sm-7">
-          <ul class="list-inline navbar-list">
-            <li class= "<%= top_nav_active?('main') %>">
-              <%= link_to 'Home', main_page_path, class: 'btn btn-default ' %>
-            </li>
-            <li class="<%= top_nav_active?('about') %>">
-              <%= link_to 'About', about_page_path, class: 'btn btn-default navbar-btn' %>
-            </li >
-            <% if session[:user_role] == 'author' || session[:user_role] == 'approver' %>
-              <li class="<%= top_nav_active?('email') %>">
-              <%= link_to 'Contact Us', email_contact_form_new_path, class: 'btn btn-default ' %>
-              </li>
-            <% end %>
-            <% unless controller_name == 'application' && action_name == 'main' %>
-              <li>
-              <%= link_to 'Explore', EtdUrls.new.explore, class: 'btn btn-default navbar-btn', onclick: EtdUrls.new.popup  %>
-              </li>
-            <% end  %>
-          </ul>
-        </div>
-
-
-        <div class="col-xs-4 col-sm-5">
-          <!--<div class="pull-right">-->
-          <% unless controller_name == 'special_committee' %>
-            <% unless session[:user_name].present? %>
-              <%= link_to 'Log In', :login, class: "btn btn-default btn-sm navbar-btn" %>
-            <% else %>
-              <span class="navbar-text small hidden-xs">Logged in as <%= session[:user_name] || current_author.access_id || current_admin.access_id || current_approver.access_id %></span>
-              <%= link_to 'Log Out', :logout, class: "btn btn-default btn-sm navbar-btn" %>
-            <% end %>
-          <% end %>
-          <!--</div>-->
-        </div>
-      </div>
-      <!-- /.col-* -->
-    </div>
-  </nav>
+  <%= render partial: 'shared/nav_bar' %>
   <%= render partial: '/google_analytics' unless Rails.env.development? %>
 </header>
-

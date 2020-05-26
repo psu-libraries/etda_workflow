@@ -110,6 +110,12 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.status = 'waiting for publication'
     expect(described_class.new(submission)).not_to be_waiting_for_publication_release
   end
+  it 'responds to #waiting_in_final_submission_on_hold?' do
+    submission.status = 'waiting in final submission on hold'
+    expect(described_class.new(submission)).to be_waiting_in_final_submission_on_hold
+    submission.status = 'final submission on hold'
+    expect(described_class.new(submission)).not_to be_waiting_in_final_submission_on_hold
+  end
   it 'responds to #released_for_publication?' do
     submission.status = 'released for publication'
     expect(described_class.new(submission)).to be_released_for_publication
@@ -151,7 +157,7 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.status = ''
     expect(described_class.new(submission)).not_to be_beyond_waiting_for_format_review_response
   end
-  it 'responds to #beyond_waiting_for_committee_review?' do
+  it 'responds to #beyond_waiting_for_committee_review?', honors: true do
     submission.status = 'waiting for head of program review'
     expect(described_class.new(submission)).to be_beyond_waiting_for_committee_review
     submission.status = 'waiting for final submission response'
@@ -162,7 +168,7 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.status = 'waiting for publication release'
     expect(described_class.new(submission)).to be_beyond_waiting_for_committee_review
   end
-  it 'responds to #beyond_waiting_for_head_of_program_review?' do
+  it 'responds to #beyond_waiting_for_head_of_program_review?', honors: true do
     submission.status = 'waiting for publication release'
     expect(described_class.new(submission)).to be_beyond_waiting_for_head_of_program_review
     submission.status = 'waiting for final submission response'

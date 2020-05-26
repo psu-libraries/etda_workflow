@@ -39,6 +39,10 @@ if defined?(RSpec)
     puts 'PARTNER=MILSCH'
     ENV['PARTNER'] = 'milsch'
     Rake::Task['spec'].invoke
+    ::Rake.application['spec'].reenable
+    puts 'PARTNER=SSET'
+    ENV['PARTNER'] = 'sset'
+    Rake::Task['spec'].invoke
     # Rake::Task['bundle:audit'].invoke
   end
 

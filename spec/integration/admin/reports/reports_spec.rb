@@ -7,6 +7,7 @@ RSpec.describe "Admins can run reports", js: true do
   let(:degree_type) { FactoryBot.create :degree_type, name: 'Dissertation', slug: 'dissertation' }
   let!(:author1) { FactoryBot.create :author, access_id: 'xyz321', psu_email_address: 'xyz321@psu.edu', first_name: 'Author', last_name: 'One' }
   let!(:author2) { FactoryBot.create :author, access_id: 'abc987', psu_email_address: 'abc987@psu.edu', first_name: 'Author', last_name: 'Two' }
+  let!(:author3) { FactoryBot.create :author, access_id: 'abc123', psu_email_address: 'abc123@psu.edu', first_name: 'Author', last_name: 'Three', confidential_hold: 1, confidential_hold_set_at: DateTime.now }
   # let(:degree) { Degree.first }
   let!(:degree) { FactoryBot.create :degree, degree_type_id: DegreeType.default.id, name: 'PHD', description: 'PHD', is_active: true }
   let!(:submission1) { FactoryBot.create :submission, :released_for_publication, author: author1, year: submission_year, semester: submission_semester, title: 'Submission1', degree_id: degree.id, access_level: 'open_access' }
@@ -36,8 +37,8 @@ RSpec.describe "Admins can run reports", js: true do
     it 'displays the available report types' do
       expect(page).to have_link('Reports')
       page.find('a#reports_menu').trigger('click')
-      sleep(5)
       expect(page).to have_link('Custom Report')
+      expect(page).to have_link('Confidential Hold Report')
     end
   end
 
@@ -55,7 +56,6 @@ RSpec.describe "Admins can run reports", js: true do
       expect(page).to have_content('Submission2')
       expect(page).not_to have_content('Submission3')
       click_button 'Select Visible'
-      sleep(5)
       page.assert_selector('tbody .row-checkbox')
       ckbox = all('tbody .row-checkbox')
       assert_equal(Submission.released_for_publication.count, ckbox.count)
@@ -64,7 +64,6 @@ RSpec.describe "Admins can run reports", js: true do
       end
       expect(page).to have_button('Export CSV')
       click_button('Export CSV')
-      sleep(4)
       expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="committee_report.csv"'
     end
   end
@@ -78,34 +77,28 @@ RSpec.describe "Admins can run reports", js: true do
     end
 
     it 'displays the invention disclosure number and access level' do
-      unless ENV['TRAVIS']
-        expect(page).to have_link('Custom Report')
-        click_link('Custom Report')
-        sleep(10)
-        expect(page).to have_content(invention_number) if current_partner.graduate?
-        expect(page).to have_content('Restricted')
-      end
+      expect(page).to have_link('Custom Report')
+      click_link('Custom Report')
+      expect(page).to have_content(invention_number) if current_partner.graduate?
+      expect(page).to have_content('Restricted')
     end
+
     it 'displays the Custom Report page' do
-      unless ENV['TRAVIS']
-        expect(page).to have_link('Custom Report')
-        click_link('Custom Report')
-        sleep(5)
-        expect(page).to have_content('Custom Report')
-        expect(page).to have_button('Select Visible')
-        expect(page).to have_content('Submission3')
-        click_button 'Select Visible'
-        page.assert_selector('tbody .row-checkbox')
-        ckbox = all('tbody .row-checkbox')
-        assert_equal(Submission.where(year: submission_year, semester: submission_semester).count, ckbox.count)
-        ckbox.each do |cb|
-          expect(have_checked_field(cb)).to be_truthy
-        end
-        expect(page).to have_button('Export CSV')
-        click_button('Export CSV')
-        sleep(4)
-        expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="custom_report.csv"'
+      expect(page).to have_link('Custom Report')
+      click_link('Custom Report')
+      expect(page).to have_content('Custom Report')
+      expect(page).to have_button('Select Visible')
+      expect(page).to have_content('Submission3')
+      click_button 'Select Visible'
+      page.assert_selector('tbody .row-checkbox')
+      ckbox = all('tbody .row-checkbox')
+      assert_equal(Submission.where(year: submission_year, semester: submission_semester).count, ckbox.count)
+      ckbox.each do |cb|
+        expect(have_checked_field(cb)).to be_truthy
       end
+      expect(page).to have_button('Export CSV')
+      click_button('Export CSV')
+      expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="custom_report.csv"'
     end
   end
 
@@ -116,17 +109,38 @@ RSpec.describe "Admins can run reports", js: true do
       submission1.save
       submission2.save
       visit(admin_submissions_index_path(DegreeType.default, 'final_submission_approved'))
+      sleep 1
     end
 
     it 'displays the final submissions' do
-      sleep(3)
       expect(page).to have_content('Final Submission to be Released')
       click_button('Select Visible')
-      sleep(3)
       expect(page).to have_button('Export CSV')
       click_button 'Export CSV'
-      sleep(4)
       expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="final_submission_report.csv"'
+    end
+  end
+
+  context 'confidential hold report index' do
+    before do
+      author3.submissions << submission1
+      visit admin_submissions_dashboard_path(DegreeType.first)
+      click_link('Reports')
+      click_link('Confidential Hold Report')
+    end
+
+    it 'displays the confidential hold report' do
+      expect(page).to have_content('Confidential Hold Report')
+      expect(page).to have_content(author3.psu_email_address)
+      click_button('Select Visible')
+      expect(page).to have_button('Export CSV')
+      click_button 'Export CSV'
+      expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="confidential_hold_report.csv"'
+    end
+
+    it "links to author's page" do
+      click_link author3.access_id
+      expect(page).to have_current_path(edit_admin_author_path(author3))
     end
   end
 end

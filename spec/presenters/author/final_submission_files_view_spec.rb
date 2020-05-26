@@ -18,7 +18,7 @@ RSpec.describe Author::FinalSubmissionFilesView do
     end
   end
 
-  describe "Access Level View" do
+  describe "Access Level View", honors: true, milsch: true do
     let(:submission) { FactoryBot.create :submission }
 
     context 'different access_level partial is returned depending upon current partner' do
@@ -34,7 +34,7 @@ RSpec.describe Author::FinalSubmissionFilesView do
     end
   end
 
-  describe 'disclosure_class' do
+  describe 'disclosure_class', milsch: true do
     let(:submission) { FactoryBot.create :submission }
 
     context 'when graduate or honors student chooses open access or restricted_to_institution' do
@@ -62,7 +62,7 @@ RSpec.describe Author::FinalSubmissionFilesView do
     end
 
     context 'when restricted is selected by Graduate author' do
-      it 'returns an empty class' do
+      it 'returns an empty class', honors: true do
         submission.access_level = 'restricted'
         expect(view.disclosure_class).to eq('') if current_partner.graduate?
       end

@@ -1,1 +1,1 @@
-<li><%= link_to 'Contact Support', 'mailto:etda@servicedesk.css.psu.edu', class: 'small' %><span class="sr-only">opens mail to etda@servicedesk.css.psu.edu"</span></li>
+<%= link_to 'Contact Support', "mailto:#{I18n.t('service_desk_email_address')}", class: 'small' %><span class="sr-only">opens mail to <%= I18n.t('service_desk_email_address').to_s %></span>

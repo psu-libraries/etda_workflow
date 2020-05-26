@@ -25,6 +25,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'Committee Review Rejected' if status_behavior.waiting_for_committee_review_rejected?
     return 'Final Submission Evaluation' if status_behavior.waiting_for_final_submission_response?
     return 'Edit Final Submission to be Released' if status_behavior.waiting_for_publication_release?
+    return 'Edit Final Submission On Hold' if status_behavior.waiting_in_final_submission_on_hold?
     return 'Edit Released Submission' if status_behavior.released_for_publication? && open_access?
     return 'Edit Restricted Theses' if status_behavior.released_for_publication_metadata_only? && restricted?
     return 'Edit Final Submission is Restricted to Penn State' if status_behavior.released_for_publication? && access_level == 'restricted_to_institution'
@@ -39,6 +40,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'restricted_actions' if status_behavior.released_for_publication_metadata_only?
     return 'restricted_institution_actions' if status_behavior.released_for_publication? && !(access_level.open_access? || access_level.restricted?)
     return 'to_be_released_actions' if status_behavior.waiting_for_publication_release?
+    return 'on_hold_actions' if status_behavior.waiting_in_final_submission_on_hold?
 
     'standard_actions'
   end
@@ -46,7 +48,7 @@ class Admin::SubmissionFormView < SimpleDelegator
   def form_for_url
     return "/admin/submissions/#{id}/format_review_response" if status_behavior.waiting_for_format_review_response?
     return "/admin/submissions/#{id}/final_submission_response" if status_behavior.waiting_for_final_submission_response?
-    return "/admin/submissions/#{id}/update_waiting_to_be_released" if status_behavior.waiting_for_publication_release?
+    return "/admin/submissions/#{id}/update_waiting_to_be_released" if status_behavior.waiting_for_publication_release? || status_behavior.waiting_in_final_submission_on_hold?
     return "/admin/submissions/#{id}/update_released" if status_behavior.released_for_publication?
 
     "/admin/submissions/#{id}"
@@ -117,7 +119,7 @@ class Admin::SubmissionFormView < SimpleDelegator
   def withdraw_message
     return '' unless status_behavior.released_for_publication?
 
-    '<div class="withdraw-msg">In order to update a published submission, it must be withdrawn from publication. After withdrawing, the submission can be edited and re-published.   The withdraw button is at the bottom of the page.</div>'.html_safe
+    '<div class="withdraw-msg">In order to update a published submission, it must be withdrawn from publication.  After withdrawing, the submission can be edited and re-published.   Any changes made to the submission while it is released will <strong>NOT</strong> be saved.  The withdraw button is at the bottom of the page.</div>'.html_safe
   end
 
   def form_section_heading(section_heading)
@@ -138,6 +140,30 @@ class Admin::SubmissionFormView < SimpleDelegator
     "class='form-section-body collapse in'".html_safe
   end
 
+  def button_message
+    if approval_status_behavior.status == 'approved' && approval_status_behavior.head_of_program_status == 'approved' && degree.degree_type.approval_configuration.head_of_program_is_approving
+      "Final Submission to be Released"
+    elsif approval_status_behavior.status == 'approved' && !degree.degree_type.approval_configuration.head_of_program_is_approving
+      "Final Submission to be Released"
+    elsif approval_status_behavior.status == 'rejected' || approval_status_behavior.head_of_program_status == 'rejected'
+      "Committee Review Rejected"
+    else
+      "Final Submission is Pending"
+    end
+  end
+
+  def confirmation_message
+    if approval_status_behavior.status == 'approved' && approval_status_behavior.head_of_program_status == 'approved' && degree.degree_type.approval_configuration.head_of_program_is_approving
+      "The committee for this submission has already approved.  Move this submission to 'Final Submission to be Released' and skip the committee review?"
+    elsif approval_status_behavior.status == 'approved' && !degree.degree_type.approval_configuration.head_of_program_is_approving
+      "The committee for this submission has already approved.  Move this submission to 'Final Submission to be Released' and skip the committee review?"
+    elsif approval_status_behavior.status == 'rejected' || approval_status_behavior.head_of_program_status == 'rejected'
+      "The committee for this submission has already rejected.  Move this submission to 'Committee Review Rejected' and skip the committee review?"
+    else
+      "Are you sure you would like to approve this submission?  This will initiate the committee review stage, which will send emails out to members of the committee."
+    end
+  end
+
   private
 
     def collapse_content?(section_heading)
@@ -155,6 +181,7 @@ class Admin::SubmissionFormView < SimpleDelegator
       return "/admin/#{degree_type.slug}/final_submission_pending" if status_behavior.waiting_for_committee_review?
       return "/admin/#{degree_type.slug}/committee_review_rejected" if status_behavior.waiting_for_committee_review_rejected?
       return "/admin/#{degree_type.slug}/final_submission_approved" if status_behavior.waiting_for_publication_release?
+      return "/admin/#{degree_type.slug}/final_submission_on_hold" if status_behavior.waiting_in_final_submission_on_hold?
       #  return "/admin/#{degree_type}/released_for_publication" if status_behavior.released_for_publication? && open_access?  TOO SLOW; RETURN TO DASHBOARD
       return "/admin/#{degree_type.slug}" if status_behavior.released_for_publication? && open_access?
       return "/admin/#{degree_type.slug}/final_withheld" if status_behavior.released_for_publication_metadata_only? && restricted?

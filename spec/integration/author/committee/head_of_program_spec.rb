@@ -26,7 +26,7 @@ RSpec.describe 'The head of program form for authors', js: true do
     page.execute_script("document.getElementById('submission_committee_members_attributes_5_email').value = 'name_5@psu.edu'")
     click_button 'Update Program Head/Chair Information'
     expect(page).to have_current_path(author_root_path)
-    expect(CommitteeMember.head_of_program(submission.id).name).to eq 'Name 5'
+    expect(CommitteeMember.head_of_program(submission).name).to eq 'Name 5'
   end
 
   it 'validates and returns to dashboard' do
@@ -42,9 +42,9 @@ RSpec.describe 'The head of program form for authors', js: true do
     expect(page).to have_content 'Input Program Head/Chair'
     click_button 'Update Program Head/Chair Information'
     expect(page).to have_current_path(author_submission_head_of_program_path(submission))
-    expect(CommitteeMember.head_of_program(submission.id)).to eq nil
+    expect(CommitteeMember.head_of_program(submission)).to eq nil
     click_link 'Return to dashboard'
     expect(page).to have_current_path(author_root_path)
-    expect(CommitteeMember.head_of_program(submission.id)).to eq nil
+    expect(CommitteeMember.head_of_program(submission)).to eq nil
   end
 end

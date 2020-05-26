@@ -17,7 +17,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
     end
 
     describe "submit empty form" do
-      it "displays validation errors" do
+      it "displays validation errors", honors: true, milsch: true do
         click_button 'Save and Continue Editing' unless current_partner.graduate?
         click_button 'Save and Input Program Head/Chair >>' if current_partner.graduate?
         expect(page).to have_content("can't be blank")
@@ -25,8 +25,9 @@ RSpec.describe 'The standard committee form for authors', js: true do
     end
 
     describe "return to author index page" do
-      it "returns to the author index page and displays validation errors" do
+      it "returns to the author index page and displays validation errors", honors: true, milsch: true do
         skip 'Non Graduate' if current_partner.graduate?
+
         expect(submission.committee_members.empty?).to eq(true)
         click_button "Save and Continue Submission"
         expect(page).to have_content("can't be blank")
@@ -34,7 +35,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
     end
 
     describe "Cancel" do
-      it "does not save the committee" do
+      it "does not save the committee", honors: true, milsch: true do
         expect(submission.committee_members.empty?).to eq(true)
         expect(page).to have_content('Add Committee')
         submission.required_committee_roles.count.times do |i|
@@ -51,7 +52,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
     end
 
     describe "save and continue submission" do
-      it "saves the committee" do
+      it "saves the committee", honors: true, milsch: true do
         expect(submission.committee_members.empty?).to eq(true)
         expect(page).to have_link('Add Committee Member')
         # visit new_author_submission_committee_members_path(submission)
@@ -65,7 +66,6 @@ RSpec.describe 'The standard committee form for authors', js: true do
         end
         click_button 'Save and Continue Submission' unless current_partner.graduate?
         click_button 'Save and Input Program Head/Chair >>' if current_partner.graduate?
-        sleep(3)
         expect(page).to have_content('My Submissions') unless current_partner.graduate?
         expect(page).to have_content('Input Program Head/Chair') if current_partner.graduate?
         submission.reload
@@ -87,7 +87,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
       end
     end
 
-    describe "filling in committee members", js: true do
+    describe "filling in committee members", js: true, honors: true, milsch: true do
       before do
         @email_list = []
         submission.required_committee_roles.count.times do |i|
@@ -100,7 +100,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         click_button 'Save and Continue Editing' unless current_partner.graduate?
       end
 
-      it 'allows an additional committee member to be added' do
+      it 'allows an additional committee member to be added', js: true do
         # expect(page).to have_content('successfully')
         expect(page).to have_link('Add Committee Member')
         assert_equal submission.committee_email_list, @email_list unless current_partner.graduate?
@@ -133,8 +133,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
           fill_in "Name", with: "Extra Member"
           fill_in "Email", with: "extra_member@example.com"
         end
-        click_button 'Save and Input Program Head/Chair >>' if current_partner.graduate?
-        click_button 'Save and Continue Editing' unless current_partner.graduate?
+        click_button 'Save and Input Program Head/Chair >>'
         submission.reload
         expect(submission.committee_members.last.is_voting).to eq(false)
       end
@@ -156,7 +155,6 @@ RSpec.describe 'The standard committee form for authors', js: true do
       it "can delete an optional committee member" do
         expect(page).to have_field('Name', with: 'I am Special')
         click_link "Remove Committee Member"
-        sleep(2)
         click_button 'Save and Continue Editing'
         # expect(page).to have_content('successfully')
         submission.reload
@@ -169,41 +167,34 @@ RSpec.describe 'The standard committee form for authors', js: true do
       # end
     end
 
-    # following works when this data is returned from ldap_lookup controller:
-    # results = [
-    #     { id: 'saw3@psu.edu', label: 'Steve Wilson', value: 'Steve Wilson' },
-    #     { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling' },
-    #     { id: 'saw140@psu.edu', label: 'Scott Woods', value: 'Scott Woods' },
-    # ]
-
     describe "typing in part of a known committee member's name", :ldap do
       let(:dropdown_items) { page.all("ul.ui-autocomplete li") }
 
-      let(:dropdown_item_for_joni) do
-        dropdown_items.find { |option| option.text =~ /Joni Lee Barnoff/ }
+      let(:dropdown_item_for_alex) do
+        dropdown_items.find { |option| option.text =~ /Alex James Kiessling/ }
       end
 
       before do
         (1..submission.required_committee_roles.count - 1).each do |i|
           fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
-          fill_in "submission_committee_members_attributes_#{i}_email", with: "pbm#{i}@psu.edu"
+          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'buck@hotmail.com'")
         end
         # Send individual characters one at a time to trigger autocomplete
         # Ref: https://github.com/teampoltergeist/poltergeist/issues/439#issuecomment-66871147
-        find("#submission_committee_members_attributes_0_name").native.send_keys(*"Barn".chars)
-        sleep 3 # Autocomplete delays before sending/displaying results
+        find("#submission_committee_members_attributes_1_name").native.send_keys(*"alex".chars)
       end
 
       it "allows me to autocomplete that committee member's information from LDAP" do
-        dropdown_item_for_joni.click
-        click_button 'Save and Continue Editing'
+        dropdown_item_for_alex.click
+        click_button 'Save and Input Program Head/Chair' if current_partner.graduate?
+        click_button 'Save and Continue Editing' unless current_partner.graduate?
         visit author_submission_committee_members_path(submission)
-        expect(page).to have_content "xxb13@psu.edu"
+        expect(page).to have_content "ajk5603@psu.edu"
       end
     end
   end
 
-  describe 'tooltips' do
+  describe 'tooltips', honors: true, milsch: true do
     let!(:committee) { create_committee(submission) }
 
     it 'has tooltip for required committee members' do
@@ -227,8 +218,9 @@ RSpec.describe 'The standard committee form for authors', js: true do
   describe 'email form checkbox' do
     let!(:committee) { create_committee(submission) }
 
-    it 'toggles email form box readonly/writable' do
+    it 'toggles email form box readonly/writable', milsch: true do
       skip 'Non honors' if current_partner.honors?
+
       checkboxes = find_all('#email_form_release_switch')
       expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_0_email' and @readonly='readonly']") if current_partner.milsch?
       expect(page).to have_xpath("//input[@id='submission_committee_members_attributes_1_email' and @readonly='readonly']") if current_partner.graduate?

@@ -33,11 +33,13 @@ RSpec.describe "when an admin releases a restricted to institution submission fo
       expect(Submission.where(degree: submission.degree).final_is_restricted_institution.count).to eql(initial_restricted_institution_count)
       expect(submission.released_for_publication_at).not_to be_nil
       visit admin_submissions_index_path(DegreeType.default, 'final_restricted_institution')
-      sleep(4)
+      sleep 1
       click_button 'Select Visible'
-      sleep(4)
       expect(page).to have_content(I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.title"), wait: 8)
-      click_button 'Release as Open Access'
+      msg = page.accept_confirm do
+        click_button 'Release as Open Access'
+      end
+      expect(msg).to match(/#{author.first_name} #{author.last_name}/)
       submission.reload
       expect(submission.status).to eq('released for publication')
       submission.reload

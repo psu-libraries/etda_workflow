@@ -24,7 +24,7 @@ class Admin::ProgramsController < AdminController
 
   def update
     @program = Program.find(params[:id])
-    @program.update_attributes!(program_params)
+    @program.update!(program_params)
     redirect_to admin_programs_path
     flash[:notice] = "#{current_partner.program_label} successfully updated"
   rescue ActiveRecord::RecordInvalid

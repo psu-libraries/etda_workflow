@@ -1,0 +1,258 @@
+en:
+  sset:
+    time:
+      formats:
+        medium: '%b %-d, %Y %l:%M %P'
+    header:
+      title: Electronic Theses for the School of Science, Engineering, and Technology
+      image: ETD-Sset.png
+    submission:
+      create:
+        success: Your SSET submission was created successfully.
+        failure: There was a problem submitting your SSET Thesis.
+      new: If you would like to start a new thesis submission, you may do so by clicking the following link.
+    partner:
+      abbrev: sset
+      name: School of Science, Engineering, and Technology
+      url: https://harrisburg.psu.edu/science-engineering-technology
+      slug: SSETT
+      description:
+        title: SSET Theses
+        text: <p>The master’s thesis requirement allows students to conduct in-depth research on a specific topic and learn about research methodology and conduct.  Students can benefit from the program’s lab facility, state of the art software packages, and equipment to conduct their master’s research.</p>
+      alternate_email_hint: 'The Alternate email address will be used after your psu.edu email address expires.'
+      thesis_guide: 'https://harrisburg.psu.edu/science-engineering-technology/ee-eet/master-electrical-engineering-msee'
+      document_title_label: 'Please enter your Thesis Title'
+      url_slug: 'sset'
+      email:
+        url: 'https://sset-explore.libraries.psu.edu'
+        address: sset@psu.edu
+        list: 'ul-etda-sset-admin@pennstateoffice365.onmicrosoft.com'
+        signature: 'School of Science, Engineering, and Technology <br />W215 Olmsted Building <br />Middletown, PA 17057 '
+        final_submission_rejected:
+          message: |
+            The electronic %{degree_type} submitted by you has been rejected by the %{partner_name}.
+            Please meet with your thesis advisor to discuss and make the necessary edits.
+            Resubmit your thesis when directed by the thesis administrator.
+
+            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
+            You may also call (717)948-6541, or send mail to:
+            School of Science, Engineering, and Technology
+            W215 Olmsted Building
+            Middletown, PA 17057
+        final_submission_approved:
+          message: |
+            Your thesis has been been approved for committee review.
+            You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
+
+            If you have questions or comments, please email School of the Science, Engineering, and Technology Office at ssetinfo@psu.edu.
+            You may also call (717)948-6541, or send mail to:
+            School of Science, Engineering, and Technology
+            W215 Olmsted Building
+            Middletown, PA 17057
+        format_review_received:
+          message: |
+            Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with you when the review has been completed.
+            You will receive the results of the review by email within two weeks.
+
+            If you have questions or comments, please email School of the Science, Engineering, and Technology Office at ssetinfo@psu.edu.
+            You may also call (717)948-6541, or send mail to:
+            School of Science, Engineering, and Technology
+            W215 Olmsted Building
+            Middletown, PA 17057
+        final_submission_received:
+          message: |
+            Thank you for submitting your final %{degree_type}.
+            You will be notified by email of your thesis approval or if changes are required within 2-3 weeks after submitting your final.
+
+            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
+            You may also call (717)948-6541, or send mail to:
+            School of Science, Engineering, and Technology
+            W215 Olmsted Building
+            Middletown, PA 17057
+        committee_member_review_requested:
+          message: |
+            Hello %{committee_member_name},
+
+            The School of Science, Engineering, and Technology and %{full_name} need you to review and digitally sign a proposed work that you have been a
+            part of or have reviewed.
+            Please login to %{review_url} and complete this request.
+            We ask that you complete this review within two weeks from receipt of this request.
+            If you are serving on this committee in multiple roles, you will only need to submit your review once.
+
+            Sincerely,
+            The School of Science, Engineering, and Technology
+
+            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
+            You may also call (717)948-6541, or send mail to:
+            School of Science, Engineering, and Technology
+            W215 Olmsted Building
+            Middletown, PA 17057
+        committee_member_review_reminder:
+          message: |
+            Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
+            Please visit this URL to conduct your final review:
+            %{review_url}
+            If you are serving on this committee in multiple roles, you will only need to submit your review once.
+
+            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
+            You may also call (717)948-6541, or send mail to:
+            School of Science, Engineering, and Technology
+            W215 Olmsted Building
+            Middletown, PA 17057
+        committee_rejected_admin:
+          message: |
+            The committee for %{author_name}'s %{degree_type} has rejected their submission.
+            The submission will automatically be available for the student to edit and resubmit for committee approval.
+
+            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
+            You may also call (717)948-6541, or send mail to:
+            School of Science, Engineering, and Technology
+            W215 Olmsted Building
+            Middletown, PA 17057
+        committee_rejected_author:
+          message: |
+            The committee reviewing your %{degree_type} has rejected your submission.
+            You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for
+            your committee to review.
+            For additional information regarding the rejection please consult your %{degree_type} adviser.
+
+            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
+            You may also call (717)948-6541, or send mail to:
+            School of Science, Engineering, and Technology
+            W215 Olmsted Building
+            Middletown, PA 17057
+        committee_approved:
+          message: |
+            Congratulations!  Your thesis has been approved by its committee.
+            Please accept our congratulations as you complete your degree.
+            (commencement information can be found online as http://commencement.psu.edu/).
+
+            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
+            You may also call (717)948-6541, or send mail to:
+            School of Science, Engineering, and Technology
+            W215 Olmsted Building
+            Middletown, PA 17057
+        release_for_publication:
+          message: |
+            Your %{degree_type} titled "%{title}" has been released with the access level of Open Access.
+            You can view your published submission at: %{url}.
+
+            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
+            You may also call (717)948-6541, or send mail to:
+            School of Science, Engineering, and Technology
+            W215 Olmsted Building
+            Middletown, PA 17057
+        release_for_publication_metadata_only:
+          message: |
+            The metadata for your %{degree_type} titled "%{title}" has been released.
+            You can view this information at: %{url}.
+            It retains its access level of %{access_level}.  The full publication will be released in two years.
+
+            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
+            You may also call (717)948-6541, or send mail to:
+            School of Science, Engineering, and Technology
+            W215 Olmsted Building
+            Middletown, PA 17057
+        access_level_updated:
+          message: |
+            The School of Science, Engineering, and Technology has changed the availability of the following thesis as shown below:
+             Author - %{full_name}
+             Title - %{title}
+             Paper - %{degree_type}
+             New Availability - %{new_access_level}
+             Old Availability - %{old_access_level}
+             Graduation Year - %{graduation_year}
+             If you have questions or comments, please email School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
+             You may also call (717)948-6541, or send mail to:
+             School of Science, Engineering, and Technology
+             W215 Olmsted Building
+             Middletown, PA 17057
+    program:
+      label: School of Science, Technology, and Engineering Name
+    committee:
+      label: Thesis Supervisor
+      list:
+        label: Thesis Supervisor
+        thesis:
+          thesis_supervisor:
+            name: Thesis Supervisor
+            description: The faculty member or researcher who is the principal investigator of the lab where the student conducted the research. The thesis supervisor also acts as a research mentor regarding the thesis project.
+          advisor:
+            name: Advisor
+            description: Faculty member who reviews the thesis and confirms that it is an acceptable undergraduate thesis.
+          honors_advisor:
+            name: Honors Advisor
+            description: Faculty member who reviews the thesis and confirms that it meets the criteria for honors designation.
+      author_instructions:
+        Students will be required to enter one name as thesis supervisor.
+        Students may enter additional names as advisor or honors advisor, but this is not required.
+      special_role: supervisor
+
+    admin_filters:
+      format_review_incomplete:
+        title: Format Review is Incomplete
+        description: Draft submissions without format review files or were rejected and need formatting corrections
+      format_review_submitted:
+        title: Format Review is Submitted
+        description: Thesis drafts to be reviewed
+      format_review_completed:
+        title: Format Review is Completed
+        description: Completed and approved drafts
+      final_submission_pending:
+        title: Final Submission is Pending
+        description: Theses waiting to be reviewed by committee members
+      committee_review_rejected:
+        title: Committee Review Rejected
+        description: Theses rejected by committee
+      final_submission_submitted:
+        title: Final Submission is Submitted
+        description: Theses waiting to be reviewed for final formatting approval by the School of Science, Technology, and Engineering.
+      final_submission_incomplete:
+        title: Final Submission is Incomplete
+        description: Submissions that were rejected and need formatting corrections
+      final_submission_not_approved:
+        title: Final Submission waiting to be approved
+        description: Submitted and waiting to be approved
+      final_submission_approved:
+        title: Final Submission to be Released
+        description: Approved by committee and waiting to be released
+      final_submission_on_hold:
+        title: Final Submission is On Hold
+        description: Submissions that have been approved but are now being held from release
+      released_for_publication:
+        title: Released Theses
+        description: Manage theses which have already been released
+      final_restricted_institution:
+        title: Final Submission is Restricted to Penn State
+        description: Submissions restricted to the Penn State community
+      final_withheld:
+        title: Restricted Theses
+        description: Availability restricted for 2 years.
+    access_level:
+      open_access: Open Access
+      open_access_attr:
+        description_html: 'Allows free worldwide access to the entire work beginning immediately after degree conferral.  Appropriate for the majority of theses submissions in immediately fulling the requirement for making the work available to the public.'
+        scope: released_for_publication
+      restricted_to_institution: 'Restricted (Penn State Only)'
+      restricted_to_institution_attr:
+        description_html: 'Access restricted to individuals having a valid Penn State Access Account, for a period of two years. Allows restricted access of the entire work beginning immediately after degree conferral. At the end of the two-year period, the status will automatically change to Open Access. <i>Intended for use by authors in cases where prior public release of the work may compromise its acceptance for publication.</i>'
+        scope: final_restricted_institution
+      restricted: Restricted
+      restricted_attr:
+        description_html: 'The option selected secures the body of the thesis for a period of two years. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final thesis and confirmed by OTM. At the end of the two-year period, the work will be released automatically for open access unless a written request is made to extend this option for an additional year. The written request for an extension should be sent to the School of Science, Engineering, and Technology, W215 Olmsted Building, Middletown, PA 17057 or by email to <a href="mailto:ssetinfo@psu.edu">ssetinfo@psu.edu</a>.  Please note: No one will be able to view your work under this option.'
+        scope: final_withheld
+    download:
+      login_html: 'Login using your Penn State access account to view the paper.'
+    admin:
+      umg: 'cn=umg/psu.etda_sset_admin_users,dc=psu,dc=edu'
+      submission:
+        edit:
+          author-information: Author Information
+          format-review-files: Format Review Information
+          committee: Thesis Advisor
+          program-information: Program Information
+    submission_steps:
+      step_two:
+        name: Verify Thesis Advisor
+        update: Refresh Thesis Advisor
+        add: Verify Thesis Advisor

@@ -2,7 +2,7 @@
 
 require 'whenever/capistrano'
 # config valid for current version and patch releases of Capistrano
-lock "~> 3.11.0"
+lock "~> 3.12"
 
 set :application, "etda_workflow"
 # set :partner, fetch(:partner, 'graduate')
@@ -49,6 +49,9 @@ set :default_env, { 'NODE_ENV' => 'production' }
 # set :whenever_environment, ->{ "#{fetch(:stage)}" }  this is being set to 'dev' so hardcoded production in schedule.rb
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:partner)}" }
 set :whenever_roles, %i[audit app]
+set :whenever_variables, -> do
+  "PARTNER=#{fetch(:partner)}"
+end
 
 set :log_level, :debug
 # set :pty, true
@@ -143,7 +146,6 @@ namespace :deploy do
   after "deploy:updated", "deploy:migrate"
 end
 
-
 # Used to keep x-1 instances of ruby on a machine.  Ex +4 leaves 3 versions on a machine.  +3 leaves 2 versions
 namespace :rbenv_custom_ruby_cleanup do
   desc 'Clean up old rbenv versions'
@@ -191,3 +193,56 @@ namespace :deploy_all do
 end
 
 task deploy_all: 'deploy_all:deploy'
+
+
+namespace :invoke do
+  # Commands for running rake tasks through capistrano
+  task :rake, [:command] => 'deploy:set_rails_env' do |task, args|
+    desc 'Invoke a rake command on the remote server'
+    on roles(:app) do
+      within current_path do
+        rails_env = fetch(:rails_env, 'production')
+        partner = fetch(:partner)
+
+        execute :rake, "#{args[:command]} PARTNER=#{partner} RAILS_ENV=#{rails_env}"
+      end
+    end
+  end
+
+  task :rake_all, [:command] => 'deploy:set_rails_env' do |task, args|
+    desc 'Invoke a rake command on the remote server for all partners'
+    on roles(:app) do
+      files = Dir.glob("config/deploy/#{fetch(:stage)}.*.rb")
+      files.each do |file|
+        file = file.sub('config/deploy/', '').sub('.rb', '')
+        info "Running rake task for #{file} to #{fetch(:stage)}"
+        system("cap #{file} 'invoke:rake[#{args[:command]}]'")
+      end
+    end
+  end
+
+  # Commands for running commands through capistrano
+  task :command, [:command] => 'deploy:set_rails_env' do |task, args|
+    desc 'Invoke a bash command on the remote server'
+    on roles(:app) do
+      within current_path do
+        rails_env = fetch(:rails_env, 'production')
+        partner = fetch(:partner)
+
+        execute "cd #{release_path} && PARTNER=#{partner} RAILS_ENV=#{rails_env} #{args[:command]}"
+      end
+    end
+  end
+
+  task :command_all, [:command] => 'deploy:set_rails_env' do |task, args|
+    desc 'Invoke a bash command on the remote server for all partners'
+    on roles(:app) do
+      files = Dir.glob("config/deploy/#{fetch(:stage)}.*.rb")
+      files.each do |file|
+        file = file.sub('config/deploy/', '').sub('.rb', '')
+        info "Running command for #{file} to #{fetch(:stage)}"
+        system("cap #{file} 'invoke:command[#{args[:command]}]'")
+      end
+    end
+  end
+end

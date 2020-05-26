@@ -77,9 +77,8 @@ class SubmissionReleaseService
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_release_for_publication?
       submission.restricted? ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
-      submission.update_attributes!(released_for_publication_at: publication_release_date, released_metadata_at: metadata_release_date, public_id: public_id)
-      WorkflowMailer.release_for_publication(submission).deliver if submission.open_access?
-      WorkflowMailer.release_for_publication_metadata_only(submission).deliver unless submission.open_access?
+      submission.update!(released_for_publication_at: publication_release_date, released_metadata_at: metadata_release_date, public_id: public_id)
+      WorkflowMailer.send_publication_release_messages(submission)
       return unless release_files(original_final_files)
 
       @released_submissions += 1
@@ -102,7 +101,7 @@ class SubmissionReleaseService
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_release_for_publication?
       status_giver.released_for_publication!
-      submission.update_attributes!(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
+      submission.update!(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
       return unless release_files(original_final_files)
 
       update_service.send_email(submission)

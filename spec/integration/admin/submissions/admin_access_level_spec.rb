@@ -15,10 +15,9 @@ RSpec.describe 'Admin submission access_level', js: true do
     submission.access_level = 'open_access'
     webaccess_authorize_admin
     visit admin_edit_submission_path(submission)
-    sleep 3
   end
 
-  context 'admin users can choose the access level' do
+  context 'admin users can choose the access level', milsch: true do
     it 'has an open_access radio button' do
       page.find("input#submission_access_level_open_access").trigger('click')
       expect(find("#submission_access_level_open_access")).to be_checked
@@ -37,7 +36,6 @@ RSpec.describe 'Admin submission access_level', js: true do
       page.find("input#submission_access_level_restricted").trigger('click')
       expect(page.find("input#submission_access_level_restricted")).to be_checked
       click_button('Update Metadata Only')
-      sleep(1)
       expect(page).to have_content('Enter justification') if current_partner.milsch?
       expect(page).to have_field('submission_invention_disclosures_attributes_0_id_number')
       inventions = page.find(:css, 'div.form-group.string.optional.submission_invention_disclosures_id_number')
@@ -45,7 +43,6 @@ RSpec.describe 'Admin submission access_level', js: true do
         fill_in 'Invention Disclosure Number (Required for Restricted Access)', with: '1234'
       end
       click_button('Update Metadata Only')
-      sleep(1)
       expect(page).not_to have_content('Invention disclosure number is required for Restricted submissions.')
     end
   end

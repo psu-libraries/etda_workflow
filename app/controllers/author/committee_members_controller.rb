@@ -14,7 +14,7 @@ class Author::CommitteeMembersController < AuthorController
     status_giver.can_provide_new_committee?
     @submission.save!(submission_params)
     status_giver.collecting_format_review_files!
-    @submission.update_attribute :committee_provided_at, Time.zone.now
+    @submission.update! committee_provided_at: Time.zone.now
     flash[:notice] = 'Committee saved successfully'
     redirect_to author_root_path
   rescue ActiveRecord::RecordInvalid => e
@@ -34,9 +34,9 @@ class Author::CommitteeMembersController < AuthorController
   end
 
   def update
-    @submission.update_attributes!(submission_params)
+    @submission.update!(submission_params)
     status_giver.collecting_format_review_files! if @submission.status_behavior.collecting_committee?
-    @submission.update_attribute :committee_provided_at, Time.zone.now
+    @submission.update! committee_provided_at: Time.zone.now
     flash[:notice] = 'Committee updated successfully'
     if params[:commit] == "Save and Continue Submission" || params[:commit] == 'Verify Committee'
       redirect_to author_root_path
@@ -78,7 +78,7 @@ class Author::CommitteeMembersController < AuthorController
 
   def head_of_program
     status_giver.can_update_committee?
-    @submission.committee_members.build(committee_role: @submission.degree_type.committee_roles.find_by(name: 'Program Head/Chair'), is_required: true) if CommitteeMember.head_of_program(@submission.id).blank?
+    @submission.committee_members.build(committee_role: @submission.degree_type.committee_roles.find_by(name: 'Program Head/Chair'), is_required: true) if CommitteeMember.head_of_program(@submission).blank?
     render :head_of_program_form
   rescue SubmissionStatusGiver::AccessForbidden
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'

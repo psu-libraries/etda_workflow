@@ -1,16 +1,26 @@
 #!/bin/bash
 
-if [ -f /secrets/env.env ]; then 
-set -a
-source /secrets/env.env
-set +a
-fi 
+if [ -f /vault/.vault-token ]; then 
+    export VAULT_TOKEN=$(cat /vault/.vault-token)
 
-freshclam -d & 
-clamd & 
+fi
 
-rails db:create
-rails db:migrate
-rails db:seed:essential
+function start_envconsul() {
+    set -u 
+    envconsul \
+        -vault-addr=${VAULT_ADDR} \
+        -secret=${VAULT_PATH} \
+        -no-prefix=true \
+        -vault-renew-token=true \
+        -once \
+        -exec='bash start.sh'
+}
 
-rails s
+
+if [ -n "${VAULT_TOKEN}" ]; then
+    echo "have token. starting envconsul"
+    start_envconsul
+else
+    echo "starting the app"
+    bash start.sh
+fi

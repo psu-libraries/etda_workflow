@@ -64,7 +64,6 @@ RSpec.describe "Manage Contact Information", js: true do
       fill_in 'Alternate email address', with: 'mydifferentalternate@gmail.com'
       expect(page).to have_link('Cancel')
       click_button('Save')
-      sleep(5)
       expect(page).to have_current_path(author_root_path)
       author.reload
       expect(author.psu_idn).not_to be_blank
