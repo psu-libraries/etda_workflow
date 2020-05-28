@@ -74,12 +74,12 @@ RSpec.describe "Email Contact Form", js: true do
 
   describe 'clicking cancel' do
     context 'when author session' do
-      it "returns to main page" do
+      it "returns to author root" do
         webaccess_authorize_author
         visit '/author'
         visit email_contact_form_new_path
         click_link "Cancel"
-        expect(page).to have_current_path(main_page_path)
+        expect(page).to have_current_path(author_root)
       end
     end
 
