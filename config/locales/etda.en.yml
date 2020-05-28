@@ -1,6 +1,7 @@
 en:
   libraries_help_link:  https://libraries.psu.edu/website-feedback
   service_desk_email_address: 'etda@servicedesk.css.psu.edu'
+  ul_etda_support_email_address: 'uletdasupport@psu.edu'
   released_message:
     success: '%{released_count} %{submissions} successfully released for publication.  '
     base_error:  'Submissions not released:  '
