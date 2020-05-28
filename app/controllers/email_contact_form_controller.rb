@@ -24,6 +24,7 @@ class EmailContactFormController < ApplicationController
     email_contact_form.psu_id = request[:email_contact_form][:psu_id].html_safe if author?
     email_contact_form.desc = request[:email_contact_form][:desc].html_safe
     email_contact_form.message = request[:email_contact_form][:message].html_safe
+    email_contact_form.issue_type = request[:email_contact_form][:issue_type].html_safe
     email_contact_form
   end
 
