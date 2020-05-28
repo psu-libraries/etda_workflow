@@ -4,16 +4,13 @@ class EmailContactForm < MailForm::Base
   attribute :psu_id,         validate: true, allow_blank: true
   attribute :desc,           validate: true
   attribute :message,        validate: true
-  attribute :issue_type,     validate: true
+  attribute :issue_type,     validate: :issue_type_valid?
   attribute :nickname,       captcha: true
 
-  def tooltip_message
-    "<strong>General formatting/data issues:</strong> Your email will be directed to The #{current_partner.name}.
-     If you are unsure about what data to input, the next steps to take, or need data to be changed by an administrator,
-     please select this option.<br/><br/><strong>Failures to upload, access, or submit:
-     </strong>  Your email will be directed to IT support staff.
-     If you are encountering website issues, having trouble accessing pages, not seeing data that should be displayed,
-     or any other technical issues, please select this option.".html_safe
+  def issue_type_valid?
+    return true if issue_type.present? && issue_type.include?(self.issue_types.keys)
+
+    false
   end
 
   # Declare the e-mail headers. It accepts anything the mail method
@@ -21,9 +18,24 @@ class EmailContactForm < MailForm::Base
   def headers
     {
       from: EtdaWorkflow::Application.config.action_mailer.default_options[:from],
-      to: current_partner.email_address.to_s,
+      to: to_address,
       subject: "#{current_partner.slug} Contact Form"
     }
+  end
+
+  def self.issue_types
+    {formatting: 'General Formatting/Usage Issues', technical: 'Technical Issues'}.freeze
+  end
+
+  def self.tooltip_message
+    "<strong>General Formatting/Usage Issues:</strong>
+     Your email will be directed to The #{current_partner.name}.
+     If you are unsure about what data to input, the next steps to take, how to use the application,
+     or need data to be changed by an administrator, please select this option.<br/><br/>
+     <strong>Technical Issues:</strong>
+     Your email will be directed to IT support staff.
+     If you are encountering error messages, having trouble accessing pages, not seeing data that should be displayed,
+     or any other technical issues, please select this option.".html_safe
   end
 
   def self.contact_form_message(message, desc, email, psuid, full_name)
@@ -34,5 +46,13 @@ class EmailContactForm < MailForm::Base
       subject: desc,
       body: message
     ).deliver
+  end
+
+  private
+
+  def to_address
+    return I18n.t('ul_etda_support_email_address').to_s if issue_type == :technical
+
+    current_partner.email_address.to_s
   end
 end
