@@ -8,7 +8,7 @@ class EmailContactForm < MailForm::Base
   attribute :nickname,       captcha: true
 
   def issue_type_valid?
-    return true if issue_type.present? && issue_type.include?(self.issue_types.keys)
+    return true if issue_type.present? && EmailContactForm.issue_types.keys.include?(issue_type)
 
     false
   end
