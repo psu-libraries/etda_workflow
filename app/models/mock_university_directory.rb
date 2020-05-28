@@ -69,19 +69,6 @@ class MockUniversityDirectory
     nil
   end
 
-  def populate_with_ldap_attributes
-    case access_id
-    when /(xxb13)/i
-      { access_id: 'xxb13', first_name: 'Test', middle_name: 'Person',
-        last_name: 'Rails', address_1: 'TSB Building',
-        city: 'University Park', state: 'PA',
-        zip: '16802', phone_number: '555-555-5555',
-        country: 'US', psu_idn: '999999999', confidential_hold: false }
-    else
-      {}
-    end
-  end
-
   def get_psu_id_number(_psu_access_id)
     '999999999'
   end
