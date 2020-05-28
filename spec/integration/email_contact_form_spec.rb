@@ -79,7 +79,7 @@ RSpec.describe "Email Contact Form", js: true do
         visit '/author'
         visit email_contact_form_new_path
         click_link "Cancel"
-        expect(page).to have_current_path(author_root)
+        expect(page).to have_current_path(author_root_path)
       end
     end
 
