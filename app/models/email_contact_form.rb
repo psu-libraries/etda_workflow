@@ -8,7 +8,7 @@ class EmailContactForm < MailForm::Base
   attribute :nickname,       captcha: true
 
   def issue_type_valid?
-    return true if issue_type.present? && EmailContactForm.issue_types.keys.include?(issue_type)
+    return true if issue_type.present? && EmailContactForm.issue_types.key?(issue_type)
 
     false
   end
@@ -24,7 +24,7 @@ class EmailContactForm < MailForm::Base
   end
 
   def self.issue_types
-    {formatting: 'General Formatting/Usage Issues', technical: 'Technical Issues'}.freeze
+    { formatting: 'General Formatting/Usage Issues', technical: 'Technical Issues' }.freeze
   end
 
   def self.tooltip_message
