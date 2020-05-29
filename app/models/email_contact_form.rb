@@ -10,7 +10,7 @@ class EmailContactForm < MailForm::Base
   def issue_type_valid?
     return true if issue_type.present? && EmailContactForm.issue_types.key?(issue_type.to_sym)
 
-    self.errors.add(:issue_type, "Invalid Issue Type")
+    errors.add(:issue_type, "Invalid Issue Type")
   end
 
   # Declare the e-mail headers. It accepts anything the mail method
