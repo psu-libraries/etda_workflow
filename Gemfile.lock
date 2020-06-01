@@ -504,7 +504,7 @@ DEPENDENCIES
   whenever (~> 1.0.0)
 
 RUBY VERSION
-   ruby 2.6.0p0
+   ruby 2.6.6p146
 
 BUNDLED WITH
    2.0.2
