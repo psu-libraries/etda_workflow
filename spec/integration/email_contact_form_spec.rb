@@ -50,15 +50,33 @@ RSpec.describe "Email Contact Form", js: true do
       visit email_contact_form_new_path
     end
 
-    it "sends an email" do
-      expect(page).to have_current_path(email_contact_form_index_path)
-      fill_in "Your Message", with: 'This is a message for ETDA'
-      fill_in 'Subject', with: 'Subject is here'
-      click_button "Send"
-      expect(ActionMailer::Base.deliveries.first).not_to be_nil
-      expect(ActionMailer::Base.deliveries.count).to eq(1)
-      expect(page).to have_current_path(main_page_path)
-      # expect(page).to have_content('Thank you for your message')
+    context 'when technical issue is selected' do
+      it "sends an email to partner" do
+        expect(page).to have_current_path(email_contact_form_index_path)
+        fill_in "Your Message", with: 'This is a message for ETDA'
+        fill_in 'Subject', with: 'Subject is here'
+        click_button "Send"
+        expect(ActionMailer::Base.deliveries.first).not_to be_nil
+        expect(ActionMailer::Base.deliveries.count).to eq(1)
+        expect(ActionMailer::Base.deliveries.first.to).to eq([current_partner.email_address.to_s])
+        expect(page).to have_current_path(main_page_path)
+        # expect(page).to have_content('Thank you for your message')
+      end
+    end
+
+    context 'when technical issue is selected' do
+      it "sends an email to IT support" do
+        expect(page).to have_current_path(email_contact_form_index_path)
+        fill_in "Your Message", with: 'This is a message for ETDA'
+        fill_in 'Subject', with: 'Subject is here'
+        find(:css, '#email_contact_form_issue_type_technical').set(true)
+        click_button "Send"
+        expect(ActionMailer::Base.deliveries.first).not_to be_nil
+        expect(ActionMailer::Base.deliveries.count).to eq(1)
+        expect(ActionMailer::Base.deliveries.first.to).to eq([I18n.t('ul_etda_support_email_address')])
+        expect(page).to have_current_path(main_page_path)
+        # expect(page).to have_content('Thank you for your message')
+      end
     end
 
     it 'displays an error when message field is blank' do
