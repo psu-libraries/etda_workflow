@@ -51,7 +51,7 @@ class EmailContactForm < MailForm::Base
   private
 
   def to_address
-    return I18n.t('ul_etda_support_email_address').to_s if issue_type == :technical
+    return I18n.t('ul_etda_support_email_address').to_s if issue_type.to_sym == :technical
 
     current_partner.email_address.to_s
   end
