@@ -16,6 +16,9 @@ exec_redis: ## pop a shell in redis container
 bundle: ## run bundle install in container
 	docker-compose exec web bundle install
 
+run: ## run bash in a fresh container without startup scripts
+	docker-compose run web /bin/bash
+
 down: ## turn this thing off
 	docker-compose down
 
