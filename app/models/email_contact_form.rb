@@ -17,7 +17,7 @@ class EmailContactForm < MailForm::Base
   # in ActionMailer accepts.
   def headers
     {
-      from: EtdaWorkflow::Application.config.action_mailer.default_options[:from],
+      from: from_address,
       to: to_address,
       subject: "#{current_partner.slug} Contact Form"
     }
@@ -54,5 +54,11 @@ class EmailContactForm < MailForm::Base
     return I18n.t('ul_etda_support_email_address').to_s if issue_type.to_sym == :technical
 
     current_partner.email_address.to_s
+  end
+
+  def from_address
+    return email if issue_type.to_sym == :technical
+
+    EtdaWorkflow::Application.config.action_mailer.default_options[:from]
   end
 end

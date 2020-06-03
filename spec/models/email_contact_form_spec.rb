@@ -6,7 +6,7 @@ RSpec.describe EmailContactForm, type: :model do
   let(:mail_form) do
     EmailContactForm.new(
       full_name: 'Test',
-      email: 'test123',
+      email: 'test123@psu.edu',
       psu_id: '999999999',
       desc: 'Issue',
       message: 'This is an issue',
@@ -16,15 +16,15 @@ RSpec.describe EmailContactForm, type: :model do
 
   describe '#headers' do
     context 'when technical issue' do
-      it 'has headers with "to" address to IT support' do
-        expect(mail_form.headers).to eq(from: 'no-reply@psu.edu',
+      it 'has headers with "to" address to IT support and "from" address is sender\'s email' do
+        expect(mail_form.headers).to eq(from: 'test123@psu.edu',
                                         to: 'uletdasupport@psu.edu',
                                         subject: "#{current_partner.slug} Contact Form")
       end
     end
 
     context 'when nontechnical issue' do
-      it 'has headers with "to" address to partner' do
+      it 'has headers with "to" address to partner and "from" address is no-reply@psu.edu' do
         mail_form.issue_type = :formatting
         expect(mail_form.headers).to eq(from: 'no-reply@psu.edu',
                                         to: 'gradthesis@psu.edu',
