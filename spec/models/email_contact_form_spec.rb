@@ -25,7 +25,7 @@ RSpec.describe EmailContactForm, type: :model do
 
     context 'when nontechnical issue' do
       it 'has headers with "to" address to partner and "from" address is no-reply@psu.edu' do
-        mail_form.issue_type = :formatting
+        mail_form.issue_type = :general
         expect(mail_form.headers).to eq(from: 'no-reply@psu.edu',
                                         to: 'gradthesis@psu.edu',
                                         subject: "#{current_partner.slug} Contact Form")
@@ -36,7 +36,7 @@ RSpec.describe EmailContactForm, type: :model do
   describe '#issue_type_valid?' do
     context 'when issue_type is :technical or :formatting' do
       it 'returns true' do
-        mail_form.issue_type = :formatting
+        mail_form.issue_type = :general
         expect(mail_form.issue_type_valid?).to eq true
         mail_form.issue_type = :technical
         expect(mail_form.issue_type_valid?).to eq true

@@ -24,18 +24,18 @@ class EmailContactForm < MailForm::Base
   end
 
   def self.issue_types
-    { formatting: 'General Formatting/Usage Issues', technical: 'Technical Issues' }.freeze
+    { general: 'General Issues', technical: 'Technical Issues' }.freeze
   end
 
   def self.tooltip_message
-    "<strong>General Formatting/Usage Issues:</strong>
+    "<strong>General Issues:</strong>
      Your email will be directed to The #{current_partner.name}.
-     If you are unsure about what data to input, the next steps to take, how to use the application,
+     If you have general questions about formatting, publication dates, timing, requirements, usage
      or need data to be changed by an administrator, please select this option.<br/><br/>
      <strong>Technical Issues:</strong>
      Your email will be directed to IT support staff.
-     If you are encountering error messages, having trouble accessing pages, not seeing data that should be displayed,
-     or any other technical issues, please select this option.".html_safe
+     If you are encountering server error messages (i.e. 500 codes), or errors while approving
+     or uploading submissions, please select this option.".html_safe
   end
 
   def self.contact_form_message(message, desc, email, psuid, full_name)
