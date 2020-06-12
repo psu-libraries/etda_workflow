@@ -25,8 +25,8 @@ jobs:
         command: |
           mkdir coverage
           # download test reporter as a static binary
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /coverage/bin/cc-test-reporter
-          chmod +x /coverage/bin/cc-test-reporter
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /coverage/cc-test-reporter
+          chmod +x /coverage/cc-test-reporter
     # - save_cache:
     #     paths:
     #       - etda-workflow.tar
@@ -74,7 +74,7 @@ jobs:
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test PARTNER=graduate JS=true docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
-          /tmp/workspace/coverage/bin/cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json /tmp/workspace/coverage/integration_resultset.json
+          /tmp/workspace/coverage/cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json /tmp/workspace/coverage/integration_resultset.json
           # docker cp test:/app/vendor .
   unit_test_grad:
     docker:
@@ -95,7 +95,7 @@ jobs:
             export TAG=${CIRCLE_SHA1}
             export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
             RAILS_ENV=test PARTNER=graduate docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
-            /tmp/workspace/coverage/bin/cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json tmp/workspace/coverage/unit_resultset.json
+            /tmp/workspace/coverage/cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json tmp/workspace/coverage/unit_resultset.json
             # docker cp test:/app/vendor .
   publish:
     docker:
@@ -113,8 +113,8 @@ jobs:
       - run:
           name: "Upload test coverage results to Code Climate"
           command: |
-            /tmp/workspace/coverage/bin/cc-test-reporter sum-coverage tmp/workspace/coverage/*resultset.json -p 2 -o tmp/workspace/coverage/.resultset.json
-            /tmp/workspace/coverage/bin/cc-test-reporter upload-coverage -i tmp/workspace/coverage/.resultset.json
+            /tmp/workspace/coverage/cc-test-reporter sum-coverage tmp/workspace/coverage/*resultset.json -p 2 -o tmp/workspace/coverage/.resultset.json
+            /tmp/workspace/coverage/cc-test-reporter upload-coverage -i tmp/workspace/coverage/.resultset.json
       - run:
           name: "Publish The Image"
           command: |
