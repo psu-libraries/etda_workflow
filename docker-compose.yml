@@ -58,15 +58,15 @@ services:
       && bundle exec guard"
     depends_on:
     - db
-    volumes:
+    # volumes:
     # - workflow_files:/etda_workflow/tmp/workflow_files
     # - explore_files:/etda_workflow/tmp/explore_files
     # - bundle-data:/etda_workflow/vendor/bundle
     # - node-data:/etda_workflow/node_modules
-    - type: bind
-      consistency: cached
-      source: .
-      target: /etda_workflow/
+    # - type: bind
+    #   consistency: cached
+    #   source: .
+    #   target: /etda_workflow/
   web:
     tty: true
     stdin_open: true
