@@ -55,8 +55,8 @@ rspec: ## test
 	docker-compose exec -e RAILS_ENV=test web rspec
 
 restart: ## restart rails server
-	docker-compose exec web rails restart
+	docker-compose exec web bundle exec rails restart
 
 console: ## boot-up rails console
-	docker-compose exec web rails c
+	docker-compose exec web bundle exec rails c
 

@@ -50,7 +50,7 @@ RSpec.describe "Email Contact Form", js: true do
       visit email_contact_form_new_path
     end
 
-    context 'when technical issue is selected' do
+    context 'when general issue is selected' do
       it "sends an email to partner" do
         expect(page).to have_current_path(email_contact_form_index_path)
         fill_in "Your Message", with: 'This is a message for ETDA'
