@@ -15,12 +15,12 @@ if [ ${PARTNER} == "graduate" ]; then
         echo "======================================"
         echo "Running integration tests for graduate"
         echo "======================================"
-        PARTNER=graduate bundle exec rspec --tag js
+        COVERAGE=true PARTNER=graduate bundle exec rspec --tag js
     else
         echo "======================================"
         echo "Running unit tests for graduate"
         echo "======================================"
-        PARTNER=graduate bundle exec rspec --tag ~js
+        COVERAGE=true PARTNER=graduate bundle exec rspec --tag ~js
     fi
 else
     for partner in ${other_partners[*]}
