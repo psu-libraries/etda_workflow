@@ -23,10 +23,10 @@ jobs:
     - run:
         name: "Setup Code Climate test-reporter"
         command: |
-          mkdir coverage
+          mkdir ./coverage
           # download test reporter as a static binary
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /coverage/cc-test-reporter
-          chmod +x /coverage/cc-test-reporter
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
+          chmod +x ./coverage/cc-test-reporter
     # - save_cache:
     #     paths:
     #       - etda-workflow.tar
@@ -35,7 +35,7 @@ jobs:
         root: .
         paths:
           - etda-workflow.tar
-          - coverage
+          - ./coverage
   rubocop:
     docker:
       - image: devago/docker-compose
