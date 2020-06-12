@@ -20,6 +20,13 @@ jobs:
           if [ -f etda-workflow.tar ]; then docker load -i etda-workflow.tar; fi
           docker build -t $REGISTRY_URL:$CIRCLE_SHA1 -t etda_workflow_web:latest --target base .
           docker save -o etda-workflow.tar etda_workflow_web:latest
+    - run:
+        name: "Setup Code Climate test-reporter"
+        command: |
+          # download test reporter as a static binary
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > bin/cc-test-reporter
+          chmod +x bin/cc-test-reporter
+          mkdir coverage
     # - save_cache:
     #     paths:
     #       - etda-workflow.tar
@@ -28,6 +35,8 @@ jobs:
         root: .
         paths:
           - etda-workflow.tar
+          - coverage
+          - bin/cc-test-reporter
   rubocop:
     docker:
       - image: devago/docker-compose
@@ -66,6 +75,7 @@ jobs:
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test PARTNER=graduate JS=true docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          bin/cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/integration/.resultset.json
           # docker cp test:/app/vendor .
   unit_test_grad:
     docker:
@@ -86,6 +96,7 @@ jobs:
             export TAG=${CIRCLE_SHA1}
             export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
             RAILS_ENV=test PARTNER=graduate docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+            bin/cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/unit/.resultset.json
             # docker cp test:/app/vendor .
   publish:
     docker:
@@ -93,12 +104,18 @@ jobs:
     environment:
       REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
       REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
-      DOCKER_USERNAME: 'robot$circleci'   
+      DOCKER_USERNAME: 'robot$circleci'
+      CC_TEST_REPORTER_ID: ETDA_WORKFLOW_CC_TEST_REPORTER_ID
     steps:
       - setup_remote_docker
       - checkout
       - attach_workspace:
           at: /tmp/workspace
+      - run:
+          name: "Upload test coverage results to Code Climate"
+          command: |
+            bin/cc-test-reporter sum-coverage coverage/*/.resultset.json -p 2 -o coverage/.resultset.json
+            bin/cc-test-reporter upload-coverage
       - run:
           name: "Publish The Image"
           command: |
