@@ -74,7 +74,7 @@ jobs:
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           PARTNER=graduate docker-compose run --name=test --service-ports -d test
-          RAILS_ENV=test JS=true docker-compose exec test /etda_workflow/bin/ci-rspec
+          RAILS_ENV=test JS=true docker exec test /etda_workflow/bin/ci-rspec
           docker cp test:/etda_workflow/coverage/.resultset.json /tmp/workspace/coverage/.resultset.json
           /tmp/workspace/coverage/cc-test-reporter format-coverage -t simplecov -o /tmp/workspace/coverage/integration_coverage.json /tmp/workspace/coverage/.resultset.json
           # docker cp test:/app/vendor .
@@ -97,7 +97,7 @@ jobs:
             export TAG=${CIRCLE_SHA1}
             export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
             PARTNER=graduate docker-compose run --name=test --service-ports -d test
-            RAILS_ENV=test docker-compose exec test /etda_workflow/bin/ci-rspec
+            RAILS_ENV=test docker exec test /etda_workflow/bin/ci-rspec
             docker cp test:/etda_workflow/coverage/.resultset.json /tmp/workspace/coverage/.resultset.json
             /tmp/workspace/coverage/cc-test-reporter format-coverage -t simplecov -o /tmp/workspace/coverage/unit_coverage.json /tmp/workspace/coverage/.resultset.json
             # docker cp test:/app/vendor .
