@@ -23,10 +23,9 @@ jobs:
     - run:
         name: "Setup Code Climate test-reporter"
         command: |
-          mkdir ./coverage
           # download test reporter as a static binary
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./coverage/cc-test-reporter
-          chmod +x ./coverage/cc-test-reporter
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
+          chmod +x cc-test-reporter
     # - save_cache:
     #     paths:
     #       - etda-workflow.tar
@@ -35,7 +34,7 @@ jobs:
         root: .
         paths:
           - etda-workflow.tar
-          - ./coverage
+          - cc-test-reporter
   rubocop:
     docker:
       - image: devago/docker-compose
@@ -75,13 +74,13 @@ jobs:
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           PARTNER=graduate docker-compose run --name=test --service-ports -d test
           RAILS_ENV=test JS=true docker exec test /etda_workflow/bin/ci-rspec
-          docker cp test:/etda_workflow/coverage/.resultset.json ./coverage/.resultset.json
-          /tmp/workspace/coverage/cc-test-reporter format-coverage -t simplecov -o ./coverage/integration_coverage.json -p /etda_workflow/ ./coverage/.resultset.json
+          docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
+          /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o integration_coverage.json -p /etda_workflow/ .resultset.json
           # docker cp test:/app/vendor .
     - persist_to_workspace:
         root: .
         paths:
-          - ./coverage
+          - integration_coverage.json
   unit_test_grad:
     docker:
       - image: devago/docker-compose
@@ -102,13 +101,13 @@ jobs:
             export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
             PARTNER=graduate docker-compose run --name=test --service-ports -d test
             RAILS_ENV=test docker exec test /etda_workflow/bin/ci-rspec
-            docker cp test:/etda_workflow/coverage/.resultset.json ./coverage/.resultset.json
-            /tmp/workspace/coverage/cc-test-reporter format-coverage -t simplecov -o ./coverage/unit_coverage.json -p /etda_workflow/ ./coverage/.resultset.json
+            docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
+            /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o unit_coverage.json -p /etda_workflow/ .resultset.json
             # docker cp test:/app/vendor .
       - persist_to_workspace:
           root: .
           paths:
-            - ./coverage
+            - unit_coverage.json
   publish:
     docker:
       - image: devago/docker-compose
@@ -125,8 +124,8 @@ jobs:
       - run:
           name: "Upload test coverage results to Code Climate"
           command: |
-            /tmp/workspace/coverage/cc-test-reporter sum-coverage /tmp/workspace/coverage/*coverage.json -p 2 -o /tmp/workspace/coverage/summed_coverage.json
-            /tmp/workspace/coverage/cc-test-reporter upload-coverage -i /tmp/workspace/coverage/summed_coverage.json
+            /tmp/workspace/cc-test-reporter sum-coverage /tmp/workspace/*coverage.json -p 2 -o /tmp/workspace/summed_coverage.json
+            /tmp/workspace/cc-test-reporter upload-coverage -i /tmp/workspace/summed_coverage.json
       - run:
           name: "Publish The Image"
           command: |
