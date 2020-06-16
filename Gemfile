@@ -86,7 +86,7 @@ group :development, :test do
   gem 'rubocop', '~> 0.61.1'
   gem 'rubocop-rspec', '~>  1.30.1'
   # Coverage report
-  gem 'simplecov', '~> 0.18.0'
+  gem 'simplecov', '~> 0.17.0'
 end
 
 group :development do

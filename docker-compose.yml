@@ -53,9 +53,9 @@ services:
       RAILS_ENV: test
       PARTNER: ${PARTNER:-graduate}
     command: >
-      sh -c "bundle check || bundle 
-      && bundle exec rake db:migrate
-      && bundle exec guard"
+#      sh -c "bundle check || bundle
+#      && bundle exec rake db:migrate
+#      && bundle exec guard"
     depends_on:
     - db
     # volumes:

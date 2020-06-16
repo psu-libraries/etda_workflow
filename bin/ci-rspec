@@ -15,19 +15,16 @@ if [ ${PARTNER} == "graduate" ]; then
         echo "======================================"
         echo "Running integration tests for graduate"
         echo "======================================"
-        PARTNER=graduate bundle exec rspec --tag js
+        COVERAGE=true PARTNER=graduate bundle exec rspec --tag js
     else
         echo "======================================"
         echo "Running unit tests for graduate"
         echo "======================================"
-        PARTNER=graduate bundle exec rspec --tag ~js
+        COVERAGE=true PARTNER=graduate bundle exec rspec --tag ~js
     fi
 else
-    for partner in ${other_partners[*]}
-    do
-        echo "======================================"
-        echo "Running $partner specific tests"
-        echo "======================================"
-        PARTNER=$partner bundle exec rspec --tag $partner
-    done
+    echo "======================================"
+    echo "Running ${PARTNER} specific tests"
+    echo "======================================"
+    PARTNER=${PARTNER} bundle exec rspec --tag ${PARTNER}
 fi
