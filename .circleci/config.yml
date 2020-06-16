@@ -154,14 +154,17 @@ jobs:
         name: "Test Honors"
         command: |
           RAILS_ENV=test PARTNER=honors docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          docker-compose down
     - run:
         name: "Test Milsch"
         command: |
           RAILS_ENV=test PARTNER=milsch docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          docker-compose down
     - run:
         name: "Test SSET"
         command: |
           RAILS_ENV=test PARTNER=sset docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          docker-compose down
   deploy-qa:
     docker:
       - image: harbor.dsrd.libraries.psu.edu/public/drone-utils:latest
