@@ -115,7 +115,6 @@ jobs:
       REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
       REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
-      CC_TEST_REPORTER_ID: ETDA_WORKFLOW_CC_TEST_REPORTER_ID
     steps:
       - setup_remote_docker
       - checkout
