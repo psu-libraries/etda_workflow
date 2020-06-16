@@ -1,9 +1,12 @@
-# Electronic Theses and Dissertations Workflow 
 [![CircleCI](https://circleci.com/gh/psu-stewardship/etda_workflow.svg?style=svg)](https://circleci.com/gh/psu-stewardship/etda_workflow)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a38c9040c48fe53aaa85/maintainability)](https://codeclimate.com/github/psu-stewardship/etda_workflow/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/a38c9040c48fe53aaa85/test_coverage)](https://codeclimate.com/github/psu-stewardship/etda_workflow/test_coverage)
+
+# Electronic Theses and Dissertations Workflow 
 
 * Ruby version: 2.6.6
 * Node version 10.17.0 (using yarn@1.19.1 as npm)
-* Rails 6.0.2.2
+* Rails 6.0.3.1
 * Redis 3.2.12
 * Sidekiq 5.2.8
 * Mariadb 10.2
@@ -43,28 +46,6 @@ To seed data:
 2. `PARTNER={parter} bundle exec rake db:seed:essential`
     
 You're good to go from here!  Any changes made in the project files on your local machine will automatically be updated in the container.  Run `make restart` to restart the puma server if changes do not appear in the web browser.  Remember to check the Makefile for more commands.  If you are running a shell in the web container, you can run all of the rails commands you would normally use for development: ie `rspec, rails restart, rails c, etc.`
-
-### Not Docker
-
-System dependencies
-  * rbenv 
-  * mysql
-  * yarn - `brew install yarn` for Mac OSX
- 
-To create the database, configure it in database.yml and then run the following commands (skip 'db:seed:essential' if importing an existing database) 
-    * `rails db:create`
-    * `rails db:migrate`
-    * `rails db:seed:essential`  
-    
-To drop the database, run `rails db:drop`
-
-After creating the database, run `yarn` to download packages needed for assets
-  In development `webpack-dev-server` can be run to watch live updating of the assets files.
-  Running `RAILS_ENV=production bin/webpack` will build the manifest for production,`RAILS_ENV=development bin/webpack`, and `RAILS_ENV=test bin/webpack` for development and test manifests.  Production manifest is saved in public/assets, development manifest in public/packs and test manifest in public/packs-test.  Configuration file is config/webpacker.yml
-  
-  The configuration file `webpack.config.js` contains loaders and plugins for compiling css, jquery, bootstrap, etc.  It also defines where the application source files are located (app/assets/javascript/).  ETD has three sets of assets:  author, admin, and base.  Author assets are used in the author layout, Admin assets in admin, and base is used throughout the application.  The approver pack pulls from all three assets, and is used in the approver layout.
-  
-To generate mocked files run `rake etda_files:create:empty_files[my_file_directory]` from the root directory.  If "my_file_directory" is not specified, the generated files will be placed in the /tmp directory by default.  
 
 ## Testing
  
