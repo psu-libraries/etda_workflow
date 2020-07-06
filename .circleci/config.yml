@@ -5,8 +5,8 @@ jobs:
     docker:
       - image: devago/docker-compose
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
     - setup_remote_docker
@@ -39,8 +39,8 @@ jobs:
     docker:
       - image: devago/docker-compose
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
     - attach_workspace:
@@ -58,8 +58,8 @@ jobs:
     docker:
       - image: devago/docker-compose
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
     - attach_workspace:
@@ -85,8 +85,8 @@ jobs:
     docker:
       - image: devago/docker-compose
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
       - attach_workspace:
@@ -112,8 +112,8 @@ jobs:
     docker:
       - image: devago/docker-compose
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
       - setup_remote_docker
@@ -130,14 +130,14 @@ jobs:
           command: |
             docker load -i /tmp/workspace/etda-workflow.tar
             docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $REGISTRY_HOST
+            docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
             docker push $REGISTRY_URL:$CIRCLE_SHA1
   test_partners:
     docker:
       - image: devago/docker-compose
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
     - attach_workspace:
@@ -167,11 +167,11 @@ jobs:
           docker-compose down
   deploy-qa:
     docker:
-      - image: harbor.dsrd.libraries.psu.edu/public/drone-utils:latest
+      - image: harbor.k8s.libraries.psu.edu/public/drone-utils:latest
     environment:
       CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
       CONFIG_ENV: qa
-      IMAGE_REPOSITORY: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      IMAGE_REPOSITORY: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
     - add_ssh_keys
     - run:
@@ -183,10 +183,10 @@ jobs:
             ./generate_circle_application.sh
   deploy-preview:
     docker:
-      - image: harbor.dsrd.libraries.psu.edu/public/drone-utils:latest
+      - image: harbor.k8s.libraries.psu.edu/public/drone-utils:latest
     environment:
       CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
-      IMAGE_REPOSITORY: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      IMAGE_REPOSITORY: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
     - add_ssh_keys
     - run:
