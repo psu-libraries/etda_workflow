@@ -19,10 +19,10 @@ gem 'redis', '~> 4.1.0'
 # Resque pool
 gem 'resque-pool', '~> 0.7.0'
 # SideKiq for queueing jobs
-gem 'sidekiq', '~> 5.2.8'
+gem 'sidekiq', '~> 5.2.9'
 # When downgrading Sidekiq, rack needed to be downgraded as well.
 # This can be removed for Sidekiq 6 or greater.
-gem 'rack', '= 2.0.8'
+gem 'rack', '= 2.1.4'
 # Used to schedule cron jobs on the servers
 gem 'whenever', '~> 1.0.0'
 # Use SCSS for stylesheets
