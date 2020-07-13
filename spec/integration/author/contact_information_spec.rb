@@ -74,6 +74,14 @@ RSpec.describe "Manage Contact Information", js: true do
     end
   end
 
+  context 'when author has confidential hold' do
+    it 'it displays a message for confidential hold authors' do
+      author.update_attribute :confidential_hold, true
+      visit edit_author_author_path(author)
+      expect(page).to have_content('Our records indicate there is a confidential hold')
+    end
+  end
+
   context "Author tries to edit a different author's personal information" do
     it 'displays Unauthorized message' do
       a_different_author = FactoryBot.create :author
