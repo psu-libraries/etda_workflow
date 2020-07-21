@@ -26,9 +26,9 @@
           <span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="top" data-html="true" title="<%=  EmailContactForm.tooltip_message %>"></span>
         </a>
       </p>
-      <%= f.input :issue_type, as: :radio_buttons, required: true, label: false,
+      <%= f.input :issue_type, required: true, label: false,
                   collection: EmailContactForm.issue_types.to_a, value_method: :first, label_method: :second,
-                  wrapper: :vertical_boolean, checked: EmailContactForm.issue_types.to_a.first[0] %>
+                  selected: EmailContactForm.issue_types.to_a.first[0], input_html: { style: 'width: 225px;' } %>
     </div>
     <div class="row">
       <%= f.input :desc, required: true, label: 'Subject', :input_html => {:style => 'width: 500px'} %>
