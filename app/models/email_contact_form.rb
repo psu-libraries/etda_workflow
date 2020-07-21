@@ -24,16 +24,16 @@ class EmailContactForm < MailForm::Base
   end
 
   def self.issue_types
-    { general: 'General/Technical Issues', failures: '500 Errors/Site Failures' }.freeze
+    { general: 'General/Technical Issues', failures: 'Site Failures/500 Errors' }.freeze
   end
 
   def self.tooltip_message
     "<strong>General/Technical Issues:</strong>
      Your email will be directed to The #{current_partner.name} IT/administrative support staff.
-     If you have questions about formatting, publication dates, timing, requirements, usage, or you
-     need data to be changed by an administrator, or you are having trouble uploading your submission,
+     If you have questions about formatting, publication dates, timing, requirements, usage, if you
+     need data to be changed by an administrator, or if you are having trouble uploading your submission,
      please select this option.<br/><br/>
-     <strong>500 Errors/Site Failures:</strong>
+     <strong>Site Failures/500 Errors:</strong>
      Your email will be directed to The Libraries engineering team.
      If you are encountering server error messages (i.e. 500 codes), or other site failures,
      please select this option.".html_safe
