@@ -11,6 +11,7 @@ en:
         success: Your Graduate School submission was created successfully.
         failure: There was a problem submitting your Graduate School eTD.
       new: If you would like to start a new thesis or dissertation, you may do so by clicking the following link.
+      descriptor: 'thesis or dissertation'
     partner:
       abbrev: graduate
       name: Graduate School
