@@ -21,8 +21,8 @@ class ApprovalConfiguration < ApplicationRecord
                                          head_of_program_is_approving: 0 } }.freeze
 
   SSET_CONFIGURATION = { 'final_paper' => { approval_deadline_on: Date.today, configuration_threshold: 0,
-                                       email_admins: 1, email_authors: 1, use_percentage: 0,
-                                       head_of_program_is_approving: 0 } }.freeze
+                                            email_admins: 1, email_authors: 1, use_percentage: 0,
+                                            head_of_program_is_approving: 0 } }.freeze
 
   CONFIGURATIONS = { 'graduate' => ApprovalConfiguration::GRADUATE_CONFIGURATION,
                      'honors' => ApprovalConfiguration::HONORS_CONFIGURATION,
