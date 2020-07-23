@@ -24,18 +24,19 @@ class EmailContactForm < MailForm::Base
   end
 
   def self.issue_types
-    { general: 'General Issues', technical: 'Technical Issues' }.freeze
+    { general: 'General/Technical Issues', failures: '500 Errors/Site Failures' }.freeze
   end
 
   def self.tooltip_message
-    "<strong>General Issues:</strong>
-     Your email will be directed to The #{current_partner.name}.
-     If you have general questions about formatting, publication dates, timing, requirements, usage
-     or need data to be changed by an administrator, please select this option.<br/><br/>
-     <strong>Technical Issues:</strong>
-     Your email will be directed to IT support staff.
-     If you are encountering server error messages (i.e. 500 codes), or errors while approving
-     or uploading submissions, please select this option.".html_safe
+    "<strong>General/Technical Issues:</strong>
+     Your email will be directed to The #{current_partner.name} IT/administrative support staff.
+     If you have questions about formatting, publication dates, timing, requirements, usage, or you
+     need data to be changed by an administrator, or you are having trouble uploading your submission,
+     please select this option.<br/><br/>
+     <strong>500 Errors/Site Failures:</strong>
+     Your email will be directed to The Libraries engineering team.
+     If you are encountering server error messages (i.e. 500 codes), or other site failures,
+     please select this option.".html_safe
   end
 
   def self.contact_form_message(message, desc, email, psuid, full_name)
@@ -51,13 +52,13 @@ class EmailContactForm < MailForm::Base
   private
 
   def to_address
-    return I18n.t('ul_etda_support_email_address').to_s if issue_type.to_sym == :technical
+    return I18n.t('ul_etda_support_email_address').to_s if issue_type.to_sym == :failures
 
     current_partner.email_address.to_s
   end
 
   def from_address
-    return email if issue_type.to_sym == :technical
+    return email if issue_type.to_sym == :failures
 
     EtdaWorkflow::Application.config.action_mailer.default_options[:from]
   end

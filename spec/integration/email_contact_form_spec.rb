@@ -29,7 +29,7 @@ RSpec.describe "Email Contact Form", js: true do
     it "has issue type tooltip" do
       tooltip = find('span[data-toggle="tooltip"]')
       tooltip.hover
-      expect(page).to have_content('Your email will be directed to IT support')
+      expect(page).to have_content(/IT\/administrative support staff | directed to The Libraries engineering team/)
       expect(page).to have_css('div.tooltip')
     end
     it "displays the contact email form initialized with author information" do
@@ -64,12 +64,12 @@ RSpec.describe "Email Contact Form", js: true do
       end
     end
 
-    context 'when technical issue is selected' do
-      it "sends an email to IT support" do
+    context 'when failures is selected' do
+      it "sends an email to dev team" do
         expect(page).to have_current_path(email_contact_form_index_path)
         fill_in "Your Message", with: 'This is a message for ETDA'
         fill_in 'Subject', with: 'Subject is here'
-        find(:css, '#email_contact_form_issue_type_technical').set(true)
+        select '500 Errors/Site Failures', from: 'email_contact_form_issue_type'
         click_button "Send"
         expect(ActionMailer::Base.deliveries.first).not_to be_nil
         expect(ActionMailer::Base.deliveries.count).to eq(1)

@@ -27,7 +27,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'Edit Final Submission to be Released' if status_behavior.waiting_for_publication_release?
     return 'Edit Final Submission On Hold' if status_behavior.waiting_in_final_submission_on_hold?
     return 'Edit Released Submission' if status_behavior.released_for_publication? && open_access?
-    return 'Edit Restricted Theses' if status_behavior.released_for_publication_metadata_only? && restricted?
+    return 'Edit Restricted Submission' if status_behavior.released_for_publication_metadata_only? && restricted?
     return 'Edit Final Submission is Restricted to Penn State' if status_behavior.released_for_publication? && access_level == 'restricted_to_institution'
 
     'Edit Incomplete Format Review'

@@ -4,24 +4,25 @@ en:
       formats:
         medium: '%b %-d, %Y %l:%M %P'
     header:
-      title: Electronic Theses for the School of Science, Engineering, and Technology
+      title: Final Papers for the School of Science, Engineering, and Technology
       image: ETD-Sset.png
     submission:
       create:
         success: Your SSET submission was created successfully.
-        failure: There was a problem submitting your SSET Thesis.
-      new: If you would like to start a new thesis submission, you may do so by clicking the following link.
+        failure: There was a problem submitting your SSET Final Paper.
+      new: If you would like to start a new final paper submission, you may do so by clicking the following link.
+      descriptor: 'final paper'
     partner:
       abbrev: sset
       name: School of Science, Engineering, and Technology
       url: https://harrisburg.psu.edu/science-engineering-technology
       slug: SSETT
       description:
-        title: SSET Theses
-        text: <p>The master’s thesis requirement allows students to conduct in-depth research on a specific topic and learn about research methodology and conduct.  Students can benefit from the program’s lab facility, state of the art software packages, and equipment to conduct their master’s research.</p>
+        title: SSET Final Papers
+        text: <p>The final paper requirement allows students to conduct in-depth research on a specific topic and learn about research methodology and conduct.  Students can benefit from the program’s lab facility, state of the art software packages, and equipment to conduct their master’s research.</p>
       alternate_email_hint: 'The Alternate email address will be used after your psu.edu email address expires.'
       thesis_guide: 'https://harrisburg.psu.edu/science-engineering-technology/ee-eet/master-electrical-engineering-msee'
-      document_title_label: 'Please enter your Thesis Title'
+      document_title_label: 'Please enter your Final Paper Title'
       url_slug: 'sset'
       email:
         url: 'https://sset-explore.libraries.psu.edu'
@@ -170,22 +171,19 @@ en:
     program:
       label: School of Science, Technology, and Engineering Name
     committee:
-      label: Thesis Supervisor
+      label: Final Paper Supervisor
       list:
-        label: Thesis Supervisor
-        thesis:
-          thesis_supervisor:
-            name: Thesis Supervisor
-            description: The faculty member or researcher who is the principal investigator of the lab where the student conducted the research. The thesis supervisor also acts as a research mentor regarding the thesis project.
+        label: Final Paper Supervisor
+        final_paper:
+          final_paper_supervisor:
+            name: Final Paper Supervisor
+            description: The faculty member or researcher who is the principal investigator of the lab where the student conducted the research. The final paper supervisor also acts as a research mentor regarding the final paper project.
           advisor:
             name: Advisor
-            description: Faculty member who reviews the thesis and confirms that it is an acceptable undergraduate thesis.
-          honors_advisor:
-            name: Honors Advisor
-            description: Faculty member who reviews the thesis and confirms that it meets the criteria for honors designation.
+            description: Faculty member who reviews the final paper and confirms that it is an acceptable undergraduate thesis.
       author_instructions:
-        Students will be required to enter one name as thesis supervisor.
-        Students may enter additional names as advisor or honors advisor, but this is not required.
+        Students will be required to enter one name as the final paper supervisor.
+        Students may enter additional names as advisors, but this is not required.
       special_role: supervisor
 
     admin_filters:
@@ -200,13 +198,13 @@ en:
         description: Completed and approved drafts
       final_submission_pending:
         title: Final Submission is Pending
-        description: Theses waiting to be reviewed by committee members
+        description: Final Papers waiting to be reviewed by committee members
       committee_review_rejected:
         title: Committee Review Rejected
-        description: Theses rejected by committee
+        description: Final Papers rejected by committee
       final_submission_submitted:
         title: Final Submission is Submitted
-        description: Theses waiting to be reviewed for final formatting approval by the School of Science, Technology, and Engineering.
+        description: Final Papers waiting to be reviewed for final formatting approval by the School of Science, Technology, and Engineering.
       final_submission_incomplete:
         title: Final Submission is Incomplete
         description: Submissions that were rejected and need formatting corrections
@@ -220,13 +218,13 @@ en:
         title: Final Submission is On Hold
         description: Submissions that have been approved but are now being held from release
       released_for_publication:
-        title: Released Theses
-        description: Manage theses which have already been released
+        title: Released Final Papers
+        description: Manage final papers which have already been released
       final_restricted_institution:
         title: Final Submission is Restricted to Penn State
         description: Submissions restricted to the Penn State community
       final_withheld:
-        title: Restricted Theses
+        title: Restricted Final Papers
         description: Availability restricted for 2 years.
     access_level:
       open_access: Open Access
@@ -239,7 +237,7 @@ en:
         scope: final_restricted_institution
       restricted: Restricted
       restricted_attr:
-        description_html: 'The option selected secures the body of the thesis for a period of two years. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final thesis and confirmed by OTM. At the end of the two-year period, the work will be released automatically for open access unless a written request is made to extend this option for an additional year. The written request for an extension should be sent to the School of Science, Engineering, and Technology, W215 Olmsted Building, Middletown, PA 17057 or by email to <a href="mailto:ssetinfo@psu.edu">ssetinfo@psu.edu</a>.  Please note: No one will be able to view your work under this option.'
+        description_html: 'The option selected secures the body of the final paper for a period of two years. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final paper and confirmed by OTM. At the end of the two-year period, the work will be released automatically for open access unless a written request is made to extend this option for an additional year. The written request for an extension should be sent to the School of Science, Engineering, and Technology, W215 Olmsted Building, Middletown, PA 17057 or by email to <a href="mailto:ssetinfo@psu.edu">ssetinfo@psu.edu</a>.  Please note: No one will be able to view your work under this option.'
         scope: final_withheld
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
@@ -249,7 +247,7 @@ en:
         edit:
           author-information: Author Information
           format-review-files: Format Review Information
-          committee: Thesis Advisor
+          committee: Committee
           program-information: Program Information
     submission_steps:
       step_two:
