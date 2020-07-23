@@ -180,7 +180,7 @@ en:
             description: The faculty member or researcher who is the principal investigator of the lab where the student conducted the research. The final paper supervisor also acts as a research mentor regarding the final paper project.
           advisor:
             name: Advisor
-            description: Faculty member who reviews the final paper and confirms that it is an acceptable undergraduate thesis.
+            description: Faculty member who reviews the final paper and confirms that it is an acceptable final paper.
       author_instructions:
         Students will be required to enter one name as the final paper supervisor.
         Students may enter additional names as advisors, but this is not required.
