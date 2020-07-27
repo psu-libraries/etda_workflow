@@ -4,7 +4,6 @@ RSpec.describe "when an admin releases the submission for publication", js: true
   let(:author) { FactoryBot.create :author }
   let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, author: author }
   let(:committee) { create_committee(submission) }
-  let(:inbound_lion_path_record) { FactoryBot.create :inbound_lion_path_record }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
 
   before do

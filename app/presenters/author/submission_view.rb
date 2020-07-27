@@ -42,7 +42,7 @@ class Author::SubmissionView < SimpleDelegator
     elsif status_behavior.ok_to_update_committee?
       return (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members/edit" + "' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>" + "<a href='" + "/author/submissions/#{id}/head_of_program" + "' class='medium'>[Edit Head of Program <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe if head_of_program_is_approving?
       return (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members/edit" + "' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe unless head_of_program_is_approving?
-    elsif status_behavior.beyond_collecting_format_review_files? || using_lionpath?
+    elsif status_behavior.beyond_collecting_format_review_files?
       (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members" + "' class='medium'>[Review My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe
     else
       step_two_name
@@ -58,9 +58,7 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_two_name
-    return 'Provide Committee ' unless using_lionpath?
-
-    'Verify Committee'
+    'Provide Committee '
   end
 
   def step_three_class

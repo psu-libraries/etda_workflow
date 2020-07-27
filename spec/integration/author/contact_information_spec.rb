@@ -10,7 +10,6 @@ RSpec.describe "Manage Contact Information", js: true do
   context 'author edits personal information' do
     it 'displays a contact information page for authors' do
       FactoryBot.create :degree
-      InboundLionPathRecord.new(current_data: LionPath::MockLionPathRecord::MOCK_LP_AUTHOR_RECORD)
       author = current_author
       visit author_root_path(author)
       click_link 'Update My Contact Information'
@@ -46,7 +45,6 @@ RSpec.describe "Manage Contact Information", js: true do
   context 'author without psu_id number updates personal information' do
     it 'populates the psu_idn number when the record is saved' do
       FactoryBot.create :degree
-      InboundLionPathRecord.new(current_data: LionPath::MockLionPathRecord.current_data, author: author)
       author = current_author
       author.psu_idn = ''
       expect(author.psu_idn).to be_blank

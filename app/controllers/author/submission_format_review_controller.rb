@@ -16,7 +16,6 @@ class Author::SubmissionFormatReviewController < AuthorController
     @submission.update!(format_review_params)
     status_giver.waiting_for_format_review_response!
     @submission.update_format_review_timestamps!(Time.zone.now)
-    OutboundLionPathRecord.new(submission: @submission).report_status_change
     redirect_to author_root_path
     WorkflowMailer.send_format_review_received_email(@submission)
     flash[:notice] = 'Format review files uploaded successfully.'

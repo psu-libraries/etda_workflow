@@ -66,29 +66,16 @@ class Admin::SubmissionFormView < SimpleDelegator
     address << "#{author.state} #{author.zip}"
   end
 
-  def using_lionpath_record?
-    using_lionpath?
-  end
-
   def committee_form
-    return 'standard_committee_form' unless using_lionpath?
-
-    'lionpath_committee_form'
+    'standard_committee_form'
   end
 
   def program_information_partial
-    return 'standard_program_information' unless using_lionpath?
-
-    'lionpath_program_information'
+    'standard_program_information'
   end
 
   def defense_date_partial_for_final_fields
-    # defense date is hidden when using lionpath b/c it's displayed in format review section
-    # hidden value is necessary when editing
-    # standard datepicker displays when lion path is not active
-    return '/admin/submissions/edit/standard_defended_at_date' unless using_lionpath?
-
-    '/admin/submissions/edit/defended_at_date_hidden'
+    '/admin/submissions/edit/standard_defended_at_date'
   end
 
   def psu_only(label)

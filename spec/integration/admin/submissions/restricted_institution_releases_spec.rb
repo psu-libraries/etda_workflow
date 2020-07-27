@@ -6,8 +6,6 @@ RSpec.describe "when an admin releases a restricted to institution submission fo
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
   let(:committee) { FactoryBot.create_committee(submission) }
 
-  let(:inbound_lion_path_record) { FactoryBot.create :inbound_lion_path_record } if current_partner.graduate?
-
   before do
     webaccess_authorize_admin
     visit root_path

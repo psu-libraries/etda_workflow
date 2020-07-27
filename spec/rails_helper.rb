@@ -10,8 +10,6 @@ if ENV['COVERAGE']
     add_filter '/jobs'
     add_filter '/app/models/legacy'
     add_filter '/app/models/lion_path'
-    add_filter '/app/models/outbound_lion_path_record.rb'
-    add_filter '/app/models/inbound_lion_path_record.rb'
     add_filter '/app/models/ldap_university_directory.rb'
   end
   SimpleCov.command_name 'spec'

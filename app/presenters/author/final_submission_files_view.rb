@@ -4,9 +4,7 @@ class Author::FinalSubmissionFilesView
   end
 
   def defended_at_date_partial
-    return 'defended_at_date' unless InboundLionPathRecord.active?
-
-    'defended_at_date_hidden_for_final_submissions'
+    'defended_at_date'
   end
 
   def author_access_level_view

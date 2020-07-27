@@ -11,7 +11,6 @@ FactoryBot.define do
     access_level { 'open_access' }
     defended_at { Time.zone.tomorrow if current_partner.graduate? }
     federal_funding { false }
-    #    lion_path_degree_code { LionPath::MockLionPathRecord.current_data[LionPath::LpKeys::PLAN].first[LionPath::LpKeys::DEGREE_CODE] }
 
     trait :collecting_program_information do
       committee_provided_at { nil }

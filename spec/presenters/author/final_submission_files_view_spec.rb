@@ -6,14 +6,8 @@ RSpec.describe Author::FinalSubmissionFilesView do
     let(:submission) { FactoryBot.create :submission }
 
     describe 'defended_at_date_partial' do
-      it 'uses defended_at_date partial to display the datepicker when Lion Path is inactive' do
-        allow(InboundLionPathRecord).to receive(:active?).and_return(false)
+      it 'uses defended_at_date partial to display the datepicker' do
         expect(view.defended_at_date_partial).to eq('defended_at_date')
-      end
-
-      it 'hides the datepicker and displays defended at date from Lion Path when Lion Path is available' do
-        allow(InboundLionPathRecord).to receive(:active?).and_return(true)
-        expect(view.defended_at_date_partial).to eq('defended_at_date_hidden_for_final_submissions')
       end
     end
   end

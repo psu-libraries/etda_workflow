@@ -44,8 +44,4 @@ FactoryBot.define do
     confidential_hold { true }
     confidential_hold_set_at { Time.zone.yesterday }
   end
-
-  trait :no_lionpath_record do
-    inbound_lion_path_record { nil }
-  end
 end

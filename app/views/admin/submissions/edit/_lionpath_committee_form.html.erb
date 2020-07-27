@@ -1,5 +1,0 @@
-<%= render 'admin/submissions/edit/form_section_header', target: 'committee' %>
-<div id="committee" <%= @view.form_section_body('committee') %>>
-  <%= render partial: '/shared/committee_show_fields' %>
-  <p><%= link_to 'Refresh Committee', admin_refresh_committee_path, class: 'btn btn-success' %></p>
-</div>

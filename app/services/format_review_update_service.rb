@@ -40,7 +40,6 @@ class FormatReviewUpdateService
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params)
       msg += " Format review information was successfully edited by an administrator"
     end
-    OutboundLionPathRecord.new(submission: submission).report_status_change if update_actions.approved? || update_actions.rejected?
     { msg: msg, redirect_path: "/admin/#{submission.degree_type.slug}/format_review_submitted" }
   end
 

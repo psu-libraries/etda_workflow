@@ -81,10 +81,6 @@ RSpec.describe 'Step 3: Collecting Format Review Files', js: true do
         expect(submission.format_review_files_uploaded_at).to be_nil
         visit author_submission_edit_format_review_path(submission)
         fill_in 'Title', with: 'Test Title'
-        unless InboundLionPathRecord.active? # current_partner.graduate?
-          select Time.zone.now.next_year.year, from: 'Graduation Year'
-          select 'Spring', from: 'Semester Intending to Graduate'
-        end
         find("#submission_federal_funding_true").click
         expect(page).to have_content('Select one or more files to upload')
         expect(page).to have_css '#format-review-file-fields .nested-fields div.form-group div:first-child input[type="file"]'

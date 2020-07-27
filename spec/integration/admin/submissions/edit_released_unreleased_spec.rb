@@ -1,10 +1,10 @@
 RSpec.describe "Editing a released submission as an admin", js: true do
   require 'integration/integration_spec_helper'
 
+  let!(:author) { FactoryBot.create(:author) }
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
   let!(:role) { CommitteeRole.second }
-  let!(:author) { FactoryBot.create(:author, :no_lionpath_record) }
   let(:submission) { FactoryBot.create(:submission, :released_for_publication, author: author, semester: 'Fall', year: DateTime.now.year) }
   let(:committee) { create_committee(submission) }
   let(:invention_disclosures) { create(:invention_disclosure, submission) }
@@ -45,7 +45,6 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     expect(page).to have_content('In order to update a published submission, it must be withdrawn from publication. After withdrawing, the submission can be edited and re-published. Any changes made to the submission while it is released will NOT be saved. The withdraw button is at the bottom of the page.')
     expect(page).to have_button('Withdraw Publication')
     expect(page).not_to have_button('Update Metadata')
-    expect(field_labeled('Date Defended', disabled: true)).to be_truthy if submission.using_lionpath?
     fill_in "Abstract", with: "New abstract text"
 
     click_link "Additional Keyword"
@@ -94,7 +93,6 @@ RSpec.describe "Editing a released submission as an admin", js: true do
 
     expect(page.find_field("Format Review Notes to Student").value).to eq submission.format_review_notes.to_s
     expect(page.find_field("Admin notes").value).to eq ""
-    expect(field_labeled('Date Defended', disabled: true)).to be_truthy if submission.using_lionpath?
     expect(page.find_field("Abstract").value).to eq submission.abstract.to_s
 
     within('#keyword-fields') do
@@ -113,7 +111,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
   describe "Remove from  submission to be released", js: true, retry: 5 do
     # let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
     # let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", degree_type: DegreeType.default, is_active: true) }
-    let(:author) { FactoryBot.create(:author, :no_lionpath_record) }
+    let(:author) { FactoryBot.create(:author) }
     let(:submission) { FactoryBot.create(:submission, :waiting_for_publication_release, author: author) }
     let(:author_name) { submission.author.last_name }
 

@@ -1,11 +1,11 @@
 RSpec.describe "Editing committee member information for format reviews and final submissions", js: true, honors: true, milsch: true do
   require 'integration/integration_spec_helper'
 
+  let!(:author) { FactoryBot.create(:author) }
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
   let!(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type, use_percentage: false, configuration_threshold: 0) }
   let!(:role) { CommitteeRole.first }
-  let!(:author) { FactoryBot.create(:author, :no_lionpath_record) }
   let(:submission) { FactoryBot.create(:submission, :waiting_for_committee_review, author: author) }
 
   before do

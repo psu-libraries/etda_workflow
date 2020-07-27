@@ -15,7 +15,7 @@
 
     <%= render "admin/submissions/edit/#{@view.program_information_partial}", {f: f}  %>
 
-    <%= render "admin/submissions/edit/#{@view.committee_form}", (@submission.using_lionpath?) ? {submission: @submission} : {f: f } %>
+    <%= render "admin/submissions/edit/#{@view.committee_form}", {f: f } %>
 
     <%= render 'admin/submissions/edit/format_review_files', f: f %>
   </div>

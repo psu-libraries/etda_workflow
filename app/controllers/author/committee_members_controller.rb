@@ -66,16 +66,6 @@ class Author::CommitteeMembersController < AuthorController
     redirect_to author_root_path
   end
 
-  def refresh
-    @submission.author.populate_lion_path_record(@submission.author.psu_idn, @submission.author.access_id)
-    if @submission.academic_plan.committee_members_refresh
-      flash[:notice] = 'Committee members successfully refreshed from Lion Path.'
-    else
-      flash[:alert] = 'Unable to refresh committee member information from Lion Path.'
-    end
-    render :show
-  end
-
   def head_of_program
     status_giver.can_update_committee?
     @submission.committee_members.build(committee_role: @submission.degree_type.committee_roles.find_by(name: 'Program Head/Chair'), is_required: true) if CommitteeMember.head_of_program(@submission).blank?

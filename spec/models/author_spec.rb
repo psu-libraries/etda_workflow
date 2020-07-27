@@ -249,24 +249,4 @@ RSpec.describe Author, type: :model do
       expect(ldap_psu_id).to eq('999999999')
     end
   end
-
-  context '#academic_plan?', lionpath: true do
-    it 'returns false if there is no lion path record' do
-      author = FactoryBot.create :author
-      FactoryBot.create(:inbound_lion_path_record, author: author, current_data: LionPath::MockLionPathRecord.current_data)
-      expect(author).to be_academic_plan
-      author.inbound_lion_path_record = nil
-      expect(author).not_to be_academic_plan
-    end
-  end
-
-  context '#populate_lion_path_record', lionpath: true do
-    it 'returns lion_path data for the author' do
-      author = FactoryBot.create :author
-      expect(author.inbound_lion_path_record).to be_nil
-      allow(InboundLionPathRecord).to receive(:active?).and_return(true)
-      author.populate_lion_path_record('999999999', 'xxb13')
-      expect(author.inbound_lion_path_record).not_to be_nil
-    end
-  end
 end

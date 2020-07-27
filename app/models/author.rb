@@ -9,7 +9,6 @@ class Author < ApplicationRecord
 
   has_many :submissions, dependent: :nullify
   has_many :confidential_hold_histories, dependent: :destroy
-  has_one :inbound_lion_path_record, dependent: :destroy
 
   # validate for author
   validates :access_id,
@@ -64,7 +63,6 @@ class Author < ApplicationRecord
 
   def populate_attributes
     populate_with_ldap_attributes
-    populate_lion_path_record psu_idn, access_id
     self
   end
 
@@ -75,28 +73,10 @@ class Author < ApplicationRecord
     save_mapped_attributes(mapped_attributes) if mapped_attributes
   end
 
-  def populate_lion_path_record(psu_idn, login_id)
-    return unless InboundLionPathRecord.active?
-
-    # refresh graduate author record each time login occurs.
-    lp_record_data = InboundLionPathRecord.new.retrieve_lion_path_record(psu_idn, login_id)
-    return nil unless InboundLionPathRecord.records_match?(psu_idn, login_id, lp_record_data)
-
-    #  Be sure there is data before continuing???
-    if inbound_lion_path_record.present?
-      inbound_lion_path_record.update!(current_data: lp_record_data)
-    else
-      build_inbound_lion_path_record(author_id: id, current_data: lp_record_data) # create a lp record
-      inbound_lion_path_record.save(validate: false)
-    end
-  end
-
   def psu_id_number(access_id)
     id_number = LdapUniversityDirectory.new.get_psu_id_number(access_id)
     id_number.nil? ? ' ' : id_number
   end
-
-  def retrieve_lion_path_information; end
 
   def refresh_important_attributes
     # do not overwrite address, phone, etc.
@@ -109,7 +89,6 @@ class Author < ApplicationRecord
     self.psu_email_address = refresh(psu_email_address, ldap_attributes[:psu_email_address])
     self.psu_idn = refresh(psu_idn, ldap_attributes[:psu_idn])
     save(validate: false)
-    populate_lion_path_record(psu_idn, access_id)
     self
   end
 
@@ -133,13 +112,6 @@ class Author < ApplicationRecord
 
   def confidential?
     confidential_hold || false
-  end
-
-  def academic_plan?
-    return false if inbound_lion_path_record.nil?
-    return false if inbound_lion_path_record.current_data.empty?
-
-    true
   end
 
   private
