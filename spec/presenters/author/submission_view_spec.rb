@@ -123,7 +123,7 @@ RSpec.describe Author::SubmissionView do
         before { submission.status = 'collecting program information' }
 
         it "returns the step two label" do
-          expect(view.step_two_description).to eql(view.step_two_name + "<a href='/author/submissions/#{submission.id}/committee_members' class='medium'>[review <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>")
+          expect(view.step_two_description).to eql(view.step_two_name)
         end
       end
 
