@@ -34,15 +34,6 @@ RSpec.describe Author::CommitteeFormView do
     end
   end
 
-  context '#committee_form_partial' do
-    author = FactoryBot.create :author
-    submission = FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)], author: author
-    it 'returns the standard_committee_form' do
-      view = described_class.new(submission)
-      expect(view.committee_form_partial).to eq('standard_committee_form')
-    end
-  end
-
   context '#new_committee_label' do
     author = FactoryBot.create :author
     submission = FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)], author: author

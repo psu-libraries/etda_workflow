@@ -8,7 +8,6 @@ class Author::SubmissionsController < AuthorController
   end
 
   def new
-    @view = Author::ProgramInformationView.new(nil)
     @submission = @author.submissions.new
   end
 
@@ -22,7 +21,6 @@ class Author::SubmissionsController < AuthorController
     flash[:notice] = 'Program information saved successfully'
   rescue ActiveRecord::RecordInvalid
     flash[:alert] = 'Oops! You may have submitted invalid program information data. Please check that your program information is correct.'
-    @view = Author::ProgramInformationView.new(nil)
     render :new
   rescue SubmissionStatusGiver::InvalidTransition
     redirect_to author_root_path
@@ -31,7 +29,6 @@ class Author::SubmissionsController < AuthorController
 
   def edit
     @submission = find_submission
-    @view = Author::ProgramInformationView.new(@submission)
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_update_program_information?
   rescue SubmissionStatusGiver::AccessForbidden
@@ -48,7 +45,6 @@ class Author::SubmissionsController < AuthorController
     flash[:notice] = 'Program information updated successfully'
   rescue ActiveRecord::RecordInvalid
     flash[:alert] = 'Oops! You may have submitted invalid program information data. Please check that your program information is correct.'
-    @view = Author::ProgramInformationView.new(@submission)
     render :edit
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path

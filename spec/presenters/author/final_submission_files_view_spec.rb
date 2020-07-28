@@ -2,16 +2,6 @@ require 'presenters/presenters_spec_helper'
 RSpec.describe Author::FinalSubmissionFilesView do
   let(:view) { described_class.new(submission) }
 
-  context "defended_at_date display depends on the Lion Path switch" do
-    let(:submission) { FactoryBot.create :submission }
-
-    describe 'defended_at_date_partial' do
-      it 'uses defended_at_date partial to display the datepicker' do
-        expect(view.defended_at_date_partial).to eq('defended_at_date')
-      end
-    end
-  end
-
   describe "Access Level View", honors: true, milsch: true do
     let(:submission) { FactoryBot.create :submission }
 

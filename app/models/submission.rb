@@ -195,10 +195,6 @@ class Submission < ApplicationRecord
     clean_title
   end
 
-  def defended_at_date
-    return defended_at
-  end
-
   def committee_email_list
     list = []
     committee_members.each do |cm|

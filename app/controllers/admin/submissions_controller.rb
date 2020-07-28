@@ -54,9 +54,7 @@ class Admin::SubmissionsController < AdminController
     ids.each do |id|
       submission = Submission.find(id)
       submission.author_edit = false
-      unless submission.nil?
-        submission.destroy
-      end
+      submission&.destroy
     end
     flash[:notice] = 'Submissions deleted successfully'
     redirect_to Rails.application.routes.url_helpers.admin_root_path

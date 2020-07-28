@@ -3,10 +3,6 @@ class Author::FinalSubmissionFilesView
     @record = submission_record || nil
   end
 
-  def defended_at_date_partial
-    'defended_at_date'
-  end
-
   def author_access_level_view
     return 'access_level_static' if current_partner.milsch?
 

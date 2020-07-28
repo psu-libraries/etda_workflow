@@ -66,18 +66,6 @@ class Admin::SubmissionFormView < SimpleDelegator
     address << "#{author.state} #{author.zip}"
   end
 
-  def committee_form
-    'standard_committee_form'
-  end
-
-  def program_information_partial
-    'standard_program_information'
-  end
-
-  def defense_date_partial_for_final_fields
-    '/admin/submissions/edit/standard_defended_at_date'
-  end
-
   def psu_only(label)
     label == AccessLevel.paper_access_levels[AccessLevel.RESTRICTED_TO_INSTITUTION.to_i][:label] && Partner.current.milsch? # 'Restricted (Penn State Only)'
   end

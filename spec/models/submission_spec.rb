@@ -218,13 +218,6 @@ RSpec.describe Submission, type: :model do
       end
     end
 
-    context '#defended_at_date' do
-      it 'returns defended_at date from student input' do
-        submission = FactoryBot.create :submission, :released_for_publication
-        expect(submission.defended_at).not_to be_blank if current_partner.graduate?
-      end
-    end
-
     context '#check_title_capitalization' do
       it 'identifies all caps in the title' do
         submission = Submission.new(title: 'THIS TITLE IS NOT ALLOWED')

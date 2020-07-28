@@ -15,10 +15,6 @@ class Author::CommitteeFormView
     update_committee_label
   end
 
-  def committee_form_partial
-    'standard_committee_form'
-  end
-
   def link_text
     return new_committee_label unless update?
 

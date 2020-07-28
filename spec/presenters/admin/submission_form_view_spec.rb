@@ -356,29 +356,6 @@ RSpec.describe Admin::SubmissionFormView do
     end
   end
 
-  describe 'committee_form' do
-    let(:author) { FactoryBot.create :author }
-    let(:submission) { FactoryBot.create :submission, author: author }
-
-    context 'the standard_committee_form is returned' do
-      it 'returns the standard committee form' do
-        expect(view.committee_form).to eq('standard_committee_form')
-        expect(view.program_information_partial).to eq('standard_program_information')
-      end
-    end
-  end
-
-  describe 'defense_date_partial_for_final_fields' do
-    let(:author) { FactoryBot.create :author }
-    let(:submission) { FactoryBot.create :submission, author: author }
-
-    context 'the date input by student is used' do
-      it 'displays datepicker date' do
-        expect(view.defense_date_partial_for_final_fields).to eq('/admin/submissions/edit/standard_defended_at_date')
-      end
-    end
-  end
-
   describe 'release_date_history' do
     it 'displays partial release date and expected full release date for restricted submissions' do
       submission = FactoryBot.create :submission, :final_is_restricted
