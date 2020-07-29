@@ -1,0 +1,43 @@
+class LionpathCSVImporter
+  def initialize(lionpath_resource)
+    @lionpath_resource = lionpath_resource
+  end
+
+  def import
+    case
+    when lionpath_resource.is_a?(LionpathProgram)
+      `#{program_script_path}`
+    when lionpath_resource.is_a?(LionpathChair)
+      `#{chair_script_path}`
+    when lionpath_resource.is_a?(LionpathCommittee)
+      `#{committee_script_path}`
+    end
+    parse_csv
+  end
+
+  private
+
+  def parse_csv
+    CSV.foreach('var/tmp_lionpath/lionpath.csv', headers: true) do |row|
+      lionpath_resource.import(row)
+    end
+  end
+
+  def bin_path
+    "#{Rails.root}/bin/"
+  end
+
+  def program_bin_path
+    bin_path + 'lionpath-program.sh'
+  end
+
+  def chair_bin_path
+    bin_path + 'lionpath-chair.sh'
+  end
+
+  def committee_bin_path
+    bin_path + 'lionpath-committee.sh'
+  end
+
+  attr_reader :lionpath_resource
+end
