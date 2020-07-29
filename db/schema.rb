@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_28_132858) do
+ActiveRecord::Schema.define(version: 2020_07_29_174238) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -211,6 +211,7 @@ ActiveRecord::Schema.define(version: 2020_07_28_132858) do
     t.integer "legacy_old_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "code"
     t.index ["legacy_id"], name: "index_programs_on_legacy_id"
   end
 
