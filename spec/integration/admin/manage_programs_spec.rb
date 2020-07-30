@@ -13,7 +13,9 @@ RSpec.describe "Manage Programs", js: true do
 
   it 'has a list of programs' do
     expect(page).to have_content(program.name)
+    expect(page).to have_content(program.code)
     expect(page).to have_content(program2.name)
+    expect(page).to have_content(program2.code)
     page.find('.add-button').click
     expect(page).to have_button("New #{current_partner.program_label}")
     fill_in 'Name', with: 'A New Program'
