@@ -48,8 +48,8 @@ class MockUniversityDirectory
     KNOWN_ACCESS_IDS.include?(psu_access_id)
   end
 
-  def retrieve(psu_access_id, attributes_map)
-    result = get_id_info(psu_access_id)
+  def retrieve(input_string, query_type, attributes_map)
+    result = get_id_info(input_string)
     return result if result.empty?
 
     if attributes_map == ADMIN_LDAP_MAP
@@ -74,7 +74,7 @@ class MockUniversityDirectory
   end
 
   def authors_confidential_status(psu_access_id)
-    results = retrieve(psu_access_id, AUTHOR_LDAP_MAP)
+    results = retrieve(psu_access_id, 'uid', AUTHOR_LDAP_MAP)
     return false if results.empty?
 
     results[:confidential_hold]

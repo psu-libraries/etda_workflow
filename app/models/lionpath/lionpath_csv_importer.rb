@@ -1,4 +1,4 @@
-class LionpathCSVImporter
+class Lionpath::LionpathCSVImporter
   def initialize(lionpath_resource)
     @lionpath_resource = lionpath_resource
   end
@@ -7,6 +7,7 @@ class LionpathCSVImporter
     case
     when lionpath_resource.is_a?(LionpathProgram)
       `#{program_script_path}`
+      Rake::Task['import:program_codes'].invoke(lionpath_csv_loc)
     when lionpath_resource.is_a?(LionpathChair)
       `#{chair_script_path}`
     when lionpath_resource.is_a?(LionpathCommittee)
@@ -17,8 +18,12 @@ class LionpathCSVImporter
 
   private
 
+  def lionpath_csv_loc
+    'var/tmp_lionpath/lionpath.csv'
+  end
+
   def parse_csv
-    CSV.foreach('var/tmp_lionpath/lionpath.csv', headers: true) do |row|
+    CSV.foreach(lionpath_csv_loc, headers: true) do |row|
       lionpath_resource.import(row)
     end
   end

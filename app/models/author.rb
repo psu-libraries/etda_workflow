@@ -62,15 +62,14 @@ class Author < ApplicationRecord
   end
 
   def populate_attributes
-    populate_with_ldap_attributes
+    populate_with_ldap_attributes(access_id,'uid')
     self
   end
 
-  def populate_with_ldap_attributes
-    results = LdapUniversityDirectory.new.retrieve(access_id, LdapResultsMap::AUTHOR_LDAP_MAP)
+  def populate_with_ldap_attributes(input_string, query_type)
+    results = LdapUniversityDirectory.new.retrieve(input_string, query_type, LdapResultsMap::AUTHOR_LDAP_MAP)
     # raise an error unless ldap_results_valid?(results)
-    mapped_attributes = results.except(:access_id)
-    save_mapped_attributes(mapped_attributes) if mapped_attributes
+    save_mapped_attributes(results) if results
   end
 
   def psu_id_number(access_id)
@@ -80,7 +79,7 @@ class Author < ApplicationRecord
 
   def refresh_important_attributes
     # do not overwrite address, phone, etc.
-    ldap_attributes = LdapUniversityDirectory.new.retrieve(access_id, LdapResultsMap::AUTHOR_LDAP_MAP)
+    ldap_attributes = LdapUniversityDirectory.new.retrieve(access_id, 'uid', LdapResultsMap::AUTHOR_LDAP_MAP)
     return if ldap_attributes.empty?
 
     self.first_name = refresh(first_name, ldap_attributes[:first_name])

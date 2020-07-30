@@ -123,7 +123,7 @@ RSpec.describe Author, type: :model do
     let(:author_update_results) { { access_id: 'testid', first_name: ' ', middle_name: 'Yhoo', last_name: 'Ilast', address_1: '0116 H Technology Sppt Bldg', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '814-456-7890', psu_idn: '988888888', confidential_hold: true } }
 
     it 'populates PSU id number if it is not present' do
-      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
       author = described_class.new(access_id: 'testid')
       author.save(validate: false)
       expect(author.psu_idn).to be_nil
@@ -131,7 +131,7 @@ RSpec.describe Author, type: :model do
       expect(author.psu_idn).not_to be_nil
     end
     it 'updates PSU idn number' do
-      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
       author = described_class.new(access_id: 'testid')
       author.psu_idn = 'xxxxxxxxx'
       author.save(validate: false)
@@ -140,7 +140,7 @@ RSpec.describe Author, type: :model do
       expect(author.psu_idn).to eq('988888888')
     end
     it 'updates author name as long as the attribute is not blank in LDAP' do
-      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
       author = described_class.new(access_id: 'testid')
       author.last_name = 'beforelast'
       author.first_name = 'beforefirst'
@@ -202,7 +202,7 @@ RSpec.describe Author, type: :model do
     it 'updates author attributes using LDAP information ' do
       expect(author.last_name).to be_blank
       expect(author.phone_number).to be_blank
-      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('xyz123', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_ldap_results)
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('xyz123', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_ldap_results)
       author.populate_attributes
       expect(author.last_name).to eql('Zebra')
       expect(author.phone_number).to eql('814-123-4567')
@@ -218,7 +218,7 @@ RSpec.describe Author, type: :model do
     it 'populates first and last name with access_id and a message when LDAP does not return those fields' do
       expect(author.last_name).to be_blank
       expect(author.phone_number).to be_blank
-      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('bbb123', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_ldap_results)
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('bbb123', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_ldap_results)
       author.populate_attributes
       expect(author.first_name).to eql(author.access_id.to_s)
       expect(author.phone_number).to eql('')

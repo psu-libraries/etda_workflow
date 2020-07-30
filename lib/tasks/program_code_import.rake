@@ -6,16 +6,14 @@ namespace :import do
 
     csv_options = { headers: true, encoding: "ISO-8859-1:UTF-8", quote_char: '"', force_quotes: true }
     CSV.foreach(args[:file_location].to_s, csv_options) do |row|
-      program_name = row['Transcript Descr'].gsub(/ \(.*\)/, '').strip
-      program = Program.find_by(name: program_name.to_s)
+      program_name = row['Transcript Descr'].to_s.strip
+      program = Program.find_by(name: program_name)
       if program.present?
-        program.update_attribute :code, row['Acadademic Plan'].to_s
+        program.update! code: row['Acadademic Plan'].to_s
       else
-        Program.create! :program, {
-            name: program_name.to_s,
+        Program.create name: program_name,
             code: row['Acadademic Plan'].to_s,
             is_active: 0
-        }
       end
     end
   end

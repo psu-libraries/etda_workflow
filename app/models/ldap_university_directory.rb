@@ -34,16 +34,16 @@ class LdapUniversityDirectory
 
   def exists?(psu_access_id)
     # result = nil
-    result = retrieve(psu_access_id, LdapResultsMap::AUTHOR_LDAP_MAP).present?
+    result = retrieve(psu_access_id, 'uid', LdapResultsMap::AUTHOR_LDAP_MAP).present?
     return false if result.nil?
 
     result.present?
   end
 
-  def retrieve(psu_access_id, attributes_map)
-    return {} if string_has_wildcard_character? psu_access_id
+  def retrieve(input_string, query_type, attributes_map)
+    return {} if string_has_wildcard_character? input_string
 
-    ldap_record = directory_lookup('uid', psu_access_id)
+    ldap_record = directory_lookup(query_type.to_s, input_string)
     mapped_attributes = LdapResult.new(ldap_record: ldap_record,
                                        attribute_map: attributes_map).map_directory_info
     return {} if mapped_attributes.blank?
