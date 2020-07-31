@@ -66,8 +66,8 @@ class Author < ApplicationRecord
     self
   end
 
-  def populate_with_ldap_attributes(input_string, query_type)
-    results = LdapUniversityDirectory.new.retrieve(input_string, query_type, LdapResultsMap::AUTHOR_LDAP_MAP)
+  def populate_with_ldap_attributes(query_string, query_type)
+    results = LdapUniversityDirectory.new.retrieve(query_string, query_type, LdapResultsMap::AUTHOR_LDAP_MAP)
     # raise an error unless ldap_results_valid?(results)
     save_mapped_attributes(results) if results
   end

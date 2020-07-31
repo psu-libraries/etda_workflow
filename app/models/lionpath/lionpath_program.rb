@@ -10,8 +10,8 @@ class Lionpath::LionpathProgram
 
   private
 
-  def year(row)
-    case row['Exp Grad'].to_s[3]
+  def semester(row)
+    case row['Exp Grad'].to_s[3].to_i
     when 1
       'Spring'
     when 5
@@ -21,15 +21,13 @@ class Lionpath::LionpathProgram
     end
   end
 
-  def semester(row)
+  def year(row)
     row['Exp Grad'].to_s[0..2].insert(1, '0').to_i
   end
 
   def author(row)
-    author = Author.find_or_create_by(psu_idn: row['ID']) do |attrs|
+    author = Author.find_or_create_by(psu_idn: row['ID'].to_s) do |attrs|
       attrs.alternate_email_address = row['Alternate Email']
-      attrs.first_name = row['First Name']
-      attrs.last_name = row['Last Name']
     end
     return author if author.persisted?
 
@@ -43,7 +41,7 @@ class Lionpath::LionpathProgram
 
     Program.create name: row['Transcript Descr'].to_s,
                    code: row['Acadademic Plan'].to_s,
-                   is_active: 0
+                   is_active: false
   end
 
   def degree(row)
