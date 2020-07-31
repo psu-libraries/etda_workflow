@@ -81,7 +81,7 @@ class MockUniversityDirectory
   end
 
   def in_admin_group?(this_access_id)
-    result = get_id_info(this_access_id)
+    result = get_id_info(this_access_id, 'uid')
     return false if result.blank?
 
     result[:administrator] || false
