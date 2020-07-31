@@ -48,7 +48,7 @@ class MockUniversityDirectory
     KNOWN_ACCESS_IDS.include?(psu_access_id)
   end
 
-  def retrieve(input_string, query_type, attributes_map)
+  def retrieve(input_string, _query_type, attributes_map)
     result = get_id_info(input_string)
     return result if result.empty?
 

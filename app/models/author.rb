@@ -62,7 +62,7 @@ class Author < ApplicationRecord
   end
 
   def populate_attributes
-    populate_with_ldap_attributes(access_id,'uid')
+    populate_with_ldap_attributes(access_id, 'uid')
     self
   end
 

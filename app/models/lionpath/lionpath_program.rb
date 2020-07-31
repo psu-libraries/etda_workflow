@@ -13,16 +13,16 @@ class Lionpath::LionpathProgram
   def year(row)
     case row['Exp Grad'].to_s[3]
     when 1
-      return 'Spring'
+      'Spring'
     when 5
-      return 'Summer'
+      'Summer'
     when 8
-      return 'Fall'
+      'Fall'
     end
   end
 
   def semester(row)
-    row['Exp Grad'].to_s[0..2].insert(1,'0').to_i
+    row['Exp Grad'].to_s[0..2].insert(1, '0').to_i
   end
 
   def author(row)

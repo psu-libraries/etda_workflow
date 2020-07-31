@@ -1,17 +1,20 @@
 class Lionpath::LionpathCSVImporter
+  class InvalidResource < StandardError; end
+
   def initialize(lionpath_resource)
     @lionpath_resource = lionpath_resource
   end
 
   def import
-    case
-    when lionpath_resource.is_a?(LionpathProgram)
+    if lionpath_resource.is_a?(LionpathProgram)
       `#{program_script_path}`
       Rake::Task['import:program_codes'].invoke(lionpath_csv_loc)
-    when lionpath_resource.is_a?(LionpathChair)
+    elsif lionpath_resource.is_a?(LionpathChair)
       `#{chair_script_path}`
-    when lionpath_resource.is_a?(LionpathCommittee)
+    elsif lionpath_resource.is_a?(LionpathCommittee)
       `#{committee_script_path}`
+    else
+      raise InvalidResource
     end
     parse_csv
   end
