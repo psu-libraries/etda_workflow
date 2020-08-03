@@ -1,0 +1,11 @@
+class Lionpath::LionpathCommittee
+  def import(row)
+    author = Author.find_by(psu_idn: row['Student ID'])
+    submission = author.submissions.find{ |s| s.degree.name == 'PHD' }
+    committee_role = CommitteeRole.find_by
+    committee_member = CommitteeMember.create submission: submission,
+
+  end
+
+  private
+end

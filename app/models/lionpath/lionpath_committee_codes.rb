@@ -1,0 +1,3 @@
+module Lionpath::LionpathCommitteeCodes
+
+end
