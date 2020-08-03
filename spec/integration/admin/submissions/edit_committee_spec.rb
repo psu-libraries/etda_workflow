@@ -34,6 +34,7 @@ RSpec.describe "Editing committee member information for format reviews and fina
     submission.reload
     expect(page).to have_content("Waiting for Committee Review")
     find("div[data-target='#committee']").click
+    sleep 1
     within('#committee') do
       expect(page).to have_content("Approved at: ")
     end
