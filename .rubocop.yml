@@ -72,6 +72,7 @@ Metrics/ClassLength:
   - app/mailers/workflow_mailer.rb
   - app/controllers/approver/approvers_controller.rb
   - app/controllers/author/submissions_controller.rb
+  - app/models/lionpath/lionpath_committee_factory.rb
 
 Metrics/CyclomaticComplexity:
   Exclude:
@@ -88,6 +89,7 @@ Metrics/CyclomaticComplexity:
   - app/controllers/author/committee_members_controller.rb
   - app/presenters/author/committee_member_view.rb
   - app/models/committee_member.rb
+  - app/models/lionpath/lionpath_committee_factory.rb
 
 Metrics/PerceivedComplexity:
   Exclude:
