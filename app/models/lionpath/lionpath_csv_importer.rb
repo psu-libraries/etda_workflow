@@ -17,9 +17,17 @@ class Lionpath::LionpathCSVImporter
       raise InvalidResource
     end
     parse_csv
+    tag_submissions_as_finished if lionpath_resource.is_a?(LionpathCommittee)
   end
 
   private
+
+  def tag_submissions_as_finished
+    # TODO: Join submissions with committee member then
+    # TODO: select where committee_members.lionpath_uploaded_at is present, then uniq
+    # TODO: Use beyond a certain date (yesterday) to make to query smaller
+    # TODO: Then update timestamp on submission
+  end
 
   def lionpath_csv_loc
     'var/tmp_lionpath/lionpath.csv'

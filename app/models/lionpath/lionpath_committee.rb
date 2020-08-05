@@ -1,8 +1,8 @@
 class Lionpath::LionpathCommittee
-
   def import(row)
     this_submission = submission(row)
-    return if this_submission.committee_members.present?
+    return if this_submission.lionpath_upload_finished_at.present? ||
+              this_submission.status_behavior.beyond_collecting_program_information?
 
     factory = Lionpath::LionpathCommitteeFactory.new(row, this_submission)
     factory.create_member
@@ -12,7 +12,7 @@ class Lionpath::LionpathCommittee
 
   def submission(row)
     this_author = author(row)
-    this_author.submissions.find{ |s| s.degree.degree_type.slug == 'dissertation' }
+    this_author.submissions.find { |s| s.degree.degree_type.slug == 'dissertation' }
   end
 
   def author(row)
