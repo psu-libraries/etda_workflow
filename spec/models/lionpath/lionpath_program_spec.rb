@@ -31,6 +31,7 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.program.name).to eq(row['Transcript Descr'])
       expect(Author.first.submissions.first.program.code).to eq(row['Acadademic Plan'])
       expect(Author.first.submissions.first.program.is_active).to eq(false)
+      expect(Author.first.submissions.first.program.lionpath_uploaded_at).to be_truthy
       expect(Author.first.submissions.first.degree.name).to eq(row['Acadademic Plan'].split('_')[1].to_s)
       expect(Author.first.submissions.first.year).to eq(2021)
       expect(Author.first.submissions.first.semester).to eq('Summer')

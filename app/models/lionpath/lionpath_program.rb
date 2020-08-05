@@ -41,7 +41,8 @@ class Lionpath::LionpathProgram
 
     Program.create name: row['Transcript Descr'].to_s,
                    code: row['Acadademic Plan'].to_s,
-                   is_active: false
+                   is_active: false,
+                   lionpath_uploaded_at: DateTime.now
   end
 
   def degree(row)
