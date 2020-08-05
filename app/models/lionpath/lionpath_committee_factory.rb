@@ -11,12 +11,12 @@ class Lionpath::LionpathCommitteeFactory
       variables = assign_variables('Committee Chair/Co-Chair', true)
     when 'CMMJ', 'CMMN', 'G', 'MN', 'M', 'N'
       variables = assign_variables('Committee Member', true)
+    when 'MAMJ', 'MARA', 'MASP', 'MAGS', 'MAMN', 'CMRA'
+      variables = assign_variables('Committee Member', false)
     when 'UF', 'GF', 'GFU', 'GU', 'F'
       variables = assign_variables('Outside Member', true)
     when 'UFN', 'UN', 'U', 'UFN', 'NF'
       variables = assign_variables('Outside Member', false)
-    when 'MAMJ', 'MARA', 'MASP', 'MAGS', 'MAMN', 'CMRA'
-      variables = assign_variables('Committee Member', false)
     when 'S'
       variables = assign_variables('Special Member', false)
     when 'CISP'
