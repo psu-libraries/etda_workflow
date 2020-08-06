@@ -23,9 +23,9 @@ class Lionpath::LionpathCSVImporter
   private
 
   def tag_submissions_as_finished
-    submissions = Submission.join(:committee_member).
-        where('committee_members.lionpath_uploaded_at > ?', DateTime.yesterday).
-        distinct(:id)
+    submissions = Submission.joins(:committee_members)
+                            .where('committee_members.lionpath_uploaded_at > ?', DateTime.yesterday)
+                            .distinct(:id)
     submissions.each do |sub|
       sub.update lionpath_upload_finished_at: DateTime.now
     end
