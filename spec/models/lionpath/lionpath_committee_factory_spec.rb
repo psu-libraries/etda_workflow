@@ -36,7 +36,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
     context "when inbound lionpath committee member has a role of #{code}" do
       let(:row) do
         { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => code.to_s,
-        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
       end
 
       it 'creates a required "Committee Chair/Co-Chair"' do
