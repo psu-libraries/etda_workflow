@@ -23,14 +23,16 @@ class Lionpath::LionpathCSVImporter
   private
 
   def tag_submissions_as_finished
-    # TODO: Join submissions with committee member then
-    # TODO: select where committee_members.lionpath_uploaded_at is present, then uniq
-    # TODO: Use beyond a certain date (yesterday) to make to query smaller
-    # TODO: Then update timestamp on submission
+    submissions = Submission.join(:committee_member).
+        where('committee_members.lionpath_uploaded_at > ?', DateTime.yesterday).
+        distinct(:id)
+    submissions.each do |sub|
+      sub.update lionpath_upload_finished_at: DateTime.now
+    end
   end
 
   def lionpath_csv_loc
-    'var/tmp_lionpath/lionpath.csv'
+    '/var/tmp_lionpath/lionpath.csv'
   end
 
   def parse_csv
