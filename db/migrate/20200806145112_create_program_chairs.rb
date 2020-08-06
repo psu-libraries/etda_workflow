@@ -6,7 +6,7 @@ class CreateProgramChairs < ActiveRecord::Migration[6.0]
       t.string :first_name
       t.string :last_name
       t.string :campus
-      t.integer :phone
+      t.bigint :phone
       t.string :email
     end
     add_index :program_chairs, :program_id, unique: true
