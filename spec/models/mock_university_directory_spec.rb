@@ -52,7 +52,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
   end
 
   describe '#retrieve' do
-    let(:result) { directory.retrieve(access_id, LdapResultsMap::AUTHOR_LDAP_MAP) }
+    let(:result) { directory.retrieve(access_id, 'uid', LdapResultsMap::AUTHOR_LDAP_MAP) }
 
     context "when given an access ID that is not part of the fake data" do
       let(:access_id) { "not there" }

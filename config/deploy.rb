@@ -127,7 +127,6 @@ namespace :deploy do
     on roles(:web) do
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/#{fetch(:partner)}_devise.yml #{release_path}/config/devise.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/#{fetch(:partner)}_database.yml #{release_path}/config/database.yml"
-      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/lion_path.yml #{release_path}/config/lion_path.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/#{fetch(:partner)}_secrets.yml #{release_path}/config/secrets.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/ldap.yml #{release_path}/config/ldap.yml"
       execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/sidekiq.yml #{release_path}/config/sidekiq.yml"

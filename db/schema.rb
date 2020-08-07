@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_31_173551) do
+ActiveRecord::Schema.define(version: 2020_07_29_174238) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.index ["degree_type_id"], name: "committee_roles_degree_type_id_fk"
   end
 
-  create_table "confidential_hold_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "confidential_hold_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "author_id", null: false
     t.datetime "set_at"
     t.datetime "removed_at"
@@ -185,15 +185,6 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.index ["submission_id"], name: "format_review_files_submission_id_fk"
   end
 
-  create_table "inbound_lion_path_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "author_id"
-    t.string "lion_path_degree_code"
-    t.text "current_data", size: :medium
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["author_id"], name: "inbound_lion_path_records_author_id_fk"
-  end
-
   create_table "invention_disclosures", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
     t.string "id_number"
@@ -212,15 +203,6 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.index ["submission_id"], name: "keywords_submission_id_fk"
   end
 
-  create_table "outbound_lion_path_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.text "status_data", size: :medium
-    t.boolean "received"
-    t.string "transaction_id"
-    t.bigint "submission_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "programs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -229,6 +211,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.integer "legacy_old_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "code"
     t.index ["legacy_id"], name: "index_programs_on_legacy_id"
   end
 
@@ -299,7 +282,6 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
   add_foreign_key "confidential_hold_histories", "authors", name: "confidential_hold_histories_author_id_fk"
   add_foreign_key "final_submission_files", "submissions", name: "final_submission_files_submission_id_fk"
   add_foreign_key "format_review_files", "submissions", name: "format_review_files_submission_id_fk"
-  add_foreign_key "inbound_lion_path_records", "authors", name: "inbound_lion_path_records_author_id_fk"
   add_foreign_key "invention_disclosures", "submissions", name: "invention_disclosures_submission_id_fk"
   add_foreign_key "keywords", "submissions", name: "keywords_submission_id_fk"
   add_foreign_key "submissions", "authors", name: "submissions_author_id_fk"

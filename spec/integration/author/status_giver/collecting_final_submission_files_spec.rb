@@ -8,7 +8,6 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
 
     let!(:author) { current_author }
     let!(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, lion_path_degree_code: 'PHD', author: author, degree: degree }
-    let!(:inbound_record) { FactoryBot.create :inbound_lion_path_record, author: author }
     let!(:committee_members) { create_committee(submission) }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
@@ -69,18 +68,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
       end
     end
 
-    context "visiting the 'Upload Final Submission Files page' when using lion path records" do
-      it 'loads the page without a datepicker when using lion path records' do
-        visit author_submission_edit_final_submission_path(submission)
-        # allow(InboundLionPathRecord).to receive(:active?).and_return(true)
-        expect(page).to have_current_path(author_submission_edit_final_submission_path(submission))
-        if InboundLionPathRecord.active?
-          expect(page).not_to have_selector('#submission_defended_at_li')
-          expect(page.find('#submission_defended_at', visible: false)).to be_truthy
-          expect(page).not_to have_content('Date Defended')
-        end
-      end
-
+    context "visiting the 'Upload Final Submission Files page'" do
       it 'redirects to head of program page if none exists and head is approving' do
         ApprovalConfiguration.find(approval_configuration.id).update_attribute :head_of_program_is_approving, true
         CommitteeMember.remove_committee_members(submission)

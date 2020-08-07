@@ -74,20 +74,6 @@ RSpec.describe Author::SubmissionsController, type: :controller do
     end
   end
 
-  describe '#refresh' do
-    it 'refreshes submission information with lion path information' do
-      submission = FactoryBot.create :submission
-      expect(get: author_submission_refresh_path(submission.id)).to route_to(controller: 'author/submissions', action: 'refresh', submission_id: submission.id.to_s)
-    end
-  end
-  # this may not be used
-  # describe '#refresh_date_defended' do
-  #   it 'refreshes the submission date_defended information with the date from lion path' do
-  #     submission = FactoryBot.create :submission
-  #     expect(get: author_submission_refresh_date_defended_path(submission.id)).to route_to(controller: 'author/submissions', action: 'refresh_date_defended', submission_id: submission.id.to_s)
-  #   end
-  # end
-
   describe '#send_email_reminder' do
     it 'routes to author/submissions/[:submission_id]/send_email_reminder' do
       submission = FactoryBot.create :submission

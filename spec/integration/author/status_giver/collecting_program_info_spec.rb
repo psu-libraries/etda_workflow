@@ -94,16 +94,10 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
 
       visit new_author_submission_path
       fill_in 'Title', with: 'A unique test title'
-      if !InboundLionPathRecord.active?
-        select program.name, from: current_partner.program_label.to_s
-        select 'Fall', from: 'Semester Intending to Graduate'
-        select Time.zone.now.year.to_s, from: 'Graduation Year'
-        select degree.description, from: 'Degree'
-      else
-        expect(page).to have_select('Academic Plan')
-        grad_degree = author.inbound_lion_path_record.academic_plan.degrees_display_collection.first[0]
-        select(grad_degree, from: 'Academic Plan')
-      end
+      select program.name, from: current_partner.program_label.to_s
+      select 'Fall', from: 'Semester Intending to Graduate'
+      select Time.zone.now.year.to_s, from: 'Graduation Year'
+      select degree.description, from: 'Degree'
       find_button('Save Program Information').click
       new_submission = Submission.where(title: 'A unique test title').first
       expect(new_submission.status).to eq 'collecting committee'

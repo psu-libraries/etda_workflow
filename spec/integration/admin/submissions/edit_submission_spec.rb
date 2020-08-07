@@ -1,11 +1,11 @@
 RSpec.describe "Editing format review and final submissions as an admin", js: true do
   require 'integration/integration_spec_helper'
 
+  let!(:author) { FactoryBot.create(:author) }
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
   let!(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type) }
   let!(:role) { CommitteeRole.second }
-  let!(:author) { FactoryBot.create(:author, :no_lionpath_record) }
   let(:submission) { FactoryBot.create(:submission, :collecting_committee, author: author) }
   let(:admin) { FactoryBot.create :admin }
   let(:final_submission) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: author) }

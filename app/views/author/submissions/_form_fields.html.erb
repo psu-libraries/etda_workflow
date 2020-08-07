@@ -1,4 +1,4 @@
 
 <%= form.input :author_id, as: :hidden, readonly: true, input_html: { value: @author.id } %>
 <%= render partial: 'title_and_checkbox', locals: {f: form} %>
-<%= render partial: "#{program_information_partial}", locals: {f: form, author: @author}  %>
+<%= render partial: "standard_program_information", locals: {f: form, author: @author}  %>

@@ -123,11 +123,7 @@ RSpec.describe Author::SubmissionView do
         before { submission.status = 'collecting program information' }
 
         it "returns the step two label" do
-          if InboundLionPathRecord.active?
-            expect(view.step_two_description).to eql(view.step_two_name + "<a href='/author/submissions/#{submission.id}/committee_members' class='medium'>[review <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>")
-          else
-            expect(view.step_two_description).to eql(view.step_two_name)
-          end
+          expect(view.step_two_description).to eql(view.step_two_name)
         end
       end
 
@@ -145,21 +141,13 @@ RSpec.describe Author::SubmissionView do
         it "returns a link to edit step two if head of program is approving" do
           submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
 
-          if InboundLionPathRecord.active?
-            expect(view.step_two_description).to eq view.step_two_name + "<a href='#{author_submission_committee_members_path(submission)}' class='medium'>[review <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
-          else
-            expect(view.step_two_description).to eq view.step_two_name + "<a href='#{edit_author_submission_committee_members_path(submission)}' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a><a href='#{author_submission_head_of_program_path(submission)}' class='medium'>[Edit Head of Program <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
-          end
+          expect(view.step_two_description).to eq view.step_two_name + "<a href='#{edit_author_submission_committee_members_path(submission)}' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a><a href='#{author_submission_head_of_program_path(submission)}' class='medium'>[Edit Head of Program <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
         end
 
         it "returns a link to edit step two if head of program is not approving" do
           submission.degree.degree_type.approval_configuration.head_of_program_is_approving = false
 
-          if InboundLionPathRecord.active?
-            expect(view.step_two_description).to eq view.step_two_name + "<a href='#{author_submission_committee_members_path(submission)}' class='medium'>[review <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
-          else
-            expect(view.step_two_description).to eq view.step_two_name + "<a href='#{edit_author_submission_committee_members_path(submission)}' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
-          end
+          expect(view.step_two_description).to eq view.step_two_name + "<a href='#{edit_author_submission_committee_members_path(submission)}' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
         end
       end
 

@@ -4,6 +4,5 @@
     <div class="center-block">No Committee Members have been entered</div>
 <% else %>
     <%= render partial: '/shared/committee_show_fields' %>
-    <%= render partial: 'lionpath_refresh_committee_link' if @submission.using_lionpath? %>
     <strong><%= link_to 'Return to dashboard', author_submissions_path %></strong>
 <% end %>

@@ -19,7 +19,7 @@ class ConfidentialHoldUpdateService
 
   def grab_ldap_results
     directory = LdapUniversityDirectory.new
-    directory.retrieve(@author.access_id, LdapResultsMap::AUTHOR_LDAP_MAP)
+    directory.retrieve(@author.access_id, 'uid', LdapResultsMap::AUTHOR_LDAP_MAP)
   end
 
   def update_confidential_hold(conf_hold_result)

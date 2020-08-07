@@ -207,25 +207,6 @@ RSpec.describe Submission, type: :model do
       end
     end
 
-    context 'using lionpath?', lionpath: true do
-      it 'knows when lion_path integration is being used' do
-        author = Author.new
-        author.inbound_lion_path_record = nil
-        submission = Submission.new(author: author)
-        expect(submission).not_to be_using_lionpath
-      end
-    end
-
-    context 'academic plan' do
-      it 'knows the correct academic plan' do
-        author = FactoryBot.create(:author)
-        inbound_record = FactoryBot.create(:inbound_lion_path_record, author: author)
-        author.inbound_lion_path_record = inbound_record
-        submission = FactoryBot.create(:submission, author: author)
-        expect(submission.academic_plan).not_to be_nil
-      end
-    end
-
     context 'keywords' do
       it 'has a list of keywords' do
         submission = Submission.new
@@ -234,13 +215,6 @@ RSpec.describe Submission, type: :model do
         submission.keywords << Keyword.new(word: 'two')
         expect(submission.delimited_keywords).to eq('zero,one,two')
         expect(submission.keyword_list).to eq(['zero', 'one', 'two'])
-      end
-    end
-
-    context '#defended_at_date' do
-      it 'returns defended_at date from student input' do
-        submission = FactoryBot.create :submission, :released_for_publication
-        expect(submission.defended_at).not_to be_blank if current_partner.graduate?
       end
     end
 

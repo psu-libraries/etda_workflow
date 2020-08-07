@@ -82,7 +82,6 @@ class SubmissionReleaseService
       return unless release_files(original_final_files)
 
       @released_submissions += 1
-      OutboundLionPathRecord.new(submission: submission).report_status_change
       # Archiver.new(s).create!
     rescue StandardError => e
       record_error("Error occurred processing submission id: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}, #{e}")
@@ -106,7 +105,6 @@ class SubmissionReleaseService
 
       update_service.send_email(submission)
       @released_submissions += 1
-      OutboundLionPathRecord.new(submission: submission).report_status_change
       # Archiver.new(s).create!
     rescue StandardError => e
       record_error("Error occurred processing submission id: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}, #{e}")

@@ -23,7 +23,7 @@
 
       <%= render partial: 'title_and_checkbox', locals: {f: f} %>
       <%= render partial: 'semester_year', locals: {f: f}  %>
-      <%= render partial: @view.defended_at_date_partial, locals: {f: f} if current_partner.graduate? %>
+      <%= render partial: 'defended_at_date', locals: {f: f} if current_partner.graduate? %>
 
       <%= f.input :abstract, as: :text, required: true, label: 'Abstract', input_html: {rows: 8} %>
 
