@@ -18,7 +18,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
   context 'when importing' do
     let(:row) do
       { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => 'C',
-        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
     end
 
     it 'assigns default values' do
@@ -36,7 +36,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
     context "when inbound lionpath committee member has a role of #{code}" do
       let(:row) do
         { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => code.to_s,
-          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
       end
 
       it 'creates a required "Committee Chair/Co-Chair"' do
@@ -51,7 +51,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
     context "when inbound lionpath committee member has a role of #{code}" do
       let(:row) do
         { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => code.to_s,
-          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
       end
 
       it 'creates a required "Committee Member"' do
@@ -66,7 +66,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
     context "when inbound lionpath committee member has a role of #{code}" do
       let(:row) do
         { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => code.to_s,
-          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
       end
 
       it 'creates a not required "Committee Member"' do
@@ -81,7 +81,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
     context "when inbound lionpath committee member has a role of #{code}" do
       let(:row) do
         { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => code.to_s,
-          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
       end
 
       it 'creates a required "Outside Member"' do
@@ -96,7 +96,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
     context "when inbound lionpath committee member has a role of #{code}" do
       let(:row) do
         { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => code.to_s,
-          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
       end
 
       it 'creates a not required "Outside Member"' do
@@ -109,7 +109,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
   context "when inbound lionpath committee member has a role of S" do
     let(:row) do
       { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => 'S',
-        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
     end
 
     it 'creates a not required "Special Member"' do
@@ -121,7 +121,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
   context "when inbound lionpath committee member has a role of CISP" do
     let(:row) do
       { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => 'CISP',
-        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
     end
 
     it 'creates a required "Committee Chair/Co-Chair"' do
@@ -140,7 +140,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
     context "when inbound lionpath committee member has a role of #{code}" do
       let(:row) do
         { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => code.to_s,
-          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
       end
 
       it 'creates a required "Committee Chair/Co-Chair"' do
@@ -160,7 +160,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
     context "when inbound lionpath committee member has a role of #{code}" do
       let(:row) do
         { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => code.to_s,
-          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+          'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
       end
 
       it 'creates a required "Committee Chair/Co-Chair"' do
@@ -178,7 +178,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
   context "when inbound lionpath committee member has a role of HM" do
     let(:row) do
       { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => 'HM',
-        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
     end
 
     it 'creates a required "Committee Chair/Co-Chair"' do
@@ -195,7 +195,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
   context "when inbound lionpath committee member has a role of CMSP" do
     let(:row) do
       { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => 'CMSP',
-        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
     end
 
     it 'creates a required "Committee Member"' do
@@ -212,7 +212,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
   context "when inbound lionpath committee member has a role of MD" do
     let(:row) do
       { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => 'MD',
-        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
     end
 
     it 'creates a required "Committee Member"' do
@@ -229,7 +229,7 @@ RSpec.describe Lionpath::LionpathCommitteeFactory do
   context "when inbound lionpath committee member has a role of SR" do
     let(:row) do
       { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => 'SR',
-        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Descr', 'Student ID' => '999999999' }
     end
 
     it 'creates a not required "Special Member"' do

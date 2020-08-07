@@ -1,0 +1,6 @@
+ID,Last Name,First Name,Exp Grad,Acadademic Plan,Transcript Descr,Milestone Code,Milestone Desc,Date Attempted,Exam Status,Alternate Email
+912345678,Tester1,Test1,2215,BIOE_PHD,Bioengineering (PHD),,,,,test1@gmail.com
+912345679,Tester2,Test2,2215,CI_PHD,Curriculum and Instruction (PHD),,,,,tester2@icloud.com
+912345680,Tester3,Test3,2265,ME_MS,Mechanical Engineering (MS),GFORTHDFNS,Doctoral Final Oral Dissertation Defense Passed,,,test3@boeing.com
+912345681,Tester4,Test4,2215,IE_PHD,Industrial Engineering (PHD),,,,,tester4@gmail.com
+912345682,Tester5,Test5,2288,PADM_PHD,Public Administration (PHD),GFORTHDFNS,Doctoral Final Oral Dissertation Defense,6/17/20,In Progress,test5.tester5@gmail.com

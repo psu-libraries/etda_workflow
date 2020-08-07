@@ -210,7 +210,7 @@ ActiveRecord::Schema.define(version: 2020_08_06_145112) do
     t.string "first_name"
     t.string "last_name"
     t.string "campus"
-    t.integer "phone"
+    t.bigint "phone"
     t.string "email"
     t.index ["program_id"], name: "index_program_chairs_on_program_id", unique: true
   end
