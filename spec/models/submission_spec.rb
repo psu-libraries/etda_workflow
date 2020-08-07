@@ -49,6 +49,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:federal_funding).of_type(:boolean) }
   it { is_expected.to have_db_column(:placed_on_hold_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:removed_hold_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:lionpath_upload_finished_at).of_type(:datetime) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }

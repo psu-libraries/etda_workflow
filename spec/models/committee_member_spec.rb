@@ -24,6 +24,7 @@ RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_index(:committee_role_id) }
   it { is_expected.to have_db_column(:last_reminder_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:is_voting).of_type(:boolean) }
+  it { is_expected.to have_db_column(:lionpath_uploaded_at).of_type(:datetime) }
   it { is_expected.to have_db_index(:approver_id) }
   it { is_expected.to belong_to(:submission).class_name('Submission') }
   it { is_expected.to belong_to(:committee_role).class_name('CommitteeRole') }
