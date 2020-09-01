@@ -17,10 +17,10 @@ RSpec.describe "Manage Programs", js: true do
     expect(page).to have_content(program2.name)
     expect(page).to have_content(program2.code)
     page.find('.add-button').click
-    expect(page).to have_button("New #{current_partner.program_label}")
+    expect(page).to have_button("Create #{current_partner.program_label}")
     fill_in 'Name', with: 'A New Program'
     find('#program_is_active_true').click
-    button_text = "New #{current_partner.program_label}"
+    button_text = "Create #{current_partner.program_label}"
     click_button button_text
     expect(page).to have_current_path(admin_programs_path)
     expect(page).to have_content(program.name)
