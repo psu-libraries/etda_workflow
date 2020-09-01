@@ -14,9 +14,10 @@ RSpec.describe Program, type: :model do
   it { is_expected.to have_db_column(:lionpath_uploaded_at).of_type(:datetime) }
 
   it { is_expected.to have_db_index(:legacy_id) }
+  it { is_expected.to have_db_index([:name, :code]).unique(true) }
   it { is_expected.to validate_presence_of :name }
 
-  it { is_expected.to validate_uniqueness_of :name }
+  it { is_expected.to validate_uniqueness_of(:name).scoped_to([:code]) }
 
   it { is_expected.to have_many :submissions }
   it { is_expected.to have_one :program_chair }

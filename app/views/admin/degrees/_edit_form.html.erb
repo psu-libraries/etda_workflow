@@ -1,0 +1,13 @@
+<%= simple_form_for [:admin, @degree] do |f| %>
+  <%= f.input :description %>
+  <%= f.input :degree_type_id,
+              collection: DegreeType.all,
+              label_method: :name,
+              value_method: :id,
+              prompt: "Please Select" %>
+  <%= f.input :is_active, as: :radio_buttons, label: 'Is active?', wrapper: :vertical_radio_and_checkboxes %>
+  <div class="form-group actions col-xs-4">
+    <%= f.button :submit %>
+    <%= link_to "Cancel", admin_degrees_path, class: 'admin btn cancel-link' %>
+  </div>
+<% end %>

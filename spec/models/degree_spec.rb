@@ -17,6 +17,7 @@ RSpec.describe Degree, type: :model do
 
   it { is_expected.to have_db_index(:degree_type_id) }
   it { is_expected.to have_db_index(:legacy_id) }
+  it { is_expected.to have_db_index(:name).unique(true) }
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :description }
 

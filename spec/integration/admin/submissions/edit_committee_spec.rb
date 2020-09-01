@@ -19,6 +19,7 @@ RSpec.describe "Editing committee member information for format reviews and fina
     visit admin_edit_submission_path(submission)
     committee_size = submission.committee_members.count
     find("div[data-target='#committee']").click
+    sleep 1
     within('#committee') do
       expect(find("select[id='submission_committee_members_attributes_0_committee_role_id']").value).to eq role.id.to_s
       within("select#submission_committee_members_attributes_1_committee_role_id") do
