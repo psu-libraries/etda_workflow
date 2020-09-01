@@ -3,7 +3,7 @@ class Lionpath::LionpathChair
     this_program = program(row)
     return if this_program.blank?
 
-    pc = ProgramChair.find_by(program: this_program)
+    pc = ProgramChair.find_by(program: this_program, campus: row['Campus'])
     return pc.update(chair_attrs(row)) if pc.present?
 
     ProgramChair.create({ program: this_program }.merge(chair_attrs(row)))

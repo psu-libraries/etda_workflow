@@ -52,4 +52,17 @@ RSpec.describe Lionpath::LionpathChair do
       expect(ProgramChair.count).to eq 0
     end
   end
+
+  context 'when program exists and has more than one chair' do
+    let!(:program_chair) { FactoryBot.create :program_chair, program: program, access_id: 'abc123', campus: 'AB' }
+
+    it 'adds another program chair' do
+      expect { lionpath_chair.import(row) }.to change(ProgramChair, :count).by 1
+      expect(ProgramChair.count).to eq 2
+      expect(Program.find(program.id).program_chairs.first.campus).to eq 'AB'
+      expect(Program.find(program.id).program_chairs.first.first_name).to eq 'Test'
+      expect(Program.find(program.id).program_chairs.second.campus).to eq 'UP'
+      expect(Program.find(program.id).program_chairs.second.first_name).to eq 'New Test'
+    end
+  end
 end
