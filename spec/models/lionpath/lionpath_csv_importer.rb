@@ -39,7 +39,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
     it 'imports lionpath chair data' do
       lionpath_csv_importer.new(Lionpath::LionpathChair.new).import
       expect(ProgramChair.count).to eq 4
-      expect(Program.find(program_1.id).program_chair.last_name).to eq 'Tester1'
+      expect(Program.find(program_1.id).program_chairs.first.last_name).to eq 'Tester1'
     end
   end
 

@@ -2,7 +2,7 @@
 
 class Program < ApplicationRecord
   has_many :submissions
-  has_one :program_chair
+  has_many :program_chairs
 
   validates :name, presence: true,
                    uniqueness: { case_sensitive: true }

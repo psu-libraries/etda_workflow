@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_06_145112) do
+ActiveRecord::Schema.define(version: 2020_09_01_135554) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -212,7 +212,7 @@ ActiveRecord::Schema.define(version: 2020_08_06_145112) do
     t.string "campus"
     t.bigint "phone"
     t.string "email"
-    t.index ["program_id"], name: "index_program_chairs_on_program_id", unique: true
+    t.index ["program_id"], name: "index_program_chairs_on_program_id"
   end
 
   create_table "programs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -276,6 +276,7 @@ ActiveRecord::Schema.define(version: 2020_08_06_145112) do
     t.datetime "placed_on_hold_at"
     t.datetime "removed_hold_at"
     t.datetime "lionpath_upload_finished_at"
+    t.string "campus"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"

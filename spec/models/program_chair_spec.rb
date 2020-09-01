@@ -10,7 +10,5 @@ RSpec.describe ProgramChair, type: :model do
   it { is_expected.to have_db_column(:phone).of_type(:integer) }
   it { is_expected.to have_db_column(:email).of_type(:string) }
 
-  it { is_expected.to have_db_index(:program_id) }
-
   it { is_expected.to belong_to :program }
 end
