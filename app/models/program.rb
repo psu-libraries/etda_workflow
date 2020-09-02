@@ -4,8 +4,8 @@ class Program < ApplicationRecord
   has_many :submissions
   has_one :program_chair
 
-  validates :name, presence: true,
-                   uniqueness: { case_sensitive: true }
+  validates :name, presence: true
+  validates :name, uniqueness: { scope: :code, case_sensitive: true }
 
   after_initialize :set_is_active_to_true
 
