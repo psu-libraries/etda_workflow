@@ -1,15 +1,24 @@
 RSpec.describe "filtering with semester dropdown", js: true do
   require 'integration/integration_spec_helper'
 
-  let!(:submission1) { FactoryBot.create(:submission, :released_for_publication,
-                                                semester: Semester.current.split(" ")[1],
-                                                year: Semester.current.split(" ")[0]) }
-  let!(:submission2) { FactoryBot.create(:submission, :released_for_publication,
-                                                semester: Semester.current.split(" ")[1],
-                                                year: Semester.current.split(" ")[0].to_f - 2) }
-  let!(:submission3) { FactoryBot.create(:submission, :waiting_for_committee_review,
-                                                semester: Semester.current.split(" ")[1],
-                                                year: Semester.current.split(" ")[0].to_f - 2) }
+  let!(:submission1) do
+    FactoryBot.create(:submission, :released_for_publication,
+                      semester: Semester.current.split(" ")[1],
+                      year: Semester.current.split(" ")[0])
+  end
+
+  let!(:submission2) do
+    FactoryBot.create(:submission, :released_for_publication,
+                      semester: Semester.current.split(" ")[1],
+                      year: Semester.current.split(" ")[0].to_f - 2)
+  end
+
+  let!(:submission3) do
+    FactoryBot.create(:submission, :waiting_for_committee_review,
+                      semester: Semester.current.split(" ")[1],
+                      year: Semester.current.split(" ")[0].to_f - 2)
+  end
+
   let!(:degree_type) { DegreeType.default }
 
   before do
