@@ -5,17 +5,35 @@ RSpec.describe Admin::SubmissionsIndexView do
   let(:view) { described_class.new(degree_type, scope, nil, semester) }
 
   describe '#default_semester' do
-    context 'when semester is nil' do
+    context 'when semester is nil and submission is not released/to be released' do
       let(:scope) { 'format_review_incomplete' }
       let(:semester) { nil }
 
-      it 'returns current semester' do
-        expect(view.default_semester).to eq Semester.current.to_s
+      it "returns 'All Semesters'" do
+        expect(view.default_semester).to eq 'All Semesters'
       end
     end
 
-    context 'when semester is given' do
+    context 'when semester is nil and submission is released' do
+      let(:scope) { 'released_for_publication' }
+      let(:semester) { nil }
+
+      it "returns current semester" do
+        expect(view.default_semester).to eq Semester.current
+      end
+    end
+
+    context 'when semester is given and submission is not released/to be released' do
       let(:scope) { 'format_review_incomplete' }
+      let(:semester) { "Fall 2018" }
+
+      it "returns given semester" do
+        expect(view.default_semester).to eq "Fall 2018"
+      end
+    end
+
+    context 'when semester is given and submission is to be released' do
+      let(:scope) { 'final_submission_to_be_released' }
       let(:semester) { "Fall 2018" }
 
       it 'returns given semester' do
