@@ -4,8 +4,6 @@ class Author::SubmissionsController < AuthorController
 
   def index
     @view = Author::SubmissionsIndexView.new(@author)
-    # TODO: Flash to be removed after 1 year of digital signatures
-    flash.now[:notice] = "Effective immediately, this site now includes the Digital Signatures feature.  This gives committee members the ability to digitally approve submissions through this site.  Graduate students submitting a thesis or dissertation through the Electronic Thesis and Dissertation Application will have their thesis and dissertation submission digitally signed by their committees via the eTD application.  This capability allows a student to securely share their final document with the committee members and allows committee members the ability to review the document and give their approval electronically.</br></br>Electronic signatures will replace the Signatory Form only.  All other supporting materials must still be submitted to the Office of Theses and Dissertations.</br></br><a target='_blank' href='https://news.psu.edu/story/581573/2019/07/29/thesis-dissertation-submissions-be-digitally-signed-starting-fall-2019'>Penn State News: Thesis, dissertation submissions to be digitally signed starting in fall 2019</a>".html_safe if current_partner.graduate?
   end
 
   def new
