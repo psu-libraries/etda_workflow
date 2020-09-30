@@ -1,9 +1,13 @@
 class OpenAccessReportEmail
   def deliver
-    @mail_sender.open_access_report(submissions, date_range).deliver_now
+    mailer.open_access_report(submissions, date_range).deliver_now
   end
 
   private
+
+  def mailer
+    WorkflowMailer.new
+  end
 
   def date_range
     case end_month
@@ -20,7 +24,7 @@ class OpenAccessReportEmail
     Submission.where(status: 'released for publication',
                      access_level: 'open_access').
                where('submissions.released_for_publication_at >= ? AND submissions.released_for_publication_at <= ?',
-                     start_month, end_month)
+                     Date.strptime("0#{start_month}/01/#{current_year}", "%D"), today)
   end
 
   def start_month
@@ -35,14 +39,18 @@ class OpenAccessReportEmail
   end
 
   def end_month
-    Date.today.month
+    today.month
   end
 
   def current_year
-    Date.today.year
+    today.year
   end
 
   def strf_today
-    Date.today.strftime('%D')
+    today.strftime('%D')
+  end
+
+  def today
+    Date.today
   end
 end
