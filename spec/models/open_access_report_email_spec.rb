@@ -5,6 +5,16 @@ RSpec.describe OpenAccessReportEmail do
 
   let(:this_year) { Date.today.year }
 
+  context 'when report is run on an invalid month' do
+    before do
+      allow(Date).to receive(:today).and_return Date.strptime("03/30/#{this_year}", "%m/%d/%Y")
+    end
+
+    it 'raises and error' do
+      expect{ open_access_report_email.deliver }.to raise_error OpenAccessReportEmail::InvalidReleaseMonth
+    end
+  end
+
   context 'when Spring semester' do
     let!(:within_submission) do
       FactoryBot.create :submission, :released_for_publication,

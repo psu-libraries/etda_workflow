@@ -1,4 +1,6 @@
 class OpenAccessReportEmail
+  class InvalidReleaseMonth < RuntimeError; end
+
   def deliver
     mailer.open_access_report(submissions, date_range).deliver_now
   end
@@ -17,6 +19,8 @@ class OpenAccessReportEmail
       "07/01/#{semester_year} - #{strf_today}"
     when 1
       "10/01/#{semester_year} - #{strf_today}"
+    else
+      raise InvalidReleaseMonth
     end
   end
 
@@ -35,6 +39,8 @@ class OpenAccessReportEmail
       '07'
     when 1
       '10'
+    else
+      raise InvalidReleaseMonth
     end
   end
 
