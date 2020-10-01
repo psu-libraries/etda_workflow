@@ -9,11 +9,11 @@ class AccessLevelUpdatedEmail
     @mail_sender.access_level_updated(to_hash).deliver_now
   end
 
-  private
-
   def self.otm_email_address
     I18n.t('external_contacts.otm.email_address')
   end
+
+  private
 
   def submission
     @submission.reload

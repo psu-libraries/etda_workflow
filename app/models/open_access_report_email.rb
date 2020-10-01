@@ -11,30 +11,30 @@ class OpenAccessReportEmail
 
   def date_range
     case end_month
-    when 5
-      "01/01/#{current_year} - #{strf_today}"
-    when 8
-      "06/01/#{current_year} - #{strf_today}"
-    when 12
-      "09/01/#{current_year} - #{strf_today}"
+    when 6
+      "02/01/#{release_year} - #{strf_today}"
+    when 9
+      "07/01/#{release_year} - #{strf_today}"
+    when 1
+      "10/01/#{release_year} - #{strf_today}"
     end
   end
 
   def submissions
     Submission.where(status: 'released for publication',
-                     access_level: 'open_access').
-               where('submissions.released_for_publication_at >= ? AND submissions.released_for_publication_at <= ?',
-                     Date.strptime("0#{start_month}/01/#{current_year}", "%D"), today)
+                     access_level: 'open_access')
+              .where('submissions.released_for_publication_at >= ? AND submissions.released_for_publication_at <= ?',
+                     Date.strptime("#{start_month}/01/#{release_year}", "%D"), today)
   end
 
   def start_month
     case end_month
-    when 5
-      1
-    when 8
-      6
-    when 12
-      9
+    when 6
+      '02'
+    when 9
+      '07'
+    when 1
+      '10'
     end
   end
 
@@ -42,12 +42,14 @@ class OpenAccessReportEmail
     today.month
   end
 
-  def current_year
+  def release_year
+    return (today.year - 1) if today.month == 1
+
     today.year
   end
 
   def strf_today
-    today.strftime('%D')
+    today.strftime('%m/%d/%Y')
   end
 
   def today
