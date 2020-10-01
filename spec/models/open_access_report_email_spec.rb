@@ -67,7 +67,12 @@ RSpec.describe OpenAccessReportEmail do
     let!(:within_submission) do
       FactoryBot.create :submission, :released_for_publication,
                         access_level: 'open_access',
-                        released_for_publication_at: DateTime.strptime("11/01/#{this_year}", "%m/%d/%Y")
+                        released_for_publication_at: DateTime.strptime("11/02/#{this_year}", "%m/%d/%Y")
+    end
+    let!(:within_submission2) do
+      FactoryBot.create :submission, :released_for_publication,
+                        access_level: 'open_access',
+                        released_for_publication_at: DateTime.strptime("01/02/#{this_year + 1}", "%m/%d/%Y")
     end
     let!(:outside_submission) do
       FactoryBot.create :submission, :released_for_publication,
@@ -81,7 +86,7 @@ RSpec.describe OpenAccessReportEmail do
 
     describe '#submissions' do
       it 'includes open_access publications released during Spring semester' do
-        expect(open_access_report_email.send(:submissions)).to eq [within_submission]
+        expect(open_access_report_email.send(:submissions)).to eq [within_submission, within_submission2]
       end
     end
 
