@@ -11,7 +11,7 @@ RSpec.describe OpenAccessReportEmail do
     end
 
     it 'raises and error' do
-      expect{ open_access_report_email.deliver }.to raise_error OpenAccessReportEmail::InvalidReleaseMonth
+      expect { open_access_report_email.deliver }.to raise_error OpenAccessReportEmail::InvalidReleaseMonth
     end
   end
 
