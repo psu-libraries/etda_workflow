@@ -2,14 +2,10 @@ class OpenAccessReportEmail
   class InvalidReleaseMonth < RuntimeError; end
 
   def deliver
-    mailer.open_access_report(submissions, date_range).deliver_now
+    WorkflowMailer.open_access_report(submissions, date_range).deliver_now
   end
 
   private
-
-  def mailer
-    WorkflowMailer.new
-  end
 
   def date_range
     case end_month
@@ -28,7 +24,7 @@ class OpenAccessReportEmail
     Submission.where(status: 'released for publication',
                      access_level: 'open_access')
               .where('submissions.released_for_publication_at >= ? AND submissions.released_for_publication_at <= ?',
-                     Date.strptime("#{start_month}/01/#{semester_year}", "%D"), today)
+                     Date.strptime("#{start_month}/01/#{semester_year}", '%m/%d/%Y'), today)
   end
 
   def start_month
