@@ -21,7 +21,7 @@ class AccessLevelUpdatedEmail
   end
 
   def cc_address
-    return self.class.otm_email_address if partner.graduate?
+    return self.class.otm_email_address if @partner.graduate?
 
     return self.class.otm_email_address if previous_level == 'restricted' && current_level.open_access?
 
