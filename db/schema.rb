@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_06_161902) do
+ActiveRecord::Schema.define(version: 2020_10_07_133658) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -240,6 +240,14 @@ ActiveRecord::Schema.define(version: 2020_10_06_161902) do
     t.index ["submission_id"], name: "proquest_files_submission_id_fk"
   end
 
+  create_table "sed_files", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "submission_id"
+    t.text "asset"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["submission_id"], name: "sed_files_submission_id_fk"
+  end
+
   create_table "submissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "author_id"
     t.bigint "program_id"
@@ -311,6 +319,7 @@ ActiveRecord::Schema.define(version: 2020_10_06_161902) do
   add_foreign_key "invention_disclosures", "submissions", name: "invention_disclosures_submission_id_fk"
   add_foreign_key "keywords", "submissions", name: "keywords_submission_id_fk"
   add_foreign_key "proquest_files", "submissions", name: "proquest_files_submission_id_fk"
+  add_foreign_key "sed_files", "submissions", name: "sed_files_submission_id_fk"
   add_foreign_key "submissions", "authors", name: "submissions_author_id_fk"
   add_foreign_key "submissions", "degrees", name: "submissions_degree_id_fk"
   add_foreign_key "submissions", "programs", name: "submissions_program_id_fk"

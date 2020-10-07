@@ -11,6 +11,9 @@ class Submission < ApplicationRecord
   has_many :final_submission_files, inverse_of: :submission, dependent: :destroy
   has_many :keywords, dependent: :destroy, validate: true
   has_many :invention_disclosures, dependent: :destroy, validate: true
+  has_one :sed_file, dependent: :destroy
+  has_one :proquest_file, dependent: :destroy
+  has_one :title_page_file, dependent: :destroy
 
   delegate :name, to: :program, prefix: :program
   delegate :name, to: :degree, prefix: :degree

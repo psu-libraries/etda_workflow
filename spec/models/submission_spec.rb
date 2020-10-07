@@ -79,6 +79,10 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_many :keywords }
   it { is_expected.to have_many :invention_disclosures }
 
+  it { is_expected.to have_one :sed_file }
+  it { is_expected.to have_one :proquest_file }
+  it { is_expected.to have_one :title_page_file }
+
   it { is_expected.to validate_inclusion_of(:access_level).in_array(AccessLevel::ACCESS_LEVEL_KEYS) }
 
   it { is_expected.to validate_inclusion_of(:status).in_array(SubmissionStatus::WORKFLOW_STATUS) }
