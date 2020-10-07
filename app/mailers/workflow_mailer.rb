@@ -67,6 +67,16 @@ class WorkflowMailer < ActionMailer::Base
          subject: "Access Level for your submission has been updated"
   end
 
+  def open_access_report(submissions, date_range)
+    @submissions = submissions
+    @date_range = date_range
+    mail to: I18n.t('ul_etda_support_email_address').to_s,
+         # TODO: Remove cc when we know this works in prod
+         cc: %w[jrp22@psu.edu ajk5603@psu.edu],
+         from: current_partner.email_address,
+         subject: "eTDs Released as Open Access #{@date_range}"
+  end
+
   def vulnerability_audit_email(audit_results)
     @audit_results = audit_results
     mail to: I18n.t('devs.lead.primary_email_address').to_s,
