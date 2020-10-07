@@ -5,11 +5,11 @@ The following Electronic Theses/Dissertations were released as Open Access betwe
 <% @submissions.each do |submission| %>
 <%= t( "#{current_partner.id}.partner.email.open_access_release.message",
        full_name: "#{submission.author.first_name} #{submission.author.last_name}",
-       title: submission.title,
+       title: submission.title.strip,
        degree_type: submission.degree.degree_type.name,
-       graduation_year: "#{submission.semester} #{submission.year}",
+       graduation_semester: "#{submission.semester} #{submission.year}",
        released_on: submission.released_for_publication_at.strftime('%D'))%>
 
 <% end %>
 Thank you,
-The Graduate School at Penn State
+The <%= current_partner.name %>

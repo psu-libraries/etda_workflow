@@ -229,7 +229,7 @@ RSpec.describe WorkflowMailer do
     let(:email) { described_class.open_access_report(submissions, date_range) }
 
     it "sets an appropriate subject" do
-      expect(email.subject).to eq 'eTDs Released as Open Access'
+      expect(email.subject).to eq "eTDs Released as Open Access #{date_range}"
     end
 
     it "is sent from the partner support email address" do
@@ -243,8 +243,9 @@ RSpec.describe WorkflowMailer do
       expect(email.body).to match(/Title - #{oa_submission1.title}/i)
       expect(email.body).to match(/Title - #{oa_submission2.title}/i)
       expect(email.body).to match(/Paper - #{oa_submission1.degree.degree_type.name}/i)
-      expect(email.body).to match(/Graduation Year - #{oa_submission1.semester} #{oa_submission1.year}/i)
+      expect(email.body).to match(/Graduation Semester - #{oa_submission1.semester} #{oa_submission1.year}/i)
       expect(email.body).to match(/Released On - #{oa_submission1.released_for_publication_at.strftime('%D')}/i)
+      expect(email.body).to match(/#{current_partner.name}/i)
     end
   end
 

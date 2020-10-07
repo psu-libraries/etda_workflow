@@ -71,8 +71,10 @@ class WorkflowMailer < ActionMailer::Base
     @submissions = submissions
     @date_range = date_range
     mail to: I18n.t('ul_etda_support_email_address').to_s,
+         # TODO: Remove cc when we know this works in prod
+         cc: %w[jrp22@psu.edu ajk5603@psu.edu],
          from: current_partner.email_address,
-         subject: "eTDs Released as Open Access"
+         subject: "eTDs Released as Open Access #{@date_range.to_s}"
   end
 
   def vulnerability_audit_email(audit_results)

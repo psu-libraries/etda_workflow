@@ -208,7 +208,7 @@ en:
                     Author - %{full_name}
                     Title - %{title}
                     Paper - %{degree_type}
-                    Graduation Year - %{graduation_year}
+                    Graduation Semester - %{graduation_semester}
                     Released On - %{released_on}
     program:
       label: Graduate Program
