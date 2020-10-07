@@ -74,7 +74,7 @@ class WorkflowMailer < ActionMailer::Base
          # TODO: Remove cc when we know this works in prod
          cc: %w[jrp22@psu.edu ajk5603@psu.edu],
          from: current_partner.email_address,
-         subject: "eTDs Released as Open Access #{@date_range.to_s}"
+         subject: "eTDs Released as Open Access #{@date_range}"
   end
 
   def vulnerability_audit_email(audit_results)

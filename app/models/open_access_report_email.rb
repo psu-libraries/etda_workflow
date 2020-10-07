@@ -21,8 +21,7 @@ class OpenAccessReportEmail
   end
 
   def submissions
-    Submission.where(status: 'released for publication',
-                     access_level: 'open_access')
+    Submission.where(status: 'released for publication', access_level: 'open_access')
               .where('submissions.released_for_publication_at >= ? AND submissions.released_for_publication_at <= ?',
                      Date.strptime("#{start_month}/01/#{semester_year}", '%m/%d/%Y'), today)
   end
