@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_07_133658) do
+ActiveRecord::Schema.define(version: 2020_10_07_143247) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -306,6 +306,14 @@ ActiveRecord::Schema.define(version: 2020_10_07_133658) do
     t.index ["public_id"], name: "index_submissions_on_public_id", unique: true
   end
 
+  create_table "title_page_files", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "submission_id"
+    t.text "asset"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["submission_id"], name: "title_page_files_submission_id_fk"
+  end
+
   add_foreign_key "approval_configurations", "degree_types", name: "degree_type_id_fk"
   add_foreign_key "committee_member_tokens", "committee_members", name: "committee_member_tokens_committee_member_id_fk"
   add_foreign_key "committee_members", "approvers", name: "committee_members_approver_id_fk"
@@ -323,4 +331,5 @@ ActiveRecord::Schema.define(version: 2020_10_07_133658) do
   add_foreign_key "submissions", "authors", name: "submissions_author_id_fk"
   add_foreign_key "submissions", "degrees", name: "submissions_degree_id_fk"
   add_foreign_key "submissions", "programs", name: "submissions_program_id_fk"
+  add_foreign_key "title_page_files", "submissions", name: "title_page_files_submission_id_fk"
 end
