@@ -24,24 +24,10 @@ RSpec.describe FormatReviewFile, type: :model do
     expect(submission).not_to be_valid
   end
 
-  it 'returns class name with dashes' do
-    format_review_file = described_class.new
-    expect(format_review_file.class_name).to eql('format-review-file')
-  end
-
-  it '#current_location - returns full path of file including file name' do
-    submission = FactoryBot.create :submission, :collecting_format_review_files
-    format_file = FormatReviewFile.new(submission_id: submission.id)
-    format_file.id = 1234
-    allow_any_instance_of(FormatReviewFile).to receive(:asset_identifier).and_return('stubbed_filename.pdf')
-    expect(format_file.current_location).to eq(WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(format_file.id) + 'stubbed_filename.pdf')
-  end
-
-  it '#full_file_path returns the full file path w/o filename' do
-    submission = FactoryBot.create :submission, :collecting_format_review_files
-    format_review_file = FormatReviewFile.new(submission_id: submission.id)
-    format_review_file.id = 1234
-    expect(format_review_file.full_file_path).to eq(WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(format_review_file.id))
+  describe '#root_files_path' do
+    it 'returns the directory above the WORKFLOW_BASE_PATH' do
+      expect(described_class.new.send(:root_files_path)).to eq 'format_review_files/'
+    end
   end
 
   describe 'virus scanning' do

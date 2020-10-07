@@ -14,24 +14,10 @@ RSpec.describe TitlePageFile, type: :model do
 
   it { is_expected.to validate_presence_of :asset }
 
-  it 'returns class name with dashes' do
-    title_page_file = described_class.new
-    expect(title_page_file.class_name).to eql('title-page-file')
-  end
-
-  it '#current_location - returns full path of file including file name' do
-    submission = FactoryBot.create :submission, :collecting_final_submission_files
-    title_page_file = TitlePageFile.new(submission_id: submission.id)
-    title_page_file.id = 1234
-    allow_any_instance_of(TitlePageFile).to receive(:asset_identifier).and_return('stubbed_filename.pdf')
-    expect(title_page_file.current_location).to eq(WORKFLOW_BASE_PATH + 'title_page_files/' + EtdaFilePaths.new.detailed_file_path(title_page_file.id) + 'stubbed_filename.pdf')
-  end
-
-  it '#full_file_path returns the full file path w/o filename' do
-    submission = FactoryBot.create :submission, :collecting_final_submission_files
-    title_page_file = TitlePageFile.new(submission_id: submission.id)
-    title_page_file.id = 1234
-    expect(title_page_file.full_file_path).to eq(WORKFLOW_BASE_PATH + 'title_page_files/' + EtdaFilePaths.new.detailed_file_path(title_page_file.id))
+  describe '#root_files_path' do
+    it 'returns the directory above the WORKFLOW_BASE_PATH' do
+      expect(described_class.new.send(:root_files_path)).to eq 'title_page_files/'
+    end
   end
 
   describe 'virus scanning' do

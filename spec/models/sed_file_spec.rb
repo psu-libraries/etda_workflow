@@ -14,24 +14,10 @@ RSpec.describe SedFile, type: :model do
 
   it { is_expected.to validate_presence_of :asset }
 
-  it 'returns class name with dashes' do
-    sed_file = described_class.new
-    expect(sed_file.class_name).to eql('sed-file')
-  end
-
-  it '#current_location - returns full path of file including file name' do
-    submission = FactoryBot.create :submission, :collecting_final_submission_files
-    sed_file = SedFile.new(submission_id: submission.id)
-    sed_file.id = 1234
-    allow_any_instance_of(SedFile).to receive(:asset_identifier).and_return('stubbed_filename.pdf')
-    expect(sed_file.current_location).to eq(WORKFLOW_BASE_PATH + 'sed_files/' + EtdaFilePaths.new.detailed_file_path(sed_file.id) + 'stubbed_filename.pdf')
-  end
-
-  it '#full_file_path returns the full file path w/o filename' do
-    submission = FactoryBot.create :submission, :collecting_final_submission_files
-    sed_file = SedFile.new(submission_id: submission.id)
-    sed_file.id = 1234
-    expect(sed_file.full_file_path).to eq(WORKFLOW_BASE_PATH + 'sed_files/' + EtdaFilePaths.new.detailed_file_path(sed_file.id))
+  describe '#root_files_path' do
+    it 'returns the directory above the WORKFLOW_BASE_PATH' do
+      expect(described_class.new.send(:root_files_path)).to eq 'sed_files/'
+    end
   end
 
   describe 'virus scanning' do
