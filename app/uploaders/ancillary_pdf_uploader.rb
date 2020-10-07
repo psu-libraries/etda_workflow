@@ -1,4 +1,4 @@
-class PdfFileUploader < CarrierWave::Uploader::Base
+class AncillaryPdfUploader < CarrierWave::Uploader::Base
   storage :file
   add_config :base_dir
 

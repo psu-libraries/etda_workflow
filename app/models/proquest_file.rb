@@ -1,24 +1,16 @@
 class ProquestFile < ApplicationRecord
-  mount_uploader :asset, PdfFileUploader
+  mount_uploader :asset, AncillaryPdfUploader
 
   belongs_to :submission
 
   validates :submission_id, :asset, presence: true
   validates :asset, virus_free: true
 
-  def class_name
-    self.class.to_s.underscore.dasherize
-  end
+  include AncillaryFile
 
-  def link_identifier
-    self.class.to_s.underscore.split('_file').first.pluralize
-  end
+  private
 
-  def full_file_path
-    WORKFLOW_BASE_PATH + 'proquest_files/' + EtdaFilePaths.new.detailed_file_path(id)
-  end
-
-  def current_location
-    full_file_path + asset_identifier
+  def root_files_path
+    'proquest_files/'
   end
 end

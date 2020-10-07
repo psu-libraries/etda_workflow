@@ -9,22 +9,11 @@ class FormatReviewFile < ApplicationRecord
   validates :asset_cache, presence: true, if: proc { |f| !f.submission.nil? && f.submission.author_edit && f.submission.status_behavior.collecting_format_review_files? }
   validates :asset, virus_free: true
 
-  def class_name
-    self.class.to_s.underscore.dasherize
-  end
+  include AncillaryFile
 
-  def link_identifier
-    self.class.to_s.underscore.split('_file').first.pluralize
-  end
+  private
 
-  def full_file_path
-    # file path only
-    WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(id)
-  end
-
-  def current_location
-    # full file path including file name
-    # WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(id) + asset_identifier
-    full_file_path + asset_identifier
+  def root_files_path
+    'format_review_files/'
   end
 end
