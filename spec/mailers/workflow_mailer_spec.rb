@@ -238,8 +238,8 @@ RSpec.describe WorkflowMailer do
 
     it "contains information about publications released as open access this semester" do
       expect(email.body).to match(/were released as Open Access between #{date_range}/i)
-      expect(email.body).to match(/Author - #{oa_submission1.author.first_name} #{oa_submission1.author.last_name}/i)
-      expect(email.body).to match(/Author - #{oa_submission1.author.first_name} #{oa_submission2.author.last_name}/i)
+      expect(email.body).to match(/Author - #{oa_submission1.author.last_name}, #{oa_submission1.author.first_name}/i)
+      expect(email.body).to match(/Author - #{oa_submission2.author.last_name}, #{oa_submission1.author.first_name}/i)
       expect(email.body).to match(/Title - #{oa_submission1.title}/i)
       expect(email.body).to match(/Title - #{oa_submission2.title}/i)
       expect(email.body).to match(/Paper - #{oa_submission1.degree.degree_type.name}/i)
