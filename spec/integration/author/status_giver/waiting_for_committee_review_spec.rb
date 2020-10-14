@@ -103,7 +103,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           submission.keywords << (FactoryBot.create :keyword)
         end
 
-        it 'can edit final submission', honors: true do
+        it 'can edit final submission' do
           visit author_submission_edit_final_submission_path(submission)
           expect(page).to have_current_path(author_submission_edit_final_submission_path(submission))
           fill_in "Title", with: "A Brand New Title"
@@ -117,8 +117,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           end
           find('#submission_has_agreed_to_terms').click
           click_button 'Submit final files for review'
-          expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' unless current_partner.honors?
-          expect(Submission.find(submission.id).status).to eq 'waiting for committee review' if current_partner.honors?
+          expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
         end
       end
     end
@@ -156,7 +155,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
       end
 
-      it "moves forward in process if accepted when head of program is not approving", honors: true do
+      it "moves forward in process if accepted when head of program is not approving" do
         submission.degree.degree_type.approval_configuration.update_attribute :head_of_program_is_approving, false
         FactoryBot.create :admin
         visit approver_path(committee_member)
@@ -164,8 +163,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find(:css, "#committee_member_status_approved").set true
         end
         click_button 'Submit Review'
-        expect(Submission.find(submission.id).status).to eq 'waiting for publication release' unless current_partner.honors?
-        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' if current_partner.honors?
+        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
         expect(WorkflowMailer.deliveries.count).to eq 1
       end
 
@@ -177,8 +175,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find('#committee_member_status_approved').click
         end
         click_button 'Submit Review'
-        expect(Submission.find(submission.id).status).to eq 'waiting for publication release' unless current_partner.honors?
-        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' if current_partner.honors?
+        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
         expect(WorkflowMailer.deliveries.count).to eq 0
       end
 

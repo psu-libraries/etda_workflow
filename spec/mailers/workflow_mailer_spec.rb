@@ -103,9 +103,8 @@ RSpec.describe WorkflowMailer do
       expect(email.to).to eq([author.psu_email_address])
     end
 
-    it "tells the author that the final submission has been approved", honors: true, milsch: true do
-      expect(email.body).to match(/It will now be automatically sent to your committee/i) if current_partner.graduate?
-      expect(email.body).to match(/has been approved/i) if current_partner.honors?
+    it "tells the author that the final submission has been approved" do
+      expect(email.body).to match(/has been approved/i)
     end
   end
 

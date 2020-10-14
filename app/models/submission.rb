@@ -377,12 +377,9 @@ class Submission < ApplicationRecord
         WorkflowMailer.send_head_of_program_review_request(self, submission_status)
         update_status_from_head_of_program
       else
-        status_giver.can_waiting_for_publication_release? unless current_partner.honors?
-        status_giver.waiting_for_publication_release! unless current_partner.honors?
-        status_giver.can_waiting_for_final_submission? if current_partner.honors?
-        status_giver.waiting_for_final_submission_response! if current_partner.honors?
+        status_giver.can_waiting_for_final_submission?
+        status_giver.waiting_for_final_submission_response!
         update_attribute(:committee_review_accepted_at, DateTime.now)
-        WorkflowMailer.send_final_emails(self) unless current_partner.honors?
         WorkflowMailer.send_committee_approved_email(self)
       end
     elsif submission_status.status == 'rejected'
