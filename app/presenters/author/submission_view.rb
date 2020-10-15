@@ -189,11 +189,7 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_seven_description
-    if status_behavior.collecting_final_submission_files_rejected?
-      ("<a href=" + "\'/author/submissions/#{id}/final_submission/edit\'" + " class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}' </span>]</a>").html_safe
-    else
-      nil
-    end
+    ("<a href=" + "\'/author/submissions/#{id}/final_submission/edit\'" + " class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}' </span>]</a>").html_safe if status_behavior.collecting_final_submission_files_rejected?
   end
 
   def step_seven_class
