@@ -51,7 +51,7 @@ class SubmissionStatus
   end
 
   def collecting_final_submission_files?
-    current_status == 'collecting final submission files' || current_status == 'format review accepted'
+    current_status == 'collecting final submission files' || current_status == 'collecting final submission files rejected'
   end
 
   def collecting_final_submission_files_rejected?

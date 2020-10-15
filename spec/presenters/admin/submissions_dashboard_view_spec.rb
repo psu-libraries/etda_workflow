@@ -205,7 +205,6 @@ RSpec.describe Admin::SubmissionsDashboardView do
             sub_count: '1'
           )
         ]
-      end
     end
   end
 end

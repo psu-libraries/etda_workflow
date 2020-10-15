@@ -122,14 +122,16 @@ class Author::SubmissionView < SimpleDelegator
 
   def step_five_description
     if status_behavior.beyond_collecting_final_submission_files? && !status_behavior.collecting_final_submission_files_rejected?
-      "Upload Final Submission Files <a href='/author/submissions/#{id}/final_submission' class='medium'>[Review Final Submission <span class='sr-only'>final submission files for submission '#{title}' </span>]</a>".html_safe
+      "Upload Final Submission Files <a href='/author/submissions/#{id}/final_submission' class='medium'>[Review Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>".html_safe
+    elsif status_behavior.collecting_final_submission_files? && !status_behavior.collecting_final_submission_files_rejected?
+      "<a href='#{"/author/submissions/#{id}/final_submission/edit"}'>Upload Final Submission Files</a>".html_safe
     else
       "Upload Final Submission Files"
     end
   end
 
   def step_five_class
-    if status_behavior.collecting_final_submission_files?
+    if status_behavior.collecting_final_submission_files? && !status_behavior.collecting_final_submission_files_rejected?
       'current'
     elsif status_behavior.beyond_collecting_final_submission_files?
       'complete'
@@ -244,7 +246,7 @@ class Author::SubmissionView < SimpleDelegator
 
   def display_notes?(step_number)
     return display_format_review_notes?(step_number) if [3, 4].include? step_number
-    return display_final_submission_notes?(step_number) if [5, 6].include? step_number
+    return display_final_submission_notes?(step_number) if [7].include? step_number
 
     false
   end
@@ -253,10 +255,11 @@ class Author::SubmissionView < SimpleDelegator
     if step_number < 5
       return Rails.application.routes.url_helpers.author_submission_format_review_path(id, anchor: "format-review-notes") unless status_behavior.collecting_format_review_files?
 
-      Rails.application.routes.url_helpers.author_submission_edit_format_review_path(id, anchor: "format-review-notes") else
-                                                                                                                                 return Rails.application.routes.url_helpers.author_submission_final_submission_path(id, anchor: "final-submission-notes") unless status_behavior.collecting_final_submission_files?
+      Rails.application.routes.url_helpers.author_submission_edit_format_review_path(id, anchor: "format-review-notes")
+    else
+      return Rails.application.routes.url_helpers.author_submission_final_submission_path(id, anchor: "final-submission-notes") unless status_behavior.collecting_final_submission_files?
 
-                                                                                                                                 Rails.application.routes.url_helpers.author_submission_edit_final_submission_path(id, anchor: "final-submission-notes")
+      Rails.application.routes.url_helpers.author_submission_edit_final_submission_path(id, anchor: "final-submission-notes")
     end
   end
 
@@ -272,8 +275,8 @@ class Author::SubmissionView < SimpleDelegator
 
     def display_final_submission_notes?(step_number)
       return false if final_submission_notes.blank?
-      return true if step_number == 5 && status_behavior.collecting_final_submission_files_rejected?
-      return true if step_number == 6 && !final_submission_approved_at.nil?
+      return true if step_number == 7 && status_behavior.collecting_final_submission_files_rejected?
+      return true if step_number == 7 && !final_submission_approved_at.nil?
 
       false
     end
