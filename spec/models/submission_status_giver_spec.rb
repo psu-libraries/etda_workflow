@@ -2076,17 +2076,16 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
 
-      it "updates status to 'waiting for final submission response'" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        giver.waiting_for_committee_review!
-        expect(submission.status).to eq 'waiting for committee review'
+        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
     context "when status is 'waiting for committee review'" do
       before { submission.status = 'waiting for committee review' }
 
-      it "raises an exception" do
+      it "does not raise an exception" do
         giver = described_class.new(submission)
         expect { giver.waiting_for_final_submission_response! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
@@ -2095,9 +2094,10 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for head of program review'" do
       before { submission.status = 'waiting for head of program review' }
 
-      it "raises an exception" do
+      it "updates status to 'waiting for final submission response'" do
         giver = described_class.new(submission)
-        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        giver.waiting_for_final_submission_response!
+        expect(submission.status).to eq 'waiting for final submission response'
       end
     end
 
@@ -2198,10 +2198,10 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for head of program review'" do
       before { submission.status = 'waiting for head of program review' }
 
-      it "updates status to 'waiting for publication release'" do
+      it "updates status to 'waiting for final submission response'" do
         giver = described_class.new(submission)
-        giver.waiting_for_publication_release!
-        expect(submission.status).to eq 'waiting for publication release'
+        giver.waiting_for_final_submission_response!
+        expect(submission.status).to eq 'waiting for final submission response'
       end
     end
 
@@ -2609,12 +2609,10 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for head of program review'" do
       before { submission.status = 'waiting for head of program review' }
 
-      it "changes the status to 'waiting for publication release'" do
-        skip 'Non honors' if current_partner.honors?
-
+      it "changes the status to 'waiting for final submission response'" do
         giver = described_class.new(submission)
-        giver.unreleased_for_publication!
-        expect(submission.status).to eq 'waiting for publication release'
+        giver.waiting_for_final_submission_response!
+        expect(submission.status).to eq 'waiting for final submission response'
       end
     end
 

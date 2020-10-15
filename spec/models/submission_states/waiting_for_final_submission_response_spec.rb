@@ -59,7 +59,7 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
     context 'when submission status WaitingForHeadOfProgramReview' do
       let(:status) { SubmissionStates::WaitingForHeadOfProgramReview.name }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be_truthy }
     end
 
     context 'when submission status CollectingFinalSubmissionFiles' do

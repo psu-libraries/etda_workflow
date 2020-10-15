@@ -65,8 +65,6 @@ RSpec.describe SubmissionStatus, type: :model do
     expect(described_class.new(submission)).to be_collecting_final_submission_files
     submission.status = 'collecting final submission files rejected'
     expect(described_class.new(submission)).to be_collecting_final_submission_files
-    submission.status = 'format review accepted'
-    expect(described_class.new(submission)).to be_collecting_final_submission_files
     submission.status = 'collecting final submission format review rejected'
     expect(described_class.new(submission)).not_to be_collecting_final_submission_files
   end

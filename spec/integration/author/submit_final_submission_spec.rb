@@ -13,7 +13,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
 
-    context "when I submit the 'Upload Final Submission Files' form" do
+    context "when I submit the 'Upload Final Submission Files' form", milsch: true, honors: true do
       it 'loads the page' do
         submission.defended_at = Time.zone.yesterday
         submission.save(validate: false)
@@ -40,7 +40,9 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         submission.reload
         expect(submission.federal_funding).to eq false
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
-        expect(WorkflowMailer.deliveries.count).to eq(3)
+        expect(WorkflowMailer.deliveries.count).to eq(6) if current_partner.graduate?
+        expect(WorkflowMailer.deliveries.count).to eq(3) if current_partner.honors?
+        expect(WorkflowMailer.deliveries.count).to eq(3) if current_partner.milsch?
       end
     end
 

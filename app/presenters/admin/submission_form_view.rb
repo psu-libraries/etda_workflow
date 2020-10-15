@@ -140,30 +140,6 @@ class Admin::SubmissionFormView < SimpleDelegator
     "class='form-section-body collapse in'".html_safe
   end
 
-  def button_message
-    if approval_status_behavior.status == 'approved' && approval_status_behavior.head_of_program_status == 'approved' && degree.degree_type.approval_configuration.head_of_program_is_approving
-      "Final Submission to be Released"
-    elsif approval_status_behavior.status == 'approved' && !degree.degree_type.approval_configuration.head_of_program_is_approving
-      "Final Submission to be Released"
-    elsif approval_status_behavior.status == 'rejected' || approval_status_behavior.head_of_program_status == 'rejected'
-      "Committee Review Rejected"
-    else
-      "Final Submission is Pending"
-    end
-  end
-
-  def confirmation_message
-    if approval_status_behavior.status == 'approved' && approval_status_behavior.head_of_program_status == 'approved' && degree.degree_type.approval_configuration.head_of_program_is_approving
-      "The committee for this submission has already approved.  Move this submission to 'Final Submission to be Released' and skip the committee review?"
-    elsif approval_status_behavior.status == 'approved' && !degree.degree_type.approval_configuration.head_of_program_is_approving
-      "The committee for this submission has already approved.  Move this submission to 'Final Submission to be Released' and skip the committee review?"
-    elsif approval_status_behavior.status == 'rejected' || approval_status_behavior.head_of_program_status == 'rejected'
-      "The committee for this submission has already rejected.  Move this submission to 'Committee Review Rejected' and skip the committee review?"
-    else
-      "Are you sure you would like to approve this submission?  This will initiate the committee review stage, which will send emails out to members of the committee."
-    end
-  end
-
   private
 
     def collapse_content?(section_heading)
