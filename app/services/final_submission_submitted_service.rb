@@ -11,6 +11,7 @@ class FinalSubmissionSubmittedService
   def final_submission_approved
     status_giver.can_waiting_for_publication_release?
     status_giver.waiting_for_publication_release!
+    @submission.update! final_submission_approved_at: DateTime.now
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
     WorkflowMailer.send_final_emails(submission)
     "The submission\'s final submission information was successfully approved."

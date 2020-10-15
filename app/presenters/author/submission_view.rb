@@ -120,6 +120,14 @@ class Author::SubmissionView < SimpleDelegator
     status
   end
 
+  def step_five_description
+    if status_behavior.beyond_collecting_final_submission_files? && !status_behavior.collecting_final_submission_files_rejected?
+      "Upload Final Submission Files <a href='/author/submissions/#{id}/final_submission' class='medium'>[Review Final Submission <span class='sr-only'>final submission files for submission '#{title}' </span>]</a>".html_safe
+    else
+      "Upload Final Submission Files"
+    end
+  end
+
   def step_five_class
     if status_behavior.collecting_final_submission_files?
       'current'
@@ -130,28 +138,11 @@ class Author::SubmissionView < SimpleDelegator
     end
   end
 
-  def step_five_description
-    if status_behavior.collecting_final_submission_files?
-      if status_behavior.collecting_final_submission_files_rejected?
-        ("Upload Final Submission files <a href=" + "\'/author/submissions/#{id}/final_submission/edit\'" + " class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}' </span>]</a>").html_safe
-      else
-        ("<a href='" + "/author/submissions/#{id}/final_submission/edit" + "'>Upload Final Submission files</a>").html_safe
-      end
-    elsif status_behavior.beyond_collecting_final_submission_files? || status_behavior.waiting_for_final_submission_response?
-      ("Upload Final Submission files <a href='" + "/author/submissions/#{id}/final_submission" + "' class='medium'>[Review Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
-    else
-      'Upload Final Submission files'
-    end
-  end
-
   def step_five_status
     status = {}
     if status_behavior.beyond_collecting_final_submission_files?
       status[:partial_name] = '/author/shared/completed_indicator'
       status[:text] = "completed#{formatted_timestamp_of(final_submission_files_uploaded_at)}"
-    elsif status_behavior.collecting_final_submission_files_rejected?
-      status[:partial_name] = '/author/shared/rejected_indicator'
-      status[:text] = "rejected#{formatted_timestamp_of(final_submission_rejected_at)}"
     end
     status
   end
@@ -195,10 +186,18 @@ class Author::SubmissionView < SimpleDelegator
     status
   end
 
+  def step_seven_description
+    if status_behavior.collecting_final_submission_files_rejected?
+      ("<a href=" + "\'/author/submissions/#{id}/final_submission/edit\'" + " class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}' </span>]</a>").html_safe
+    else
+      nil
+    end
+  end
+
   def step_seven_class
-    if status_behavior.waiting_for_final_submission_response?
+    if status_behavior.waiting_for_final_submission_response? || status_behavior.collecting_final_submission_files_rejected?
       'current'
-    elsif status_behavior.beyond_waiting_for_final_submission_response?
+    elsif status_behavior.beyond_waiting_for_final_submission_response_rejected?
       'complete'
     else
       ''
@@ -207,11 +206,14 @@ class Author::SubmissionView < SimpleDelegator
 
   def step_seven_status
     status = {}
-    if status_behavior.beyond_waiting_for_final_submission_response?
+    if status_behavior.beyond_waiting_for_final_submission_response_rejected?
       status[:text] = "approved#{formatted_timestamp_of(final_submission_approved_at)}"
       status[:partial_name] = '/author/shared/completed_indicator'
     elsif status_behavior.waiting_for_final_submission_response?
       status[:partial_name] = '/author/shared/under_review_indicator'
+    elsif status_behavior.collecting_final_submission_files_rejected?
+      status[:partial_name] = '/author/shared/rejected_indicator'
+      status[:text] = "rejected#{formatted_timestamp_of(final_submission_rejected_at)}"
     end
     status
   end

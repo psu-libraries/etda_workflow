@@ -55,8 +55,8 @@ class SubmissionStatusGiver
     validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse]
   end
 
-  def can_waiting_for_final_submission?
-    validate_current_state! [SubmissionStates::WaitingForCommitteeReview, SubmissionStates::CollectingFinalSubmissionFilesRejected]
+  def can_waiting_for_final_submission_response?
+    validate_current_state! [SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::CollectingFinalSubmissionFilesRejected]
   end
 
   def can_respond_to_final_submission?
@@ -64,7 +64,7 @@ class SubmissionStatusGiver
   end
 
   def can_waiting_for_committee_review?
-    validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::WaitingForCommitteeReviewRejected]
+    validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::WaitingForCommitteeReviewRejected]
   end
 
   def can_waiting_for_head_of_program_review?
@@ -72,11 +72,11 @@ class SubmissionStatusGiver
   end
 
   def can_waiting_for_committee_review_rejected?
-    submission.head_of_program_is_approving? ? (validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReview]) : (validate_current_state! [SubmissionStates::WaitingForCommitteeReview])
+    validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReview]
   end
 
   def can_waiting_for_publication_release?
-    submission.head_of_program_is_approving? ? (validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingInFinalSubmissionOnHold]) : (validate_current_state! [SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingInFinalSubmissionOnHold])
+    validate_current_state! [SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingInFinalSubmissionOnHold]
   end
 
   def can_waiting_in_final_submission_on_hold?

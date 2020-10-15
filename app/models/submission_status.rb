@@ -51,7 +51,7 @@ class SubmissionStatus
   end
 
   def collecting_final_submission_files?
-    current_status == 'collecting final submission files' || current_status == 'format review accepted' || current_status == 'collecting final submission files rejected'
+    current_status == 'collecting final submission files' || current_status == 'format review accepted'
   end
 
   def collecting_final_submission_files_rejected?
@@ -110,10 +110,6 @@ class SubmissionStatus
     waiting_for_committee_review? || beyond_waiting_for_committee_review?
   end
 
-  def beyond_waiting_for_final_submission_response?
-    waiting_for_publication_release? || released_for_publication? || waiting_in_final_submission_on_hold?
-  end
-
   def beyond_waiting_for_committee_review?
     waiting_for_head_of_program_review? || beyond_waiting_for_head_of_program_review?
   end
@@ -124,6 +120,14 @@ class SubmissionStatus
 
   def beyond_waiting_for_committee_review_rejected?
     waiting_for_final_submission_response? || beyond_waiting_for_final_submission_response?
+  end
+
+  def beyond_waiting_for_final_submission_response?
+    collecting_final_submission_files_rejected? || beyond_waiting_for_final_submission_response_rejected?
+  end
+
+  def beyond_waiting_for_final_submission_response_rejected?
+    waiting_for_publication_release? || released_for_publication? || waiting_in_final_submission_on_hold?
   end
 
   def format_review_rejected?
