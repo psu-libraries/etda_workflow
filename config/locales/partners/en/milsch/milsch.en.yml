@@ -42,8 +42,9 @@ en:
                     University Park, PA  16802
         final_submission_approved:
           message: |
-                    Your thesis has been approved for committee review.
-                    You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
+                    Congratulations!  Your thesis has been approved by The Millennium Scholars Program.
+                    Please accept our congratulations as you complete your degree.
+                    (commencement information can be found online as http://commencement.psu.edu/).
 
                     If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
@@ -62,8 +63,8 @@ en:
                     University Park, PA  16802
         final_submission_received:
           message: |
-                    Thank you for submitting your final %{degree_type}.
-                    You will be notified by email of your thesis approval or if changes are required within 2-3 weeks after submitting your final.
+                    Thank you for submitting your final %{degree_type}.  Your %{degree_type} has been accepted for committee review.
+                    You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
@@ -124,9 +125,9 @@ en:
                     University Park, PA  16802
         committee_approved:
           message: |
-                    Congratulations!  Your thesis has been approved by its committee.
-                    Please accept our congratulations as you complete your degree.
-                    (commencement information can be found online as http://commencement.psu.edu/).
+                    Your submission has been reviewed by your committee and it is approved.
+                    No further action is needed by you at this time.  The Millenium Scholars Program will now review your submission.
+                    You will be notified by email of your thesis approval or if changes are required within 2-3 weeks.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:
