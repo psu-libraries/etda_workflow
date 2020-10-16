@@ -104,7 +104,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "tells the author that the final submission has been approved" do
-      expect(email.body).to match(/has been approved/i)
+      expect(email.body).to match(/Congratulations!|has been approved/i)
     end
   end
 
@@ -172,7 +172,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "tells the author that the final submission has been approved" do
-      expect(email.body).to match(/Congratulations!/i)
+      expect(email.body).to match(/committee and it is approved/i)
     end
   end
 
