@@ -1,10 +1,10 @@
 class FinalSubmissionSubmitService
   attr_accessor :submission, :status_giver, :approval_status, :final_submission_params
 
-  def initialize(submission, status_giver, approval_status, final_submission_params)
+  def initialize(submission, status_giver, final_submission_params)
     @submission = submission
     @status_giver = status_giver
-    @approval_status = approval_status
+    @approval_status = submission.approval_status_behavior.status
     @final_submission_params = final_submission_params
   end
 
@@ -41,6 +41,7 @@ class FinalSubmissionSubmitService
       status_giver.can_waiting_for_committee_review?
       status_giver.waiting_for_committee_review!
       submission.reset_committee_reviews
+      submission.committee_review_requests_init
     end
     OutboundLionPathRecord.new(submission: submission).report_status_change
     submission.update_final_submission_timestamps!(Time.zone.now)
@@ -57,6 +58,6 @@ class FinalSubmissionSubmitService
   def collect_final
     status_giver.can_waiting_for_committee_review?
     status_giver.waiting_for_committee_review!
-    submission.committee_review_requests_init unless approval_status == 'approved'
+    submission.committee_review_requests_init
   end
 end
