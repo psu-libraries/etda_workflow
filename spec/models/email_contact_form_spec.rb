@@ -23,11 +23,11 @@ RSpec.describe EmailContactForm, type: :model do
       end
     end
 
-    context 'when general/technical issue' do
+    context 'when general/technical issue', honors: true, milsch: true do
       it 'has headers with "to" address to partner and "from" address is no-reply@psu.edu' do
         mail_form.issue_type = :general
         expect(mail_form.headers).to eq(from: 'no-reply@psu.edu',
-                                        to: 'gradthesis@psu.edu',
+                                        to: current_partner.email_address.to_s,
                                         subject: "#{current_partner.slug} Contact Form")
       end
     end
