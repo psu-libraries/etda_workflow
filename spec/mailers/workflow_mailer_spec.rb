@@ -223,7 +223,7 @@ RSpec.describe WorkflowMailer do
 
   describe '#open_access_report' do
     let(:date_range) { "#{(Date.today - 6.months).strftime('%D')} - #{Date.today.strftime('%D')}" }
-    let(:csv) { CSV.generate { |csv| csv << ['HEADERS']} }
+    let(:csv) { CSV.generate { |csv| csv << ['HEADERS'] } }
     let(:email) { described_class.open_access_report(date_range, csv) }
 
     it "sets an appropriate subject" do

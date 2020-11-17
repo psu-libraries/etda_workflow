@@ -54,7 +54,7 @@ class WorkflowMailerPreview < ActionMailer::Preview
 
   def open_access_report
     @submissions = [Submission.first, Submission.second, Submission.third]
-    csv = CSV.generate {|csv| csv << ['HEADERS']}
+    csv = CSV.generate { |c| c << ['HEADERS'] }
     WorkflowMailer.open_access_report('1/1/01 - 1/1/02', csv)
   end
 end
