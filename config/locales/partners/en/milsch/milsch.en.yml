@@ -168,13 +168,6 @@ en:
                      Millennium Scholars Program
                      130 Ritenour Building
                      University Park, PA  16802
-        open_access_release:
-          message: |
-                    Author - %{full_name}
-                    Title - %{title}
-                    Paper - %{degree_type}
-                    Graduation Semester - %{graduation_semester}
-                    Released On - %{released_on}
     program:
       label: Millennium Scholars Program Name
     committee:
