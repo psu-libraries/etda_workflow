@@ -2,10 +2,21 @@ class OpenAccessReportEmail
   class InvalidReleaseMonth < RuntimeError; end
 
   def deliver
-    WorkflowMailer.open_access_report(submissions, date_range).deliver_now
+    WorkflowMailer.open_access_report(date_range, csv).deliver_now
   end
 
   private
+
+  def csv
+    CSV.generate do |csv|
+      csv << ['Last Name', 'First Name', 'Title', 'Degree Type', 'Graduation Semester', 'Released On']
+      submissions.each do |submission|
+        csv << [submission.author.last_name.to_s, submission.author.first_name.to_s, submission.title.strip.to_s,
+                submission.degree.degree_type.name.to_s, "#{submission.semester} #{submission.year}",
+                submission.released_for_publication_at.strftime('%D').to_s]
+      end
+    end
+  end
 
   def date_range
     case end_month

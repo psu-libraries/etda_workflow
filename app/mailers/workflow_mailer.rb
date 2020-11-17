@@ -67,9 +67,9 @@ class WorkflowMailer < ActionMailer::Base
          subject: "Access Level for your submission has been updated"
   end
 
-  def open_access_report(submissions, date_range)
-    @submissions = submissions
+  def open_access_report(date_range, csv)
     @date_range = date_range
+    attachments['open_access_report.csv'] = csv
     mail to: I18n.t('ul_etda_support_email_address').to_s,
          # TODO: Remove cc when we know this works in prod
          cc: %w[jrp22@psu.edu ajk5603@psu.edu],
