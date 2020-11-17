@@ -239,8 +239,8 @@ RSpec.describe WorkflowMailer do
     end
 
     it "contains information about publications released as open access this semester" do
-      expect(email.body).to match(/were released as Open Access between #{date_range}/i)
-      expect(email.body).to match(/#{current_partner.name}/i)
+      expect(email.parts.first.body.to_s).to match(/were released as Open Access between #{date_range}/i)
+      expect(email.parts.first.body.to_s).to match(/#{current_partner.name}/i)
     end
   end
 
