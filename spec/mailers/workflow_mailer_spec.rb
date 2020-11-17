@@ -222,11 +222,9 @@ RSpec.describe WorkflowMailer do
   end
 
   describe '#open_access_report' do
-    let(:oa_submission1) { FactoryBot.create :submission, :released_for_publication }
-    let(:oa_submission2) { FactoryBot.create :submission, :released_for_publication }
-    let(:submissions) { [oa_submission1, oa_submission2] }
     let(:date_range) { "#{(Date.today - 6.months).strftime('%D')} - #{Date.today.strftime('%D')}" }
-    let(:email) { described_class.open_access_report(submissions, date_range) }
+    let(:csv) { CSV.generate { |csv| csv << ['HEADERS']} }
+    let(:email) { described_class.open_access_report(date_range, csv) }
 
     it "sets an appropriate subject" do
       expect(email.subject).to eq "eTDs Released as Open Access #{date_range}"
@@ -236,15 +234,12 @@ RSpec.describe WorkflowMailer do
       expect(email.from).to eq([partner_email])
     end
 
+    it "has csv attachment" do
+      expect(email.attachments.first.filename).to eq("open_access_report.csv")
+    end
+
     it "contains information about publications released as open access this semester" do
       expect(email.body).to match(/were released as Open Access between #{date_range}/i)
-      expect(email.body).to match(/Author - #{oa_submission1.author.last_name}, #{oa_submission1.author.first_name}/i)
-      expect(email.body).to match(/Author - #{oa_submission2.author.last_name}, #{oa_submission1.author.first_name}/i)
-      expect(email.body).to match(/Title - #{oa_submission1.title}/i)
-      expect(email.body).to match(/Title - #{oa_submission2.title}/i)
-      expect(email.body).to match(/Paper - #{oa_submission1.degree.degree_type.name}/i)
-      expect(email.body).to match(/Graduation Semester - #{oa_submission1.semester} #{oa_submission1.year}/i)
-      expect(email.body).to match(/Released On - #{oa_submission1.released_for_publication_at.strftime('%D')}/i)
       expect(email.body).to match(/#{current_partner.name}/i)
     end
   end

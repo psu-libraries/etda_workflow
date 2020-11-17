@@ -1,8 +1,4 @@
 class WorkflowMailerPreview < ActionMailer::Preview
-  def initialize
-    @submission = Submission.first
-  end
-
   if current_partner.graduate?
     def format_review_received
       WorkflowMailer.format_review_received(@submission)
@@ -54,5 +50,11 @@ class WorkflowMailerPreview < ActionMailer::Preview
   def vulnerability_audit_email
     audit_results = 'Vulnerable Gem Found\n A fake gem to test\n CVE-bogus1234'
     WorkflowMailer.vulnerability_audit_email(audit_results)
+  end
+
+  def open_access_report
+    @submissions = [Submission.first, Submission.second, Submission.third]
+    csv = CSV.generate {|csv| csv << ['HEADERS']}
+    WorkflowMailer.open_access_report('1/1/01 - 1/1/02', csv)
   end
 end
