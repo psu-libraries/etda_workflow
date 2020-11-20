@@ -59,7 +59,8 @@
       <%#= render 'shared/release_statement' %>
       <%#= f.input :has_agreed_to_publication_release, label: 'I agree to release agreement', as: :boolean, wrapper: :vertical_boolean, required: true %>
       <div class="form-group actions col-xs-6">
-        <%= f.button :submit, class: "btn-primary author-final-submit", value: "Submit final files for review" %>
+        <%= f.button :submit, class: "btn-primary author-final-submit", value: "Submit final files for review" unless current_partner.graduate? %>
+        <%= f.button :submit, class: "btn-primary author-final-submit", value: "Submit final files for review", data: {confirm: I18n.t("graduate.fee_message.#{@submission.degree.degree_type.slug}.message").html_safe} if current_partner.graduate? %>
         <%= link_to "Cancel", author_root_path, class: 'btn cancel-link' %>
       </div>
   <% end %>
