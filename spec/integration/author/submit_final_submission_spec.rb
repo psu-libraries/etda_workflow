@@ -34,8 +34,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
         find('span', text: 'Submit final files for review').click
+        expect(page).to have_content('Please pay the')
         click_button('Continue')
-        # expect(page).to have_content('successfully')
         submission.reload
         expect(submission.status).to eq 'waiting for final submission response' unless current_partner.honors?
         expect(submission.status).to eq 'waiting for committee review' if current_partner.honors?
