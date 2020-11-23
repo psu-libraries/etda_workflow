@@ -116,7 +116,8 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
             all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
           end
           find('#submission_has_agreed_to_terms').click
-          click_button 'Submit final files for review'
+          find('span', text: 'Submit final files for review').click
+          click_button('Continue')
           expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' unless current_partner.honors?
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review' if current_partner.honors?
         end

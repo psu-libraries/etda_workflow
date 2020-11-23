@@ -33,7 +33,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         find("#submission_federal_funding_false").click
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
-        click_button 'Submit final files for review'
+        find('span', text: 'Submit final files for review').click
+        click_button('Continue')
         # expect(page).to have_content('successfully')
         submission.reload
         expect(submission.status).to eq 'waiting for final submission response' unless current_partner.honors?
@@ -63,7 +64,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         check 'I agree to copyright statement'
-        click_button 'Submit final files for review'
+        find('span', text: 'Submit final files for review').click
+        click_button('Continue')
         # expect(page).to have_content('successfully')
         submission.reload
         expect(page).to have_current_path(author_root_path)
@@ -96,7 +98,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         all('input[type="file"]').last.set(fixture('final_submission_file_01.pdf'))
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
-        click_button 'Submit final files for review'
+        find('span', text: 'Submit final files for review').click
+        click_button('Continue')
         # expect(page).to have_content('successfully')
         submission.reload
         expect(submission.status).to eq 'waiting for final submission response' unless current_partner.honors?
@@ -132,7 +135,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         check 'I agree to copyright statement'
-        click_button 'Submit final files for review'
+        find('span', text: 'Submit final files for review').click
+        click_button('Continue')
         # expect(page).to have_content('successfully')
         submission.reload
         expect(submission.status).to eq 'waiting for final submission response' unless current_partner.honors?
