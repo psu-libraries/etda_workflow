@@ -552,6 +552,17 @@ p.hint
   }
 }
 
+#dialog-confirm {
+  .modal-dialog
+  {
+    top: 25%;
+  }
+  .modal-backdrop
+  {
+    background-color: #ffffff;
+  }
+}
+
 //override Bootstrap label-success color (green) to correct contrast errors
 .label-success,
 .btn-success

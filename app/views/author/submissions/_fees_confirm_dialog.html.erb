@@ -1,0 +1,16 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="dialog-confirm" aria-labelledby="confirm_title" aria-describedby="confirm_desc">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id='confirm_title' class="modal-title">Reminder</h4>
+      </div>
+      <div id='confirm_desc' class="modal-body" >
+        <p><%= I18n.t("graduate.fee_message.#{@submission.degree.degree_type.slug}.message").html_safe %></p>
+      </div>
+      <div class="modal-footer">
+        <button id="final-submit-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="final-submit" value="Submit final files for review" type="button" class="btn btn-primary" >Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
