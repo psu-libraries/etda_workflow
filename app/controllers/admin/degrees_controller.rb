@@ -10,7 +10,7 @@ class Admin::DegreesController < AdminController
   end
 
   def create
-    @degree = Degree.new(degree_params)
+    @degree = Degree.new(degree_create_params)
     @degree.save!
     redirect_to admin_degrees_path
     flash[:notice] = 'Degree successfully created'
@@ -24,7 +24,7 @@ class Admin::DegreesController < AdminController
 
   def update
     @degree = Degree.find(params[:id])
-    @degree.update!(degree_params)
+    @degree.update!(degree_update_params)
     redirect_to admin_degrees_path
     flash[:notice] = 'Degree successfully updated'
   rescue ActiveRecord::RecordInvalid
@@ -33,7 +33,13 @@ class Admin::DegreesController < AdminController
 
   private
 
-  def degree_params
+  def degree_update_params
+    params.require(:degree).permit(:description,
+                                   :degree_type_id,
+                                   :is_active)
+  end
+
+  def degree_create_params
     params.require(:degree).permit(:name,
                                    :description,
                                    :degree_type_id,

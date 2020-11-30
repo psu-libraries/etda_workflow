@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2020_09_01_135554) do
     t.datetime "updated_at", null: false
     t.index ["degree_type_id"], name: "index_degrees_on_degree_type_id"
     t.index ["legacy_id"], name: "index_degrees_on_legacy_id"
+    t.index ["name"], name: "index_degrees_on_name", unique: true
   end
 
   create_table "final_submission_files", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -226,6 +227,7 @@ ActiveRecord::Schema.define(version: 2020_09_01_135554) do
     t.string "code"
     t.datetime "lionpath_uploaded_at"
     t.index ["legacy_id"], name: "index_programs_on_legacy_id"
+    t.index ["name", "code"], name: "index_programs_on_name_and_code", unique: true
   end
 
   create_table "submissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
