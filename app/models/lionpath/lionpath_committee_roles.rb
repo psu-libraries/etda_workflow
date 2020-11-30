@@ -21,12 +21,12 @@ class Lionpath::LionpathCommitteeRoles
   private
 
   def committee_role_attrs(row)
-    status = (row['Status'] == 'A' ? true : false)
+    status = (row['Status'] == 'A')
     {
-        degree_type_id: dissertation_id,
-        name: row['Description'],
-        is_active: status,
-        num_required: 0
+      degree_type_id: dissertation_id,
+      name: row['Description'],
+      is_active: status,
+      num_required: 0
     }
   end
 
