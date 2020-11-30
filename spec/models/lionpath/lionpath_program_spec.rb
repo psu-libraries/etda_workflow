@@ -9,7 +9,8 @@ RSpec.describe Lionpath::LionpathProgram do
     {
       'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Exp Grad' => 2215,
       'Acadademic Plan' => 'BIOE_PHD', 'Transcript Descr' => 'Bioengineering (PHD)', 'Milestone Code' => nil,
-      'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil, 'Alternate Email' => 'test@psu.edu'
+      'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil, 'Alternate Email' => 'test@psu.edu',
+      'Campus' => 'UP'
     }
   end
 
@@ -35,6 +36,7 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.degree.name).to eq(row['Acadademic Plan'].split('_')[1].to_s)
       expect(Author.first.submissions.first.year).to eq(2021)
       expect(Author.first.submissions.first.semester).to eq('Summer')
+      expect(Author.first.submissions.first.campus).to eq('UP')
     end
   end
 

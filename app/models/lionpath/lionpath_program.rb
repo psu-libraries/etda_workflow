@@ -5,7 +5,8 @@ class Lionpath::LionpathProgram
                       degree: degree(row),
                       semester: semester(row),
                       year: year(row),
-                      status: 'collecting program information'
+                      status: 'collecting program information',
+                      campus: row['Campus']
   end
 
   private
