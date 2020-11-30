@@ -20,7 +20,7 @@ RSpec.describe Program, type: :model do
   it { is_expected.to validate_uniqueness_of(:name).scoped_to([:code]) }
 
   it { is_expected.to have_many :submissions }
-  it { is_expected.to have_one :program_chair }
+  it { is_expected.to have_many :program_chairs }
 
   describe '#active_status' do
     context 'When is_active is false or nil' do
