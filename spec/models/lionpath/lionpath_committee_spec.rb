@@ -9,6 +9,7 @@ RSpec.describe Lionpath::LionpathCommittee do
   end
   let!(:degree) { FactoryBot.create :degree, name: 'PHD', degree_type: degree_type }
   let!(:degree_type) { DegreeType.find_by(slug: 'dissertation') }
+  let!(:committee_role) { FactoryBot.create :committee_role, code: 'C', name: 'Chair of Committee' }
   let(:row) do
     { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => 'C',
       'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
@@ -27,14 +28,15 @@ RSpec.describe Lionpath::LionpathCommittee do
   context "when author's submission does not have lionpath_upload_finished_at timestamp" do
     it 'imports data' do
       expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 1
+      expect(submission.committee_members.first.name).to eq 'Test Tester'
     end
   end
 
-  context "when author has a thesis submission" do
-    let!(:submission_thesis) { FactoryBot.create :submission }
+  context "when author has a dissertation submission" do
+    let!(:submission_dissertation) { FactoryBot.create :submission }
 
-    it 'does not affect thesis committee' do
-      expect { lionpath_committee.import(row) }.to change { submission_thesis.committee_members.count }.by 0
+    it 'does not affect dissertation committee' do
+      expect { lionpath_committee.import(row) }.to change { submission_dissertation.committee_members.count }.by 0
     end
   end
 end
