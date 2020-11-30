@@ -88,7 +88,7 @@ Metrics/CyclomaticComplexity:
   - app/controllers/author/committee_members_controller.rb
   - app/presenters/author/committee_member_view.rb
   - app/models/committee_member.rb
-  - app/models/lionpath/lionpath_committee_factory.rb
+  - app/models/lionpath/lionpath_committee_creator.rb
 
 Metrics/PerceivedComplexity:
   Exclude:

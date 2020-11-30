@@ -11,7 +11,7 @@ RSpec.describe Lionpath::LionpathCommitteeCreator do
   let!(:degree_type) { DegreeType.find_by(slug: 'dissertation') }
 
   before do
-    factory = lionpath_committee_factory.new(row, submission)
+    factory = lionpath_committee_creator.new(row, submission)
     factory.create_member
   end
 
