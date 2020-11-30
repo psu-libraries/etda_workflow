@@ -1,7 +1,7 @@
 require 'model_spec_helper'
 
-RSpec.describe Lionpath::LionpathCommitteeFactory do
-  subject(:lionpath_committee_factory) { described_class }
+RSpec.describe Lionpath::LionpathCommitteeCreator do
+  subject(:lionpath_committee_creator) { described_class }
 
   let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
   let!(:submission) do

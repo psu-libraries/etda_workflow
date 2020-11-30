@@ -4,7 +4,7 @@ class Lionpath::LionpathCommittee
     return if this_submission.lionpath_upload_finished_at.present? ||
               this_submission.status_behavior.beyond_collecting_program_information?
 
-    factory = Lionpath::LionpathCommitteeFactory.new(row, this_submission)
+    factory = Lionpath::LionpathCommitteeCreator.new(row, this_submission)
     factory.create_member
   end
 

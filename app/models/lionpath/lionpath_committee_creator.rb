@@ -1,4 +1,4 @@
-class Lionpath::LionpathCommitteeFactory
+class Lionpath::LionpathCommitteeCreator
   def initialize(row, submission)
     @row = row
     @submission = submission
