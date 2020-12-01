@@ -1,23 +1,32 @@
 class Lionpath::LionpathCsvImporter
   class InvalidResource < StandardError; end
 
-  def initialize(lionpath_resource)
-    @lionpath_resource = lionpath_resource
+  # Order is essential here; Do not change.
+  LIONPATH_RESOURCES = [
+    Lionpath::LionpathProgram,
+    Lionpath::LionpathChair,
+    Lionpath::LionpathCommittee
+  ].freeze
+
+  def initialize
   end
 
   def import
-    if lionpath_resource.is_a?(Lionpath::LionpathProgram)
-      `#{program_bin_path}`
-    elsif lionpath_resource.is_a?(Lionpath::LionpathChair)
-      `#{chair_bin_path}`
-    elsif lionpath_resource.is_a?(Lionpath::LionpathCommittee)
-      `#{committee_bin_path}`
-    else
-      raise InvalidResource
+    LIONPATH_RESOURCES.each do |resource|
+      if resource.is_a?(Lionpath::LionpathProgram)
+        `#{program_bin_path}`
+      elsif resource.is_a?(Lionpath::LionpathChair)
+        `#{chair_bin_path}`
+      elsif resource.is_a?(Lionpath::LionpathCommittee)
+        `#{committee_bin_path}`
+      else
+        raise InvalidResource
+      end
+      parse_csv(resource)
+      # Tagging MUST happen AFTER csv is parsed
+      # It's the only way to be sure the committees are complete and ready to be tagged
+      tag_submissions_as_finished if resource.is_a?(Lionpath::LionpathCommittee)
     end
-    parse_csv
-    # Tagging MUST happen AFTER csv is parsed
-    tag_submissions_as_finished if lionpath_resource.is_a?(Lionpath::LionpathCommittee)
   end
 
   private
@@ -28,6 +37,7 @@ class Lionpath::LionpathCsvImporter
 
   def tag_submissions_as_finished
     submissions = Submission.joins(:committee_members)
+                            .where('submissions.lionpath_upload_finished_at IS NULL')
                             .where('committee_members.lionpath_uploaded_at > ?', DateTime.yesterday)
                             .distinct(:id)
     submissions.each do |sub|
@@ -43,10 +53,10 @@ class Lionpath::LionpathCsvImporter
     '/var/tmp_lionpath/'
   end
 
-  def parse_csv
+  def parse_csv(resource)
     csv_options = { headers: true, encoding: "ISO-8859-1:UTF-8", quote_char: '"', force_quotes: true }
     CSV.foreach(lionpath_csv_loc, csv_options) do |row|
-      lionpath_resource.import(row)
+      resource.import(row)
     end
   end
 
@@ -65,6 +75,4 @@ class Lionpath::LionpathCsvImporter
   def committee_bin_path
     bin_path + 'lionpath-committee.sh'
   end
-
-  attr_reader :lionpath_resource
 end
