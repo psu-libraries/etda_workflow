@@ -1,11 +1,11 @@
 require 'model_spec_helper'
 
 RSpec.describe Lionpath::LionpathCsvImporter do
-  subject(:lionpath_csv_importer) { described_class }
+  subject(:lionpath_csv_importer) { described_class.new }
 
   before do
-    allow_any_instance_of(lionpath_csv_importer).to receive(:`).and_return(true)
-    allow_any_instance_of(lionpath_csv_importer).to receive(:lionpath_csv_loc).and_return(fixture_location)
+    allow(lionpath_csv_importer).to receive(:`).and_return(true)
+    allow(lionpath_csv_importer).to receive(:lionpath_csv_loc).and_return(fixture_location)
   end
 
   context 'when lionpath_resource is LionpathProgram' do
@@ -19,7 +19,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
     let!(:degree_ms) { FactoryBot.create :degree, name: 'MS', degree_type: DegreeType.second }
 
     it 'imports lionpath program data' do
-      lionpath_csv_importer.new(Lionpath::LionpathProgram.new).import
+      lionpath_csv_importer.send(:parse_csv, Lionpath::LionpathProgram.new)
       expect(Submission.count).to eq 5
       expect(Program.count).to eq 5
       expect(Author.find(author_1.id).submissions.first.program.name).to eq 'Bioengineering (PHD)'
@@ -34,11 +34,10 @@ RSpec.describe Lionpath::LionpathCsvImporter do
     let!(:program_2) { FactoryBot.create :program, code: 'NUTR_MS' }
     let!(:program_3) { FactoryBot.create :program, code: 'NUTR_PHD' }
     let!(:program_4) { FactoryBot.create :program, code: 'NEURS_MS' }
-    let!(:program_5) { FactoryBot.create :program, code: 'NEURS_MS' }
 
     it 'imports lionpath chair data' do
-      lionpath_csv_importer.new(Lionpath::LionpathChair.new).import
-      expect(ProgramChair.count).to eq 4
+      lionpath_csv_importer.send(:parse_csv, Lionpath::LionpathChair.new)
+      expect(ProgramChair.count).to eq 5
       expect(Program.find(program_1.id).program_chairs.first.last_name).to eq 'Tester1'
     end
   end
@@ -48,16 +47,24 @@ RSpec.describe Lionpath::LionpathCsvImporter do
     let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
     let!(:submission) { FactoryBot.create :submission, degree: degree, author: author }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.first }
-
-    it 'imports lionpath committee data' do
-      lionpath_csv_importer.new(Lionpath::LionpathCommittee.new).import
-      expect(CommitteeMember.count).to eq 6
-      expect(author.submissions.first.committee_members.count).to eq 6
-      expect(author.submissions.first.committee_members.first.name).to eq 'Test1 Tester1'
+    before do
+      FactoryBot.create :committee_role, code: 'CHMJ'
+      FactoryBot.create :committee_role, code: 'CMMJ'
+      FactoryBot.create :committee_role, code: 'UF'
+      FactoryBot.create :committee_role, code: 'MD'
     end
 
-    it 'tags submissions with lionpath_upload_finished_at timestamp' do
-      # TODO: This spec
+    it 'imports lionpath committee data' do
+      lionpath_csv_importer.send(:parse_csv, Lionpath::LionpathCommittee.new)
+      expect(CommitteeMember.count).to eq 5
+      expect(author.submissions.first.committee_members.count).to eq 5
+      expect(author.submissions.first.committee_members.first.name).to eq 'Test1 Tester1'
+    end
+  end
+
+  describe '#assign_chairs' do
+    it "adds program chair to submissions' committees and adds finishing timestamp" do
+
     end
   end
 end
