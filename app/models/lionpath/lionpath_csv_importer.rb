@@ -3,44 +3,57 @@ class Lionpath::LionpathCsvImporter
 
   # Order is essential here; Do not change.
   LIONPATH_RESOURCES = [
-    Lionpath::LionpathProgram,
-    Lionpath::LionpathChair,
-    Lionpath::LionpathCommittee
+    Lionpath::LionpathProgram.new,
+    Lionpath::LionpathChair.new,
+    Lionpath::LionpathCommittee.new
   ].freeze
-
-  def initialize
-  end
 
   def import
     LIONPATH_RESOURCES.each do |resource|
-      if resource.is_a?(Lionpath::LionpathProgram)
-        `#{program_bin_path}`
-      elsif resource.is_a?(Lionpath::LionpathChair)
-        `#{chair_bin_path}`
-      elsif resource.is_a?(Lionpath::LionpathCommittee)
-        `#{committee_bin_path}`
-      else
-        raise InvalidResource
-      end
+      grab_file(resource)
       parse_csv(resource)
-      # Tagging MUST happen AFTER csv is parsed
-      # It's the only way to be sure the committees are complete and ready to be tagged
-      tag_submissions_as_finished if resource.is_a?(Lionpath::LionpathCommittee)
     end
+    assign_chairs
   end
 
   private
+
+  def grab_file(resource)
+    if resource.is_a?(Lionpath::LionpathProgram)
+      `#{program_bin_path}`
+    elsif resource.is_a?(Lionpath::LionpathChair)
+      `#{chair_bin_path}`
+    elsif resource.is_a?(Lionpath::LionpathCommittee)
+      `#{committee_bin_path}`
+    else
+      raise InvalidResource
+    end
+  end
 
   def clear_tmp_directory
     `rm -v #{tmp_dir}*`
   end
 
-  def tag_submissions_as_finished
+  def assign_chairs
+    degree_type = DegreeType.find_by(slug: 'dissertation')
+    chair_role = CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: degree_type)
     submissions = Submission.joins(:committee_members)
                             .where('submissions.lionpath_upload_finished_at IS NULL')
                             .where('committee_members.lionpath_uploaded_at > ?', DateTime.yesterday)
                             .distinct(:id)
     submissions.each do |sub|
+      program_chair = sub.program.program_chairs.find{ |n| n.campus == sub.campus }
+      chair_member = CommitteeMember.create committee_role: chair_role.id,
+                                            name: "#{program_chair.first_name} #{program_chair.last_name}",
+                                            email: program_chair.email,
+                                            access_id: program_chair.access_id,
+                                            is_required: true,
+                                            is_voting: false,
+                                            lionpath_uploaded_at: DateTime.now
+      sub.committee_members << chair_member
+      sub.save!
+      # The following timestamp must be assigned after all imports and committee chair is added
+      # This way we are certain the committees are complete
       sub.update lionpath_upload_finished_at: DateTime.now
     end
   end
