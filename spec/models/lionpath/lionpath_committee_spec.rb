@@ -25,6 +25,26 @@ RSpec.describe Lionpath::LionpathCommittee do
     end
   end
 
+  context "when author's submission is beyond_collecting_committee" do
+    before do
+      submission.update status: 'collecting format review files'
+    end
+
+    it 'does not import data' do
+      expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 0
+    end
+  end
+
+  context "when author's submission was created before the previous day" do
+    before do
+      submission.update created_at: (DateTime.now - 2.days)
+    end
+
+    it 'does not import data' do
+      expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 0
+    end
+  end
+
   context "when author's submission does not have lionpath_upload_finished_at timestamp" do
     it 'imports data' do
       expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 1

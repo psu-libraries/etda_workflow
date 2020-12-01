@@ -13,7 +13,6 @@ class Lionpath::LionpathCommitteeRoles
         cr.update(committee_role_attrs(row))
         next
       end
-
       CommitteeRole.create!({ code: row['Type'] }.merge(committee_role_attrs(row)))
     end
   end

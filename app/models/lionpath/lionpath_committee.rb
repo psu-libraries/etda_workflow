@@ -2,10 +2,10 @@ class Lionpath::LionpathCommittee
   def import(row)
     this_submission = submission(row)
     return if this_submission.lionpath_upload_finished_at.present? ||
-              this_submission.status_behavior.beyond_collecting_program_information? ||
+              this_submission.status_behavior.beyond_collecting_committee? ||
               this_submission.created_at < DateTime.yesterday
 
-    CommitteeMember.create( { submission: this_submission }.merge(committee_member_attrs(row)))
+    CommitteeMember.create({ submission: this_submission }.merge(committee_member_attrs(row)))
   end
 
   private
