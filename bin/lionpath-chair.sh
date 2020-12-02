@@ -1,8 +1,13 @@
 #!/bin/bash
 
-# Using SFTP connection with Lionpath host, pull all program head/chair files
-sftp -P 22 -r -i ~/.ssh/id_rsa_lionpath_prod uldsrdc@prod-nfs.lionpath.psu.edu:/out/PE_SR_G_ETD_CHAIR_PRC* var/tmp_lionpath/
+# Using SFTP connection with Lionpath host to pull file names in order of most to least recent
+OUTPUT=$(sftp -P 22 -b bin/lp_sftp_newest.bat -i ~/.ssh/id_rsa_lionpath_prod uldsrdc@prod-nfs.lionpath.psu.edu)
 
-# Single out the newest file, rename, and delete the old ones
-ls -t var/tmp_lionpath/ | head -1 | xargs -I '{}' mv var/tmp_lionpath/{} var/tmp_lionpath/lionpath.csv
-rm var/tmp_lionpath/PE_SR_G_ETD_CHAIR_PRC*
+# Single out the first PE_SR_G_ETD_CHAIR_PRC and pull this down as var/tmp_lionpath/lionpath.csv
+for x in $OUTPUT
+do
+  if [[ "$x" =~ "PE_SR_G_ETD_CHAIR_PRC" ]]; then
+    sftp -P 22 -r -i ~/.ssh/id_rsa_lionpath_prod uldsrdc@prod-nfs.lionpath.psu.edu:/out/$x var/tmp_lionpath/lionpath.csv
+    break
+  fi
+done
