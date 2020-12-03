@@ -66,6 +66,11 @@ RSpec.describe Lionpath::LionpathCsvImporter do
   end
 
   describe '#assign_chairs' do
+    let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.first }
+    let!(:program_head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: degree.degree_type) }
+    let!(:program) { FactoryBot.create :program }
+    let!(:program_chair) { FactoryBot.create :program_chair, program: program, campus: 'UP' }
+
     context 'when submission is before 2021' do
 
     end
@@ -75,28 +80,24 @@ RSpec.describe Lionpath::LionpathCsvImporter do
     end
 
     context 'when submission already has a program chair' do
-      let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.first }
       let!(:submission) { FactoryBot.create :submission, created_at: DateTime.strptime('2021-01-02', '%Y-%m-%d'),
-                                            degree: degree }
-      let!(:program_head_role) { FactoryBot.create :committee_role, name: 'Program Head/Chair',
-                                                   degree_type: degree.degree_type }
+                                            degree: degree, program: program, campus: 'UP' }
       let!(:program_head_member) { FactoryBot.create :committee_member, committee_role: program_head_role,
                                                             submission: submission }
       let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
-
+      it "updates pre-existing program chair in submissions' committee" do
+        expect{ lionpath_csv_importer.send(:assign_chairs) }.to change{ CommitteeMember.count }.by 0
+        expect(Submission.find(submission.id).committee_members.first.access_id).to eq program_chair.access_id
+      end
     end
 
     context "when submission doesn't have a program chair yet" do
-      let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.first }
       let!(:submission) { FactoryBot.create :submission, created_at: DateTime.strptime('2021-01-02', '%Y-%m-%d'),
                                                    degree: degree, program: program, campus: 'UP' }
-      let!(:program_head_role) { FactoryBot.create :committee_role, name: 'Program Head/Chair',
-                                                          degree_type: degree.degree_type }
       let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
-      let!(:program) { FactoryBot.create :program }
-      let!(:program_chair) { FactoryBot.create :program_chair, program: program, campus: 'UP' }
       it "adds program chair to submissions' committee" do
         expect{ lionpath_csv_importer.send(:assign_chairs) }.to change{ CommitteeMember.count }.by 1
+        expect(Submission.find(submission.id).committee_members.second.access_id).to eq program_chair.access_id
       end
     end
   end
