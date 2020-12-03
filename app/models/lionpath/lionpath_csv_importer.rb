@@ -35,13 +35,13 @@ class Lionpath::LionpathCsvImporter
   end
 
   def assign_chairs
-    degree_type = DegreeType.find_by(slug: 'dissertation')
-    chair_role = CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: degree_type)
-    submissions = Submission.where('submissions.year >= 2021')
+    submissions = Submission.where('submissions.created_at >= ?', DateTime.strptime('2021-01-01', '%Y-%m-%d'))
     submissions.each do |sub|
-      next if sub.committee_members.empty?
+      next if sub.committee_members.blank?
 
-      sub_chair = sub.committee_members.find(committee_role_id: chair_role.id)
+      degree_type = sub.degree.degree_type
+      chair_role = CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: degree_type)
+      sub_chair = sub.committee_members.find_by(committee_role_id: chair_role.id)
       program_chair = sub.program.program_chairs.find{ |n| n.campus == sub.campus }
       if sub_chair.present?
         sub_chair.update name: "#{program_chair.first_name} #{program_chair.last_name}",
@@ -50,7 +50,7 @@ class Lionpath::LionpathCsvImporter
                          lionpath_updated_at: DateTime.now
         return
       end
-      chair_member = CommitteeMember.create committee_role: chair_role.id,
+      chair_member = CommitteeMember.create committee_role_id: chair_role.id,
                                             name: "#{program_chair.first_name} #{program_chair.last_name}",
                                             email: program_chair.email,
                                             access_id: program_chair.access_id,
