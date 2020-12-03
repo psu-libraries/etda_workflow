@@ -18,7 +18,8 @@ class Lionpath::LionpathChair
       last_name: row['Last Name'],
       campus: row['Campus'],
       phone: row['Phone'],
-      email: row['Univ Email'].downcase
+      email: row['Univ Email'].downcase,
+      lionpath_updated_at: DateTime.now
     }
   end
 

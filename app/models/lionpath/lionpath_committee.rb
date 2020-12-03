@@ -1,10 +1,13 @@
 class Lionpath::LionpathCommittee
   def import(row)
     this_submission = submission(row)
-    return if this_submission.lionpath_upload_finished_at.present? ||
-              this_submission.status_behavior.beyond_collecting_committee? ||
-              this_submission.created_at < DateTime.yesterday
+    return if this_submission.year < 2021
 
+    cm = this_submission.committee_members.find(access_id: row['Access ID'].downcase.to_s)
+    if cm.present?
+      cm.update committee_member_attrs(row)
+      return
+    end
     CommitteeMember.create({ submission: this_submission }.merge(committee_member_attrs(row)))
   end
 
@@ -19,7 +22,7 @@ class Lionpath::LionpathCommittee
       email: "#{row['Access ID'].downcase}@psu.edu",
       access_id: row['Access ID'].downcase.to_s,
       is_voting: true,
-      lionpath_uploaded_at: DateTime.now
+      lionpath_updated_at: DateTime.now
     }
   end
 

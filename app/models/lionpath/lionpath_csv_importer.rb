@@ -37,24 +37,28 @@ class Lionpath::LionpathCsvImporter
   def assign_chairs
     degree_type = DegreeType.find_by(slug: 'dissertation')
     chair_role = CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: degree_type)
-    submissions = Submission.joins(:committee_members)
-                            .where('submissions.lionpath_upload_finished_at IS NULL')
-                            .where('committee_members.lionpath_uploaded_at > ?', DateTime.yesterday)
-                            .distinct(:id)
+    submissions = Submission.where('submissions.year >= 2021')
     submissions.each do |sub|
+      next if sub.committee_members.empty?
+
+      sub_chair = sub.committee_members.find(committee_role_id: chair_role.id)
       program_chair = sub.program.program_chairs.find{ |n| n.campus == sub.campus }
+      if sub_chair.present?
+        sub_chair.update name: "#{program_chair.first_name} #{program_chair.last_name}",
+                         email: program_chair.email,
+                         access_id: program_chair.access_id,
+                         lionpath_updated_at: DateTime.now
+        return
+      end
       chair_member = CommitteeMember.create committee_role: chair_role.id,
                                             name: "#{program_chair.first_name} #{program_chair.last_name}",
                                             email: program_chair.email,
                                             access_id: program_chair.access_id,
                                             is_required: true,
                                             is_voting: false,
-                                            lionpath_uploaded_at: DateTime.now
+                                            lionpath_updated_at: DateTime.now
       sub.committee_members << chair_member
       sub.save!
-      # The following timestamp must be assigned after all imports and committee chair is added
-      # This way we are certain the committees are complete
-      sub.update lionpath_upload_finished_at: DateTime.now
     end
   end
 
