@@ -2,22 +2,24 @@ class Lionpath::LionpathProgram
   def import(row)
     return if year(row) < 2021
 
-    if author(row).submissions.present?
-      submission = author(row).submissions.find(degree_id: degree(row).id)
+    author = author(row)
+    degree = degree(row)
+    if author.submissions.present?
+      submission = author.submissions.find_by(degree_id: degree.id)
 
       if submission.present?
-        submission.update submission_attrs(row)
+        submission.update submission_attrs(row, author)
         return
       end
     end
-    Submission.create({status: 'collecting program information'}.merge(submission_attrs(row)))
+    Submission.create({status: 'collecting program information'}.merge(submission_attrs(row, author)))
   end
 
   private
 
-  def submission_attrs(row)
+  def submission_attrs(row, author)
     {
-      author: author(row),
+      author: author,
       program: program(row),
       degree: degree(row),
       semester: semester(row),
@@ -57,7 +59,7 @@ class Lionpath::LionpathProgram
 
     Program.create name: row['Transcript Descr'].to_s,
                    code: row['Acadademic Plan'].to_s,
-                   is_active: false,
+                   is_active: true,
                    lionpath_updated_at: DateTime.now
   end
 
