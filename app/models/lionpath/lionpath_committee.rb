@@ -1,12 +1,14 @@
 class Lionpath::LionpathCommittee
   def import(row)
     this_submission = submission(row)
-    return if this_submission.year < 2021
+    return if this_submission.blank? || this_submission.created_at.year < 2021
 
-    cm = this_submission.committee_members.find(access_id: row['Access ID'].downcase.to_s)
-    if cm.present?
-      cm.update committee_member_attrs(row)
-      return
+    if this_submission.committee_members.present?
+      cm = this_submission.committee_members.find_by(access_id: row['Access ID'].downcase.to_s)
+      if cm.present?
+        cm.update committee_member_attrs(row)
+        return
+      end
     end
     CommitteeMember.create({ submission: this_submission }.merge(committee_member_attrs(row)))
   end
