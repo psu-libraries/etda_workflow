@@ -72,11 +72,20 @@ RSpec.describe Lionpath::LionpathCsvImporter do
     let!(:program_chair) { FactoryBot.create :program_chair, program: program, campus: 'UP' }
 
     context 'when submission is before 2021' do
-
+      let!(:submission) { FactoryBot.create :submission, created_at: DateTime.strptime('2020-01-02', '%Y-%m-%d'),
+                                            degree: degree, program: program, campus: 'UP' }
+      let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
+      it 'does not get a chair' do
+        expect{ lionpath_csv_importer.send(:assign_chairs) }.to change{ CommitteeMember.count }.by 0
+      end
     end
 
     context 'when submission has no committee' do
-
+      let!(:submission) { FactoryBot.create :submission, created_at: DateTime.strptime('2021-01-02', '%Y-%m-%d'),
+                                            degree: degree, program: program, campus: 'UP' }
+      it 'does not get a chair' do
+        expect{ lionpath_csv_importer.send(:assign_chairs) }.to change{ CommitteeMember.count }.by 0
+      end
     end
 
     context 'when submission already has a program chair' do
