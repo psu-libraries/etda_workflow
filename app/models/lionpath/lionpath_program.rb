@@ -24,7 +24,8 @@ class Lionpath::LionpathProgram
       degree: degree(row),
       semester: semester(row),
       year: year(row),
-      campus: row['Campus']
+      campus: row['Campus'],
+      lionpath_updated_at: DateTime.now
     }
   end
 

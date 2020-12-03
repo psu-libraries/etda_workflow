@@ -42,6 +42,7 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.program.code).to eq(row_1['Acadademic Plan'])
       expect(Author.first.submissions.first.program.is_active).to eq(true)
       expect(Author.first.submissions.first.program.lionpath_updated_at).to be_truthy
+      expect(Author.first.submissions.first.lionpath_updated_at).to be_truthy
       expect(Author.first.submissions.first.degree.name).to eq(row_1['Acadademic Plan'].split('_')[1].to_s)
       expect(Author.first.submissions.first.year).to eq(2021)
       expect(Author.first.submissions.first.semester).to eq('Summer')
@@ -68,6 +69,11 @@ RSpec.describe Lionpath::LionpathProgram do
 
     it 'updates the submission' do
       expect{ lionpath_program.import(row_1) }.to change{ Submission.count }.by 0
+      expect(Author.first.submissions.first.lionpath_updated_at).to be_truthy
+      expect(Author.first.submissions.first.degree.name).to eq(row_1['Acadademic Plan'].split('_')[1].to_s)
+      expect(Author.first.submissions.first.year).to eq(2021)
+      expect(Author.first.submissions.first.semester).to eq('Summer')
+      expect(Author.first.submissions.first.campus).to eq('UP')
     end
   end
 
