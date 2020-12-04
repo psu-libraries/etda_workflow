@@ -11,6 +11,7 @@ FactoryBot.define do
     access_level { 'open_access' }
     defended_at { Time.zone.tomorrow if current_partner.graduate? }
     federal_funding { false }
+    campus { 'UP' }
 
     trait :collecting_program_information do
       committee_provided_at { nil }
