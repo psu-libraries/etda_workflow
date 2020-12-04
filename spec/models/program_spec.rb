@@ -11,7 +11,7 @@ RSpec.describe Program, type: :model do
   it { is_expected.to have_db_column(:legacy_old_id).of_type(:integer) }
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
-  it { is_expected.to have_db_column(:lionpath_uploaded_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:lionpath_updated_at).of_type(:datetime) }
 
   it { is_expected.to have_db_index(:legacy_id) }
   it { is_expected.to have_db_index([:name, :code]).unique(true) }

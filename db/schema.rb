@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_30_181958) do
+ActiveRecord::Schema.define(version: 2020_12_03_165927) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(version: 2020_11_30_181958) do
     t.boolean "is_voting", default: false
     t.boolean "federal_funding_used"
     t.bigint "approver_id"
-    t.datetime "lionpath_uploaded_at"
+    t.datetime "lionpath_updated_at"
     t.index ["approver_id"], name: "index_committee_members_on_approver_id"
     t.index ["committee_role_id"], name: "committee_members_committee_role_id_fk"
     t.index ["submission_id"], name: "committee_members_submission_id_fk"
@@ -214,6 +214,7 @@ ActiveRecord::Schema.define(version: 2020_11_30_181958) do
     t.string "campus"
     t.bigint "phone"
     t.string "email"
+    t.datetime "lionpath_updated_at"
     t.index ["program_id"], name: "index_program_chairs_on_program_id"
   end
 
@@ -226,7 +227,7 @@ ActiveRecord::Schema.define(version: 2020_11_30_181958) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "code"
-    t.datetime "lionpath_uploaded_at"
+    t.datetime "lionpath_updated_at"
     t.index ["legacy_id"], name: "index_programs_on_legacy_id"
     t.index ["name", "code"], name: "index_programs_on_name_and_code", unique: true
   end
@@ -278,8 +279,8 @@ ActiveRecord::Schema.define(version: 2020_11_30_181958) do
     t.boolean "federal_funding"
     t.datetime "placed_on_hold_at"
     t.datetime "removed_hold_at"
-    t.datetime "lionpath_upload_finished_at"
     t.string "campus"
+    t.datetime "lionpath_updated_at"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"
