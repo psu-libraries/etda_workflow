@@ -1,3 +1,4 @@
+<% disabled_bool = (current_partner.graduate? && @submission.degree.degree_type.slug == 'dissertation') %>
 <h1>Input Program Head/Chair</h1>
 <br/>
 <p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.head_of_program_notice").html_safe %></p>
@@ -12,10 +13,10 @@
             <h2 class="h2-small">Program Head/Chair <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="right" data-html="true" title="<p><strong>Program Head/Chair</strong> - Faculty member responsible for leadership in developing the department’s academic programs.</p>"></span></a></h2>
           </div>
           <div class="col-sm-6">
-            <%= f.input :name, label: 'Program Head/Chair Name', input_html: { class: 'ldap-lookup' } %>
+            <%= f.input :name, label: 'Program Head/Chair Name', disabled: disabled_bool, input_html: { class: 'ldap-lookup' } %>
           </div>
           <div class="col-sm-6">
-            <%= f.input :email, label: 'Program Head/Chair Email', input_html: { readonly: true }%>
+            <%= f.input :email, label: 'Program Head/Chair Email', disabled: disabled_bool, input_html: { readonly: true }%>
           </div>
         <% end %>
       <% end %>
