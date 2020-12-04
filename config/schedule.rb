@@ -29,3 +29,7 @@ end
 every '0 1 30 1,6,9 *', roles: [:app] do
   partner_rake 'report:oa_release'
 end
+
+# every :day, at: '3am', roles: [:app] do
+#   partner_rake 'lionpath_import:core'
+# end
