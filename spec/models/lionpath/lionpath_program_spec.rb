@@ -7,19 +7,19 @@ RSpec.describe Lionpath::LionpathProgram do
 
   let(:row_1) do
     {
-        'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Exp Grad' => 2215,
-        'Acadademic Plan' => 'BIOE_PHD', 'Transcript Descr' => 'Bioengineering (PHD)', 'Milestone Code' => nil,
-        'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil, 'Alternate Email' => 'test@psu.edu',
-        'Campus' => 'UP'
+      'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Exp Grad' => 2215,
+      'Acadademic Plan' => 'BIOE_PHD', 'Transcript Descr' => 'Bioengineering (PHD)', 'Milestone Code' => nil,
+      'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil, 'Alternate Email' => 'test@psu.edu',
+      'Campus' => 'UP'
     }
   end
 
   let(:row_2) do
     {
-        'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Exp Grad' => 2205,
-        'Acadademic Plan' => 'BIOE_PHD', 'Transcript Descr' => 'Bioengineering (PHD)', 'Milestone Code' => nil,
-        'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil, 'Alternate Email' => 'test@psu.edu',
-        'Campus' => 'UP'
+      'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Exp Grad' => 2205,
+      'Acadademic Plan' => 'BIOE_PHD', 'Transcript Descr' => 'Bioengineering (PHD)', 'Milestone Code' => nil,
+      'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil, 'Alternate Email' => 'test@psu.edu',
+      'Campus' => 'UP'
     }
   end
 
@@ -68,7 +68,7 @@ RSpec.describe Lionpath::LionpathProgram do
     let!(:submission) { FactoryBot.create :submission, author: author, degree: degree }
 
     it 'updates the submission' do
-      expect{ lionpath_program.import(row_1) }.to change{ Submission.count }.by 0
+      expect { lionpath_program.import(row_1) }.to change(Submission, :count).by 0
       expect(Author.first.submissions.first.lionpath_updated_at).to be_truthy
       expect(Author.first.submissions.first.degree.name).to eq(row_1['Acadademic Plan'].split('_')[1].to_s)
       expect(Author.first.submissions.first.year).to eq(2021)
@@ -82,7 +82,7 @@ RSpec.describe Lionpath::LionpathProgram do
     let!(:program) { FactoryBot.create :program, code: row_2['Acadademic Plan'] }
 
     it 'does not import the record' do
-      expect{ lionpath_program.import(row_2) }.to change{ Submission.count }.by 0
+      expect { lionpath_program.import(row_2) }.to change(Submission, :count).by 0
     end
   end
 end

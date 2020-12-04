@@ -45,8 +45,11 @@ RSpec.describe Lionpath::LionpathCommittee do
     end
 
     context 'when submission already has the committee member from the lionpath record' do
-      let!(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role,
-                                                        name: 'wrong', access_id: 'abc123', submission: submission}
+      let!(:committee_member) do
+        FactoryBot.create :committee_member, committee_role: committee_role,
+                                             name: 'wrong', access_id: 'abc123', submission: submission
+      end
+
       it 'updates that committee member record' do
         expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 0
         expect(CommitteeMember.find(committee_member.id).name).to eq 'Test Tester'

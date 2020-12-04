@@ -12,7 +12,7 @@ class Lionpath::LionpathProgram
         return
       end
     end
-    Submission.create({status: 'collecting program information'}.merge(submission_attrs(row, author)))
+    Submission.create({ status: 'collecting program information' }.merge(submission_attrs(row, author)))
   end
 
   private

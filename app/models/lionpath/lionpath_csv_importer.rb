@@ -42,13 +42,13 @@ class Lionpath::LionpathCsvImporter
       degree_type = sub.degree.degree_type
       chair_role = CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: degree_type)
       sub_chair = sub.committee_members.find_by(committee_role_id: chair_role.id)
-      program_chair = sub.program.program_chairs.find{ |n| n.campus == sub.campus }
+      program_chair = sub.program.program_chairs.find { |n| n.campus == sub.campus }
       if sub_chair.present?
         sub_chair.update name: "#{program_chair.first_name} #{program_chair.last_name}",
                          email: program_chair.email,
                          access_id: program_chair.access_id,
                          lionpath_updated_at: DateTime.now
-        return
+        next
       end
       chair_member = CommitteeMember.create committee_role_id: chair_role.id,
                                             name: "#{program_chair.first_name} #{program_chair.last_name}",
