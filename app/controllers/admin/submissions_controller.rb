@@ -7,8 +7,8 @@ class Admin::SubmissionsController < AdminController
   end
 
   def dashboard
-    # Reset session semester to current semester when returning to dashboard
-    session[:semester] = Semester.current
+    # Reset session semester to nil when returning to dashboard
+    session[:semester] = nil
     degree_type = params[:degree_type] || DegreeType.default
     @view = Admin::SubmissionsDashboardView.new(degree_type)
   end

@@ -17,11 +17,12 @@ RSpec.describe Admin::SubmissionsController, type: :controller do
   end
 
   describe '#dashboard' do
-    it 'displays dashboard index' do
+    it 'displays dashboard index and resets session semester' do
+      session["semester"] = 'All Semesters'
       expect(get: admin_submissions_dashboard_path(DegreeType.default)).to route_to(controller: 'admin/submissions', action: 'dashboard', 'degree_type': DegreeType.default.slug)
       get :dashboard, params: { degree_type: DegreeType.default.slug }
       expect(response).to render_template('admin/submissions/dashboard')
-      expect(session["semester"]).to eq Semester.current.to_s
+      expect(session["semester"]).to eq nil
     end
   end
 
