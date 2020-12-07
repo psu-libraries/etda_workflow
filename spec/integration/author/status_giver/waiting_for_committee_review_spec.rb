@@ -103,7 +103,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           submission.keywords << (FactoryBot.create :keyword)
         end
 
-        it 'can edit final submission', honors: true, milsch:true do
+        it 'can edit final submission', honors: true, milsch: true do
           visit author_submission_edit_final_submission_path(submission)
           expect(page).to have_current_path(author_submission_edit_final_submission_path(submission))
           fill_in "Title", with: "A Brand New Title"
