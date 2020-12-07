@@ -46,6 +46,7 @@ class FinalSubmissionSubmitService
     OutboundLionPathRecord.new(submission: submission).report_status_change
     submission.update_final_submission_timestamps!(Time.zone.now)
     WorkflowMailer.send_final_submission_received_email(submission)
+    submission.committee_review_requests_init unless approval_status == 'approved'
   end
 
   def collect_final_sub_submit

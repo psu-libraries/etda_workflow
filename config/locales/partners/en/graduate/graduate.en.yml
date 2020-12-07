@@ -204,13 +204,6 @@ en:
                      115 Kern Building
                      Graduate School
                      University Park, PA  16802
-        open_access_release:
-          message: |
-                    Author - %{full_name}
-                    Title - %{title}
-                    Paper - %{degree_type}
-                    Graduation Semester - %{graduation_semester}
-                    Released On - %{released_on}
     program:
       label: Graduate Program
     committee:
@@ -312,6 +305,11 @@ en:
         scope: final_withheld
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
+    fee_message:
+      master_thesis:
+        message: "Please pay the $25 thesis fee before submitting your final.  The fee can be paid at the <a href='https://secure.gradsch.psu.edu/paymentportal/' target='_blank'>Payment Section</a> of the Graduate School Thesis and Dissertation Information <a href='https://gradschool.psu.edu/completing-your-degree/thesis-and-dissertation-information/' target='_blank'>webpage</a>."
+      dissertation:
+        message: "Please pay the $95. dissertation fee before submitting your final.  The fee can be paid at the <a href='https://secure.gradsch.psu.edu/paymentportal/' target='_blank'>Payment Section</a> of the Graduate School Thesis and Dissertation Information <a href='https://gradschool.psu.edu/completing-your-degree/thesis-and-dissertation-information/' target='_blank'>webpage</a>."
     admin:
       umg: 'cn=umg/psu.sas.etda-graduate-admins,dc=psu,dc=edu'
       submission:

@@ -5,6 +5,22 @@ RSpec.describe OpenAccessReportEmail do
 
   let(:this_year) { Date.today.year }
 
+  describe '#csv' do
+    let(:submission) do
+      FactoryBot.create :submission, :released_for_publication,
+                        access_level: 'open_access',
+                        released_for_publication_at: DateTime.now
+    end
+    let(:csv) do
+      "Last Name,First Name,Title,Degree Type,Graduation Semester,Released On\n#{submission.author.last_name},#{submission.author.first_name},#{submission.title},#{submission.degree.degree_type.name},#{submission.semester} #{submission.year},#{submission.released_for_publication_at.strftime('%D')}\n"
+    end
+
+    it 'generates a csv from queried submissions' do
+      allow_any_instance_of(described_class).to receive(:submissions).and_return [submission]
+      expect(open_access_report_email.send(:csv)).to eq csv
+    end
+  end
+
   context 'when report is run on an invalid month' do
     before do
       allow(Date).to receive(:today).and_return Date.strptime("03/30/#{this_year}", "%m/%d/%Y")

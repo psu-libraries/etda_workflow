@@ -177,13 +177,6 @@ en:
                     Debra Rodgers, Coordinator of Academic Services 
                     honorsthesis@psu.edu 
                     814-867-2505
-        open_access_release:
-          message: |
-                    Author - %{full_name}
-                    Title - %{title}
-                    Paper - %{degree_type}
-                    Graduation Semester - %{graduation_semester}
-                    Released On - %{released_on}
     program:
       label: Area of Honors
     committee:
