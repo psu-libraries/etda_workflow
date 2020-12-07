@@ -103,7 +103,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
           submission.keywords << (FactoryBot.create :keyword)
         end
 
-        it 'can edit final submission' do
+        it 'can edit final submission', honors: true, milsch: true do
           visit author_submission_edit_final_submission_path(submission)
           expect(page).to have_current_path(author_submission_edit_final_submission_path(submission))
           fill_in "Title", with: "A Brand New Title"
@@ -116,11 +116,11 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
             all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
           end
           find('#submission_has_agreed_to_terms').click
-          if current_partner.honors?
-            click_button 'Submit final files for review'
-          else
+          if current_partner.graduate?
             find('span', text: 'Submit final files for review').click
             click_button('Continue')
+          else
+            click_button 'Submit final files for review'
           end
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
         end
