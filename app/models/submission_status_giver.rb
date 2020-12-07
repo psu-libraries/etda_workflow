@@ -10,7 +10,7 @@ class SubmissionStatusGiver
   end
 
   def can_update_program_information?
-    validate_current_state! [SubmissionStates::CollectingCommittee, SubmissionStates::CollectingFormatReviewFiles]
+    validate_current_state! [SubmissionStates::CollectingProgramInformation, SubmissionStates::CollectingCommittee, SubmissionStates::CollectingFormatReviewFiles]
   end
 
   def can_provide_new_committee?

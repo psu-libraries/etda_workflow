@@ -20,6 +20,16 @@ class Author::SubmissionView < SimpleDelegator
     created_at.strftime('%B %-e, %Y')
   end
 
+  def step_one_class
+    if status_behavior.beyond_collecting_program_information?
+      'complete'
+    elsif status_behavior.collecting_program_information?
+      'current'
+    else
+      ''
+    end
+  end
+
   def step_one_description
     if status_behavior.beyond_collecting_committee?
       ("Provide program information <a href='" + "/author/submissions/#{id}/program_information" + "' class='medium'>[Review Program Information <span class='sr-only'>program information for submission '#{title}'</span>]</a>").html_safe
@@ -31,8 +41,10 @@ class Author::SubmissionView < SimpleDelegator
   def step_two_class
     if status_behavior.beyond_collecting_committee?
       'complete'
-    else
+    elsif status_behavior.collecting_committee?
       'current'
+    else
+      ''
     end
   end
 

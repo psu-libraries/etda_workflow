@@ -39,6 +39,7 @@ class Author::SubmissionsController < AuthorController
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_update_program_information?
     @submission.update!(standard_program_params)
+    status_giver.collecting_committee!
     redirect_to author_root_path
     flash[:notice] = 'Program information updated successfully'
   rescue ActiveRecord::RecordInvalid

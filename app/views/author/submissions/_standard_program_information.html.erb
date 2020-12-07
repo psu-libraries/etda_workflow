@@ -1,10 +1,9 @@
-<% disabled_bool = current_partner.graduate? %>
+<% disabled_bool = current_partner.graduate? && f.object.lionpath_updated_at.present? %>
 <% if disabled_bool %>
 <br />
 <div class="col-xs-12">
   <div class="alert alert-info" %>
     <p>Program information is imported from <strong>LionPATH</strong>.</p>
-    <br />
     <p>If the following data is incorrect, you must fix it in <strong>LionPATH</strong>.  This data will update after one day.</p>
   </div>
 </div>

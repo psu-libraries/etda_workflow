@@ -78,6 +78,32 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
         expect(page).to have_current_path(author_root_path)
       end
     end
+
+    describe "editing program information with imported lionpath data" do
+      let!(:program) { FactoryBot.create :program }
+
+      before do
+        submission.update program_id: program.id, year: DateTime.now.year,
+                          title: nil, semester: 'Fall', lionpath_updated_at: DateTime.now,
+                          degree_id: Degree.first.id
+      end
+
+      it 'displays lionpath data' do
+        visit "author/submissions/#{submission.id}/edit"
+        expect(find("input[id='submission_title']").value).to be_empty
+        find("input[id='submission_title']").set 'Test Title'
+        expect(find("select[id='submission_program_id']").value).to eq program.id.to_s
+        expect(find("select[id='submission_program_id']").disabled?).to eq true
+        expect(find("select[id='submission_degree_id']").value).to eq Degree.first.id.to_s
+        expect(find("select[id='submission_degree_id']").disabled?).to eq true
+        expect(find("select[id='submission_semester']").value).to eq 'Fall'
+        expect(find("select[id='submission_semester']").disabled?).to eq true
+        expect(find("select[id='submission_year']").value).to eq DateTime.now.year.to_s
+        expect(find("select[id='submission_year']").disabled?).to eq true
+        click_on 'Update Program Information'
+        expect(Submission.find(submission.id).title).to eq 'Test Title'
+      end
+    end
   end
 
   describe "when I submit the 'Program Information' form" do
