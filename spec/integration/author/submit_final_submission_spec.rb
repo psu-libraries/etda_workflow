@@ -14,7 +14,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
 
     context "when I submit the 'Upload Final Submission Files' form" do
-      it 'loads the page', honors: true do
+      it 'loads the page', honors: true, milsch: true do
         submission.defended_at = Time.zone.yesterday
         submission.save(validate: false)
         submission.reload
@@ -33,12 +33,12 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         find("#submission_federal_funding_false").click
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
-        if current_partner.honors?
-          click_button 'Submit final files for review'
-        else
+        if current_partner.graduate?
           find('span', text: 'Submit final files for review').click
           expect(page).to have_content('Please pay the')
           click_button('Continue')
+        else
+          click_button 'Submit final files for review'
         end
         # expect(page).to have_content('successfully')
         submission.reload
@@ -53,7 +53,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     end
 
     context "when I submit the 'Upload Final Submission Files' form after committee rejection" do
-      it 'proceeds to "waiting for final submission response" and resets committee reviews', honors: true do
+      it 'proceeds to "waiting for final submission response" and resets committee reviews', honors: true, milsch: true do
         submission.committee_members.first.update_attribute :status, 'rejected'
         submission.status = 'waiting for committee review rejected'
         submission.defended_at = Time.zone.yesterday
@@ -69,11 +69,11 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         check 'I agree to copyright statement'
-        if current_partner.honors?
-          click_button 'Submit final files for review'
-        else
+        if current_partner.graduate?
           find('span', text: 'Submit final files for review').click
           click_button('Continue')
+        else
+          click_button 'Submit final files for review'
         end
         # expect(page).to have_content('successfully')
         submission.reload
@@ -87,7 +87,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     end
 
     context "when I submit the 'Upload Final Submission Files' form with multiple files" do
-      it 'uploads two files', honors: true do
+      it 'uploads two files', honors: true, milsch: true do
         submission.defended_at = Time.zone.yesterday
         submission.save(validate: false)
         submission.reload
@@ -107,11 +107,11 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         all('input[type="file"]').last.set(fixture('final_submission_file_01.pdf'))
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
-        if current_partner.honors?
-          click_button 'Submit final files for review'
-        else
+        if current_partner.graduate?
           find('span', text: 'Submit final files for review').click
           click_button('Continue')
+        else
+          click_button 'Submit final files for review'
         end
         # expect(page).to have_content('successfully')
         submission.reload
@@ -126,7 +126,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     end
 
     context "when I have a legacy format review record and submit 'Upload Final Submission Files' form" do
-      it 'loads the page' do
+      it 'loads the page', honors: true, milsch: true do
         submission.year = Time.zone.now.year.to_s
         submission.semester = 'Spring'
         submission.title = nil
@@ -148,11 +148,11 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         check 'I agree to copyright statement'
-        if current_partner.honors?
-          click_button 'Submit final files for review'
-        else
+        if current_partner.graduate?
           find('span', text: 'Submit final files for review').click
           click_button('Continue')
+        else
+          click_button 'Submit final files for review'
         end
         # expect(page).to have_content('successfully')
         submission.reload
