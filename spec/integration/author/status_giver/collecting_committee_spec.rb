@@ -103,8 +103,12 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
       start_count = author.submissions.count
       expect(start_count > 0).to be_truthy
       visit author_root_path
-      click_link("delete")
-      expect(author.submissions.count).to eq(start_count - 1)
+      if !current_partner.graduate?
+        click_link("delete")
+        expect(author.submissions.count).to eq(start_count - 1)
+      else
+        expect(page).not_to have_link('delete')
+      end
     end
   end
 end

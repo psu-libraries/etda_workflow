@@ -89,6 +89,8 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
       end
 
       it 'displays imported data and updates when submitted' do
+        skip 'graduate only' unless current_partner.graduate?
+
         visit "author/submissions/#{submission.id}/edit"
         expect(find("input[id='submission_title']").value).to be_empty
         find("input[id='submission_title']").set 'Test Title'

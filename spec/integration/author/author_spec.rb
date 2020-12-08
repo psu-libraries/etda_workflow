@@ -14,14 +14,15 @@ RSpec.describe 'Author submission page', type: :integration, js: true do
     end
     it 'contains a list of submissions' do
       expect(page).to have_content('My Submissions')
-      expect(page).to have_link('Start a new Submission')
+      expect(page).to have_link('Start a new Submission') unless current_partner.graduate?
     end
   end
 
   context 'Author submission display when author has no submissions' do
     it "displays 'no submissions message'" do
       expect(page).to have_content("You don't have any submissions")
-      expect(page).to have_link('Start a new Submission')
+      expect(page).to have_content("in LionPath") if current_partner.graduate?
+      expect(page).to have_link('Start a new Submission') unless current_partner.graduate?
       expect(page).not_to have_link('Contact Support')
     end
   end
