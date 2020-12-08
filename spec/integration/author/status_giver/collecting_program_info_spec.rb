@@ -88,7 +88,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
                           degree_id: Degree.first.id
       end
 
-      it 'displays lionpath data' do
+      it 'displays imported data and updates when submitted' do
         visit "author/submissions/#{submission.id}/edit"
         expect(find("input[id='submission_title']").value).to be_empty
         find("input[id='submission_title']").set 'Test Title'
@@ -102,6 +102,23 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
         expect(find("select[id='submission_year']").disabled?).to eq true
         click_on 'Update Program Information'
         expect(Submission.find(submission.id).title).to eq 'Test Title'
+        expect(Submission.find(submission.id).status).to eq 'collecting committee'
+      end
+    end
+
+    describe 'when submission is beyond_collecting_committee' do
+      let!(:program) { FactoryBot.create :program }
+
+      before do
+        submission.update program_id: program.id, year: DateTime.now.year,
+                          title: 'Title', semester: 'Fall', degree_id: Degree.first.id,
+                          status: 'collecting format review files'
+      end
+
+      it "doesn't change status of submission" do
+        visit "author/submissions/#{submission.id}/edit"
+        click_on 'Update Program Information'
+        expect(Submission.find(submission.id).status).to eq 'collecting format review files'
       end
     end
   end

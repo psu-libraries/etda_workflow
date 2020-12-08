@@ -68,6 +68,16 @@ RSpec.describe Author::SubmissionView do
     end
   end
 
+  describe 'step_one_class' do
+    context "when submission's status is beyond collecting program information" do
+      before { submission.status = 'collecting committee' }
+
+      it "returns 'complete'" do
+        expect(view.step_one_class).to eq 'complete'
+      end
+    end
+  end
+
   describe '#step_one_description' do
     context "when step two is the current step" do
       before { submission.status = 'collecting committee' }
@@ -89,6 +99,43 @@ RSpec.describe Author::SubmissionView do
       it "returns a link to review step two" do
         submission.status = 'collecting final submission files'
         expect(view.step_one_description).to eq "Provide program information <a href='#{author_submission_program_information_path(submission)}' class='medium'>[Review Program Information <span class='sr-only'>program information for submission '#{submission.title}'</span>]</a>"
+      end
+    end
+  end
+
+  describe 'step_one_status' do
+    context "when submission's status is beyond collecting program information and was not imported via lionpath" do
+      before do
+        submission.status = 'collecting committee'
+        submission.created_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+      end
+
+      it "returns completed partial and text as hash" do
+        expect(view.step_one_status).to eq(text: "completed on January 1, 2020", partial_name: '/author/shared/completed_indicator')
+      end
+    end
+
+    context "when submission's status is beyond collecting program information and was imported via lionpath" do
+      before do
+        submission.status = 'collecting committee'
+        submission.created_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+        submission.lionpath_updated_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+      end
+
+      it "returns completed partial and created on text as hash" do
+        expect(view.step_one_status).to eq(text: "created on January 1, 2020", partial_name: '/author/shared/completed_indicator')
+      end
+    end
+
+    context "when submission's status is collecting program information" do
+      before do
+        submission.status = 'collecting program information'
+        submission.created_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+        submission.lionpath_updated_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+      end
+
+      it "returns created on text as hash" do
+        expect(view.step_one_status).to eq(text: "created on January 1, 2020")
       end
     end
   end

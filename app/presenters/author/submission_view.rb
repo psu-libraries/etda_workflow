@@ -38,6 +38,20 @@ class Author::SubmissionView < SimpleDelegator
     end
   end
 
+  def step_one_status
+    status = {}
+    if status_behavior.beyond_collecting_program_information? && lionpath_updated_at.blank?
+      status[:text] = "completed on #{created_on}"
+      status[:partial_name] = '/author/shared/completed_indicator'
+    elsif status_behavior.beyond_collecting_program_information?
+      status[:text] = "created on #{created_on}"
+      status[:partial_name] = '/author/shared/completed_indicator'
+    else
+      status[:text] = "created on #{created_on}"
+    end
+    status
+  end
+
   def step_two_class
     if status_behavior.beyond_collecting_committee?
       'complete'
