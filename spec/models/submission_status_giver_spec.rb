@@ -412,20 +412,38 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'collecting committee'" do
+    context "when status is 'collecting committee'", milsch: true, honors: true do
       before { submission.status = 'collecting committee' }
 
-      it "raises exception if submission is a dissertation" do
-        degree_type = FactoryBot.create(:degree_type, slug: 'dissertation')
-        degree = FactoryBot.create(:degree, degree_type: degree_type)
-        submission.degree = degree
-        giver = described_class.new(submission)
-        expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      context "when graduate" do
+        it "raises exception if submission is a dissertation" do
+          skip "graduate only" unless current_partner.graduate?
+
+          degree_type = DegreeType.find_by(slug: 'dissertation')
+          degree = FactoryBot.create(:degree, degree_type: degree_type)
+          submission.degree = degree
+          giver = described_class.new(submission)
+          expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        end
+
+        it "does not raise exception if submission is a master thesis" do
+          skip "graduate only" unless current_partner.graduate?
+
+          degree_type = DegreeType.find_by(slug: 'master_thesis')
+          degree = FactoryBot.create(:degree, degree_type: degree_type)
+          submission.degree = degree
+          giver = described_class.new(submission)
+          expect { giver.can_provide_new_committee? }.not_to raise_error
+        end
       end
 
-      it "does not raise exception" do
-        giver = described_class.new(submission)
-        expect { giver.can_provide_new_committee? }.not_to raise_error
+      context "when not graduate" do
+        it "does not raise exception" do
+          skip "graduate only" if current_partner.graduate?
+
+          giver = described_class.new(submission)
+          expect { giver.can_provide_new_committee? }.not_to raise_error
+        end
       end
     end
 
@@ -521,20 +539,38 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'collecting committee'" do
+    context "when status is 'collecting committee'", milsch: true, honors: true do
       before { submission.status = 'collecting committee' }
 
-      it "doesn't raise exception if submission is a dissertation" do
-        degree_type = FactoryBot.create(:degree_type, slug: 'dissertation')
-        degree = FactoryBot.create(:degree, degree_type: degree_type)
-        submission.degree = degree
-        giver = described_class.new(submission)
-        expect { giver.can_update_committee? }.not_to raise_error
+      context "when graduate" do
+        it "doesn't raise exception if submission is a dissertation" do
+          skip "graduate only" unless current_partner.graduate?
+
+          degree_type = DegreeType.find_by(slug: 'dissertation')
+          degree = FactoryBot.create(:degree, degree_type: degree_type)
+          submission.degree = degree
+          giver = described_class.new(submission)
+          expect { giver.can_update_committee? }.not_to raise_error
+        end
+
+        it "raises an exception if submission is a master thesis" do
+          skip "graduate only" unless current_partner.graduate?
+
+          degree_type = DegreeType.find_by(slug: 'master_thesis')
+          degree = FactoryBot.create(:degree, degree_type: degree_type)
+          submission.degree = degree
+          giver = described_class.new(submission)
+          expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        end
       end
 
-      it "raises an exception" do
-        giver = described_class.new(submission)
-        expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      context "when not graduate" do
+        it "raises and exception" do
+          skip "graduate only" if current_partner.graduate?
+
+          giver = described_class.new(submission)
+          expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        end
       end
     end
 
