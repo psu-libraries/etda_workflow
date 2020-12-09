@@ -307,7 +307,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_update_program_information? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_update_program_information? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -415,6 +415,14 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
 
+      it "raises exception if submission is a dissertation" do
+        degree_type = FactoryBot.create(:degree_type, slug: 'dissertation')
+        degree = FactoryBot.create(:degree, degree_type: degree_type)
+        submission.degree = degree
+        giver = described_class.new(submission)
+        expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+
       it "does not raise exception" do
         giver = described_class.new(submission)
         expect { giver.can_provide_new_committee? }.not_to raise_error
@@ -515,6 +523,14 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
     context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
+
+      it "doesn't raise exception if submission is a dissertation" do
+        degree_type = FactoryBot.create(:degree_type, slug: 'dissertation')
+        degree = FactoryBot.create(:degree, degree_type: degree_type)
+        submission.degree = degree
+        giver = described_class.new(submission)
+        expect { giver.can_update_committee? }.not_to raise_error
+      end
 
       it "raises an exception" do
         giver = described_class.new(submission)
