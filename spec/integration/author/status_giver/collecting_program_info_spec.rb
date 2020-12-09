@@ -132,7 +132,9 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
 
     let(:author) { current_author }
 
-    it "submission status updates to 'collecting committee'" do
+    it "submission status updates to 'collecting committee'", milsch: true, honors: true do
+      skip "non graduate" if current_partner.graduate?
+
       program = FactoryBot.create :program, name: 'Information Sciences and Technology'
       second_program = FactoryBot.create :program, name: 'A different program'
       degree = Degree.create(name: 'Master of Science', degree_type_id: DegreeType.default.id, description: 'My Master degree')
@@ -156,7 +158,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
     end
   end
 
-  describe "author can delete a submission" do
+  describe "author can delete a submission", milsch: true, honors: true do
     before do
       webaccess_authorize_author
     end
@@ -168,8 +170,12 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
       start_count = author.submissions.count
       expect(start_count > 0).to be_truthy
       visit author_root_path
-      click_link("delete")
-      expect(author.submissions.count).to eq(start_count - 1)
+      if current_partner.graduate?
+        expect(page).not_to have_link "delete"
+      else
+        click_link("delete")
+        expect(author.submissions.count).to eq(start_count - 1)
+      end
     end
   end
 end
