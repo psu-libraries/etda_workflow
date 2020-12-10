@@ -69,11 +69,9 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
     end
 
     context "visiting the 'Upload Final Submission Files page'" do
-      it 'redirects to head of program page if none exists and head is approving' do
-        ApprovalConfiguration.find(approval_configuration.id).update_attribute :head_of_program_is_approving, true
-        CommitteeMember.remove_committee_members(submission)
+      it 'displays the upload final submission files page' do
         visit author_submission_edit_final_submission_path(submission)
-        expect(page).to have_current_path(author_submission_head_of_program_path(submission))
+        expect(page).to have_current_path(author_submission_edit_final_submission_path(submission))
       end
     end
 

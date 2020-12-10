@@ -2,6 +2,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
   require 'integration/integration_spec_helper'
 
   let(:author) { current_author }
+
   if current_partner.graduate?
     let(:submission) { FactoryBot.create :submission, :collecting_committee, author: author, degree: degree }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.find_by(slug: 'master_thesis') }
