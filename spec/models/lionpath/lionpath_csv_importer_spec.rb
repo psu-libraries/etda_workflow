@@ -8,7 +8,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
       it 'raises an error', milsch: true, honors: true do
         skip 'non graduate' if current_partner.graduate?
 
-        expect{ lionpath_csv_importer.import }.to raise_error(Lionpath::LionpathCsvImporter::InvalidPartner)
+        expect { lionpath_csv_importer.import }.to raise_error(Lionpath::LionpathCsvImporter::InvalidPartner)
       end
     end
   end

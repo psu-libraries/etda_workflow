@@ -3,18 +3,20 @@ RSpec.describe 'The standard committee form for authors', js: true do
 
   let(:author) { current_author }
   let(:submission) { FactoryBot.create :submission, :collecting_committee, author: author, degree: degree }
-  let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.find_by(slug: 'master_thesis') }
+
   if current_partner.graduate?
-    let!(:head_role) { CommitteeRole.find_by(degree_type: degree.degree_type, name: 'Program Head/Chair')}
+    let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.find_by(slug: 'master_thesis') }
+    let!(:head_role) { CommitteeRole.find_by(degree_type: degree.degree_type, name: 'Program Head/Chair') }
     let!(:head_member) do
       FactoryBot.create(:committee_member, committee_role: head_role, is_required: true,
                                            is_voting: false, name: 'Test Tester', email: 'abc123@psu.edu',
                                            lionpath_updated_at: DateTime.now, submission_id: submission.id)
     end
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: true }
+  else
+    let(:degree) { Degree.default }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
   end
-
-  let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: true } if current_partner.graduate?
-  let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false } unless current_partner.graduate?
 
   before do
     webaccess_authorize_author
@@ -34,8 +36,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
     it "does not save the committee" do
       expect(page).to have_content('Add Committee')
       submission.required_committee_roles.count.times do |i|
-        fill_in "submission_committee_members_attributes_#{i+1}_name", with: "Professor Buck Murphy #{i+1}"
-        fill_in "submission_committee_members_attributes_#{i+1}_email", with: "buck@hotmail.com"
+        fill_in "submission_committee_members_attributes_#{i + 1}_name", with: "Professor Buck Murphy #{i + 1}"
+        fill_in "submission_committee_members_attributes_#{i + 1}_email", with: "buck@hotmail.com"
       end
       click_link('Cancel')
       expect(page).to have_content('My Submissions')
@@ -54,7 +56,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
       # visit new_author_submission_committee_members_path(submission)
       @email_list = [head_member.email]
       submission.required_committee_roles.count.times do |i|
-        i = i+1 if current_partner.graduate?
+        i += 1 if current_partner.graduate?
         fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
         page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'buck@hotmail.com'")
         @email_list << "buck@hotmail.com"
@@ -69,7 +71,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
       expect(submission.committee_members.second.access_id).to eq('pbm123') if current_partner.graduate?
       visit author_submission_committee_members_path(submission)
       submission.required_committee_roles.count.times do |i|
-        i = i+1 if current_partner.graduate?
+        i += 1 if current_partner.graduate?
         # expect(page).to have_content role.name
         name = "Professor Buck Murphy #{i}"
         email = "buck@hotmail.com"
@@ -83,7 +85,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
     before do
       @email_list = []
       submission.required_committee_roles.count.times do |i|
-        i = i+1 if current_partner.graduate?
+        i += 1 if current_partner.graduate?
 
         fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
         page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'buck@hotmail.com'")

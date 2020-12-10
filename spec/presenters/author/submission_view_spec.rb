@@ -185,15 +185,7 @@ RSpec.describe Author::SubmissionView do
       context "when step three is the current step" do
         before { submission.status = 'collecting format review files' }
 
-        it "returns a link to edit step two if head of program is approving" do
-          submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
-
-          expect(view.step_two_description).to eq view.step_two_name + "<a href='#{edit_author_submission_committee_members_path(submission)}' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a><a href='#{author_submission_head_of_program_path(submission)}' class='medium'>[Edit Head of Program <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
-        end
-
-        it "returns a link to edit step two if head of program is not approving" do
-          submission.degree.degree_type.approval_configuration.head_of_program_is_approving = false
-
+        it "returns a link to edit step two" do
           expect(view.step_two_description).to eq view.step_two_name + "<a href='#{edit_author_submission_committee_members_path(submission)}' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
         end
       end
