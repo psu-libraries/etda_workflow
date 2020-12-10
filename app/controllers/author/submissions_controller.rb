@@ -79,9 +79,6 @@ class Author::SubmissionsController < AuthorController
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
-  rescue CommitteeMember::ProgramHeadMissing
-    redirect_to author_submission_head_of_program_path(@submission)
-    flash[:alert] = 'In order to proceed to the final submission stage, you must input the head/chair of your graduate program here.'
   end
 
   def update_final_submission
@@ -131,14 +128,6 @@ class Author::SubmissionsController < AuthorController
   end
 
   private
-
-    def missing_head_redirect
-      raise CommitteeMember::ProgramHeadMissing if program_head_missing
-    end
-
-    def program_head_missing
-      @submission.head_of_program_is_approving? && CommitteeMember.head_of_program(@submission).blank?
-    end
 
     def find_submission
       @submission = @author.submissions.find(params[:submission_id] || params[:id])

@@ -68,8 +68,7 @@ class Author::SubmissionView < SimpleDelegator
     elsif status_behavior.collecting_committee?
       ("<a href='" + "/author/submissions/#{id}/committee_members/new" + "'>" + step_two_name + "</a>").html_safe
     elsif status_behavior.ok_to_update_committee?
-      return (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members/edit" + "' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>" + "<a href='" + "/author/submissions/#{id}/head_of_program" + "' class='medium'>[Edit Head of Program <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe if head_of_program_is_approving?
-      return (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members/edit" + "' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe unless head_of_program_is_approving?
+      (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members/edit" + "' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe
     elsif status_behavior.beyond_collecting_format_review_files?
       (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members" + "' class='medium'>[Review My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe
     else

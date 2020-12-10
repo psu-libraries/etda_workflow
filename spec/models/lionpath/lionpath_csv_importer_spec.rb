@@ -123,7 +123,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
         expect { lionpath_csv_importer.send(:assign_chairs) }.to change(CommitteeMember, :count).by 1
         expect(Submission.find(submission.id).committee_members.second.access_id).to eq program_chair.access_id
         expect(Submission.find(submission.id).committee_members.second.is_voting).to eq false
-        expect(Submission.find(submission.id).committee_members.second.is_required).to eq false
+        expect(Submission.find(submission.id).committee_members.second.is_required).to eq true
       end
     end
   end

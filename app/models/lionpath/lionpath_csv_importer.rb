@@ -55,7 +55,7 @@ class Lionpath::LionpathCsvImporter
                                             name: "#{program_chair.first_name} #{program_chair.last_name}",
                                             email: program_chair.email,
                                             access_id: program_chair.access_id,
-                                            is_required: false,
+                                            is_required: true,
                                             is_voting: false,
                                             lionpath_updated_at: DateTime.now
       sub.committee_members << chair_member
