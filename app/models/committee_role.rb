@@ -5,7 +5,7 @@ class CommitteeRole < ApplicationRecord
   has_many :committee_members
 
   GRADUATE_ROLES = { 'dissertation' => [
-    { name: 'Program Head/Chair', num_required: 1, is_active: true },
+    { name: 'Program Head/Chair', num_required: 0, is_active: true },
     { name: 'Dissertation Advisor/Co-Advisor', num_required: 1, is_active: true },
     { name: 'Committee Chair/Co-Chair', num_required: 1, is_active: true },
     { name: 'Committee Member', num_required: 2, is_active: true },
@@ -14,7 +14,7 @@ class CommitteeRole < ApplicationRecord
     { name: 'Special Signatory', num_required: 0, is_active: true }
   ],
                      'master_thesis' => [
-                       { name: 'Program Head/Chair', num_required: 1, is_active: true },
+                       { name: 'Program Head/Chair', num_required: 0, is_active: true },
                        { name: 'Thesis Advisor/Co-Advisor', num_required: 1, is_active: true },
                        { name: 'Committee Member', num_required: 0, is_active: true },
                        { name: 'Special Signatory', num_required: 0, is_active: true }
