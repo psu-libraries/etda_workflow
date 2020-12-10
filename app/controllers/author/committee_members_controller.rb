@@ -5,9 +5,10 @@ class Author::CommitteeMembersController < AuthorController
     status_giver.can_provide_new_committee?
     @submission.build_committee_members_for_partners
     render :form
-  rescue SubmissionStatusGiver::AccessForbidden
+  rescue SubmissionStatusGiver::AccessForbidden => e
     redirect_to author_root_path
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator' unless e
+    flash[:alert] = e if e
   end
 
   def create

@@ -1,6 +1,6 @@
 <%- #this presenter is being initialized here since cocoon make it hard to initialize it another way
     local_presenter = Author::CommitteeMemberView.new(f.object) %>
-<% disabled_bool = (current_partner.graduate? && @submission.degree.degree_type.slug == 'dissertation') %>
+<% disabled_bool = (current_partner.graduate? && f.object.lionpath_updated_at.present?) %>
 <% unless local_presenter.head_of_program? %>
 <div class="nested-fields panel panel-default">
   <div class="row committee-role">
@@ -24,8 +24,8 @@
         <% end %>
       </div>
       <% if controller_name == 'committee_members' %>
-        <% if disabled_bool %>
-          <%= f.association :committee_role, collection: ['Special Signatory'], prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+        <% if @submission.degree.degree_type.slug == 'dissertation' %>
+          <%= f.association :committee_role, collection: CommitteeRole.where(name: 'Special Signatory', degree_type_id: @submission.degree.degree_type.id), prompt: 'Please select a role', label_html: { class: 'hidden' } %>
         <% else %>
           <%= f.association :committee_role, collection: local_presenter.author_possible_roles, prompt: 'Please select a role', label_html: { class: 'hidden' } %>
         <% end %>

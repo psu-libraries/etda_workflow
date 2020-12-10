@@ -1,4 +1,4 @@
-<% disabled_bool = (current_partner.graduate? && @submission.degree.degree_type.slug == 'dissertation') %>
+<% disabled_bool = current_partner.graduate? %>
 <h1>Input Program Head/Chair</h1>
 <br/>
 <p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.head_of_program_notice").html_safe %></p>
