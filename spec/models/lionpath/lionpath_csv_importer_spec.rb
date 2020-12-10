@@ -3,6 +3,16 @@ require 'model_spec_helper'
 RSpec.describe Lionpath::LionpathCsvImporter do
   subject(:lionpath_csv_importer) { described_class.new }
 
+  describe '#import' do
+    context 'when current_partner is not graduate' do
+      it 'raises an error', milsch: true, honors: true do
+        skip 'non graduate' if current_partner.graduate?
+
+        expect{ lionpath_csv_importer.import }.to raise_error(Lionpath::LionpathCsvImporter::InvalidPartner)
+      end
+    end
+  end
+
   describe 'parsing of csvs' do
     before do
       allow_any_instance_of(described_class).to receive(:lionpath_csv_loc).and_return(fixture_location)

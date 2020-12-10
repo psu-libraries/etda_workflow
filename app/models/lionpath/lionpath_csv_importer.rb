@@ -1,5 +1,6 @@
 class Lionpath::LionpathCsvImporter
   class InvalidResource < StandardError; end
+  class InvalidPartner < StandardError; end
 
   # Order is essential here; Do not change.
   LIONPATH_RESOURCES = [
@@ -9,6 +10,8 @@ class Lionpath::LionpathCsvImporter
   ].freeze
 
   def import
+    raise InvalidPartner unless current_partner.graduate?
+
     LIONPATH_RESOURCES.each do |resource|
       grab_file(resource)
       parse_csv(resource)
