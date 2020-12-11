@@ -60,8 +60,8 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
       end
     end
 
-    context "visiting the 'Program Information' page" do
-      it "display committee_members page" do
+    context "visiting the 'Review Program Information' page" do
+      it 'raises a forbidden access error' do
         visit "/author/submissions/#{submission.id}/program_information"
         expect(page).to have_current_path(author_root_path)
         expect(page).not_to have_current_path("author/submissions/#{submission.id}/program_information")
@@ -69,13 +69,12 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
       end
     end
 
-    # ##?????????
-    context "visiting the 'Review Program Information' page" do
-      it 'raises a forbidden access error' do
-        visit author_submission_program_information_path(submission)
-        # expect(page).to have_content 'You are not allowed to visit that page at this time, please contact your administrator'
-        expect(page).to have_current_path(author_root_path)
-        expect(page).not_to have_current_path(author_submission_program_information_path(submission))
+    context "visiting the 'Update Program Information' page" do
+      it 'displays update program information page' do
+        visit "/author/submissions/#{submission.id}/edit"
+        expect(page).not_to have_current_path(author_root_path)
+        expect(page).to have_current_path("/author/submissions/#{submission.id}/edit")
+        # expect(page).to have_content('You are not allowed to visit that page at this time, please contact your administrator')
       end
     end
 

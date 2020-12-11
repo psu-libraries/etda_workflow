@@ -45,38 +45,76 @@ RSpec.describe 'The standard committee form for authors', js: true do
   end
 
   describe "save and continue submission" do
-    it "saves the committee", honors: true, milsch: true do
-      expect(page).to have_link('Add Committee Member')
-      if current_partner.graduate?
-        expect(page).to have_content('Program Head/Chair')
-        expect(find('#submission_committee_members_attributes_0_name').value).to eq('Test Tester')
-        expect(find('#submission_committee_members_attributes_0_name').disabled?).to eq true
+    context 'when submission is a master_thesis' do
+      it "allows editing and submission of committee", honors: true, milsch: true do
+        expect(page).to have_link('Add Committee Member')
+        if current_partner.graduate?
+          expect(page).to have_content('Program Head/Chair')
+          expect(find('#submission_committee_members_attributes_0_name').value).to eq('Test Tester')
+          expect(find('#submission_committee_members_attributes_0_name').disabled?).to eq true
+        end
+        # visit new_author_submission_committee_members_path(submission)
+        @email_list = [head_member.email] if current_partner.graduate?
+        @email_list = [] unless current_partner.graduate?
+        submission.required_committee_roles.count.times do |i|
+          i += 1 if current_partner.graduate?
+          fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
+          page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'buck@hotmail.com'")
+          @email_list << "buck@hotmail.com"
+        end
+        click_button 'Save and Continue Submission'
+        expect(page).to have_content('My Submissions')
+        submission.reload
+        assert_equal submission.committee_email_list, @email_list
+        expect(submission.committee_members.count).to eq(submission.required_committee_roles.count) unless current_partner.graduate?
+        expect(submission.committee_members.count).to eq(submission.required_committee_roles.count + 1) if current_partner.graduate?
+        expect(submission.committee_members.first.access_id).to eq('pbm123') unless current_partner.graduate?
+        expect(submission.committee_members.second.access_id).to eq('pbm123') if current_partner.graduate?
+        visit author_submission_committee_members_path(submission)
+        submission.required_committee_roles.count.times do |i|
+          i += 1 if current_partner.graduate?
+          # expect(page).to have_content role.name
+          name = "Professor Buck Murphy #{i}"
+          email = "buck@hotmail.com"
+          expect(page).to have_content(name)
+          expect(page).to have_content(email)
+        end
       end
-      # visit new_author_submission_committee_members_path(submission)
-      @email_list = [head_member.email] if current_partner.graduate?
-      @email_list = [] unless current_partner.graduate?
-      submission.required_committee_roles.count.times do |i|
-        i += 1 if current_partner.graduate?
-        fill_in "submission_committee_members_attributes_#{i}_name", with: "Professor Buck Murphy #{i}"
-        page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'buck@hotmail.com'")
-        @email_list << "buck@hotmail.com"
+    end
+
+    context 'when submission is a dissertation' do
+      let!(:submission_2) { FactoryBot.create :submission, :collecting_committee, author: author, degree: degree_2 }
+      let!(:degree_2) { FactoryBot.create :degree, degree_type: DegreeType.default }
+      let!(:head_role_2) { CommitteeRole.find_by(degree_type: DegreeType.default, name: 'Program Head/Chair') }
+      let!(:head_member_2) do
+        FactoryBot.create(:committee_member, committee_role: head_role_2, is_required: true,
+                                             is_voting: false, name: 'Test Tester', email: 'abc123@psu.edu',
+                                             lionpath_updated_at: DateTime.now, submission_id: submission_2.id)
       end
-      click_button 'Save and Continue Submission'
-      expect(page).to have_content('My Submissions')
-      submission.reload
-      assert_equal submission.committee_email_list, @email_list
-      expect(submission.committee_members.count).to eq(submission.required_committee_roles.count) unless current_partner.graduate?
-      expect(submission.committee_members.count).to eq(submission.required_committee_roles.count + 1) if current_partner.graduate?
-      expect(submission.committee_members.first.access_id).to eq('pbm123') unless current_partner.graduate?
-      expect(submission.committee_members.second.access_id).to eq('pbm123') if current_partner.graduate?
-      visit author_submission_committee_members_path(submission)
-      submission.required_committee_roles.count.times do |i|
-        i += 1 if current_partner.graduate?
-        # expect(page).to have_content role.name
-        name = "Professor Buck Murphy #{i}"
-        email = "buck@hotmail.com"
-        expect(page).to have_content(name)
-        expect(page).to have_content(email)
+      let!(:committee_member_1) { FactoryBot.create :committee_member, submission: submission_2, lionpath_updated_at: DateTime.now }
+      let!(:committee_member_2) { FactoryBot.create :committee_member, submission: submission_2, lionpath_updated_at: DateTime.now }
+      let!(:committee_member_3) { FactoryBot.create :committee_member, submission: submission_2, lionpath_updated_at: DateTime.now }
+
+      it 'disables committee form and allows submission of committee' do
+        skip 'graduate only' unless current_partner.graduate?
+
+        visit edit_author_submission_committee_members_path(submission_2)
+        submission_2.committee_members.count.times do |i|
+          expect(find("#submission_committee_members_attributes_#{i}_name").value).to eq('Professor Buck Murphy') unless i == 0
+          expect(find("#submission_committee_members_attributes_#{i}_name").value).to eq('Test Tester') if i == 0
+          expect(find("#submission_committee_members_attributes_#{i}_name").disabled?).to eq true
+        end
+        click_link 'Add Committee Member'
+        fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last
+        within fields_for_last_committee_member do
+          expect(find("div.select").find_all("option").count).to eq 2
+          select 'Special Signatory', from: 'Committee role'
+          fill_in "Name", with: "Extra Member"
+          fill_in "Email", with: "extra_member@example.com"
+        end
+        expect { click_button 'Save and Continue Submission' }.to change { submission_2.committee_members.count }.by 1
+        submission_2.reload
+        expect(submission_2.status).to eq 'collecting format review files'
       end
     end
   end
