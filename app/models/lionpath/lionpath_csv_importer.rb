@@ -1,5 +1,6 @@
 class Lionpath::LionpathCsvImporter
   class InvalidResource < StandardError; end
+  class InvalidPartner < StandardError; end
 
   # Order is essential here; Do not change.
   LIONPATH_RESOURCES = [
@@ -9,6 +10,8 @@ class Lionpath::LionpathCsvImporter
   ].freeze
 
   def import
+    raise InvalidPartner unless current_partner.graduate?
+
     LIONPATH_RESOURCES.each do |resource|
       grab_file(resource)
       parse_csv(resource)
@@ -37,8 +40,6 @@ class Lionpath::LionpathCsvImporter
   def assign_chairs
     submissions = Submission.where('submissions.created_at >= ?', DateTime.strptime('2021-01-01', '%Y-%m-%d'))
     submissions.each do |sub|
-      next if sub.committee_members.blank?
-
       degree_type = sub.degree.degree_type
       chair_role = CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: degree_type)
       sub_chair = sub.committee_members.find_by(committee_role_id: chair_role.id)

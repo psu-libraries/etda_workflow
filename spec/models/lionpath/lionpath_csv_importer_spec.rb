@@ -3,6 +3,16 @@ require 'model_spec_helper'
 RSpec.describe Lionpath::LionpathCsvImporter do
   subject(:lionpath_csv_importer) { described_class.new }
 
+  describe '#import' do
+    context 'when current_partner is not graduate' do
+      it 'raises an error', milsch: true, honors: true do
+        skip 'non graduate' if current_partner.graduate?
+
+        expect { lionpath_csv_importer.import }.to raise_error(Lionpath::LionpathCsvImporter::InvalidPartner)
+      end
+    end
+  end
+
   describe 'parsing of csvs' do
     before do
       allow_any_instance_of(described_class).to receive(:lionpath_csv_loc).and_return(fixture_location)
@@ -85,17 +95,6 @@ RSpec.describe Lionpath::LionpathCsvImporter do
       end
     end
 
-    context 'when submission has no committee' do
-      let!(:submission) do
-        FactoryBot.create :submission, created_at: DateTime.strptime('2021-01-02', '%Y-%m-%d'),
-                                       degree: degree, program: program, campus: 'UP'
-      end
-
-      it 'does not get a chair' do
-        expect { lionpath_csv_importer.send(:assign_chairs) }.to change(CommitteeMember, :count).by 0
-      end
-    end
-
     context 'when submission already has a program chair' do
       let!(:submission) do
         FactoryBot.create :submission, created_at: DateTime.strptime('2021-01-02', '%Y-%m-%d'),
@@ -123,6 +122,8 @@ RSpec.describe Lionpath::LionpathCsvImporter do
       it "adds program chair to submissions' committee" do
         expect { lionpath_csv_importer.send(:assign_chairs) }.to change(CommitteeMember, :count).by 1
         expect(Submission.find(submission.id).committee_members.second.access_id).to eq program_chair.access_id
+        expect(Submission.find(submission.id).committee_members.second.is_voting).to eq false
+        expect(Submission.find(submission.id).committee_members.second.is_required).to eq true
       end
     end
   end

@@ -39,6 +39,7 @@ class Author::SubmissionsController < AuthorController
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_update_program_information?
     @submission.update!(standard_program_params)
+    status_giver.collecting_committee! if @submission.status_behavior.collecting_program_information?
     redirect_to author_root_path
     flash[:notice] = 'Program information updated successfully'
   rescue ActiveRecord::RecordInvalid
@@ -74,13 +75,9 @@ class Author::SubmissionsController < AuthorController
     @submission.access_level = 'open_access' if (current_partner.honors? || current_partner.milsch?) && @submission.access_level.blank?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
-    missing_head_redirect
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
-  rescue CommitteeMember::ProgramHeadMissing
-    redirect_to author_submission_head_of_program_path(@submission)
-    flash[:alert] = 'In order to proceed to the final submission stage, you must input the head/chair of your graduate program here.'
   end
 
   def update_final_submission
@@ -130,14 +127,6 @@ class Author::SubmissionsController < AuthorController
   end
 
   private
-
-    def missing_head_redirect
-      raise CommitteeMember::ProgramHeadMissing if program_head_missing
-    end
-
-    def program_head_missing
-      @submission.head_of_program_is_approving? && CommitteeMember.head_of_program(@submission).blank?
-    end
 
     def find_submission
       @submission = @author.submissions.find(params[:submission_id] || params[:id])

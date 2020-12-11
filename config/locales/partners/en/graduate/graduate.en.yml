@@ -216,6 +216,9 @@ en:
           committee_member:
             name: Committee Member
             description: A professor who serves a variety of roles in the student’s thesis and is a member of the committee.
+          program_head:
+            name: Program Head
+            description: Faculty member responsible for leadership in developing the department’s academic programs.
         dissertation:
           dissertation_advisor:
             name: Dissertation Advisor

@@ -25,12 +25,8 @@
       </div>
     </div>
       <div class="col-xs-12 col-xs-10 col-sm-9">
-        <% if @submission.head_of_program_is_approving? && @submission.status == 'collecting committee' %>
-          <%= submission_form.button :submit, class: "btn-primary", value: "Save and Input Program Head/Chair >>" %>
-        <% else %>
-          <%= submission_form.button :submit, class: "btn-primary", value: "Save and Continue Editing" %>
-          <%= submission_form.button :submit, class: "btn-primary btn-success", value: "Save and Continue Submission" %>
-        <% end %>
+        <%= submission_form.button :submit, class: "btn-primary", value: "Save and Continue Editing" %>
+        <%= submission_form.button :submit, class: "btn-primary btn-success", value: "Save and Continue Submission" %>
         <%= link_to "Cancel", author_root_path, class: 'btn cancel-link'%>
       </div>
 

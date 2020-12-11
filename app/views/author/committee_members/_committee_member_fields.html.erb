@@ -1,12 +1,12 @@
 <%- #this presenter is being initialized here since cocoon make it hard to initialize it another way
     local_presenter = Author::CommitteeMemberView.new(f.object) %>
-<% unless local_presenter.head_of_program? %>
+<% disabled_bool = (current_partner.graduate? && f.object.lionpath_updated_at.present?) %>
 <div class="nested-fields panel panel-default">
   <div class="row committee-role">
   <% if local_presenter.required? %>
     <div class="col-sm-12">
       <h2 class="h2-small block-header"><%= local_presenter.role %> <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="right" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>"></span></a></h2>
-      <% unless current_partner.honors? %>
+      <% if !current_partner.honors? && !disabled_bool %>
         <p class="email_form_checkbox"><%= check_box 'email_form_release', "switch" %><small> Committee member is not in dropdown list</small></p>
       <% end %>
       <%= f.association :committee_role, as: :hidden, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || []  %>
@@ -23,9 +23,13 @@
         <% end %>
       </div>
       <% if controller_name == 'committee_members' %>
-        <%= f.association :committee_role, collection: local_presenter.author_possible_roles , prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+        <% if @submission.degree.degree_type.slug == 'dissertation' %>
+          <%= f.association :committee_role, collection: CommitteeRole.where(name: 'Special Signatory', degree_type_id: @submission.degree.degree_type.id), prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+        <% else %>
+          <%= f.association :committee_role, collection: local_presenter.author_possible_roles, prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+        <% end %>
       <% elsif controller_name == 'submissions' %>
-        <%= f.association :committee_role, collection: local_presenter.admin_possible_roles , prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+        <%= f.association :committee_role, collection: local_presenter.admin_possible_roles, prompt: 'Please select a role', label_html: { class: 'hidden' } %>
       <% end %>
     </div>
   <% end %>
@@ -34,21 +38,29 @@
   <%= f.input :is_required, as: :hidden, :input_html => { value: f.object.is_required, readonly: true } %>
 
   <div class="row">
-    <div class="col-sm-6">
-        <%= f.input :name, label: local_presenter.name_label, aria: { label: "Use arrow keys to navigate your committee member search results to confirm the proper person" }, input_html: { class: 'ldap-lookup' }, required: true %>
-    </div>
     <% unless local_presenter.required? %>
       <div class="col-sm-6">
-        <%= f.input :email, label: local_presenter.email_label, required: true %>
+        <%= f.input :name, label: local_presenter.name_label,
+                    aria: { label: "Use arrow keys to navigate your committee member search results to confirm the proper person" },
+                    input_html: { class: 'ldap-lookup' }, required: true %>
+      </div>
+      <div class="col-sm-6">
+        <%= f.input :email, label: local_presenter.email_label,
+                    required: true %>
       </div>
       <div class="col-sm-6 committee-remove">
         <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger' %>
       </div>
     <% else %>
       <div class="col-sm-6">
-        <%= f.input :email, label: local_presenter.email_label, required: true, input_html: { readonly: true } %>
+        <%= f.input :name, label: local_presenter.name_label,
+                    aria: { label: "Use arrow keys to navigate your committee member search results to confirm the proper person" },
+                    disabled: disabled_bool, input_html: { class: 'ldap-lookup' }, required: true %>
+      </div>
+      <div class="col-sm-6">
+        <%= f.input :email, label: local_presenter.email_label,
+                    required: true, input_html: { readonly: true } %>
       </div>
     <% end %>
   </div>
 </div>
-<% end %>

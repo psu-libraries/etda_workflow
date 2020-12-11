@@ -78,6 +78,51 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
         expect(page).to have_current_path(author_root_path)
       end
     end
+
+    describe "editing program information with imported lionpath data" do
+      let!(:program) { FactoryBot.create :program }
+
+      before do
+        submission.update program_id: program.id, year: DateTime.now.year,
+                          title: nil, semester: 'Fall', lionpath_updated_at: DateTime.now,
+                          degree_id: Degree.first.id
+      end
+
+      it 'displays imported data and updates when submitted' do
+        skip 'graduate only' unless current_partner.graduate?
+
+        visit "author/submissions/#{submission.id}/edit"
+        expect(find("input[id='submission_title']").value).to be_empty
+        find("input[id='submission_title']").set 'Test Title'
+        expect(find("select[id='submission_program_id']").value).to eq program.id.to_s
+        expect(find("select[id='submission_program_id']").disabled?).to eq true
+        expect(find("select[id='submission_degree_id']").value).to eq Degree.first.id.to_s
+        expect(find("select[id='submission_degree_id']").disabled?).to eq true
+        expect(find("select[id='submission_semester']").value).to eq 'Fall'
+        expect(find("select[id='submission_semester']").disabled?).to eq true
+        expect(find("select[id='submission_year']").value).to eq DateTime.now.year.to_s
+        expect(find("select[id='submission_year']").disabled?).to eq true
+        click_on 'Update Program Information'
+        expect(Submission.find(submission.id).title).to eq 'Test Title'
+        expect(Submission.find(submission.id).status).to eq 'collecting committee'
+      end
+    end
+
+    describe 'when submission is beyond_collecting_committee' do
+      let!(:program) { FactoryBot.create :program }
+
+      before do
+        submission.update program_id: program.id, year: DateTime.now.year,
+                          title: 'Title', semester: 'Fall', degree_id: Degree.first.id,
+                          status: 'collecting format review files'
+      end
+
+      it "doesn't change status of submission" do
+        visit "author/submissions/#{submission.id}/edit"
+        click_on 'Update Program Information'
+        expect(Submission.find(submission.id).status).to eq 'collecting format review files'
+      end
+    end
   end
 
   describe "when I submit the 'Program Information' form" do
@@ -87,7 +132,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
 
     let(:author) { current_author }
 
-    it "submission status updates to 'collecting committee'" do
+    it "submission status updates to 'collecting committee'", milsch: true, honors: true do
       program = FactoryBot.create :program, name: 'Information Sciences and Technology'
       second_program = FactoryBot.create :program, name: 'A different program'
       degree = Degree.create(name: 'Master of Science', degree_type_id: DegreeType.default.id, description: 'My Master degree')
@@ -111,7 +156,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
     end
   end
 
-  describe "author can delete a submission" do
+  describe "author can delete a submission", milsch: true, honors: true do
     before do
       webaccess_authorize_author
     end
@@ -123,8 +168,12 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
       start_count = author.submissions.count
       expect(start_count > 0).to be_truthy
       visit author_root_path
-      click_link("delete")
-      expect(author.submissions.count).to eq(start_count - 1)
+      if current_partner.graduate?
+        expect(page).not_to have_link "delete"
+      else
+        click_link("delete")
+        expect(author.submissions.count).to eq(start_count - 1)
+      end
     end
   end
 end
