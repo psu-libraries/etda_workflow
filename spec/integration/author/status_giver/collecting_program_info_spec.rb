@@ -133,8 +133,6 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
     let(:author) { current_author }
 
     it "submission status updates to 'collecting committee'", milsch: true, honors: true do
-      skip "non graduate" if current_partner.graduate?
-
       program = FactoryBot.create :program, name: 'Information Sciences and Technology'
       second_program = FactoryBot.create :program, name: 'A different program'
       degree = Degree.create(name: 'Master of Science', degree_type_id: DegreeType.default.id, description: 'My Master degree')
