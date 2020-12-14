@@ -9,6 +9,13 @@ class Lionpath::LionpathCsvImporter
     Lionpath::LionpathCommittee.new
   ].freeze
 
+  # Patterns sftp will look for when pulling csv file
+  LIONPATH_FILE_PATTERNS = {
+    program: 'PE_SR_G_ETD_STDNT_PLAN_PRC',
+    chair: 'PE_SR_G_ETD_CHAIR_PRC',
+    committee: 'PE_SR_G_ETD_COMMITTEE_PRC'
+  }.freexe
+
   def import
     raise InvalidPartner unless current_partner.graduate?
 
@@ -17,17 +24,18 @@ class Lionpath::LionpathCsvImporter
       parse_csv(resource)
     end
     assign_chairs
+    File.delete(lionpath_csv_loc) if File.exist?(lionpath_csv_loc)
   end
 
   private
 
   def grab_file(resource)
     if resource.is_a?(Lionpath::LionpathProgram)
-      `#{program_bin_path}`
+      `#{bin_path} #{LIONPATH_FILE_PATTERNS[:program]}`
     elsif resource.is_a?(Lionpath::LionpathChair)
-      `#{chair_bin_path}`
+      `#{bin_path} #{LIONPATH_FILE_PATTERNS[:chair]}`
     elsif resource.is_a?(Lionpath::LionpathCommittee)
-      `#{committee_bin_path}`
+      `#{bin_path} #{LIONPATH_FILE_PATTERNS[:committee]}`
     else
       raise InvalidResource
     end
@@ -68,7 +76,7 @@ class Lionpath::LionpathCsvImporter
   end
 
   def tmp_dir
-    '/var/tmp_lionpath/'
+    'tmp/'
   end
 
   def parse_csv(resource)
@@ -79,18 +87,6 @@ class Lionpath::LionpathCsvImporter
   end
 
   def bin_path
-    "#{Rails.root}/bin/"
-  end
-
-  def program_bin_path
-    bin_path + 'lionpath-program.sh'
-  end
-
-  def chair_bin_path
-    bin_path + 'lionpath-chair.sh'
-  end
-
-  def committee_bin_path
-    bin_path + 'lionpath-committee.sh'
+    "#{Rails.root}/bin/lionpath-csv.sh"
   end
 end
