@@ -17,7 +17,7 @@ OUTPUT=$(sftp -P 22 -b bin/lp_sftp_newest.bat -i $ID_FILE_PATH $EXT_HOST)
 for x in $OUTPUT
 do
   if [[ "$x" =~ "$PATTERN" ]]; then
-    sftp -P 22 -r -i ~/.ssh/$ID_FILE_PATH $EXT_HOST:/out/$x tmp/lionpath.csv
+    sftp -P 22 -r -i $ID_FILE_PATH $EXT_HOST:/out/$x tmp/lionpath.csv
     break
   fi
 done
