@@ -56,7 +56,7 @@ RSpec.describe Lionpath::LionpathProgram do
     let!(:program) { FactoryBot.create :program, code: row_1['Acadademic Plan'] }
 
     it 'links to existing author and program' do
-      lionpath_program.import(row_1)
+      expect { lionpath_program.import(row_1) }.to change(Author, :count).by 0
       expect(Submission.first.program).to eq program
       expect(Submission.first.author).to eq author
     end

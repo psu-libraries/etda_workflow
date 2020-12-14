@@ -45,11 +45,10 @@ class Lionpath::LionpathProgram
   end
 
   def author(row)
-    author = Author.find_or_create_by(psu_idn: row['ID'].to_s) do |attrs|
-      attrs.alternate_email_address = row['Alternate Email']
-    end
-    return author if author.persisted?
+    author = Author.find_by(psu_idn: row['ID'].to_s)
+    return author if author.present?
 
+    author = Author.create({psu_idn: row['ID'], alternate_email_address: row['Alternate Email']})
     author.populate_with_ldap_attributes(author.psu_idn, 'psidn')
     author
   end
