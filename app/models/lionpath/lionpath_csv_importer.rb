@@ -14,7 +14,7 @@ class Lionpath::LionpathCsvImporter
     program: 'PE_SR_G_ETD_STDNT_PLAN_PRC',
     chair: 'PE_SR_G_ETD_CHAIR_PRC',
     committee: 'PE_SR_G_ETD_COMMITTEE_PRC'
-  }.freexe
+  }.freeze
 
   def import
     raise InvalidPartner unless current_partner.graduate?
@@ -39,10 +39,6 @@ class Lionpath::LionpathCsvImporter
     else
       raise InvalidResource
     end
-  end
-
-  def clear_tmp_directory
-    `rm -v #{tmp_dir}*`
   end
 
   def assign_chairs
@@ -71,19 +67,19 @@ class Lionpath::LionpathCsvImporter
     end
   end
 
-  def lionpath_csv_loc
-    "#{tmp_dir}lionpath.csv"
-  end
-
-  def tmp_dir
-    'tmp/'
-  end
-
   def parse_csv(resource)
     csv_options = { headers: true, encoding: "ISO-8859-1:UTF-8", quote_char: '"', force_quotes: true }
     CSV.foreach(lionpath_csv_loc, csv_options) do |row|
       resource.import(row)
     end
+  end
+
+  def lionpath_csv_loc
+    "#{tmp_dir}lionpath.csv"
+  end
+
+  def tmp_dir
+    "#{Rails.root}/tmp/"
   end
 
   def bin_path
