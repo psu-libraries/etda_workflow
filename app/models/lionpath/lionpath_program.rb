@@ -64,7 +64,7 @@ class Lionpath::LionpathProgram
   end
 
   def degree(row)
-    incoming_dg = row['Acadademic Plan'].split('_')[1].to_s
+    incoming_dg = row['Acadademic Plan'].split('_').last.to_s
     Degree.find_by(name: incoming_dg)
   end
 end

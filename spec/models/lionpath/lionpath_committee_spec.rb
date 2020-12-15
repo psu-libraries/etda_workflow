@@ -15,9 +15,9 @@ RSpec.describe Lionpath::LionpathCommittee do
       'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
   end
 
-  context "when author's submission is created before 2021" do
+  context "when author's submission's year is before 2021" do
     before do
-      submission.update created_at: DateTime.strptime('2020', '%Y')
+      submission.update year: 2020
     end
 
     it 'does not import data' do
@@ -37,7 +37,7 @@ RSpec.describe Lionpath::LionpathCommittee do
 
   context "when author's submission is beyond or equal to 2021" do
     before do
-      submission.update created_at: DateTime.strptime('2021-01-02', '%Y-%m-%d')
+      submission.update year: 2021
     end
 
     it 'imports data' do

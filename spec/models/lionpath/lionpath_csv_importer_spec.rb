@@ -57,7 +57,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
       let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
       let!(:submission) do
         FactoryBot.create :submission, degree: degree, author: author,
-                                       created_at: DateTime.strptime('2021-01-02', '%Y-%m-%d')
+                                       year: 2021
       end
       let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.first }
 
@@ -85,7 +85,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
 
     context 'when submission is before 2021' do
       let!(:submission) do
-        FactoryBot.create :submission, created_at: DateTime.strptime('2020-01-02', '%Y-%m-%d'),
+        FactoryBot.create :submission, year: 2020,
                                        degree: degree, program: program, campus: 'UP'
       end
       let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
@@ -97,7 +97,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
 
     context 'when submission already has a program chair' do
       let!(:submission) do
-        FactoryBot.create :submission, created_at: DateTime.strptime('2021-01-02', '%Y-%m-%d'),
+        FactoryBot.create :submission, year: 2021,
                                        degree: degree, program: program, campus: 'UP'
       end
       let!(:program_head_member) do
@@ -114,7 +114,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
 
     context "when submission doesn't have a program chair yet" do
       let!(:submission) do
-        FactoryBot.create :submission, created_at: DateTime.strptime('2021-01-02', '%Y-%m-%d'),
+        FactoryBot.create :submission, year: 2021,
                                        degree: degree, program: program, campus: 'UP'
       end
       let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }

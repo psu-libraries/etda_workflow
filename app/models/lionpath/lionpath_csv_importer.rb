@@ -42,12 +42,14 @@ class Lionpath::LionpathCsvImporter
   end
 
   def assign_chairs
-    submissions = Submission.where('submissions.created_at >= ?', DateTime.strptime('2021-01-01', '%Y-%m-%d'))
+    submissions = Submission.where('submissions.year >= ?', 2021)
     submissions.each do |sub|
       degree_type = sub.degree.degree_type
       chair_role = CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: degree_type)
       sub_chair = sub.committee_members.find_by(committee_role_id: chair_role.id)
       program_chair = sub.program.program_chairs.find { |n| n.campus == sub.campus }
+      next if program_chair.blank?
+
       if sub_chair.present?
         sub_chair.update name: "#{program_chair.first_name} #{program_chair.last_name}",
                          email: program_chair.email,
@@ -64,17 +66,17 @@ class Lionpath::LionpathCsvImporter
                                             lionpath_updated_at: DateTime.now
       sub.committee_members << chair_member
       sub.save!
+    rescue StandardError => e
+      Rails.logger.error e
     end
   end
 
   def parse_csv(resource)
     csv_options = { headers: true, encoding: "ISO-8859-1:UTF-8", quote_char: '"', force_quotes: true }
     CSV.foreach(lionpath_csv_loc, csv_options) do |row|
-      begin
-        resource.import(row)
-      rescue StandardError => e
-        puts e
-      end
+      resource.import(row)
+    rescue StandardError => e
+      Rails.logger.error e
     end
   end
 
