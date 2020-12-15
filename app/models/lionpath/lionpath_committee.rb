@@ -16,7 +16,7 @@ class Lionpath::LionpathCommittee
   private
 
   def committee_member_attrs(row)
-    committee_role = CommitteeRole.find_by(code: row['Role'])
+    committee_role = CommitteeRole.find_by(code: row['Role'].to_s)
     {
       committee_role: committee_role,
       is_required: true,
@@ -30,10 +30,12 @@ class Lionpath::LionpathCommittee
 
   def submission(row)
     this_author = author(row)
+    return if this_author.blank? || this_author.submissions.blank?
+
     this_author.submissions.find { |s| s.degree.degree_type.slug == 'dissertation' }
   end
 
   def author(row)
-    Author.find_by(psu_idn: row['Student ID'])
+    Author.find_by(psu_idn: row['Student ID'].to_s)
   end
 end

@@ -68,16 +68,14 @@ class Lionpath::LionpathCsvImporter
   end
 
   def parse_csv(resource)
-    errors = []
     csv_options = { headers: true, encoding: "ISO-8859-1:UTF-8", quote_char: '"', force_quotes: true }
     CSV.foreach(lionpath_csv_loc, csv_options) do |row|
       begin
         resource.import(row)
       rescue StandardError => e
-        errors << e
+        puts e
       end
     end
-    puts errors
   end
 
   def lionpath_csv_loc
