@@ -67,7 +67,7 @@ class Lionpath::LionpathCsvImporter
       sub.committee_members << chair_member
       sub.save!
     rescue StandardError => e
-      puts e
+      Rails.logger.error(error_json(e, "Assigning Chairs"))
     end
   end
 
@@ -76,8 +76,17 @@ class Lionpath::LionpathCsvImporter
     CSV.foreach(lionpath_csv_loc, csv_options) do |row|
       resource.import(row)
     rescue StandardError => e
-      puts e
+      Rails.logger.error(error_json(e, resource))
     end
+  end
+
+  def error_json(error, resource)
+    {
+      lionpath: {
+        error: error.to_s,
+        resource: resource.class.name
+      }
+    }.to_json
   end
 
   def lionpath_csv_loc

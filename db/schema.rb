@@ -206,7 +206,7 @@ ActiveRecord::Schema.define(version: 2020_12_03_165927) do
     t.index ["submission_id"], name: "keywords_submission_id_fk"
   end
 
-  create_table "program_chairs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "program_chairs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "program_id", null: false
     t.string "access_id", null: false
     t.string "first_name"
