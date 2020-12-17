@@ -1,15 +1,20 @@
+<% disabled_bool = (current_partner.graduate? && f.object.lionpath_updated_at.present?) %>
 <div class="nested-fields admin panel panel-default committee-member-information">
   <div class="status-row">
     <div class="col-sm-6">
-      <%= f.association :committee_role, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || [] , input_html: {class: 'role'} %>
+      <%= f.association :committee_role,
+                        collection: @submission.degree_type.try(&:committee_roles).order('name asc') || [] ,
+                        disabled: disabled_bool, input_html: {class: 'role'} %>
     </div>
     <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger remove-member'%>
   </div>
   <div class="row committee-details">
-    <%= f.input :name, input_html: { class: 'ldap-lookup' } %>
-    <%= f.input :email %>
+    <%= f.input :name, disabled: disabled_bool, input_html: { class: 'ldap-lookup' } %>
+    <%= f.input :email, disabled: disabled_bool %>
     <div class="status-row">
-      <%= f.input :status, collection: Hash[CommitteeMember::STATUS.collect{ |item| [item, item.capitalize] }], label_method: :last, value_method: :first, include_blank: true, input_html: { class: "select-status" } %>
+      <%= f.input :status, collection: Hash[CommitteeMember::STATUS.collect{ |item| [item, item.capitalize] }],
+                  label_method: :last, value_method: :first,
+                  include_blank: true, input_html: { class: "select-status" } %>
       <% if (@submission.status_behavior.waiting_for_committee_review? && f.object.committee_role.present? && f.object.committee_role.name != 'Program Head/Chair') || (@submission.status_behavior.waiting_for_head_of_program_review? && f.object.committee_role.present? && f.object.committee_role.name == 'Program Head/Chair') %>
         <button type="button" id="send_email_reminder" value="<%= f.object.id.to_s %>">Send Email Reminder</button>
       <% end %>
@@ -17,7 +22,9 @@
     <%= "<p class='hint'>Approved at: #{f.object.approved_at.strftime("%B %d, %Y")} #{f.object.approved_at.strftime("%I:%M %p")}</p>".html_safe if f.object.status == 'approved' %>
     <%= f.input :notes %>
     <% if f.object.committee_role && f.object.committee_role.name.include?("Advisor") %>
-      <%= f.input :federal_funding_used, as: :radio_buttons, collection: [["Yes", true],["No", false]], wrapper: :federal_funding_radios if current_partner.graduate? %>
+      <%= f.input :federal_funding_used, as: :radio_buttons,
+                  collection: [["Yes", true],["No", false]],
+                  wrapper: :federal_funding_radios if current_partner.graduate? %>
     <% end %>
   </div>
 </div>

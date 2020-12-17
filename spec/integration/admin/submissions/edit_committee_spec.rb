@@ -5,10 +5,11 @@ RSpec.describe "Editing committee member information", js: true, honors: true, m
   let!(:submission) { FactoryBot.create(:submission, :waiting_for_committee_review, degree: degree, author: author) }
   let!(:degree) { FactoryBot.create(:degree, degree_type: DegreeType.default) }
   let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: DegreeType.default }
+  let!(:committee_role) { FactoryBot.create :committee_role, degree_type: DegreeType.default }
 
   before do
     create_committee submission
-    submission.committee_members << FactoryBot.create(:committee_member)
+    submission.committee_members << FactoryBot.create(:committee_member, committee_role: committee_role)
     webaccess_authorize_admin
   end
 
@@ -29,7 +30,6 @@ RSpec.describe "Editing committee member information", js: true, honors: true, m
     end
     click_button 'Update Metadata'
     submission.reload
-    puts page.body
     find("div[data-target='#committee']").click
     sleep 1
     within('#committee') do
@@ -38,5 +38,31 @@ RSpec.describe "Editing committee member information", js: true, honors: true, m
     expect(submission.committee_members.count).to eq(committee_size.to_i - 1)
     expect(submission.committee_members.first.status).to eq 'approved'
     expect(submission.committee_members.first.notes).to match(/changed Review Status to 'Approved'/)
+  end
+
+  context 'when committee member was created via lionpath import' do
+    let(:lp_committee_member) do
+      FactoryBot.create :committee_member, name: 'LP Tester',
+                                           lionpath_updated_at: DateTime.now, committee_role: committee_role
+    end
+
+    before do
+      submission.committee_members << lp_committee_member
+    end
+
+    it 'disables the name, email and committee role fields for this committee member' do
+      skip 'graduate only' unless current_partner.graduate?
+
+      visit admin_edit_submission_path(submission)
+      find("div[data-target='#committee']").click
+      sleep 1
+      within('#committee') do
+        expect(find_all("select.role").last.value).to eq committee_role.id.to_s
+        expect(find_all("select.role").last.disabled?).to eq true
+        expect(find_all("input.ui-autocomplete-input").last.value).to eq 'LP Tester'
+        expect(find_all("input.ui-autocomplete-input").last.disabled?).to eq true
+        expect(find_all("input.email").last.disabled?).to eq true
+      end
+    end
   end
 end

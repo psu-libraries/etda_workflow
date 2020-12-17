@@ -17,7 +17,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
 
       it 'rescues error and reports to rails logger with lionpath: tag' do
         allow_any_instance_of(described_class).to receive(:lionpath_csv_loc).and_return(fixture_location)
-        lionpath_committee = spy(Lionpath::LionpathCommittee.new)
+        lionpath_committee = instance_spy(Lionpath::LionpathCommittee)
         allow(lionpath_committee).to receive(:import).and_raise StandardError
         expect(Rails.logger).to receive(:error).with(/lionpath:|StandardError/).exactly(5).times
         lionpath_csv_importer.send(:parse_csv, lionpath_committee)
