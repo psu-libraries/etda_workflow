@@ -11,6 +11,18 @@ RSpec.describe Lionpath::LionpathCsvImporter do
         expect { lionpath_csv_importer.import }.to raise_error(Lionpath::LionpathCsvImporter::InvalidPartner)
       end
     end
+
+    context 'when error occurs during csv parsing' do
+      let(:fixture_location) { "#{Rails.root}/spec/fixtures/lionpath/lionpath_committee.csv" }
+
+      it 'rescues error and reports to rails logger with lionpath: tag' do
+        allow_any_instance_of(described_class).to receive(:lionpath_csv_loc).and_return(fixture_location)
+        lionpath_committee = spy(Lionpath::LionpathCommittee.new)
+        allow(lionpath_committee).to receive(:import).and_raise StandardError
+        expect(Rails.logger).to receive(:error).with(/lionpath:|StandardError/).exactly(5).times
+        lionpath_csv_importer.send(:parse_csv, lionpath_committee)
+      end
+    end
   end
 
   describe 'parsing of csvs' do

@@ -84,7 +84,8 @@ class Lionpath::LionpathCsvImporter
     {
       lionpath: {
         error: error.to_s,
-        resource: resource.class.name
+        resource: resource.class.name,
+        timestamp: DateTime.now
       }
     }.to_json
   end
