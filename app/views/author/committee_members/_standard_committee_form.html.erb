@@ -1,10 +1,9 @@
 
     <p>
-    <p>Enter required committee members in the form below.  Type the committee member's name in the form.  After a blank is entered, a list of names will appear.  Use up and down arrow keys to scroll through the list.  When the desired name is highlighted, click the return key to populate the form.  Both the committee member's name and email address will be filled after the selection is made.  Emails will automatically be sent to each committee member once your final submission is submitted and the committee review stage begins.  These emails will provide a link to where committee members can complete their reviews.</p>
+    <p><%= t("#{current_partner.id}.committee.list.#{@submission.degree_type.slug}.help_text") %></p>
 
-    <p><span class="text-info"><strong>Help:</strong></span> <%= t("#{current_partner.id}.committee.author_instructions") %></p>
     <% if current_partner.graduate? %>
-      <p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.author_notice") %></p>
+      <p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.list.#{@submission.degree_type.slug}.notice") %></p>
     <% end %>
     <%= simple_form_for @submission,
                         url:  author_submission_committee_members_path(@submission) do |submission_form| %>
