@@ -4,22 +4,23 @@ class Lionpath::LionpathProgram
 
     author = author(row)
     degree = degree(row)
+    program = program(row)
     if author.submissions.present?
-      submission = author.submissions.find_by(degree_id: degree.id)
+      submission = author.submissions.find_by(degree_id: degree.id, program: program)
 
       if submission.present?
         submission.update submission_attrs(row)
         return
       end
     end
-    Submission.create({ status: 'collecting program information', author: author }.merge(submission_attrs(row)))
+    Submission.create({ status: 'collecting program information',
+                        author: author, program: program }.merge(submission_attrs(row)))
   end
 
   private
 
   def submission_attrs(row)
     {
-      program: program(row),
       degree: degree(row),
       semester: semester(row),
       year: year(row),

@@ -65,7 +65,7 @@ RSpec.describe Lionpath::LionpathProgram do
   context 'when submission already exists' do
     let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
     let!(:program) { FactoryBot.create :program, code: row_1['Acadademic Plan'] }
-    let!(:submission) { FactoryBot.create :submission, author: author, degree: degree }
+    let!(:submission) { FactoryBot.create :submission, author: author, degree: degree, program: program }
 
     it 'updates the submission' do
       expect { lionpath_program.import(row_1) }.to change(Submission, :count).by 0
