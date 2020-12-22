@@ -13,8 +13,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
 
-    context "when I submit the 'Upload Final Submission Files' form", milsch: true, honors: true do
-      it 'loads the page' do
+    context "when I submit the 'Upload Final Submission Files' form" do
+      it 'loads the page', honors: true, milsch: true do
         submission.defended_at = Time.zone.yesterday
         submission.save(validate: false)
         submission.reload
@@ -88,7 +88,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     end
 
     context "when I submit the 'Upload Final Submission Files' form with multiple files" do
-      it 'uploads two files', honors: true do
+      it 'uploads two files' do
         submission.defended_at = Time.zone.yesterday
         submission.save(validate: false)
         submission.reload
