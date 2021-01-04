@@ -1,7 +1,7 @@
 class Lionpath::LionpathCommittee
   def import(row)
     this_submission = submission(row)
-    return if this_submission.blank? || this_submission.year < 2021
+    return if this_submission.blank? || invalid_date?(this_submission)
 
     if this_submission.committee_members.present?
       cm = this_submission.committee_members.find_by(access_id: row['Access ID'].downcase.to_s)
@@ -33,6 +33,10 @@ class Lionpath::LionpathCommittee
     return if this_author.blank? || this_author.submissions.blank?
 
     this_author.submissions.find { |s| s.degree_type.slug == 'dissertation' }
+  end
+
+  def invalid_date?(submission)
+    submission.year < 2021 || (submission.year == 2021 && submission.semester == 'Spring')
   end
 
   def author(row)
