@@ -1,4 +1,4 @@
-class AssignChairs
+class Lionpath::LionpathAssignChairs
   def call
     submissions.each do |sub|
       degree_type = sub.degree.degree_type

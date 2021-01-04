@@ -42,7 +42,7 @@ class Lionpath::LionpathCsvImporter
   end
 
   def assign_chairs
-    AssignChairs.new.call
+    Lionpath::LionpathAssignChairs.new.call
   end
 
   def parse_csv(resource)
