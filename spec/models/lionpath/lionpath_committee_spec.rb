@@ -25,6 +25,16 @@ RSpec.describe Lionpath::LionpathCommittee do
     end
   end
 
+  context "when author's submission is during Spring 2021" do
+    before do
+      submission.update year: 2021, semester: 'Spring'
+    end
+
+    it 'does not import data' do
+      expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 0
+    end
+  end
+
   context "when author does not have a dissertation submission" do
     before do
       degree.update degree_type: DegreeType.find_by(slug: 'master_thesis')
@@ -35,9 +45,9 @@ RSpec.describe Lionpath::LionpathCommittee do
     end
   end
 
-  context "when author's submission is beyond or equal to 2021" do
+  context "when author's submission is beyond Spring 2021" do
     before do
-      submission.update year: 2021
+      submission.update year: 2021, semester: 'Summer'
     end
 
     it 'imports data' do

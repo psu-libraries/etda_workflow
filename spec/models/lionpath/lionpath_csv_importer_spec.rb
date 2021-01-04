@@ -69,7 +69,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
       let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
       let!(:submission) do
         FactoryBot.create :submission, degree: degree, author: author,
-                                       year: 2021
+                                       year: 2021, semester: 'Summer'
       end
       let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.first }
 
