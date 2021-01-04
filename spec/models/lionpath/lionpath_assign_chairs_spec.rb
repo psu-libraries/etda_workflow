@@ -11,8 +11,8 @@ RSpec.describe Lionpath::LionpathAssignChairs do
 
     context 'when submission is before 2021' do
       let!(:submission) do
-        FactoryBot.create :submission, year: 2020,
-                          degree: degree, program: program, campus: 'UP'
+        FactoryBot.create :submission, year: 2020, degree: degree,
+                                       program: program, campus: 'UP'
       end
       let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
 
@@ -24,7 +24,7 @@ RSpec.describe Lionpath::LionpathAssignChairs do
     context 'when submission is from Spring 2021' do
       let!(:submission) do
         FactoryBot.create :submission, year: 2021, semester: 'Spring',
-                          degree: degree, program: program, campus: 'UP'
+                                       degree: degree, program: program, campus: 'UP'
       end
       let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
 
@@ -36,11 +36,10 @@ RSpec.describe Lionpath::LionpathAssignChairs do
     context 'when submission already has a program chair' do
       let!(:submission) do
         FactoryBot.create :submission, year: 2021, semester: 'Summer',
-                          degree: degree, program: program, campus: 'UP'
+                                       degree: degree, program: program, campus: 'UP'
       end
       let!(:program_head_member) do
-        FactoryBot.create :committee_member, committee_role: program_head_role,
-                          submission: submission
+        FactoryBot.create :committee_member, committee_role: program_head_role, submission: submission
       end
       let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
 
@@ -53,7 +52,7 @@ RSpec.describe Lionpath::LionpathAssignChairs do
     context "when submission doesn't have a program chair yet" do
       let!(:submission) do
         FactoryBot.create :submission, year: 2021, semester: 'Summer',
-                          degree: degree, program: program, campus: 'UP'
+                                       degree: degree, program: program, campus: 'UP'
       end
       let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
 

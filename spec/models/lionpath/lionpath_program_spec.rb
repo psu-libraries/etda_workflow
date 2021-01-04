@@ -25,10 +25,10 @@ RSpec.describe Lionpath::LionpathProgram do
 
   let(:row_3) do
     {
-        'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Exp Grad' => 2211,
-        'Acadademic Plan' => 'BIOE_PHD', 'Transcript Descr' => 'Bioengineering (PHD)', 'Milestone Code' => nil,
-        'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil, 'Alternate Email' => 'test@psu.edu',
-        'Campus' => 'UP'
+      'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Exp Grad' => 2211,
+      'Acadademic Plan' => 'BIOE_PHD', 'Transcript Descr' => 'Bioengineering (PHD)', 'Milestone Code' => nil,
+      'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil, 'Alternate Email' => 'test@psu.edu',
+      'Campus' => 'UP'
     }
   end
 
