@@ -52,10 +52,8 @@ class ApplicationController < ActionController::Base
 
   def login
     Rails.logger.info 'LOGGING IN APP CONTROLLER'
-    # webaccess_login_url = WebAccess.new(request.env['HTTP_REFERER']).login_url
-    Rails.logger.info "REDIRECTING---" + "#{WebAccess.new(request.env['HTTP_REFERER']).login_url}  #{Time.zone.now}"
-    # redirect_to webaccess_login_url # unless Rails.env.development? || Rails.env.test?
-    redirect_to webaccess_login_url
+    # '/login' is to be protected at the webserver level
+    redirect_to session['return_to'] || '/'
   end
 
   def logout
@@ -63,9 +61,7 @@ class ApplicationController < ActionController::Base
     session[:user_role] = nil
     session[:user_name] = nil
     # make any local additions here (e.g. expiring local sessions, etc.)
-    # adapted from here: http://cosign.git.sourceforge.net/git/gitweb.cgi?p=cosign/cosign;a=blob;f=scripts/logout/logout.php;h=3779248c754001bfa4ea8e1224028be2b978f3ec;hb=HEAD
-    cookies.delete(request.env['COSIGN_SERVICE']) if request.env['COSIGN_SERVICE']
-    redirect_to webaccess_logout_url unless Rails.env.test?
+    redirect_to session['return_to'] || '/'
     # redirect_to WebAccess.new.logout_url unless Rails.env.development? || Rails.env.test?
   end
 
