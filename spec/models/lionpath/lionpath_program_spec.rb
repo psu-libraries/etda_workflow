@@ -23,6 +23,15 @@ RSpec.describe Lionpath::LionpathProgram do
     }
   end
 
+  let(:row_3) do
+    {
+        'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Exp Grad' => 2211,
+        'Acadademic Plan' => 'BIOE_PHD', 'Transcript Descr' => 'Bioengineering (PHD)', 'Milestone Code' => nil,
+        'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil, 'Alternate Email' => 'test@psu.edu',
+        'Campus' => 'UP'
+    }
+  end
+
   context 'when no author or program exists' do
     before do
       lionpath_program.import(row_1)
@@ -80,6 +89,15 @@ RSpec.describe Lionpath::LionpathProgram do
   context 'when program from lionpath is before 2021' do
     let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
     let!(:program) { FactoryBot.create :program, code: row_2['Acadademic Plan'] }
+
+    it 'does not import the record' do
+      expect { lionpath_program.import(row_2) }.to change(Submission, :count).by 0
+    end
+  end
+
+  context 'when program from lionpath is during Spring 2021' do
+    let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
+    let!(:program) { FactoryBot.create :program, code: row_3['Acadademic Plan'] }
 
     it 'does not import the record' do
       expect { lionpath_program.import(row_2) }.to change(Submission, :count).by 0
