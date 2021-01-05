@@ -6,6 +6,8 @@ module Devise
     class WebaccessAuthenticatable < Authenticatable
       def authenticate!
         access_id = remote_user(request.headers)
+        # apache sometimes sends a "(null)" string for nil users.
+        access_id = nil if access_id = "(null)"
         Rails.logger.info "Devise Access ID ******* #{access_id}"
         if access_id.present? # webaccess successful
           this_object = authentication_type || Author.class
