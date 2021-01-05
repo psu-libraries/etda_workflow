@@ -1,6 +1,6 @@
 class Lionpath::LionpathProgram
   def import(row)
-    return if year(row) < 2021
+    return if year(row) < 2021 || invalid_date?(row)
 
     author = author(row)
     degree = degree(row)
@@ -67,5 +67,9 @@ class Lionpath::LionpathProgram
   def degree(row)
     incoming_dg = row['Acadademic Plan'].split('_').last.to_s
     Degree.find_by(name: incoming_dg)
+  end
+
+  def invalid_date?(row)
+    year(row) == 2021 && semester(row) == 'Spring'
   end
 end
