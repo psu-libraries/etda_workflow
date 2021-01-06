@@ -29,6 +29,8 @@ class FinalSubmissionUpdateService
       msg = action_service.final_submission_rejected
     elsif update_actions.record_updated?
       msg += action_service.final_submission_updated
+    elsif update_actions.rejected_committee?
+      msg += action_service.final_rejected_send_committee
     end
     lionpath_outbound.report_status_change if update_actions.approved? || update_actions.rejected?
     { msg: msg, redirect_path: admin_submitted_sub_index_path }

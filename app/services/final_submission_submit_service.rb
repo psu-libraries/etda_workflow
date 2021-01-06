@@ -35,15 +35,8 @@ class FinalSubmissionSubmitService
   end
 
   def final_sub_reject_submit
-    if approval_status == 'approved'
-      status_giver.can_waiting_for_final_submission_response?
-      status_giver.waiting_for_final_submission_response!
-    else
-      status_giver.can_waiting_for_committee_review?
-      status_giver.waiting_for_committee_review!
-      submission.reset_committee_reviews
-      submission.committee_review_requests_init
-    end
+    status_giver.can_waiting_for_final_submission_response?
+    status_giver.waiting_for_final_submission_response!
     OutboundLionPathRecord.new(submission: submission).report_status_change
     submission.update_final_submission_timestamps!(Time.zone.now)
     WorkflowMailer.send_final_submission_received_email(submission)
