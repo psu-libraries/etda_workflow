@@ -9,19 +9,11 @@ class FinalSubmissionSubmittedService
   end
 
   def final_submission_approved
-    if current_partner.honors?
-      status_giver.can_waiting_for_publication_release?
-      status_giver.waiting_for_publication_release!
-      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-      WorkflowMailer.send_final_emails(submission)
-    else
-      status_giver.can_waiting_for_committee_review?
-      status_giver.waiting_for_committee_review!
-      UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-      submission.update_status_from_committee
-      WorkflowMailer.send_final_submission_approved_email(submission)
-      submission.committee_review_requests_init if submission.status_behavior.waiting_for_committee_review?
-    end
+    status_giver.can_waiting_for_publication_release?
+    status_giver.waiting_for_publication_release!
+    @submission.update! final_submission_approved_at: DateTime.now
+    UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
+    WorkflowMailer.send_final_emails(submission)
     "The submission\'s final submission information was successfully approved."
   end
 

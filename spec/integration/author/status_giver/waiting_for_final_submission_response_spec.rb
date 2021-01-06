@@ -1,4 +1,4 @@
-RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
+RSpec.describe "Step 7: Waiting for Final Submission Response'", js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'waiting for final submission response'" do

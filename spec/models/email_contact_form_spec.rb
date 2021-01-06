@@ -2,7 +2,7 @@
 
 require 'model_spec_helper'
 
-RSpec.describe EmailContactForm, type: :model do
+RSpec.describe EmailContactForm, honors: true, type: :model do
   let(:mail_form) do
     EmailContactForm.new(
       full_name: 'Test',

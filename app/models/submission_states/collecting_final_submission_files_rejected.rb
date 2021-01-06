@@ -5,8 +5,7 @@ module SubmissionStates
     @name = 'collecting final submission files rejected'
 
     def initialize
-      @transitions_to = [SubmissionStates::WaitingForFinalSubmissionResponse] unless current_partner.honors?
-      @transitions_to = [SubmissionStates::WaitingForCommitteeReview] if current_partner.honors?
+      @transitions_to = [SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForFinalSubmissionResponse]
     end
 
     def status_date(submission)
