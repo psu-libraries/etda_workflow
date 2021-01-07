@@ -24,18 +24,23 @@ class FinalSubmissionSubmittedService
     submission.has_agreed_to_terms = false
     submission.final_submission_rejected_at = Time.zone.now
     submission.save
+    status_giver.can_respond_to_final_submission?
     status_giver.collecting_final_submission_files_rejected!
     WorkflowMailer.send_final_submission_rejected_email(@submission)
     "The submission\'s final submission information was successfully rejected and returned to the author for revision."
   end
 
-  def final_submission_sent_to_hold
+  def final_rejected_send_committee
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-    submission.placed_on_hold_at = DateTime.now
+    submission.has_agreed_to_publication_release = false
+    submission.publication_release_terms_agreed_to_at = nil
+    submission.has_agreed_to_terms = false
+    submission.final_submission_rejected_at = Time.zone.now
     submission.save
-    status_giver.can_waiting_in_final_submission_on_hold?
-    status_giver.waiting_in_final_submission_on_hold!
-    "The submission was successfully placed on hold."
+    status_giver.can_waiting_for_committee_review_rejected?
+    status_giver.waiting_for_committee_review_rejected!
+    WorkflowMailer.send_final_submission_rejected_email(@submission)
+    "The submission\'s final submission information was successfully rejected and returned to the author for revision."
   end
 
   def final_submission_updated

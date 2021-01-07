@@ -19,3 +19,5 @@ en:
       email_address: 'ul-etda-released@pennstateoffice365.onmicrosoft.com'
     otm:
       email_address: 'otminfo@psu.edu'
+  text:
+    rejected_committee_message: This action will move this submission to "Committee Review Rejected" where the student will resubmit. After the student resubmits, the submission will move to the committee approval stage and emails will be sent to committee members.  Would you like to proceed?
