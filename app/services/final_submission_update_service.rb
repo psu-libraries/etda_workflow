@@ -22,7 +22,6 @@ class FinalSubmissionUpdateService
     status_giver.can_respond_to_final_submission?
     action_service = FinalSubmissionSubmittedService.new(submission, current_remote_user,
                                                          status_giver, final_submission_params)
-    lionpath_outbound = OutboundLionPathRecord.new(submission: submission)
     if update_actions.approved?
       msg = action_service.final_submission_approved
     elsif update_actions.rejected?
@@ -32,7 +31,6 @@ class FinalSubmissionUpdateService
     elsif update_actions.rejected_committee?
       msg += action_service.final_rejected_send_committee
     end
-    lionpath_outbound.report_status_change if update_actions.approved? || update_actions.rejected?
     { msg: msg, redirect_path: admin_submitted_sub_index_path }
   end
 
