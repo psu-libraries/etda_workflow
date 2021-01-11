@@ -36,7 +36,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
       let!(:author_2) { FactoryBot.create :author, psu_idn: '912345679', access_id: 'abc2' }
       let!(:author_3) { FactoryBot.create :author, psu_idn: '912345680', access_id: 'abc3' }
       let!(:author_4) { FactoryBot.create :author, psu_idn: '912345681', access_id: 'abc4' }
-      let!(:author_5) { FactoryBot.create :author, psu_idn: '912345682', access_id: 'abc5'}
+      let!(:author_5) { FactoryBot.create :author, psu_idn: '912345682', access_id: 'abc5' }
       let!(:degree_phd) { FactoryBot.create :degree, name: 'PHD', degree_type: DegreeType.first }
       let!(:degree_ms) { FactoryBot.create :degree, name: 'MS', degree_type: DegreeType.second }
 
