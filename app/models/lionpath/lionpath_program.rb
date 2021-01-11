@@ -45,12 +45,12 @@ class Lionpath::LionpathProgram
   end
 
   def author(row)
-    author = Author.find_or_create_by(psu_idn: row['ID'].to_s) do |attrs|
+    author = Author.find_or_create_by(access_id: row['Campus ID'].to_s.downcase) do |attrs|
       attrs.alternate_email_address = row['Alternate Email']
     end
     return author if author.persisted?
 
-    author.populate_with_ldap_attributes(author.psu_idn, 'psidn')
+    author.populate_with_ldap_attributes(author.access_id, 'uid')
     author
   end
 
@@ -65,7 +65,7 @@ class Lionpath::LionpathProgram
   end
 
   def degree(row)
-    incoming_dg = row['Acadademic Plan'].split('_').last.to_s
+    incoming_dg = row['Degree'].to_s.upcase
     Degree.find_by(name: incoming_dg)
   end
 
