@@ -7,19 +7,19 @@ RSpec.describe Lionpath::LionpathProgram do
 
   let(:row_1) do
     {
-      'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Exp Grad' => 2215,
-      'Acadademic Plan' => 'BIOE_PHD', 'Transcript Descr' => 'Bioengineering (PHD)', 'Milestone Code' => nil,
-      'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil, 'Alternate Email' => 'test@psu.edu',
-      'Campus' => 'UP'
+      'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Campus ID' => 'xxb13', 'Exp Grad' => 2215,
+      'Acadademic Plan' => 'BIOE_PHD', 'Degree' => 'PHD', 'Transcript Descr' => 'Bioengineering (PHD)',
+      'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
+      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP'
     }
   end
 
   let(:row_2) do
     {
-      'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Exp Grad' => 2205,
-      'Acadademic Plan' => 'BIOE_PHD', 'Transcript Descr' => 'Bioengineering (PHD)', 'Milestone Code' => nil,
-      'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil, 'Alternate Email' => 'test@psu.edu',
-      'Campus' => 'UP'
+      'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Campus ID' => 'xxb13', 'Exp Grad' => 2205,
+      'Acadademic Plan' => 'BIOE_PHD', 'Degree' => 'PHD', 'Transcript Descr' => 'Bioengineering (PHD)',
+      'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
+      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP'
     }
   end
 
@@ -52,7 +52,7 @@ RSpec.describe Lionpath::LionpathProgram do
   end
 
   context 'when author and program exist' do
-    let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
+    let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'xxb13' }
     let!(:program) { FactoryBot.create :program, code: row_1['Acadademic Plan'] }
 
     it 'links to existing author and program' do
@@ -63,7 +63,7 @@ RSpec.describe Lionpath::LionpathProgram do
   end
 
   context 'when submission already exists' do
-    let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
+    let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'xxb13' }
     let!(:program) { FactoryBot.create :program, code: row_1['Acadademic Plan'] }
     let!(:submission) { FactoryBot.create :submission, author: author, degree: degree, program: program }
 
@@ -78,7 +78,7 @@ RSpec.describe Lionpath::LionpathProgram do
   end
 
   context 'when program from lionpath is before 2021' do
-    let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
+    let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'xxb13' }
     let!(:program) { FactoryBot.create :program, code: row_2['Acadademic Plan'] }
 
     it 'does not import the record' do
