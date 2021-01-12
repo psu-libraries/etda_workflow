@@ -7,8 +7,7 @@ class Approver::ApproversController < ApproverController
   def index
     @approver = Approver.find_by(access_id: current_approver.access_id)
     update_approver_committee_members(@approver)
-    @committee_members = @approver.committee_members.select { |n| n if n.submission.status_behavior.beyond_collecting_final_submission_files? } if current_partner.honors?
-    @committee_members = @approver.committee_members.select { |n| n if n.submission.status_behavior.beyond_waiting_for_final_submission_response? } unless current_partner.honors?
+    @committee_members = @approver.committee_members.select { |n| n if n.submission.status_behavior.beyond_collecting_final_submission_files? }
   end
 
   def edit

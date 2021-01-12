@@ -1,4 +1,4 @@
-RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
+RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'waiting for committee review'" do
@@ -103,7 +103,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           submission.keywords << (FactoryBot.create :keyword)
         end
 
-        it 'can edit final submission', honors: true do
+        it 'can edit final submission', honors: true, milsch: true do
           visit author_submission_edit_final_submission_path(submission)
           expect(page).to have_current_path(author_submission_edit_final_submission_path(submission))
           fill_in "Title", with: "A Brand New Title"
@@ -116,14 +116,13 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
             all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
           end
           find('#submission_has_agreed_to_terms').click
-          if current_partner.honors?
-            click_button 'Submit final files for review'
-          else
+          if current_partner.graduate?
             find('span', text: 'Submit final files for review').click
             click_button('Continue')
+          else
+            click_button 'Submit final files for review'
           end
-          expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' unless current_partner.honors?
-          expect(Submission.find(submission.id).status).to eq 'waiting for committee review' if current_partner.honors?
+          expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
         end
       end
     end
@@ -136,7 +135,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
       end
 
       it "moves forward in process if accepted when head of program is approving" do
-        skip 'Graduate Only' unless current_partner.graduate?
+        skip 'Graduate only' unless current_partner.graduate?
 
         submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
         submission.committee_members << (FactoryBot.create :committee_member, committee_role_id: head_role.id, access_id: 'abc123')
@@ -148,8 +147,8 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
         expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
       end
 
-      it "proceeds to 'waiting for publication release' when head of program is approving if head already accepted" do
-        skip 'Graduate Only' unless current_partner.graduate?
+      it "proceeds to 'waiting for final submission response' when head of program is approving if head already accepted" do
+        skip 'Graduate only' unless current_partner.graduate?
 
         FactoryBot.create :committee_member, :required, submission: submission, committee_role: head_role, status: 'approved', access_id: 'approverflow'
         submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
@@ -158,10 +157,10 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find(:css, "#committee_member_status_approved").set true
         end
         click_button 'Submit Review'
-        expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
+        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
       end
 
-      it "moves forward in process if accepted when head of program is not approving", honors: true do
+      it "moves forward in process if accepted when head of program is not approving" do
         submission.degree.degree_type.approval_configuration.update_attribute :head_of_program_is_approving, false
         FactoryBot.create :admin
         visit approver_path(committee_member)
@@ -169,12 +168,11 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find(:css, "#committee_member_status_approved").set true
         end
         click_button 'Submit Review'
-        expect(Submission.find(submission.id).status).to eq 'waiting for publication release' unless current_partner.honors?
-        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' if current_partner.honors?
+        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
         expect(WorkflowMailer.deliveries.count).to eq 1
       end
 
-      it "moves forward in process if accepted when head of program is not approving but does not send email", honors: true do
+      it "moves forward in process if accepted when head of program is not approving but does not send email" do
         submission.degree.degree_type.approval_configuration.update head_of_program_is_approving: false, email_admins: false, email_authors: false
         FactoryBot.create :admin
         visit approver_path(committee_member)
@@ -182,8 +180,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
           find('#committee_member_status_approved').click
         end
         click_button 'Submit Review'
-        expect(Submission.find(submission.id).status).to eq 'waiting for publication release' unless current_partner.honors?
-        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response' if current_partner.honors?
+        expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
         expect(WorkflowMailer.deliveries.count).to eq 0
       end
 
@@ -308,7 +305,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
       end
 
       context "when 'waiting for head of program review'" do
-        it "proceeds to 'waiting for publication release' if approved" do
+        it "proceeds to 'waiting for final submission response' if approved" do
           skip 'Graduate only' unless current_partner.graduate?
 
           FactoryBot.create :admin
@@ -317,7 +314,7 @@ RSpec.describe "Step 7: Waiting for Committee Review'", js: true do
             find(:css, "#committee_member_status_approved").set true
           end
           click_button 'Submit Review'
-          expect(Submission.find(submission.id).status).to eq 'waiting for publication release'
+          expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
           expect(WorkflowMailer.deliveries.count).to eq 1
         end
 

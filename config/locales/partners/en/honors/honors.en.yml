@@ -225,7 +225,7 @@ en:
         description: Submitted and waiting to be approved
       final_submission_approved:
         title: Final Submission to be Released
-        description: Approved by committee and waiting to be released
+        description: Approved by committee and The Honors College; waiting to be released
       final_submission_on_hold:
         title: Final Submission is On Hold
         description: Submissions that have been approved but are now being held from release

@@ -28,6 +28,8 @@ class FinalSubmissionUpdateService
       msg = action_service.final_submission_rejected
     elsif update_actions.record_updated?
       msg += action_service.final_submission_updated
+    elsif update_actions.rejected_committee?
+      msg += action_service.final_rejected_send_committee
     end
     { msg: msg, redirect_path: admin_submitted_sub_index_path }
   end

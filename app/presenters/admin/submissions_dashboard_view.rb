@@ -8,31 +8,12 @@ class Admin::SubmissionsDashboardView
   end
 
   def filters
-    return honors_filters if current_partner.honors?
-
     standard_filters
   end
 
   private
 
     def standard_filters
-      [
-        format_review_is_incomplete_filter,
-        format_review_is_submitted_filter,
-        format_review_is_completed_filter,
-        final_submission_is_submitted_filter,
-        final_submission_is_incomplete_filter,
-        final_submission_is_pending_filter,
-        committee_review_is_rejected_filter,
-        final_submission_is_approved_filter,
-        final_submission_is_on_hold_filter,
-        released_for_publication_filter,
-        final_is_restricted_institution_filter,
-        final_is_withheld_filter
-      ]
-    end
-
-    def honors_filters
       [
         format_review_is_incomplete_filter,
         format_review_is_submitted_filter,

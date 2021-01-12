@@ -4,12 +4,10 @@ require 'model_spec_helper'
 
 RSpec.describe SubmissionStates::WaitingForCommitteeReviewRejected do
   describe 'instance methods' do
-    it "transitions to WaitingForFinalSubmissionResponse", honors: true do
+    it "transitions to WaitingForCommitteeReview" do
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFiles)
-      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview) unless current_partner.honors?
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview) if current_partner.honors?
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse) unless current_partner.honors?
-      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse) if current_partner.honors?
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview)
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForFinalSubmissionResponse)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingCommittee)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFiles)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFilesRejected)

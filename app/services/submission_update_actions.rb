@@ -40,4 +40,10 @@ class SubmissionUpdateActions
 
     false
   end
+
+  def rejected_committee?
+    return true if params[:rejected_committee]
+
+    false
+  end
 end

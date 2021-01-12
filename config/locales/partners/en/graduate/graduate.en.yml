@@ -42,10 +42,15 @@ en:
                     University Park, PA  16802
         final_submission_approved:
           message: |
-                    Your final %{degree_type} has been approved by the Office of Theses and Dissertations.
-                    It will now be automatically sent to your committee for review and approval.
-                    No action is required of you at this time.
-                    You will be notified once your committee has reviewed and made a decision regarding your document.
+                    Congratulations! Your final %{degree_type} has been approved by the Office of Theses and Dissertations.
+
+                    After graduation, the eTD will be available through Penn State’s eTD database %{url} and will be sent
+                    to ProQuest/UMI Dissertation Services for processing unless you have chosen to restrict access to it.
+                    If it is restricted, it will automatically change to Open Access after two years.
+                    The access level for your %{degree_type} is: %{access_level}.
+                    Please accept our congratulations as you complete your degree.
+                    (commencement information can be found online as http://commencement.psu.edu/).
+
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:
@@ -67,8 +72,9 @@ en:
                     University Park, PA  16802
         final_submission_received:
           message: |
-                    Thank you for submitting your final %{degree_type}.  You will be notified by email of your eTD approval
-                    or if changes are required within 2-3 weeks after submitting your final.
+                    Thank you for submitting your final %{degree_type}.  It will now be automatically sent to your committee for review and approval.
+                    No action is required of you at this time.
+                    You will be notified once your committee has reviewed and made a decision regarding your document.
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:
@@ -149,14 +155,9 @@ en:
                     University Park, PA  16802
         committee_approved:
           message: |
-                    Congratulations! Your eTD has been reviewed by your committee and the Graduate School and it is approved. 
-                    No further action is needed by you at this time.
-                    After graduation, the eTD will be available through Penn State’s eTD database %{url} and will be sent
-                    to ProQuest/UMI Dissertation Services for processing unless you have chosen to restrict access to it.
-                    If it is restricted, it will automatically change to Open Access after two years.
-                    The access level for your %{degree_type} is: %{access_level}.
-                    Please accept our congratulations as you complete your degree.
-                    (commencement information can be found online as http://commencement.psu.edu/).
+                    Your eTD has been reviewed by your committee and it is approved.
+                    No further action is needed by you at this time.  The Graduate School will now review your submission.
+                    You will be notified by email of your eTD approval or if changes are required within 2-3 weeks. 
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:
@@ -263,7 +264,7 @@ en:
         description: Submitted and waiting to be approved
       final_submission_approved:
         title: Final Submission to be Released
-        description: Approved by committee and waiting to be released
+        description: Approved by committee and the Graduate School; waiting to be released
       final_submission_on_hold:
         title: Final Submission is On Hold
         description: Submissions that have been approved but are now being held from release

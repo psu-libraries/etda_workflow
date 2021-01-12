@@ -82,10 +82,8 @@ class Author::SubmissionsController < AuthorController
 
   def update_final_submission
     @submission = find_submission
-    approval_status = ApprovalStatus.new(@submission).status
     status_giver = SubmissionStatusGiver.new(@submission)
-    submit_service = FinalSubmissionSubmitService.new(@submission, status_giver,
-                                                      approval_status, final_submission_params)
+    submit_service = FinalSubmissionSubmitService.new(@submission, status_giver, final_submission_params)
     submit_service.submit_final_submission
     redirect_to author_root_path
     flash[:notice] = 'Final submission files uploaded successfully.'

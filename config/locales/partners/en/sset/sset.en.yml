@@ -42,8 +42,11 @@ en:
             Middletown, PA 17057
         final_submission_approved:
           message: |
-            Your thesis has been been approved for committee review.
-            You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
+            Congratulations!  Your thesis has been approved by The School of Science, Engineering, and Technology.
+            Please accept our congratulations as you complete your degree.
+            (commencement information can be found online as http://commencement.psu.edu/).
+
+
 
             If you have questions or comments, please email School of the Science, Engineering, and Technology Office at ssetinfo@psu.edu.
             You may also call (717)948-6541, or send mail to:
@@ -62,8 +65,8 @@ en:
             Middletown, PA 17057
         final_submission_received:
           message: |
-            Thank you for submitting your final %{degree_type}.
-            You will be notified by email of your thesis approval or if changes are required within 2-3 weeks after submitting your final.
+            Thank you for submitting your final %{degree_type}. It has been been accepted for committee review.
+            You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
 
             If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
             You may also call (717)948-6541, or send mail to:
@@ -124,9 +127,9 @@ en:
             Middletown, PA 17057
         committee_approved:
           message: |
-            Congratulations!  Your thesis has been approved by its committee.
-            Please accept our congratulations as you complete your degree.
-            (commencement information can be found online as http://commencement.psu.edu/).
+            Your submission has been reviewed by your committee and it is approved.
+            No further action is needed by you at this time.  The School of Science, Engineering, and Technology will now review your submission.
+            You will be notified by email of your thesis approval or if changes are required within 2-3 weeks.
 
             If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
             You may also call (717)948-6541, or send mail to:
@@ -215,7 +218,7 @@ en:
         description: Submitted and waiting to be approved
       final_submission_approved:
         title: Final Submission to be Released
-        description: Approved by committee and waiting to be released
+        description: Approved by committee and the School of Science, Engineering, and Technology; waiting to be released
       final_submission_on_hold:
         title: Final Submission is On Hold
         description: Submissions that have been approved but are now being held from release
