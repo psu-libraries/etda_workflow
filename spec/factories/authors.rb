@@ -32,7 +32,6 @@ FactoryBot.define do
     state { "PA" }
     zip { "16801" }
     updated_at { 4.days.ago }
-    # inbound_lion_path_record { FactoryBot.create(:inbound_lion_path_record }
   end
 
   trait :author_from_ldap do

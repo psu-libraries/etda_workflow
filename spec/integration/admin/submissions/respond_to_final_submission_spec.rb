@@ -30,7 +30,6 @@ RSpec.describe "when admin responds to final submission", js: true do
       select_year = Date.current.year - 2
       select_month = 'Mar'
       select_day = '1'
-      submission.author.inbound_lion_path_record = nil
       submission.final_submission_approved_at = nil
       create_committee(submission)
       FactoryBot.create :format_review_file, submission: submission
