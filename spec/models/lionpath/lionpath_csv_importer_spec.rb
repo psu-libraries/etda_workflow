@@ -36,7 +36,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
 
       it 'imports lionpath committee roles data' do
         expect { lionpath_csv_importer.send(:parse_csv, Lionpath::LionpathCommitteeRoles.new) }
-            .to change(CommitteeRole, :count).by 2
+          .to change(CommitteeRole, :count).by 2
         expect(CommitteeRole.find(committee_role.id).name).to eq 'Dissertation Advisor'
         expect(CommitteeRole.last.is_active).to eq false
       end
