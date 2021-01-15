@@ -4,6 +4,7 @@ class Lionpath::LionpathCsvImporter
 
   # Order is essential here; Do not change.
   LIONPATH_RESOURCES = [
+    Lionpath::LionpathCommitteeRoles.new,
     Lionpath::LionpathProgram.new,
     Lionpath::LionpathChair.new,
     Lionpath::LionpathCommittee.new
@@ -11,6 +12,7 @@ class Lionpath::LionpathCsvImporter
 
   # Patterns sftp will look for when pulling csv file
   LIONPATH_FILE_PATTERNS = {
+    committee_role: 'PE_SR_G_ETD_ACT_COMROLES',
     program: 'PE_SR_G_ETD_STDNT_PLAN_PRC',
     chair: 'PE_SR_G_ETD_CHAIR_PRC',
     committee: 'PE_SR_G_ETD_COMMITTEE_PRC'
@@ -30,7 +32,9 @@ class Lionpath::LionpathCsvImporter
   private
 
   def grab_file(resource)
-    if resource.is_a?(Lionpath::LionpathProgram)
+    if resource.is_a?(Lionpath::LionpathCommitteeRoles)
+      `#{bin_path} #{LIONPATH_FILE_PATTERNS[:committee_role]}`
+    elsif resource.is_a?(Lionpath::LionpathProgram)
       `#{bin_path} #{LIONPATH_FILE_PATTERNS[:program]}`
     elsif resource.is_a?(Lionpath::LionpathChair)
       `#{bin_path} #{LIONPATH_FILE_PATTERNS[:chair]}`

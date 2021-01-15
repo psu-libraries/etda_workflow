@@ -40,6 +40,6 @@ class Lionpath::LionpathCommittee
   end
 
   def author(row)
-    Author.find_by(psu_idn: row['Student ID'].to_s)
+    Author.find_by(access_id: row['Student Campus ID'].downcase.to_s)
   end
 end

@@ -3,7 +3,7 @@ require 'model_spec_helper'
 RSpec.describe Lionpath::LionpathCommittee do
   subject(:lionpath_committee) { described_class.new }
 
-  let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
+  let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'def123' }
   let!(:submission) do
     FactoryBot.create :submission, author: author, degree: degree, status: 'collecting program information'
   end
@@ -12,7 +12,8 @@ RSpec.describe Lionpath::LionpathCommittee do
   let!(:committee_role) { FactoryBot.create :committee_role, code: 'C', name: 'Chair of Committee' }
   let(:row) do
     { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => 'C',
-      'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999' }
+      'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999',
+      'Student Campus ID' => 'def123', 'Suprvsr Nbr' => '932352541' }
   end
 
   context "when author's submission's year is before 2021" do

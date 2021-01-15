@@ -30,6 +30,18 @@ RSpec.describe Lionpath::LionpathCsvImporter do
       allow_any_instance_of(described_class).to receive(:lionpath_csv_loc).and_return(fixture_location)
     end
 
+    context 'when lionpath_resource is LionpathCommitteeRoles' do
+      let(:fixture_location) { "#{Rails.root}/spec/fixtures/lionpath/lionpath_committee_roles.csv" }
+      let!(:committee_role) { FactoryBot.create :committee_role, code: 'ABCD' }
+
+      it 'imports lionpath committee roles data' do
+        expect { lionpath_csv_importer.send(:parse_csv, Lionpath::LionpathCommitteeRoles.new) }
+            .to change(CommitteeRole, :count).by 2
+        expect(CommitteeRole.find(committee_role.id).name).to eq 'Dissertation Advisor'
+        expect(CommitteeRole.last.is_active).to eq false
+      end
+    end
+
     context 'when lionpath_resource is LionpathProgram' do
       let(:fixture_location) { "#{Rails.root}/spec/fixtures/lionpath/lionpath_program.csv" }
       let!(:author_1) { FactoryBot.create :author, psu_idn: '912345678', access_id: 'abc1' }
@@ -66,7 +78,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
 
     context 'when lionpath_resource is LionpathCommittee' do
       let(:fixture_location) { "#{Rails.root}/spec/fixtures/lionpath/lionpath_committee.csv" }
-      let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
+      let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'abc123' }
       let!(:submission) do
         FactoryBot.create :submission, degree: degree, author: author,
                                        year: 2021, semester: 'Summer'

@@ -1,20 +1,11 @@
 class Lionpath::LionpathCommitteeRoles
-  attr_accessor :file_path
-
-  def initialize(roles_file_path)
-    @file_path = roles_file_path
-  end
-
-  def import
-    csv_options = { headers: true, encoding: "ISO-8859-1:UTF-8", quote_char: '"', force_quotes: true }
-    CSV.foreach(file_path, csv_options) do |row|
-      cr = CommitteeRole.find_by(code: row['Type'])
-      if cr.present?
-        cr.update(committee_role_attrs(row))
-        next
-      end
-      CommitteeRole.create!({ code: row['Type'] }.merge(committee_role_attrs(row)))
+  def import(row)
+    cr = CommitteeRole.find_by(code: row['Type'])
+    if cr.present?
+      cr.update(committee_role_attrs(row))
+      return
     end
+    CommitteeRole.create!({ code: row['Type'] }.merge(committee_role_attrs(row)))
   end
 
   private
