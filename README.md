@@ -94,7 +94,7 @@ Committee Roles for The Graduate School's Dissertation submissions are imported 
 
 Committees are also imported daily for The Graduate School's Dissertation submissions.  These committees use the Committee Roles imported previously from LionPATH.
 
-Committees are not currently being imported from LionPATH for The Graduate School's Master's Thesis submissions.
+Committees and Committee Roles are not currently being imported from LionPATH for The Graduate School's Master's Thesis submissions.
 
 The LionPATH integration uses sftp to pull CSV dumps of the Committee Roles, Student Program data(submissions), Program Head/Chair, and Committees (in that order) from LionPATH.  The bash script: `lionpath-csv.sh` does most of the work to grab these CSVs from the LionPATH sftp server.  The files follow these file naming conventions:
 
