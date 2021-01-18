@@ -84,4 +84,21 @@ If using ssh to run tasks on the server, be sure to set the PARTNER environment 
 When updating rails versions, be sure to rebuild webpack binary `bundle exec bin/rails webpacker:binstubs
 ` respond with 'Y' to overwrite existing webpack & webpacker binaries    
 
- 
+## LionPATH Integration
+
+Student program information is imported daily from LionPATH for The Graduate School's Master's Thesis and Dissertation submissions.
+
+Program Head/Chair data is imported daily from LionPATH and is used to update a submission's Program Head/Chair information daily for The Graduate School's Master's Thesis and Dissertation submissions.
+
+Committee Roles for The Graduate School's Dissertation submissions are imported daily from LionPATH.  These roles exactly reflect the roles in LionPATH and are different from Master's Thesis roles.
+
+Committees are also imported daily for The Graduate School's Dissertation submissions.  These committees use the Committee Roles imported previously from LionPATH.
+
+Committees are not currently being imported from LionPATH for The Graduate School's Master's Thesis submissions.
+
+The LionPATH integration uses sftp to pull CSV dumps of the Committee Roles, Student Program data(submissions), Program Head/Chair, and Committees (in that order) from LionPATH.  The bash script: `lionpath-csv.sh` does most of the work to grab these CSVs from the LionPATH sftp server.  The files follow these file naming conventions:
+
+	Committee Roles: PE_SR_G_ETD_ACT_COMROLES
+	Student Program Information: PE_SR_G_ETD_STDNT_PLAN_PRC
+	Program Head/Chair: PE_SR_G_ETD_CHAIR_PRC
+	Committees: PE_SR_G_ETD_COMMITTEE_PRC
