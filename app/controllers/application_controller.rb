@@ -57,12 +57,9 @@ class ApplicationController < ActionController::Base
   end
 
   def logout
-    session[:access_id] = nil
-    session[:user_role] = nil
-    session[:user_name] = nil
-    # make any local additions here (e.g. expiring local sessions, etc.)
+    reset_session
+    cookies.delete("mod_auth_openidc_session")
     redirect_to session['return_to'] || '/'
-    # redirect_to WebAccess.new.logout_url unless Rails.env.development? || Rails.env.test?
   end
 
   def autocomplete
