@@ -42,8 +42,8 @@ class ApplicationController < ActionController::Base
   end
 
   def about
-    render '/about/index.html', layout: 'home'
     session[:user_name] = current_remote_user if current_remote_user && session[:user_name].blank?
+    render '/about/index.html', layout: 'home'
   end
 
   def docs
