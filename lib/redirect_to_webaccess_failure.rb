@@ -2,7 +2,8 @@
 
 class RedirectToWebaccessFailure < Devise::FailureApp
   def redirect_url
-    WebAccess.new(request.env['ORIGINAL_FULLPATH'] || '').login_url
+    session[:return_to] = request.env['ORIGINAL_FULLPATH'] || WebAccess.new('').application_url
+    '/login'
   end
 
   def respond
