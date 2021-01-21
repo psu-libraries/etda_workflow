@@ -5,6 +5,7 @@ class ApproverController < ApplicationController
 
   Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
+  before_action :authenticate_approver!
   before_action :clear_approver
   before_action :find_or_initialize_approver
   before_action :authenticate_or_redirect

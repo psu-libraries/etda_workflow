@@ -5,6 +5,7 @@ class AuthorController < ApplicationController
 
   Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
+  before_action :authenticate_author!
   before_action :clear_author
   before_action :find_or_initialize_author
   before_action :authenticate_or_redirect

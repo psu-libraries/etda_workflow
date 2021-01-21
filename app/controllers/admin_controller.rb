@@ -5,6 +5,7 @@ class AdminController < ApplicationController
 
   Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
 
+  before_action :authenticate_admin!
   before_action :clear_admin
   before_action :authenticate_or_redirect
   before_action :find_or_initialize_admin
