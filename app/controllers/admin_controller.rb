@@ -12,6 +12,7 @@ class AdminController < ApplicationController
     @admin = current_admin
     current_ability
     session[:user_role] = 'admin'
+    session[:user_name] = current_admin.access_id
   end
 
   def current_ability

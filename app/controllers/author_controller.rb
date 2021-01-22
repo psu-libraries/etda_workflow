@@ -12,6 +12,7 @@ class AuthorController < ApplicationController
     @author = current_author
     author_ability
     session[:user_role] = 'author'
+    session[:user_name] = current_author.full_name
   end
 
   def author_ability

@@ -129,7 +129,7 @@ RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
 
       it 'fails' do
         expect(subject).not_to be_valid
-        expect(subject.authenticate!).to eq(:failure)
+        expect(subject.authenticate!).to eq('/401')
       end
     end
 
@@ -138,7 +138,7 @@ RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
 
       it 'fails' do
         expect(subject).not_to be_valid
-        expect(subject.authenticate!).to eq(:failure)
+        expect(subject.authenticate!).to eq('/401')
       end
     end
 
@@ -147,7 +147,7 @@ RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
 
       it 'fails' do
         expect(subject).not_to be_valid
-        expect(subject.authenticate!).to eq(:failure)
+        expect(subject.authenticate!).to eq('/401')
       end
     end
   end

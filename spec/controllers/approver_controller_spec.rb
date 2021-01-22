@@ -6,7 +6,6 @@ RSpec.describe ApproverController, type: :controller do
   before do
     @approver_controller = ApproverController.new
     allow(@approver_controller).to receive(:request).and_return(request)
-    allow(@approver_controller).to receive(:valid_approver?).and_return(true)
   end
 
   describe @author_controller do

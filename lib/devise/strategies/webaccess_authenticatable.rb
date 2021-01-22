@@ -9,6 +9,7 @@ module Devise
         # apache sometimes sends a "(null)" string for nil users.
         access_id = nil if access_id == "(null)"
         return failure unless access_id.present?
+        # return redirect! 'sso.uri' unless access_id.present?
 
         this_object = authentication_type || Author.class
         a = this_object.find_by_access_id(access_id)
@@ -57,8 +58,8 @@ module Devise
       protected
 
       def failure
-        redirect! '/401'
         fail!
+        redirect! '/401'
       end
 
       def success(obj)

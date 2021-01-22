@@ -12,6 +12,7 @@ class ApproverController < ApplicationController
     @approver = current_approver
     approver_ability
     session[:user_role] = 'approver'
+    session[:user_name] = current_approver.access_id
   end
 
   def approver_ability
