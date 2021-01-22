@@ -6,7 +6,7 @@ RSpec.describe AuthorController, type: :controller do
   before do
     @author_controller = AuthorController.new
     allow(@author_controller).to receive(:request).and_return(request)
-    allow(@author_controller).to receive(:valid_author_session?).and_return(true)
+    allow(@author_controller).to receive(:valid_author?).and_return(true)
   end
 
   describe @author_controller do

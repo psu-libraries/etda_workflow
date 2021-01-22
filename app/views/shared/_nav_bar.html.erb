@@ -25,10 +25,10 @@
 
       <div class="log-div">
         <% unless controller_name == 'special_committee' %>
-          <% unless session[:user_name].present? %>
+          <% unless author_signed_in? || admin_signed_in? || approver_signed_in? %>
             <%= link_to 'Log In', :login, class: "btn btn-sm navbar-btn" %>
           <% else %>
-            <span class="navbar-text small hidden-xs">Logged in as <%= session[:user_name] || current_author.access_id || current_admin.access_id || current_approver.access_id %></span>
+            <span class="navbar-text small hidden-xs">Logged in as <%= current_author.full_name || current_admin.access_id || current_approver.access_id %></span>
             <%= link_to 'Log Out', :logout, class: "btn btn-sm navbar-btn" %>
           <% end %>
         <% end %>

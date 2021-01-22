@@ -33,12 +33,10 @@ class ApplicationController < ActionController::Base
   helper_method :explore_url
 
   def main
-    session[:user_name] = current_remote_user if current_remote_user && session[:user_name].blank?
     render '/main/index.html', layout: 'home'
   end
 
   def about
-    session[:user_name] = current_remote_user if current_remote_user && session[:user_name].blank?
     render '/about/index.html', layout: 'home'
   end
 
