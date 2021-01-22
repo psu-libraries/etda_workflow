@@ -15,17 +15,34 @@ module Devise
           if a.nil?
             if this_object.name == 'Approver'
               obj = this_object.create(access_id: access_id)
-            else
+              success!(obj)
+            elsif this_object.name == 'Author'
               obj = this_object.create(access_id: access_id, psu_email_address: "#{access_id}@psu.edu")
               obj.populate_attributes
+              success!(obj)
+            elsif this_object.name == 'Admin'
+              if LdapUniversityDirectory.new.in_admin_group?(access_id)
+                obj = this_object.create(access_id: access_id, psu_email_address: "#{access_id}@psu.edu")
+                obj.populate_attributes
+                success!(obj)
+              else
+                fail!
+                redirect! '/401'
+              end
             end
           else
-            obj = a
-            obj.refresh_important_attributes unless obj.class.name == 'Approver'
+            if (a.class.name == 'Admin') && (!a.administrator?)
+              fail!
+              redirect! '/401'
+            else
+              obj = a
+              obj.refresh_important_attributes unless obj.class.name == 'Approver'
+              success!(obj)
+            end
           end
-          success!(obj)
         else
           fail!
+          redirect! '/401'
         end
       end
 

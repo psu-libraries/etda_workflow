@@ -29,10 +29,6 @@ class ApplicationController < ActionController::Base
     rescue_from RestClient::ExceptionWithResponse, with: :render_500
   end
 
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :null_session
-
   helper_method :admin?
   helper_method :explore_url
 
