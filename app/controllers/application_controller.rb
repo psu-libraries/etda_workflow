@@ -33,6 +33,7 @@ class ApplicationController < ActionController::Base
   helper_method :explore_url
 
   def main
+    @current_remote_user = current_remote_user
     render '/main/index.html', layout: 'home'
   end
 
