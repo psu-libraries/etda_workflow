@@ -10,6 +10,8 @@ class ApproverController < ApplicationController
   def approver_auth
     authenticate_approver! unless approver_signed_in?
     @approver = current_approver
+    approver_ability
+    session[:user_role] = 'approver'
   end
 
   def approver_ability

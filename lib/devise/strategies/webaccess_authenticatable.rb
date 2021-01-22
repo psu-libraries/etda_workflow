@@ -8,7 +8,7 @@ module Devise
         access_id = remote_user(request.headers)
         # apache sometimes sends a "(null)" string for nil users.
         access_id = nil if access_id == "(null)"
-        failure unless access_id.present?
+        return failure unless access_id.present?
 
         this_object = authentication_type || Author.class
         a = this_object.find_by_access_id(access_id)
@@ -22,7 +22,7 @@ module Devise
             obj.populate_attributes
             success(obj)
           when 'Admin'
-            failure unless LdapUniversityDirectory.new.in_admin_group?(access_id)
+            return failure unless LdapUniversityDirectory.new.in_admin_group?(access_id)
 
             obj = this_object.create(access_id: access_id, psu_email_address: "#{access_id}@psu.edu")
             obj.populate_attributes
@@ -57,13 +57,13 @@ module Devise
       protected
 
       def failure
-        fail!
         redirect! '/401'
+        fail!
       end
 
       def success(obj)
-        success!(obj)
         Rails.logger.info "Devise Access ID ******* #{obj.access_id}"
+        success!(obj)
       end
 
       def authentication_type

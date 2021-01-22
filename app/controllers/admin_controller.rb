@@ -10,6 +10,8 @@ class AdminController < ApplicationController
   def admin_auth
     authenticate_admin! unless admin_signed_in?
     @admin = current_admin
+    current_ability
+    session[:user_role] = 'admin'
   end
 
   def current_ability

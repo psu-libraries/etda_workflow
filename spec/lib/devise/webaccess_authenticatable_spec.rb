@@ -45,6 +45,7 @@ RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
   # end
 
   describe 'authenticate!' do
+
     context 'when author' do
       let(:author) { FactoryBot.create(:author) }
       let(:request) { double(headers: { 'HTTP_REMOTE_USER' => author.access_id, 'REQUEST_URI' => '/author/submissions' }) }
@@ -78,6 +79,7 @@ RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
       context 'with a new user' do
         before { allow(Admin).to receive(:find_by_access_id).with(admin.access_id).and_return(nil) }
         it 'authenticates while creating new user and populating attributes' do
+          allow_any_instance_of(LdapUniversityDirectory).to receive(:in_admin_group?).and_return true
           expect(Admin).to receive(:create).with(access_id: admin.access_id, psu_email_address: "#{admin.access_id}@psu.edu").once.and_return(admin)
           expect_any_instance_of(Admin).to receive(:populate_attributes).once
           expect(subject).to be_valid
