@@ -8,7 +8,7 @@ class AdminController < ApplicationController
   protected
 
   def admin_auth
-    authenticate_admin! unless admin_signed_in?
+    authenticate_admin!
     @admin = current_admin
     current_ability
     session[:user_role] = 'admin'

@@ -8,7 +8,7 @@ class AuthorController < ApplicationController
   protected
 
   def author_auth
-    authenticate_author! unless author_signed_in?
+    authenticate_author!
     @author = current_author
     author_ability
     session[:user_role] = 'author'
