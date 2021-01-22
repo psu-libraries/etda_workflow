@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ApproverController < ApplicationController
-
   before_action :approver_auth
 
   layout 'approver'

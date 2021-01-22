@@ -8,41 +8,36 @@ module Devise
         access_id = remote_user(request.headers)
         # apache sometimes sends a "(null)" string for nil users.
         access_id = nil if access_id == "(null)"
-        Rails.logger.info "Devise Access ID ******* #{access_id}"
-        if access_id.present? # webaccess successful
-          this_object = authentication_type || Author.class
-          a = this_object.find_by_access_id(access_id)
-          if a.nil?
-            if this_object.name == 'Approver'
-              obj = this_object.create(access_id: access_id)
-              success!(obj)
-            elsif this_object.name == 'Author'
-              obj = this_object.create(access_id: access_id, psu_email_address: "#{access_id}@psu.edu")
-              obj.populate_attributes
-              success!(obj)
-            elsif this_object.name == 'Admin'
-              if LdapUniversityDirectory.new.in_admin_group?(access_id)
-                obj = this_object.create(access_id: access_id, psu_email_address: "#{access_id}@psu.edu")
-                obj.populate_attributes
-                success!(obj)
-              else
-                fail!
-                redirect! '/401'
-              end
-            end
+        failure unless access_id.present?
+
+        this_object = authentication_type || Author.class
+        a = this_object.find_by_access_id(access_id)
+        if a.nil?
+          case this_object.name
+          when 'Approver'
+            obj = this_object.create(access_id: access_id)
+            success(obj)
+          when 'Author'
+            obj = this_object.create(access_id: access_id, psu_email_address: "#{access_id}@psu.edu")
+            obj.populate_attributes
+            success(obj)
+          when 'Admin'
+            failure unless LdapUniversityDirectory.new.in_admin_group?(access_id)
+
+            obj = this_object.create(access_id: access_id, psu_email_address: "#{access_id}@psu.edu")
+            obj.populate_attributes
+            success(obj)
           else
-            if (a.class.name == 'Admin') && (!a.administrator?)
-              fail!
-              redirect! '/401'
-            else
-              obj = a
-              obj.refresh_important_attributes unless obj.class.name == 'Approver'
-              success!(obj)
-            end
+            failure
           end
         else
-          fail!
-          redirect! '/401'
+          if (a.class.name == 'Admin') && (!a.administrator?)
+            failure
+          else
+            obj = a
+            obj.refresh_important_attributes unless obj.class.name == 'Approver'
+            success(obj)
+          end
         end
       end
 
@@ -60,6 +55,16 @@ module Devise
       end
 
       protected
+
+      def failure
+        fail!
+        redirect! '/401'
+      end
+
+      def success(obj)
+        success!(obj)
+        Rails.logger.info "Devise Access ID ******* #{obj.access_id}"
+      end
 
       def authentication_type
         uri = request.headers['REQUEST_URI']

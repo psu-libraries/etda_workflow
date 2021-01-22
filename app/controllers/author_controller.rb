@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class AuthorController < ApplicationController
-
   before_action :author_auth
 
   layout 'author'
