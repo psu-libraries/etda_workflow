@@ -2,7 +2,7 @@
 
 class RedirectToOidcFailure < Devise::FailureApp
   def redirect_url
-    request.env['ORIGINAL_FULLPATH'] || '/'
+    request.env['ORIGINAL_FULLPATH'] || '/login'
   end
 
   def respond
