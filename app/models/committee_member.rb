@@ -69,6 +69,8 @@ class CommitteeMember < ApplicationRecord
   end
 
   def status=(new_status)
+    return if new_status == self[:status]
+
     self[:status] = new_status
     case new_status
     when 'pending'
@@ -84,13 +86,15 @@ class CommitteeMember < ApplicationRecord
   end
 
   def email=(new_email)
+    return if new_email == self[:email]
+
     self[:email] = new_email.strip
     new_access_id = LdapUniversityDirectory.new.retrieve_committee_access_id(self[:email])
     self.access_id = new_access_id if new_access_id.present?
   end
 
   def committee_role_id=(new_committee_role_id)
-    return if new_committee_role_id.blank?
+    return if new_committee_role_id.blank? || (new_committee_role_id == self[:committee_role_id])
 
     self[:committee_role_id] = new_committee_role_id
     self[:is_voting] = true unless CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Program Head/Chair'
