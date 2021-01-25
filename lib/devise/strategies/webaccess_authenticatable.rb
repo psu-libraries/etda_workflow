@@ -6,8 +6,7 @@ module Devise
     class WebaccessAuthenticatable < Authenticatable
       def authenticate!
         access_id = remote_user(request.headers)
-        # apache sometimes sends a "(null)" string for nil users.
-        access_id = nil if access_id == "(null)"
+
         return fail! unless access_id.present?
 
         this_object = authentication_type || Author.class
@@ -49,8 +48,9 @@ module Devise
       end
 
       def remote_user(headers)
+        nil_values = ["", "(null)"]
         access_id = headers.fetch('REMOTE_USER', nil) || headers.fetch('HTTP_REMOTE_USER', nil)
-        access_id = nil if access_id == "(null)"
+        return nil if nil_values.include?(access_id)
         return access_id
       end
 
