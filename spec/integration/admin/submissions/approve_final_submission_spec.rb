@@ -5,7 +5,7 @@ RSpec.describe "when an admin approves a final submission", js: true do
   let(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response, author: author }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_edit_submission_path(submission)
   end
 

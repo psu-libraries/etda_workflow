@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Devise::Strategies::WebaccessAuthenticatable do
+RSpec.describe Devise::Strategies::OidcAuthenticatable do
   include Devise::Strategies
   subject { described_class.new(nil) }
 

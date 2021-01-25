@@ -11,9 +11,6 @@ en:
   devs:
     lead:
       primary_email_address: 'ajk5603@psu.edu'
-  webaccess:
-    base_login_url: 'https://webaccess.psu.edu/?cosign-%s&%s'
-    base_logout_url: 'https://webaccess.psu.edu/cgi-bin/logout?%s'
   external_contacts:
     ul_cataloging:
       email_address: 'ul-etda-released@pennstateoffice365.onmicrosoft.com'

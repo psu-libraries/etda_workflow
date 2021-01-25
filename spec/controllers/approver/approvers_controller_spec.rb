@@ -9,7 +9,7 @@ RSpec.describe Approver::ApproversController, type: :controller do
     # Need to authenticate as an approver for these controller specs to work
     headers = { 'REMOTE_USER' => 'approverflow', 'REQUEST_URI' => '/approver' }
     request.headers.merge! headers
-    Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate!
+    Devise::Strategies::OidcAuthenticatable.new(headers).authenticate!
   end
 
   describe '#index' do

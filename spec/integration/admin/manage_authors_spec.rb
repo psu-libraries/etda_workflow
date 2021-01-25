@@ -6,7 +6,7 @@ RSpec.describe "Manage Authors", js: true do
   let!(:author2) { FactoryBot.create :author, confidential_hold: true }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_authors_path
   end
 

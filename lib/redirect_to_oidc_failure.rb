@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-class RedirectToWebaccessFailure < Devise::FailureApp
+class RedirectToOidcFailure < Devise::FailureApp
   def redirect_url
-    session[:return_to] = request.env['ORIGINAL_FULLPATH'] || WebAccess.new('').application_url
-    '/login'
+    request.env['ORIGINAL_FULLPATH'] || '/'
   end
 
   def respond

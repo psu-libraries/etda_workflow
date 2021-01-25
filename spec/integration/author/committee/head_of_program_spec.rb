@@ -7,7 +7,7 @@ RSpec.describe 'The head of program form for authors', js: true do
   let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: true }
 
   before do
-    webaccess_authorize_author
+    oidc_authorize_author
     visit new_author_submission_committee_members_path(submission)
   end
 

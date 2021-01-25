@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
+  Devise.add_module(:oidc_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/oidc_authenticatable')
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_url
@@ -63,7 +63,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_remote_user
-    Devise::Strategies::WebaccessAuthenticatable.new(nil).remote_user(request.headers)
+    Devise::Strategies::OidcAuthenticatable.new(nil).remote_user(request.headers)
   end
 
   def render_404(exception)
@@ -94,14 +94,6 @@ class ApplicationController < ActionController::Base
   def set_url
     ApplicationUrl.current = request.original_url
     ApplicationUrl.stage
-  end
-
-  def webaccess_login_url
-    WebAccess.new.login_url
-  end
-
-  def webaccess_logout_url
-    WebAccess.new.logout_url
   end
 
   def configure_permitted_parameters

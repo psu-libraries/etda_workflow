@@ -12,7 +12,7 @@ RSpec.describe "Editing committee member information for format reviews and fina
     create_committee submission
     submission.committee_members << FactoryBot.create(:committee_member, committee_role: role) unless current_partner.graduate?
     submission.committee_members << FactoryBot.create(:committee_member, committee_role: role) unless current_partner.graduate?
-    webaccess_authorize_admin
+    oidc_authorize_admin
   end
 
   it 'has specific content and records changes for certain updates', retry: 5 do

@@ -7,7 +7,7 @@ RSpec.describe "Editing approval configuration", js: true, honors: true, milsch:
   let!(:approval_configuration_2) { FactoryBot.create(:approval_configuration, degree_type: DegreeType.second) } if current_partner.graduate?
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit edit_admin_approval_configuration_path(approval_configuration_1)
   end
 

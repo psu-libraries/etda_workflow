@@ -5,7 +5,7 @@ RSpec.describe "when an admin approves a format review", js: true do
   let!(:submission) { FactoryBot.create :submission, :waiting_for_format_review_response, author: author }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
   end
 
   context "when an admin accepts the format review files" do

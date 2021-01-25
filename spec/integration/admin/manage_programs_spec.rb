@@ -7,7 +7,7 @@ RSpec.describe "Manage Programs", js: true do
   let!(:program2) { FactoryBot.create :program }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_programs_path
   end
 

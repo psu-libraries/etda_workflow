@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'redirect_to_webaccess_failure'
+require 'redirect_to_oidc_failure'
 
-Devise.add_module(:webaccess_authenticatable,
+Devise.add_module(:oidc_authenticatable,
                   strategy: true,
                   controller: :sessions,
-                  model: 'devise/models/webaccess_authenticatable',
+                  model: 'devise/models/oidc_authenticatable',
                   route: :session)
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
@@ -285,6 +285,6 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
   config.warden do |manager|
-    manager.failure_app = RedirectToWebaccessFailure
+    manager.failure_app = RedirectToOidcFailure
   end
 end

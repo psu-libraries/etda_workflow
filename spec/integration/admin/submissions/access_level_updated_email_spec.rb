@@ -5,7 +5,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
     # admin = FactoryBot.create :admin, site_administrator: true, administrator: true
 
     before do
-      webaccess_authorize_admin
+      oidc_authorize_admin
     end
 
     it 'sends an email to the appropriate people with the updated access level information' do
@@ -32,7 +32,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
 
   describe 'bulk releasing submissions', js: true do
     before do
-      webaccess_authorize_admin
+      oidc_authorize_admin
     end
 
     it 'sends an email for each submission released with the updated access level information' do

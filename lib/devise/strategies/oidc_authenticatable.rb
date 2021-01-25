@@ -3,7 +3,7 @@
 require 'devise/strategies/authenticatable'
 module Devise
   module Strategies
-    class WebaccessAuthenticatable < Authenticatable
+    class OidcAuthenticatable < Authenticatable
       def authenticate!
         access_id = remote_user(request.headers)
 
@@ -84,4 +84,4 @@ module Devise
   end
 end
 
-Warden::Strategies.add(:webaccess_authenticatable, Devise::Strategies::WebaccessAuthenticatable)
+Warden::Strategies.add(:oidc_authenticatable, Devise::Strategies::OidcAuthenticatable)

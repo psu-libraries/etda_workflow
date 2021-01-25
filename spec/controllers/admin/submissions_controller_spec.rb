@@ -7,7 +7,7 @@ RSpec.describe Admin::SubmissionsController, type: :controller do
     # Need to authenticate as an admin for these controller specs to work
     headers = { 'REMOTE_USER' => 'xxb13', 'REQUEST_URI' => '/admin/degrees' }
     request.headers.merge! headers
-    Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate!
+    Devise::Strategies::OidcAuthenticatable.new(headers).authenticate!
   end
 
   describe '#redirect_to_default_dashboard' do

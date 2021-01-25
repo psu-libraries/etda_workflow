@@ -2,7 +2,7 @@ RSpec.describe "Author Navigation", js: true do
   require 'integration/integration_spec_helper'
 
   before do
-    webaccess_authorize_author
+    oidc_authorize_author
     visit '/author'
   end
 

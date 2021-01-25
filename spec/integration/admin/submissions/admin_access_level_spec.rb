@@ -13,7 +13,7 @@ RSpec.describe 'Admin submission access_level', js: true do
     submission.committee_members << committee_member1
     submission.committee_members << committee_member2
     submission.access_level = 'open_access'
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_edit_submission_path(submission)
   end
 

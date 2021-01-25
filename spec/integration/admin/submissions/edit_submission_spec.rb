@@ -11,7 +11,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
   let(:final_submission) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: author) }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
   end
 
   it "Saves the updated submission data for a submission with status collecting committee", retry: 5 do
