@@ -39,7 +39,7 @@ RSpec.describe FinalSubmissionUpdateService do
   end
 
   describe 'it processes approved final submissions' do
-    it 'approves a final submission', honors: true do
+    it 'approves a final submission' do
       submission = FactoryBot.create :submission,
                                      :waiting_for_final_submission_response,
                                      committee_members: [committee_member]
@@ -53,17 +53,15 @@ RSpec.describe FinalSubmissionUpdateService do
       result = update_service.respond_final_submission
       expect(result[:msg]).to eql("The submission\'s final submission information was successfully approved.")
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/final_submission_submitted")
-      expect(submission.status).to eq('waiting for committee review') unless current_partner.honors?
-      expect(submission.status).to eq('waiting for publication release') if current_partner.honors?
+      expect(submission.status).to eq('waiting for publication release')
       expect(submission.title).to eq('update this title')
       expect(submission.publication_release_terms_agreed_to_at).not_to be_nil
       expect(submission.federal_funding).to eq true
       mailer_count = ActionMailer::Base.deliveries.count
-      expect(mailer_count).to eq(submission.voting_committee_members.count + 1) unless current_partner.honors?
-      expect(mailer_count).to eq(1) if current_partner.honors?
+      expect(mailer_count).to eq(1)
     end
 
-    it 'approves a final submission and proceeds to publication release if committee approved', honors: true do
+    it 'approves a final submission and proceeds to publication release if committee approved' do
       submission = FactoryBot.create :submission,
                                      :waiting_for_final_submission_response,
                                      committee_members: [committee_member]
@@ -82,8 +80,7 @@ RSpec.describe FinalSubmissionUpdateService do
       expect(submission.title).to eq('update this title')
       expect(submission.publication_release_terms_agreed_to_at).not_to be_nil
       mailer_count = WorkflowMailer.deliveries.count
-      expect(mailer_count).to eq(2) unless current_partner.honors?
-      expect(mailer_count).to eq(1) if current_partner.honors?
+      expect(mailer_count).to eq(1)
     end
 
     it 'rejects a final submission' do

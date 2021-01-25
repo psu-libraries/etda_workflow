@@ -377,12 +377,9 @@ class Submission < ApplicationRecord
         WorkflowMailer.send_head_of_program_review_request(self, submission_status)
         update_status_from_head_of_program
       else
-        status_giver.can_waiting_for_publication_release? unless current_partner.honors?
-        status_giver.waiting_for_publication_release! unless current_partner.honors?
-        status_giver.can_waiting_for_final_submission? if current_partner.honors?
-        status_giver.waiting_for_final_submission_response! if current_partner.honors?
+        status_giver.can_waiting_for_final_submission_response?
+        status_giver.waiting_for_final_submission_response!
         update_attribute(:committee_review_accepted_at, DateTime.now)
-        WorkflowMailer.send_final_emails(self) unless current_partner.honors?
         WorkflowMailer.send_committee_approved_email(self)
       end
     elsif submission_status.status == 'rejected'
@@ -397,10 +394,10 @@ class Submission < ApplicationRecord
     submission_head_of_program_status = ApprovalStatus.new(self).head_of_program_status
     status_giver = SubmissionStatusGiver.new(self)
     if submission_head_of_program_status == 'approved'
-      status_giver.can_waiting_for_publication_release?
-      status_giver.waiting_for_publication_release!
+      status_giver.can_waiting_for_final_submission_response?
+      status_giver.waiting_for_final_submission_response!
       update_attribute(:head_of_program_review_accepted_at, DateTime.now)
-      WorkflowMailer.send_final_emails(self)
+      WorkflowMailer.send_committee_approved_email(self)
     elsif submission_head_of_program_status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!
