@@ -6,7 +6,7 @@ RSpec.describe Lionpath::LionpathCommittee do
   let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'def123' }
   let!(:submission) do
     FactoryBot.create :submission, author: author, degree: degree,
-                      status: 'collecting program information', lionpath_updated_at: DateTime.now
+                                   status: 'collecting program information', lionpath_updated_at: DateTime.now
   end
   let!(:degree) { FactoryBot.create :degree, name: 'PHD', degree_type: degree_type }
   let!(:degree_type) { DegreeType.find_by(slug: 'dissertation') }
