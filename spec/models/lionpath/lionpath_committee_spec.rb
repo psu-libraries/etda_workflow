@@ -5,7 +5,8 @@ RSpec.describe Lionpath::LionpathCommittee do
 
   let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'def123' }
   let!(:submission) do
-    FactoryBot.create :submission, author: author, degree: degree, status: 'collecting program information'
+    FactoryBot.create :submission, author: author, degree: degree,
+                      status: 'collecting program information', lionpath_updated_at: DateTime.now
   end
   let!(:degree) { FactoryBot.create :degree, name: 'PHD', degree_type: degree_type }
   let!(:degree_type) { DegreeType.find_by(slug: 'dissertation') }
@@ -29,6 +30,16 @@ RSpec.describe Lionpath::LionpathCommittee do
   context "when author's submission is during Spring 2021" do
     before do
       submission.update year: 2021, semester: 'Spring'
+    end
+
+    it 'does not import data' do
+      expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 0
+    end
+  end
+
+  context "when author's submission does not have a lionpath_updated_at timestamp" do
+    before do
+      submission.update lionpath_updated_at: nil
     end
 
     it 'does not import data' do

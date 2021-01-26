@@ -7,12 +7,12 @@ RSpec.describe Lionpath::LionpathAssignChairs do
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.first }
     let!(:program_head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: degree.degree_type) }
     let!(:program) { FactoryBot.create :program }
-    let!(:program_chair) { FactoryBot.create :program_chair, program: program, campus: 'UP' }
+    let!(:program_chair) { FactoryBot.create :program_chair, program: program, campus: 'UP', access_id: 'abc123' }
 
     context 'when submission is before 2021' do
       let!(:submission) do
-        FactoryBot.create :submission, year: 2020, degree: degree,
-                                       program: program, campus: 'UP'
+        FactoryBot.create :submission, year: 2020, degree: degree, program: program,
+                          campus: 'UP', lionpath_updated_at: DateTime.now
       end
       let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
 
@@ -23,8 +23,20 @@ RSpec.describe Lionpath::LionpathAssignChairs do
 
     context 'when submission is from Spring 2021' do
       let!(:submission) do
-        FactoryBot.create :submission, year: 2021, semester: 'Spring',
-                                       degree: degree, program: program, campus: 'UP'
+        FactoryBot.create :submission, year: 2021, semester: 'Spring', degree: degree,
+                          program: program, campus: 'UP', lionpath_updated_at: DateTime.now
+      end
+      let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
+
+      it 'does not get a chair' do
+        expect { lionpath_assign_chairs.call }.to change(CommitteeMember, :count).by 0
+      end
+    end
+
+    context 'when submission does not have a lionpath_updated_at timestamp' do
+      let!(:submission) do
+        FactoryBot.create :submission, year: 2022, semester: 'Spring',
+                          degree: degree, program: program, campus: 'UP'
       end
       let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
 
@@ -35,7 +47,7 @@ RSpec.describe Lionpath::LionpathAssignChairs do
 
     context 'when submission already has a program chair' do
       let!(:submission) do
-        FactoryBot.create :submission, year: 2021, semester: 'Summer',
+        FactoryBot.create :submission, year: 2021, semester: 'Summer', lionpath_updated_at: DateTime.now,
                                        degree: degree, program: program, campus: 'UP'
       end
       let!(:program_head_member) do
@@ -51,7 +63,7 @@ RSpec.describe Lionpath::LionpathAssignChairs do
 
     context "when submission doesn't have a program chair yet" do
       let!(:submission) do
-        FactoryBot.create :submission, year: 2021, semester: 'Summer',
+        FactoryBot.create :submission, year: 2021, semester: 'Summer', lionpath_updated_at: DateTime.now,
                                        degree: degree, program: program, campus: 'UP'
       end
       let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
