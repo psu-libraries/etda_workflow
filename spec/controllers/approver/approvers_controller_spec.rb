@@ -6,10 +6,11 @@ RSpec.describe Approver::ApproversController, type: :controller do
   let!(:approver) { FactoryBot.create :approver, access_id: 'approverflow' }
 
   before do
-    # Need to authenticate as an approver for these controller specs to work
     headers = { 'REMOTE_USER' => 'approverflow', 'REQUEST_URI' => '/approver' }
     request.headers.merge! headers
-    Devise::Strategies::OidcAuthenticatable.new(headers).authenticate!
+    # Skip authentication
+    allow_any_instance_of(ApproverController).to receive(:set_session).and_return true
+    allow_any_instance_of(ApproverController).to receive(:approver_auth).and_return true
   end
 
   describe '#index' do

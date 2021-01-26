@@ -12,7 +12,7 @@ RSpec.describe RedirectToOidcFailure, type: :model do
 
     it 'creates redirect url' do
       allow(request).to receive(:env).and_return(:headers)
-      expect(subject.redirect_url).to eq('/')
+      expect(subject.redirect_url).to eq('/login')
     end
   end
 end
