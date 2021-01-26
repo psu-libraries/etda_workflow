@@ -9,7 +9,7 @@ class ApproverController < ApplicationController
   protected
 
   def set_session
-    sign_out if (session[:user_role] != 'approver')
+    sign_out if session[:user_role] != 'approver'
     session[:user_role] = 'approver'
   end
 

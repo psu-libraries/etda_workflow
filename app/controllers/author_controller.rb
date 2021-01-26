@@ -9,7 +9,7 @@ class AuthorController < ApplicationController
   protected
 
   def set_session
-    sign_out if (session[:user_role] != 'author')
+    sign_out if session[:user_role] != 'author'
     session[:user_role] = 'author'
   end
 

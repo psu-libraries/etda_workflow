@@ -9,7 +9,7 @@ class AdminController < ApplicationController
   protected
 
   def set_session
-    sign_out if (session[:user_role] != 'admin')
+    sign_out if session[:user_role] != 'admin'
     session[:user_role] = 'admin'
   end
 
