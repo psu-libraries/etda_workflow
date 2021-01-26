@@ -5,6 +5,8 @@ module Devise
   module Strategies
     class OidcAuthenticatable < Authenticatable
       def authenticate!
+        return pass if session[:user_name].present?
+
         access_id = remote_user(request.headers)
 
         return fail! unless access_id.present?

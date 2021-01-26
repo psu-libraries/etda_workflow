@@ -198,7 +198,6 @@ Style/DocumentationMethod:
 # SupportedStyles: annotated, template, unannotated
 Style/FormatStringToken:
   Exclude:
-    - 'app/models/web_access.rb'
 
 # Offense count: 30
 Style/InlineComment:
