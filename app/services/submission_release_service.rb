@@ -117,8 +117,6 @@ class SubmissionReleaseService
       plural_txt = released_total.positive? ? released_total.to_s : 'No'
       result_message = I18n.t('released_message.success', released_count: plural_txt, submissions: 'submission'.pluralize(released_total))
       @error_message = '' unless @error_count.positive?
-      return @error_message if @error_message.present?
-
       [result_message, @error_message]
     end
 
