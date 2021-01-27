@@ -64,10 +64,10 @@ en:
                     you when the review has been completed.
                     You will receive the results of the review by email within 2-3 weeks.
 
-                    Please be aware that the order of the approval process for the final thesis/dissertation has been revised.
-                    The committee members will now approve the theses/dissertations prior to the Office of Theses and Dissertations.
+                    Please be aware that the order of the approval process for the final %{degree_type} has been revised.
+                    The committee members will now approve the %{degree_type} prior to the Office of Theses and Dissertations.
                     The review and approval of the final submission by each committee member should be completed
-                    before the final thesis/dissertation is uploaded to the eTD site.
+                    before the final %{degree_type} is uploaded to the eTD site.
                     Following the approval of the committee members, the final document will be reviewed and
                     approved by The Office of Theses and Dissertations.
 
