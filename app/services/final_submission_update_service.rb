@@ -93,6 +93,7 @@ class FinalSubmissionUpdateService
       :lion_path_degree_code,
       :restricted_notes,
       :federal_funding,
+      :proquest_agreement,
       committee_members_attributes: [:id, :committee_role_id, :name, :email, :status, :notes, :is_required,
                                      :is_voting, :federal_funding_used, :_destroy],
       format_review_files_attributes: [:asset, :asset_cache, :id, :_destroy],

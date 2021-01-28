@@ -351,6 +351,13 @@ class Submission < ApplicationRecord
     end
   end
 
+  def proquest_agreement=(input)
+    super(input)
+    return unless proquest_agreement_changed? && ActiveModel::Type::Boolean.new.cast(input)
+
+    self[:proquest_agreement_at] = DateTime.now
+  end
+
   private
 
   def format_review_file_check
@@ -406,11 +413,5 @@ class Submission < ApplicationRecord
       WorkflowMailer.send_committee_rejected_emails(self)
     end
   end
-
-  def self.proquest_agreement=(input)
-    return if self.proquest_agreement_at == input
-
-    self.update :proquest_agreement_at, DateTime.now if input.truthy?
-    super(input)
-  end
 end
+
