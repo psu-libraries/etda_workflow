@@ -129,13 +129,16 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
       all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
     end
     find('#submission_access_level_restricted').click
+    find('#submission_proquest_agreement').click
     find('#submission_federal_funding_false').click
     fill_in 'submission_invention_disclosures_attributes_0_id_number', with: 12345
     fill_in 'Admin notes', with: 'Some Notes', exact: true
     click_button 'Update Metadata'
-    expect(Submission.find(final_submission.id).admin_notes).to eq 'Some Notes'
-    expect(Submission.find(final_submission.id).federal_funding).to eq false
-    expect(Submission.find(final_submission.id).restricted?).to eq true
+    final_submission.reload
+    expect(final_submission.admin_notes).to eq 'Some Notes'
+    expect(final_submission.federal_funding).to eq false
+    expect(final_submission.restricted?).to eq true
+    expect(final_submission.proquest_agreement).to eq false
   end
 
   describe 'has link to audit page' do

@@ -117,12 +117,16 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
           end
           find('#submission_has_agreed_to_terms').click
           if current_partner.graduate?
+            find('#submission_proquest_agreement').click
             find('span', text: 'Submit final files for review').click
             click_button('Continue')
           else
             click_button 'Submit final files for review'
           end
-          expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+          submission.reload
+          expect(submission.status).to eq 'waiting for committee review'
+          expect(submission.proquest_agreement).to eq true
+          expect(submission.proquest_agreement_at).to be_truthy
         end
       end
     end
