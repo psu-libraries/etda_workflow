@@ -414,4 +414,3 @@ class Submission < ApplicationRecord
     end
   end
 end
-
