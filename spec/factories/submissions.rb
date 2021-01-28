@@ -62,6 +62,8 @@ FactoryBot.define do
       format_review_approved_at { 2.days.ago }
       final_submission_approved_at { Time.zone.yesterday }
       publication_release_terms_agreed_to_at { Time.zone.now }
+      proquest_agreement { true }
+      proquest_agreement_at { Time.zone.now }
     end
 
     trait :waiting_for_committee_review do
