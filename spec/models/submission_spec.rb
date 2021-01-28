@@ -428,8 +428,10 @@ RSpec.describe Submission, type: :model do
 
   describe "#proquest_agreement" do
     it "sets proquest_agreement_at when updated to 'true'" do
+      skip 'graduate only' unless current_partner.graduate?
+
       submission = FactoryBot.create :submission, :collecting_final_submission_files,
-                                                  proquest_agreement: nil, proquest_agreement_at: nil
+                                     proquest_agreement: nil, proquest_agreement_at: nil
       submission.update proquest_agreement: true
       submission.reload
       expect(submission.proquest_agreement_at).to be_truthy

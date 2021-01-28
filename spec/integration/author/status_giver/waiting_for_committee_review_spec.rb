@@ -125,8 +125,10 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
           end
           submission.reload
           expect(submission.status).to eq 'waiting for committee review'
-          expect(submission.proquest_agreement).to eq true
-          expect(submission.proquest_agreement_at).to be_truthy
+          if current_partner.graduate?
+            expect(submission.proquest_agreement).to eq true
+            expect(submission.proquest_agreement_at).to be_truthy
+          end
         end
       end
     end

@@ -61,11 +61,11 @@ class Submission < ApplicationRecord
             :keywords,
             :access_level,
             :has_agreed_to_terms,
-            :proquest_agreement,
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && s.author_edit }
 
   validates :defended_at,
-            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit } # && !InboundLionPathRecord.active? }
+            :proquest_agreement,
+            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit }
 
   validates :public_id,
             uniqueness: { case_sensitive: true },
