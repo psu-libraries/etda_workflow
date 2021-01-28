@@ -61,6 +61,7 @@ class Submission < ApplicationRecord
             :keywords,
             :access_level,
             :has_agreed_to_terms,
+            :proquest_agreement,
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && s.author_edit }
 
   validates :defended_at,
@@ -404,5 +405,12 @@ class Submission < ApplicationRecord
       update_attribute(:head_of_program_review_rejected_at, DateTime.now)
       WorkflowMailer.send_committee_rejected_emails(self)
     end
+  end
+
+  def self.proquest_agreement=(input)
+    return if self.proquest_agreement_at == input
+
+    self.update :proquest_agreement_at, DateTime.now if input.truthy?
+    super(input)
   end
 end

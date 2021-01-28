@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_31_173551) do
+ActiveRecord::Schema.define(version: 2021_01_27_184224) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -279,6 +279,8 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.boolean "federal_funding"
     t.datetime "placed_on_hold_at"
     t.datetime "removed_hold_at"
+    t.datetime "proquest_agreement_at"
+    t.boolean "proquest_agreement"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"
