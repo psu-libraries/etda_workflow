@@ -169,7 +169,7 @@ RSpec.describe Submission, type: :model do
     end
 
     it 'validates federal funding only when authors are editing beyond collecting committee' do
-      submission = FactoryBot.create :submission, :collecting_final_submission_files
+      submission = FactoryBot.create :submission, :waiting_for_final_submission_response
       submission2 = FactoryBot.create :submission, :collecting_program_information
       submission.author_edit = true
       submission.federal_funding = true
@@ -203,9 +203,13 @@ RSpec.describe Submission, type: :model do
       expect(submission2).not_to be_valid
     end
 
-    it 'validates proquest_agreement if author is submitting beyond format review' do
-      submission = FactoryBot.create :submission, :collecting_format_review_files
-      submission2 = FactoryBot.create :submission, :collecting_final_submission_files
+    it "validates proquest_agreement if graduate school, dissertation,
+        and author is submitting beyond format review" do
+      skip 'graduate only' unless current_partner.graduate?
+
+      degree = FactoryBot.create :degree, degree_type: DegreeType.default
+      submission = FactoryBot.create :submission, :collecting_format_review_files, degree
+      submission2 = FactoryBot.create :submission, :waiting_for_final_submission_response, degree
       submission.author_edit = true
       submission.proquest_agreement = true
       expect(submission).to be_valid

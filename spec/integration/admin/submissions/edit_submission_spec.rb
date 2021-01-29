@@ -9,6 +9,9 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
   let(:submission) { FactoryBot.create(:submission, :collecting_committee, author: author) }
   let(:admin) { FactoryBot.create :admin }
   let(:final_submission) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: author) }
+  let(:final_masters_submission) do
+    FactoryBot.create(:submission, :waiting_for_final_submission_response, author: author, degree: degree) }
+  end
 
   before do
     webaccess_authorize_admin
@@ -97,6 +100,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     visit admin_edit_submission_path(final_submission)
     expect(page).not_to have_link('final_submission_file_01.pdf')
   end
+
   it 'Allows admin to upload multiple final submission files' do
     visit admin_edit_submission_path(final_submission)
     expect(page).not_to have_link('final_submission_file_01.pdf')
@@ -139,6 +143,15 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     expect(final_submission.federal_funding).to eq false
     expect(final_submission.restricted?).to eq true
     expect(final_submission.proquest_agreement).to eq false if current_partner.graduate?
+  end
+
+  context "when master's thesis" do
+    it 'does not show ProQuest agreement' do
+      skip 'graduate only' unless current_partner.graduate
+
+      visit admin_edit_submission_path(final_masters_submission)
+      expect(page).not_to have_content('ProQuest Statement')
+    end
   end
 
   describe 'has link to audit page' do

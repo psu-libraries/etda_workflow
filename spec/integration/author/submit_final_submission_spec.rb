@@ -15,6 +15,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
 
     context "when I submit the 'Upload Final Submission Files' form" do
       it 'loads the page', honors: true, milsch: true do
+        submission.proquest_agreement = nil
+        submission.proquest_agreement_at = nil
         submission.defended_at = Time.zone.yesterday
         submission.save(validate: false)
         submission.reload
@@ -33,6 +35,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         find("#submission_federal_funding_false").click
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
+        check 'I agree to ProQuest statement' if current_partner.graduate?
         if current_partner.graduate?
           find('span', text: 'Submit final files for review').click
           expect(page).to have_content('Please pay the')
@@ -46,7 +49,11 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         submission.reload
         expect(submission.federal_funding).to eq false
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
-        expect(WorkflowMailer.deliveries.count).to eq(6) if current_partner.graduate?
+        if current_partner.graduate?
+          expect(WorkflowMailer.deliveries.count).to eq(6)
+          expect(submission.proquest_agreement).to eq true
+          expect(submission.proquest_agreement_at).to be_truthy
+        end
         expect(WorkflowMailer.deliveries.count).to eq(3) if current_partner.honors?
         expect(WorkflowMailer.deliveries.count).to eq(2) if current_partner.milsch?
       end
@@ -70,6 +77,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         check 'I agree to copyright statement'
         if current_partner.graduate?
+          check 'I agree to ProQuest statement'
           find('span', text: 'Submit final files for review').click
           click_button('Continue')
         else
@@ -109,6 +117,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
         if current_partner.graduate?
+          check 'I agree to ProQuest statement'
           find('span', text: 'Submit final files for review').click
           click_button('Continue')
         else
@@ -149,6 +158,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         check 'I agree to copyright statement'
         if current_partner.graduate?
+          check 'I agree to ProQuest statement'
           find('span', text: 'Submit final files for review').click
           click_button('Continue')
         else

@@ -40,7 +40,6 @@ FactoryBot.define do
 
     trait :collecting_final_submission_files do
       status { "collecting final submission files" }
-      final_submission_traits
     end
 
     trait :collecting_final_submission_files_rejected do
@@ -68,14 +67,17 @@ FactoryBot.define do
 
     trait :waiting_for_committee_review do
       status { "waiting for committee review" }
+      final_submission_traits
     end
 
     trait :waiting_for_head_of_program_review do
       status { "waiting for head of program review" }
+      final_submission_traits
     end
 
     trait :waiting_for_committee_review_rejected do
       status { "waiting for committee review rejected" }
+      final_submission_traits
     end
 
     trait :waiting_for_final_submission_response do

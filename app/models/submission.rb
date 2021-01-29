@@ -64,8 +64,12 @@ class Submission < ApplicationRecord
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && s.author_edit }
 
   validates :defended_at,
-            :proquest_agreement,
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit }
+
+  validates :proquest_agreement,
+            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? &&
+                                            current_partner.graduate? && degree_type.slug == 'dissertation' &&
+                                            s.author_edit }
 
   validates :public_id,
             uniqueness: { case_sensitive: true },

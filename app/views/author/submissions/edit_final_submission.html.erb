@@ -56,7 +56,7 @@
       <%= render 'shared/copyright_statement' %>
       <%= f.input :has_agreed_to_terms, label: 'I agree to copyright statement', as: :boolean, wrapper: :vertical_boolean, required: true %>
 
-      <% if current_partner.graduate? %>
+      <% if current_partner.graduate? && f.object.degree_type.slug == 'dissertation' %>
         <%= render 'shared/proquest_agreement' %>
         <%= f.input :proquest_agreement, label: 'I agree to ProQuest statement', as: :boolean, wrapper: :vertical_boolean, required: true %>
       <% end %>
