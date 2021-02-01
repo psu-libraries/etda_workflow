@@ -147,7 +147,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
 
   context "when master's thesis" do
     it 'does not show ProQuest agreement' do
-      skip 'graduate only' unless current_partner.graduate
+      skip 'graduate only' unless current_partner.graduate?
 
       visit admin_edit_submission_path(final_masters_submission)
       expect(page).not_to have_content('ProQuest Statement')

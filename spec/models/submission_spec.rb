@@ -83,7 +83,6 @@ RSpec.describe Submission, type: :model do
 
   it { is_expected.to validate_inclusion_of(:access_level).in_array(AccessLevel::ACCESS_LEVEL_KEYS) }
 
-  it { is_expected.to validate_inclusion_of(:status).in_array(SubmissionStatus::WORKFLOW_STATUS) }
 
   it { is_expected.to accept_nested_attributes_for :committee_members }
   it { is_expected.to accept_nested_attributes_for :format_review_files }
@@ -97,6 +96,14 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to delegate_method(:author_last_name).to(:author).as(:last_name) }
   it { is_expected.to delegate_method(:author_full_name).to(:author).as(:full_name) }
   it { is_expected.to delegate_method(:author_psu_email_address).to(:author).as(:psu_email_address) }
+
+  describe 'status validation' do
+    it 'validates the inclusion of status in SubmissionStatus::WORKFLOW_STATUS array' do
+      degree = FactoryBot.create :degree, degree_type: DegreeType.default
+      submission = FactoryBot.create :submission, degree: degree
+      expect(submission).to validate_inclusion_of(:status).in_array(SubmissionStatus::WORKFLOW_STATUS)
+    end
+  end
 
   describe 'conditional submission validations' do
     submission = described_class.new(access_level: AccessLevel.OPEN_ACCESS.current_access_level)
@@ -208,8 +215,8 @@ RSpec.describe Submission, type: :model do
       skip 'graduate only' unless current_partner.graduate?
 
       degree = FactoryBot.create :degree, degree_type: DegreeType.default
-      submission = FactoryBot.create :submission, :collecting_format_review_files, degree
-      submission2 = FactoryBot.create :submission, :waiting_for_final_submission_response, degree
+      submission = FactoryBot.create :submission, :collecting_format_review_files, degree: degree
+      submission2 = FactoryBot.create :submission, :waiting_for_final_submission_response, degree: degree
       submission.author_edit = true
       submission.proquest_agreement = true
       expect(submission).to be_valid
