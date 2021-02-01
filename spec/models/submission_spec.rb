@@ -83,7 +83,6 @@ RSpec.describe Submission, type: :model do
 
   it { is_expected.to validate_inclusion_of(:access_level).in_array(AccessLevel::ACCESS_LEVEL_KEYS) }
 
-
   it { is_expected.to accept_nested_attributes_for :committee_members }
   it { is_expected.to accept_nested_attributes_for :format_review_files }
   it { is_expected.to accept_nested_attributes_for :final_submission_files }
