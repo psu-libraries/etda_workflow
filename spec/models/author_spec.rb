@@ -31,6 +31,7 @@ RSpec.describe Author, type: :model do
   it { is_expected.to have_db_column(:psu_idn).of_type(:string) }
   it { is_expected.to have_db_column(:confidential_hold).of_type(:boolean) }
   it { is_expected.to have_db_column(:confidential_hold_set_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:admin_edited_at).of_type(:datetime) }
   it { is_expected.to validate_presence_of(:access_id) }
   it { is_expected.to validate_presence_of(:first_name) }
   it { is_expected.to validate_presence_of(:last_name) }
