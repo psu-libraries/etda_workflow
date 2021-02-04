@@ -16,7 +16,7 @@ class Admin::AuthorsController < AdminController
     @author.attributes = author_attrs
     @author.save(validate: false)
     # Update each submissions' updated_at timestamp so Solr detects an update
-    @author.submissions.each { |s| s.update :updated_at, DateTime.now }
+    @author.submissions.each { |s| s.update updated_at: DateTime.now }
     outbound_lionpath_record.report_email_change unless @author.submissions.empty?
     redirect_to admin_authors_path
     flash[:notice] = 'Author successfully updated'
