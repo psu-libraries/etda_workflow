@@ -59,6 +59,7 @@ RSpec.describe "Manage Authors", js: true do
     click_button('Update Author')
     # expect(page).to have_content('Author successfully updated')
     author1.reload
+    expect(author1.admin_edited_at).to be_truthy
     visit edit_admin_author_path(author1)
     expect(page).to have_field('First name', with: 'correctname')
     click_link('Cancel')

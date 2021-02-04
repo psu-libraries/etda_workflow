@@ -32,6 +32,7 @@ FactoryBot.define do
     state { "PA" }
     zip { "16801" }
     updated_at { 4.days.ago }
+    admin_edited_at { nil }
     # inbound_lion_path_record { FactoryBot.create(:inbound_lion_path_record }
   end
 

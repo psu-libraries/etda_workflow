@@ -19,7 +19,7 @@ module Devise
             end
           else
             obj = a
-            obj.refresh_important_attributes unless obj.class.name == 'Approver'
+            obj.refresh_important_attributes if obj.class.name == 'Author' && obj.admin_edited_at.blank?
           end
           success!(obj)
         else
