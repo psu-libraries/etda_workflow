@@ -12,7 +12,7 @@ class Admin::AuthorsController < AdminController
     @author = Author.find(params[:id])
     @view = Admin::AuthorView.new(@author)
     outbound_lionpath_record = OutboundLionPathRecord.new(submission: @author.submissions.last, original_alternate_email: @author.alternate_email_address)
-    author_attrs = author_params.merge({ admin_edited_at: DateTime.now })
+    author_attrs = author_params.merge(admin_edited_at: DateTime.now)
     @author.attributes = author_attrs
     @author.save(validate: false)
     # Update each submissions' updated_at timestamp so Solr detects an update

@@ -12,11 +12,11 @@ RSpec.describe "Manage Authors", js: true do
 
   it 'has a list of authors' do
     submission1 = FactoryBot.create :submission, :waiting_for_final_submission_response,
-                                                 created_at: Time.zone.now,
-                                                 updated_at: (Time.zone.now - 2.years)
+                                    created_at: Time.zone.now,
+                                    updated_at: (Time.zone.now - 2.years)
     submission2 = FactoryBot.create :submission, :released_for_publication,
-                                                 created_at: (Time.zone.now - 2.years),
-                                                 updated_at: (Time.zone.now - 2.years)
+                                    created_at: (Time.zone.now - 2.years),
+                                    updated_at: (Time.zone.now - 2.years)
     author1.submissions = [submission1, submission2]
     allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
     allow_any_instance_of(Author).to receive(:populate_with_ldap_attributes).and_return(true)
