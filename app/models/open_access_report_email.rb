@@ -1,6 +1,4 @@
 class OpenAccessReportEmail
-  class InvalidReleaseMonth < RuntimeError; end
-
   def deliver
     WorkflowMailer.open_access_report(date_range, csv).deliver_now
   end
@@ -9,26 +7,21 @@ class OpenAccessReportEmail
 
   def csv
     CSV.generate do |csv|
-      csv << ['Last Name', 'First Name', 'Title', 'Degree Type', 'Graduation Semester', 'Released On']
+      csv << headers
       submissions.each do |submission|
-        csv << [submission.author.last_name.to_s, submission.author.first_name.to_s, submission.title.strip.to_s,
-                submission.degree.degree_type.name.to_s, "#{submission.semester} #{submission.year}",
-                submission.released_for_publication_at.strftime('%D').to_s]
+        csv << row(submission)
       end
     end
   end
 
-  def date_range
-    case end_month
-    when 6
-      "02/01/#{semester_year} - #{strf_today}"
-    when 9
-      "07/01/#{semester_year} - #{strf_today}"
-    when 1
-      "10/01/#{semester_year} - #{strf_today}"
-    else
-      raise InvalidReleaseMonth
-    end
+  def headers
+    ['Last Name', 'First Name', 'Title', 'Degree Type', 'Graduation Semester', 'Released On']
+  end
+
+  def row(submission)
+    [submission.author.last_name.to_s, submission.author.first_name.to_s, submission.title.strip.to_s,
+     submission.degree.degree_type.name.to_s, "#{submission.semester} #{submission.year}",
+     submission.released_for_publication_at.strftime('%D').to_s]
   end
 
   def submissions
@@ -37,16 +30,18 @@ class OpenAccessReportEmail
                      Date.strptime("#{start_month}/01/#{semester_year}", '%m/%d/%Y'), today)
   end
 
+  def date_range
+    "#{start_month}/01/#{semester_year} - #{strf_today}"
+  end
+
   def start_month
     case end_month
-    when 6
+    when 2,3,4,5,6
       '02'
-    when 9
+    when 7,8,9
       '07'
-    when 1
+    when 10,11,12,1
       '10'
-    else
-      raise InvalidReleaseMonth
     end
   end
 
