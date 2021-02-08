@@ -36,11 +36,11 @@ class OpenAccessReportEmail
 
   def start_month
     case end_month
-    when 2,3,4,5,6
+    when 2, 3, 4, 5, 6
       '02'
-    when 7,8,9
+    when 7, 8, 9
       '07'
-    when 10,11,12,1
+    when 10, 11, 12, 1
       '10'
     end
   end
