@@ -4,11 +4,11 @@
 
 # Electronic Theses and Dissertations Workflow 
 
-* Ruby version: 2.6.6
-* Node version 10.17.0 (using yarn@1.19.1 as npm)
-* Rails 6.0.3.1
-* Redis 3.2.12
-* Sidekiq 5.2.8
+* Ruby version: 2.6
+* Node version 10.17 (using yarn@1.19 as npm)
+* Rails 6.0.3
+* Redis 3.2
+* Sidekiq 5.2
 * Mariadb 10.2
  
 ## Setup
@@ -49,7 +49,6 @@ You're good to go from here!  Any changes made in the project files on your loca
 
 ## Testing
  
-
    To run the tests: 
    1.  `RAILS_ENV=test bundle exec rspec` tests Graduate School instance   
    2.  `RAILS_ENV=test bundle exec PARTNER=honors rspec` tests Honors College instance
@@ -60,7 +59,7 @@ You're good to go from here!  Any changes made in the project files on your loca
    1. `RAILS_ENV=test PARTNER=milsch bundle exec rspec --tag milsch`
    1. `RAILS_ENV=test PARTNER=honors bundle exec rspec --tag honors`
 
-   Additionally, there are some integration tests that use javascript and some component tests that run against Penn State's LDAP directory service: rspec --tag ldap. Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.  When in development or testing, you must edit the development.rb or test.rb file in config/environments and change MockUniversityDirectory to LdapUniversityDirectory to test a true ldap call.
+   Additionally, there are some component tests that run against Penn State's LDAP directory service: rspec --tag ldap. Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.  When in development or testing, you must edit the development.rb or test.rb file in config/environments and change MockUniversityDirectory to LdapUniversityDirectory to test a true ldap call.
 
 ## Deployment instructions
 
@@ -80,8 +79,3 @@ To run tasks on the server, use the "invoke" namespace and the "rake" or "comman
 *Note: When running bash commands, the parameter to "invoke:command[]" should be in single quotes.*
 
 If using ssh to run tasks on the server, be sure to set the PARTNER environment variable for partner specific tasks.
-    
-When updating rails versions, be sure to rebuild webpack binary `bundle exec bin/rails webpacker:binstubs
-` respond with 'Y' to overwrite existing webpack & webpacker binaries    
-
- 
