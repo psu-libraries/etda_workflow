@@ -70,9 +70,7 @@ class WorkflowMailer < ActionMailer::Base
   def open_access_report(date_range, csv)
     @date_range = date_range
     attachments['open_access_report.csv'] = csv
-    mail to: I18n.t('ul_etda_support_email_address').to_s,
-         # TODO: Remove cc when we know this works in prod
-         cc: %w[jrp22@psu.edu ajk5603@psu.edu],
+    mail to: I18n.t('external_contacts.ul_cataloging.email_address').to_s,
          from: current_partner.email_address,
          subject: "eTDs Released as Open Access #{@date_range}"
   end

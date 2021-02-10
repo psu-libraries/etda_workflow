@@ -43,6 +43,4 @@ class Admin < ApplicationRecord
     update(mapped_attributes)
     save(validate: false)
   end
-
-  def refresh_important_attributes; end
 end
