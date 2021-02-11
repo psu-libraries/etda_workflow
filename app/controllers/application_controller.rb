@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
+  Devise.add_module(:oidc_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/oidc_authenticatable')
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_url
@@ -29,21 +29,16 @@ class ApplicationController < ActionController::Base
     rescue_from RestClient::ExceptionWithResponse, with: :render_500
   end
 
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :null_session
-
   helper_method :admin?
   helper_method :explore_url
 
   def main
+    @current_remote_user = current_remote_user
     render '/main/index.html', layout: 'home'
-    session[:user_name] = current_remote_user if current_remote_user && session[:user_name].blank?
   end
 
   def about
     render '/about/index.html', layout: 'home'
-    session[:user_name] = current_remote_user if current_remote_user && session[:user_name].blank?
   end
 
   def docs
@@ -52,21 +47,14 @@ class ApplicationController < ActionController::Base
 
   def login
     Rails.logger.info 'LOGGING IN APP CONTROLLER'
-    # webaccess_login_url = WebAccess.new(request.env['HTTP_REFERER']).login_url
-    Rails.logger.info "REDIRECTING---" + "#{WebAccess.new(request.env['HTTP_REFERER']).login_url}  #{Time.zone.now}"
-    # redirect_to webaccess_login_url # unless Rails.env.development? || Rails.env.test?
-    redirect_to webaccess_login_url
+    # '/login' is to be protected at the webserver level
+    redirect_to session['return_to'] || '/'
   end
 
   def logout
-    session[:access_id] = nil
-    session[:user_role] = nil
-    session[:user_name] = nil
-    # make any local additions here (e.g. expiring local sessions, etc.)
-    # adapted from here: http://cosign.git.sourceforge.net/git/gitweb.cgi?p=cosign/cosign;a=blob;f=scripts/logout/logout.php;h=3779248c754001bfa4ea8e1224028be2b978f3ec;hb=HEAD
-    cookies.delete(request.env['COSIGN_SERVICE']) if request.env['COSIGN_SERVICE']
-    redirect_to webaccess_logout_url unless Rails.env.test?
-    # redirect_to WebAccess.new.logout_url unless Rails.env.development? || Rails.env.test?
+    reset_session
+    cookies.delete("mod_auth_openidc_session")
+    redirect_to session['return_to'] || '/'
   end
 
   def autocomplete
@@ -75,7 +63,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_remote_user
-    Devise::Strategies::WebaccessAuthenticatable.new(nil).remote_user(request.headers)
+    Devise::Strategies::OidcAuthenticatable.new(nil).remote_user(request.headers)
   end
 
   def render_404(exception)
@@ -106,14 +94,6 @@ class ApplicationController < ActionController::Base
   def set_url
     ApplicationUrl.current = request.original_url
     ApplicationUrl.stage
-  end
-
-  def webaccess_login_url
-    WebAccess.new.login_url
-  end
-
-  def webaccess_logout_url
-    WebAccess.new.logout_url
   end
 
   def configure_permitted_parameters

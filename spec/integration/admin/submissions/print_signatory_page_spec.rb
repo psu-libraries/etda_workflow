@@ -7,7 +7,7 @@ RSpec.describe "Printing a graduate signatory page as an admin", js: true, honor
 
   before do
     create_committee(submission)
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_submissions_index_path(submission.degree_type.slug, 'format_review_submitted')
   end
 

@@ -14,7 +14,7 @@ RSpec.describe "Release a submission with a public id", js: true, honors: true, 
   let(:submission_3) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: jane_author) }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
   end
 
   it 'assigns a public id and releases a submission', js: true do

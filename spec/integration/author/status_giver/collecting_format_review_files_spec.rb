@@ -3,7 +3,7 @@ RSpec.describe 'Step 3: Collecting Format Review Files', js: true do
 
   describe "When status is 'collecting format review files'" do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
     end
 
     let!(:author) { current_author }

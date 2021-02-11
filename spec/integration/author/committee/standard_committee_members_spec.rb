@@ -11,7 +11,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
   unless InboundLionPathRecord.active?
     before do
       allow(InboundLionPathRecord).to receive(:active?).and_return(false)
-      webaccess_authorize_author
+      oidc_authorize_author
       visit root_path
       visit new_author_submission_committee_members_path(submission)
     end

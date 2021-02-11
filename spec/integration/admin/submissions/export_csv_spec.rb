@@ -10,7 +10,7 @@ RSpec.describe "Exporting a list of approved submissions as an admin", js: true 
     let(:admin) { FactoryBot.create :admin }
 
     before do
-      webaccess_authorize_admin
+      oidc_authorize_admin
       visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')
       sleep 1
     end

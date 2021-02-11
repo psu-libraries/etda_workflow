@@ -13,7 +13,7 @@ RSpec.describe "Submission filter with semester dropdown", js: true do
     submission1.access_level = 'restricted'
     submission1.invention_disclosures = [InventionDisclosure.new(id_number: "#{submission1.year}-1234")]
     submission1.save!
-    webaccess_authorize_admin
+    oidc_authorize_admin
     # visit admin_edit_submission_path(submission)
     visit admin_submissions_dashboard_path(DegreeType.default.name)
   end

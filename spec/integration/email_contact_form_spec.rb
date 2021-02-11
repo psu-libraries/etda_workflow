@@ -15,7 +15,7 @@ RSpec.describe "Email Contact Form", js: true do
 
   describe 'display contact form for logged in user' do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
       visit '/author'
       visit email_contact_form_new_path
     end
@@ -45,7 +45,7 @@ RSpec.describe "Email Contact Form", js: true do
 
   describe 'submitting the contact form' do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
       visit '/author'
       visit email_contact_form_new_path
     end
@@ -92,7 +92,7 @@ RSpec.describe "Email Contact Form", js: true do
   describe 'clicking cancel' do
     context 'when author session' do
       it "returns to author root" do
-        webaccess_authorize_author
+        oidc_authorize_author
         visit '/author'
         visit email_contact_form_new_path
         click_link "Cancel"
@@ -103,7 +103,7 @@ RSpec.describe "Email Contact Form", js: true do
     context 'when approver session' do
       it "returns to approver page" do
         allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
-        webaccess_authorize_approver
+        oidc_authorize_approver
         visit '/approver'
         visit email_contact_form_new_path
         expect(page).not_to have_field('PSU ID Number')

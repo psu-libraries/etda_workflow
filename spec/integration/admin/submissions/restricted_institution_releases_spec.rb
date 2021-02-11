@@ -9,7 +9,7 @@ RSpec.describe "when an admin releases a restricted to institution submission fo
   let(:inbound_lion_path_record) { FactoryBot.create :inbound_lion_path_record } if current_partner.graduate?
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit root_path
   end
 

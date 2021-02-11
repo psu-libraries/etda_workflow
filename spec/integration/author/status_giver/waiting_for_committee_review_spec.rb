@@ -18,7 +18,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
 
     context 'when author tries visiting various pages' do
       before do
-        webaccess_authorize_author
+        oidc_authorize_author
       end
 
       context "visiting the 'Update Program Information' page" do
@@ -130,7 +130,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
     context "when committee reviews" do
       before do
         allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
-        webaccess_authorize_approver
+        oidc_authorize_approver
         committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
       end
 
@@ -218,7 +218,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
 
     context 'when author tries visiting various pages' do
       before do
-        webaccess_authorize_author
+        oidc_authorize_author
       end
 
       context "visiting the 'Update Program Information' page" do
@@ -300,7 +300,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
     context "when committee reviews" do
       before do
         allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
-        webaccess_authorize_approver
+        oidc_authorize_approver
         head_of_program.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id if current_partner.graduate?
       end
 

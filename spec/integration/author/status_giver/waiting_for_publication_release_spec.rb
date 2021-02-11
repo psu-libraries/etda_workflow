@@ -3,8 +3,8 @@ RSpec.describe "Last Step: 'waiting for publication release'", js: true do
 
   describe "When status is 'waiting for publication release'" do
     before do
-      webaccess_authorize_author
-      webaccess_authorize_admin
+      oidc_authorize_author
+      oidc_authorize_admin
       submission.degree.degree_type.approval_configuration = approval_configuration
     end
 

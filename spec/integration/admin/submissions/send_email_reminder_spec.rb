@@ -13,7 +13,7 @@ RSpec.describe "Sending an email reminder", js: true do
     ActionMailer::Base.deliveries = []
     submission1.committee_members << committee_member1
     submission2.committee_members << committee_member2
-    webaccess_authorize_admin
+    oidc_authorize_admin
   end
 
   context "when submission status is waiting for committee review" do

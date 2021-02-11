@@ -7,7 +7,7 @@ RSpec.describe "Manage Degrees", js: true do
   let!(:degree2) { FactoryBot.create :degree }
 
   before do
-     webaccess_authorize_admin
+     oidc_authorize_admin
      visit admin_degrees_path
   end
 

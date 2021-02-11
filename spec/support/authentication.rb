@@ -32,19 +32,19 @@ class StubbedAuthenticationStrategy < ::Devise::Strategies::Base
 end
 
 module StubbedAuthenticationHelper
-  def webaccess_authorize_author
+  def oidc_authorize_author
     sign_in_as_author current_author
     sign_in_as_admin nil if @current_admin.nil?
     sign_in_as_approver nil if @current_approver.nil?
   end
 
-  def webaccess_authorize_admin
+  def oidc_authorize_admin
     sign_in_as_admin current_admin
     sign_in_as_author nil if @current_author.nil?
     sign_in_as_approver nil if @current_approver.nil?
   end
 
-  def webaccess_authorize_approver
+  def oidc_authorize_approver
     sign_in_as_approver current_approver
     sign_in_as_author nil if @current_author.nil?
     sign_in_as_admin nil if @current_admin.nil?
@@ -80,7 +80,7 @@ module StubbedAuthenticationHelper
     Capybara.page.driver.browser.remove_cookie '_etdflow_author_session'
     Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_author_session', path: '/author')
     StubbedAuthenticationStrategy.author = author
-    Warden::Strategies.add :webaccess_authenticatable, StubbedAuthenticationStrategy
+    Warden::Strategies.add :oidc_authenticatable, StubbedAuthenticationStrategy
   end
 
   def sign_in_as_admin(admin)
@@ -90,7 +90,7 @@ module StubbedAuthenticationHelper
     Capybara.page.driver.browser.remove_cookie '_etdflow_admin_session'
     Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_admin_session', path: '/admin')
     StubbedAuthenticationStrategy.admin = admin
-    Warden::Strategies.add :webaccess_authenticatable, StubbedAuthenticationStrategy
+    Warden::Strategies.add :oidc_authenticatable, StubbedAuthenticationStrategy
   end
 
   def sign_in_as_approver(approver)
@@ -101,13 +101,13 @@ module StubbedAuthenticationHelper
     Capybara.page.driver.browser.remove_cookie '_etdflow_approver_session'
     Capybara.current_session.driver.browser.set_cookie(name: '_etdflow_approver_session', path: '/approver')
     StubbedAuthenticationStrategy.approver = approver
-    Warden::Strategies.add :webaccess_authenticatable, StubbedAuthenticationStrategy
+    Warden::Strategies.add :oidc_authenticatable, StubbedAuthenticationStrategy
   end
 end
 
 RSpec.configure do |config|
   config.after do
-    Warden::Strategies.add :webaccess_authenticatable, Devise::Strategies::WebaccessAuthenticatable
+    Warden::Strategies.add :oidc_authenticatable, Devise::Strategies::OidcAuthenticatable
     StubbedAuthenticationStrategy.author = nil unless @current_author.nil?
     StubbedAuthenticationStrategy.admin = nil unless @current_admin.nil?
     StubbedAuthenticationStrategy.approver = nil unless @current_approver.nil?

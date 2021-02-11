@@ -4,7 +4,6 @@ RSpec.describe AdminController, type: :controller do
   before do
     @admin_controller = AdminController.new
     allow(@admin_controller).to receive(:request).and_return(request)
-    allow(@admin_controller).to receive(:valid_admin?).and_return(true)
   end
 
   describe 'admin_controller' do

@@ -19,7 +19,7 @@ RSpec.describe "when admin responds to final submission", js: true do
   end
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
   end
 
   describe "when an admin accepts the final submission files" do

@@ -3,7 +3,7 @@ RSpec.describe 'Tagit-keywords', type: :integration, js: true do
 
   context 'keyword tagit' do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
     end
 
     let(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, author: current_author }

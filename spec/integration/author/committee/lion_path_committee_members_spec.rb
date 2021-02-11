@@ -9,7 +9,7 @@ RSpec.describe 'The new committee form when Lion Path is active', js: true do
 
   if InboundLionPathRecord.active?
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
       author.inbound_lion_path_record.current_data[:employee_id] = submission.author.psu_idn.to_s
       visit root_path
     end
