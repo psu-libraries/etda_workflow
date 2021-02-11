@@ -22,7 +22,7 @@ RSpec.describe "Admins can run reports", js: true do
     submission2.invention_disclosures << InventionDisclosure.new(id_number: invention_number)
     submission2.access_level = 'restricted'
     # submission2.save!
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_submissions_dashboard_path(Degree.first.degree_type)
   end
 

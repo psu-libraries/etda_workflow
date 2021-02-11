@@ -24,7 +24,7 @@ class SubmissionReleaseService
     end
     # wait until all submissions and files have been released and then run delta-import to update solr
     bulk_solr_result = SolrDataImportService.new.delta_import
-    return { error: true, msg: "Error occurred during delta-import for solr bulk update" } if bulk_solr_result[:error]
+    return ["Error occurred during delta-import for solr bulk update", ''] if bulk_solr_result[:error]
 
     final_results(submission_ids.count)
   end

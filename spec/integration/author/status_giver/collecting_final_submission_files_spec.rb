@@ -3,7 +3,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
 
   describe "When status is 'collecting final submission files'" do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
     end
 
     let!(:author) { current_author }

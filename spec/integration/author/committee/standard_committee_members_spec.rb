@@ -17,7 +17,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
   end
 
   before do
-    webaccess_authorize_author
+    oidc_authorize_author
     visit new_author_submission_committee_members_path(submission)
   end
 

@@ -9,7 +9,7 @@ RSpec.describe "Manage Submissions", js: true do
   let!(:submission2) { FactoryBot.create :submission, :waiting_for_publication_release, author: author2 }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')
     sleep 1
   end
@@ -49,7 +49,7 @@ RSpec.describe "Manage Submissions", js: true do
     let!(:submission5) { FactoryBot.create :submission, :released_for_publication, author: author1 }
 
     before do
-      webaccess_authorize_admin
+      oidc_authorize_admin
     end
 
     if current_partner.graduate?

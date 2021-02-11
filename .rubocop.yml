@@ -182,7 +182,6 @@ Lint/HandleExceptions:
 
 Lint/ParenthesesAsGroupedExpression:
   Exclude:
-    - 'lib/devise/strategies/webaccess_authenticatable.rb'
 
 Lint/ShadowingOuterLocalVariable:
   Exclude:

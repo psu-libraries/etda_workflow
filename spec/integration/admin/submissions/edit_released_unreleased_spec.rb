@@ -10,7 +10,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
   let(:invention_disclosures) { create(:invention_disclosure, submission) }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_edit_submission_path(submission)
     page.find('div[data-target="#program-information"]').click
     fill_in "Title", with: "A Brand New TITLE"
@@ -118,7 +118,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     # let(:degree_type) { current_partner.graduate? ? 'dissertation' : 'thesis' }
 
     before do
-      webaccess_authorize_admin
+      oidc_authorize_admin
       visit admin_edit_submission_path(submission)
     end
 
@@ -155,7 +155,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
       legacy_submission.legacy_id = 888
       legacy_submission.save
 
-      webaccess_authorize_admin
+      oidc_authorize_admin
       visit admin_edit_submission_path(legacy_submission)
 
       expect(page).to have_button('Update Metadata Only')

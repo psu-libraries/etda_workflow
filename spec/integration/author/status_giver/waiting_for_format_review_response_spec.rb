@@ -3,7 +3,7 @@ RSpec.describe 'Step 4: Waiting for Format Review Response', js: true do
 
   describe "When status is 'waiting for format review response'" do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
     end
 
     let!(:author) { current_author }

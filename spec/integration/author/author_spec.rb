@@ -2,7 +2,7 @@ RSpec.describe 'Author submission page', type: :integration, milsch: true, honor
   require 'integration/integration_spec_helper'
 
   before do
-    webaccess_authorize_author
+    oidc_authorize_author
     visit author_submissions_path
   end
 
@@ -50,7 +50,7 @@ RSpec.describe 'Author submission page', type: :integration, milsch: true, honor
 
   context 'Author submission display when author has more than one submissions' do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
       FactoryBot.create_list :submission, 2, author: current_author
       visit author_submissions_path
     end

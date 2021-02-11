@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'devise/strategies/webaccess_authenticatable.rb'
+require 'devise/strategies/oidc_authenticatable.rb'
 
 module Devise
   module Models
-    module WebaccessAuthenticatable
+    module OidcAuthenticatable
       extend ActiveSupport::Concern
 
       def after_database_authentication; end

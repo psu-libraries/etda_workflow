@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_03_165927) do
+ActiveRecord::Schema.define(version: 2021_02_04_182913) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 2020_12_03_165927) do
     t.integer "legacy_id"
     t.boolean "confidential_hold"
     t.datetime "confidential_hold_set_at"
+    t.datetime "admin_edited_at"
     t.index ["access_id"], name: "index_authors_on_access_id", unique: true
     t.index ["legacy_id"], name: "index_authors_on_legacy_id"
   end

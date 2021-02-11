@@ -3,7 +3,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
 
   describe "When collecting final submission files", honors: true, milsch: true do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
     end
 
     let!(:author) { current_author }

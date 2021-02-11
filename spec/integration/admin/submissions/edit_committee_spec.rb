@@ -10,7 +10,7 @@ RSpec.describe "Editing committee member information", js: true, honors: true, m
   before do
     create_committee submission
     submission.committee_members << FactoryBot.create(:committee_member, committee_role: committee_role)
-    webaccess_authorize_admin
+    oidc_authorize_admin
   end
 
   it 'has specific content and records changes for certain updates', retry: 5 do

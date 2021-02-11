@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class Admin < ApplicationRecord
-  Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
-
-  devise :webaccess_authenticatable, :rememberable, :trackable, :registerable
+  devise :oidc_authenticatable, :rememberable, :trackable, :registerable
 
   validates :access_id,
             :first_name,
@@ -45,6 +43,4 @@ class Admin < ApplicationRecord
     update(mapped_attributes)
     save(validate: false)
   end
-
-  def refresh_important_attributes; end
 end

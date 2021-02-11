@@ -4,10 +4,11 @@ require 'rails_helper'
 
 RSpec.describe Admin::SubmissionsController, type: :controller do
   before do
-    # Need to authenticate as an admin for these controller specs to work
     headers = { 'REMOTE_USER' => 'xxb13', 'REQUEST_URI' => '/admin/degrees' }
     request.headers.merge! headers
-    Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate!
+    # Skip authentication
+    allow_any_instance_of(AdminController).to receive(:set_session).and_return true
+    allow_any_instance_of(AdminController).to receive(:admin_auth).and_return true
   end
 
   describe '#redirect_to_default_dashboard' do

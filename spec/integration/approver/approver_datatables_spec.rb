@@ -12,7 +12,7 @@ RSpec.describe 'Approver datatables', type: :integration, js: true do
   before do
     submission.final_submission_files << final_submission_file
     submission.degree.degree_type.approval_configuration = approval_configuration
-    webaccess_authorize_approver
+    oidc_authorize_approver
   end
 
   it "updates approver's committee member records and lists them" do

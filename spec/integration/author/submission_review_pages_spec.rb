@@ -28,7 +28,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
     submission1.save
     submission2.committee_members << committee_member3
     submission2.committee_members << committee_member4
-    webaccess_authorize_author
+    oidc_authorize_author
     visit author_submissions_path
   end
 

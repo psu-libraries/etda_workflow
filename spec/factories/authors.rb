@@ -32,6 +32,7 @@ FactoryBot.define do
     state { "PA" }
     zip { "16801" }
     updated_at { 4.days.ago }
+    admin_edited_at { nil }
   end
 
   trait :author_from_ldap do

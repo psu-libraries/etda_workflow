@@ -3,7 +3,7 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
 
   describe "When status is 'collecting committee'" do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
     end
 
     let!(:author) { current_author }
@@ -118,7 +118,7 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
     let(:author) { current_author }
 
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
     end
 
     it "deletes the submission" do

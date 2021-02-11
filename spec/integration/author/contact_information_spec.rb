@@ -2,7 +2,7 @@ RSpec.describe "Manage Contact Information", js: true do
   require 'integration/integration_spec_helper'
 
   before do
-    webaccess_authorize_author
+    oidc_authorize_author
   end
 
   let(:author) { current_author }
@@ -11,7 +11,7 @@ RSpec.describe "Manage Contact Information", js: true do
     it 'displays a contact information page for authors' do
       FactoryBot.create :degree
       author = current_author
-      visit author_root_path(author)
+      visit author_root_path
       click_link 'Update My Contact Information'
       expect(page).to have_current_path(edit_author_author_path(author))
       expect(page).to have_content("Update Contact Information")

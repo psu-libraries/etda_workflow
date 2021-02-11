@@ -3,7 +3,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
 
   describe "When status is 'collecting program information'" do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
     end
 
     let!(:author) { current_author }
@@ -127,7 +127,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
 
   describe "when I submit the 'Program Information' form" do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
     end
 
     let(:author) { current_author }
@@ -158,7 +158,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
 
   describe "author can delete a submission", milsch: true, honors: true do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
     end
 
     let(:author) { current_author }
