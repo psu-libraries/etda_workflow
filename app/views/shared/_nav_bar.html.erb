@@ -14,7 +14,7 @@
               <%= link_to 'Contact Us', email_contact_form_new_path, class: 'btn btn-sm navbar-btn ' %>
             </li>
           <% end %>
-          <% unless controller_name == 'application' && action_name == 'main' %>
+          <% unless (controller_name == 'application' && action_name == 'main') || current_partner.sset? %>
             <li>
               <%= link_to 'Explore', EtdUrls.new.explore, class: 'btn btn-sm navbar-btn' %>
             </li>

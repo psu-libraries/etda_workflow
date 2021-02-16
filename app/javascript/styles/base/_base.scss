@@ -685,10 +685,19 @@ a.cancel-link{
 //Styles for main page
 .btn-main{
   background-color: $medium-blue-bright;
+  color: white;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 #main-page{
   margin-top: 20px;
+}
+
+.top-container{
+  padding-bottom: 20px;
 }
 
 #admin-col{
