@@ -8,7 +8,7 @@ class Author::PublishedSubmissionsIndexView
 
   def title_link(submission)
     return "<p>#{submission.cleaned_title}</p>" if current_partner.sset?
-    
+
     "<span class='sr-only'>link to your submission #{submission.cleaned_title} opens in a new tab</span> <a target = blank href = '#{EtdUrls.new.explore}/catalog/#{submission.public_id}' class='title'> #{submission.cleaned_title} </a>"
   end
 
