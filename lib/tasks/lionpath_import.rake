@@ -11,7 +11,8 @@ namespace :lionpath_import do
     Rails.logger.info "Process complete in #{(finish - start).seconds}"
   end
 
-  desc "Import committee roles from LionPATH committee role configuration file"
+  desc "Import committee roles from LionPATH committee role configuration file
+        separate from the core import"
 
   task :committee_roles, [:file_location] => :environment do |task, args|
     return unless current_partner.graduate?

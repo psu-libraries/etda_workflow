@@ -234,7 +234,7 @@ en:
               description: Faculty member responsible for leadership in developing the department’s academic programs.
         dissertation:
           help_text: Committees are imported from LionPATH.  Review the following committee.  If changes are necessary, make those changes in LionPATH and your committee will update here after one day.
-          notice: Special Signatories and Special Members can be added at the bottom of the screen by clicking "Add Committee Member" and selecting their role from the dropdown.  Note that if these members are external to Penn State and do not have Access IDs, they will be prompted to create a OneID account when they visit this site.
+          notice: Special Signatories can be added at the bottom of the screen by clicking "Add Committee Member" and selecting their role from the dropdown.  Note that if these members are external to Penn State and do not have Access IDs, they will be prompted to create a OneID account when they visit this site.
           members:
             lionpath_committee:
               name: LionPATH Committee

@@ -18,7 +18,7 @@ class Author::SubmissionsIndexView
   end
 
   def no_submissions_message
-    return "" unless @author.submissions.released_for_publication.count.zero?
+    return "You currently do not have any submissions to complete." unless @author.submissions.released_for_publication.count.zero?
 
     return "You don't have any submissions yet.  Start your submission by completing your program information in <strong>LionPATH</strong>." if current_partner.graduate?
 

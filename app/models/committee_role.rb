@@ -4,6 +4,9 @@ class CommitteeRole < ApplicationRecord
   belongs_to :degree_type
   has_many :committee_members
 
+  # With the addition of the LionPATH integration, these graduate dissertation roles are no longer in use
+  # The preferred dissertation roles are imported during the LionPATH import
+  # However, these roles still exist for legacy submissions
   GRADUATE_ROLES = { 'dissertation' => [
     { name: 'Program Head/Chair', num_required: 0, is_active: true },
     { name: 'Dissertation Advisor/Co-Advisor', num_required: 1, is_active: true },
