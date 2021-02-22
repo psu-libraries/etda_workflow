@@ -82,7 +82,7 @@ If using ssh to run tasks on the server, be sure to set the PARTNER environment 
 
 ## LionPATH Integration
 
-Student program and committee information is imported daily from LionPATH.  The integration runs on a cron jobs that kicks off a 3am.  There are five tables/resources updated in ETDA by this daily import: Submission, Program, CommitteeMember, CommitteeRole, ProgramChair.  The import works in the following order:
+Student program and committee information is imported daily from LionPATH.  The integration runs on a cron job that kicks off a 3am.  There are five tables/resources updated in ETDA by this daily import: Submission, Program, CommitteeMember, CommitteeRole, ProgramChair.  The import works in the following order:
 
 1. Committee Roles for The Graduate School's Dissertation submissions are imported.  This updates the CommitteeRole table with changes and/or new committee roles.  These roles exactly reflect the roles in LionPATH and are different from Master's Thesis roles.
 
@@ -94,7 +94,7 @@ Student program and committee information is imported daily from LionPATH.  The 
 
 Committees and Committee Roles are not currently being imported from LionPATH for The Graduate School's Master's Thesis submissions.
 
-The LionPATH integration uses sftp to pull CSV dumps of the Committee Roles, Student Program data(submissions), Program Head/Chair, and Committees (in that order) from LionPATH.  The bash script: `lionpath-csv.sh` does most of the work to grab these CSVs from the LionPATH sftp server.  The files follow these file naming conventions:
+The LionPATH integration uses sftp to pull CSV dumps of the Committee Roles, Student Program info, Program Head/Chair, and Committees (in that order) from LionPATH.  The bash script: `lionpath-csv.sh` does most of the work to grab these CSVs from the LionPATH sftp server.  The files follow these file naming conventions:
 
 	Committee Roles: PE_SR_G_ETD_ACT_COMROLES
 	Student Program Information: PE_SR_G_ETD_STDNT_PLAN_PRC
