@@ -39,7 +39,7 @@ class Author::CommitteeMemberView
 
   def committee_members_tooltip_text
     output = ''
-    I18n.t("#{current_partner.id}.committee.list.#{model.submission.degree_type.slug}").each do |_k, v|
+    I18n.t("#{current_partner.id}.committee.list.#{model.submission.degree_type.slug}.members").each do |_k, v|
       output << "<p><strong>#{v[:name]}</strong> - #{v[:description]}</p>"
     end
     output.html_safe

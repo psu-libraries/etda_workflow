@@ -34,7 +34,7 @@ class Admin < ApplicationRecord
   end
 
   def populate_attributes
-    results = LdapUniversityDirectory.new.retrieve(access_id, LdapResultsMap::ADMIN_LDAP_MAP)
+    results = LdapUniversityDirectory.new.retrieve(access_id, 'uid', LdapResultsMap::ADMIN_LDAP_MAP)
     mapped_attributes = results.except(:access_id)
     save_mapped_attributes(mapped_attributes) if mapped_attributes
   end

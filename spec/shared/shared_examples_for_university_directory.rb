@@ -24,7 +24,7 @@ RSpec.shared_examples "a UniversityDirectory" do
       expect(directory).to respond_to(:retrieve)
     end
     it "takes two arguments" do
-      expect(directory.method(:retrieve).arity).to eq(2)
+      expect(directory.method(:retrieve).arity).to eq(3)
     end
   end
 

@@ -13,12 +13,14 @@ RSpec.describe "Manage Programs", js: true do
 
   it 'has a list of programs' do
     expect(page).to have_content(program.name)
+    expect(page).to have_content(program.code)
     expect(page).to have_content(program2.name)
+    expect(page).to have_content(program2.code)
     page.find('.add-button').click
-    expect(page).to have_button("New #{current_partner.program_label}")
+    expect(page).to have_button("Create #{current_partner.program_label}")
     fill_in 'Name', with: 'A New Program'
-    check 'Is active'
-    button_text = "New #{current_partner.program_label}"
+    find('#program_is_active_true').click
+    button_text = "Create #{current_partner.program_label}"
     click_button button_text
     expect(page).to have_current_path(admin_programs_path)
     expect(page).to have_content(program.name)
@@ -28,17 +30,16 @@ RSpec.describe "Manage Programs", js: true do
     end
     # expect(page).to have_content("#{current_partner.program_label} successfully created")
     click_link 'A New Program'
-    expect(page).to have_content("Edit #{current_partner.program_label}")
-    expect(page).to have_selector("input[value='A New Program']")
-    fill_in 'Name', with: 'a different program name'
-    uncheck 'Is active'
+    expect(page).to have_content("Edit A New Program")
+    find('#program_is_active_false').click
     click_button "Update #{current_partner.program_label}"
     expect(page).to have_content(program.name)
-    within('tr', text: 'a different program name') do
+    within('tr', text: 'A New Program') do
       expect(page).to have_content('No')
     end
     # expect(page).to have_content("#{current_partner.program_label} successfully updated")
-    fill_in 'Search records...', with: 'different program'
+    fill_in 'Search records...', with: 'A New'
+    expect(page).to have_content('A New Program')
     expect(page).not_to have_content(program.name)
     expect(page).not_to have_content(program2.name)
     status_str = printf('Showing 1 to %1d of %1d records', Program.all.count, Program.all.count)

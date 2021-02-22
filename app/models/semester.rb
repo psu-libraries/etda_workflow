@@ -24,12 +24,12 @@ class Semester
 
   def self.all_years
     this_year = Time.zone.today.year
-    Semester.new.build_year_list(1998, this_year + 5)
+    Semester.new.build_year_list(1998, this_year + 10)
   end
 
   def self.graduation_years
     this_year = Time.zone.today.year
-    list = Semester.new.build_year_list(this_year - 10, this_year + 5)
+    list = Semester.new.build_year_list(this_year - 10, this_year + 10)
     list.reverse
   end
 

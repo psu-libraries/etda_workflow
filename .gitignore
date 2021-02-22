@@ -26,7 +26,6 @@ vendor/bundle
 #config/secrets.yml
 #config/database.yml
 config/locales/test/**/*
-#config/lion_path.yml
 #config/redis.yml
 spec/examples.txt
 

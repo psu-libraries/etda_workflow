@@ -79,3 +79,24 @@ To run tasks on the server, use the "invoke" namespace and the "rake" or "comman
 *Note: When running bash commands, the parameter to "invoke:command[]" should be in single quotes.*
 
 If using ssh to run tasks on the server, be sure to set the PARTNER environment variable for partner specific tasks.
+
+## LionPATH Integration
+
+Student program and committee information is imported daily from LionPATH.  The integration runs on a cron job that kicks off at 3am.  There are five tables/resources updated in ETDA by this daily import: Submission, Program, CommitteeMember, CommitteeRole, ProgramChair.  The import works in the following order:
+
+1. Committee Roles for The Graduate School's Dissertation submissions are imported.  This updates the CommitteeRole table with changes and/or new committee roles.  These roles exactly reflect the roles in LionPATH and are different from Master's Thesis roles.
+
+2. Student program information is imported for The Graduate School's Master's Thesis and Dissertation submissions.  New programs are added to the Program table during this import and linked to the student's Submission.
+
+3. Program Head/Chair data is imported. This updates the ProgramChair table with changes and/or new program chairs and is then used to add to a submission's committee for The Graduate School's Master's Thesis and Dissertation submissions.
+
+4. Committees are imported for The Graduate School's Dissertation submissions.  This adds or updates CommitteeMembers for the student's submission.  These committees use the Committee Roles imported previously from LionPATH.
+
+Committees and Committee Roles are not currently being imported from LionPATH for The Graduate School's Master's Thesis submissions.
+
+The LionPATH integration uses sftp to pull CSV dumps of the Committee Roles, Student Program info, Program Head/Chair, and Committees (in that order) from LionPATH.  The bash script: `lionpath-csv.sh` does most of the work to grab these CSVs from the LionPATH sftp server.  The files follow these file naming conventions:
+
+	Committee Roles: PE_SR_G_ETD_ACT_COMROLES
+	Student Program Information: PE_SR_G_ETD_STDNT_PLAN_PRC
+	Program Head/Chair: PE_SR_G_ETD_CHAIR_PRC
+	Committees: PE_SR_G_ETD_COMMITTEE_PRC

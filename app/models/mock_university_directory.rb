@@ -48,8 +48,8 @@ class MockUniversityDirectory
     KNOWN_ACCESS_IDS.include?(psu_access_id)
   end
 
-  def retrieve(psu_access_id, attributes_map)
-    result = get_id_info(psu_access_id)
+  def retrieve(input_string, query_type, attributes_map)
+    result = get_id_info(input_string, query_type)
     return result if result.empty?
 
     if attributes_map == ADMIN_LDAP_MAP
@@ -74,56 +74,65 @@ class MockUniversityDirectory
   end
 
   def authors_confidential_status(psu_access_id)
-    results = retrieve(psu_access_id, AUTHOR_LDAP_MAP)
+    results = retrieve(psu_access_id, 'uid', AUTHOR_LDAP_MAP)
     return false if results.empty?
 
     results[:confidential_hold]
   end
 
   def in_admin_group?(this_access_id)
-    result = get_id_info(this_access_id)
+    result = get_id_info(this_access_id, 'uid')
     return false if result.blank?
 
     result[:administrator] || false
   end
 
-  def get_id_info(psu_access_id)
-    case psu_access_id
-    when /(ajk5603)/i
-      { access_id: 'ajk5603', first_name: 'Alex', middle_name: 'James',
-        last_name: 'Kiessling', address_1: 'Pattee Library',
-        city: 'University Park', state: 'PA',
-        zip: '16802', phone_number: '555-555-5555',
-        country: 'US', psu_idn: '999999999', confidential_hold: true,
-        administrator: true, site_administrator: true }
-    when /(dmc186)/i
-      { access_id: 'dmc186', first_name: 'Daniel', middle_name: 'Michael',
-        last_name: 'Coughlin', address_1: 'University Libraries',
-        city: 'University Park', state: 'PA',
-        zip: '16802', phone_number: '555-555-5555',
-        country: 'US', psu_idn: '999999999', confidential_hold: false,
-        administrator: true, site_administrator: true }
-    when /(amg32)/i
-      { access_id: 'amg32', first_name: 'Andrew', middle_name: 'Michael',
-        last_name: 'Gearhart', address_1: 'Pattee Library',
-        city: 'University Park', state: 'PA',
-        zip: '16802', phone_number: '555-555-5555',
-        country: 'US', psu_idn: '999999999', confidential_hold: false,
-        administrator: true, site_administrator: true }
-    when /(xxb13)/i
+  def get_id_info(query_string, query_type)
+    if query_type == 'uid'
+      case query_string
+      when /(ajk5603)/i
+        { access_id: 'ajk5603', first_name: 'Alex', middle_name: 'James',
+          last_name: 'Kiessling', address_1: 'Pattee Library',
+          city: 'University Park', state: 'PA',
+          zip: '16802', phone_number: '555-555-5555',
+          country: 'US', psu_idn: '999999999', confidential_hold: true,
+          administrator: true, site_administrator: true }
+      when /(dmc186)/i
+        { access_id: 'dmc186', first_name: 'Daniel', middle_name: 'Michael',
+          last_name: 'Coughlin', address_1: 'University Libraries',
+          city: 'University Park', state: 'PA',
+          zip: '16802', phone_number: '555-555-5555',
+          country: 'US', psu_idn: '999999999', confidential_hold: false,
+          administrator: true, site_administrator: true }
+      when /(amg32)/i
+        { access_id: 'amg32', first_name: 'Andrew', middle_name: 'Michael',
+          last_name: 'Gearhart', address_1: 'Pattee Library',
+          city: 'University Park', state: 'PA',
+          zip: '16802', phone_number: '555-555-5555',
+          country: 'US', psu_idn: '999999999', confidential_hold: false,
+          administrator: true, site_administrator: true }
+      when /(xxb13)/i
+        { access_id: 'testid', first_name: 'testfirst', middle_name: 'testmiddle',
+          last_name: 'testlast', address_1: 'Anywhere',
+          city: 'University Park', state: 'PA',
+          zip: '16802', phone_number: '555-555-5555',
+          country: 'US', confidential_hold: false, psu_idn: '999999999',
+          administrator: true, site_administrator: true }
+      when /(conf123)/i
+        { access_id: 'conf123', first_name: 'Confidential', middle_name: 'X.',
+          last_name: 'Student', address_1: 'I cannot tell you', city: 'Secret', state: 'PA',
+          zip: '16801', phone_number: '111-111-1111', psu_idn: '977777777',
+          confidential_hold: true, administrator: false, site_administrator: true }
+      else
+        []
+      end
+    else
       { access_id: 'testid', first_name: 'testfirst', middle_name: 'testmiddle',
         last_name: 'testlast', address_1: 'Anywhere',
         city: 'University Park', state: 'PA',
         zip: '16802', phone_number: '555-555-5555',
         country: 'US', confidential_hold: false, psu_idn: '999999999',
         administrator: true, site_administrator: true }
-    when /(conf123)/i
-      { access_id: 'conf123', first_name: 'Confidential', middle_name: 'X.',
-        last_name: 'Student', address_1: 'I cannot tell you', city: 'Secret', state: 'PA',
-        zip: '16801', phone_number: '111-111-1111', psu_idn: '977777777',
-        confidential_hold: true, administrator: false, site_administrator: true }
-    else
-      []
     end
   end
 end

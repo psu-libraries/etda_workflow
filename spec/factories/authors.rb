@@ -33,7 +33,6 @@ FactoryBot.define do
     zip { "16801" }
     updated_at { 4.days.ago }
     admin_edited_at { nil }
-    # inbound_lion_path_record { FactoryBot.create(:inbound_lion_path_record }
   end
 
   trait :author_from_ldap do
@@ -44,9 +43,5 @@ FactoryBot.define do
   trait :confidential_hold do
     confidential_hold { true }
     confidential_hold_set_at { Time.zone.yesterday }
-  end
-
-  trait :no_lionpath_record do
-    inbound_lion_path_record { nil }
   end
 end
