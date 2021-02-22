@@ -82,7 +82,7 @@ If using ssh to run tasks on the server, be sure to set the PARTNER environment 
 
 ## LionPATH Integration
 
-Student program and committee information is imported daily from LionPATH.  The integration runs on a cron job that kicks off a 3am.  There are five tables/resources updated in ETDA by this daily import: Submission, Program, CommitteeMember, CommitteeRole, ProgramChair.  The import works in the following order:
+Student program and committee information is imported daily from LionPATH.  The integration runs on a cron job that kicks off at 3am.  There are five tables/resources updated in ETDA by this daily import: Submission, Program, CommitteeMember, CommitteeRole, ProgramChair.  The import works in the following order:
 
 1. Committee Roles for The Graduate School's Dissertation submissions are imported.  This updates the CommitteeRole table with changes and/or new committee roles.  These roles exactly reflect the roles in LionPATH and are different from Master's Thesis roles.
 
