@@ -82,13 +82,15 @@ If using ssh to run tasks on the server, be sure to set the PARTNER environment 
 
 ## LionPATH Integration
 
-Student program information is imported daily from LionPATH for The Graduate School's Master's Thesis and Dissertation submissions.
+Student program and committee information is imported daily from LionPATH.  The integration runs on a cron jobs that kicks off a 3am.  There are five tables/resources updated in ETDA by this daily import: Submission, Program, CommitteeMember, CommitteeRole, ProgramChair.  The import works in the following order:
 
-Program Head/Chair data is imported daily from LionPATH and is used to update a submission's Program Head/Chair information daily for The Graduate School's Master's Thesis and Dissertation submissions.
+1. Committee Roles for The Graduate School's Dissertation submissions are imported.  This updates the CommitteeRole table with changes and/or new committee roles.  These roles exactly reflect the roles in LionPATH and are different from Master's Thesis roles.
 
-Committee Roles for The Graduate School's Dissertation submissions are imported daily from LionPATH.  These roles exactly reflect the roles in LionPATH and are different from Master's Thesis roles.
+2. Student program information is imported for The Graduate School's Master's Thesis and Dissertation submissions.  New programs are added to the Program table during this import and linked to the student's Submission.
 
-Committees are also imported daily for The Graduate School's Dissertation submissions.  These committees use the Committee Roles imported previously from LionPATH.
+3. Program Head/Chair data is imported. This updates the ProgramChair table with changes and/or new program chairs and is then used to add to a submission's committee for The Graduate School's Master's Thesis and Dissertation submissions.
+
+4. Committees are imported for The Graduate School's Dissertation submissions.  This adds or updates CommitteeMembers for the student's submission.  These committees use the Committee Roles imported previously from LionPATH.
 
 Committees and Committee Roles are not currently being imported from LionPATH for The Graduate School's Master's Thesis submissions.
 
