@@ -1,6 +1,6 @@
 
     <p>
-    <p><%= t("#{current_partner.id}.committee.list.#{@submission.degree_type.slug}.help_text") %></p>
+    <p><%= t("#{current_partner.id}.committee.list.#{@submission.degree_type.slug}.help_text").html_safe %></p>
 
     <% if current_partner.graduate? %>
       <p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.list.#{@submission.degree_type.slug}.notice") %></p>
