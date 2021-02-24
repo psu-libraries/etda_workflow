@@ -14,15 +14,11 @@ class SubmissionStatusGiver
   end
 
   def can_provide_new_committee?
-    raise AccessForbidden, 'You must complete your committee in LionPATH before moving to step two.' if @submission.degree_type.slug == 'dissertation'
-
     validate_current_state! [SubmissionStates::CollectingCommittee]
   end
 
   def can_update_committee?
-    valid_states = [SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected]
-    valid_states << SubmissionStates::CollectingCommittee if @submission.degree_type.slug == 'dissertation'
-    validate_current_state! valid_states
+    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::CollectingCommittee]
   end
 
   def can_upload_format_review_files?
