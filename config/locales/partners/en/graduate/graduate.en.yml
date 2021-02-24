@@ -233,6 +233,7 @@ en:
               name: Program Head
               description: Faculty member responsible for leadership in developing the department’s academic programs.
         dissertation:
+          incomplete_error: Your committee is not complete.  Please complete your committee in <a target="_blank" href="https://lionpath.psu.edu">LionPATH</a>.
           help_text: Committees are imported from <strong>LionPATH</strong>.  Review the following committee.  If changes are necessary, make those changes in <a target="_blank" href="https://lionpath.psu.edu">LionPATH</a>.  Your changes will be reflected here after the next update.  Updates run daily at 3AM ET.
           notice: Special Signatories can be added at the bottom of the screen by clicking "Add Committee Member" and selecting their role from the dropdown.  Note that if these members are external to Penn State and do not have Access IDs, they will be prompted to create a OneID account when they visit this site.
           members:

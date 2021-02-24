@@ -54,7 +54,7 @@ class Author::CommitteeMembersController < AuthorController
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
     redirect_to author_root_path
   rescue LionpathCommitteeCheckService::IncompleteLionpathCommittee => e
-    flash[:alert] = e
+    flash[:alert] = e.to_s.html_safe
     render :form
   end
 
