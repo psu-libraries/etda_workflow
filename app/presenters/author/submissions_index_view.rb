@@ -18,9 +18,9 @@ class Author::SubmissionsIndexView
   end
 
   def no_submissions_message
-    return "You currently do not have any submissions to complete." unless @author.submissions.released_for_publication.count.zero?
+    return "You currently do not have any submissions to complete.  Start a new submission by completing your program information in <a target='_blank' href='https://lionpath.psu.edu'>LionPATH</a>. Your changes will be reflected here after the next update.  Updates run daily at 3AM ET." unless @author.submissions.released_for_publication.count.zero?
 
-    return "You don't have any submissions yet.  Start your submission by completing your program information in <strong>LionPATH</strong>." if current_partner.graduate?
+    return "You don't have any submissions yet.  Start your submission by completing your program information in <a target='_blank' href='https://lionpath.psu.edu'>LionPATH</a>. Your changes will be reflected here after the next update.  Updates run daily at 3AM ET." if current_partner.graduate?
 
     "You don't have any submissions yet."
   end
