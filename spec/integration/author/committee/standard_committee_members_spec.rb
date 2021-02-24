@@ -127,9 +127,9 @@ RSpec.describe 'The standard committee form for authors', js: true do
         let(:degree_2) { FactoryBot.create :degree, degree_type: DegreeType.default }
         let(:head_role_2) { CommitteeRole.find_by(degree_type: DegreeType.default, name: 'Program Head/Chair') }
         let(:head_member_2) do
-          FactoryBot.create(:committee_member, committee_role: head_role_2, is_required: true,
-                            is_voting: false, name: 'Test Tester', email: 'abc123@psu.edu',
-                            lionpath_updated_at: DateTime.now, submission_id: submission_2.id)
+          FactoryBot.create :committee_member, committee_role: head_role_2, is_required: true,
+                                               is_voting: false, name: 'Test Tester', email: 'abc123@psu.edu',
+                                               lionpath_updated_at: DateTime.now, submission_id: submission_2.id
         end
 
         it 'does not allow submission of committee and raises error' do
