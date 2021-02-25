@@ -83,38 +83,70 @@ RSpec.describe 'The standard committee form for authors', js: true do
     end
 
     context 'when submission is a dissertation' do
-      let!(:submission_2) { FactoryBot.create :submission, :collecting_committee, author: author, degree: degree_2 }
-      let!(:degree_2) { FactoryBot.create :degree, degree_type: DegreeType.default }
-      let!(:head_role_2) { CommitteeRole.find_by(degree_type: DegreeType.default, name: 'Program Head/Chair') }
-      let!(:head_member_2) do
-        FactoryBot.create(:committee_member, committee_role: head_role_2, is_required: true,
-                                             is_voting: false, name: 'Test Tester', email: 'abc123@psu.edu',
-                                             lionpath_updated_at: DateTime.now, submission_id: submission_2.id)
+      context 'when lionpath committee is present' do
+        let!(:submission_2) { FactoryBot.create :submission, :collecting_committee, author: author, degree: degree_2 }
+        let!(:degree_2) { FactoryBot.create :degree, degree_type: DegreeType.default }
+        let!(:head_role_2) { CommitteeRole.find_by(degree_type: DegreeType.default, name: 'Program Head/Chair') }
+        let!(:head_member_2) do
+          FactoryBot.create(:committee_member, committee_role: head_role_2, is_required: true,
+                                               is_voting: false, name: 'Test Tester', email: 'abc123@psu.edu',
+                                               lionpath_updated_at: DateTime.now, submission_id: submission_2.id)
+        end
+        let!(:committee_member_1) { FactoryBot.create :committee_member, submission: submission_2, lionpath_updated_at: DateTime.now }
+        let!(:committee_member_2) { FactoryBot.create :committee_member, submission: submission_2, lionpath_updated_at: DateTime.now }
+        let!(:committee_member_3) { FactoryBot.create :committee_member, submission: submission_2, lionpath_updated_at: DateTime.now }
+
+        it 'disables committee form and allows submission of committee' do
+          skip 'graduate only' unless current_partner.graduate?
+
+          visit edit_author_submission_committee_members_path(submission_2)
+          submission_2.committee_members.count.times do |i|
+            expect(find("#submission_committee_members_attributes_#{i}_name").value).to eq('Professor Buck Murphy') unless i == 0
+            expect(find("#submission_committee_members_attributes_#{i}_name").value).to eq('Test Tester') if i == 0
+            expect(find("#submission_committee_members_attributes_#{i}_name").disabled?).to eq true
+          end
+          click_link 'Add Committee Member'
+          fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last
+          within fields_for_last_committee_member do
+            expect(find("div.select").find_all("option").count).to eq 2
+            select 'Special Signatory', from: 'Committee role'
+            fill_in "Name", with: "Extra Member"
+            fill_in "Email", with: "extra_member@example.com"
+          end
+          expect { click_button 'Save and Continue Submission' }.to change { submission_2.committee_members.count }.by 1
+          submission_2.reload
+          expect(submission_2.status).to eq 'collecting format review files'
+        end
       end
-      let!(:committee_member_1) { FactoryBot.create :committee_member, submission: submission_2, lionpath_updated_at: DateTime.now }
-      let!(:committee_member_2) { FactoryBot.create :committee_member, submission: submission_2, lionpath_updated_at: DateTime.now }
-      let!(:committee_member_3) { FactoryBot.create :committee_member, submission: submission_2, lionpath_updated_at: DateTime.now }
 
-      it 'disables committee form and allows submission of committee' do
-        skip 'graduate only' unless current_partner.graduate?
+      context 'when lionpath committee is not present' do
+        let(:submission_2) do
+          FactoryBot.create :submission, :collecting_committee,
+                            author: author, degree: degree_2, lionpath_updated_at: DateTime.now
+        end
+        let(:degree_2) { FactoryBot.create :degree, degree_type: DegreeType.default }
+        let(:head_role_2) { CommitteeRole.find_by(degree_type: DegreeType.default, name: 'Program Head/Chair') }
+        let(:head_member_2) do
+          FactoryBot.create :committee_member, committee_role: head_role_2, is_required: true,
+                                               is_voting: false, name: 'Test Tester', email: 'abc123@psu.edu',
+                                               lionpath_updated_at: DateTime.now, submission_id: submission_2.id
+        end
 
-        visit edit_author_submission_committee_members_path(submission_2)
-        submission_2.committee_members.count.times do |i|
-          expect(find("#submission_committee_members_attributes_#{i}_name").value).to eq('Professor Buck Murphy') unless i == 0
-          expect(find("#submission_committee_members_attributes_#{i}_name").value).to eq('Test Tester') if i == 0
-          expect(find("#submission_committee_members_attributes_#{i}_name").disabled?).to eq true
+        it 'does not allow submission of committee and raises error' do
+          skip 'graduate only' unless current_partner.graduate?
+
+          visit edit_author_submission_committee_members_path(submission_2)
+          click_link 'Add Committee Member'
+          fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last
+          within fields_for_last_committee_member do
+            expect(find("div.select").find_all("option").count).to eq 2
+            select 'Special Signatory', from: 'Committee role'
+            fill_in "Name", with: "Extra Member"
+            fill_in "Email", with: "extra_member@example.com"
+          end
+          expect { click_button 'Save and Continue Submission' }.to change { submission_2.committee_members.count }.by 0
+          expect(page).to have_content 'Your committee is not complete'
         end
-        click_link 'Add Committee Member'
-        fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last
-        within fields_for_last_committee_member do
-          expect(find("div.select").find_all("option").count).to eq 2
-          select 'Special Signatory', from: 'Committee role'
-          fill_in "Name", with: "Extra Member"
-          fill_in "Email", with: "extra_member@example.com"
-        end
-        expect { click_button 'Save and Continue Submission' }.to change { submission_2.committee_members.count }.by 1
-        submission_2.reload
-        expect(submission_2.status).to eq 'collecting format review files'
       end
     end
   end

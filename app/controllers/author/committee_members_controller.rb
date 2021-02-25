@@ -35,6 +35,7 @@ class Author::CommitteeMembersController < AuthorController
   end
 
   def update
+    LionpathCommitteeCheckService.check_submission(@submission)
     @submission.update!(submission_params)
     status_giver.collecting_format_review_files! if @submission.status_behavior.collecting_committee?
     @submission.update! committee_provided_at: Time.zone.now
@@ -52,6 +53,9 @@ class Author::CommitteeMembersController < AuthorController
   rescue SubmissionStatusGiver::AccessForbidden
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
     redirect_to author_root_path
+  rescue LionpathCommitteeCheckService::IncompleteLionpathCommittee => e
+    flash[:alert] = e.to_s.html_safe
+    render :form
   end
 
   def show
