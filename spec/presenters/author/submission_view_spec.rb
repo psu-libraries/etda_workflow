@@ -177,8 +177,19 @@ RSpec.describe Author::SubmissionView do
       context "when step two is the current step" do
         before { submission.status = 'collecting committee' }
 
-        it "returns a link to complete step two" do
-          expect(view.step_two_description).to eq "<a href='#{new_author_submission_committee_members_path(submission)}'>" + view.step_two_name + "</a>"
+        context "when degree_type is 'Dissertation'" do
+          it "returns a link to complete step two" do
+            expect(view.step_two_description).to eq "<a href='#{edit_author_submission_committee_members_path(submission)}'>" + view.step_two_name + "</a>"
+          end
+        end
+
+        context "when degree_type is 'Master Thesis'" do
+          let(:degree_2) { FactoryBot.create :degree, degree_type: DegreeType.second }
+          
+          it "returns a link to complete step two" do
+            submission.update degree: degree_2
+            expect(view.step_two_description).to eq "<a href='#{new_author_submission_committee_members_path(submission)}'>" + view.step_two_name + "</a>"
+          end
         end
       end
 
