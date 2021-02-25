@@ -185,7 +185,7 @@ RSpec.describe Author::SubmissionView do
 
         context "when degree_type is 'Master Thesis'" do
           let(:degree_2) { FactoryBot.create :degree, degree_type: DegreeType.second }
-          
+
           it "returns a link to complete step two" do
             submission.update degree: degree_2
             expect(view.step_two_description).to eq "<a href='#{new_author_submission_committee_members_path(submission)}'>" + view.step_two_name + "</a>"
