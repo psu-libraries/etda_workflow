@@ -35,10 +35,11 @@ en:
             Please meet with your thesis advisor to discuss and make the necessary edits.
             Resubmit your thesis when directed by the thesis administrator.
 
-            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
-            You may also call (717)948-6541, or send mail to:
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
             School of Science, Engineering, and Technology
-            W215 Olmsted Building
+            777 West Harrisburg Pike
+            W256 Olmsted Building
             Middletown, PA 17057
         final_submission_approved:
           message: |
@@ -48,30 +49,33 @@ en:
 
 
 
-            If you have questions or comments, please email School of the Science, Engineering, and Technology Office at ssetinfo@psu.edu.
-            You may also call (717)948-6541, or send mail to:
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
             School of Science, Engineering, and Technology
-            W215 Olmsted Building
+            777 West Harrisburg Pike
+            W256 Olmsted Building
             Middletown, PA 17057
         format_review_received:
           message: |
-            Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with you when the review has been completed.
-            You will receive the results of the review by email within two weeks.
+            Thank you for submitting your Final Project Paper. Someone will be in touch with you when the review has been completed.
+            You should receive an email with comments, feedback, or results of the committee review within two weeks.
 
-            If you have questions or comments, please email School of the Science, Engineering, and Technology Office at ssetinfo@psu.edu.
-            You may also call (717)948-6541, or send mail to:
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
             School of Science, Engineering, and Technology
-            W215 Olmsted Building
+            777 West Harrisburg Pike
+            W256 Olmsted Building
             Middletown, PA 17057
         final_submission_received:
           message: |
             Thank you for submitting your final %{degree_type}. It has been been accepted for committee review.
             You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
 
-            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
-            You may also call (717)948-6541, or send mail to:
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
             School of Science, Engineering, and Technology
-            W215 Olmsted Building
+            777 West Harrisburg Pike
+            W256 Olmsted Building
             Middletown, PA 17057
         committee_member_review_requested:
           message: |
@@ -86,10 +90,11 @@ en:
             Sincerely,
             The School of Science, Engineering, and Technology
 
-            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
-            You may also call (717)948-6541, or send mail to:
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
             School of Science, Engineering, and Technology
-            W215 Olmsted Building
+            777 West Harrisburg Pike
+            W256 Olmsted Building
             Middletown, PA 17057
         committee_member_review_reminder:
           message: |
@@ -98,20 +103,22 @@ en:
             %{review_url}
             If you are serving on this committee in multiple roles, you will only need to submit your review once.
 
-            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
-            You may also call (717)948-6541, or send mail to:
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
             School of Science, Engineering, and Technology
-            W215 Olmsted Building
+            777 West Harrisburg Pike
+            W256 Olmsted Building
             Middletown, PA 17057
         committee_rejected_admin:
           message: |
             The committee for %{author_name}'s %{degree_type} has rejected their submission.
             The submission will automatically be available for the student to edit and resubmit for committee approval.
 
-            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
-            You may also call (717)948-6541, or send mail to:
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
             School of Science, Engineering, and Technology
-            W215 Olmsted Building
+            777 West Harrisburg Pike
+            W256 Olmsted Building
             Middletown, PA 17057
         committee_rejected_author:
           message: |
@@ -120,10 +127,11 @@ en:
             your committee to review.
             For additional information regarding the rejection please consult your %{degree_type} adviser.
 
-            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
-            You may also call (717)948-6541, or send mail to:
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
             School of Science, Engineering, and Technology
-            W215 Olmsted Building
+            777 West Harrisburg Pike
+            W256 Olmsted Building
             Middletown, PA 17057
         committee_approved:
           message: |
@@ -131,20 +139,22 @@ en:
             No further action is needed by you at this time.  The School of Science, Engineering, and Technology will now review your submission.
             You will be notified by email of your thesis approval or if changes are required within 2-3 weeks.
 
-            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
-            You may also call (717)948-6541, or send mail to:
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
             School of Science, Engineering, and Technology
-            W215 Olmsted Building
+            777 West Harrisburg Pike
+            W256 Olmsted Building
             Middletown, PA 17057
         release_for_publication:
           message: |
             Your %{degree_type} titled "%{title}" has been released with the access level of Open Access.
             You can view your published submission at: %{url}.
 
-            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
-            You may also call (717)948-6541, or send mail to:
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
             School of Science, Engineering, and Technology
-            W215 Olmsted Building
+            777 West Harrisburg Pike
+            W256 Olmsted Building
             Middletown, PA 17057
         release_for_publication_metadata_only:
           message: |
@@ -152,10 +162,11 @@ en:
             You can view this information at: %{url}.
             It retains its access level of %{access_level}.  The full publication will be released in two years.
 
-            If you have questions or comments, please email the School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
-            You may also call (717)948-6541, or send mail to:
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
             School of Science, Engineering, and Technology
-            W215 Olmsted Building
+            777 West Harrisburg Pike
+            W256 Olmsted Building
             Middletown, PA 17057
         access_level_updated:
           message: |
@@ -166,10 +177,11 @@ en:
              New Availability - %{new_access_level}
              Old Availability - %{old_access_level}
              Graduation Year - %{graduation_year}
-             If you have questions or comments, please email School of Science, Engineering, and Technology Office at ssetinfo@psu.edu.
-             You may also call (717)948-6541, or send mail to:
+             For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+             You may also call (717)948-4349, or send mail to:
              School of Science, Engineering, and Technology
-             W215 Olmsted Building
+             777 West Harrisburg Pike
+             W256 Olmsted Building
              Middletown, PA 17057
     program:
       label: Program in The School of Science, Technology, and Engineering
