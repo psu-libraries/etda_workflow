@@ -1,8 +1,9 @@
+<% local_presenter = Author::CommitteeMemberView.new(f.object) %>
 <% if controller_name == 'committee_members' %>
   <% if @submission.degree.degree_type.slug == 'dissertation' %>
-    <%= f.association :committee_role, collection: CommitteeRole.where(name: 'Special Signatory', degree_type_id: @submission.degree.degree_type.id), prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+    <%= f.association :committee_role, collection: local_presenter.dissertation_possible_roles, prompt: 'Please select a role', label_html: { class: 'hidden' } %>
   <% elsif current_partner.sset? %>
-    <%= f.association :committee_role, collection: CommitteeRole.where(name: 'Paper Reader', degree_type_id: @submission.degree.degree_type.id), prompt: 'Please select a role', label_html: { class: 'hidden' } %>
+    <%= f.association :committee_role, collection: local_presenter.sset_possible_roles, prompt: 'Please select a role', label_html: { class: 'hidden' } %>
   <% else %>
     <%= f.association :committee_role, collection: local_presenter.author_possible_roles, prompt: 'Please select a role', label_html: { class: 'hidden' } %>
   <% end %>
