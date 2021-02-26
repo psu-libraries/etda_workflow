@@ -42,7 +42,7 @@ class Author::CommitteeMemberView
   end
 
   def sset_possible_roles
-    model.submission.degree_type.where(name: 'Paper Reader', degree_type_id: @submission.degree.degree_type.id)
+    model.submission.degree_type.where(name: 'Paper Reader', degree_type_id: model.submission.degree.degree_type.id)
   end
 
   def committee_members_tooltip_text
