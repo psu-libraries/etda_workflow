@@ -174,18 +174,21 @@ en:
     program:
       label: Program in The School of Science, Technology, and Engineering
     committee:
-      label: Final Paper Supervisor
+      label: Committee Member
       list:
-        label: Final Paper Supervisor
+        label: Committee Members
         final_paper:
           help_text: Enter required committee members in the form below.  Type the committee member's name in the form.  After a blank is entered, a list of names will appear.  Use up and down arrow keys to scroll through the list.  When the desired name is highlighted, click the return key to populate the form.  Both the committee member's name and email address will be filled after the selection is made.  Emails will automatically be sent to each committee member once your final submission is submitted and the committee review stage begins.  These emails will provide a link to where committee members can complete their reviews.
           members:
-            final_paper_supervisor:
-              name: Final Paper Supervisor
-              description: The faculty member or researcher who is the principal investigator of the lab where the student conducted the research. The final paper supervisor also acts as a research mentor regarding the final paper project.
-            advisor:
-              name: Advisor
+            paper_instructor_advisor:
+              name: Paper Instructor (Advisor)
+              description: The faculty member or researcher who is the principal investigator of the lab where the student conducted the research. The advisor also acts as a research mentor regarding the final paper project.
+            paper_reader:
+              name: Paper Reader
               description: Faculty member who reviews the final paper and confirms that it is an acceptable final paper.
+            department_head:
+              name: Department Head
+              description: The head of the department.
       author_instructions:
         Students will be required to enter one name as the final paper supervisor.
         Students may enter additional names as advisors, but this is not required.
