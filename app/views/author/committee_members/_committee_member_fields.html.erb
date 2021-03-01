@@ -22,15 +22,7 @@
           <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="top" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>"></span></a>
         <% end %>
       </div>
-      <% if controller_name == 'committee_members' %>
-        <% if @submission.degree.degree_type.slug == 'dissertation' %>
-          <%= f.association :committee_role, collection: CommitteeRole.where(name: 'Special Signatory', degree_type_id: @submission.degree.degree_type.id), prompt: 'Please select a role', label_html: { class: 'hidden' } %>
-        <% else %>
-          <%= f.association :committee_role, collection: local_presenter.author_possible_roles, prompt: 'Please select a role', label_html: { class: 'hidden' } %>
-        <% end %>
-      <% elsif controller_name == 'submissions' %>
-        <%= f.association :committee_role, collection: local_presenter.admin_possible_roles, prompt: 'Please select a role', label_html: { class: 'hidden' } %>
-      <% end %>
+      <%= render partial: 'author/committee_members/committee_role_dropdown', locals: { controller_name: controller_name, f: f } %>
     </div>
   <% end %>
   </div>

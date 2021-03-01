@@ -36,8 +36,9 @@ class CommitteeRole < ApplicationRecord
   ] }.freeze
 
   SSET_ROLES = { 'final_paper' => [
-    { name: 'Final Paper Supervisor', num_required: 1, is_active: true },
-    { name: 'Advisor',                num_required: 0, is_active: true }
+    { name: 'Paper Instructor (Advisor)', num_required: 1, is_active: true },
+    { name: 'Paper Reader',               num_required: 1, is_active: true },
+    { name: 'Department Head',            num_required: 1, is_active: true }
   ] }.freeze
 
   ROLES = { 'graduate' => CommitteeRole::GRADUATE_ROLES, 'honors' => CommitteeRole::HONORS_ROLES,
