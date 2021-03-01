@@ -44,6 +44,7 @@ header {
 
   .navbar-default {
     height: 50px;
+    width: 100%;
 
     .navbar-text {
       color: #ffffff;
@@ -84,7 +85,6 @@ header {
     }
 
     .log-div {
-      margin-right: -50px;
       float: right;
     }
 
@@ -166,8 +166,9 @@ footer {
   width: 100%;
   padding-top: 20px;
 
-  .navbar-default .navbar-nav > li > a {
+  .navbar-default .navbar-list > li > a {
     color: $blue-light;
+    margin-left: 3em;
 
     &:hover {
       color: #ffffff;
@@ -188,11 +189,10 @@ footer {
       margin-top: 9px;
     }
 
-    .version,
-    a {
-      padding-top: 10px;
-      padding-bottom: 10px;
-      padding-left: 1em;
+    .version {
+      padding-top: 4px;
+      margin-bottom: 15px;
+      float: right;
     }
   }
 }
