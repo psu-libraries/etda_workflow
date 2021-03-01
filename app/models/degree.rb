@@ -50,7 +50,7 @@ class Degree < ApplicationRecord
   }.freeze
 
   SSET_DEGREES = {
-    thesis: [
+    final_paper: [
       { name: "ME", description: "Master of Engineering" }
     ]
   }.freeze

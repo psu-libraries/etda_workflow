@@ -4,12 +4,10 @@ require 'model_spec_helper'
 
 RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
   describe 'instance methods' do
-    it "transitions to WaitingForCommitteeReview and CollectingFinalSubmissionFilesRejected", honors: true do
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview) unless current_partner.honors?
-      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview) if current_partner.honors?
+    it "transitions to WaitingForPublicationRelease and CollectingFinalSubmissionFilesRejected" do
+      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForCommitteeReview)
       expect(described_class.new).to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFilesRejected)
-      expect(described_class.new).not_to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease) unless current_partner.honors?
-      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease) if current_partner.honors?
+      expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingCommittee)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFiles)
       expect(described_class.new).not_to be_valid_state_change(SubmissionStates::CollectingFormatReviewFilesRejected)
@@ -46,37 +44,35 @@ RSpec.describe SubmissionStates::WaitingForFinalSubmissionResponse do
       it { is_expected.to be_truthy }
     end
 
-    context 'when submission status WaitingForCommitteeReview', honors: true do
+    context 'when submission status WaitingForCommitteeReview' do
       let(:status) { SubmissionStates::WaitingForCommitteeReview.name }
 
-      it { is_expected.to be_falsey } unless current_partner.honors?
-      it { is_expected.to be_truthy } if current_partner.honors?
+      it { is_expected.to be_truthy }
     end
 
-    context 'when submission status WaitingForCommitteeReviewRejected', honors: true do
+    context 'when submission status WaitingForCommitteeReviewRejected' do
       let(:status) { SubmissionStates::WaitingForCommitteeReviewRejected.name }
 
-      it { is_expected.to be_truthy } unless current_partner.honors?
-      it { is_expected.to be_falsey } if current_partner.honors?
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status WaitingForHeadOfProgramReview' do
       let(:status) { SubmissionStates::WaitingForHeadOfProgramReview.name }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be_truthy }
     end
 
-    context 'when submission status CollectingFinalSubmissionFiles', honors: true do
+    context 'when submission status CollectingFinalSubmissionFiles' do
       let(:status) { SubmissionStates::CollectingFinalSubmissionFiles.name }
 
-      it { is_expected.to be_truthy } unless current_partner.honors?
-      it { is_expected.to be_falsey } if current_partner.honors?
+      it { is_expected.to be_falsey }
     end
 
     context 'when submission status CollectingFinalSubmissionFilesRejected' do
       let(:status) { SubmissionStates::CollectingFinalSubmissionFilesRejected.name }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be_falsey } if current_partner.honors?
+      it { is_expected.to be_truthy } unless current_partner.honors?
     end
 
     context 'when submission status FormatReviewAccepted' do

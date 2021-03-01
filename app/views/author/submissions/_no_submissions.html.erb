@@ -1,6 +1,8 @@
+<% unless current_partner.graduate? %>
 <div class="col-xs-12">
   <%= render 'new_submission_button' %>
 </div>
+<% end %>
 
 <div class="row">
   <div class="col-xs-12">
@@ -11,7 +13,10 @@
 <div id="submissions" class="row">
 
   <div class="col-xs-12 submission">
+    <br />
+    <div class="alert alert-info" %>
     <p class="hint"><%= @view.no_submissions_message.html_safe %></p>
+    </div>
 
     <%= render 'progress_indicator_preview'%>
   </div>

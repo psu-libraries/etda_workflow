@@ -6,11 +6,9 @@ RSpec.describe "when an admin releases a restricted submission for publication a
   let(:committee) { create_committee(submission) }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
 
-  let(:inbound_lion_path_record) { FactoryBot.create :inbound_lion_path_record } if current_partner.graduate?
-
   before do
     FileUtilityHelper.new.copy_test_file(Rails.root.join(final_submission_file.current_location))
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit root_path
   end
 
@@ -32,9 +30,8 @@ RSpec.describe "when an admin releases a restricted submission for publication a
       expect(Submission.where(degree: submission.degree).final_is_withheld.count).to eql(initial_restricted_count)
       expect(submission.released_for_publication_at).not_to be_nil
       visit admin_submissions_index_path(DegreeType.default, 'final_withheld')
-      sleep(6)
+      sleep 1
       click_button 'Select Visible'
-      sleep(4)
       expect(page).to have_content(I18n.t("#{current_partner.id}.admin_filters.final_withheld.title"), wait: 5)
       msg = page.accept_confirm do
         click_button 'Release as Open Access'

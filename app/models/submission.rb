@@ -53,7 +53,7 @@ class Submission < ApplicationRecord
 
   validates :title,
             length: { maximum: 400 },
-            presence: true, if: proc { |s| s.author_edit } # !InboundLionPathRecord.active? }
+            presence: true, if: proc { |s| s.author_edit }
 
   validates :federal_funding, inclusion: { in: [true, false] }, if: proc { |s| s.status_behavior.beyond_collecting_committee? && s.author_edit }
 
@@ -64,7 +64,7 @@ class Submission < ApplicationRecord
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && s.author_edit }
 
   validates :defended_at,
-            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit } # && !InboundLionPathRecord.active? }
+            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit }
 
   validates :public_id,
             uniqueness: { case_sensitive: true },
@@ -169,15 +169,6 @@ class Submission < ApplicationRecord
     !(exists || (!restricted? && !published?))
   end
 
-  def using_lionpath?
-    InboundLionPathRecord.active? && (author.inbound_lion_path_record.present? && !status_behavior.released_for_publication?)
-  end
-
-  def academic_plan
-    @academic_plan = LionPath::AcademicPlan.new(author.inbound_lion_path_record, lion_path_degree_code, self)
-    @academic_plan
-  end
-
   def semester_and_year
     "#{year} #{semester}"
   end
@@ -202,12 +193,6 @@ class Submission < ApplicationRecord
     clean_title = title.split(/\r\n/).join.strip || ''
     clean_title = clean_title.strip_control_and_extended_characters
     clean_title
-  end
-
-  def defended_at_date
-    return defended_at unless using_lionpath?
-
-    academic_plan.defense_date
   end
 
   def committee_email_list
@@ -303,10 +288,7 @@ class Submission < ApplicationRecord
   end
 
   def self.extend_publication_date(submission_ids, date_to_release)
-    where(id: submission_ids).update_all(released_for_publication_at: date_to_release)
-    submission_ids.each do |s_id|
-      OutboundLionPathRecord.new(submission: Submission.find(s_id)).report_status_change
-    end
+    where(id: submission_ids).find_each { |s| s.update!(released_for_publication_at: date_to_release) }
   end
 
   def voting_committee_members
@@ -322,14 +304,8 @@ class Submission < ApplicationRecord
 
   # Initialize our committee members with empty records for each of the required roles.
   def build_committee_members_for_partners
-    if using_lionpath?
-      academic_plan.committee.each do |cm|
-        committee_members.build(committee_role_id: InboundLionPathRecord.etd_role(cm[:role_desc]), is_required: true, name: author.inbound_lion_path_record.academic_plan.full_name(cm), email: cm[:email])
-      end
-    else
-      required_committee_roles.each do |role|
-        committee_members.build(committee_role: role, is_required: true)
-      end
+    required_committee_roles.each do |role|
+      committee_members.build(committee_role: role, is_required: true)
     end
   end
 
@@ -339,7 +315,7 @@ class Submission < ApplicationRecord
 
   def committee_review_requests_init
     committee_members.each do |committee_member|
-      committee_member.update_attribute :approval_started_at, DateTime.now
+      committee_member.update! approval_started_at: DateTime.now
       seen_access_ids = []
       next if committee_member.committee_role.name == 'Program Head/Chair' || seen_access_ids.include?(committee_member.access_id)
 
@@ -377,12 +353,9 @@ class Submission < ApplicationRecord
         WorkflowMailer.send_head_of_program_review_request(self, submission_status)
         update_status_from_head_of_program
       else
-        status_giver.can_waiting_for_publication_release? unless current_partner.honors?
-        status_giver.waiting_for_publication_release! unless current_partner.honors?
-        status_giver.can_waiting_for_final_submission? if current_partner.honors?
-        status_giver.waiting_for_final_submission_response! if current_partner.honors?
+        status_giver.can_waiting_for_final_submission_response?
+        status_giver.waiting_for_final_submission_response!
         update_attribute(:committee_review_accepted_at, DateTime.now)
-        WorkflowMailer.send_final_emails(self) unless current_partner.honors?
         WorkflowMailer.send_committee_approved_email(self)
       end
     elsif submission_status.status == 'rejected'
@@ -397,10 +370,10 @@ class Submission < ApplicationRecord
     submission_head_of_program_status = ApprovalStatus.new(self).head_of_program_status
     status_giver = SubmissionStatusGiver.new(self)
     if submission_head_of_program_status == 'approved'
-      status_giver.can_waiting_for_publication_release?
-      status_giver.waiting_for_publication_release!
+      status_giver.can_waiting_for_final_submission_response?
+      status_giver.waiting_for_final_submission_response!
       update_attribute(:head_of_program_review_accepted_at, DateTime.now)
-      WorkflowMailer.send_final_emails(self)
+      WorkflowMailer.send_committee_approved_email(self)
     elsif submission_head_of_program_status == 'rejected'
       status_giver.can_waiting_for_committee_review_rejected?
       status_giver.waiting_for_committee_review_rejected!

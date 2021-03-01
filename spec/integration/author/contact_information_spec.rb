@@ -2,7 +2,7 @@ RSpec.describe "Manage Contact Information", js: true do
   require 'integration/integration_spec_helper'
 
   before do
-    webaccess_authorize_author
+    oidc_authorize_author
   end
 
   let(:author) { current_author }
@@ -10,9 +10,8 @@ RSpec.describe "Manage Contact Information", js: true do
   context 'author edits personal information' do
     it 'displays a contact information page for authors' do
       FactoryBot.create :degree
-      InboundLionPathRecord.new(current_data: LionPath::MockLionPathRecord::MOCK_LP_AUTHOR_RECORD)
       author = current_author
-      visit author_root_path(author)
+      visit author_root_path
       click_link 'Update My Contact Information'
       expect(page).to have_current_path(edit_author_author_path(author))
       expect(page).to have_content("Update Contact Information")
@@ -46,7 +45,6 @@ RSpec.describe "Manage Contact Information", js: true do
   context 'author without psu_id number updates personal information' do
     it 'populates the psu_idn number when the record is saved' do
       FactoryBot.create :degree
-      InboundLionPathRecord.new(current_data: LionPath::MockLionPathRecord.current_data, author: author)
       author = current_author
       author.psu_idn = ''
       expect(author.psu_idn).to be_blank
@@ -64,7 +62,6 @@ RSpec.describe "Manage Contact Information", js: true do
       fill_in 'Alternate email address', with: 'mydifferentalternate@gmail.com'
       expect(page).to have_link('Cancel')
       click_button('Save')
-      sleep(5)
       expect(page).to have_current_path(author_root_path)
       author.reload
       expect(author.psu_idn).not_to be_blank
@@ -72,6 +69,14 @@ RSpec.describe "Manage Contact Information", js: true do
       visit edit_author_author_path(author)
       expect(page).to have_field('Alternate email address', with: 'mydifferentalternate@gmail.com')
       expect(page).to have_link('Accessibility')
+    end
+  end
+
+  context 'when author has confidential hold' do
+    it 'displays a message for confidential hold authors' do
+      author.update_attribute :confidential_hold, true
+      visit edit_author_author_path(author)
+      expect(page).to have_content('Our records indicate there is a confidential hold')
     end
   end
 

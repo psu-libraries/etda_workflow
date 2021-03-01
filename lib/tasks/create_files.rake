@@ -62,10 +62,12 @@ namespace :etda_files do
     content_type == 'application/pdf'
   end
 
-  MS_TYPES = %w(application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/msword application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/vnd.openxmlformats-officedocument.wordprocessingml.document)
+  def ms_types
+    %w(application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/msword application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/vnd.openxmlformats-officedocument.wordprocessingml.document).freeze
+  end
 
   def is_doc? content_type
-     MS_TYPES.include? content_type
+     ms_types.include? content_type
   end
 end
 

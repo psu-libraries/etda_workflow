@@ -8,13 +8,12 @@ RSpec.describe "Opt out Report", js: true do
 
     if current_partner.graduate?
       it 'displays a list of authors with published submissions' do
-        webaccess_authorize_admin
+        oidc_authorize_admin
         FactoryBot.create :submission, :final_is_restricted, author: author1
         FactoryBot.create :submission, :final_is_restricted_to_institution, author: author2
         FactoryBot.create :submission, status: 'released for publication', author: author3
         FactoryBot.create :submission, status: 'collecting format review files', author: author4
         visit 'admin/authors/contact_list'
-        sleep(3)
         expect(page).to have_content('Email Contact List')
         expect(page).to have_content('Set by User')
         expect(page).to have_link(author1.last_name)

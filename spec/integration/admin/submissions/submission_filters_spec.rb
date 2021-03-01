@@ -13,7 +13,7 @@ RSpec.describe "Submission filter with semester dropdown", js: true do
     submission1.access_level = 'restricted'
     submission1.invention_disclosures = [InventionDisclosure.new(id_number: "#{submission1.year}-1234")]
     submission1.save!
-    webaccess_authorize_admin
+    oidc_authorize_admin
     # visit admin_edit_submission_path(submission)
     visit admin_submissions_dashboard_path(DegreeType.default.name)
   end
@@ -26,7 +26,6 @@ RSpec.describe "Submission filter with semester dropdown", js: true do
 
   it 'opens the final submission submitted page' do
     page.find('a#final-submission-submitted').click
-    sleep(3)
     expect(page).to have_selector('h1', text: 'Final Submission is Submitted')
     expect(page).to have_selector('.form-control.input-sm.semester')
     expect(page).to have_select('All Semesters')
@@ -36,7 +35,6 @@ RSpec.describe "Submission filter with semester dropdown", js: true do
   end
   it 'displays access level and invention disclosure' do
     page.find('a#final-submission-submitted').click
-    sleep(3)
     expect(page).to have_content('Restricted')
     expect(page).to have_content("#{submission1.year}-1234")
   end

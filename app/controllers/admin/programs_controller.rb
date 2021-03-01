@@ -10,7 +10,7 @@ class Admin::ProgramsController < AdminController
   end
 
   def create
-    @program = Program.new(program_params)
+    @program = Program.new(program_create_params)
     @program.save!
     redirect_to admin_programs_path
     flash[:notice] = "#{current_partner.program_label} successfully created"
@@ -24,7 +24,7 @@ class Admin::ProgramsController < AdminController
 
   def update
     @program = Program.find(params[:id])
-    @program.update!(program_params)
+    @program.update!(program_update_params)
     redirect_to admin_programs_path
     flash[:notice] = "#{current_partner.program_label} successfully updated"
   rescue ActiveRecord::RecordInvalid
@@ -33,8 +33,11 @@ class Admin::ProgramsController < AdminController
 
   private
 
-  def program_params
-    params.require(:program).permit(:name,
-                                    :is_active)
+  def program_update_params
+    params.require(:program).permit(:is_active)
+  end
+
+  def program_create_params
+    params.require(:program).permit(:name, :is_active)
   end
 end

@@ -80,7 +80,7 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Mocks
-  LionPathConnection = LionPath::MockLionPathConnection
+  # TODO Remove constants from initializer (autoload to deprecate in future Rails versions)
   LdapUniversityDirectory = MockUniversityDirectory
   VirusScanner = MockVirusScanner
   WORKFLOW_BASE_PATH = "tmp/workflow_files/#{Partner.current.id}/"

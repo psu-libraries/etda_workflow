@@ -8,7 +8,7 @@ RSpec.describe 'Author submission access_level', js: true do
   let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
 
   before do
-    webaccess_authorize_author
+    oidc_authorize_author
     FactoryBot.create :format_review_file, submission: submission
     # create :final_submission_file, submission: submission
     submission.committee_members << committee_member1
@@ -36,14 +36,12 @@ RSpec.describe 'Author submission access_level', js: true do
         expect(page).not_to have_content('Enter justification')
         expect(page).to have_field('submission_invention_disclosures_attributes_0_id_number')
         click_button('Submit final files for review')
-        sleep(3)
         expect(page).to have_content('Invention disclosure number is required for Restricted submissions.')
         inventions = page.find(:css, 'div.form-group.string.optional.submission_invention_disclosures_id_number')
         within inventions do
           fill_in 'Invention Disclosure Number (Required for Restricted Access)', with: '1234'
         end
         click_button('Submit final files for review')
-        sleep(3)
         expect(page).not_to have_content('Invention disclosure number is required for Restricted submissions.')
       end
     end

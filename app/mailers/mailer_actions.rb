@@ -21,8 +21,7 @@ module MailerActions
   end
 
   def send_final_emails(submission)
-    committee_approved(submission).deliver if submission.degree.degree_type.approval_configuration.email_authors && !current_partner.honors?
-    final_submission_approved(submission).deliver if current_partner.honors?
+    final_submission_approved(submission).deliver
   end
 
   def send_head_of_program_review_request(submission, submission_status)
@@ -30,7 +29,7 @@ module MailerActions
   end
 
   def send_committee_approved_email(submission)
-    committee_approved(submission).deliver if submission.degree.degree_type.approval_configuration.email_authors && current_partner.honors?
+    committee_approved(submission).deliver if submission.degree.degree_type.approval_configuration.email_authors
   end
 
   def send_committee_rejected_emails(submission)

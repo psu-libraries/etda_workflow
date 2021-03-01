@@ -1,17 +1,27 @@
 RSpec.describe "Editing format review and final submissions as an admin", js: true do
   require 'integration/integration_spec_helper'
 
+  let!(:author) { FactoryBot.create(:author) }
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
   let!(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type) }
   let!(:role) { CommitteeRole.second }
-  let!(:author) { FactoryBot.create(:author, :no_lionpath_record) }
-  let(:submission) { FactoryBot.create(:submission, :collecting_committee, author: author) }
+  let!(:submission) { FactoryBot.create(:submission, :collecting_committee, author: author, program: program) }
   let(:admin) { FactoryBot.create :admin }
   let(:final_submission) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: author) }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
+  end
+
+  it 'disables program info if imported from lionpath' do
+    submission.update lionpath_updated_at: DateTime.now
+    visit admin_edit_submission_path(submission)
+    page.find('div[data-target="#program-information"]').click
+    expect(find("select#submission_program_id").disabled?).to eq true
+    expect(find("select#submission_degree_id").disabled?).to eq true
+    expect(find("select#submission_semester").disabled?).to eq true
+    expect(find("select#submission_year").disabled?).to eq true
   end
 
   it "Saves the updated submission data for a submission with status collecting committee", retry: 5 do
@@ -41,7 +51,6 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     fill_in "Admin notes", with: "Some admin notes"
 
     click_button "Update Metadata"
-    sleep(5)
     visit admin_edit_submission_path(submission)
     page.find('div[data-target="#program-information"]').click
     expect(page).to have_current_path(admin_edit_submission_path(submission))
@@ -73,10 +82,8 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     end
     expect(page).to have_content("Marked for deletion [undo]")
     click_button 'Update Metadata'
-    sleep(10)
     # expect(page).to have_content('success')
     visit admin_edit_submission_path(submission)
-    sleep(8)
     expect(page).to have_link "format_review_file_02.pdf"
     expect(page).not_to have_link "format_review_file_01.pdf"
   end
@@ -89,7 +96,6 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
       all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
     end
     click_button 'Update Metadata'
-    sleep 5
     visit admin_edit_submission_path(final_submission)
     expect(page).to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
@@ -98,9 +104,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     end
     expect(page).to have_content("Marked for deletion [undo]")
     click_button 'Update Metadata'
-    sleep 5
     visit admin_edit_submission_path(final_submission)
-    sleep 8
     expect(page).not_to have_link('final_submission_file_01.pdf')
   end
   it 'Allows admin to upload multiple final submission files' do
@@ -115,7 +119,6 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
       all('input[type="file"]').last.set(fixture('final_submission_file_01.pdf'))
     end
     click_button 'Update Metadata'
-    sleep 8
     visit admin_edit_submission_path(final_submission)
     expect(page).to have_link('final_submission_file_01.pdf')
     expect(page).to have_link('final_submission_file_01.pdf')
@@ -125,9 +128,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     end
     expect(page).to have_content("Marked for deletion [undo]")
     click_button 'Update Metadata'
-    sleep 5
     visit admin_edit_submission_path(final_submission)
-    sleep 8
     expect(page).to have_link('final_submission_file_01.pdf')
   end
 
@@ -142,7 +143,6 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     fill_in 'submission_invention_disclosures_attributes_0_id_number', with: 12345
     fill_in 'Admin notes', with: 'Some Notes', exact: true
     click_button 'Update Metadata'
-    sleep 1
     expect(Submission.find(final_submission.id).admin_notes).to eq 'Some Notes'
     expect(Submission.find(final_submission.id).federal_funding).to eq false
     expect(Submission.find(final_submission.id).restricted?).to eq true

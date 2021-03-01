@@ -1,9 +1,11 @@
 <div class="progress-indicator in-process">
-  <div class="step step-1 complete"><%= @submission_view.step_info(1) %>
+  <div class="step step-1 <%= @submission_view.step_one_class %>"><%= @submission_view.step_info(1) %>
     <div class="information">
       <div class="description"><%= @submission_view.step_one_description %>
         <div class="status">
-          <%= render '/author/shared/completed_indicator', step_number: 1, text: "completed on #{@submission_view.created_on}" %>
+          <% status = @submission_view.step_one_status %>
+          <%= render(status[:partial_name], step_number: 1, text: status[:text]) unless status[:partial_name].blank? %>
+          <%= "<p>#{status[:text]}</p>".html_safe if status[:partial_name].blank? %>
         </div>
       </div>
       <div class='number-arrow'>
@@ -68,13 +70,12 @@
       </div>
     </div>
   </div>
-  <div class="step step-6 <%= current_partner.honors? ?  @submission_view.step_seven_class : @submission_view.step_six_class%>"><%= current_partner.honors? ? @submission_view.step_info(7) : @submission_view.step_info(6) %>
+  <div class="step step-6 <%= @submission_view.step_six_class %>"><%= @submission_view.step_info(6) %>
     <div class="information">
-      <div class="description"><%= current_partner.honors? ? @submission_view.step_seven_description : I18n.t("#{current_partner.id}.partner.name").html_safe + " approves Final Submission files".html_safe %>
+      <div class="description"><%= @submission_view.step_six_description %>
         <div class="status">
-          <% current_partner.honors? ? status = @submission_view.step_seven_status : status = @submission_view.step_six_status %>
-          <%= render(status[:partial_name], step_number: 6, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(6)) unless status[:partial_name].blank? || current_partner.honors? %>
-          <%= render(status[:partial_name], step_number: 7, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(7)) unless status[:partial_name].blank? || !current_partner.honors? %>
+          <% status = @submission_view.step_six_status %>
+          <%= render(status[:partial_name], step_number: 6, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(6)) unless status[:partial_name].blank? %>
         </div>
       </div>
       <div class='number-arrow' >
@@ -83,13 +84,12 @@
       </div>
     </div>
   </div>
-  <div class="step step-7 <%= current_partner.honors? ? @submission_view.step_six_class : @submission_view.step_seven_class %>"><%= current_partner.honors? ? @submission_view.step_info(6) : @submission_view.step_info(7) %>
+  <div class="step step-7 <%= @submission_view.step_seven_class %>"><%= @submission_view.step_info(7) %>
     <div class="information">
-      <div class="description"><%= current_partner.honors? ? I18n.t("#{current_partner.id}.partner.name").html_safe + " approves Final Submission files".html_safe : @submission_view.step_seven_description %>
+      <div class="description"><%= (I18n.t("#{current_partner.id}.partner.name") + " approves Final Submission files ").html_safe + @submission_view.step_seven_description %>
         <div class="status">
-          <% current_partner.honors? ? status = @submission_view.step_six_status : status = @submission_view.step_seven_status %>
-          <%= render(status[:partial_name], step_number: 7, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(7)) unless status[:partial_name].blank? || current_partner.honors? %>
-          <%= render(status[:partial_name], step_number: 6, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(6)) unless status[:partial_name].blank? || !current_partner.honors? %>
+          <% status = @submission_view.step_seven_status %>
+          <%= render(status[:partial_name], step_number: 7, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(7)) unless status[:partial_name].blank? %>
         </div>
       </div>
       <div class='number-arrow' >

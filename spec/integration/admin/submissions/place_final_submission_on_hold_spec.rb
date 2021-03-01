@@ -7,7 +7,7 @@ RSpec.describe "Placing a final submission on hold as an admin", js: true do
   let!(:hold_submission) { FactoryBot.create(:submission, :waiting_in_final_submission_on_hold, author: author) }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
   end
 
   context 'when visiting the queues dashboard' do

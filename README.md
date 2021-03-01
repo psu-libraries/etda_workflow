@@ -1,8 +1,15 @@
-# Electronic Theses and Dissertations Workflow 
 [![CircleCI](https://circleci.com/gh/psu-stewardship/etda_workflow.svg?style=svg)](https://circleci.com/gh/psu-stewardship/etda_workflow)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a38c9040c48fe53aaa85/maintainability)](https://codeclimate.com/github/psu-stewardship/etda_workflow/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/a38c9040c48fe53aaa85/test_coverage)](https://codeclimate.com/github/psu-stewardship/etda_workflow/test_coverage)
 
-* Ruby version: 2.6.0
-* Node version 10.17.0 (using yarn@1.19.1 as npm)
+# Electronic Theses and Dissertations Workflow 
+
+* Ruby version: 2.6
+* Node version 10.17 (using yarn@1.19 as npm)
+* Rails 6.0.3
+* Redis 3.2
+* Sidekiq 5.2
+* Mariadb 10.2
  
 ## Setup
 
@@ -40,31 +47,8 @@ To seed data:
     
 You're good to go from here!  Any changes made in the project files on your local machine will automatically be updated in the container.  Run `make restart` to restart the puma server if changes do not appear in the web browser.  Remember to check the Makefile for more commands.  If you are running a shell in the web container, you can run all of the rails commands you would normally use for development: ie `rspec, rails restart, rails c, etc.`
 
-### Not Docker
-
-* System dependencies
-  * rbenv 
-  * mysql
-  * yarn - `brew install yarn` for Mac OSX
- 
-* To create the database, configure it in database.yml and then run the following commands (skip 'db:seed:essential' if importing an existing database) 
-    * `rails db:create`
-    * `rails db:migrate`
-    * `rails db:seed:essential`  
-    
-* To drop the database, run `rails db:drop`
-
-* After creating the database, run `yarn` to download packages needed for assets
-  In development `webpack-dev-server` can be run to watch live updating of the assets files.
-  Running `RAILS_ENV=production bin/webpack` will build the manifest for production,`RAILS_ENV=development bin/webpack`, and `RAILS_ENV=test bin/webpack` for development and test manifests.  Production manifest is saved in public/assets, development manifest in public/packs and test manifest in public/packs-test.  Configuration file is config/webpacker.yml
-  
-  The configuration file `webpack.config.js` contains loaders and plugins for compiling css, jquery, bootstrap, etc.  It also defines where the application source files are located (app/assets/javascript/).  ETD has three sets of assets:  author, admin, and base.  Author assets are used in the author layout, Admin assets in admin, and base is used throughout the application.  The approver pack pulls from all three assets, and is used in the approver layout.
-  
-* To generate mocked files run `rake etda_files:create:empty_files[my_file_directory]` from the root directory.  If "my_file_directory" is not specified, the generated files will be placed in the /tmp directory by default.  
-
 ## Testing
  
-
    To run the tests: 
    1.  `RAILS_ENV=test bundle exec rspec` tests Graduate School instance   
    2.  `RAILS_ENV=test bundle exec PARTNER=honors rspec` tests Honors College instance
@@ -75,14 +59,7 @@ You're good to go from here!  Any changes made in the project files on your loca
    1. `RAILS_ENV=test PARTNER=milsch bundle exec rspec --tag milsch`
    1. `RAILS_ENV=test PARTNER=honors bundle exec rspec --tag honors`
 
-   Additionally, there are some integration tests that use javascript and some component tests that run against Penn State's LDAP directory service: rspec --tag ldap. Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.  When in development or testing, you must edit the development.rb or test.rb file in config/environments and change MockUniversityDirectory to LdapUniversityDirectory to test a true ldap call.
-
-## Services
-    
-- Redis (for storing Sidekiq queues)
-- Sidekiq (for delayed mailers)
-- Mariadb
-    
+   Additionally, there are some component tests that run against Penn State's LDAP directory service: rspec --tag ldap. Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.  When in development or testing, you must edit the development.rb or test.rb file in config/environments and change MockUniversityDirectory to LdapUniversityDirectory to test a true ldap call.
 
 ## Deployment instructions
 
@@ -102,8 +79,24 @@ To run tasks on the server, use the "invoke" namespace and the "rake" or "comman
 *Note: When running bash commands, the parameter to "invoke:command[]" should be in single quotes.*
 
 If using ssh to run tasks on the server, be sure to set the PARTNER environment variable for partner specific tasks.
-    
-When updating rails versions, be sure to rebuild webpack binary `bundle exec bin/rails webpacker:binstubs
-` respond with 'Y' to overwrite existing webpack & webpacker binaries    
 
- 
+## LionPATH Integration
+
+Student program and committee information is imported daily from LionPATH.  The integration runs on a cron job that kicks off at 3am.  There are five tables/resources updated in ETDA by this daily import: Submission, Program, CommitteeMember, CommitteeRole, ProgramChair.  The import works in the following order:
+
+1. Committee Roles for The Graduate School's Dissertation submissions are imported.  This updates the CommitteeRole table with changes and/or new committee roles.  These roles exactly reflect the roles in LionPATH and are different from Master's Thesis roles.
+
+2. Student program information is imported for The Graduate School's Master's Thesis and Dissertation submissions.  New programs are added to the Program table during this import and linked to the student's Submission.
+
+3. Program Head/Chair data is imported. This updates the ProgramChair table with changes and/or new program chairs and is then used to add to a submission's committee for The Graduate School's Master's Thesis and Dissertation submissions.
+
+4. Committees are imported for The Graduate School's Dissertation submissions.  This adds or updates CommitteeMembers for the student's submission.  These committees use the Committee Roles imported previously from LionPATH.
+
+Committees and Committee Roles are not currently being imported from LionPATH for The Graduate School's Master's Thesis submissions.
+
+The LionPATH integration uses sftp to pull CSV dumps of the Committee Roles, Student Program info, Program Head/Chair, and Committees (in that order) from LionPATH.  The bash script: `lionpath-csv.sh` does most of the work to grab these CSVs from the LionPATH sftp server.  The files follow these file naming conventions:
+
+	Committee Roles: PE_SR_G_ETD_ACT_COMROLES
+	Student Program Information: PE_SR_G_ETD_STDNT_PLAN_PRC
+	Program Head/Chair: PE_SR_G_ETD_CHAIR_PRC
+	Committees: PE_SR_G_ETD_COMMITTEE_PRC

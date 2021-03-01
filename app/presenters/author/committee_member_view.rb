@@ -37,9 +37,17 @@ class Author::CommitteeMemberView
     model.submission.degree_type.try(&:committee_roles).order('name asc') || []
   end
 
+  def dissertation_possible_roles
+    model.submission.degree_type.try(&:committee_roles).where(name: 'Special Signatory', degree_type_id: model.submission.degree_type.id)
+  end
+
+  def sset_possible_roles
+    model.submission.degree_type.try(&:committee_roles).where(name: 'Paper Reader', degree_type_id: model.submission.degree.degree_type.id)
+  end
+
   def committee_members_tooltip_text
     output = ''
-    I18n.t("#{current_partner.id}.committee.list.#{model.submission.degree_type.slug}").each do |_k, v|
+    I18n.t("#{current_partner.id}.committee.list.#{model.submission.degree_type.slug}.members").each do |_k, v|
       output << "<p><strong>#{v[:name]}</strong> - #{v[:description]}</p>"
     end
     output.html_safe

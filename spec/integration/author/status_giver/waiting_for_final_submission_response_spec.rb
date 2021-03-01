@@ -1,9 +1,9 @@
-RSpec.describe "Step 6: Waiting for Final Submission Response'", js: true do
+RSpec.describe "Step 7: Waiting for Final Submission Response'", js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'waiting for final submission response'" do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
     end
 
     let!(:author) { current_author }

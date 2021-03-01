@@ -3,13 +3,10 @@
 class Author < ApplicationRecord
   class NotAuthorizedToEdit < StandardError; end
 
-  Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
-
-  devise :webaccess_authenticatable, :rememberable, :trackable, :registerable
+  devise :oidc_authenticatable, :rememberable, :trackable, :registerable
 
   has_many :submissions, dependent: :nullify
   has_many :confidential_hold_histories, dependent: :destroy
-  has_one :inbound_lion_path_record, dependent: :destroy
 
   # validate for author
   validates :access_id,
@@ -63,32 +60,14 @@ class Author < ApplicationRecord
   end
 
   def populate_attributes
-    populate_with_ldap_attributes
-    populate_lion_path_record psu_idn, access_id
+    populate_with_ldap_attributes(access_id, 'uid')
     self
   end
 
-  def populate_with_ldap_attributes
-    results = LdapUniversityDirectory.new.retrieve(access_id, LdapResultsMap::AUTHOR_LDAP_MAP)
+  def populate_with_ldap_attributes(query_string, query_type)
+    results = LdapUniversityDirectory.new.retrieve(query_string, query_type, LdapResultsMap::AUTHOR_LDAP_MAP)
     # raise an error unless ldap_results_valid?(results)
-    mapped_attributes = results.except(:access_id)
-    save_mapped_attributes(mapped_attributes) if mapped_attributes
-  end
-
-  def populate_lion_path_record(psu_idn, login_id)
-    return unless InboundLionPathRecord.active?
-
-    # refresh graduate author record each time login occurs.
-    lp_record_data = InboundLionPathRecord.new.retrieve_lion_path_record(psu_idn, login_id)
-    return nil unless InboundLionPathRecord.records_match?(psu_idn, login_id, lp_record_data)
-
-    #  Be sure there is data before continuing???
-    if inbound_lion_path_record.present?
-      inbound_lion_path_record.update(:current_data, lp_record_data)
-    else
-      build_inbound_lion_path_record(author_id: id, current_data: lp_record_data) # create a lp record
-      inbound_lion_path_record.save(validate: false)
-    end
+    save_mapped_attributes(results) if results
   end
 
   def psu_id_number(access_id)
@@ -96,11 +75,9 @@ class Author < ApplicationRecord
     id_number.nil? ? ' ' : id_number
   end
 
-  def retrieve_lion_path_information; end
-
   def refresh_important_attributes
     # do not overwrite address, phone, etc.
-    ldap_attributes = LdapUniversityDirectory.new.retrieve(access_id, LdapResultsMap::AUTHOR_LDAP_MAP)
+    ldap_attributes = LdapUniversityDirectory.new.retrieve(access_id, 'uid', LdapResultsMap::AUTHOR_LDAP_MAP)
     return if ldap_attributes.empty?
 
     self.first_name = refresh(first_name, ldap_attributes[:first_name])
@@ -109,7 +86,6 @@ class Author < ApplicationRecord
     self.psu_email_address = refresh(psu_email_address, ldap_attributes[:psu_email_address])
     self.psu_idn = refresh(psu_idn, ldap_attributes[:psu_idn])
     save(validate: false)
-    populate_lion_path_record(psu_idn, access_id)
     self
   end
 
@@ -133,13 +109,6 @@ class Author < ApplicationRecord
 
   def confidential?
     confidential_hold || false
-  end
-
-  def academic_plan?
-    return false if inbound_lion_path_record.nil?
-    return false if inbound_lion_path_record.current_data.empty?
-
-    true
   end
 
   private

@@ -11,6 +11,7 @@ RSpec.describe CommitteeRole, type: :model do
   it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false) }
   it { is_expected.to have_db_column(:num_required).of_type(:integer).with_options(null: false) }
   it { is_expected.to have_db_column(:is_active).of_type(:boolean).with_options(null: false) }
+  it { is_expected.to have_db_column(:code).of_type(:string) }
   it { is_expected.to have_db_column(:degree_type_id).of_type(:integer).with_options(null: false) }
   it { is_expected.to have_db_index(:degree_type_id) }
   it { is_expected.to belong_to(:degree_type).class_name('DegreeType') }

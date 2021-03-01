@@ -6,10 +6,8 @@ RSpec.describe "when an admin releases a restricted to institution submission fo
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
   let(:committee) { FactoryBot.create_committee(submission) }
 
-  let(:inbound_lion_path_record) { FactoryBot.create :inbound_lion_path_record } if current_partner.graduate?
-
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit root_path
   end
 
@@ -33,9 +31,8 @@ RSpec.describe "when an admin releases a restricted to institution submission fo
       expect(Submission.where(degree: submission.degree).final_is_restricted_institution.count).to eql(initial_restricted_institution_count)
       expect(submission.released_for_publication_at).not_to be_nil
       visit admin_submissions_index_path(DegreeType.default, 'final_restricted_institution')
-      sleep(4)
+      sleep 1
       click_button 'Select Visible'
-      sleep(4)
       expect(page).to have_content(I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.title"), wait: 8)
       msg = page.accept_confirm do
         click_button 'Release as Open Access'

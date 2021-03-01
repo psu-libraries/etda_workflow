@@ -1,56 +1,26 @@
 # frozen_string_literal: true
 
 class AdminController < ApplicationController
-  protect_from_forgery with: :exception
-
-  Devise.add_module(:webaccess_authenticatable, strategy: true, controller: :sessions, model: 'devise/models/webaccess_authenticatable')
-
-  before_action :clear_admin
-  before_action :authenticate_or_redirect
-  before_action :find_or_initialize_admin
+  before_action :set_session
+  before_action :admin_auth
 
   layout 'admin'
 
   protected
 
-  def find_or_initialize_admin
-    @admin ||= Admin.find_or_initialize_by(access_id: current_admin.access_id)
-    # Rails.logger.info "current_admin = #{current_admin.inspect}"
-    session[:user_name] = @admin.full_name
+  def set_session
+    sign_out if session[:user_role] != 'admin'
+    session[:user_role] = 'admin'
   end
 
-  def clear_admin
-    # Rails.logger.info 'CLEARING ADMIN...........'
-    # only logout if the REMOTE_USER is not set in the HTTP headers and a user is set within warden
-    #  logout clears the entire session including flash messages
-    request.env['warden'].logout if current_remote_user.nil? || !valid_admin_session?
-  end
-
-  def authenticate_or_redirect
-    if valid_admin?
-      authenticate_admin! unless valid_admin_session?
-      authorize! :administer, :all
-    else
-      redirect_to '/401' # unauthorized page
-    end
-  end
-
-  def valid_admin?
-    this_admin = current_remote_user
-    user_is_admin = if current_admin.nil?
-      LdapUniversityDirectory.new.in_admin_group?(this_admin)
-                    else
-      current_admin.administrator?
-                    end
-    session[:user_role] = 'admin' if user_is_admin
-    user_is_admin
-  end
-
-  def valid_admin_session?
-    session[:user_role] == 'admin'
+  def admin_auth
+    authenticate_admin!
+    @admin = current_admin
+    current_ability
+    session[:user_name] = current_admin.access_id
   end
 
   def current_ability
-    @current_ability ||= AdminAbility.new(current_admin)
+    @current_ability ||= AdminAbility.new(@admin)
   end
 end

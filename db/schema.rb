@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_31_173551) do
+ActiveRecord::Schema.define(version: 2021_02_04_182913) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.integer "legacy_id"
     t.boolean "confidential_hold"
     t.datetime "confidential_hold_set_at"
+    t.datetime "admin_edited_at"
     t.index ["access_id"], name: "index_authors_on_access_id", unique: true
     t.index ["legacy_id"], name: "index_authors_on_legacy_id"
   end
@@ -121,6 +122,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.boolean "is_voting", default: false
     t.boolean "federal_funding_used"
     t.bigint "approver_id"
+    t.datetime "lionpath_updated_at"
     t.index ["approver_id"], name: "index_committee_members_on_approver_id"
     t.index ["committee_role_id"], name: "committee_members_committee_role_id_fk"
     t.index ["submission_id"], name: "committee_members_submission_id_fk"
@@ -131,6 +133,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.string "name", null: false
     t.integer "num_required", default: 0, null: false
     t.boolean "is_active", default: true, null: false
+    t.string "code"
     t.index ["degree_type_id"], name: "committee_roles_degree_type_id_fk"
   end
 
@@ -163,6 +166,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.datetime "updated_at", null: false
     t.index ["degree_type_id"], name: "index_degrees_on_degree_type_id"
     t.index ["legacy_id"], name: "index_degrees_on_legacy_id"
+    t.index ["name"], name: "index_degrees_on_name", unique: true
   end
 
   create_table "final_submission_files", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -185,15 +189,6 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.index ["submission_id"], name: "format_review_files_submission_id_fk"
   end
 
-  create_table "inbound_lion_path_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "author_id"
-    t.string "lion_path_degree_code"
-    t.text "current_data", size: :medium
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["author_id"], name: "inbound_lion_path_records_author_id_fk"
-  end
-
   create_table "invention_disclosures", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
     t.string "id_number"
@@ -212,13 +207,16 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.index ["submission_id"], name: "keywords_submission_id_fk"
   end
 
-  create_table "outbound_lion_path_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.text "status_data", size: :medium
-    t.boolean "received"
-    t.string "transaction_id"
-    t.bigint "submission_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "program_chairs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "program_id", null: false
+    t.string "access_id", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "campus"
+    t.bigint "phone"
+    t.string "email"
+    t.datetime "lionpath_updated_at"
+    t.index ["program_id"], name: "index_program_chairs_on_program_id"
   end
 
   create_table "programs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -229,7 +227,10 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.integer "legacy_old_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "code"
+    t.datetime "lionpath_updated_at"
     t.index ["legacy_id"], name: "index_programs_on_legacy_id"
+    t.index ["name", "code"], name: "index_programs_on_name_and_code", unique: true
   end
 
   create_table "submissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -279,6 +280,8 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
     t.boolean "federal_funding"
     t.datetime "placed_on_hold_at"
     t.datetime "removed_hold_at"
+    t.string "campus"
+    t.datetime "lionpath_updated_at"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"
@@ -299,9 +302,9 @@ ActiveRecord::Schema.define(version: 2020_01_31_173551) do
   add_foreign_key "confidential_hold_histories", "authors", name: "confidential_hold_histories_author_id_fk"
   add_foreign_key "final_submission_files", "submissions", name: "final_submission_files_submission_id_fk"
   add_foreign_key "format_review_files", "submissions", name: "format_review_files_submission_id_fk"
-  add_foreign_key "inbound_lion_path_records", "authors", name: "inbound_lion_path_records_author_id_fk"
   add_foreign_key "invention_disclosures", "submissions", name: "invention_disclosures_submission_id_fk"
   add_foreign_key "keywords", "submissions", name: "keywords_submission_id_fk"
+  add_foreign_key "program_chairs", "programs", name: "program_chairs_program_id_fk"
   add_foreign_key "submissions", "authors", name: "submissions_author_id_fk"
   add_foreign_key "submissions", "degrees", name: "submissions_degree_id_fk"
   add_foreign_key "submissions", "programs", name: "submissions_program_id_fk"

@@ -46,15 +46,16 @@ services:
       # context: . 
       # target: base
     environment:
+      JS: ${JS:-false}
       REDIS_HOST: redis
       APP_HOST: web
       MYSQL_HOST: db
       RAILS_ENV: test
       PARTNER: ${PARTNER:-graduate}
     command: >
-      sh -c "bundle check || bundle 
-      && bundle exec rake db:migrate
-      && bundle exec guard"
+#      sh -c "bundle check || bundle
+#      && bundle exec rake db:migrate
+#      && bundle exec guard"
     depends_on:
     - db
     # volumes:

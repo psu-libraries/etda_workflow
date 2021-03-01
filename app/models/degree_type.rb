@@ -20,7 +20,7 @@ class DegreeType < ApplicationRecord
       "Thesis"
     ],
     'sset' => [
-      "Thesis"
+      "Final Paper"
     ]
   }.freeze
 

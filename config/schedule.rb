@@ -10,7 +10,7 @@ set :partner, ENV['PARTNER']
 
 job_type :partner_rake, "cd :path && :environment_variable=:environment PARTNER=:partner bundle exec rake :task --silent :output"
 
-every :day, roles: [:audit]  do
+every :day, roles: [:audit] do
   partner_rake 'audit:vulnerabilities'
 end
 
@@ -18,10 +18,18 @@ every :sunday, at: '1am', roles: [:app] do
   partner_rake 'final_files:verify'
 end
 
-every :day, at: '1am', roles: [:app]  do
+every :day, at: '1am', roles: [:app] do
   partner_rake 'tokens:remove_expired'
 end
 
-every :day, at: '1am', roles: [:app]  do
+every :day, at: '1am', roles: [:app] do
   partner_rake 'confidential:update'
+end
+
+every '0 1 30 1,6,9 *', roles: [:app] do
+  partner_rake 'report:oa_release'
+end
+
+every :day, at: '3am', roles: [:app] do
+  partner_rake 'lionpath_import:core'
 end

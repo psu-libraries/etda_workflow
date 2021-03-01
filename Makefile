@@ -16,6 +16,9 @@ exec_redis: ## pop a shell in redis container
 bundle: ## run bundle install in container
 	docker-compose exec web bundle install
 
+run: ## run bash in a fresh container without startup scripts
+	docker-compose run web /bin/bash
+
 down: ## turn this thing off
 	docker-compose down
 
@@ -52,8 +55,8 @@ rspec: ## test
 	docker-compose exec -e RAILS_ENV=test web rspec
 
 restart: ## restart rails server
-	docker-compose exec web rails restart
+	docker-compose exec web bundle exec rails restart
 
 console: ## boot-up rails console
-	docker-compose exec web rails c
+	docker-compose exec web bundle exec rails c
 

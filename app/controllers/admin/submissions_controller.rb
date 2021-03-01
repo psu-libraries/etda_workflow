@@ -7,8 +7,8 @@ class Admin::SubmissionsController < AdminController
   end
 
   def dashboard
-    # Reset session semester to current semester when returning to dashboard
-    session[:semester] = Semester.current
+    # Reset session semester to nil when returning to dashboard
+    session[:semester] = nil
     degree_type = params[:degree_type] || DegreeType.default
     @view = Admin::SubmissionsDashboardView.new(degree_type)
   end
@@ -54,10 +54,7 @@ class Admin::SubmissionsController < AdminController
     ids.each do |id|
       submission = Submission.find(id)
       submission.author_edit = false
-      unless submission.nil?
-        OutboundLionPathRecord.new(submission: submission).report_deleted_submission
-        submission.destroy
-      end
+      submission&.destroy
     end
     flash[:notice] = 'Submissions deleted successfully'
     redirect_to Rails.application.routes.url_helpers.admin_root_path
@@ -191,30 +188,9 @@ class Admin::SubmissionsController < AdminController
     return if params[:id].nil?
 
     @submission = Submission.find(params[:id])
-    @submission.update_attribute :is_printed, 1 unless @submission.is_printed?
+    @submission.update! is_printed: 1 unless @submission.is_printed?
     redirect_to admin_submissions_index_path(@submission.degree_type.slug, 'format_review_submitted')
     flash[:notice] = "Printed submission information for #{@submission.author.first_name} #{@submission.author.last_name}"
-  end
-
-  def refresh_committee
-    @submission = Submission.find(params[:id])
-    @submission.author.populate_lion_path_record(@submission.author.psu_idn, @submission.author.access_id)
-    if @submission.academic_plan.committee_members_refresh
-      flash[:notice] = 'Committee successfully refreshed from Lion Path'
-    else
-      flash[:alert] = 'Unable to refresh committee member information from Lion Path.'
-    end
-    redirect_to admin_edit_submission_path(@submission.id)
-  end
-
-  def refresh_academic_plan
-    @submission = Submission.find(params[:id])
-    if @submission.author.inbound_lion_path_record.refresh_academic_plan(@submission)
-      flash[:notice] = 'Academic plan information successfully refreshed from Lion Path'
-    else
-      flash[:alert] = 'There was a problem refreshing your academic plan information.  Please contact your administrator'
-    end
-    redirect_to admin_edit_submission_path(@submission.id)
   end
 
   def send_email_reminder

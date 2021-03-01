@@ -40,6 +40,7 @@ html {
 
 header {
   background-color: #000000;
+  margin-bottom: 40px;
 
   .navbar-default {
     height: 50px;
@@ -543,6 +544,17 @@ p.hint
   }
 }
 
+#dialog-confirm {
+  .modal-dialog
+  {
+    top: 25%;
+  }
+  .modal-backdrop
+  {
+    background-color: #ffffff;
+  }
+}
+
 //override Bootstrap label-success color (green) to correct contrast errors
 .label-success,
 .btn-success
@@ -665,10 +677,19 @@ a.cancel-link{
 //Styles for main page
 .btn-main{
   background-color: $medium-blue-bright;
+  color: white;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 #main-page{
-  margin-top: 40px;
+  margin-top: 20px;
+}
+
+.top-container{
+  padding-bottom: 20px;
 }
 
 #admin-col{

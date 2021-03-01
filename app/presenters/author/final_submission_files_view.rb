@@ -3,12 +3,6 @@ class Author::FinalSubmissionFilesView
     @record = submission_record || nil
   end
 
-  def defended_at_date_partial
-    return 'defended_at_date' unless InboundLionPathRecord.active?
-
-    'defended_at_date_hidden_for_final_submissions'
-  end
-
   def author_access_level_view
     return 'access_level_static' if current_partner.milsch?
 

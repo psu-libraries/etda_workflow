@@ -22,7 +22,7 @@ RSpec.describe "Admins can run reports", js: true do
     submission2.invention_disclosures << InventionDisclosure.new(id_number: invention_number)
     submission2.access_level = 'restricted'
     # submission2.save!
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_submissions_dashboard_path(Degree.first.degree_type)
   end
 
@@ -37,7 +37,6 @@ RSpec.describe "Admins can run reports", js: true do
     it 'displays the available report types' do
       expect(page).to have_link('Reports')
       page.find('a#reports_menu').trigger('click')
-      sleep(5)
       expect(page).to have_link('Custom Report')
       expect(page).to have_link('Confidential Hold Report')
     end
@@ -57,7 +56,6 @@ RSpec.describe "Admins can run reports", js: true do
       expect(page).to have_content('Submission2')
       expect(page).not_to have_content('Submission3')
       click_button 'Select Visible'
-      sleep(5)
       page.assert_selector('tbody .row-checkbox')
       ckbox = all('tbody .row-checkbox')
       assert_equal(Submission.released_for_publication.count, ckbox.count)
@@ -66,7 +64,6 @@ RSpec.describe "Admins can run reports", js: true do
       end
       expect(page).to have_button('Export CSV')
       click_button('Export CSV')
-      sleep(4)
       expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="committee_report.csv"'
     end
   end
@@ -82,7 +79,6 @@ RSpec.describe "Admins can run reports", js: true do
     it 'displays the invention disclosure number and access level' do
       expect(page).to have_link('Custom Report')
       click_link('Custom Report')
-      sleep(10)
       expect(page).to have_content(invention_number) if current_partner.graduate?
       expect(page).to have_content('Restricted')
     end
@@ -90,7 +86,6 @@ RSpec.describe "Admins can run reports", js: true do
     it 'displays the Custom Report page' do
       expect(page).to have_link('Custom Report')
       click_link('Custom Report')
-      sleep(5)
       expect(page).to have_content('Custom Report')
       expect(page).to have_button('Select Visible')
       expect(page).to have_content('Submission3')
@@ -103,7 +98,6 @@ RSpec.describe "Admins can run reports", js: true do
       end
       expect(page).to have_button('Export CSV')
       click_button('Export CSV')
-      sleep(4)
       expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="custom_report.csv"'
     end
   end
@@ -115,16 +109,14 @@ RSpec.describe "Admins can run reports", js: true do
       submission1.save
       submission2.save
       visit(admin_submissions_index_path(DegreeType.default, 'final_submission_approved'))
+      sleep 1
     end
 
     it 'displays the final submissions' do
-      sleep(3)
       expect(page).to have_content('Final Submission to be Released')
       click_button('Select Visible')
-      sleep(3)
       expect(page).to have_button('Export CSV')
       click_button 'Export CSV'
-      sleep(4)
       expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="final_submission_report.csv"'
     end
   end
@@ -141,10 +133,8 @@ RSpec.describe "Admins can run reports", js: true do
       expect(page).to have_content('Confidential Hold Report')
       expect(page).to have_content(author3.psu_email_address)
       click_button('Select Visible')
-      sleep(1)
       expect(page).to have_button('Export CSV')
       click_button 'Export CSV'
-      sleep(1)
       expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="confidential_hold_report.csv"'
     end
 

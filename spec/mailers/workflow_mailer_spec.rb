@@ -103,9 +103,8 @@ RSpec.describe WorkflowMailer do
       expect(email.to).to eq([author.psu_email_address])
     end
 
-    it "tells the author that the final submission has been approved", honors: true, milsch: true do
-      expect(email.body).to match(/It will now be automatically sent to your committee/i) if current_partner.graduate?
-      expect(email.body).to match(/has been approved/i) if current_partner.honors?
+    it "tells the author that the final submission has been approved" do
+      expect(email.body).to match(/Congratulations!|has been approved/i)
     end
   end
 
@@ -173,7 +172,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "tells the author that the final submission has been approved" do
-      expect(email.body).to match(/Congratulations!/i)
+      expect(email.body).to match(/committee and it is approved/i)
     end
   end
 
@@ -218,6 +217,29 @@ RSpec.describe WorkflowMailer do
 
     it "notifies the author about the access level change of their submission" do
       expect(email.body).to match(/changed the availability/i)
+    end
+  end
+
+  describe '#open_access_report' do
+    let(:date_range) { "#{(Date.today - 6.months).strftime('%D')} - #{Date.today.strftime('%D')}" }
+    let(:csv) { CSV.generate { |csv| csv << ['HEADERS'] } }
+    let(:email) { described_class.open_access_report(date_range, csv) }
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq "eTDs Released as Open Access #{date_range}"
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "has csv attachment" do
+      expect(email.attachments.first.filename).to eq("open_access_report.csv")
+    end
+
+    it "contains information about publications released as open access this semester" do
+      expect(email.parts.first.body.to_s).to match(/were released as Open Access between #{date_range}/i)
+      expect(email.parts.first.body.to_s).to match(/#{current_partner.name}/i)
     end
   end
 

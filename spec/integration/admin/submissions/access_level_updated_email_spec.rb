@@ -5,7 +5,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
     # admin = FactoryBot.create :admin, site_administrator: true, administrator: true
 
     before do
-      webaccess_authorize_admin
+      oidc_authorize_admin
     end
 
     it 'sends an email to the appropriate people with the updated access level information' do
@@ -13,7 +13,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
       submission = FactoryBot.create :submission, :final_is_restricted, author: author
       start_count = ActionMailer::Base.deliveries.count
       visit admin_submissions_index_path(DegreeType.default, 'final_withheld')
-      sleep(1)
+      sleep 1
       click_button 'Select Visible'
       click_button 'Release as Open Access'
       expect(ActionMailer::Base.deliveries.count).to eq(start_count + 1)
@@ -32,7 +32,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
 
   describe 'bulk releasing submissions', js: true do
     before do
-      webaccess_authorize_admin
+      oidc_authorize_admin
     end
 
     it 'sends an email for each submission released with the updated access level information' do
@@ -40,9 +40,9 @@ RSpec.describe 'actions that send an email notifying users of an access level up
       submission2 = FactoryBot.create :submission, :final_is_restricted
       start_count = ActionMailer::Base.deliveries.count
       visit admin_submissions_index_path(DegreeType.default, 'final_withheld')
-      sleep(1)
+      sleep 1
       click_button 'Select Visible'
-      click_button "Release as Open Access", wait: 8
+      click_button "Release as Open Access"
       email1_to_address = submission1.author.alternate_email_address || submission1.author.psu_email_address
       email2_to_address = submission2.author.alternate_email_address || submission2.author.psu_email_address
       submission1_email = open_email(email1_to_address)
@@ -54,7 +54,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
       expect(submission1_email).to have_content submission1.author_full_name
       expect(submission1_email).to have_content submission1.title
       expect(submission1_email.subject).to match(/Access Level for your submission has been updated/i)
-      expect(submission1_email.cc).to match_array [AccessLevelUpdatedEmail.otm_email_address, AccessLevelUpdatedEmail.cataloging_email_address]
+      expect(submission1_email.cc).to eq [AccessLevelUpdatedEmail.otm_email_address]
       expect(submission1_email.from).to eq [current_partner.email_address]
       expect(submission2_email.body).to match(/Old Availability - Restricted/i)
       expect(submission2_email.body).to match(/New Availability - Open Access/i)
@@ -62,7 +62,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
       expect(submission2_email).to have_content submission2.author_full_name
       expect(submission2_email).to have_content submission2.title
       expect(submission2_email.subject).to match(/Access Level for your submission has been updated/i)
-      expect(submission2_email.cc).to match_array [AccessLevelUpdatedEmail.otm_email_address, AccessLevelUpdatedEmail.cataloging_email_address]
+      expect(submission2_email.cc).to eq [AccessLevelUpdatedEmail.otm_email_address]
       expect(submission2_email.from).to eq [current_partner.email_address]
     end
   end

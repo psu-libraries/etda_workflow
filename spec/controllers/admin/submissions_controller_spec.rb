@@ -4,10 +4,11 @@ require 'rails_helper'
 
 RSpec.describe Admin::SubmissionsController, type: :controller do
   before do
-    # Need to authenticate as an admin for these controller specs to work
     headers = { 'REMOTE_USER' => 'xxb13', 'REQUEST_URI' => '/admin/degrees' }
     request.headers.merge! headers
-    Devise::Strategies::WebaccessAuthenticatable.new(headers).authenticate!
+    # Skip authentication
+    allow_any_instance_of(AdminController).to receive(:set_session).and_return true
+    allow_any_instance_of(AdminController).to receive(:admin_auth).and_return true
   end
 
   describe '#redirect_to_default_dashboard' do
@@ -17,11 +18,12 @@ RSpec.describe Admin::SubmissionsController, type: :controller do
   end
 
   describe '#dashboard' do
-    it 'displays dashboard index' do
+    it 'displays dashboard index and resets session semester' do
+      session["semester"] = 'All Semesters'
       expect(get: admin_submissions_dashboard_path(DegreeType.default)).to route_to(controller: 'admin/submissions', action: 'dashboard', 'degree_type': DegreeType.default.slug)
       get :dashboard, params: { degree_type: DegreeType.default.slug }
       expect(response).to render_template('admin/submissions/dashboard')
-      expect(session["semester"]).to eq Semester.current.to_s
+      expect(session["semester"]).to eq nil
     end
   end
 
@@ -121,22 +123,6 @@ RSpec.describe Admin::SubmissionsController, type: :controller do
       patch :print_signatory_page_update, params: { id: submission.id.to_s }
       expect(response.status).to be(302)
       expect(response).to redirect_to("/admin/#{DegreeType.default.slug}/format_review_submitted")
-    end
-  end
-
-  describe '#refresh_committee' do
-    it 'refreshes committee information with information from Lion Path' do
-      submission = FactoryBot.create :submission, :waiting_for_final_submission_response
-      expect(get: admin_refresh_committee_path(submission.id)).to route_to(controller: 'admin/submissions', action: 'refresh_committee', id: submission.id.to_s)
-      expect(response.status).to eq(200) if InboundLionPathRecord.active?
-    end
-  end
-
-  describe '#refresh_academic_plan' do
-    submission = FactoryBot.create :submission, :waiting_for_format_review_response
-    it 'refreshes academic plan with information from Lion Path' do
-      expect(get: admin_submissions_refresh_academic_plan_path(submission.id)).to route_to(controller: 'admin/submissions', action: 'refresh_academic_plan', id: submission.id.to_s)
-      expect(response.status).to eq(200) if InboundLionPathRecord.active?
     end
   end
 

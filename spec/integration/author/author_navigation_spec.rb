@@ -2,14 +2,13 @@ RSpec.describe "Author Navigation", js: true do
   require 'integration/integration_spec_helper'
 
   before do
-    webaccess_authorize_author
+    oidc_authorize_author
     visit '/author'
   end
 
   let(:author) { current_author }
 
   it 'has top navigation' do
-    sleep 3
     expect(page).to have_link('Home')
     expect(page).to have_link('About')
     expect(page).to have_link('Contact Us')

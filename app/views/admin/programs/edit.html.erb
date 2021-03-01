@@ -1,3 +1,3 @@
-<h2>Edit <%= current_partner.program_label.pluralize %></h2>
+<h2>Edit <%= @program.name.to_s %></h2>
 
 <%= render partial: "form", locals: {this_action: 'Update'} %>

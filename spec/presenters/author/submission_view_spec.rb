@@ -68,6 +68,16 @@ RSpec.describe Author::SubmissionView do
     end
   end
 
+  describe 'step_one_class' do
+    context "when submission's status is beyond collecting program information" do
+      before { submission.status = 'collecting committee' }
+
+      it "returns 'complete'" do
+        expect(view.step_one_class).to eq 'complete'
+      end
+    end
+  end
+
   describe '#step_one_description' do
     context "when step two is the current step" do
       before { submission.status = 'collecting committee' }
@@ -89,6 +99,43 @@ RSpec.describe Author::SubmissionView do
       it "returns a link to review step two" do
         submission.status = 'collecting final submission files'
         expect(view.step_one_description).to eq "Provide program information <a href='#{author_submission_program_information_path(submission)}' class='medium'>[Review Program Information <span class='sr-only'>program information for submission '#{submission.title}'</span>]</a>"
+      end
+    end
+  end
+
+  describe 'step_one_status' do
+    context "when submission's status is beyond collecting program information and was not imported via lionpath" do
+      before do
+        submission.status = 'collecting committee'
+        submission.created_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+      end
+
+      it "returns completed partial and text as hash" do
+        expect(view.step_one_status).to eq(text: "completed on January 1, 2020", partial_name: '/author/shared/completed_indicator')
+      end
+    end
+
+    context "when submission's status is beyond collecting program information and was imported via lionpath" do
+      before do
+        submission.status = 'collecting committee'
+        submission.created_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+        submission.lionpath_updated_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+      end
+
+      it "returns completed partial and created on text as hash" do
+        expect(view.step_one_status).to eq(text: "created on January 1, 2020", partial_name: '/author/shared/completed_indicator')
+      end
+    end
+
+    context "when submission's status is collecting program information" do
+      before do
+        submission.status = 'collecting program information'
+        submission.created_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+        submission.lionpath_updated_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+      end
+
+      it "returns created on text as hash" do
+        expect(view.step_one_status).to eq(text: "created on January 1, 2020")
       end
     end
   end
@@ -123,43 +170,34 @@ RSpec.describe Author::SubmissionView do
         before { submission.status = 'collecting program information' }
 
         it "returns the step two label" do
-          if InboundLionPathRecord.active?
-            expect(view.step_two_description).to eql(view.step_two_name + "<a href='/author/submissions/#{submission.id}/committee_members' class='medium'>[review <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>")
-          else
-            expect(view.step_two_description).to eql(view.step_two_name)
-          end
+          expect(view.step_two_description).to eql(view.step_two_name)
         end
       end
 
       context "when step two is the current step" do
         before { submission.status = 'collecting committee' }
 
-        it "returns a link to complete step two" do
-          expect(view.step_two_description).to eq "<a href='#{new_author_submission_committee_members_path(submission)}'>" + view.step_two_name + "</a>"
+        context "when degree_type is 'Dissertation'" do
+          it "returns a link to complete step two" do
+            expect(view.step_two_description).to eq "<a href='#{edit_author_submission_committee_members_path(submission)}'>" + view.step_two_name + "</a>"
+          end
+        end
+
+        context "when degree_type is 'Master Thesis'" do
+          let(:degree_2) { FactoryBot.create :degree, degree_type: DegreeType.second }
+
+          it "returns a link to complete step two" do
+            submission.update degree: degree_2
+            expect(view.step_two_description).to eq "<a href='#{new_author_submission_committee_members_path(submission)}'>" + view.step_two_name + "</a>"
+          end
         end
       end
 
       context "when step three is the current step" do
         before { submission.status = 'collecting format review files' }
 
-        it "returns a link to edit step two if head of program is approving" do
-          submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
-
-          if InboundLionPathRecord.active?
-            expect(view.step_two_description).to eq view.step_two_name + "<a href='#{author_submission_committee_members_path(submission)}' class='medium'>[review <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
-          else
-            expect(view.step_two_description).to eq view.step_two_name + "<a href='#{edit_author_submission_committee_members_path(submission)}' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a><a href='#{author_submission_head_of_program_path(submission)}' class='medium'>[Edit Head of Program <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
-          end
-        end
-
-        it "returns a link to edit step two if head of program is not approving" do
-          submission.degree.degree_type.approval_configuration.head_of_program_is_approving = false
-
-          if InboundLionPathRecord.active?
-            expect(view.step_two_description).to eq view.step_two_name + "<a href='#{author_submission_committee_members_path(submission)}' class='medium'>[review <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
-          else
-            expect(view.step_two_description).to eq view.step_two_name + "<a href='#{edit_author_submission_committee_members_path(submission)}' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
-          end
+        it "returns a link to edit step two" do
+          expect(view.step_two_description).to eq view.step_two_name + "<a href='#{edit_author_submission_committee_members_path(submission)}' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{submission.title}' </span>]</a>"
         end
       end
 
@@ -378,7 +416,7 @@ RSpec.describe Author::SubmissionView do
       context "when the submission is before step five" do
         it "returns the step five label" do
           submission.status = 'waiting for format review response'
-          expect(view.step_five_description).to eq 'Upload Final Submission files'
+          expect(view.step_five_description).to eq 'Upload Final Submission Files'
         end
       end
 
@@ -389,25 +427,14 @@ RSpec.describe Author::SubmissionView do
         end
 
         it "returns a link to complete step five" do
-          expect(view.step_five_description).to eq "<a href='#{author_submission_edit_final_submission_path(submission)}'>Upload Final Submission files</a>"
-        end
-      end
-
-      context 'when step five is the current step after my final submission is rejected' do
-        before do
-          submission.status = 'collecting final submission files'
-          submission.final_submission_rejected_at = Time.zone.now
-        end
-
-        it "returns a link to edit step five" do
-          expect(view.step_five_description).to eq "Upload Final Submission files <a href='/author/submissions/#{submission.id}/final_submission/edit' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{submission.title}' </span>]</a>"
+          expect(view.step_five_description).to eq "<a href='#{author_submission_edit_final_submission_path(submission)}'>Upload Final Submission Files</a>"
         end
       end
 
       context "when the submission is beyond step five" do
         it "returns a link to review the files" do
           submission.status = 'waiting for final submission response'
-          expect(view.step_five_description).to eq "Upload Final Submission files <a href='/author/submissions/#{submission.id}/final_submission' class='medium'>[Review Final Submission <span class='sr-only'>final submission files for submission '#{submission.title}'</span>]</a>"
+          expect(view.step_five_description).to eq "Upload Final Submission Files <a href='/author/submissions/#{submission.id}/final_submission' class='medium'>[Review Final Submission <span class='sr-only'>final submission files for submission '#{submission.title}'</span>]</a>"
         end
       end
     end
@@ -430,40 +457,44 @@ RSpec.describe Author::SubmissionView do
           expect(view.step_five_status).to eq(partial_name: '/author/shared/completed_indicator', text: "completed on July 4, 2014")
         end
       end
-
-      context 'when step five is the current step after my final submission is rejected' do
-        before do
-          submission.status = 'collecting final submission files'
-          submission.final_submission_rejected_at = Time.zone.local(2014, 7, 4)
-        end
-
-        it 'returns rejection instructions' do
-          expect(view.step_five_status).to eq(partial_name: '/author/shared/rejected_indicator', text: "rejected on July 4, 2014")
-        end
-      end
     end
   end
 
-  describe 'step six: Graduate school or Honors College approves Final Submission files' do
+  describe 'step six: Waiting for committee review' do
+    let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type }
+
+    before do
+      submission.degree = degree
+    end
+
     describe '#step_six_class' do
-      context "when the submission is before step seven" do
+      context "when the submission is before step six" do
         before { allow(submission.status_behavior).to receive(:beyond_collecting_final_submission_files?).and_return(false) }
 
         it "returns an empty string" do
           expect(view.step_six_class).to eq ''
         end
+
+        it "does not display review page" do
+          expect(view.step_six_description).to eq 'Waiting for Committee Review'
+        end
       end
 
       context "when step six is the current step" do
-        before { submission.status = 'waiting for final submission response' }
+        it "returns 'current' when waiting for committee review" do
+          submission.status = 'waiting for committee review'
+          expect(view.step_six_class).to eq 'current'
+        end
 
-        it "returns 'current'" do
+        it "returns 'current' when waiting for head of program review" do
+          submission.status = 'waiting for head of program review'
           expect(view.step_six_class).to eq 'current'
         end
       end
 
-      context "when step seven has been completed" do
-        before { allow(submission.status_behavior).to receive(:beyond_waiting_for_head_of_program_review?).and_return(true) }
+      context "when step six has been completed" do
+        before { allow(submission.status_behavior).to receive(:beyond_waiting_for_committee_review?).and_return(true) }
 
         it "returns 'complete'" do
           submission.status = 'waiting for publication release'
@@ -473,7 +504,7 @@ RSpec.describe Author::SubmissionView do
     end
 
     describe '#step_six_status' do
-      context 'when the submission is before waiting for final submission response' do
+      context 'when the submission is before waiting for committee review' do
         before { submission.status = 'collecting final submission files' }
 
         it 'returns an empty string' do
@@ -481,84 +512,11 @@ RSpec.describe Author::SubmissionView do
         end
       end
 
-      context 'when the submission is currently waiting for final submission response' do
-        before { submission.status = 'waiting for final submission response' }
-
-        it 'returns "under review by an administrator"' do
-          expect(view.step_six_status).to eq(partial_name: '/author/shared/under_review_indicator')
-        end
-      end
-
-      context "when the submission's Final Submission files have been approved" do
-        before do
-          submission.final_submission_approved_at = Time.zone.local(2014, 7, 4)
-        end
-
-        it 'returns approved' do
-          submission.status = 'waiting for publication release'
-          expect(view.step_six_status).to eq(partial_name: '/author/shared/completed_indicator', text: "approved on July 4, 2014")
-        end
-      end
-    end
-  end
-
-  describe 'step seven: Graduate school or Honors College waiting for committee review' do
-    let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type }
-
-    before do
-      submission.degree = degree
-    end
-
-    describe '#step_seven_class' do
-      context "when the submission is before step six" do
-        before { allow(submission.status_behavior).to receive(:beyond_collecting_final_submission_files?).and_return(false) }
-
-        it "returns an empty string" do
-          expect(view.step_seven_class).to eq ''
-        end
-
-        it "does not display review page" do
-          expect(view.step_seven_description).to eq 'Waiting for Committee Review'
-        end
-      end
-
-      context "when step seven is the current step" do
-        it "returns 'current' when waiting for committee review" do
-          submission.status = 'waiting for committee review'
-          expect(view.step_seven_class).to eq 'current'
-        end
-
-        it "returns 'current' when waiting for head of program review" do
-          submission.status = 'waiting for head of program review'
-          expect(view.step_seven_class).to eq 'current'
-        end
-      end
-
-      context "when step seven has been completed" do
-        before { allow(submission.status_behavior).to receive(:beyond_waiting_for_committee_review?).and_return(true) }
-
-        it "returns 'complete'" do
-          submission.status = 'waiting for publication release'
-          expect(view.step_seven_class).to eq 'complete'
-        end
-      end
-    end
-
-    describe '#step_seven_status' do
-      context 'when the submission is before waiting for committee review' do
-        before { submission.status = 'collecting final submission files' }
-
-        it 'returns an empty string' do
-          expect(view.step_seven_status).to eq({})
-        end
-      end
-
       context 'when the submission is currently waiting for committee review' do
         before { submission.status = 'waiting for committee review' }
 
         it 'returns "under review by committee"' do
-          expect(view.step_seven_status).to eq(partial_name: '/author/shared/waiting_indicator')
+          expect(view.step_six_status).to eq(partial_name: '/author/shared/waiting_indicator')
         end
       end
 
@@ -566,7 +524,7 @@ RSpec.describe Author::SubmissionView do
         before { submission.status = 'waiting for head of program review' }
 
         it 'returns "under review by head of program"' do
-          expect(view.step_seven_status).to eq(partial_name: '/author/shared/waiting_indicator')
+          expect(view.step_six_status).to eq(partial_name: '/author/shared/waiting_indicator')
         end
       end
 
@@ -578,13 +536,13 @@ RSpec.describe Author::SubmissionView do
 
         it 'returns approved (w/ head of program)' do
           submission.status = 'waiting for publication release'
-          expect(view.step_seven_status).to eq(partial_name: '/author/shared/completed_indicator', text: "approved on July 5, 2014")
+          expect(view.step_six_status).to eq(partial_name: '/author/shared/completed_indicator', text: "approved on July 5, 2014")
         end
 
         it 'returns approved (w/o head of program)' do
           submission.status = 'waiting for publication release'
           submission.degree.degree_type.approval_configuration.head_of_program_is_approving = false
-          expect(view.step_seven_status).to eq(partial_name: '/author/shared/completed_indicator', text: "approved on July 4, 2014")
+          expect(view.step_six_status).to eq(partial_name: '/author/shared/completed_indicator', text: "approved on July 4, 2014")
         end
       end
 
@@ -595,18 +553,18 @@ RSpec.describe Author::SubmissionView do
 
         it 'returns rejected' do
           submission.status = 'waiting for committee review rejected'
-          expect(view.step_seven_status).to eq(partial_name: '/author/shared/rejected_indicator', text: "rejected on July 4, 2014")
+          expect(view.step_six_status).to eq(partial_name: '/author/shared/rejected_indicator', text: "rejected on July 4, 2014")
         end
       end
     end
   end
 
-  describe '#step_seven_description' do
+  describe '#step_six_description' do
     context "when the submission is before step seven" do
       before { allow(submission.status_behavior).to receive(:beyond_collecting_final_submission_files?).and_return(false) }
 
       it "does not display review page" do
-        expect(view.step_seven_description).to eq 'Waiting for Committee Review'
+        expect(view.step_six_description).to eq 'Waiting for Committee Review'
       end
     end
 
@@ -614,7 +572,7 @@ RSpec.describe Author::SubmissionView do
       before { submission.status = 'waiting for committee review' }
 
       it 'to display results page' do
-        expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[My Committee Review.*\]/)
+        expect(view.step_six_description).to match(/Waiting for Committee Review.*\[My Committee Review.*\]/)
       end
     end
 
@@ -622,7 +580,7 @@ RSpec.describe Author::SubmissionView do
       before { submission.status = 'waiting for head of program review' }
 
       it 'to display results page' do
-        expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[My Committee Review.*\]/)
+        expect(view.step_six_description).to match(/Waiting for Committee Review.*\[My Committee Review.*\]/)
       end
     end
 
@@ -630,7 +588,7 @@ RSpec.describe Author::SubmissionView do
       before { submission.status = 'waiting for publication release' }
 
       it 'to display results page' do
-        expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[My Committee Review.*\]/)
+        expect(view.step_six_description).to match(/Waiting for Committee Review.*\[My Committee Review.*\]/)
       end
     end
 
@@ -638,7 +596,65 @@ RSpec.describe Author::SubmissionView do
       before { submission.status = 'waiting for committee review rejected' }
 
       it 'to display review and update links' do
-        expect(view.step_seven_description).to match(/Waiting for Committee Review.*\[My Committee Review.*\[Update.*\]/)
+        expect(view.step_six_description).to match(/Waiting for Committee Review.*\[My Committee Review.*\[Update.*\]/)
+      end
+    end
+  end
+
+  describe 'step seven: Partner approves Final Submission files' do
+    describe '#step_seven_class' do
+      context "when the submission is before step seven" do
+        before { allow(submission.status_behavior).to receive(:beyond_collecting_final_submission_files?).and_return(false) }
+
+        it "returns an empty string" do
+          expect(view.step_seven_class).to eq ''
+        end
+      end
+
+      context "when step seven is the current step" do
+        before { submission.status = 'waiting for final submission response' }
+
+        it "returns 'current'" do
+          expect(view.step_seven_class).to eq 'current'
+        end
+      end
+
+      context "when step seven has been completed" do
+        before { allow(submission.status_behavior).to receive(:beyond_waiting_for_final_submission_response_rejected?).and_return(true) }
+
+        it "returns 'complete'" do
+          submission.status = 'waiting for publication release'
+          expect(view.step_six_class).to eq 'complete'
+        end
+      end
+    end
+
+    describe '#step_seven_status' do
+      context 'when the submission is before waiting for final submission response' do
+        before { submission.status = 'collecting final submission files' }
+
+        it 'returns an empty string' do
+          expect(view.step_seven_status).to eq({})
+        end
+      end
+
+      context 'when the submission is currently waiting for final submission response' do
+        before { submission.status = 'waiting for final submission response' }
+
+        it 'returns "under review by an administrator"' do
+          expect(view.step_seven_status).to eq(partial_name: '/author/shared/under_review_indicator')
+        end
+      end
+
+      context "when the submission's Final Submission files have been approved" do
+        before do
+          submission.final_submission_approved_at = Time.zone.local(2014, 7, 4)
+        end
+
+        it 'returns approved' do
+          submission.status = 'waiting for publication release'
+          expect(view.step_seven_status).to eq(partial_name: '/author/shared/completed_indicator', text: "approved on July 4, 2014")
+        end
       end
     end
   end
@@ -724,19 +740,19 @@ RSpec.describe Author::SubmissionView do
   context '#display_final_submission_notes?' do
     it 'does not display if notes are empty' do
       submission.final_submission_notes = nil
-      expect(view.send('display_final_submission_notes?', 5)).to be_falsey
+      expect(view.send('display_final_submission_notes?', 7)).to be_falsey
     end
-    it 'displays notes for step 5' do
+    it 'displays notes for step 7' do
       submission.final_submission_notes = 'final rnote'
       submission.status = 'collecting final submission files rejected'
       submission.final_submission_rejected_at = Time.zone.yesterday
-      expect(view.send('display_final_submission_notes?', 5)).to be_truthy
+      expect(view.send('display_final_submission_notes?', 7)).to be_truthy
     end
-    it 'displays notes for step 6 if final submission has not been approved' do
+    it 'displays notes for step 7 if final submission has been approved' do
       submission.final_submission_approved_at = Time.zone.yesterday
       submission.final_submission_notes = 'final note'
       submission.status = 'waiting for publication release'
-      expect(view.send('display_final_submission_notes?', 6)).to be_truthy
+      expect(view.send('display_final_submission_notes?', 7)).to be_truthy
     end
   end
 end

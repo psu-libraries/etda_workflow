@@ -8,46 +8,36 @@ RSpec.describe "Manage Submissions", js: true do
   let!(:submission1) { FactoryBot.create :submission, :waiting_for_publication_release, author: author1 }
   let!(:submission2) { FactoryBot.create :submission, :waiting_for_publication_release, author: author2 }
 
-  outbound_active = Rails.application.config_for(:lion_path)[current_partner.id.to_sym][:lion_path_outbound]
-
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')
     sleep 1
   end
 
   describe 'Admin Delete submissions' do
     context 'bulk deletes submissions' do
-      it 'deletes the submissions and creates outbound lion path records' do
+      it 'deletes the submissions' do
         FactoryBot.create :submission, :waiting_for_publication_release, author: author1
         expect(page).to have_content('Final Submission to be Released')
         expect(page).to have_content('Showing')
-        # expect(page).to have_link('Contact Support')
-        # expect(page).to have_link('Accessibility')
-        outbound_records = OutboundLionPathRecord.all.count
         submission_count = Submission.all.count
         click_button 'Select Visible'
         expect(page).to have_button('Delete selected')
         click_button('Delete selected')
         # expect(page).to have_content('successfully')
-        total_outbound = OutboundLionPathRecord.all.count
         total_submissions = Submission.all.count
-        expect(total_outbound).to eql(outbound_records + 2) if outbound_active
         expect(total_submissions).to eql(submission_count - 2)
       end
     end
 
     context 'delete one submission' do
-      it 'deletes one submission and creates one outbound lion path record' do
-        outbound_records = OutboundLionPathRecord.all.count
+      it 'deletes one submission' do
         submission_count = Submission.all.count
         find(:css, "input.row-checkbox", match: :first).set(true)
         expect(page).to have_button('Delete selected')
         click_button('Delete selected')
         # expect(page).to have_content('successfully')
-        total_outbound = OutboundLionPathRecord.all.count
         total_submissions = Submission.all.count
-        expect(total_outbound).to eql(outbound_records + 1) if outbound_active
         expect(total_submissions).to eql(submission_count - 1)
       end
     end
@@ -59,7 +49,7 @@ RSpec.describe "Manage Submissions", js: true do
     let!(:submission5) { FactoryBot.create :submission, :released_for_publication, author: author1 }
 
     before do
-      webaccess_authorize_admin
+      oidc_authorize_admin
     end
 
     if current_partner.graduate?

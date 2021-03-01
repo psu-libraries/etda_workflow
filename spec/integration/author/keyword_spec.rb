@@ -3,7 +3,7 @@ RSpec.describe 'Tagit-keywords', type: :integration, js: true do
 
   context 'keyword tagit' do
     before do
-      webaccess_authorize_author
+      oidc_authorize_author
     end
 
     let(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, author: current_author }
@@ -20,7 +20,6 @@ RSpec.describe 'Tagit-keywords', type: :integration, js: true do
       page.find('.tagit-close').click
       expect(page).to have_content('Are you sure you want to delete keyword "' + keyword + '"?')
       page.find("#ConfirmModal button#delete").click
-      sleep 2
       expect(page).to have_selector('ul.tagit li span.tagit-label', count: number_of_keywords - 1)
     end
 
@@ -36,7 +35,6 @@ RSpec.describe 'Tagit-keywords', type: :integration, js: true do
       page.find('.tagit-close').click
       expect(page).to have_content('Are you sure you want to delete keyword "' + keyword + '"?')
       page.find('button#cancel').click
-      sleep(3)
       expect(page).to have_content(keyword)
     end
 

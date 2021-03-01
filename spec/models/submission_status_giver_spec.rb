@@ -146,10 +146,9 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
 
-      it "raises an exception", honors: true do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_for_committee_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden) unless current_partner.honors?
-        expect { giver.can_waiting_for_committee_review? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden) if current_partner.honors?
+        expect { giver.can_waiting_for_committee_review? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -167,8 +166,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "does not raise an exception", honors: true do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_for_committee_review? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden) unless current_partner.honors?
-        expect { giver.can_waiting_for_committee_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden) if current_partner.honors?
+        expect { giver.can_waiting_for_committee_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -307,7 +305,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_update_program_information? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_update_program_information? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -412,12 +410,38 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'collecting committee'" do
+    context "when status is 'collecting committee'", milsch: true, honors: true do
       before { submission.status = 'collecting committee' }
 
-      it "does not raise exception" do
-        giver = described_class.new(submission)
-        expect { giver.can_provide_new_committee? }.not_to raise_error
+      context "when graduate" do
+        it "raises exception if submission is a dissertation" do
+          skip "graduate only" unless current_partner.graduate?
+
+          degree_type = DegreeType.find_by(slug: 'dissertation')
+          degree = FactoryBot.create(:degree, degree_type: degree_type)
+          submission.degree = degree
+          giver = described_class.new(submission)
+          expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        end
+
+        it "does not raise exception if submission is a master thesis" do
+          skip "graduate only" unless current_partner.graduate?
+
+          degree_type = DegreeType.find_by(slug: 'master_thesis')
+          degree = FactoryBot.create(:degree, degree_type: degree_type)
+          submission.degree = degree
+          giver = described_class.new(submission)
+          expect { giver.can_provide_new_committee? }.not_to raise_error
+        end
+      end
+
+      context "when not graduate" do
+        it "does not raise exception" do
+          skip "graduate only" if current_partner.graduate?
+
+          giver = described_class.new(submission)
+          expect { giver.can_provide_new_committee? }.not_to raise_error
+        end
       end
     end
 
@@ -513,12 +537,38 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'collecting committee'" do
+    context "when status is 'collecting committee'", milsch: true, honors: true do
       before { submission.status = 'collecting committee' }
 
-      it "raises an exception" do
-        giver = described_class.new(submission)
-        expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      context "when graduate" do
+        it "doesn't raise exception if submission is a dissertation" do
+          skip "graduate only" unless current_partner.graduate?
+
+          degree_type = DegreeType.find_by(slug: 'dissertation')
+          degree = FactoryBot.create(:degree, degree_type: degree_type)
+          submission.degree = degree
+          giver = described_class.new(submission)
+          expect { giver.can_update_committee? }.not_to raise_error
+        end
+
+        it "raises an exception if submission is a master thesis" do
+          skip "graduate only" unless current_partner.graduate?
+
+          degree_type = DegreeType.find_by(slug: 'master_thesis')
+          degree = FactoryBot.create(:degree, degree_type: degree_type)
+          submission.degree = degree
+          giver = described_class.new(submission)
+          expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        end
+      end
+
+      context "when not graduate" do
+        it "raises and exception" do
+          skip "graduate only" if current_partner.graduate?
+
+          giver = described_class.new(submission)
+          expect { giver.can_update_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        end
       end
     end
 
@@ -2024,8 +2074,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "raises an exception", honors: true do
         giver = described_class.new(submission)
-        expect { giver.waiting_for_committee_review! }.to raise_error(SubmissionStatusGiver::InvalidTransition) unless current_partner.honors?
-        expect { giver.waiting_for_committee_review! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition) if current_partner.honors?
+        expect { giver.waiting_for_committee_review! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -2079,31 +2128,28 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
 
-      it "updates status to 'waiting for final submission response' unless honors", honors: true do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        giver.waiting_for_final_submission_response! unless current_partner.honors?
-        giver.waiting_for_committee_review! if current_partner.honors?
-        expect(submission.status).to eq 'waiting for final submission response' unless current_partner.honors?
-        expect(submission.status).to eq 'waiting for committee review' if current_partner.honors?
+        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
     context "when status is 'waiting for committee review'" do
       before { submission.status = 'waiting for committee review' }
 
-      it "raises an exception", honors: true do
+      it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition) unless current_partner.honors?
-        expect { giver.waiting_for_final_submission_response! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition) if current_partner.honors?
+        expect { giver.waiting_for_final_submission_response! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
     context "when status is 'waiting for head of program review'" do
       before { submission.status = 'waiting for head of program review' }
 
-      it "raises an exception" do
+      it "updates status to 'waiting for final submission response'" do
         giver = described_class.new(submission)
-        expect { giver.waiting_for_final_submission_response! }.to raise_error(SubmissionStatusGiver::InvalidTransition)
+        giver.waiting_for_final_submission_response!
+        expect(submission.status).to eq 'waiting for final submission response'
       end
     end
 
@@ -2194,32 +2240,29 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for committee review'" do
       before { submission.status = 'waiting for committee review' }
 
-      it "updates status to 'waiting for publication release'", honors: true do
+      it "updates status to 'waiting for publication release'" do
         giver = described_class.new(submission)
-        giver.waiting_for_publication_release! unless current_partner.honors?
-        giver.waiting_for_final_submission_response! if current_partner.honors?
-        expect(submission.status).to eq 'waiting for publication release' unless current_partner.honors?
-        expect(submission.status).to eq 'waiting for final submission response' if current_partner.honors?
+        giver.waiting_for_final_submission_response!
+        expect(submission.status).to eq 'waiting for final submission response'
       end
     end
 
     context "when status is 'waiting for head of program review'" do
       before { submission.status = 'waiting for head of program review' }
 
-      it "updates status to 'waiting for publication release'" do
+      it "updates status to 'waiting for final submission response'" do
         giver = described_class.new(submission)
-        giver.waiting_for_publication_release!
-        expect(submission.status).to eq 'waiting for publication release'
+        giver.waiting_for_final_submission_response!
+        expect(submission.status).to eq 'waiting for final submission response'
       end
     end
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
 
-      it "raises an exception", honors: true do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.waiting_for_publication_release! }.to raise_error(SubmissionStatusGiver::InvalidTransition) unless current_partner.honors?
-        expect { giver.waiting_for_publication_release! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition) if current_partner.honors?
+        expect { giver.waiting_for_publication_release! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 
@@ -2608,34 +2651,29 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for committee review'" do
       before { submission.status = 'waiting for committee review' }
 
-      it "changes the status to 'waiting for publication release'", honors: true do
+      it "changes the status to 'waiting for publication release'" do
         giver = described_class.new(submission)
-        giver.unreleased_for_publication! unless current_partner.honors?
-        giver.waiting_for_final_submission_response! if current_partner.honors?
-        expect(submission.status).to eq 'waiting for publication release' unless current_partner.honors?
-        expect(submission.status).to eq 'waiting for final submission response' if current_partner.honors?
+        giver.waiting_for_final_submission_response!
+        expect(submission.status).to eq 'waiting for final submission response'
       end
     end
 
     context "when status is 'waiting for head of program review'" do
       before { submission.status = 'waiting for head of program review' }
 
-      it "changes the status to 'waiting for publication release'" do
-        skip 'Non honors' if current_partner.honors?
-
+      it "changes the status to 'waiting for final submission response'" do
         giver = described_class.new(submission)
-        giver.unreleased_for_publication!
-        expect(submission.status).to eq 'waiting for publication release'
+        giver.waiting_for_final_submission_response!
+        expect(submission.status).to eq 'waiting for final submission response'
       end
     end
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
 
-      it "raises an exception", honors: true do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.unreleased_for_publication! }.to raise_error(SubmissionStatusGiver::InvalidTransition) unless current_partner.honors?
-        expect { giver.unreleased_for_publication! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition) if current_partner.honors?
+        expect { giver.unreleased_for_publication! }.not_to raise_error(SubmissionStatusGiver::InvalidTransition)
       end
     end
 

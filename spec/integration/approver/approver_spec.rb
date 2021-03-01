@@ -12,10 +12,9 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   let(:committee_role_not_advisor) { FactoryBot.create :committee_role, name: "Just Normal Member" }
 
   before do
-    allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
     submission.final_submission_files << final_submission_file
     submission.degree.degree_type.approval_configuration = approval_configuration
-    webaccess_authorize_approver
+    oidc_authorize_approver
   end
 
   context 'approver matches committee member access_id' do
@@ -47,7 +46,6 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       within("div#file_links") do
         final_link = page.find("a")
         final_link.trigger('click')
-        sleep(3)
       end
       expect(page.driver.browser.window_handles.count).to eql(num_windows + 1)
     end

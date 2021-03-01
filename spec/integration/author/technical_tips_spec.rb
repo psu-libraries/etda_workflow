@@ -2,7 +2,7 @@ RSpec.describe "Technical Tips page", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   before do
-    webaccess_authorize_author
+    oidc_authorize_author
     visit author_submissions_path
   end
 

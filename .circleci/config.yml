@@ -5,8 +5,8 @@ jobs:
     docker:
       - image: devago/docker-compose
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
     - setup_remote_docker
@@ -20,6 +20,12 @@ jobs:
           if [ -f etda-workflow.tar ]; then docker load -i etda-workflow.tar; fi
           docker build -t $REGISTRY_URL:$CIRCLE_SHA1 -t etda_workflow_web:latest --target base .
           docker save -o etda-workflow.tar etda_workflow_web:latest
+    - run:
+        name: "Setup Code Climate test-reporter"
+        command: |
+          # download test reporter as a static binary
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
+          chmod +x cc-test-reporter
     # - save_cache:
     #     paths:
     #       - etda-workflow.tar
@@ -28,12 +34,13 @@ jobs:
         root: .
         paths:
           - etda-workflow.tar
+          - cc-test-reporter
   rubocop:
     docker:
       - image: devago/docker-compose
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
     - attach_workspace:
@@ -47,12 +54,12 @@ jobs:
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
-  test_grad:
+  integration_test_grad:
     docker:
       - image: devago/docker-compose
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
     - attach_workspace:
@@ -60,38 +67,77 @@ jobs:
     - setup_remote_docker
     - checkout
     - run:
-        name: "Test Graduate"
+        name: "Integration Test Graduate"
         command: |
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          RAILS_ENV=test PARTNER=graduate docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          PARTNER=graduate docker-compose run --name=test --service-ports -d test
+          docker exec -e RAILS_ENV=test -e JS=true test /etda_workflow/bin/ci-rspec
+          docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
+          /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o integration_coverage.json -p /etda_workflow/ .resultset.json
           # docker cp test:/app/vendor .
+    - persist_to_workspace:
+        root: .
+        paths:
+          - integration_coverage.json
+  unit_test_grad:
+    docker:
+      - image: devago/docker-compose
+    environment:
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      DOCKER_USERNAME: 'robot$circleci'
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: "Unit Test Graduate"
+          command: |
+            docker load -i /tmp/workspace/etda-workflow.tar
+            export TAG=${CIRCLE_SHA1}
+            export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+            PARTNER=graduate docker-compose run --name=test --service-ports -d test
+            docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
+            docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
+            /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o unit_coverage.json -p /etda_workflow/ .resultset.json
+            # docker cp test:/app/vendor .
+      - persist_to_workspace:
+          root: .
+          paths:
+            - unit_coverage.json
   publish:
     docker:
       - image: devago/docker-compose
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
-      DOCKER_USERNAME: 'robot$circleci'   
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      DOCKER_USERNAME: 'robot$circleci'
     steps:
       - setup_remote_docker
       - checkout
       - attach_workspace:
           at: /tmp/workspace
       - run:
+          name: "Upload test coverage results to Code Climate"
+          command: |
+            /tmp/workspace/cc-test-reporter sum-coverage /tmp/workspace/*coverage.json -p 2 -o /tmp/workspace/summed_coverage.json
+            /tmp/workspace/cc-test-reporter upload-coverage -i /tmp/workspace/summed_coverage.json
+      - run:
           name: "Publish The Image"
           command: |
             docker load -i /tmp/workspace/etda-workflow.tar
             docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $REGISTRY_HOST
+            docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
             docker push $REGISTRY_URL:$CIRCLE_SHA1
-  test_milsch:
+  test_partners:
     docker:
       - image: devago/docker-compose
     environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
     - attach_workspace:
@@ -99,40 +145,33 @@ jobs:
     - setup_remote_docker
     - checkout
     - run:
-        name: "Test Milsch"
+        name: "Setup Workspace"
         command: |
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          RAILS_ENV=test PARTNER=milsch docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
-          # docker cp test:/app/vendor .
-  test_honors:
-    docker:
-      - image: devago/docker-compose
-    environment:
-      REGISTRY_HOST: harbor.dsrd.libraries.psu.edu
-      REGISTRY_URL: harbor.dsrd.libraries.psu.edu/library/etda-workflow
-      DOCKER_USERNAME: 'robot$circleci'
-    steps:
-    - attach_workspace:
-        at: /tmp/workspace
-    - setup_remote_docker
-    - checkout
     - run:
         name: "Test Honors"
         command: |
-          docker load -i /tmp/workspace/etda-workflow.tar
-          export TAG=${CIRCLE_SHA1}
-          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test PARTNER=honors docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
-          # docker cp test:/app/vendor .
+          docker-compose down
+    - run:
+        name: "Test Milsch"
+        command: |
+          RAILS_ENV=test PARTNER=milsch docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          docker-compose down
+    - run:
+        name: "Test SSET"
+        command: |
+          RAILS_ENV=test PARTNER=sset docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          docker-compose down
   deploy-qa:
     docker:
-      - image: harbor.dsrd.libraries.psu.edu/public/drone-utils:latest
+      - image: harbor.k8s.libraries.psu.edu/public/drone-utils:latest
     environment:
       CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
       CONFIG_ENV: qa
-      IMAGE_REPOSITORY: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      IMAGE_REPOSITORY: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
     - add_ssh_keys
     - run:
@@ -144,10 +183,10 @@ jobs:
             ./generate_circle_application.sh
   deploy-preview:
     docker:
-      - image: harbor.dsrd.libraries.psu.edu/public/drone-utils:latest
+      - image: harbor.k8s.libraries.psu.edu/public/drone-utils:latest
     environment:
       CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
-      IMAGE_REPOSITORY: harbor.dsrd.libraries.psu.edu/library/etda-workflow
+      IMAGE_REPOSITORY: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
     - add_ssh_keys
     - run:
@@ -166,18 +205,21 @@ workflows:
       - rubocop:
           requires:
             - build
-      - test_grad:
+      - integration_test_grad:
           requires:
             - build
-      - test_milsch:
+      - unit_test_grad:
           requires:
             - build
-      - test_honors:
+      - test_partners:
           requires:
             - build
       - publish:
           requires:
-            - test_grad
+            - unit_test_grad
+            - integration_test_grad
+            - test_partners
+            - rubocop
       - deploy-qa:
           requires:
             - publish

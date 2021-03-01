@@ -6,19 +6,21 @@ RSpec.describe "Manage Authors", js: true do
   let!(:author2) { FactoryBot.create :author, confidential_hold: true }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_authors_path
-    sleep(5)
   end
 
   it 'has a list of authors' do
-    submission1 = FactoryBot.create :submission, :waiting_for_final_submission_response, created_at: Time.zone.now
-    submission2 = FactoryBot.create :submission, :released_for_publication, created_at: (Time.zone.now - 2.years)
+    submission1 = FactoryBot.create :submission, :waiting_for_final_submission_response,
+                                    created_at: Time.zone.now,
+                                    updated_at: (Time.zone.now - 2.years)
+    submission2 = FactoryBot.create :submission, :released_for_publication,
+                                    created_at: (Time.zone.now - 2.years),
+                                    updated_at: (Time.zone.now - 2.years)
     author1.submissions = [submission1, submission2]
     allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
     allow_any_instance_of(Author).to receive(:populate_with_ldap_attributes).and_return(true)
     expect(page).to have_current_path(admin_authors_path)
-    sleep(3)
     expect(page).to have_content('Authors')
     expect(page).to have_content('Access ID')
     expect(page).to have_content('Last Name')
@@ -32,7 +34,6 @@ RSpec.describe "Manage Authors", js: true do
     expect(page).to have_content(author2.alternate_email_address)
     expect(page).to have_content(author1.psu_email_address)
     click_link(author1.access_id.to_s)
-    sleep(3)
     expect(page).to have_button('Update Author')
     expect(page).to have_current_path(edit_admin_author_path(author1))
     expect(page).to have_content(author1.psu_idn)
@@ -52,7 +53,6 @@ RSpec.describe "Manage Authors", js: true do
     expect(page).to have_field('Alternate email address', with: author1.alternate_email_address)
     expect(page).to have_field('Display your alternate email address on your eTD document summary page?') if current_partner.graduate?
     page.find('div.form-section-heading').trigger('click')
-    sleep(4)
     expect(page).to have_link(submission1.title.to_s)
     expect(page).to have_content('released for publication')
     expect(page).to have_link(submission2.title.to_s)
@@ -61,13 +61,14 @@ RSpec.describe "Manage Authors", js: true do
     expect(page).to have_link('Cancel')
     fill_in('First name', with: 'correctname')
     click_button('Update Author')
-    sleep 2
     # expect(page).to have_content('Author successfully updated')
     author1.reload
+    expect(author1.admin_edited_at).to be_truthy
+    expect(submission1.updated_at.year).to eq DateTime.now.year
+    expect(submission2.updated_at.year).to eq DateTime.now.year
     visit edit_admin_author_path(author1)
     expect(page).to have_field('First name', with: 'correctname')
     click_link('Cancel')
-    sleep 2
     expect(page).to have_content('Authors')
     expect(page).to have_content('Showing')
     expect(page).to have_content('PSU Email')

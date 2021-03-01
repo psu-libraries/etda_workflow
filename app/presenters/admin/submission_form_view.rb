@@ -27,7 +27,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'Edit Final Submission to be Released' if status_behavior.waiting_for_publication_release?
     return 'Edit Final Submission On Hold' if status_behavior.waiting_in_final_submission_on_hold?
     return 'Edit Released Submission' if status_behavior.released_for_publication? && open_access?
-    return 'Edit Restricted Theses' if status_behavior.released_for_publication_metadata_only? && restricted?
+    return 'Edit Restricted Submission' if status_behavior.released_for_publication_metadata_only? && restricted?
     return 'Edit Final Submission is Restricted to Penn State' if status_behavior.released_for_publication? && access_level == 'restricted_to_institution'
 
     'Edit Incomplete Format Review'
@@ -64,31 +64,6 @@ class Admin::SubmissionFormView < SimpleDelegator
     address << "#{author.address_2}<br />" if author.address_2.present?
     address << "#{author.city}, " if author.city.present?
     address << "#{author.state} #{author.zip}"
-  end
-
-  def using_lionpath_record?
-    using_lionpath?
-  end
-
-  def committee_form
-    return 'standard_committee_form' unless using_lionpath?
-
-    'lionpath_committee_form'
-  end
-
-  def program_information_partial
-    return 'standard_program_information' unless using_lionpath?
-
-    'lionpath_program_information'
-  end
-
-  def defense_date_partial_for_final_fields
-    # defense date is hidden when using lionpath b/c it's displayed in format review section
-    # hidden value is necessary when editing
-    # standard datepicker displays when lion path is not active
-    return '/admin/submissions/edit/standard_defended_at_date' unless using_lionpath?
-
-    '/admin/submissions/edit/defended_at_date_hidden'
   end
 
   def psu_only(label)
@@ -138,30 +113,6 @@ class Admin::SubmissionFormView < SimpleDelegator
     return "class='form-section-body collapse' aria-expanded='false'".html_safe if collapse_content?(section_heading)
 
     "class='form-section-body collapse in'".html_safe
-  end
-
-  def button_message
-    if approval_status_behavior.status == 'approved' && approval_status_behavior.head_of_program_status == 'approved' && degree.degree_type.approval_configuration.head_of_program_is_approving
-      "Final Submission to be Released"
-    elsif approval_status_behavior.status == 'approved' && !degree.degree_type.approval_configuration.head_of_program_is_approving
-      "Final Submission to be Released"
-    elsif approval_status_behavior.status == 'rejected' || approval_status_behavior.head_of_program_status == 'rejected'
-      "Committee Review Rejected"
-    else
-      "Final Submission is Pending"
-    end
-  end
-
-  def confirmation_message
-    if approval_status_behavior.status == 'approved' && approval_status_behavior.head_of_program_status == 'approved' && degree.degree_type.approval_configuration.head_of_program_is_approving
-      "The committee for this submission has already approved.  Move this submission to 'Final Submission to be Released' and skip the committee review?"
-    elsif approval_status_behavior.status == 'approved' && !degree.degree_type.approval_configuration.head_of_program_is_approving
-      "The committee for this submission has already approved.  Move this submission to 'Final Submission to be Released' and skip the committee review?"
-    elsif approval_status_behavior.status == 'rejected' || approval_status_behavior.head_of_program_status == 'rejected'
-      "The committee for this submission has already rejected.  Move this submission to 'Committee Review Rejected' and skip the committee review?"
-    else
-      "Are you sure you would like to approve this submission?  This will initiate the committee review stage, which will send emails out to members of the committee."
-    end
   end
 
   private
