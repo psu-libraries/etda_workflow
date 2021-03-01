@@ -247,7 +247,7 @@ en:
     access_level:
       open_access: Open Access
       open_access_attr:
-        description_html: 'Allows free worldwide access to the entire work beginning immediately after degree conferral.  Appropriate for the majority of theses submissions in immediately fulling the requirement for making the work available to the public.'
+        description_html: 'Allows free worldwide access to the entire work beginning immediately after degree conferral.  (Most common)'
         scope: released_for_publication
       restricted_to_institution: 'Restricted (Penn State Only)'
       restricted_to_institution_attr:
@@ -255,7 +255,7 @@ en:
         scope: final_restricted_institution
       restricted: Restricted
       restricted_attr:
-        description_html: 'The option selected secures the body of the final paper for a period of two years. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final paper and confirmed by OTM. At the end of the two-year period, the work will be released automatically for open access unless a written request is made to extend this option for an additional year. The written request for an extension should be sent to the School of Science, Engineering, and Technology, W215 Olmsted Building, Middletown, PA 17057 or by email to <a href="mailto:ssetinfo@psu.edu">ssetinfo@psu.edu</a>.  Please note: No one will be able to view your work under this option.'
+        description_html: 'Restricts the entire work for the purpose of filing a patent. At the end of the two-year period, the status will automatically change to Open Access. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final paper , and confirmed by OTM.  If no Penn State University funds were utilized in this final paper please enter “NOPSUFUNDS”  for the Invention Disclosure Number field below.'
         scope: final_withheld
     download:
       login_html: 'Login using your Penn State access account to view the paper.'

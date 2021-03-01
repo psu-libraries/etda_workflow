@@ -1,5 +1,10 @@
 <fieldset>
   <legend>Document Availability</legend>
+  <% if current_partner.sset? %>
+    <div class="alert alert-info">
+      <p class="hint"><u>At this time submissions are not being made public.</u>  If they are in the future, please select the access level for your submission.</p>
+    </div>
+  <% end %>
     <div class="author">
       <%= f.input :access_level,
                   as: :radio_buttons,
