@@ -78,6 +78,7 @@ class LdapUniversityDirectory
     return false if result.blank?
     return true if result.include? "cn=umg/psu.sas.etda-#{current_partner.id}-admins,dc=psu,dc=edu"
     return true if result.include? "cn=umg/psu.dsrd.etda_#{current_partner.id}_admin_users,dc=psu,dc=edu"
+    return true if result.include? "cn=umg/psu.etda_#{current_partner.id}_admin_users,dc=psu,dc=edu"
 
     false
   end
