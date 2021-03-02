@@ -62,6 +62,7 @@ header {
 
   #logo-old {
     padding-top: 9px;
+    padding-left: 30px;
     a {
       color: #ffffff;
       font-size: $font-size-h3;
@@ -168,7 +169,7 @@ footer {
 
   .navbar-default .navbar-list > li > a {
     color: $blue-light;
-    margin-left: 3em;
+    margin-right: 6em;
 
     &:hover {
       color: #ffffff;
