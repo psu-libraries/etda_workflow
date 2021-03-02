@@ -3,12 +3,12 @@
     <h1><%= current_partner.program_label.pluralize %></h1>
   </div>
   <div class="col-xs-3 col-sm-3">
-    <%= link_to "<span class='fa fa-plus'></span> #{current_partner.program_label}".html_safe, new_admin_program_path, class: 'btn btn-sm btn-default add-button pull-right' %>
+    <%= link_to "<span class='fa fa-plus'></span> #{current_partner.program_label}".html_safe, new_admin_program_path, class: 'btn btn-sm btn-default add-button float-right' %>
   </div>
 </div>
 
 <table id="programs-index" class="table table-striped datatable" data-ajax-url="<%= admin_programs_path %>">
-  <div class="pull-right">
+  <div class="float-right">
     <span><label for="starts-with_check">Match names beginning with: </label><input id="starts-with_check", type="checkbox" /></span>
   </div>
   <thead>
