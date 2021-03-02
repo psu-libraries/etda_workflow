@@ -8,7 +8,7 @@ require('bootstrap/dist/css/bootstrap.min.css');
 require('bootstrap/dist/css/bootstrap.css');
 require('../admin/initialize_datatables.js');
 require('../styles/admin/datatable_images.css.scss');
-require( 'datatables.net-bs' );
+require( 'datatables.net-bs4' );
 require('../styles/base/_base.scss');
 require('../styles/admin/screen.scss');
 require('../styles/admin/print.scss');
