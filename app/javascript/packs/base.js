@@ -5,7 +5,7 @@
 
 var $ = require('jquery');
 window.jQuery = $;
-
+require('bootstrap')
 require('jquery-ui');
 require('jquery-ujs');
 
