@@ -23,14 +23,18 @@
       <% end %>
 
       <%= render partial: 'title_and_checkbox', locals: {f: f} %>
+      <br/>
       <%= render partial: 'semester_year', locals: {f: f}  %>
       <%= render partial: 'defended_at_date', locals: {f: f} if current_partner.graduate? %>
+      <br/>
 
       <%= f.input :abstract, as: :text, required: true, label: 'Abstract', input_html: {rows: 8} %>
 
       <%= f.input :delimited_keywords, as: :string, label: 'Keywords', wrapper: :hint_top, hint: Keyword.hint, required: true, input_html: { class: 'tagit' } %>
+      <br/>
 
       <%= render partial: @view.author_access_level_view, locals: {f: f}  %>
+      <br/>
 
       <div id="final-submission-file-fields">
         <%= render partial: 'author/submissions/final_submission_file_label' %>

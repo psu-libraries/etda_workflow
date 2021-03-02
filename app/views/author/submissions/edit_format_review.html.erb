@@ -3,6 +3,7 @@
     <h1>Upload Format Review Files</h1>
   </div>
 </div>
+<br/>
 
 <div class="row">
   <div class="col-xs-12">
@@ -18,6 +19,7 @@
           </div>
       <% end %>
       <%= render partial: '/author/submissions/title_and_checkbox', locals: {f: f} %>
+      <br/>
       <%= render partial: '/author/submissions/semester_year', locals: {f: f}  %>
       <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} %>
       </br>
@@ -37,6 +39,8 @@
            <span class="fa fa-plus"></span> Additional File
           <% end %>
       </div>
+
+      <br/>
 
       <div class="form-group actions">
         <div class="col-xs-12 col-sm-6 col-md-8">

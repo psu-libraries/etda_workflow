@@ -247,6 +247,17 @@ form {
   }
 }
 
+.radio_buttons {
+  margin-right: 8px;
+}
+
+.boolean {
+  margin-right: 8px;
+}
+
+input[name="submission[access_level]"] {
+  margin-right: 8px;
+}
 
 .file-link {
   @extend .form-control;
