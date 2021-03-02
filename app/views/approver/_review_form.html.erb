@@ -23,7 +23,7 @@
                     label: 'Were Federal Funds utilized for this submission?'.html_safe %>
       <% end %>
       <div class="form-group actions col-xs-4">
-        <%= f.button :submit, "Submit Review" %>
+        <%= f.button :submit, "Submit Review", class: 'btn-success' %>
         <% if @review_complete %>
           <%= render 'review_message' %>
         <% end %>
