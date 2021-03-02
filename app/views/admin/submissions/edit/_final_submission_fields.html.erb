@@ -15,7 +15,7 @@
                                 data: {association_insertion_node: '#keyword-fields', association_insertion_method: 'append'},
                                 form_name: 'keyword_fields',
                                 partial: 'shared/keyword_fields' do %>
-      <span class="glyphicon glyphicon-plus"></span>Additional Keyword
+      <span class="fa fa-plus"></span>Additional Keyword
     <% end %>
   </div>
 
@@ -43,7 +43,7 @@
         data: { association_insertion_node: '#final-submission-file-fields', association_insertion_method: 'append' },
         form_name: 'file_fields',
         partial: 'file_fields' do %>
-      <span class="glyphicon glyphicon-plus"></span> Additional File
+      <span class="fa fa-plus"></span> Additional File
     <% end %>
   </div>
   <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} %>
