@@ -20,13 +20,11 @@
     <div id="content-container" class="container-fluid">
       <%= render partial: 'shared/flash_messages' unless flash.empty? %>
       <div id="content-row" class="row">
-        <div class="col-xs-12 col-sm-4">
-        </div>
 
-          <%= yield %>
+        <%= yield %>
 
-        </div>
       </div>
+    </div>
   </main>
 </div>
 

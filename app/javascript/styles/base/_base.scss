@@ -685,32 +685,34 @@ a.cancel-link{
   padding-bottom: 10px;
 }
 
-#main-page{
-  margin-top: 20px;
-}
-
 .top-container{
   padding-bottom: 20px;
 }
 
-#admin-col{
-  margin-left: 3rem;
+.author-col{
+  margin-left: 15%;
+}
+
+.admin-col{
   background-color: #000000;
   border-radius: 5px;
+  padding-bottom: 50px;
+  padding-left: 30px;
+  padding-top: 25px;
+  width: 300px;
 }
 
-#admin-box {
-  padding-left: 20px;
-  padding-bottom: 30px;
-}
-
-#admin-box > li {
+.admin-box > li {
   padding-left: 30px;
   list-style-type: none;
 }
 
-#admin-box > div {
+.admin-box > div {
   color: white;
+}
+
+.about-page {
+  margin-left: 50px;
 }
 
 .submission_info {
