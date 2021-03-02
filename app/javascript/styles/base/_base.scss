@@ -136,6 +136,8 @@ ul.navbar-list {
 
 #main-navigation {
   margin-top: 20px;
+  margin-right: 50px;
+  margin-left: 50px;
 
   .nav {
     padding-bottom: 20px;
@@ -504,6 +506,10 @@ select.disabled {
   border-radius: $border-radius-large;
   width: 95%;
   margin: 0.5em auto;
+}
+
+.btn-author-nav {
+  width: 100%;
 }
 
 .nav-pills > li.active > a, .nav-pills > li > a:hover, .nav-pills > li.active > a:hover {
