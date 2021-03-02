@@ -5,7 +5,8 @@
 </div>
 <div>
 
-  <p>Existing <%= 'submission'.pluralize(@view.submissions.count) %> found.  The status of your previously submitted <%= 'document'.pluralize(@view.submissions.count) %> is listed below.</p>
+  <br/>
+  <p class="hint">Existing <%= 'submission'.pluralize(@view.submissions.count) %> found.  The status of your previously submitted <%= 'document'.pluralize(@view.submissions.count) %> is listed below:</p>
 
 
 </div>
@@ -14,7 +15,7 @@
   <% @view.submissions.each do |submission| %>
     <% @submission_view = Author::SubmissionView.new submission %>
 
-    <div id="submission-<%= submission.id %>" class="col-xs-12 submission">
+    <div id="submission-<%= submission.id %>" class="col-lg-6 submission">
       <div class="heading">
         <h3><%= submission.title %></h3>
 
