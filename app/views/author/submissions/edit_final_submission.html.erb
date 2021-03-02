@@ -62,7 +62,7 @@
       <div class="form-group actions col-xs-6">
         <%= f.button :submit, class: "btn-primary author-final-submit", value: "Submit final files for review" unless current_partner.graduate? %>
         <%= '<span class="btn btn-primary author-final-submit" id="submit-final-submission">Submit final files for review</span>'.html_safe if current_partner.graduate? %>
-        <%= link_to "Cancel", author_root_path, class: 'btn cancel-link' %>
+        <%= link_to "Cancel", author_root_path, class: 'btn btn-light' %>
       </div>
   <% end %>
 </div>
