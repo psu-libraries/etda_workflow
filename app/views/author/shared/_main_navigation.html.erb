@@ -3,16 +3,16 @@
     <nav id="main-navigation">
       <ul class="nav nav-pills nav-stacked">
         <li class="<%= author_nav_active?('submissions') %>">
-          <%= link_to 'Submissions', author_root_path, {class: 'btn btn-author-nav'} %>
+          <%= link_to 'Submissions', author_root_path, {class: 'btn btn-nav'} %>
         </li>
         <li class="<%= author_nav_active?('author') %>">
-          <%= link_to 'Update My Contact Information', edit_author_author_path(@author), {class: 'btn btn-author-nav'}%>
+          <%= link_to 'Update My Contact Information', edit_author_author_path(@author), {class: 'btn btn-nav'}%>
         </li>
         <li class="<%= author_nav_active?('published') %>">
-          <%= link_to 'My Published Submissions', author_published_submissions_index_path, {class: 'btn btn-author-nav'} %>
+          <%= link_to 'My Published Submissions', author_published_submissions_index_path, {class: 'btn btn-nav'} %>
         </li>
         <li class="<%= author_nav_active?('tips') %> ">
-          <%= link_to 'Technical Tips', :author_technical_tips, {class: 'btn btn-author-nav'} %>
+          <%= link_to 'Technical Tips', :author_technical_tips, {class: 'btn btn-nav'} %>
         </li>
       </ul>
     </nav>

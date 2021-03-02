@@ -137,7 +137,7 @@ ul.navbar-list {
 #main-navigation {
   margin-top: 20px;
   margin-right: 50px;
-  margin-left: 50px;
+  margin-left: 100px;
 
   .nav {
     padding-bottom: 20px;
@@ -519,8 +519,13 @@ select.disabled {
   margin: 0.5em auto;
 }
 
-.btn-author-nav {
+.btn-nav {
+  color: white;
   width: 100%;
+}
+
+.dropdown-item {
+  background-color: white;
 }
 
 .nav-pills > li.active > a, .nav-pills > li > a:hover, .nav-pills > li.active > a:hover {
