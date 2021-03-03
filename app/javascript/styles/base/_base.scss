@@ -522,8 +522,8 @@ select.disabled {
 #main-navigation > ul > li{
   background-color: $medium-blue-bright;
   border-radius: $border-radius-large;
-  width: 95%;
-  margin: 0.5em auto;
+  width: 100%;
+  margin: 0.5em 0px 0px 0px;
 }
 
 .btn-nav {
