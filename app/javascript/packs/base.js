@@ -5,7 +5,9 @@
 
 var $ = require('jquery');
 window.jQuery = $;
-require('bootstrap')
+
+require('../styles/base/_base.scss');
+require('bootstrap');
 require('jquery-ui');
 require('jquery-ujs');
 
@@ -16,7 +18,6 @@ require('jquery-ui/ui/widgets/button');
 require('../../../vendor/assets/javascripts/tag-it.js');
 require('../../../vendor/assets/javascripts/breakpoints.js');
 require('../base/cocoon.js');
-require('../styles/base/_base.scss');
 require('../base/alerts.js');
 require('../base/display_first_nested_field.js');
 require('../base/layout.js');

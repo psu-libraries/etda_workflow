@@ -1,7 +1,7 @@
 <div class="form-section-heading" data-toggle="collapse" data-target="#final-submission-information">Final Submission Information
   <span class="hide-show-indicator fa-rotate-90"></span>
 </div>
-<div id="final-submission-information" class="form-section-body collapse in">
+<div id="final-submission-information" class="form-section-body collapse show">
 
   <%= render partial: 'admin/submissions/edit/release_date_history' %>
 
@@ -9,9 +9,9 @@
   <%= f.input :abstract, as: :text, label: 'Abstract<span class="required-asterisk">*</span>'.html_safe, input_html: { class: 'can-toggle-editability', rows: 10 } %>
 
   <div class="links cocoon-links">
-    <label>Keywords<span class="required">*</span></label>
+    <label><strong>Keywords<span class="required">*</span></strong></label>
     <%= link_to_add_association f, :keywords,
-                                class: 'btn btn-default btn-sm',
+                                class: 'btn btn-light btn-sm',
                                 data: {association_insertion_node: '#keyword-fields', association_insertion_method: 'append'},
                                 form_name: 'keyword_fields',
                                 partial: 'shared/keyword_fields' do %>

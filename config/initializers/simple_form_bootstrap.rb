@@ -2,7 +2,7 @@
 
 # Use this setup block to configure all options available in SimpleForm.
 SimpleForm.setup do |config|
-  config.button_class = 'btn btn-default'
+  config.button_class = 'btn btn-light'
   config.boolean_label_class = nil
 
   config.wrappers :vertical_form, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|

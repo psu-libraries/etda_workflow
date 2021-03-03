@@ -5,6 +5,7 @@
     <% if current_partner.graduate? %>
       <p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.list.#{@submission.degree_type.slug}.notice") %></p>
     <% end %>
+    <br/>
     <%= simple_form_for @submission,
                         url:  author_submission_committee_members_path(@submission) do |submission_form| %>
       <%= submission_form.simple_fields_for :committee_members do |committee_member_form| %>
