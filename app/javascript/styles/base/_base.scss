@@ -38,6 +38,30 @@ a {
   }
 }
 
+/* Override DataTables pagination color schemes */
+.page-item.active .page-link {
+  color: #fff !important;
+  background-color: $primary !important;
+  border-color: $primary !important;
+}
+.page-item.disabled .page-link {
+  color: #8c9094 !important;
+  background-color: #fff !important;
+  border-color: #d0d4d8 !important;
+}
+
+.page-link {
+  color: $primary !important;
+  background-color: #fff !important;
+  border: 1px solid #d0d4d8 !important;
+}
+
+.page-link:hover {
+  color: #fff !important;
+  background-color: $primary !important;
+  border-color: $primary !important;
+}
+
 .btn-primary {
   background-color: $primary;
   border-color: $primary;
