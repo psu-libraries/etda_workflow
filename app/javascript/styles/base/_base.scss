@@ -30,6 +30,10 @@ $border-radius-large:  6px !default;
 $primary: $medium-blue-bright;
 $grid-float-breakpoint: 992px;
 
+label.control-label {
+  font-weight: bold;
+}
+
 a {
   color: $primary;
 
