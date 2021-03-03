@@ -1,4 +1,4 @@
-<div class="content-container">
+<div class="col-sm-12 approver-index">
   <div class="row">
     <div class="col-sm-12">
       <h1>My Reviews</h1>
@@ -8,11 +8,15 @@
   </br>
 
   <div class="row">
-    <div id="approver-select-reviews" class="select-reviews">
+    <div class="select-reviews">
+      <p><strong>Filter by:</strong></p>
+      <div id="approver-select-reviews">
+      </div>
     </div>
-    <p><strong>Filter by:</strong></p>
   </div>
-  <div>
+  <br/>
+
+  <div class="col-sm-12">
     <table id="approver-committees-index" class="approver-committees-index table table-striped datatable" data-ajax-url="<%= approver_root_path %>">
       <thead>
         <tr>

@@ -524,15 +524,21 @@ select.disabled {
   width: 100%;
 }
 
-.dropdown-item {
+.dropdown-item{
   background-color: white;
 }
 
-.nav-pills > li.active > a, .nav-pills > li > a:hover, .nav-pills > li.active > a:hover {
+.nav-pills > li.active > a, .nav-pills > li > a:hover, .nav-pills > li.active > a:hover{
   background-color: $blue-light;
   color: $gray-dark;
 }
 
+.nav-pills {
+  .active {
+    background-color: $blue-light;
+    color: $gray-dark;
+  }
+}
 .home-text {
   color: $gray-med-dark;
 }
@@ -814,10 +820,17 @@ a.contact-support-link {
 
 // Approver styles
 .select-reviews {
-  float: right;
-  margin:0 20px 10px 0;
+  margin-left: 25px;
+}
+
+.approver-review {
+  margin-left: 25%;
 }
 
 #approver-committees-index span {
   display:none;
+}
+
+.approver-index {
+  margin-left: 25%;
 }
