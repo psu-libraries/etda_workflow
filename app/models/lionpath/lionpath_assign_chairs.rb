@@ -41,6 +41,6 @@ class Lionpath::LionpathAssignChairs
   end
 
   def submissions
-    Submission.where('(submissions.year > ? OR (submissions.year = ? AND submissions.semester <> ?)) AND submissions.lionpath_updated_at IS NOT NULL', 2021, 2021, 'Spring')
+    Submission.where('submissions.year >= ? AND submissions.lionpath_updated_at IS NOT NULL', DateTime.now.year)
   end
 end
