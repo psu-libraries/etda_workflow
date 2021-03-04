@@ -8,8 +8,8 @@ class Lionpath::LionpathProgram
     if author.submissions.present?
 
       if Semester.current == "2021 Spring"
-        sp2021_subs = author.submissions.where("submissions.year = 2021 AND submissions.semester = 'Spring'")
-        return if sp2021_subs.present?
+        submissions = sp2021_subs(author)
+        return if submissions.present?
       end
 
       submission = author.submissions.find_by(degree_id: degree.id, program: program)
@@ -73,5 +73,10 @@ class Lionpath::LionpathProgram
   def degree(row)
     incoming_dg = row['Degree'].to_s.upcase
     Degree.find_by(name: incoming_dg)
+  end
+
+  def sp2021_subs(author)
+    author.submissions
+        .where("submissions.year = 2021 AND submissions.semester = 'Spring' AND submissions.lionpath_updated_at IS NULL")
   end
 end
