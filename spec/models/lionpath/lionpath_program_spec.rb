@@ -117,8 +117,10 @@ RSpec.describe Lionpath::LionpathProgram do
     end
 
     context 'when another Spring 2021 submission exists that was imported from LionPATH' do
-      let(:sp2021_sub) { FactoryBot.create :submission, semester: 'Spring', program: program, degree: degree_ms,
-                                           year: 2021, lionpath_updated_at: DateTime.now }
+      let(:sp2021_sub) do
+        FactoryBot.create :submission, semester: 'Spring', program: program, degree: degree_ms,
+                                       year: 2021, lionpath_updated_at: DateTime.now
+      end
 
       context 'when that submission is the same record that is being imported' do
         it 'updates existing record' do

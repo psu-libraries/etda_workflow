@@ -77,6 +77,6 @@ class Lionpath::LionpathProgram
 
   def sp2021_subs(author)
     author.submissions
-        .where("submissions.year = 2021 AND submissions.semester = 'Spring' AND submissions.lionpath_updated_at IS NULL")
+          .where("submissions.year = 2021 AND submissions.semester = 'Spring' AND submissions.lionpath_updated_at IS NULL")
   end
 end
