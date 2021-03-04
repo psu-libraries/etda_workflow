@@ -19,6 +19,11 @@ RSpec.describe Lionpath::LionpathAssignChairs do
       it 'does not get a chair' do
         expect { lionpath_assign_chairs.call }.to change(CommitteeMember, :count).by 0
       end
+
+      it 'does not update chair' do
+        committee_member.update committee_role: program_head_role
+        expect { lionpath_assign_chairs.call }.not_to(change { CommitteeMember.find(committee_member.id) })
+      end
     end
 
     context 'when submission does not have a lionpath_updated_at timestamp' do
