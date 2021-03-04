@@ -79,4 +79,16 @@ RSpec.describe Lionpath::LionpathCommittee do
       end
     end
   end
+
+  context 'when author has two dissertations and one is not from lionpath' do
+    let!(:submission_2) do
+      FactoryBot.create :submission, author: author, degree: degree,
+                        status: 'collecting program information'
+    end
+    it 'imports the committee for the lionpath dissertation' do
+      expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 1
+      submission_2.reload
+      expect(submission_2.committee_members.count).to eq 0
+    end
+  end
 end

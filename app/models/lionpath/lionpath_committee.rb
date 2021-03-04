@@ -32,7 +32,9 @@ class Lionpath::LionpathCommittee
     this_author = author(row)
     return if this_author.blank? || this_author.submissions.blank?
 
-    this_author.submissions.find { |s| s.degree_type.slug == 'dissertation' }
+    this_author.submissions.joins(degree: [:degree_type])
+                           .where("degree_types.slug = 'dissertation' AND submissions.lionpath_updated_at IS NOT NULL")
+                           .first
   end
 
   def invalid_date?(submission)
