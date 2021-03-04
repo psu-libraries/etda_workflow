@@ -1,11 +1,17 @@
 class Lionpath::LionpathProgram
   def import(row)
-    return if year(row) < 2021 || invalid_date?(row)
+    return if year(row) < 2021
 
     author = author(row)
     degree = degree(row)
     program = program(row)
     if author.submissions.present?
+
+      if Semester.current == "2021 Spring"
+        submissions = sp2021_subs(author)
+        return if submissions.present?
+      end
+
       submission = author.submissions.find_by(degree_id: degree.id, program: program)
 
       if submission.present?
@@ -69,7 +75,8 @@ class Lionpath::LionpathProgram
     Degree.find_by(name: incoming_dg)
   end
 
-  def invalid_date?(row)
-    year(row) == 2021 && semester(row) == 'Spring'
+  def sp2021_subs(author)
+    author.submissions
+          .where("submissions.year = 2021 AND submissions.semester = 'Spring' AND submissions.lionpath_updated_at IS NULL")
   end
 end

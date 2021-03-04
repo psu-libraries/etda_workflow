@@ -27,16 +27,6 @@ RSpec.describe Lionpath::LionpathCommittee do
     end
   end
 
-  context "when author's submission is during Spring 2021" do
-    before do
-      submission.update year: 2021, semester: 'Spring'
-    end
-
-    it 'does not import data' do
-      expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 0
-    end
-  end
-
   context "when author's submission does not have a lionpath_updated_at timestamp" do
     before do
       submission.update lionpath_updated_at: nil
@@ -87,6 +77,19 @@ RSpec.describe Lionpath::LionpathCommittee do
         expect(submission.committee_members.first.committee_role).to eq committee_role
         expect(submission.committee_members.first.email).to eq 'abc123@psu.edu'
       end
+    end
+  end
+
+  context 'when author has two dissertations and one is not from lionpath' do
+    let!(:submission_2) do
+      FactoryBot.create :submission, author: author, degree: degree,
+                                     status: 'collecting program information'
+    end
+
+    it 'imports the committee for the lionpath dissertation' do
+      expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 1
+      submission_2.reload
+      expect(submission_2.committee_members.count).to eq 0
     end
   end
 end

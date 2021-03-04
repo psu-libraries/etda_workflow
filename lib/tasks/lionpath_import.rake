@@ -1,7 +1,7 @@
 namespace :lionpath_import do
 
-  desc "Core Lionpath import imports Program Chairs, Student Plans,
-        and Committee Members in that order"
+  desc "Core Lionpath import imports Committee Roles, Program Chairs,
+        Student Plans, and Committee Members in that order"
   task core: :environment do
     return unless current_partner.graduate?
 
