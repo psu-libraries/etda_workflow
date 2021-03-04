@@ -41,6 +41,6 @@ class Lionpath::LionpathAssignChairs
   end
 
   def submissions
-    Submission.where('submissions.year >= ? AND submissions.lionpath_updated_at IS NOT NULL', DateTime.now.year)
+    Submission.where('submissions.created_at >= ? AND submissions.lionpath_updated_at IS NOT NULL', (DateTime.now - 1.month))
   end
 end

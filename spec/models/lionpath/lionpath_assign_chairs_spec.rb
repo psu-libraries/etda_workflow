@@ -9,9 +9,9 @@ RSpec.describe Lionpath::LionpathAssignChairs do
     let!(:program) { FactoryBot.create :program }
     let!(:program_chair) { FactoryBot.create :program_chair, program: program, campus: 'UP', access_id: 'abc123' }
 
-    context 'when submission is before current year' do
+    context 'when submission was created before 1 month ago' do
       let!(:submission) do
-        FactoryBot.create :submission, year: (DateTime.now.year - 1.year), degree: degree, program: program,
+        FactoryBot.create :submission, created_at: (DateTime.now - 2.months), degree: degree, program: program,
                                        campus: 'UP', lionpath_updated_at: DateTime.now
       end
       let!(:committee_member) { FactoryBot.create :committee_member, submission: submission }
