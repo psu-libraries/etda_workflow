@@ -71,6 +71,10 @@ a {
   border-color: $primary;
 }
 
+.content-main {
+  padding-left: 50px;
+}
+
 html {
   min-height: 100%;
 }
@@ -173,8 +177,8 @@ ul.navbar-list {
 
 #main-navigation {
   margin-top: 20px;
-  margin-right: 50px;
-  margin-left: 100px;
+  margin-right: 25px;
+  margin-left: 50px;
 
   .nav {
     padding-bottom: 20px;
