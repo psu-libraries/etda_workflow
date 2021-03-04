@@ -27,16 +27,6 @@ RSpec.describe Lionpath::LionpathCommittee do
     end
   end
 
-  context "when author's submission is during Spring 2021" do
-    before do
-      submission.update year: 2021, semester: 'Spring'
-    end
-
-    it 'does not import data' do
-      expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 0
-    end
-  end
-
   context "when author's submission does not have a lionpath_updated_at timestamp" do
     before do
       submission.update lionpath_updated_at: nil
