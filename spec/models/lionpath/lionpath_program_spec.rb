@@ -25,10 +25,10 @@ RSpec.describe Lionpath::LionpathProgram do
 
   let(:row_3) do
     {
-      'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Exp Grad' => 2211,
-      'Acadademic Plan' => 'BIOE_PHD', 'Transcript Descr' => 'Bioengineering (PHD)', 'Milestone Code' => nil,
-      'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil, 'Alternate Email' => 'test@psu.edu',
-      'Campus' => 'UP'
+      'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Campus ID' => 'xxb13', 'Exp Grad' => 2211,
+      'Acadademic Plan' => 'BIOE_PHD', 'Degree' => 'PHD', 'Transcript Descr' => 'Bioengineering (PHD)',
+      'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
+      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP'
     }
   end
 
@@ -96,11 +96,23 @@ RSpec.describe Lionpath::LionpathProgram do
   end
 
   context 'when program from lionpath is during Spring 2021' do
-    let!(:author) { FactoryBot.create :author, psu_idn: '999999999' }
+    let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'xxb13' }
     let!(:program) { FactoryBot.create :program, code: row_3['Acadademic Plan'] }
 
-    it 'does not import the record' do
-      expect { lionpath_program.import(row_2) }.to change(Submission, :count).by 0
+    context 'when no other Spring 2021 submission exists' do
+      it 'imports the record' do
+        expect { lionpath_program.import(row_3) }.to change(Submission, :count).by 1
+      end
+    end
+
+    context 'when another Spring 2021 submission exists' do
+      let(:sp2021_sub) { FactoryBot.create :submission, semester: 'Spring', year: 2021 }
+
+      it 'does not import the record' do
+        author.submissions << sp2021_sub
+        author.reload
+        expect { lionpath_program.import(row_3) }.to change(Submission, :count).by 0
+      end
     end
   end
 end
