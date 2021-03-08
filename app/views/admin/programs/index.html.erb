@@ -1,14 +1,14 @@
 <div class="row">
-  <div class="col-xs-9 col-sm-9">
+  <div class="col-sm-10">
     <h1><%= current_partner.program_label.pluralize %></h1>
   </div>
-  <div class="col-xs-3 col-sm-3">
+  <div class="float-right">
     <%= link_to "<span class='fa fa-plus'></span> #{current_partner.program_label}".html_safe, new_admin_program_path, class: 'btn btn-sm btn-light add-button' %>
   </div>
 </div>
 <br/>
 
-<div class="col-sm-10">
+<div class="col-sm-12">
   <table id="programs-index" class="table table-striped datatable" data-ajax-url="<%= admin_programs_path %>">
     <thead>
       <tr>

@@ -152,25 +152,23 @@ table.dataTable {
 .panel {
   border-radius: 10px;
   padding-bottom: 10px;
-  margin-top: 30px;
+  margin-top: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
 
   &.filter {
     display: block;
     color: $text-color;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin: 10px;
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
     @include transition(all 0.2s ease);
 
     .panel-body {
-      margin-left: 15px;
+      margin-left: 20px;
       margin-top: 15px;
     }
 
     .panel-heading {
-      padding-top: 5px;
-      padding-left: 20px;
-      padding-right: 20px;
-      padding-bottom: 10px;
+      padding: 1px 20px 1px 20px;
       border-top-right-radius: 10px;
       border-top-left-radius: 10px;
       background-color: $gray-lightest;
@@ -219,8 +217,15 @@ table.dataTable {
   &.no-submissions {
     color: $gray-light;
 
+    .panel-body {
+      margin-left: 20px;
+      margin-top: 15px;
+    }
+
     .panel-heading {
       background-color: #fff;
+      padding-left: 20px;
+      padding-right: 20px;
 
       .panel-title {
         color: #767676;

@@ -10,8 +10,10 @@
   </div>
   <div class="col-sm-10 committee-details">
     <div class="status-row">
-    <%= f.input :name, disabled: disabled_bool, input_html: { class: 'ldap-lookup' } %>
-    <%= f.input :email, disabled: disabled_bool %>
+        <%= f.input :name, disabled: disabled_bool, input_html: { class: 'ldap-lookup' } %>
+      <div class="col-sm-3">
+        <%= f.input :email, disabled: disabled_bool %>
+      </div>
     </div>
     <div class="status-row">
       <%= f.input :status, collection: Hash[CommitteeMember::STATUS.collect{ |item| [item, item.capitalize] }],
