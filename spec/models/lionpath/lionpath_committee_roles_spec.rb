@@ -18,7 +18,7 @@ RSpec.describe Lionpath::LionpathCommitteeRoles do
     end
 
     it 'updates the existing role' do
-      expect { lionpath_committee_roles.import(row1) }.to change { committee_role.reload.lionpath_updated_at }
+      expect { lionpath_committee_roles.import(row1) }.to(change { committee_role.reload.lionpath_updated_at })
       expect(CommitteeRole.count).to eq 12
       committee_role.reload
       expect(committee_role.is_active).to eq false
@@ -33,7 +33,7 @@ RSpec.describe Lionpath::LionpathCommitteeRoles do
     end
 
     it 'creates a new role' do
-      expect { lionpath_committee_roles.import(row2) }.to change { CommitteeRole.count }.by 1
+      expect { lionpath_committee_roles.import(row2) }.to change(CommitteeRole, :count).by 1
       expect(CommitteeRole.last.name).to eq 'Primary Supervisor'
       expect(CommitteeRole.last.code).to eq 'PRIM'
       expect(CommitteeRole.last.lionpath_updated_at).to be_truthy
