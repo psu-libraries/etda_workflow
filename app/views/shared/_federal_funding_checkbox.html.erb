@@ -4,5 +4,12 @@
 <p><%= f.input :federal_funding, as: :radio_buttons,
                label: false, wrapper: :vertical_radio_and_checkboxes,
                required: true,
-               collection: [['I confirm that, as required by federal guidelines, all federal funds used for the work described in this dissertation have been explicitly acknowledged in the document, along with a disclaimer indicating that the findings and conclusions do not necessarily reflect the view of the funding agency. [Please see the Research Terms Clarification to 2CFR § 200.328 (pp. 20-21) for the precise language to be used.]', true],['I confirm that no federal funds were used for the work described in this dissertation.',false]]%>
+               collection: [["I confirm that, as required by federal guidelines, all federal funds
+                              used for the work described in this #{f.object.degree_type.to_s}
+                              have been explicitly acknowledged in the document, along with a disclaimer
+                              indicating that the findings and conclusions do not necessarily reflect the
+                              view of the funding agency. [Please see the Research Terms Clarification to
+                              2CFR § 200.328 (pp. 20-21) for the precise language to be used.]", true],
+                              ['I confirm that no federal funds were used for the work described in this
+                              dissertation.',false]]%>
 </div>
