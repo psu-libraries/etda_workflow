@@ -9,6 +9,8 @@ class Program < ApplicationRecord
 
   after_initialize :set_is_active_to_true
 
+  # Programs are imported from LionPATH during the LIonPATH import
+  # These defaults can be used to set up the development env
   DEFAULT_NAMES = ["Aerospace Engineering (AERSP)", "Architectural Engineering (AE)",
                    "Astronomy and Astrophysics (ASTRO)", "Biochemistry and Molecular Biology (BMB)",
                    "Biological Engineering (BME)", "Biology (BIOL)", "Biomedical Engineering (BME)",
