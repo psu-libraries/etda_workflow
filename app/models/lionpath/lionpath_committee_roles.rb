@@ -16,7 +16,8 @@ class Lionpath::LionpathCommitteeRoles
       degree_type_id: dissertation_id,
       name: row['Description'],
       is_active: status,
-      num_required: 0
+      num_required: 0,
+      lionpath_updated_at: DateTime.now
     }
   end
 

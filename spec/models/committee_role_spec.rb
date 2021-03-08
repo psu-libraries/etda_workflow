@@ -16,6 +16,9 @@ RSpec.describe CommitteeRole, type: :model do
   it { is_expected.to have_db_index(:degree_type_id) }
   it { is_expected.to belong_to(:degree_type).class_name('DegreeType') }
   it { is_expected.to have_many :committee_members }
+  it { is_expected.to have_db_column(:lionpath_updated_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
 
   describe "the CommitteeRole seed data" do
     context "seed committee role data for the current partner" do
