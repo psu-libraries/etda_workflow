@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_04_182913) do
+ActiveRecord::Schema.define(version: 2021_03_08_173409) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -134,6 +134,9 @@ ActiveRecord::Schema.define(version: 2021_02_04_182913) do
     t.integer "num_required", default: 0, null: false
     t.boolean "is_active", default: true, null: false
     t.string "code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "lionpath_updated_at"
     t.index ["degree_type_id"], name: "committee_roles_degree_type_id_fk"
   end
 
@@ -216,6 +219,8 @@ ActiveRecord::Schema.define(version: 2021_02_04_182913) do
     t.bigint "phone"
     t.string "email"
     t.datetime "lionpath_updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["program_id"], name: "index_program_chairs_on_program_id"
   end
 
