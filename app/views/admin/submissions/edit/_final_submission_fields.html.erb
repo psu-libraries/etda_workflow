@@ -24,6 +24,7 @@
       <%= render 'shared/keyword_fields', keyword_fields: keyword %>
     <% end %>
   </div>
+  <br/>
 
   <%= f.input :access_level, as: :radio_buttons,
               collection: AccessLevel.display.map { |k| ["<strong> #{k[:label]} </strong> -- #{k[:description]} #{render partial: 'restricted_notes', locals: {f: f} if @view.psu_only(k[:label])}".html_safe, k[:type], { class: "#{k[:type]}" }] },
