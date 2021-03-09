@@ -1,5 +1,5 @@
 <div class="col-sm-12">
-  <h2><%= @view.title %></h2>
+  <h1><%= @view.title %></h1>
   <%= render partial: 'email_template_link', locals: { submission: @submission } %>
 
   <strong><%= "#{@view.withdraw_message}".html_safe %></strong>

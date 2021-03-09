@@ -830,11 +830,15 @@ a.cancel-link{
 }
 
 #committee_member_table_audit {
-  width: 80%;
+  width: 100%;
 }
 
 .submission_committee_members_federal_funding_used {
   display: flex;
+
+  .radio {
+    margin-right: 10px;
+  }
 }
 
 .funding-radios {
@@ -851,10 +855,6 @@ img.docs-image {
 a.contact-support-link {
   display: inline-block;
   padding-bottom: 20px;
-}
-
-.approved-at-column {
-  width: 100px;
 }
 
 // Approver styles
