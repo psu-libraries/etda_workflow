@@ -172,13 +172,14 @@ table.dataTable {
       border-top-right-radius: 10px;
       border-top-left-radius: 10px;
       background-color: $gray-lightest;
-      border-color: $link-color;
 
       .panel-title {
         color: $link-color;
+        margin-top: 15px;
+        margin-bottom: 15px;
 
         .badge {
-          background-color: $link-color;
+          background-color: $primary;
           color: #fff;
         }
 
