@@ -26,7 +26,7 @@ en:
       url_slug: 'honors'
       email:
         url:  'https://honors-explore.libraries.psu.edu'
-        address: honorsthesis@psu.edu
+        address: SHCAcademics@psu.edu
         list: 'ul-etda-honors-admin@pennstateoffice365.onmicrosoft.com'
         signature: 'Schreyer Honors College<br /> University Park, PA'
         final_submission_rejected:
@@ -38,7 +38,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         final_submission_approved:
           message: |
@@ -53,7 +53,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu 
                     814-867-2505
         format_review_received:
           message: |
@@ -65,7 +65,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu 
                     814-867-2505
         final_submission_received:
           message: |
@@ -77,7 +77,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         committee_member_review_requested:
           message: |
@@ -90,7 +90,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         committee_member_review_reminder:
           message: |
@@ -102,7 +102,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         committee_rejected_admin:
           message: |
@@ -113,7 +113,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         committee_rejected_author:
           message: |
@@ -126,7 +126,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         committee_approved:
           message: |
@@ -137,7 +137,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         release_for_publication:
           message: |
@@ -148,7 +148,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         release_for_publication_metadata_only:
           message: |
@@ -160,7 +160,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         access_level_updated:
           message: |
@@ -175,7 +175,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
     program:
       label: Area of Honors
@@ -249,7 +249,7 @@ en:
         scope: final_restricted_institution
       restricted: 'Restricted'
       restricted_attr:
-        description_html: 'The option selected secures the body of the thesis for a period of two years. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final honors thesis and confirmed by OTM. At the end of the two-year period, the work will be released automatically for open access unless a written request is made to extend this option for an additional year. The written request for an extension should be sent 30 days prior to the end of the two-year period to the Honors College Records Department, 10 Schreyer Honors College, The Pennsylvania State University, University Park, PA 16802, or by e-mail to <a href="mailto:honorsthesis@psu.edu">honorsthesis@psu.edu</a>. Please note: No one will be able to view your work under this option.'
+        description_html: 'The option selected secures the body of the thesis for a period of two years. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final honors thesis and confirmed by OTM. At the end of the two-year period, the work will be released automatically for open access unless a written request is made to extend this option for an additional year. The written request for an extension should be sent 30 days prior to the end of the two-year period to the Honors College Records Department, 10 Schreyer Honors College, The Pennsylvania State University, University Park, PA 16802, or by e-mail to <a href="mailto:SHCAcademics@psu.edu">SHCAcademics@psu.edu</a>. Please note: No one will be able to view your work under this option.'
         scope: final_withheld
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
