@@ -143,7 +143,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
 
     context 'submission is open access' do
-      it "doesn't display help text" do
+      it "does display help text" do
         submission.update_attribute :access_level, 'open_access'
         visit "approver/committee_member/#{committee_member.id}"
 
