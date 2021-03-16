@@ -19,9 +19,7 @@ class Lionpath::LionpathCommittee
 
       cm_external = this_submission.committee_members.find_by(external_to_psu_id: row['Access ID'].downcase,
                                                               committee_role: committee_role)
-      if cm_external.present?
-        return
-      end
+      return if cm_external.present?
     end
 
     CommitteeMember.create({ submission: this_submission }.merge(committee_member_attrs(row, committee_role)))
@@ -44,9 +42,7 @@ class Lionpath::LionpathCommittee
       is_voting: true,
       lionpath_updated_at: DateTime.now
     }
-    if self.class.external_ids.include?(row['Access ID'].downcase)
-      hash.merge! external_to_psu_id: row['Access ID'].downcase
-    end
+    hash[:external_to_psu_id] = row['Access ID'].downcase if self.class.external_ids.include?(row['Access ID'].downcase)
     hash
   end
 

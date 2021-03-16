@@ -126,8 +126,8 @@ RSpec.describe Lionpath::LionpathCommittee do
 
       context 'when the committee member has been edited' do
         it 'does not create a record or update anything' do
-          committee_member.update({ name: "Test Tester", email: 'tester@email.com', committee_role: committee_role2,
-                                    access_id: nil, external_to_psu_id: 'mgc25' })
+          committee_member.update(name: "Test Tester", email: 'tester@email.com', committee_role: committee_role2,
+                                  access_id: nil, external_to_psu_id: 'mgc25')
           expect { lionpath_committee.import(row2) }.to change { submission.committee_members.count }.by 0
           committee_member.reload
           expect(committee_member.email).to eq 'tester@email.com'

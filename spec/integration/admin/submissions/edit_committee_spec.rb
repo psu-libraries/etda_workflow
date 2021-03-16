@@ -68,7 +68,7 @@ RSpec.describe "Editing committee member information", js: true, honors: true, m
     end
 
     context 'when one of the committee members is external to PSU' do
-      let(:external_role) { FactoryBot.create :committee_role, name: 'Special Member', code: 'S', degree_type: DegreeType.default}
+      let(:external_role) { FactoryBot.create :committee_role, name: 'Special Member', code: 'S', degree_type: DegreeType.default }
       let!(:committee_member) do
         FactoryBot.create :committee_member, submission: submission, committee_role: external_role,
                                              lionpath_updated_at: DateTime.now, external_to_psu_id: 'mgc25',

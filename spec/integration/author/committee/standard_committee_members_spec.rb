@@ -119,13 +119,13 @@ RSpec.describe 'The standard committee form for authors', js: true do
         end
 
         context 'when a committee member is external to PSU' do
-          let(:external_role) { FactoryBot.create :committee_role, name: 'Special Member', code: 'S', degree_type: DegreeType.default}
+          let(:external_role) { FactoryBot.create :committee_role, name: 'Special Member', code: 'S', degree_type: DegreeType.default }
 
           context 'when the committee member has been updated' do
             let!(:committee_member_4) do
               FactoryBot.create :committee_member, submission: submission_2, committee_role: external_role,
-                                lionpath_updated_at: DateTime.now, external_to_psu_id: 'mgc25',
-                                access_id: 'mgc25', name: 'Member Committee', email: 'mgc25@psu.edu'
+                                                   lionpath_updated_at: DateTime.now, external_to_psu_id: 'mgc25',
+                                                   access_id: 'mgc25', name: 'Member Committee', email: 'mgc25@psu.edu'
             end
 
             it 'has an open and blank form for this committee member' do
@@ -143,8 +143,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
           context 'when the committee member has been updated' do
             let!(:committee_member_4) do
               FactoryBot.create :committee_member, submission: submission_2, committee_role: external_role,
-                                lionpath_updated_at: DateTime.now, external_to_psu_id: 'mgc25',
-                                access_id: nil, name: 'Test Person', email: 'test@email.com'
+                                                   lionpath_updated_at: DateTime.now, external_to_psu_id: 'mgc25',
+                                                   access_id: nil, name: 'Test Person', email: 'test@email.com'
             end
 
             it 'has an open filled out form for this committee member' do
