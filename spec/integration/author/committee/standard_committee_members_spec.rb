@@ -117,6 +117,48 @@ RSpec.describe 'The standard committee form for authors', js: true do
           submission_2.reload
           expect(submission_2.status).to eq 'collecting format review files'
         end
+
+        context 'when a committee member is external to PSU' do
+          let(:external_role) { FactoryBot.create :committee_role, name: 'Special Member', code: 'S', degree_type: DegreeType.default }
+
+          context 'when the committee member has been updated' do
+            let!(:committee_member_4) do
+              FactoryBot.create :committee_member, submission: submission_2, committee_role: external_role,
+                                                   lionpath_updated_at: DateTime.now, external_to_psu_id: 'mgc25',
+                                                   access_id: 'mgc25', name: 'Member Committee', email: 'mgc25@psu.edu'
+            end
+
+            it 'has an open and blank form for this committee member' do
+              skip 'graduate only' unless current_partner.graduate?
+
+              visit edit_author_submission_committee_members_path(submission_2)
+              num = submission_2.committee_members.count - 1
+              expect(find("#submission_committee_members_attributes_#{num}_name").disabled?).to eq false
+              expect(find("#submission_committee_members_attributes_#{num}_name").value).to eq ''
+              expect(find("#submission_committee_members_attributes_#{num}_email").disabled?).to eq false
+              expect(find("#submission_committee_members_attributes_#{num}_email").value).to eq ''
+            end
+          end
+
+          context 'when the committee member has been updated' do
+            let!(:committee_member_4) do
+              FactoryBot.create :committee_member, submission: submission_2, committee_role: external_role,
+                                                   lionpath_updated_at: DateTime.now, external_to_psu_id: 'mgc25',
+                                                   access_id: nil, name: 'Test Person', email: 'test@email.com'
+            end
+
+            it 'has an open filled out form for this committee member' do
+              skip 'graduate only' unless current_partner.graduate?
+
+              visit edit_author_submission_committee_members_path(submission_2)
+              num = submission_2.committee_members.count - 1
+              expect(find("#submission_committee_members_attributes_#{num}_name").disabled?).to eq false
+              expect(find("#submission_committee_members_attributes_#{num}_name").value).to eq committee_member_4.name
+              expect(find("#submission_committee_members_attributes_#{num}_email").disabled?).to eq false
+              expect(find("#submission_committee_members_attributes_#{num}_email").value).to eq committee_member_4.email
+            end
+          end
+        end
       end
 
       context 'when lionpath committee is not present' do

@@ -92,4 +92,47 @@ RSpec.describe Lionpath::LionpathCommittee do
       expect(submission_2.committee_members.count).to eq 0
     end
   end
+
+  context 'when committee member is external to PSU' do
+    let!(:committee_role2) { FactoryBot.create :committee_role, code: 'S', name: 'Special Member' }
+    let(:row2) do
+      { 'Access ID' => 'mgc25', 'Last Name' => 'Committee', 'First Name' => 'Member', 'Role' => 'S',
+        'Committee' => 'DOCCM', 'Committee Long Descr' => 'Special Member', 'Student ID' => '999999999',
+        'Student Campus ID' => 'def123', 'Suprvsr Nbr' => '932352541' }
+    end
+
+    context 'when the committee member does not yet exist in the db' do
+      it 'imports the record' do
+        expect { lionpath_committee.import(row2) }.to change { submission.committee_members.count }.by 1
+        expect(submission.committee_members.last.access_id).to eq 'mgc25'
+        expect(submission.committee_members.last.external_to_psu_id).to eq 'mgc25'
+      end
+    end
+
+    context 'when the committee member already exists in the db' do
+      let!(:committee_member) do
+        FactoryBot.create :committee_member, access_id: 'mgc25', email: 'mgc25@psu.edu', name: 'Member Committee',
+                                             committee_role: committee_role2, submission: submission
+      end
+
+      context 'when the committee member in the db does not have an external_to_psu_id' do
+        it 'just updates the is_external_to_psu field' do
+          expect { lionpath_committee.import(row2) }.to change { submission.committee_members.count }.by 0
+          committee_member.reload
+          expect(committee_member.external_to_psu_id).to eq 'mgc25'
+          expect(committee_member.email).to eq 'mgc25@psu.edu'
+        end
+      end
+
+      context 'when the committee member has been edited' do
+        it 'does not create a record or update anything' do
+          committee_member.update(name: "Test Tester", email: 'tester@email.com', committee_role: committee_role2,
+                                  access_id: nil, external_to_psu_id: 'mgc25')
+          expect { lionpath_committee.import(row2) }.to change { submission.committee_members.count }.by 0
+          committee_member.reload
+          expect(committee_member.email).to eq 'tester@email.com'
+        end
+      end
+    end
+  end
 end

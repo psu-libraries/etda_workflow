@@ -25,6 +25,7 @@ RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_column(:last_reminder_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:is_voting).of_type(:boolean) }
   it { is_expected.to have_db_column(:lionpath_updated_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:external_to_psu_id).of_type(:string) }
   it { is_expected.to have_db_index(:approver_id) }
   it { is_expected.to belong_to(:submission).class_name('Submission') }
   it { is_expected.to belong_to(:committee_role).class_name('CommitteeRole') }
@@ -153,8 +154,7 @@ RSpec.describe CommitteeMember, type: :model do
       it "doesn't update access_id" do
         cm.access_id = 'test123'
         allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
-        cm.update email: 'test123@psu.edu'
-        expect(cm.access_id).to eq 'test123'
+        expect { cm.update email: 'test123@psu.edu' }.to change(cm, :access_id).to nil
       end
     end
 
