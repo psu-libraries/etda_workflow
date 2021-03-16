@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(version: 2021_03_16_142853) do
     t.boolean "federal_funding_used"
     t.bigint "approver_id"
     t.datetime "lionpath_updated_at"
-    t.boolean "is_external_to_psu"
+    t.string "external_to_psu_id"
     t.index ["approver_id"], name: "index_committee_members_on_approver_id"
     t.index ["committee_role_id"], name: "committee_members_committee_role_id_fk"
     t.index ["submission_id"], name: "committee_members_submission_id_fk"
