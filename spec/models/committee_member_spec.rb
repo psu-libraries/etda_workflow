@@ -154,8 +154,7 @@ RSpec.describe CommitteeMember, type: :model do
       it "doesn't update access_id" do
         cm.access_id = 'test123'
         allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
-        cm.update email: 'test123@psu.edu'
-        expect(cm.access_id).to eq 'test123'
+        expect { cm.update email: 'test123@psu.edu' }.to change(cm, :access_id).to nil
       end
     end
 
