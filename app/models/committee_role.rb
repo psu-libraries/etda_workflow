@@ -8,7 +8,7 @@ class CommitteeRole < ApplicationRecord
   # The preferred dissertation roles are imported during the LionPATH import
   # However, these roles still exist for legacy submissions
   GRADUATE_ROLES = { 'dissertation' => [
-    { name: 'Program Head/Chair', num_required: 0, is_active: true },
+    { name: 'Program Head/Chair', num_required: 0, is_active: true, is_program_head: true },
     { name: 'Dissertation Advisor/Co-Advisor', num_required: 1, is_active: true },
     { name: 'Committee Chair/Co-Chair', num_required: 1, is_active: true },
     { name: 'Committee Member', num_required: 2, is_active: true },
@@ -17,7 +17,7 @@ class CommitteeRole < ApplicationRecord
     { name: 'Special Signatory', num_required: 0, is_active: true }
   ],
                      'master_thesis' => [
-                       { name: 'Program Head/Chair', num_required: 0, is_active: true },
+                       { name: 'Program Head/Chair', num_required: 0, is_active: true, is_program_head: true },
                        { name: 'Thesis Advisor/Co-Advisor', num_required: 1, is_active: true },
                        { name: 'Committee Member', num_required: 0, is_active: true },
                        { name: 'Special Signatory', num_required: 0, is_active: true }
@@ -38,7 +38,7 @@ class CommitteeRole < ApplicationRecord
   SSET_ROLES = { 'final_paper' => [
     { name: 'Paper Instructor (Advisor)', num_required: 1, is_active: true },
     { name: 'Paper Reader',               num_required: 1, is_active: true },
-    { name: 'Department Head',            num_required: 1, is_active: true }
+    { name: 'Department Head',            num_required: 1, is_active: true, is_program_head: true }
   ] }.freeze
 
   ROLES = { 'graduate' => CommitteeRole::GRADUATE_ROLES, 'honors' => CommitteeRole::HONORS_ROLES,
