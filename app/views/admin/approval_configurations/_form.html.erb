@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <% if current_partner.graduate? %>
+  <% if current_partner.graduate? || current_partner.sset? %>
     <div class="row">
       <div class="col-sm-12">
       <%= f.label :email_admins, 'Require approval from head of graduate program?' %>
