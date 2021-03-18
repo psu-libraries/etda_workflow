@@ -34,7 +34,7 @@ RSpec.describe LionpathCommitteeCheckService do
     context 'when submission is from lionpath, is a dissertation, and does not have a voting committee' do
       let(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
       let(:submission) { FactoryBot.create :submission, lionpath_updated_at: DateTime.now, degree: degree }
-      let(:chair_role) { CommitteeRole.find_by(name: 'Program Head/Chair') }
+      let(:chair_role) { CommitteeRole.find_by(is_program_head: true) }
       let(:committee_member) { FactoryBot.create :committee_member, committee_role: chair_role, is_voting: false }
 
       it 'raises error' do

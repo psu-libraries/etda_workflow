@@ -14,7 +14,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
     let(:committee_member) { FactoryBot.create :committee_member, submission: submission, access_id: 'approverflow' }
     let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
     let(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, email_admins: true }
-    let(:head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: submission.degree.degree_type) }
+    let(:head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', is_program_head: true, degree_type: submission.degree.degree_type) }
 
     context 'when author tries visiting various pages' do
       before do
@@ -212,7 +212,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
     let(:committee_member) { FactoryBot.create :committee_member, submission: submission, access_id: 'approverflow' }
     let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
     let(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, email_admins: true }
-    let(:head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: submission.degree.degree_type) }
+    let(:head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', is_program_head: true, degree_type: submission.degree.degree_type) }
 
     let(:head_of_program) { FactoryBot.create :committee_member, :required, submission: submission, committee_role: head_role, access_id: 'approverflow' } if current_partner.graduate?
 

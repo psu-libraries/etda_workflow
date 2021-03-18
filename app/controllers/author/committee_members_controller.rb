@@ -42,8 +42,6 @@ class Author::CommitteeMembersController < AuthorController
     flash[:notice] = 'Committee updated successfully'
     if params[:commit] == "Save and Continue Submission" || params[:commit] == 'Verify Committee'
       redirect_to author_root_path
-    elsif params[:commit] == "Update Program Head/Chair Information"
-      redirect_to author_root_path
     else
       redirect_to edit_author_submission_committee_members_path(@submission)
     end

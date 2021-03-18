@@ -44,7 +44,7 @@ class Lionpath::LionpathAssignChairs
   end
 
   def chair_role(submission)
-    CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: degree_type(submission))
+    CommitteeRole.find_by(is_program_head: true, degree_type: degree_type(submission))
   end
 
   def submission_chair(submission)

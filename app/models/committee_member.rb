@@ -3,7 +3,6 @@
 class CommitteeMember < ApplicationRecord
   class ProgramHeadMissing < StandardError; end
 
-  # This maps ldap values to one or more values needed for committee member autocomplete
   validate :validate_email
   validate :one_head_of_program_check
   validates :committee_role_id,
@@ -14,6 +13,8 @@ class CommitteeMember < ApplicationRecord
   belongs_to :committee_role
   belongs_to :approver, optional: true
   has_one :committee_member_token, dependent: :destroy
+
+  delegate :is_program_head, to: :committee_role
 
   STATUS = ["pending", "approved", "rejected"].freeze
 
@@ -41,9 +42,9 @@ class CommitteeMember < ApplicationRecord
     CommitteeMember.where(submission_id: submission_id).pluck(:committee_role_id, :is_required, :name, :email)
   end
 
-  def self.head_of_program(submission)
-    program_head_role = CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: submission.degree.degree_type)
-    CommitteeMember.where(submission: submission).find_by(committee_role: program_head_role)
+  def self.program_head(submission)
+    head_role = CommitteeRole.find_by(is_program_head: true, degree_type: submission.degree_type)
+    submission.committee_members.find_by(committee_role: head_role)
   end
 
   def validate_email
@@ -61,11 +62,9 @@ class CommitteeMember < ApplicationRecord
   end
 
   def reminder_email_authorized?
-    if last_reminder_at
-      ((DateTime.now.to_time - last_reminder_at.to_time) / 60 / 60) > 24
-    else
-      true
-    end
+    return ((DateTime.now.to_time - last_reminder_at.to_time) / 60 / 60) > 24 if last_reminder_at
+
+    true
   end
 
   def status=(new_status)
@@ -97,8 +96,10 @@ class CommitteeMember < ApplicationRecord
     return if new_committee_role_id.blank? || (new_committee_role_id == self[:committee_role_id])
 
     self[:committee_role_id] = new_committee_role_id
-    self[:is_voting] = true unless CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Program Head/Chair'
-    self[:is_voting] = false if CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' || CommitteeRole.find(new_committee_role_id).name == 'Program Head/Chair'
+    self[:is_voting] = true unless CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' ||
+                                   CommitteeRole.find(new_committee_role_id).is_program_head
+    self[:is_voting] = false if CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' ||
+                                CommitteeRole.find(new_committee_role_id).is_program_head
     ldap_result = LdapUniversityDirectory.new.retrieve_committee_access_id(email)
     return unless committee_member_token.blank? && ldap_result.blank?
 
@@ -114,10 +115,13 @@ class CommitteeMember < ApplicationRecord
   private
 
   def one_head_of_program_check
-    return true unless committee_role.present? && submission.present? && committee_role.name == 'Program Head/Chair'
+    return true unless committee_role.present? && submission.present? && is_program_head
 
-    head_committee_member_id = (CommitteeMember.head_of_program(submission) ? CommitteeMember.head_of_program(submission).id : nil)
-    return true if (head_committee_member_id.nil? || head_committee_member_id == self[:id]) && (submission.committee_members.collect { |n| n.committee_role.present? ? n.committee_role.name : nil }.count('Program Head/Chair') < 2)
+    program_head = CommitteeMember.program_head(submission)
+    head_committee_member_id = (program_head ? program_head.id : nil)
+    return true if (head_committee_member_id.nil? || head_committee_member_id == self[:id]) &&
+                   (submission.committee_members.collect { |n| n.committee_role.present? ? n.is_program_head : nil }
+                   .count(true) < 2)
 
     errors.add(:committee_role_id, 'An author may only have one Program Head/Chair.')
     false
