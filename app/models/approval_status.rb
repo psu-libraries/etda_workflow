@@ -21,7 +21,7 @@ class ApprovalStatus
   end
 
   def head_of_program_status
-    return 'approved' if !current_partner.graduate? || head_of_program.blank?
+    return 'approved' if head_of_program.blank?
 
     head_of_program.status
   end
