@@ -243,22 +243,59 @@ RSpec.describe Submission, type: :model do
     end
 
     context '#voting_committee_members' do
-      it 'returns a list of voting committee members', honors: true, milsch: true do
-        degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
-        submission = Submission.new(degree: degree)
-        submission.build_committee_members_for_partners
-        submission.committee_members.each_with_index do |cm, index|
-          next if index == 0
+      let!(:degree2) { FactoryBot.create :degree, degree_type: DegreeType.default, name: 'mydegree' }
+      let!(:submission2) { FactoryBot.create :submission, degree: degree2 }
+      let(:head_role) { CommitteeRole.find_by(degree_type: degree2.degree_type, is_program_head: true) }
 
-          cm.is_voting = true
-          cm.access_id = 'abc123' if index == 1
-          cm.access_id = 'abc123' if index == 2
-          cm.access_id = 'abc456' if index == 3
-          cm.access_id = 'abc789' if index == 4
-          cm.access_id = 'abc321' if index == 5
+      context 'when head of program is approving' do
+        it 'returns a list of voting committee members without duplication that does not include program head' do
+          allow(submission2).to receive(:head_of_program_is_approving?).and_return true
+          create_committee(submission2)
+          submission2.committee_members.each_with_index do |cm, index|
+            if index == 0
+              cm.committee_role = head_role
+              cm.is_voting = false
+              cm.access_id = 'abc'
+              cm.save!
+              next
+            end
+
+            cm.is_voting = true
+            cm.access_id = 'abc123' if index == 1
+            cm.access_id = 'abc123' if index == 2
+            cm.access_id = 'abc456' if index == 3
+            cm.access_id = 'abc789' if index == 4
+            cm.access_id = 'abc321' if index == 5
+            cm.save!
+          end
+          submission2.reload
+          expect(submission2.voting_committee_members.count).to eq(submission2.committee_members.count - 2)
         end
-        expect(submission.voting_committee_members.count).to eq(submission.committee_members.to_ary.count - 2) if current_partner.graduate?
-        expect(submission.voting_committee_members.count).to eq(submission.committee_members.to_ary.count - 1) unless current_partner.graduate?
+      end
+      context 'when head of program is not approving' do
+        it 'returns a list of voting committee members without duplication that includes the program head' do
+          allow(submission2).to receive(:head_of_program_is_approving?).and_return false
+          create_committee(submission2)
+          submission2.committee_members.each_with_index do |cm, index|
+            if index == 0
+              cm.committee_role = head_role
+              cm.is_voting = false
+              cm.access_id = 'abc'
+              cm.save!
+              next
+            end
+
+            cm.is_voting = true
+            cm.access_id = 'abc123' if index == 1
+            cm.access_id = 'abc123' if index == 2
+            cm.access_id = 'abc456' if index == 3
+            cm.access_id = 'abc789' if index == 4
+            cm.access_id = 'abc321' if index == 5
+            cm.save!
+          end
+          submission2.reload
+          expect(submission2.voting_committee_members.count).to eq(submission2.committee_members.count - 1)
+        end
       end
     end
 

@@ -68,6 +68,17 @@ RSpec.describe ApprovalStatus, type: :model do
             expect(described_class.new(submission).status).to eq('approved')
           end
         end
+
+        context 'when head of program is not approving but is present' do
+          let(:head_role) { FactoryBot.create :committee_role, is_program_head: true }
+
+          it 'includes program head in core vote' do
+            submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'approved', is_voting: true)
+            submission.committee_members << FactoryBot.create(:committee_member, committee_role: head_role, submission: submission, status: 'pending', is_voting: false)
+
+            expect(described_class.new(submission).status).to eq('none')
+          end
+        end
       end
 
       context "when 1 rejection is permitted" do
@@ -239,10 +250,18 @@ RSpec.describe ApprovalStatus, type: :model do
       FactoryBot.create(:committee_member, status: 'pending', committee_role_id: head_role.id, submission: submission) if current_partner.graduate?
     end
 
-    it 'grabs status of Program Head/Chair' do
-      skip 'Graduate Only' unless current_partner.graduate?
+    context 'when head of program is approving' do
+      it 'grabs status of Program Head/Chair' do
+        allow_any_instance_of(Submission).to receive(:head_of_program_is_approving?).and_return(true)
+        expect(described_class.new(submission).head_of_program_status).to eq('pending')
+      end
+    end
 
-      expect(described_class.new(submission).head_of_program_status).to eq('pending')
+    context 'when head of program is not approving' do
+      it 'returns approved' do
+        allow_any_instance_of(Submission).to receive(:head_of_program_is_approving?).and_return(false)
+        expect(described_class.new(submission).head_of_program_status).to eq('approved')
+      end
     end
   end
 end

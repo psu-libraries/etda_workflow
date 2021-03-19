@@ -21,7 +21,7 @@ class ApprovalStatus
   end
 
   def head_of_program_status
-    return 'approved' if head_of_program.blank?
+    return 'approved' if !@current_submission.head_of_program_is_approving? || head_of_program.blank?
 
     head_of_program.status
   end
@@ -64,7 +64,7 @@ class ApprovalStatus
 
   def all_have_voted?
     committee_members.each do |member|
-      next if member == head_of_program
+      next if member == head_of_program && @current_submission.head_of_program_is_approving?
 
       return false unless member.status == 'approved' || member.status == 'rejected'
     end

@@ -299,7 +299,8 @@ class Submission < ApplicationRecord
       voting_no_dups << member unless seen_access_ids.include? member.access_id
       seen_access_ids << member.access_id
     end
-    voting_no_dups
+    voting_no_dups << CommitteeMember.program_head(self) unless head_of_program_is_approving?
+    voting_no_dups.compact
   end
 
   # Initialize our committee members with empty records for each of the required roles.
