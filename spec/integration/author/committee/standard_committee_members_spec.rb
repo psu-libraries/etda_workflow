@@ -12,6 +12,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
                                            is_voting: false, name: 'Test Tester', email: 'abc123@psu.edu',
                                            lionpath_updated_at: DateTime.now, submission_id: submission.id)
     end
+
   else
     let(:submission) { FactoryBot.create :submission, :collecting_committee, author: author }
   end
@@ -91,6 +92,10 @@ RSpec.describe 'The standard committee form for authors', js: true do
           FactoryBot.create(:committee_member, committee_role: head_role_2, is_required: true,
                                                is_voting: false, name: 'Test Tester', email: 'abc123@psu.edu',
                                                lionpath_updated_at: DateTime.now, submission_id: submission_2.id)
+        end
+        let!(:approval_config) do
+          FactoryBot.create :approval_configuration, head_of_program_is_approving: true,
+                                                     degree_type: DegreeType.default
         end
         let!(:committee_member_1) { FactoryBot.create :committee_member, submission: submission_2, lionpath_updated_at: DateTime.now }
         let!(:committee_member_2) { FactoryBot.create :committee_member, submission: submission_2, lionpath_updated_at: DateTime.now }
@@ -172,6 +177,10 @@ RSpec.describe 'The standard committee form for authors', js: true do
           FactoryBot.create :committee_member, committee_role: head_role_2, is_required: true,
                                                is_voting: false, name: 'Test Tester', email: 'abc123@psu.edu',
                                                lionpath_updated_at: DateTime.now, submission_id: submission_2.id
+        end
+        let!(:approval_config) do
+          FactoryBot.create :approval_configuration, head_of_program_is_approving: true,
+                                                     degree_type: DegreeType.default
         end
 
         it 'does not allow submission of committee and raises error' do

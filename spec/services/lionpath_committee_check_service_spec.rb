@@ -2,6 +2,10 @@ require 'rails_helper'
 require 'shoulda-matchers'
 
 RSpec.describe LionpathCommitteeCheckService do
+  let!(:approval_config) do
+    FactoryBot.create :approval_configuration, head_of_program_is_approving: true, degree_type: DegreeType.default
+  end
+
   describe '#check_submission' do
     context 'when submission is not from lionpath' do
       let(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }

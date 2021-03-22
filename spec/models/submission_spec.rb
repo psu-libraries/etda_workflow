@@ -272,6 +272,7 @@ RSpec.describe Submission, type: :model do
           expect(submission2.voting_committee_members.count).to eq(submission2.committee_members.count - 2)
         end
       end
+
       context 'when head of program is not approving' do
         it 'returns a list of voting committee members without duplication that includes the program head' do
           allow(submission2).to receive(:head_of_program_is_approving?).and_return false
