@@ -5,7 +5,7 @@ RSpec.describe Lionpath::LionpathAssignChairs do
 
   describe '#call' do
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.first }
-    let!(:program_head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: degree.degree_type) }
+    let!(:program_head_role) { CommitteeRole.find_by(is_program_head: true, degree_type: degree.degree_type) }
     let!(:program) { FactoryBot.create :program }
     let!(:program_chair) { FactoryBot.create :program_chair, program: program, campus: 'UP', access_id: 'abc123' }
 

@@ -17,6 +17,7 @@ RSpec.describe CommitteeRole, type: :model do
   it { is_expected.to belong_to(:degree_type).class_name('DegreeType') }
   it { is_expected.to have_many :committee_members }
   it { is_expected.to have_db_column(:lionpath_updated_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:is_program_head).of_type(:boolean) }
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
 
@@ -25,15 +26,6 @@ RSpec.describe CommitteeRole, type: :model do
       it "creates the essential committee roles collections" do
         expect(DegreeType.default.committee_roles.order('name asc').collect(&:name)).to eq(@ordered_roles_list)
       end
-    end
-  end
-
-  describe 'add_lp_role' do
-    it 'creates a committee role if it does not already exist' do
-      bogus_name = 'bogus committee role name'
-      expect(described_class.find_by_name(bogus_name.to_s)).to be_nil
-      described_class.add_lp_role(bogus_name.to_s)
-      expect(described_class.find_by_name(bogus_name.to_s)).not_to be_nil
     end
   end
 

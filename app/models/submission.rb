@@ -299,7 +299,8 @@ class Submission < ApplicationRecord
       voting_no_dups << member unless seen_access_ids.include? member.access_id
       seen_access_ids << member.access_id
     end
-    voting_no_dups
+    voting_no_dups << CommitteeMember.program_head(self) unless head_of_program_is_approving?
+    voting_no_dups.compact
   end
 
   # Initialize our committee members with empty records for each of the required roles.
@@ -317,7 +318,7 @@ class Submission < ApplicationRecord
     committee_members.each do |committee_member|
       committee_member.update! approval_started_at: DateTime.now
       seen_access_ids = []
-      next if committee_member.committee_role.name == 'Program Head/Chair' || seen_access_ids.include?(committee_member.access_id)
+      next if committee_member.is_program_head || seen_access_ids.include?(committee_member.access_id)
 
       WorkflowMailer.send_committee_review_requests(self, committee_member)
 

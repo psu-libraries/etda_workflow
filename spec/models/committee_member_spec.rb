@@ -282,7 +282,7 @@ RSpec.describe CommitteeMember, type: :model do
     let(:submission) { FactoryBot.create(:submission) }
     let(:cm1) { described_class.new }
     let(:cm2) { described_class.new }
-    let(:committee_role) { FactoryBot.create(:committee_role, name: 'Program Head/Chair') }
+    let(:committee_role) { FactoryBot.create(:committee_role, name: 'Program Head/Chair', is_program_head: true) }
 
     before do
       cm1.email = 'email@psu.edu'
@@ -340,6 +340,32 @@ RSpec.describe CommitteeMember, type: :model do
       it 'strips whitespace' do
         cm.update_attribute :name, '     Test Tester      '
         expect(cm.name).to eq 'Test Tester'
+      end
+    end
+  end
+
+  describe '.program_head' do
+    let!(:submission) { FactoryBot.create(:submission, degree: (FactoryBot.create :degree, degree_type: DegreeType.default)) }
+    let!(:cm1) { FactoryBot.create :committee_member }
+    let!(:cm2) { FactoryBot.create :committee_member }
+
+    before do
+      submission.committee_members << [cm1, cm2]
+      submission.save!
+    end
+
+    context 'when committee does not contain a program head' do
+      it 'returns nil' do
+        expect(described_class.program_head(submission)).to eq nil
+      end
+    end
+
+    context 'when committee contains a program head' do
+      let(:program_head_role) { CommitteeRole.find_by(degree_type: submission.degree_type, is_program_head: true) }
+
+      it 'returns program head' do
+        cm1.update committee_role: program_head_role
+        expect(described_class.program_head(submission)).to eq cm1
       end
     end
   end

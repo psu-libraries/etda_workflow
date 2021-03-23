@@ -14,7 +14,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
     let(:committee_member) { FactoryBot.create :committee_member, submission: submission, access_id: 'approverflow' }
     let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
     let(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, email_admins: true }
-    let(:head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: submission.degree.degree_type) }
+    let(:head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', is_program_head: true, degree_type: submission.degree.degree_type) }
 
     context 'when author tries visiting various pages' do
       before do
@@ -135,8 +135,6 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
       end
 
       it "moves forward in process if accepted when head of program is approving" do
-        skip 'Graduate only' unless current_partner.graduate?
-
         submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
         submission.committee_members << (FactoryBot.create :committee_member, committee_role_id: head_role.id, access_id: 'abc123')
         visit approver_path(committee_member)
@@ -148,8 +146,6 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
       end
 
       it "proceeds to 'waiting for final submission response' when head of program is approving if head already accepted" do
-        skip 'Graduate only' unless current_partner.graduate?
-
         FactoryBot.create :committee_member, :required, submission: submission, committee_role: head_role, status: 'approved', access_id: 'approverflow'
         submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
         visit approver_path(committee_member)
@@ -212,7 +208,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
     let(:committee_member) { FactoryBot.create :committee_member, submission: submission, access_id: 'approverflow' }
     let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
     let(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, email_admins: true }
-    let(:head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', degree_type: submission.degree.degree_type) }
+    let(:head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', is_program_head: true, degree_type: submission.degree.degree_type) }
 
     let(:head_of_program) { FactoryBot.create :committee_member, :required, submission: submission, committee_role: head_role, access_id: 'approverflow' } if current_partner.graduate?
 
@@ -306,8 +302,6 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
 
       context "when 'waiting for head of program review'" do
         it "proceeds to 'waiting for final submission response' if approved" do
-          skip 'Graduate only' unless current_partner.graduate?
-
           FactoryBot.create :admin
           visit approver_path(head_of_program)
           within("form#edit_committee_member_#{head_of_program.id}") do
@@ -319,8 +313,6 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         end
 
         it "proceeds to 'waiting for committee review rejected' if rejected" do
-          skip 'Graduate only' unless current_partner.graduate?
-
           FactoryBot.create :admin
           visit approver_path(head_of_program)
           within("form#edit_committee_member_#{head_of_program.id}") do
@@ -332,8 +324,6 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         end
 
         it "proceeds to 'waiting for committee review rejected' if rejected but doesn't send emails" do
-          skip 'Graduate only' unless current_partner.graduate?
-
           FactoryBot.create :admin
           approval_configuration.update email_admins: false, email_authors: false
           visit approver_path(head_of_program)

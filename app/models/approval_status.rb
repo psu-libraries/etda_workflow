@@ -17,11 +17,11 @@ class ApprovalStatus
     @voting_committee_members = submission.voting_committee_members
     @committee_members = submission.committee_members
     @approval_configuration = submission.degree.degree_type.approval_configuration
-    @head_of_program = CommitteeMember.head_of_program current_submission
+    @head_of_program = CommitteeMember.program_head current_submission
   end
 
   def head_of_program_status
-    return 'approved' if !current_partner.graduate? || head_of_program.blank?
+    return 'approved' if !@current_submission.head_of_program_is_approving? || head_of_program.blank?
 
     head_of_program.status
   end
@@ -64,7 +64,7 @@ class ApprovalStatus
 
   def all_have_voted?
     committee_members.each do |member|
-      next if member == head_of_program
+      next if member == head_of_program && @current_submission.head_of_program_is_approving?
 
       return false unless member.status == 'approved' || member.status == 'rejected'
     end
