@@ -123,7 +123,7 @@ class CommitteeMember < ApplicationRecord
                    (submission.committee_members.collect { |n| n.committee_role.present? ? n.is_program_head : nil }
                    .count(true) < 2)
 
-    errors.add(:committee_role_id, 'An author may only have one Program Head/Chair.')
+    errors.add(:committee_role_id, 'A submission may only have one Program Head/Chair.')
     false
   end
 end

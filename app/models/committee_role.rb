@@ -19,7 +19,7 @@ class CommitteeRole < ApplicationRecord
                      'master_thesis' => [
                        { name: 'Program Head/Chair', num_required: 0, is_active: true, is_program_head: true },
                        { name: 'Thesis Advisor/Co-Advisor', num_required: 1, is_active: true, is_program_head: false },
-                       { name: 'Committee Member', num_required: 0, is_active: true, is_program_head: false },
+                       { name: 'Committee Member', num_required: 2, is_active: true, is_program_head: false },
                        { name: 'Special Signatory', num_required: 0, is_active: true, is_program_head: false }
                      ] }.freeze
 
