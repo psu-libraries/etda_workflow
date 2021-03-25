@@ -110,10 +110,10 @@ RSpec.describe 'The standard committee form for authors', js: true do
             expect(find("#submission_committee_members_attributes_#{i}_name").value).to eq('Test Tester') if i == 0
             expect(find("#submission_committee_members_attributes_#{i}_name").disabled?).to eq true
           end
-          click_link 'Add Committee Member'
+          click_link 'Add Special Signatory'
           fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last
           within fields_for_last_committee_member do
-            expect(find("div.select").find_all("option").count).to eq 2
+            expect(find("div.select").find_all("option").count).to eq 1
             select 'Special Signatory', from: 'Committee role'
             fill_in "Name", with: "Extra Member"
             fill_in "Email", with: "extra_member@example.com"
@@ -187,10 +187,10 @@ RSpec.describe 'The standard committee form for authors', js: true do
           skip 'graduate only' unless current_partner.graduate?
 
           visit edit_author_submission_committee_members_path(submission_2)
-          click_link 'Add Committee Member'
+          click_link 'Add Special Signatory'
           fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last
           within fields_for_last_committee_member do
-            expect(find("div.select").find_all("option").count).to eq 2
+            expect(find("div.select").find_all("option").count).to eq 1
             select 'Special Signatory', from: 'Committee role'
             fill_in "Name", with: "Extra Member"
             fill_in "Email", with: "extra_member@example.com"
