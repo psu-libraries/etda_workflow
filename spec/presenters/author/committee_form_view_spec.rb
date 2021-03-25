@@ -42,7 +42,7 @@ RSpec.describe Author::CommitteeFormView do
     context 'when submission is a dissertation' do
       let!(:submission) do
         FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)],
-                          author: author, degree: degree1
+                                       author: author, degree: degree1
       end
 
       it 'returns "Committee Members"' do
@@ -54,7 +54,7 @@ RSpec.describe Author::CommitteeFormView do
     context 'when submission is not a dissertation' do
       let!(:submission) do
         FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)],
-                          author: author, degree: degree2
+                                       author: author, degree: degree2
       end
 
       it 'returns "Add Committee Members"' do
@@ -72,7 +72,7 @@ RSpec.describe Author::CommitteeFormView do
     context 'when submission is a dissertation' do
       let!(:submission) do
         FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)],
-                          author: author, degree: degree1
+                                       author: author, degree: degree1
       end
 
       it 'returns "Committee Members"' do
@@ -84,7 +84,7 @@ RSpec.describe Author::CommitteeFormView do
     context 'when submission is not a dissertation' do
       let!(:submission) do
         FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)],
-                          author: author, degree: degree2
+                                       author: author, degree: degree2
       end
 
       it 'returns "Update Committee Members"' do
@@ -102,7 +102,7 @@ RSpec.describe Author::CommitteeFormView do
     context 'when submission is a dissertation' do
       let!(:submission) do
         FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)],
-                          author: author, degree: degree1
+                                       author: author, degree: degree1
       end
 
       it 'returns "Add Special Signatory"' do
@@ -114,7 +114,7 @@ RSpec.describe Author::CommitteeFormView do
     context 'when submission is not a dissertation' do
       let!(:submission) do
         FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)],
-                          author: author, degree: degree2
+                                       author: author, degree: degree2
       end
 
       it 'returns "Add Committee Member"' do
