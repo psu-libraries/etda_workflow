@@ -9,6 +9,10 @@ class Author::CommitteeFormView
     @submission.committee_members.count.positive?
   end
 
+  def dissertation?
+    submission.degree_type.slug == 'dissertation'
+  end
+
   def form_title
     return new_committee_label unless update?
 
@@ -22,10 +26,26 @@ class Author::CommitteeFormView
   end
 
   def update_committee_label
-    'Update Committee Members'
+    if dissertation?
+      'Committee Members'
+    else
+      'Update Committee Members'
+    end
   end
 
   def new_committee_label
-    'Add Committee Members'
+    if dissertation?
+      'Committee Members'
+    else
+      'Add Committee Members'
+    end
+  end
+
+  def add_member_label
+    if dissertation?
+      'Add Special Signatory'
+    else
+      'Add Committee Member'
+    end
   end
 end

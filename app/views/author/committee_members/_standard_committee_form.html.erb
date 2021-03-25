@@ -3,7 +3,7 @@
     <p><%= t("#{current_partner.id}.committee.list.#{@submission.degree_type.slug}.help_text").html_safe %></p>
 
     <% if current_partner.graduate? %>
-      <p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.list.#{@submission.degree_type.slug}.notice") %></p>
+      <p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.list.#{@submission.degree_type.slug}.notice").html_safe %></p>
     <% end %>
     <%= simple_form_for @submission,
                         url:  author_submission_committee_members_path(@submission) do |submission_form| %>
@@ -17,7 +17,7 @@
     <div class="form-group actions">
       <div class="col-xs-12 col-sm-6 col-md-4">
         <span class='glyphicon glyphicon-plus'> </span>
-        <%= link_to_add_association "Add Committee Member", submission_form, :committee_members,
+        <%= link_to_add_association @presenter.add_member_label, submission_form, :committee_members,
               class: 'btn btn-sm btn-default',
               data: { association_insertion_node: '#add_member', association_insertion_method: 'append' } %>
 
