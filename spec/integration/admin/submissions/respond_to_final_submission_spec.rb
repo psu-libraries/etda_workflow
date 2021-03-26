@@ -70,14 +70,14 @@ RSpec.describe "when admin responds to final submission", js: true do
     end
   end
 
-  describe "when an admin clicks 'Reject & send to committee'" do
-    it "updates status to 'waiting for committee review rejected'" do
+  describe "when an admin clicks 'Send to committee'" do
+    it "updates status to 'waiting for committee review'" do
       visit admin_edit_submission_path(submission)
-      click_button 'Reject & send to committee'
+      click_button 'Send to committee'
       # expect(page).to have_content('final submission information was successfully rejected and returned to the author for revision')
       submission.reload
-      expect(submission.status).to eq 'waiting for committee review rejected'
-      expect(submission.final_submission_rejected_at).not_to be_nil
+      expect(submission.status).to eq 'waiting for committee review'
+      expect(WorkflowMailer.deliveries.last.subject).to eq "Committee Review Initiated"
     end
   end
 

@@ -81,7 +81,7 @@ en:
                     814-867-2505
         sent_to_committee:
           message: |
-                    Your %{degree_type}: "%{title}" has been sent sent back to be approved by your committee.
+                    Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee.
                     No action is required of you at this time.
                     You will be notified once your committee has reviewed and made a decision regarding your document.
 

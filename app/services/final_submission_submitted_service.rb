@@ -37,8 +37,8 @@ class FinalSubmissionSubmittedService
     status_giver.waiting_for_committee_review!
     submission.reset_committee_reviews
     submission.committee_review_requests_init
-    WorkflowMailer.sent_to_committee(@submission)
-    "The submission\'s final submission information was successfully rejected and returned to the author for revision."
+    WorkflowMailer.sent_to_committee(@submission).deliver
+    "The submission was successfully returned to the committee review stage and the committee was notified to visit the site for review."
   end
 
   def final_submission_updated
