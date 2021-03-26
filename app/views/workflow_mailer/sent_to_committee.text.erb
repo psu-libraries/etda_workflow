@@ -1,0 +1,5 @@
+Dear <%= @author.full_name %>,
+
+<%= t( "#{current_partner.id}.partner.email.sent_to_committee.message",
+       title: @submission.title,
+       degree_type: @submission.degree_type) %>

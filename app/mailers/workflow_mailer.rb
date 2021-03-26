@@ -89,6 +89,15 @@ class WorkflowMailer < ActionMailer::Base
          subject: 'VERIFY FILES: Misplaced files found'
   end
 
+  def sent_to_committee(submission)
+    @submission = submission
+    @author = submission.author
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "Committee Review Initiated"
+  end
+
   def committee_member_review_request(submission, committee_member)
     @submission = submission
     @committee_member = committee_member

@@ -17,4 +17,4 @@ en:
     otm:
       email_address: 'otminfo@psu.edu'
   text:
-    rejected_committee_message: This action will move this submission to "Committee Review Rejected" where the student will resubmit. After the student resubmits, the submission will move to the committee approval stage and emails will be sent to committee members.  Would you like to proceed?
+    rejected_committee_message: This action will move this submission to "Final Submission is Pending" for the committee to review. Automatic email notifications will be sent out to the committee members for review and the author will receive an email notifying them of this action.  Would you like to proceed?

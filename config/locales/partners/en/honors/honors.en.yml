@@ -79,6 +79,18 @@ en:
                     Debra Rodgers, Coordinator of Academic Services 
                     SHCAcademics@psu.edu
                     814-867-2505
+        sent_to_committee:
+          message: |
+                    Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee.
+                    No action is required of you at this time.
+                    You will be notified once your committee has reviewed and made a decision regarding your document.
+
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    SHCAcademics@psu.edu
+                    814-867-2505
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},

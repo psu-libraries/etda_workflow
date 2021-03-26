@@ -21,9 +21,9 @@ RSpec.describe FinalSubmissionSubmittedService do
   end
 
   describe '#final_rejected_send_committee' do
-    it "sends submissions to 'waiting for committee review rejected'" do
+    it "sends submissions to 'waiting for committee review'" do
       described_class_inst.final_rejected_send_committee
-      expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
+      expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
     end
   end
 end
