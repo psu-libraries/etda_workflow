@@ -63,7 +63,7 @@ en:
                     University Park, PA  16802
         final_submission_received:
           message: |
-                    Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee.
+                    Thank you for submitting your final %{degree_type}.  Your %{degree_type} has been accepted for committee review.
                     You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
@@ -73,7 +73,7 @@ en:
                     University Park, PA  16802
         sent_to_committee:
           message: |
-                    Your %{degree_type}: "%{title}" has been sent sent back to be approved by your committee.
+                    Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee.
                     No action is required of you at this time.
                     You will be notified once your committee has reviewed and made a decision regarding your document.
 
