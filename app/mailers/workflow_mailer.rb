@@ -67,12 +67,12 @@ class WorkflowMailer < ActionMailer::Base
          subject: "Access Level for your submission has been updated"
   end
 
-  def open_access_report(date_range, csv)
+  def semester_release_report(date_range, csv, filename)
     @date_range = date_range
-    attachments['open_access_report.csv'] = csv
+    attachments[filename.to_s] = csv
     mail to: I18n.t('external_contacts.ul_cataloging.email_address').to_s,
          from: current_partner.email_address,
-         subject: "eTDs Released as Open Access #{@date_range}"
+         subject: "eTDs Released Between #{@date_range}"
   end
 
   def vulnerability_audit_email(audit_results)

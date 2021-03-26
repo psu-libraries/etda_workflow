@@ -7,11 +7,7 @@ class Semester
     'Summer'
   ].freeze
 
-  def self.current(today = Time.zone.today)
-    year = today.year
-    fall_start   = Date.new(year, 8, 16)
-    summer_start = Date.new(year, 5, 16)
-
+  def self.current
     season = if today >= fall_start
                "Fall"
              elsif today >= summer_start
@@ -20,6 +16,22 @@ class Semester
                "Spring"
              end
     "#{year} #{season}"
+  end
+
+  def self.last
+    season = if today >= fall_start
+               "Summer"
+             elsif today >= summer_start
+               "Spring"
+             else
+               "Fall"
+             end
+
+    if season == "Fall"
+      "#{year - 1} #{season}"
+    else
+      "#{year} #{season}"
+    end
   end
 
   def self.all_years
@@ -49,5 +61,21 @@ class Semester
     return true if current_semester == 'Summer' && this_semester == 'Fall'
 
     false
+  end
+
+  def self.today
+    Time.zone.today
+  end
+
+  def self.year
+    today.year
+  end
+
+  def self.fall_start
+    Date.new(year, 8, 16)
+  end
+
+  def self.summer_start
+    Date.new(year, 5, 16)
   end
 end
