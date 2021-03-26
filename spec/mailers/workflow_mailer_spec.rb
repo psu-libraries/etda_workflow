@@ -148,6 +148,26 @@ RSpec.describe WorkflowMailer do
     end
   end
 
+  describe '#sent_to_committee' do
+    let(:email) { described_class.sent_to_committee(submission) }
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq "Committee Review Initiated"
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "is sent to the student's PSU email address" do
+      expect(email.to).to eq([author.psu_email_address])
+    end
+
+    it "tells the author that the final submission has been sent back to the committee" do
+      expect(email.body).to match(/#{submission.degree_type}: "#{submission.title}" has been sent/i)
+    end
+  end
+
   describe '#committee_approved' do
     let(:email) { described_class.committee_approved(submission) }
 
