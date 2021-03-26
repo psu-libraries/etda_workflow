@@ -136,7 +136,7 @@ class SubmissionStatusGiver
 
   def can_waiting_for_committee_review?
     validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles,
-                             SubmissionStates::CollectingFinalSubmissionFilesRejected,
+                             SubmissionStates::WaitingForFinalSubmissionResponse,
                              SubmissionStates::WaitingForCommitteeReviewRejected]
   end
 
@@ -146,8 +146,7 @@ class SubmissionStatusGiver
 
   def can_waiting_for_committee_review_rejected?
     validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview,
-                             SubmissionStates::WaitingForCommitteeReview,
-                             SubmissionStates::WaitingForFinalSubmissionResponse]
+                             SubmissionStates::WaitingForCommitteeReview]
   end
 
   def can_waiting_for_publication_release?
