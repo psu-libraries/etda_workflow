@@ -10,15 +10,15 @@ RSpec.describe Semester, type: :model do
       let(:semester) { described_class.current }
 
       it 'returns fall for dates after 8-15' do
-        allow(Time).to receive_message_chain(:zone, :today).and_return(Time.zone.parse("#{year}-8-16:T00:00"))
+        allow(Semester).to receive(:today).and_return(Time.zone.parse("#{year}-8-16:T00:00"))
         expect(semester).to eql("#{year} Fall")
       end
       it 'returns summer for dates after 5-15' do
-        allow(Time).to receive_message_chain(:zone, :today).and_return(Time.zone.parse("#{year}-5-16:T00:00"))
+        allow(Semester).to receive(:today).and_return(Time.zone.parse("#{year}-5-16:T00:00"))
         expect(semester).to eql("#{year} Summer")
       end
       it 'returns spring for dates before 5-16' do
-        allow(Time).to receive_message_chain(:zone, :today).and_return(Time.zone.parse("#{year}-5-15:T00:00"))
+        allow(Semester).to receive(:today).and_return(Time.zone.parse("#{year}-5-15:T00:00"))
         expect(semester).to eql("#{year} Spring")
       end
     end
@@ -27,15 +27,15 @@ RSpec.describe Semester, type: :model do
       let(:semester) { described_class.last }
 
       it 'returns Summer for dates after 8-15' do
-        allow(Time).to receive_message_chain(:zone, :today).and_return(Time.zone.parse("#{year}-8-16:T00:00"))
+        allow(Semester).to receive(:today).and_return(Time.zone.parse("#{year}-8-16:T00:00"))
         expect(semester).to eql("#{year} Summer")
       end
       it 'returns Spring for dates after 5-15' do
-        allow(Time).to receive_message_chain(:zone, :today).and_return(Time.zone.parse("#{year}-5-16:T00:00"))
+        allow(Semester).to receive(:today).and_return(Time.zone.parse("#{year}-5-16:T00:00"))
         expect(semester).to eql("#{year} Spring")
       end
       it 'returns Fall for dates before 5-16' do
-        allow(Time).to receive_message_chain(:zone, :today).and_return(Time.zone.parse("#{year}-5-15:T00:00"))
+        allow(Semester).to receive(:today).and_return(Time.zone.parse("#{year}-5-15:T00:00"))
         expect(semester).to eql("#{year - 1} Fall")
       end
     end

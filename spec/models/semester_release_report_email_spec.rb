@@ -6,17 +6,21 @@ RSpec.describe SemesterReleaseReportEmail do
   let(:this_year) { Date.today.year }
 
   describe '#csv' do
-    let(:submission) do
+    let!(:submission) do
       FactoryBot.create :submission, :released_for_publication,
                         access_level: 'open_access',
-                        released_for_publication_at: DateTime.now
+                        released_for_publication_at: DateTime.strptime("03/01/#{this_year}", "%m/%d/%Y")
     end
     let(:csv) do
       "Last Name,First Name,Title,Degree Type,Graduation Semester,Released On,Access Level\n#{submission.author.last_name},#{submission.author.first_name},#{submission.title},#{submission.degree.degree_type.name},#{submission.semester} #{submission.year},#{submission.released_for_publication_at.strftime('%D')},#{submission.access_level}\n"
     end
 
+    before do
+      allow(Date).to receive(:today).and_return Date.strptime("06/30/#{this_year}", "%m/%d/%Y")
+      allow(Semester).to receive(:today).and_return Date.strptime("06/30/#{this_year}", "%m/%d/%Y")
+    end
+
     it 'generates a csv from queried submissions' do
-      allow_any_instance_of(described_class).to receive(:submissions).and_return [submission]
       expect(semester_release_report_email.send(:csv)).to eq csv
     end
   end

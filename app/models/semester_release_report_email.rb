@@ -15,7 +15,7 @@ class SemesterReleaseReportEmail
   end
 
   def filename
-    "ETD_#{Semester.last.split(" ").last.uppercase}_RELEASE_REPORT.csv"
+    "ETD_#{Semester.last.split(' ').last.uppercase}_RELEASE_REPORT.csv"
   end
 
   def headers
@@ -32,8 +32,7 @@ class SemesterReleaseReportEmail
     Submission.where("submissions.status LIKE '%released for publication%'")
               .where('submissions.released_for_publication_at >= ? AND submissions.released_for_publication_at <= ?',
                      Date.strptime("#{start_month}/01/#{semester_year}", '%m/%d/%Y'), today)
-              .or(
-                  Submission.where("submissions.status LIKE '%released for publication%'")
+              .or(Submission.where("submissions.status LIKE '%released for publication%'")
                             .where('submissions.released_metadata_at >= ? AND submissions.released_metadata_at <= ?',
                                    Date.strptime("#{start_month}/01/#{semester_year}", '%m/%d/%Y'), today))
   end
@@ -59,7 +58,7 @@ class SemesterReleaseReportEmail
   end
 
   def semester_year
-    Semester.last.split(" ").first
+    Semester.last.split(' ').first
   end
 
   def strf_today
