@@ -150,7 +150,8 @@ jobs:
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          PARTNER=honors docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          PARTNER=honors docker-compose run --name=test --service-ports -d test
+          docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
     - run:
         name: "Test Milsch"
@@ -158,7 +159,8 @@ jobs:
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          PARTNER=milsch docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          PARTNER=milsch docker-compose run --name=test --service-ports -d test
+          docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
     - run:
         name: "Test SSET"
@@ -166,7 +168,8 @@ jobs:
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          PARTNER=sset docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
+          PARTNER=sset docker-compose run --name=test --service-ports -d test
+          docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
   deploy-qa:
     docker:
