@@ -145,26 +145,27 @@ jobs:
     - setup_remote_docker
     - checkout
     - run:
-        name: "Setup Workspace"
-        command: |
-          export TAG=${CIRCLE_SHA1}
-          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-    - run:
         name: "Test Honors"
         command: |
           docker load -i /tmp/workspace/etda-workflow.tar
+          export TAG=${CIRCLE_SHA1}
+          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test PARTNER=honors docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
           docker-compose down
     - run:
         name: "Test Milsch"
         command: |
           docker load -i /tmp/workspace/etda-workflow.tar
+          export TAG=${CIRCLE_SHA1}
+          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test PARTNER=milsch docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
           docker-compose down
     - run:
         name: "Test SSET"
         command: |
           docker load -i /tmp/workspace/etda-workflow.tar
+          export TAG=${CIRCLE_SHA1}
+          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test PARTNER=sset docker-compose run --name=test --service-ports test /etda_workflow/bin/ci-rspec
           docker-compose down
   deploy-qa:
