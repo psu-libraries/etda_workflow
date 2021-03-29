@@ -5,6 +5,12 @@ RSpec.describe SemesterReleaseReportEmail do
 
   let(:this_year) { Date.today.year }
 
+  describe '#deliver' do
+    it 'delivers an email' do
+      expect { semester_release_report_email.deliver }.to change { WorkflowMailer.deliveries.count }.by 1
+    end
+  end
+
   describe '#csv' do
     let!(:submission) do
       FactoryBot.create :submission, :released_for_publication,
