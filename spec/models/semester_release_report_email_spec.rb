@@ -12,7 +12,7 @@ RSpec.describe SemesterReleaseReportEmail do
                         released_for_publication_at: DateTime.now
     end
     let(:csv) do
-      "Last Name,First Name,Title,Degree Type,Graduation Semester,Released On\n#{submission.author.last_name},#{submission.author.first_name},#{submission.title},#{submission.degree.degree_type.name},#{submission.semester} #{submission.year},#{submission.released_for_publication_at.strftime('%D')}\n"
+      "Last Name,First Name,Title,Degree Type,Graduation Semester,Released On,Access Level\n#{submission.author.last_name},#{submission.author.first_name},#{submission.title},#{submission.degree.degree_type.name},#{submission.semester} #{submission.year},#{submission.released_for_publication_at.strftime('%D')},#{submission.access_level}\n"
     end
 
     it 'generates a csv from queried submissions' do
@@ -27,19 +27,28 @@ RSpec.describe SemesterReleaseReportEmail do
                         access_level: 'open_access',
                         released_for_publication_at: DateTime.strptime("03/01/#{this_year}", "%m/%d/%Y")
     end
+    let!(:within_submission2) do
+      FactoryBot.create :submission, :final_is_restricted,
+                        released_metadata_at: DateTime.strptime("03/01/#{this_year}", "%m/%d/%Y")
+    end
     let!(:outside_submission) do
       FactoryBot.create :submission, :released_for_publication,
                         access_level: 'open_access',
                         released_for_publication_at: DateTime.strptime("09/01/#{this_year}", "%m/%d/%Y")
     end
+    let!(:outside_submission2) do
+      FactoryBot.create :submission, :final_is_restricted,
+                        released_metadata_at: DateTime.strptime("09/01/#{this_year}", "%m/%d/%Y")
+    end
 
     before do
       allow(Date).to receive(:today).and_return Date.strptime("06/30/#{this_year}", "%m/%d/%Y")
+      allow(Semester).to receive(:today).and_return Date.strptime("06/30/#{this_year}", "%m/%d/%Y")
     end
 
     describe '#submissions' do
-      it 'includes open_access publications released during Spring semester' do
-        expect(semester_release_report_email.send(:submissions)).to eq [within_submission]
+      it 'includes all publications released during Spring semester' do
+        expect(semester_release_report_email.send(:submissions)).to eq [within_submission, within_submission2]
       end
     end
 
@@ -56,19 +65,28 @@ RSpec.describe SemesterReleaseReportEmail do
                         access_level: 'open_access',
                         released_for_publication_at: DateTime.strptime("07/31/#{this_year}", "%m/%d/%Y")
     end
+    let!(:within_submission2) do
+      FactoryBot.create :submission, :final_is_restricted_to_institution,
+                        released_metadata_at: DateTime.strptime("07/31/#{this_year}", "%m/%d/%Y")
+    end
     let!(:outside_submission) do
       FactoryBot.create :submission, :released_for_publication,
                         access_level: 'open_access',
                         released_for_publication_at: DateTime.strptime("02/01/#{this_year}", "%m/%d/%Y")
     end
+    let!(:outside_submission2) do
+      FactoryBot.create :submission, :final_is_restricted_to_institution,
+                        released_metadata_at: DateTime.strptime("02/01/#{this_year}", "%m/%d/%Y")
+    end
 
     before do
       allow(Date).to receive(:today).and_return Date.strptime("09/30/#{this_year}", "%m/%d/%Y")
+      allow(Semester).to receive(:today).and_return Date.strptime("09/30/#{this_year}", "%m/%d/%Y")
     end
 
     describe '#submissions' do
-      it 'includes open_access publications released during Spring semester' do
-        expect(semester_release_report_email.send(:submissions)).to eq [within_submission]
+      it 'includes all publications released during Spring semester' do
+        expect(semester_release_report_email.send(:submissions)).to eq [within_submission, within_submission2]
       end
     end
 
@@ -83,7 +101,7 @@ RSpec.describe SemesterReleaseReportEmail do
     let!(:within_submission) do
       FactoryBot.create :submission, :released_for_publication,
                         access_level: 'open_access',
-                        released_for_publication_at: DateTime.strptime("11/02/#{this_year}", "%m/%d/%Y")
+                        released_for_publication_at: DateTime.strptime("11/02/#{this_year - 1}", "%m/%d/%Y")
     end
     let!(:within_submission2) do
       FactoryBot.create :submission, :released_for_publication,
@@ -95,13 +113,18 @@ RSpec.describe SemesterReleaseReportEmail do
                         access_level: 'open_access',
                         released_for_publication_at: DateTime.strptime("07/01/#{this_year - 1}", "%m/%d/%Y")
     end
+    let!(:outside_submission2) do
+      FactoryBot.create :submission, :final_is_restricted_to_institution,
+                        released_metadata_at: DateTime.strptime("02/01/#{this_year}", "%m/%d/%Y")
+    end
 
     before do
       allow(Date).to receive(:today).and_return Date.strptime("01/31/#{this_year}", "%m/%d/%Y")
+      allow(Semester).to receive(:today).and_return Date.strptime("01/31/#{this_year}", "%m/%d/%Y")
     end
 
     describe '#submissions' do
-      it 'includes open_access publications released during Spring semester' do
+      it 'includes all publications released during Spring semester' do
         expect(semester_release_report_email.send(:submissions)).to eq [within_submission, within_submission2]
       end
     end
