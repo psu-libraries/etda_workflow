@@ -61,6 +61,12 @@ RSpec.describe SemesterReleaseReportEmail do
         expect(semester_release_report_email.send(:date_range)).to eq "02/01/#{this_year} - 06/30/#{this_year}"
       end
     end
+
+    describe '#filename' do
+      it 'returns ETD_SPRING_RELEASE_REPORT.csv' do
+        expect(semester_release_report_email.send(:filename)).to eq 'ETD_SPRING_RELEASE_REPORT.csv'
+      end
+    end
   end
 
   context 'when currently Fall semester' do
@@ -97,6 +103,12 @@ RSpec.describe SemesterReleaseReportEmail do
     describe '#date_range' do
       it 'returns July 1st - September 31st in standard US format' do
         expect(semester_release_report_email.send(:date_range)).to eq "07/01/#{this_year} - 09/30/#{this_year}"
+      end
+    end
+
+    describe '#filename' do
+      it 'returns ETD_SUMMER_RELEASE_REPORT.csv' do
+        expect(semester_release_report_email.send(:filename)).to eq 'ETD_SUMMER_RELEASE_REPORT.csv'
       end
     end
   end
@@ -137,6 +149,12 @@ RSpec.describe SemesterReleaseReportEmail do
       it 'returns October 1st - January 31st in standard US format' do
         expect(semester_release_report_email.send(:date_range)).to eq "10/01/#{this_year - 1} - 01/31/#{this_year}"
       end
+    end
+  end
+
+  describe '#filename' do
+    it 'returns ETD_FALL_RELEASE_REPORT.csv' do
+      expect(semester_release_report_email.send(:filename)).to eq 'ETD_FALL_RELEASE_REPORT.csv'
     end
   end
 end

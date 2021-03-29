@@ -15,7 +15,7 @@ class SemesterReleaseReportEmail
   end
 
   def filename
-    "ETD_#{Semester.last.split(' ').last.uppercase}_RELEASE_REPORT.csv"
+    "ETD_#{Semester.last.split(' ').last.upcase}_RELEASE_REPORT.csv"
   end
 
   def headers
