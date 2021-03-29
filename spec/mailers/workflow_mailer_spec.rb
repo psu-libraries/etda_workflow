@@ -246,7 +246,7 @@ RSpec.describe WorkflowMailer do
     let(:email) { described_class.semester_release_report(date_range, csv, "filename.csv") }
 
     it "sets an appropriate subject" do
-      expect(email.subject).to eq "eTDs Released as Open Access #{date_range}"
+      expect(email.subject).to eq "eTDs Released Between #{date_range}"
     end
 
     it "is sent from the partner support email address" do

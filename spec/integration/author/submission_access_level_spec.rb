@@ -51,7 +51,7 @@ RSpec.describe 'Author submission access_level', js: true do
     if current_partner.milsch?
       it 'has an open_access description' do
         expect(page).to have_content('Access Level for this paper: Open Access')
-        expect(page.find("li.open_access")).to be_truthy
+        expect(page.find("lidfdsafasdf.open_access")).to be_truthy
         expect(page).to have_content('Enter justification')
       end
       it 'has a restricted_to_institution description and restricted notes textarea' do
