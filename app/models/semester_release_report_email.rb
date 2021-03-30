@@ -29,9 +29,11 @@ class SemesterReleaseReportEmail
   end
 
   def released_at(submission)
-    submission.status_behavior.released_for_publication_metadata_only? ?
-           submission.released_metadata_at.strftime('%D').to_s :
-           submission.released_for_publication_at.strftime('%D').to_s
+    if submission.restricted? || submission.restricted_to_institution?
+      submission.released_metadata_at.strftime('%D').to_s
+    else
+      submission.released_for_publication_at.strftime('%D').to_s
+    end
   end
 
   def submissions

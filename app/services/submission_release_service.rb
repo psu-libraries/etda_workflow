@@ -76,7 +76,11 @@ class SubmissionReleaseService
 
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_release_for_publication?
-      (submission.restricted? || submission.restricted_to_institution?) ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
+      if submission.restricted? || submission.restricted_to_institution?
+        status_giver.released_for_publication_metadata_only!
+      else
+        status_giver.released_for_publication!
+      end
       submission.update!(released_for_publication_at: publication_release_date, released_metadata_at: metadata_release_date, public_id: public_id)
       WorkflowMailer.send_publication_release_messages(submission)
       return unless release_files(original_final_files)
