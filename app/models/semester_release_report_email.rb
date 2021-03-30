@@ -25,7 +25,13 @@ class SemesterReleaseReportEmail
   def row(submission)
     [submission.author.last_name.to_s, submission.author.first_name.to_s, submission.title.strip.to_s,
      submission.degree.degree_type.name.to_s, "#{submission.semester} #{submission.year}",
-     submission.released_for_publication_at.strftime('%D').to_s, submission.access_level.to_s]
+     released_at(submission), submission.access_level.to_s]
+  end
+
+  def released_at(submission)
+    submission.status_behavior.released_for_publication_metadata_only? ?
+           submission.released_metadata_at.strftime('%D').to_s :
+           submission.released_for_publication_at.strftime('%D').to_s
   end
 
   def submissions

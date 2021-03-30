@@ -17,8 +17,12 @@ RSpec.describe SemesterReleaseReportEmail do
                         access_level: 'open_access',
                         released_for_publication_at: DateTime.strptime("03/01/#{this_year}", "%m/%d/%Y")
     end
+    let!(:submission2) do
+      FactoryBot.create :submission, :final_is_restricted,
+                        released_metadata_at: DateTime.strptime("04/10/#{this_year}", "%m/%d/%Y")
+    end
     let(:csv) do
-      "Last Name,First Name,Title,Degree Type,Graduation Semester,Released On,Access Level\n#{submission.author.last_name},#{submission.author.first_name},#{submission.title},#{submission.degree.degree_type.name},#{submission.semester} #{submission.year},#{submission.released_for_publication_at.strftime('%D')},#{submission.access_level}\n"
+      "Last Name,First Name,Title,Degree Type,Graduation Semester,Released On,Access Level\n#{submission.author.last_name},#{submission.author.first_name},#{submission.title},#{submission.degree.degree_type.name},#{submission.semester} #{submission.year},#{submission.released_for_publication_at.strftime('%D')},#{submission.access_level}\n#{submission2.author.last_name},#{submission2.author.first_name},#{submission2.title},#{submission2.degree.degree_type.name},#{submission2.semester} #{submission2.year},#{submission2.released_metadata_at.strftime('%D')},#{submission2.access_level}\n"
     end
 
     before do
