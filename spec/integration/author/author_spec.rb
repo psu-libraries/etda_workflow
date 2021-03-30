@@ -45,6 +45,8 @@ RSpec.describe 'Author submission page', type: :integration, milsch: true, honor
       expect(page).to have_content('Existing submission found. The status of your previously submitted document is listed below.')
       expect(page).to have_link('Provide Committee')
       expect(page).to have_content('If you would like to start a new thesis') unless current_partner.graduate?
+      new_link = find_link('Start a new Submission')
+      expect(new_link['outerHTML']).to match(/You already have a/)
     end
   end
 
