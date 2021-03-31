@@ -169,7 +169,7 @@ namespace :yarn do
   task :check do
     on roles (:web) do 
       puts '***running yarn install --check-files'
-      execute "cd #{release_path} && yarn install --check-files --frozen-lockfile--production"
+      execute "cd #{release_path} && yarn install --check-files --frozen-lockfile --production"
     end
   end
 end
