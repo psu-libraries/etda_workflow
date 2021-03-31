@@ -168,10 +168,8 @@ namespace :yarn do
   desc 'check dependencies'
   task :check do
     on roles (:web) do 
-      puts '***running yarn check'
-      execute "cd #{release_path} && yarn check --integrity --frozen-lockfile --production"
-      execute "cd #{release_path} && yarn check --verify-tree --frozen-lockfile --production"
-      execute "cd #{release_path} && yarn check --frozen-lockfile --production"
+      puts '***running yarn install --check-files'
+      execute "cd #{release_path} && yarn install --check-files --frozen-lockfile--production"
     end
   end
 end
