@@ -243,10 +243,10 @@ RSpec.describe WorkflowMailer do
   describe '#open_access_report' do
     let(:date_range) { "#{(Date.today - 6.months).strftime('%D')} - #{Date.today.strftime('%D')}" }
     let(:csv) { CSV.generate { |csv| csv << ['HEADERS'] } }
-    let(:email) { described_class.open_access_report(date_range, csv) }
+    let(:email) { described_class.semester_release_report(date_range, csv, "filename.csv") }
 
     it "sets an appropriate subject" do
-      expect(email.subject).to eq "eTDs Released as Open Access #{date_range}"
+      expect(email.subject).to eq "eTDs Released Between #{date_range}"
     end
 
     it "is sent from the partner support email address" do
@@ -254,11 +254,11 @@ RSpec.describe WorkflowMailer do
     end
 
     it "has csv attachment" do
-      expect(email.attachments.first.filename).to eq("open_access_report.csv")
+      expect(email.attachments.first.filename).to eq("filename.csv")
     end
 
     it "contains information about publications released as open access this semester" do
-      expect(email.parts.first.body.to_s).to match(/were released as Open Access between #{date_range}/i)
+      expect(email.parts.first.body.to_s).to match(/were released between #{date_range}/i)
       expect(email.parts.first.body.to_s).to match(/#{current_partner.name}/i)
     end
   end
