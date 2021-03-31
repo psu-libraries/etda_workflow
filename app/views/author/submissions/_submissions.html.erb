@@ -27,5 +27,6 @@
     </div>
   <% end %>
 
-  <%= render 'new_submission_button' unless current_partner.graduate? %>
+  <%= render 'new_submission_button' unless current_partner.graduate? || current_partner.honors? %>
+  <%= render 'honors_new_submission_button' if current_partner.honors? %>
 </div>
