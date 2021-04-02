@@ -87,6 +87,42 @@ RSpec.describe WorkflowMailer do
     end
   end
 
+  describe '#format_review_rejected' do
+    let(:email) { described_class.format_review_rejected(submission) }
+    let(:partner_email) { current_partner.email_address }
+
+    context "when the current partner is 'sset'", sset: true do
+      before do
+        skip 'sset only' unless current_partner.sset?
+      end
+
+      it "sets an appropriate subject" do
+        expect(email.subject).to match(/format review has been rejected/i)
+      end
+
+      it "is sent from the partner support email address" do
+        expect(email.from).to eq([partner_email])
+      end
+
+      it "is sent to the student's PSU email address" do
+        expect(author.psu_email_address).not_to be_blank
+        expect(email.to).to eq([author.psu_email_address])
+      end
+
+      it "tells them that their format review has been rejected" do
+        expect(email.body).to match(/Project Paper has been rejected/i)
+      end
+    end
+
+    context "when the current partner is not 'sset'" do
+      it "raises an exception" do
+        skip 'non sset only' if current_partner.sset?
+
+        expect { email.deliver_now }.to raise_error WorkflowMailer::InvalidPartner
+      end
+    end
+  end
+
   describe '#final_submission_received' do
     before { allow(Partner).to receive(:current).and_return(partner) }
 
