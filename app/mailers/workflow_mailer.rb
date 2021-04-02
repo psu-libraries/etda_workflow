@@ -1,4 +1,5 @@
 class WorkflowMailer < ActionMailer::Base
+  class InvalidPartner < StandardError; end
   extend MailerActions
 
   def format_review_received(submission)
@@ -8,6 +9,28 @@ class WorkflowMailer < ActionMailer::Base
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
          subject: "Your format review has been received"
+  end
+
+  def format_review_accepted(submission)
+    raise InvalidPartner unless current_partner.sset?
+
+    @submission = submission
+    @author = submission.author
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "Your format review has been accepted"
+  end
+
+  def format_review_rejected(submission)
+    raise InvalidPartner unless current_partner.sset?
+
+    @submission = submission
+    @author = submission.author
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "Your format review has been rejected"
   end
 
   def final_submission_received(submission)
