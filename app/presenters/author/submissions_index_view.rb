@@ -18,8 +18,10 @@ class Author::SubmissionsIndexView
   end
 
   def no_submissions_message
-    return "You do not have any submissions to complete.
-            Please contact your program office to begin a submission." if current_partner.graduate?
+    if current_partner.graduate?
+      return "You don't have any submissions to complete.
+              Please contact your program office to begin a submission."
+    end
 
     "You don't have any submissions to complete."
   end
