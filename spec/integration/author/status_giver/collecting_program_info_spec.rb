@@ -102,7 +102,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
         expect(find("select[id='submission_semester']").disabled?).to eq true
         expect(find("select[id='submission_year']").value).to eq DateTime.now.year.to_s
         expect(find("select[id='submission_year']").disabled?).to eq true
-        click_on "Update #{submission.degree_type.to_s} Title"
+        click_on "Update #{submission.degree_type} Title"
         expect(Submission.find(submission.id).title).to eq 'Test Title'
         expect(Submission.find(submission.id).status).to eq 'collecting committee'
       end
@@ -119,7 +119,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
 
       it "doesn't change status of submission", milsch: true, honors: true, sset: true do
         visit "author/submissions/#{submission.id}/edit"
-        click_on "Update #{submission.degree_type.to_s} Title" if current_partner.graduate?
+        click_on "Update #{submission.degree_type} Title" if current_partner.graduate?
         click_on "Update Program Information" unless current_partner.graduate?
         expect(Submission.find(submission.id).status).to eq 'collecting format review files'
       end
@@ -152,7 +152,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
       visit "/author/submissions/#{new_submission.id}/edit"
       select second_program.name, from: current_partner.program_label.to_s
       second_program_id = Program.where(name: second_program.name).first.id
-      click_on "Update #{new_submission.degree_type.to_s} Title" if current_partner.graduate?
+      click_on "Update #{new_submission.degree_type} Title" if current_partner.graduate?
       click_on "Update Program Information" unless current_partner.graduate?
       submission = author.submissions.first.reload
       expect(submission.program.id).to eq(second_program_id)
