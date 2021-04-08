@@ -21,7 +21,7 @@ RSpec.describe 'Author submission page', type: :integration, milsch: true, honor
   context 'Author submission display when author has no submissions' do
     it "displays 'no submissions message'" do
       expect(page).to have_content("You don't have any submissions")
-      expect(page).to have_content("in LionPATH") if current_partner.graduate?
+      expect(page).not_to have_link('Start a new Submission') if current_partner.graduate?
       expect(page).to have_link('Start a new Submission') unless current_partner.graduate?
       expect(page).not_to have_link('Contact Support')
     end

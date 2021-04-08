@@ -102,7 +102,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
         expect(find("select[id='submission_semester']").disabled?).to eq true
         expect(find("select[id='submission_year']").value).to eq DateTime.now.year.to_s
         expect(find("select[id='submission_year']").disabled?).to eq true
-        click_on 'Update Program Information'
+        click_on "Update #{submission.degree_type.to_s} Title"
         expect(Submission.find(submission.id).title).to eq 'Test Title'
         expect(Submission.find(submission.id).status).to eq 'collecting committee'
       end
@@ -117,9 +117,10 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
                           status: 'collecting format review files'
       end
 
-      it "doesn't change status of submission" do
+      it "doesn't change status of submission", milsch: true, honors: true, sset: true do
         visit "author/submissions/#{submission.id}/edit"
-        click_on 'Update Program Information'
+        click_on "Update #{submission.degree_type.to_s} Title" if current_partner.graduate?
+        click_on "Update Program Information" unless current_partner.graduate?
         expect(Submission.find(submission.id).status).to eq 'collecting format review files'
       end
     end
@@ -132,10 +133,10 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
 
     let(:author) { current_author }
 
-    it "submission status updates to 'collecting committee'", milsch: true, honors: true do
+    it "submission status updates to 'collecting committee'", milsch: true, honors: true, sset: true do
       program = FactoryBot.create :program, name: 'Information Sciences and Technology'
       second_program = FactoryBot.create :program, name: 'A different program'
-      degree = Degree.create(name: 'Master of Science', degree_type_id: DegreeType.default.id, description: 'My Master degree')
+      degree = Degree.create(name: 'Degree Name', degree_type_id: DegreeType.default.id, description: 'My Degree')
 
       visit new_author_submission_path
       fill_in 'Title', with: 'A unique test title'
@@ -143,14 +144,16 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
       select 'Fall', from: 'Semester Intending to Graduate'
       select Time.zone.now.year.to_s, from: 'Graduation Year'
       select degree.description, from: 'Degree'
-      find_button('Save Program Information').click
+      find_button("Save Thesis or Dissertation Title").click if current_partner.graduate?
+      find_button('Save Program Information').click unless current_partner.graduate?
       new_submission = Submission.where(title: 'A unique test title').first
       expect(new_submission.status).to eq 'collecting committee'
       expect(new_submission.program.id).to eq(Program.where(name: 'Information Sciences and Technology').first.id)
       visit "/author/submissions/#{new_submission.id}/edit"
       select second_program.name, from: current_partner.program_label.to_s
       second_program_id = Program.where(name: second_program.name).first.id
-      find_button('Update Program Information').click
+      click_on "Update #{new_submission.degree_type.to_s} Title" if current_partner.graduate?
+      click_on "Update Program Information" unless current_partner.graduate?
       submission = author.submissions.first.reload
       expect(submission.program.id).to eq(second_program_id)
     end
