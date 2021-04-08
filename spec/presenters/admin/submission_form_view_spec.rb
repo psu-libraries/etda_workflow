@@ -228,8 +228,8 @@ RSpec.describe Admin::SubmissionFormView do
     context "When the status is 'waiting for committee review'" do
       before { submission.status = 'waiting for committee review' }
 
-      it "returns the normal update path" do
-        expect(view.form_for_url).to eq admin_submission_path(submission)
+      it "returns final submission pending response" do
+        expect(view.form_for_url).to eq admin_submissions_final_submission_pending_response_path(submission)
       end
     end
 
