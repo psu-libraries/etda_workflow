@@ -140,9 +140,7 @@ class Submission < ApplicationRecord
   end
 
   def reset_program_head_review
-    if program_head
-      program_head.update status: ''
-    end
+    program_head&.update status: ''
   end
 
   def initialize_access_level

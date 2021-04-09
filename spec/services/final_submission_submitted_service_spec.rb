@@ -37,6 +37,7 @@ RSpec.describe FinalSubmissionSubmittedService do
         cm.update status: 'approved'
       end
     end
+
     it "sends submissions to 'waiting for head of program review'" do
       described_class_inst.final_rejected_send_dept_head
       submission.reload
