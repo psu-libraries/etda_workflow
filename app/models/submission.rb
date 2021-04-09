@@ -38,6 +38,10 @@ class Submission < ApplicationRecord
     ApprovalStatus.new(self)
   end
 
+  def program_head
+    CommitteeMember.program_head(self)
+  end
+
   after_initialize :set_status_to_collecting_program_information
   after_initialize :initialize_access_level
 
@@ -133,6 +137,10 @@ class Submission < ApplicationRecord
     committee_members.each do |committee_member|
       committee_member.update! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
     end
+  end
+
+  def reset_program_head_review
+    program_head&.update status: ''
   end
 
   def initialize_access_level
@@ -299,7 +307,7 @@ class Submission < ApplicationRecord
       voting_no_dups << member unless seen_access_ids.include? member.access_id
       seen_access_ids << member.access_id
     end
-    voting_no_dups << CommitteeMember.program_head(self) unless head_of_program_is_approving?
+    voting_no_dups << program_head unless head_of_program_is_approving?
     voting_no_dups.compact
   end
 

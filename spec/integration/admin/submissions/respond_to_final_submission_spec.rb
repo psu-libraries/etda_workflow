@@ -81,6 +81,32 @@ RSpec.describe "when admin responds to final submission", js: true do
     end
   end
 
+  describe "when an admin clicks 'Send to program head'" do
+    context 'when head of program is approving' do
+      it "updates status to 'waiting for head of program review'" do
+        submission.committee_members << FactoryBot.create(:committee_member,
+                                                          committee_role: CommitteeRole.find_by(degree_type: submission.degree_type,
+                                                                                                is_program_head: true))
+        visit admin_edit_submission_path(submission)
+        click_button 'Send to program head'
+        expect(page).to have_content('program head review stage and the program head')
+        submission.reload
+        expect(submission.status).to eq 'waiting for head of program review'
+      end
+    end
+
+    context 'when head of program is not approving' do
+      before do
+        submission.degree_type.approval_configuration.update head_of_program_is_approving: false
+      end
+
+      it "does not show button" do
+        visit admin_edit_submission_path(submission)
+        expect(page).not_to have_button 'Send to program head'
+      end
+    end
+  end
+
   describe 'an admin deletes a format review file that is waiting for approval' do
     let!(:submission) { FactoryBot.create :submission, :waiting_for_format_review_response }
     let!(:format_file) { FactoryBot.create :format_review_file, submission: submission }

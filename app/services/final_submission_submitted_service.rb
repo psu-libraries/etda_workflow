@@ -41,6 +41,18 @@ class FinalSubmissionSubmittedService
     "The submission was successfully returned to the committee review stage and the committee was notified to visit the site for review."
   end
 
+  def final_rejected_send_dept_head
+    return "This submission does not have a program head." if submission.program_head.blank?
+
+    UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
+    submission.save
+    status_giver.can_waiting_for_head_of_program_review?
+    status_giver.waiting_for_head_of_program_review!
+    submission.reset_program_head_review
+    WorkflowMailer.committee_member_review_request(@submission, @submission.program_head).deliver
+    "The submission was successfully returned to the program head review stage and the program head was notified to visit the site for review."
+  end
+
   def final_submission_updated
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
     " Final submission information was successfully edited by an administrator"
