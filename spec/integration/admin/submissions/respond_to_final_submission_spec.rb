@@ -84,6 +84,9 @@ RSpec.describe "when admin responds to final submission", js: true do
   describe "when an admin clicks 'Send to program head'" do
     context 'when head of program is approving' do
       it "updates status to 'waiting for head of program review'" do
+        submission.committee_members << FactoryBot.create(:committee_member,
+                                                           committee_role: CommitteeRole.find_by(degree_type: submission.degree_type,
+                                                                                                 is_program_head: true))
         visit admin_edit_submission_path(submission)
         click_button 'Send to program head'
         expect(page).to have_content('program head review stage and the program head')

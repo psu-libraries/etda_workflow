@@ -42,6 +42,8 @@ class FinalSubmissionSubmittedService
   end
 
   def final_rejected_send_dept_head
+    return "This submission does not have a program head." if submission.program_head.blank?
+
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
     submission.save
     status_giver.can_waiting_for_head_of_program_review?
