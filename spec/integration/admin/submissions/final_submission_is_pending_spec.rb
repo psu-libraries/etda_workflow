@@ -14,4 +14,13 @@ RSpec.describe "when an admin views the final submission is pending bucket", js:
     expect(page).to have_content "Final Submission is Pending"
     expect(page).to have_link submission.title
   end
+
+  describe 'selecting a submission' do
+    it 'has button to "Reject & return to author"' do
+      click_link submission.title
+      click_button 'Reject & return to author'
+      submission.reload
+      expect(submission.status).to eq 'waiting for committee review rejected'
+    end
+  end
 end

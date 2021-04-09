@@ -166,6 +166,17 @@ en:
             777 West Harrisburg Pike
             W256 Olmsted Building
             Middletown, PA 17057
+        pending_returned_to_author:
+          message: |
+            Your %{degree_type} has been rejected by request of an administrator.
+            You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review again.
+
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
+            School of Science, Engineering, and Technology
+            777 West Harrisburg Pike
+            W256 Olmsted Building
+            Middletown, PA 17057
         committee_approved:
           message: |
             Your submission has been reviewed by your committee and it is approved.

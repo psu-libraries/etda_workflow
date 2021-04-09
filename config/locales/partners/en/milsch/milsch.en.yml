@@ -134,6 +134,16 @@ en:
                     Millennium Scholars Program
                     130 Ritenour Building
                     University Park, PA  16802
+        pending_returned_to_author:
+          message: |
+            Your %{degree_type} has been rejected by request of an administrator.
+            You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review again.
+
+            If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
+            You may also call (814)867-5105, or send mail to:
+            Millennium Scholars Program
+            130 Ritenour Building
+            University Park, PA  16802
         committee_approved:
           message: |
                     Your submission has been reviewed by your committee and it is approved.

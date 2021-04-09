@@ -174,6 +174,17 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
+        pending_returned_to_author:
+          message: |
+               Your %{degree_type} has been rejected by request of an administrator.
+               You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review again.
+
+               If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+               You may also call (814)865-5448, or send mail to:
+               Office of Theses and Dissertations
+               115 Kern Building
+               Graduate School
+               University Park, PA  16802
         committee_approved:
           message: |
                     Your eTD has been reviewed by your committee and it is approved.
