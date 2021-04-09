@@ -355,6 +355,26 @@ RSpec.describe WorkflowMailer do
     end
   end
 
+  describe '#pending_returned_to_author' do
+    let(:email) { described_class.pending_returned_to_author(submission) }
+
+    it "is sent to the proper recipient" do
+      expect(email.to).to eq([submission.author.psu_email_address])
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("Final Submission Returned for Resubmission")
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/has been rejected by request of an administrator/)
+    end
+  end
+
   describe '#committee_member_review_reminder' do
     let(:email) { described_class.committee_member_review_reminder(submission, committee_member) }
 
