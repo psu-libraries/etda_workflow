@@ -376,7 +376,7 @@ RSpec.describe Submission, type: :model do
             allow(CommitteeMember).to receive(:program_head).with(submission).and_return(FactoryBot.create(:committee_member))
             submission.update_status_from_committee
             expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
-            expect(WorkflowMailer.deliveries.count).to eq 0
+            expect(WorkflowMailer.deliveries.count).to eq 1
           end
         end
 
