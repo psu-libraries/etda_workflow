@@ -6,8 +6,8 @@ FactoryBot.define do
     use_percentage { 0 }
     configuration_threshold { 1 }
     head_of_program_is_approving { 1 }
-    email_authors { 0 }
-    email_admins { 0 }
+    email_authors { 1 }
+    email_admins { 1 }
     degree_type
   end
 end

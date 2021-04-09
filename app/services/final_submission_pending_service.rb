@@ -18,6 +18,7 @@ class FinalSubmissionPendingService
       WorkflowMailer.pending_returned_to_author(submission).deliver
       { msg: "The submission was successfully returned to the student for resubmission.", redirect_to: submission_path }
     else
+      submission.update_status_from_committee
       { msg: "The submission was successfully updated.", redirect_to: submission_path }
     end
   end

@@ -5,6 +5,7 @@ RSpec.describe FinalSubmissionPendingService do
   let(:service) { described_class.new(submission, params, 'adminflow') }
   let!(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, degree: degree }
   let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+  let!(:approval_config) { FactoryBot.create :approval_configuration, degree_type: DegreeType.default, head_of_program_is_approving: false }
 
   describe "#respond" do
     context 'when params[:update_metadata]' do
@@ -12,14 +13,32 @@ RSpec.describe FinalSubmissionPendingService do
         ActionController::Parameters.new(update_metadata: "Update Metadata", submission: { title: 'New Title' })
       end
 
-      it 'just updates the metadata' do
-        expect(service.respond).to eq(
-          msg: "The submission was successfully updated.",
-          redirect_to: "/admin/submissions/#{submission.id}/edit"
-        )
-        submission.reload
-        expect(submission.title).to eq 'New Title'
-        expect(WorkflowMailer.deliveries.count).to eq 0
+      context 'when committee has blank reviews' do
+        it 'updates the metadata' do
+          expect(service.respond).to eq(
+            msg: "The submission was successfully updated.",
+            redirect_to: "/admin/submissions/#{submission.id}/edit"
+          )
+          submission.reload
+          expect(submission.title).to eq 'New Title'
+          expect(submission.status).to eq 'waiting for committee review'
+          expect(WorkflowMailer.deliveries.count).to eq 0
+        end
+      end
+
+      context 'when committee has all approved reviews' do
+        it 'moves the submission to final submission is submitted' do
+          create_committee(submission)
+          submission.committee_members.each { |cm| cm.update status: 'approved' }
+          expect(service.respond).to eq(
+            msg: "The submission was successfully updated.",
+            redirect_to: "/admin/submissions/#{submission.id}/edit"
+          )
+          submission.reload
+          expect(submission.title).to eq 'New Title'
+          expect(submission.status).to eq 'waiting for final submission response'
+          expect(WorkflowMailer.deliveries.count).to eq 1
+        end
       end
     end
 
