@@ -47,9 +47,8 @@ class FinalSubmissionSubmittedService
     status_giver.can_waiting_for_head_of_program_review?
     status_giver.waiting_for_head_of_program_review!
     submission.reset_program_head_review
-    WorkflowMailer.committee_member_review_request(@submission, @submission.program_head)
-    WorkflowMailer.sent_to_committee(submission).deliver
-    "The submission was successfully returned to the program head review stage and the department head was notified to visit the site for review."
+    WorkflowMailer.committee_member_review_request(@submission, @submission.program_head).deliver
+    "The submission was successfully returned to the program head review stage and the program head was notified to visit the site for review."
   end
 
   def final_submission_updated
