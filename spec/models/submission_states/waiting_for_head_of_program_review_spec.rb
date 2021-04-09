@@ -38,6 +38,12 @@ RSpec.describe SubmissionStates::WaitingForHeadOfProgramReview do
     let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, status: status }
     let(:subject) { described_class.transition submission }
 
+    context 'when submission status WaitingForFinalSubmissionResponse' do
+      let(:status) { SubmissionStates::WaitingForFinalSubmissionResponse.name }
+
+      it { is_expected.to be_truthy }
+    end
+
     context 'when submission status WaitingForCommittee' do
       let(:status) { described_class.name }
 

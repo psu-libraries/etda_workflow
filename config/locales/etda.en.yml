@@ -19,3 +19,4 @@ en:
   text:
     rejected_committee_message: This action will move this submission to "Final Submission is Pending" for the committee to review. Automatic email notifications will be sent out to the committee members for review and the author will receive an email notifying them of this action.  Would you like to proceed?
     pending_return_to_author_message: This action will move this submission to "Committee Review Rejected" for the student to resubmit. When the student submits, automatic email notifications will be sent out to the committee members for the entire committee to review again.  Would you like to proceed?
+    rejected_dept_head_message: This action will move this submission to "Final Submission is Pending" for the program head to review. An automatic email notification will be sent out to the program head for review.  Would you like to proceed?

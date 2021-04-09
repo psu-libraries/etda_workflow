@@ -1,6 +1,10 @@
 <div class="row">
   <div class="col-xs-12 col-sm-9">
-    <h1>Program Information</h1>
+    <% if current_partner.graduate? %>
+      <h1>Enter Thesis or Dissertation Title</h1>
+    <% else %>
+      <h1>Program Information</h1>
+    <% end %>
   </div>
 </div>
 
@@ -11,7 +15,8 @@
       <%= render partial: "form_fields", locals: { form: form, program_information_partial: 'standard_program_information' } %>
 
       <div class="form-group actions col-xs-6">
-        <%= form.button :submit, class: "btn-primary", value: "Save Program Information" %>
+        <%= form.button :submit, class: "btn-primary", value: "Save Thesis or Dissertation Title" if current_partner.graduate? %>
+        <%= form.button :submit, class: "btn-primary", value: "Save Program Information" unless current_partner.graduate? %>
         <%= link_to "Cancel", author_root_path, class: 'btn cancel-link' %>
       </div>
     <% end %>

@@ -7,6 +7,7 @@ module SubmissionStates
     def initialize
       @transitions_to = [SubmissionStates::WaitingForPublicationRelease,
                          SubmissionStates::WaitingForCommitteeReview,
+                         SubmissionStates::WaitingForHeadOfProgramReview,
                          SubmissionStates::CollectingFinalSubmissionFilesRejected]
     end
 

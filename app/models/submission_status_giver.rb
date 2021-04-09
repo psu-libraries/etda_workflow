@@ -141,7 +141,8 @@ class SubmissionStatusGiver
   end
 
   def can_waiting_for_head_of_program_review?
-    validate_current_state! [SubmissionStates::WaitingForCommitteeReview]
+    validate_current_state! [SubmissionStates::WaitingForCommitteeReview,
+                            SubmissionStates::WaitingForFinalSubmissionResponse]
   end
 
   def can_committee_review_admin_response?
