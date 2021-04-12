@@ -8,7 +8,7 @@ RSpec.describe ApprovalStatus, type: :model do
   let(:approval_configuration1) { ApprovalConfiguration.create(configuration_threshold: 0, use_percentage: 0, approval_deadline_on: Date.today, head_of_program_is_approving: false) }
   let(:approval_configuration2) { ApprovalConfiguration.create(configuration_threshold: 1, use_percentage: 0, approval_deadline_on: Date.today, head_of_program_is_approving: false) }
   let(:approval_configuration3) { ApprovalConfiguration.create(configuration_threshold: 100, use_percentage: 1, approval_deadline_on: Date.today, head_of_program_is_approving: false) }
-  let(:approval_configuration4) { ApprovalConfiguration.create(configuration_threshold: 75, use_percentage: 1, approval_deadline_on: Date.today, head_of_program_is_approving: false) }
+  let(:approval_configuration4) { ApprovalConfiguration.create(configuration_threshold: 66, use_percentage: 1, approval_deadline_on: Date.today, head_of_program_is_approving: false) }
 
   describe "#status" do
     context "when using rejections permitted" do
@@ -191,7 +191,7 @@ RSpec.describe ApprovalStatus, type: :model do
         end
       end
 
-      context "when percentage for approval is 75" do
+      context "when percentage for approval is 66" do
         before do
           submission.degree.degree_type.approval_configuration = approval_configuration4
         end
@@ -207,9 +207,10 @@ RSpec.describe ApprovalStatus, type: :model do
           end
         end
 
-        context "when 75 percent approve" do
+        context "when 80 percent approve" do
           it "returns approved" do
             submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'rejected', is_voting: true)
+            submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'approved', is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'approved', is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'approved', is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'approved', is_voting: true)
@@ -218,10 +219,11 @@ RSpec.describe ApprovalStatus, type: :model do
           end
         end
 
-        context "when 50 percent reject" do
+        context "when 40 percent reject" do
           it "returns rejected" do
             submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'rejected', is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'rejected', is_voting: true)
+            submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'approved', is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'approved', is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'approved', is_voting: true)
 
@@ -229,7 +231,7 @@ RSpec.describe ApprovalStatus, type: :model do
           end
         end
 
-        context "when 50 percent approve but only 25 percent reject (25 percent pending)" do
+        context "when 50 percent approve but 25 percent reject (25 percent pending)" do
           it "returns none" do
             submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'pending', is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, submission: submission, status: 'rejected', is_voting: true)
