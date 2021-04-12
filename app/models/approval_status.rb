@@ -59,7 +59,7 @@ class ApprovalStatus
   end
 
   def num_approved_required
-    (voting_committee_members.count.to_f * (approval_configuration.configuration_threshold.to_f / 100)).round
+    (voting_committee_members.count.to_f * (approval_configuration.configuration_threshold.to_f / 100)).ceil
   end
 
   def all_have_voted?
