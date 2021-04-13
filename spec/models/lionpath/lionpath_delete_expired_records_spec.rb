@@ -18,7 +18,7 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
   let!(:exp_lp_cm2) { FactoryBot.create :committee_member, lionpath_updated_at: (DateTime.now - 10.days) }
   let!(:exp_lp_cm3) do
     FactoryBot.create :committee_member, lionpath_updated_at: (DateTime.now - 10.days),
-                      created_at: (DateTime.now - 5.years)
+                                         created_at: (DateTime.now - 5.years)
   end
 
   context "when less than 1% of the total number of records are expired" do
