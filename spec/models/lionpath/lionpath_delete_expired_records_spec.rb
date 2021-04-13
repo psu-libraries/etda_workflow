@@ -14,22 +14,23 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
   let!(:exp_lp_cm1) { FactoryBot.create :committee_member, lionpath_updated_at: (DateTime.now - 2.days) }
   let!(:exp_lp_cm2) { FactoryBot.create :committee_member, lionpath_updated_at: (DateTime.now - 10.days) }
 
-  context "when #safe_to_delete returns true" do
-    before do
-      allow(described_class).to receive(:total_lp_sub_count).and_return 10000
-      allow(described_class).to receive(:total_lp_cmtee_mmbr_count).and_return 10000
-    end
-
+  context "when less than 1% of the total number of records are expired" do
     it "deletes expired lionpath submissions" do
+      200.times { FactoryBot.create :submission, lionpath_updated_at: DateTime.now }
       expect{ described_class.delete }.to change(Submission, :count).by -2
+      expect{ exp_lp_sub1.reload }.to raise_error ActiveRecord::RecordNotFound
+      expect{ exp_lp_sub2.reload }.to raise_error ActiveRecord::RecordNotFound
     end
 
     it "deletes expired lionpath committee_members" do
+      200.times { FactoryBot.create :committee_member, lionpath_updated_at: DateTime.now }
       expect{ described_class.delete }.to change(CommitteeMember, :count).by -2
+      expect{ exp_lp_cm1.reload }.to raise_error ActiveRecord::RecordNotFound
+      expect{ exp_lp_cm2.reload }.to raise_error ActiveRecord::RecordNotFound
     end
   end
 
-  context "when #safe_to_delete returns false" do
+  context "when more than 1% of the total number of records are expired" do
     it "does not delete expired lionpath submissions" do
       expect{ described_class.delete }.not_to change(Submission, :count)
     end
