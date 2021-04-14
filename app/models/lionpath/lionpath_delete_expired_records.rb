@@ -1,9 +1,14 @@
 class Lionpath::LionpathDeleteExpiredRecords
   class << self
     def delete
-      lp_subs_to_delete.each(&:destroy) if safe_to_delete?(total_lp_sub_count, lp_subs_to_delete.count)
-      lp_cmtee_mmbrs_to_delete.each(&:destroy) if safe_to_delete?(total_lp_cmtee_mmbr_count,
-                                                                  lp_cmtee_mmbrs_to_delete.count)
+      if safe_to_delete?(total_lp_sub_count, lp_subs_to_delete.count)
+        lp_subs_to_delete.each(&:destroy)
+        send_email
+      end
+      if safe_to_delete?(total_lp_cmtee_mmbr_count, lp_cmtee_mmbrs_to_delete.count)
+        lp_cmtee_mmbrs_to_delete.each(&:destroy)
+        send_email
+      end
     end
 
     private
@@ -41,6 +46,10 @@ class Lionpath::LionpathDeleteExpiredRecords
 
     def safe_to_delete?(total_num, num_to_delete)
       (num_to_delete.to_f / total_num.to_f) < (5.to_f / 100.to_f)
+    end
+
+    def send_email
+      WorkflowMailer.lionpath_deletion_alert
     end
   end
 end
