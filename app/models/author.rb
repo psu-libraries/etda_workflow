@@ -83,7 +83,7 @@ class Author < ApplicationRecord
     self.first_name = refresh(first_name, ldap_attributes[:first_name])
     self.last_name = refresh(last_name, ldap_attributes[:last_name])
     self.middle_name = refresh(middle_name, ldap_attributes[:middle_name])
-    self.psu_email_address = refresh(psu_email_address, "#{self.access_id}@psu.edu")
+    self.psu_email_address = refresh(psu_email_address, "#{access_id}@psu.edu")
     self.psu_idn = refresh(psu_idn, ldap_attributes[:psu_idn])
     save(validate: false)
     self
