@@ -32,8 +32,11 @@ class Lionpath::LionpathDeleteExpiredRecords
       total_lp_subs.where('submissions.lionpath_updated_at < ?', (DateTime.now - 2.days))
     end
 
+    # External to PSU committee members will stop updating after they are imported.
+    # Therefore, they need to be excluded from the following query.
     def lp_cmtee_mmbrs_to_delete
-      total_lp_cmtee_mmbrs.where('committee_members.lionpath_updated_at < ?', (DateTime.now - 2.days))
+      total_lp_cmtee_mmbrs.where('committee_members.external_to_psu_id IS NULL AND committee_members.lionpath_updated_at < ?',
+                                 (DateTime.now - 2.days))
     end
 
     def safe_to_delete?(total_num, num_to_delete)
