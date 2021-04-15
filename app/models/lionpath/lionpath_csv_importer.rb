@@ -27,6 +27,7 @@ class Lionpath::LionpathCsvImporter
     end
     assign_chairs
     File.delete(lionpath_csv_loc) if File.exist?(lionpath_csv_loc)
+    Lionpath::LionpathDeleteExpiredRecords.delete
   end
 
   private

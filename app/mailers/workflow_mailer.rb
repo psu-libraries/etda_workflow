@@ -112,6 +112,17 @@ class WorkflowMailer < ActionMailer::Base
          subject: 'VERIFY FILES: Misplaced files found'
   end
 
+  def lionpath_deletion_alert(resource)
+    raise InvalidPartner unless current_partner.graduate?
+
+    @datetime_now = DateTime.now
+    @resource = resource
+
+    mail to: I18n.t('devs.lead.primary_email_address').to_s,
+         from: current_partner.email_address,
+         subject: 'Alert: LionPATH Deletion Exceeded 5%'
+  end
+
   def sent_to_committee(submission)
     @submission = submission
     @author = submission.author
