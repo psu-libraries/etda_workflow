@@ -91,6 +91,18 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
+        sent_to_committee:
+          message: |
+                    Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee.
+                    No action is required of you at this time.
+                    You will be notified once your committee has reviewed and made a decision regarding your document.
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
@@ -162,6 +174,17 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
+        pending_returned_to_author:
+          message: |
+               Your %{degree_type} has been rejected by request of an administrator.
+               You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review again.
+
+               If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+               You may also call (814)865-5448, or send mail to:
+               Office of Theses and Dissertations
+               115 Kern Building
+               Graduate School
+               University Park, PA  16802
         committee_approved:
           message: |
                     Your eTD has been reviewed by your committee and it is approved.
@@ -220,44 +243,32 @@ en:
       list:
         label: Committee Members
         master_thesis:
-          thesis_advisor:
-            name: Thesis Advisor
-            description: The professor responsible for supervising a MS student through the writing of their thesis.
-          committee_member:
-            name: Committee Member
-            description: A professor who serves a variety of roles in the student’s thesis and is a member of the committee.
+          help_text: Enter required committee members in the form below.  Type the committee member's name in the form.  After a blank is entered, a list of names will appear.  Use up and down arrow keys to scroll through the list.  When the desired name is highlighted, click the return key to populate the form.  Both the committee member's name and email address will be filled after the selection is made.  Emails will automatically be sent to each committee member once your final submission is submitted and the committee review stage begins.  These emails will provide a link to where committee members can complete their reviews.
+          notice: The committee for a Master's thesis must consist of at least one Thesis Advisor and two Committee Members.  You can add committee members at the bottom of the page.  Your Program Head/Chair's information has been imported from LionPATH.  The Program Head/Chair will be the final committee member to review your work.
+          members:
+            thesis_advisor:
+              name: Thesis Advisor
+              description: The professor responsible for supervising a MS student through the writing of their thesis.
+            committee_member:
+              name: Committee Member
+              description: A professor who serves a variety of roles in the student’s thesis and is a member of the committee.
+            program_head:
+              name: Program Head
+              description: Faculty member responsible for leadership in developing the department’s academic programs.
         dissertation:
-          dissertation_advisor:
-            name: Dissertation Advisor
-            description: Graduate Faculty member(s) principally responsible for day-to-day guidance of the student’s dissertation research and academic/professional development.
-          committee_chair:
-            name: Committee Chair
-            description: The Committee Chair must be a member of the Graduate Faculty and the student’s major Graduate Program.  The Committee Chair is responsible for arranging and conducting all committee meetings and ensuring that all requirements relative to the doctoral degree are met.
-          committee_member:
-            name: Committee Member
-            description: A member of the Graduate Faculty who is in position to contribute to the student’s education.
-          outside_member:
-            name: Outside Member
-            description: The Outside Member must have their primary academic appointment in an administrative unit different than the Ph.D. Committee Chair(s) and Dissertation Adviser(s).
-          special_signatory:
-            name: Special Signatory
-            description: A person outside the university with expertise in a particular field who is unable to attend the final defense.
-          special_member:
-            name: Special Member
-            description: A member of the student’s Ph.D. Committee who is not a member of the Graduate Faculty of Penn State, but whose expertise and insights would provide substantial benefit to the student’s dissertation research and the Ph.D. Committee.
-          program_head:
-            name: Program Head
-            description: Faculty member responsible for leadership in developing the department’s academic programs.
-      author_instructions:
-        The committee for a Master's thesis must consist of at least one Thesis Advisor and two Committee Members.  The committee for a Dissertation must include one Dissertation Advisor, one Committee Chair, two Committee Members, and one Outside Member.
-      author_notice:
-        Special Signatories and Special Members can be added at the bottom of the screen by clicking "Add Committee Member" and selecting their role from the dropdown.  Note that if these members are external to Penn State and do not have Access IDs, they will be prompted to create a OneID account when they visit this site.
-      head_of_program_notice: |
-                              In order to proceed to the final submission stage, you must input the Head/Chair of your graduate program. If you do not yet know who the head of your program is, you can:<br /><br />
-                              Skip this step by clicking "Return to dashboard" below. You may then proceed to the format review stage. You will be prompted again when submitting your final submission to complete this step if you have not yet done so.<br /><br />
-                              <strong>OR</strong><br /><br />
-                              Search for the primary contact of your program here: <a href="https://secure.gradsch.psu.edu/gpms/" target="_blank">Graduate Program Search</a><br />
-                              Contact the person identified to obtain the name of the Program Head/Chair and proceed with your submission.
+          incomplete_error: Your committee is not complete.  Please complete your committee in <a target="_blank" href="https://lionpath.psu.edu">LionPATH</a>.
+          help_text: Please review your current and official committee. Dissertation Committees are imported from LionPATH based on your approved committee appointment signature form.  Any concerns should be directed to your graduate program offices.  Any changes to the committee members presented below will require new official paperwork.
+          notice: Special Signatories (not to be confused with special members) can be added at the bottom of the screen by clicking “Add Special Signatory”.  The role will populate to Special Signatory and is the only option available to add here.  Note that if these members are external to Penn State and do not have Access IDs, they will be prompted to create a OneID account when they visit this site.  For questions regarding Special Signatories please contact <a href="mailto:gradthesis@psu.edu">gradthesis@psu.edu</a>.
+          members:
+            lionpath_committee:
+              name: LionPATH Committee
+              description: Refer to your graduate program offices for descriptions of committee roles imported from LionPATH.
+            special_signatory:
+              name: Special Signatory
+              description: A person outside the university with expertise in a particular field who is unable to attend the final defense.
+            program_head:
+              name: Program Head
+              description: Faculty member responsible for leadership in developing the department’s academic programs.
       special_role: advisor
     admin_filters:
       format_review_incomplete:

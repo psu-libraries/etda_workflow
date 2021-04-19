@@ -182,7 +182,6 @@ Lint/HandleExceptions:
 
 Lint/ParenthesesAsGroupedExpression:
   Exclude:
-    - 'lib/devise/strategies/webaccess_authenticatable.rb'
 
 Lint/ShadowingOuterLocalVariable:
   Exclude:
@@ -285,7 +284,6 @@ Lint/UselessAssignment:
     #- 'app/views/admin/degrees/index.json.rabl'
     #- 'app/views/admin/programs/index.json.rabl'
     - 'spec/lib/tasks/confidential.rake'
-    - 'spec/models/lion_path/academic_plan_spec.rb'
     - 'app/models/legacy/importer.rb'
 
 Style/StderrPuts:

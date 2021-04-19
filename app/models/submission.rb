@@ -38,6 +38,10 @@ class Submission < ApplicationRecord
     ApprovalStatus.new(self)
   end
 
+  def program_head
+    CommitteeMember.program_head(self)
+  end
+
   after_initialize :set_status_to_collecting_program_information
   after_initialize :initialize_access_level
 
@@ -53,7 +57,7 @@ class Submission < ApplicationRecord
 
   validates :title,
             length: { maximum: 400 },
-            presence: true, if: proc { |s| s.author_edit } # !InboundLionPathRecord.active? }
+            presence: true, if: proc { |s| s.author_edit }
 
   validates :federal_funding, inclusion: { in: [true, false] }, if: proc { |s| s.status_behavior.beyond_collecting_committee? && s.author_edit }
 
@@ -116,7 +120,7 @@ class Submission < ApplicationRecord
   scope :final_submission_is_approved, -> { where(status: 'waiting for publication release') }
   scope :final_submission_is_on_hold, -> { where(status: 'waiting in final submission on hold') }
   scope :released_for_publication, -> { where('status LIKE "released for publication%"') }
-  scope :final_is_restricted_institution, -> { where(status: 'released for publication', access_level: 'restricted_to_institution') }
+  scope :final_is_restricted_institution, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted_to_institution') }
   scope :final_is_withheld, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted') }
   scope :ok_to_release, -> { where('released_for_publication_at <= ?', Time.zone.today.end_of_day) }
 
@@ -136,6 +140,10 @@ class Submission < ApplicationRecord
     committee_members.each do |committee_member|
       committee_member.update! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
     end
+  end
+
+  def reset_program_head_review
+    program_head&.update status: ''
   end
 
   def initialize_access_level
@@ -172,15 +180,6 @@ class Submission < ApplicationRecord
     !(exists || (!restricted? && !published?))
   end
 
-  def using_lionpath?
-    InboundLionPathRecord.active? && (author.inbound_lion_path_record.present? && !status_behavior.released_for_publication?)
-  end
-
-  def academic_plan
-    @academic_plan = LionPath::AcademicPlan.new(author.inbound_lion_path_record, lion_path_degree_code, self)
-    @academic_plan
-  end
-
   def semester_and_year
     "#{year} #{semester}"
   end
@@ -205,12 +204,6 @@ class Submission < ApplicationRecord
     clean_title = title.split(/\r\n/).join.strip || ''
     clean_title = clean_title.strip_control_and_extended_characters
     clean_title
-  end
-
-  def defended_at_date
-    return defended_at unless using_lionpath?
-
-    academic_plan.defense_date
   end
 
   def committee_email_list
@@ -307,9 +300,6 @@ class Submission < ApplicationRecord
 
   def self.extend_publication_date(submission_ids, date_to_release)
     where(id: submission_ids).find_each { |s| s.update!(released_for_publication_at: date_to_release) }
-    submission_ids.each do |s_id|
-      OutboundLionPathRecord.new(submission: Submission.find(s_id)).report_status_change
-    end
   end
 
   def voting_committee_members
@@ -320,19 +310,14 @@ class Submission < ApplicationRecord
       voting_no_dups << member unless seen_access_ids.include? member.access_id
       seen_access_ids << member.access_id
     end
-    voting_no_dups
+    voting_no_dups << program_head unless head_of_program_is_approving?
+    voting_no_dups.compact
   end
 
   # Initialize our committee members with empty records for each of the required roles.
   def build_committee_members_for_partners
-    if using_lionpath?
-      academic_plan.committee.each do |cm|
-        committee_members.build(committee_role_id: InboundLionPathRecord.etd_role(cm[:role_desc]), is_required: true, name: author.inbound_lion_path_record.academic_plan.full_name(cm), email: cm[:email])
-      end
-    else
-      required_committee_roles.each do |role|
-        committee_members.build(committee_role: role, is_required: true)
-      end
+    required_committee_roles.each do |role|
+      committee_members.build(committee_role: role, is_required: true)
     end
   end
 
@@ -341,10 +326,10 @@ class Submission < ApplicationRecord
   end
 
   def committee_review_requests_init
+    seen_access_ids = []
     committee_members.each do |committee_member|
       committee_member.update! approval_started_at: DateTime.now
-      seen_access_ids = []
-      next if committee_member.committee_role.name == 'Program Head/Chair' || seen_access_ids.include?(committee_member.access_id)
+      next if committee_member.is_program_head || seen_access_ids.include?(committee_member.access_id)
 
       WorkflowMailer.send_committee_review_requests(self, committee_member)
 

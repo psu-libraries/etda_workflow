@@ -6,11 +6,9 @@ RSpec.describe "when an admin releases a restricted submission for publication a
   let(:committee) { create_committee(submission) }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
 
-  let(:inbound_lion_path_record) { FactoryBot.create :inbound_lion_path_record } if current_partner.graduate?
-
   before do
     FileUtilityHelper.new.copy_test_file(Rails.root.join(final_submission_file.current_location))
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit root_path
   end
 

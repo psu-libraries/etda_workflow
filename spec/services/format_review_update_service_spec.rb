@@ -27,6 +27,8 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       expect(submission.committee_members.first.status).to eq('approved')
       expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Review Status to 'Approved' at: .*\n\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
       expect(submission.federal_funding).to eq false
+      expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.sset?
+      expect(WorkflowMailer.deliveries.count).to eq 0 unless current_partner.sset?
     end
   end
 
@@ -47,6 +49,8 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       expect(submission.semester).to eq(semester)
       expect(submission.committee_members.first.is_voting).to eq(false)
       expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
+      expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.sset?
+      expect(WorkflowMailer.deliveries.count).to eq 0 unless current_partner.sset?
     end
   end
 

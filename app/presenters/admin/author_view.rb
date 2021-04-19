@@ -22,8 +22,6 @@ class Admin::AuthorView
     end
 
     def list_item(submission)
-      return "<li><a href='/admin/submissions/#{submission.id}/edit'>#{submission.title}</a><br/>status: #{submission.status}, created: #{submission.created_at.strftime('%m/%d/%Y')}</li>" if submission.status_behavior.beyond_collecting_format_review_files?
-
-      "<li>#{submission.title}<br/>status: #{submission.status}, created: #{submission.created_at.strftime('%m/%d/%Y')}</li>"
+      "<li><a href='/admin/submissions/#{submission.id}/edit'>#{submission.title || '[Title not available]'}</a><br/>status: #{submission.status}, created: #{submission.created_at.strftime('%m/%d/%Y')}</li>"
     end
 end

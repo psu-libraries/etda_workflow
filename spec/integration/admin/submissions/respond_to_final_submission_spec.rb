@@ -19,65 +19,36 @@ RSpec.describe "when admin responds to final submission", js: true do
   end
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
   end
 
   describe "when an admin accepts the final submission files" do
-    context "without a Lion Path Record" do
-      it "updates status to 'waiting for committee review' and emails committee members", honors: true, milsch: true do
-        submission.committee_members << committee_members
-        submission.save!
-        submission.reload
-        select_year = Date.current.year - 2
-        select_month = 'Mar'
-        select_day = '1'
-        submission.author.inbound_lion_path_record = nil
-        submission.final_submission_approved_at = nil
-        create_committee(submission)
-        FactoryBot.create :format_review_file, submission: submission
-        FactoryBot.create :final_submission_file, submission: submission
-        visit admin_edit_submission_path(submission)
-        sleep 2
-        fill_in 'Final Submission Notes to Student', with: 'Note on paper is approved'
-        if current_partner.graduate?
-          select select_year, from: 'submission[defended_at(1i)]'
-          select select_month, from: 'submission[defended_at(2i)]'
-          select select_day, from: 'submission[defended_at(3i)]'
-        end
-        click_button 'Approve Final Submission'
-        # expect(page).to have_content("The submission's final submission information was successfully approved.")
-        submission.reload
-        expect(submission.status).to eq 'waiting for publication release'
-        expect(submission.final_submission_approved_at).not_to be_nil
-        expect(formatted_date(submission.defended_at)).to eq(formatted_date(Date.parse("#{select_year}-#{select_month}-#{select_day}"))) if current_partner.graduate?
-        expect(WorkflowMailer.deliveries.count).to eq(1)
+    it "updates status to 'waiting for committee review' and emails committee members", honors: true, milsch: true do
+      submission.committee_members << committee_members
+      submission.save!
+      submission.reload
+      select_year = Date.current.year - 2
+      select_month = 'Mar'
+      select_day = '1'
+      submission.final_submission_approved_at = nil
+      create_committee(submission)
+      FactoryBot.create :format_review_file, submission: submission
+      FactoryBot.create :final_submission_file, submission: submission
+      visit admin_edit_submission_path(submission)
+      sleep 2
+      fill_in 'Final Submission Notes to Student', with: 'Note on paper is approved'
+      if current_partner.graduate?
+        select select_year, from: 'submission[defended_at(1i)]'
+        select select_month, from: 'submission[defended_at(2i)]'
+        select select_day, from: 'submission[defended_at(3i)]'
       end
-    end
-
-    context "when an admin accepts the final submission files for a submission with an active Lion Path Record" do
-      if InboundLionPathRecord.active?
-        it "updates submission status to 'waiting for committee_review'" do
-          submission.status = 'collecting final submission files'
-          submission.final_submission_approved_at = nil
-          submission.defended_at = Time.zone.yesterday
-          FactoryBot.create :format_review_file, submission: submission
-          FactoryBot.create :final_submission_file, submission: submission
-          create_committee(submission)
-          visit admin_edit_submission_path(submission)
-          sleep 2
-          fill_in 'Final Submission Notes to Student', with: 'Note on paper is approved'
-          if current_partner.graduate?
-            expect(page.find('#defense_date').find('#submission_defended_at', visible: false)).to be_truthy
-            expect(page).not_to have_selector('#submission_defended_at_li')
-          end
-          click_button 'Approve Final Submission'
-          # expect(page).to have_content("The submission's final submission information was successfully approved.")
-          submission.reload
-          expect(submission.status).to eq 'waiting for committee review'
-          expect(submission.final_submission_approved_at).not_to be_nil
-          expect(submission.defended_at).to eq(Date.yesterday.in_time_zone) if current_partner.graduate?
-        end
-      end
+      click_button 'Approve Final Submission'
+      # expect(page).to have_content("The submission's final submission information was successfully approved.")
+      submission.reload
+      expect(submission.status).to eq 'waiting for publication release'
+      expect(submission.final_submission_approved_at).not_to be_nil
+      expect(formatted_date(submission.defended_at)).to eq(formatted_date(Date.parse("#{select_year}-#{select_month}-#{select_day}"))) if current_partner.graduate?
+      expect(WorkflowMailer.deliveries.count).to eq(1)
     end
   end
 
@@ -99,14 +70,40 @@ RSpec.describe "when admin responds to final submission", js: true do
     end
   end
 
-  describe "when an admin clicks 'Reject & send to committee'" do
-    it "updates status to 'waiting for committee review rejected'" do
+  describe "when an admin clicks 'Send to committee'" do
+    it "updates status to 'waiting for committee review'" do
       visit admin_edit_submission_path(submission)
-      click_button 'Reject & send to committee'
+      click_button 'Send to committee'
       # expect(page).to have_content('final submission information was successfully rejected and returned to the author for revision')
       submission.reload
-      expect(submission.status).to eq 'waiting for committee review rejected'
-      expect(submission.final_submission_rejected_at).not_to be_nil
+      expect(submission.status).to eq 'waiting for committee review'
+      expect(WorkflowMailer.deliveries.last.subject).to eq "Committee Review Initiated"
+    end
+  end
+
+  describe "when an admin clicks 'Send to program head'" do
+    context 'when head of program is approving' do
+      it "updates status to 'waiting for head of program review'" do
+        submission.committee_members << FactoryBot.create(:committee_member,
+                                                          committee_role: CommitteeRole.find_by(degree_type: submission.degree_type,
+                                                                                                is_program_head: true))
+        visit admin_edit_submission_path(submission)
+        click_button 'Send to program head'
+        expect(page).to have_content('program head review stage and the program head')
+        submission.reload
+        expect(submission.status).to eq 'waiting for head of program review'
+      end
+    end
+
+    context 'when head of program is not approving' do
+      before do
+        submission.degree_type.approval_configuration.update head_of_program_is_approving: false
+      end
+
+      it "does not show button" do
+        visit admin_edit_submission_path(submission)
+        expect(page).not_to have_button 'Send to program head'
+      end
     end
   end
 

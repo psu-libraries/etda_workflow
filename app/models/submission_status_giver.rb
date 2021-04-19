@@ -10,45 +10,114 @@ class SubmissionStatusGiver
   end
 
   def can_update_program_information?
-    validate_current_state! [SubmissionStates::CollectingCommittee, SubmissionStates::CollectingFormatReviewFiles]
+    validate_current_state! [SubmissionStates::CollectingProgramInformation,
+                             SubmissionStates::CollectingCommittee,
+                             SubmissionStates::CollectingFormatReviewFiles]
   end
 
   def can_provide_new_committee?
-    validate_current_state! [SubmissionStates::CollectingCommittee]
+    submission.degree_type.slug == 'dissertation' ?
+        (validate_current_state! []) :
+        (validate_current_state! [SubmissionStates::CollectingCommittee])
   end
 
   def can_update_committee?
-    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected]
+    submission.degree_type.slug == 'dissertation' ?
+        (validate_current_state! [SubmissionStates::CollectingFormatReviewFiles,
+                                  SubmissionStates::CollectingFormatReviewFilesRejected,
+                                  SubmissionStates::CollectingFinalSubmissionFiles,
+                                  SubmissionStates::CollectingFinalSubmissionFilesRejected,
+                                  SubmissionStates::CollectingCommittee]) :
+        (validate_current_state! [SubmissionStates::CollectingFormatReviewFiles,
+                                  SubmissionStates::CollectingFormatReviewFilesRejected,
+                                  SubmissionStates::CollectingFinalSubmissionFiles,
+                                  SubmissionStates::CollectingFinalSubmissionFilesRejected])
   end
 
   def can_upload_format_review_files?
-    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::CollectingFormatReviewFilesRejected]
+    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles,
+                             SubmissionStates::CollectingFormatReviewFiles,
+                             SubmissionStates::CollectingFormatReviewFilesRejected]
   end
 
   def can_review_program_information?
-    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::WaitingInFinalSubmissionOnHold, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFormatReviewFilesRejected]
+    validate_current_state! [SubmissionStates::CollectingFormatReviewFiles,
+                             SubmissionStates::WaitingForFormatReviewResponse,
+                             SubmissionStates::CollectingFinalSubmissionFiles,
+                             SubmissionStates::CollectingFinalSubmissionFilesRejected,
+                             SubmissionStates::FormatReviewAccepted,
+                             SubmissionStates::WaitingForCommitteeReview,
+                             SubmissionStates::WaitingForHeadOfProgramReview,
+                             SubmissionStates::WaitingForCommitteeReviewRejected,
+                             SubmissionStates::WaitingForFinalSubmissionResponse,
+                             SubmissionStates::WaitingForPublicationRelease,
+                             SubmissionStates::WaitingInFinalSubmissionOnHold,
+                             SubmissionStates::ReleasedForPublication,
+                             SubmissionStates::CollectingFormatReviewFilesRejected]
   end
 
   def can_create_or_edit_committee?
-    validate_current_state! [SubmissionStates::CollectingCommittee, SubmissionStates::CollectingFormatReviewFiles, SubmissionStates::CollectingFormatReviewFilesRejected,
-                             SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::CollectingFinalSubmissionFilesRejected]
+    validate_current_state! [SubmissionStates::CollectingCommittee,
+                             SubmissionStates::CollectingFormatReviewFiles,
+                             SubmissionStates::CollectingFormatReviewFilesRejected,
+                             SubmissionStates::WaitingForFormatReviewResponse,
+                             SubmissionStates::CollectingFinalSubmissionFiles,
+                             SubmissionStates::CollectingFinalSubmissionFilesRejected,
+                             SubmissionStates::FormatReviewAccepted,
+                             SubmissionStates::WaitingForCommitteeReview,
+                             SubmissionStates::WaitingForHeadOfProgramReview,
+                             SubmissionStates::WaitingForCommitteeReviewRejected,
+                             SubmissionStates::WaitingForFinalSubmissionResponse,
+                             SubmissionStates::WaitingForPublicationRelease,
+                             SubmissionStates::ReleasedForPublication,
+                             SubmissionStates::CollectingFormatReviewFilesRejected,
+                             SubmissionStates::CollectingFinalSubmissionFilesRejected]
   end
 
   def can_review_committee?
-    validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected,
-                             SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::WaitingInFinalSubmissionOnHold, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::CollectingFinalSubmissionFilesRejected] # , submission.beyond_collecting_format_review_files?
+    validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse,
+                             SubmissionStates::CollectingFinalSubmissionFiles,
+                             SubmissionStates::CollectingFinalSubmissionFilesRejected,
+                             SubmissionStates::FormatReviewAccepted,
+                             SubmissionStates::WaitingForFinalSubmissionResponse,
+                             SubmissionStates::WaitingForPublicationRelease,
+                             SubmissionStates::WaitingInFinalSubmissionOnHold,
+                             SubmissionStates::ReleasedForPublication,
+                             SubmissionStates::CollectingFormatReviewFilesRejected,
+                             SubmissionStates::CollectingFinalSubmissionFilesRejected]
   end
 
   def can_review_format_review_files?
-    validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse, SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::CollectingFormatReviewFilesRejected, SubmissionStates::FormatReviewAccepted, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::WaitingInFinalSubmissionOnHold, SubmissionStates::ReleasedForPublication, SubmissionStates::CollectingFinalSubmissionFilesRejected]
+    validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse,
+                             SubmissionStates::CollectingFinalSubmissionFiles,
+                             SubmissionStates::CollectingFinalSubmissionFilesRejected,
+                             SubmissionStates::CollectingFormatReviewFilesRejected,
+                             SubmissionStates::FormatReviewAccepted,
+                             SubmissionStates::WaitingForCommitteeReview,
+                             SubmissionStates::WaitingForHeadOfProgramReview,
+                             SubmissionStates::WaitingForCommitteeReviewRejected,
+                             SubmissionStates::WaitingForFinalSubmissionResponse,
+                             SubmissionStates::WaitingForPublicationRelease,
+                             SubmissionStates::WaitingInFinalSubmissionOnHold,
+                             SubmissionStates::ReleasedForPublication,
+                             SubmissionStates::CollectingFinalSubmissionFilesRejected]
   end
 
   def can_upload_final_submission_files?
-    validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::FormatReviewAccepted, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::WaitingForCommitteeReviewRejected]
+    validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles,
+                             SubmissionStates::FormatReviewAccepted,
+                             SubmissionStates::CollectingFinalSubmissionFilesRejected,
+                             SubmissionStates::WaitingForCommitteeReviewRejected]
   end
 
   def can_review_final_submission_files?
-    validate_current_state! [SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReviewRejected, SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingForPublicationRelease, SubmissionStates::WaitingInFinalSubmissionOnHold, SubmissionStates::ReleasedForPublication]
+    validate_current_state! [SubmissionStates::WaitingForCommitteeReview,
+                             SubmissionStates::WaitingForHeadOfProgramReview,
+                             SubmissionStates::WaitingForCommitteeReviewRejected,
+                             SubmissionStates::WaitingForFinalSubmissionResponse,
+                             SubmissionStates::WaitingForPublicationRelease,
+                             SubmissionStates::WaitingInFinalSubmissionOnHold,
+                             SubmissionStates::ReleasedForPublication]
   end
 
   def can_respond_to_format_review?
@@ -56,7 +125,9 @@ class SubmissionStatusGiver
   end
 
   def can_waiting_for_final_submission_response?
-    validate_current_state! [SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::CollectingFinalSubmissionFilesRejected]
+    validate_current_state! [SubmissionStates::WaitingForCommitteeReview,
+                             SubmissionStates::WaitingForHeadOfProgramReview,
+                             SubmissionStates::CollectingFinalSubmissionFilesRejected]
   end
 
   def can_respond_to_final_submission?
@@ -64,19 +135,29 @@ class SubmissionStatusGiver
   end
 
   def can_waiting_for_committee_review?
-    validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles, SubmissionStates::CollectingFinalSubmissionFilesRejected, SubmissionStates::WaitingForCommitteeReviewRejected]
+    validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles,
+                             SubmissionStates::WaitingForFinalSubmissionResponse,
+                             SubmissionStates::WaitingForCommitteeReviewRejected]
   end
 
   def can_waiting_for_head_of_program_review?
-    validate_current_state! [SubmissionStates::WaitingForCommitteeReview]
+    validate_current_state! [SubmissionStates::WaitingForCommitteeReview,
+                            SubmissionStates::WaitingForFinalSubmissionResponse]
+  end
+
+  def can_committee_review_admin_response?
+    validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview,
+                             SubmissionStates::WaitingForCommitteeReview]
   end
 
   def can_waiting_for_committee_review_rejected?
-    validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview, SubmissionStates::WaitingForCommitteeReview, SubmissionStates::WaitingForFinalSubmissionResponse]
+    validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview,
+                             SubmissionStates::WaitingForCommitteeReview]
   end
 
   def can_waiting_for_publication_release?
-    validate_current_state! [SubmissionStates::WaitingForFinalSubmissionResponse, SubmissionStates::WaitingInFinalSubmissionOnHold]
+    validate_current_state! [SubmissionStates::WaitingForFinalSubmissionResponse,
+                             SubmissionStates::WaitingInFinalSubmissionOnHold]
   end
 
   def can_waiting_in_final_submission_on_hold?
@@ -84,7 +165,9 @@ class SubmissionStatusGiver
   end
 
   def can_release_for_publication?
-    validate_current_state! [SubmissionStates::WaitingForPublicationRelease, SubmissionStates::ReleasedForPublication, SubmissionStates::ReleasedForPublicationMetadataOnly]
+    validate_current_state! [SubmissionStates::WaitingForPublicationRelease,
+                             SubmissionStates::ReleasedForPublication,
+                             SubmissionStates::ReleasedForPublicationMetadataOnly]
   end
 
   def can_remove_from_waiting_to_be_released?
@@ -92,7 +175,8 @@ class SubmissionStatusGiver
   end
 
   def can_unrelease_for_publication?
-    validate_current_state! [SubmissionStates::ReleasedForPublication, SubmissionStates::ReleasedForPublicationMetadataOnly]
+    validate_current_state! [SubmissionStates::ReleasedForPublication,
+                             SubmissionStates::ReleasedForPublicationMetadataOnly]
   end
 
   def collecting_committee!

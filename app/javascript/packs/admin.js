@@ -14,6 +14,5 @@ require('../styles/admin/screen.scss');
 require('../styles/admin/print.scss');
 require('../admin/initialize_report_tables.js');
 require('../admin/print_format_review.js');
-require('../admin/lionpath_plan_information.js');
 require('../admin/send_email_reminder.js');
 require('../admin/approval_configuration_radios.js');

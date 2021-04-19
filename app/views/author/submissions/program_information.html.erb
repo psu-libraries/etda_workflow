@@ -30,14 +30,7 @@
       <h2 class="h4">Graduation Year</h2>
       <p><%= @submission.year %></p>
     </div>
-    <%= render partial: 'program_information_defense_date' if @submission.using_lionpath? %>
-    <div class="row" >
-      <div class="col-xs-12 review-group <%= even_odd(@row_count) %>">
-        <p><strong>
-          <%= render partial: 'lionpath_refresh_link' if  @submission.using_lionpath? %>&nbsp;&nbsp;
-          <%= link_to 'Return to dashboard', author_root_path %>
-        </strong></p>
-      </div>
-    </div>
   </div>
 </div>
+<br />
+<strong><%= link_to 'Return to dashboard', author_root_path %></strong>

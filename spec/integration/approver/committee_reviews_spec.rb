@@ -9,7 +9,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   before do
     submission.final_submission_files << final_submission_file
     submission.degree.degree_type.approval_configuration = approval_configuration
-    webaccess_authorize_approver
+    oidc_authorize_approver
   end
 
   context 'approver matches committee member access_id' do

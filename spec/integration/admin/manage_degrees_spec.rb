@@ -7,7 +7,7 @@ RSpec.describe "Manage Degrees", js: true do
   let!(:degree2) { FactoryBot.create :degree }
 
   before do
-     webaccess_authorize_admin
+     oidc_authorize_admin
      visit admin_degrees_path
   end
 
@@ -20,7 +20,7 @@ RSpec.describe "Manage Degrees", js: true do
     expect(page).to have_button('Create Degree')
     fill_in 'Name', with: 'MArch'
     fill_in 'Description', with: 'Master of Architecture'
-    check 'Is active'
+    find('#degree_is_active_true').click
     select DegreeType.default.name, from: 'Degree type'
     click_button 'Create Degree'
     expect(page).to have_current_path(admin_degrees_path)
@@ -32,22 +32,20 @@ RSpec.describe "Manage Degrees", js: true do
     end
     # expect(page).to have_content('Degree successfully created')
     click_link 'MArch'
-    expect(page).to have_content('Edit Degree')
+    expect(page).to have_content("Edit MArch")
     expect(page).to have_selector("input[value='Master of Architecture']")
-    fill_in 'Name', with: 'a new name'
     fill_in 'Description', with: 'NEWDESC'
-    uncheck 'Is active'
+    find('#degree_is_active_false').click
     select 'Thesis', from: 'Degree type'
     click_button 'Update Degree'
     expect(page).to have_content(degree.name)
     # expect(page).to have_content('Degree successfully updated')
     within('tr', text: 'NEWDESC') do
-      expect(page).to have_content('a new name')
       expect(page).to have_content('Thesis')
       expect(page).to have_content('No')
     end
-    fill_in 'Search records...', with: 'a new name'
-    expect(page).not_to have_content(degree.name)
+    fill_in 'Search records...', with: degree.name.to_s
+    expect(page).to have_content(degree.name)
     expect(page).not_to have_content(degree2.name)
     status_str = printf('Showing 1 to %1d of %1d entries', Degree.all.count, Degree.all.count)
     expect(page).to have_content(status_str)

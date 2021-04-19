@@ -14,7 +14,7 @@ class SubmissionReleaseService
       submission = Submission.find(id)
       original_final_files = final_files_for_submission(submission)
       file_verification_results = file_verification(original_final_files)
-      next unless file_verification_results[:valid]
+      return ['File not found.', file_verification_results[:file_error_list]] unless file_verification_results[:valid]
 
       if release_type == 'Release selected for publication'
         publish_a_submission(submission, date_to_release, original_final_files)
@@ -24,7 +24,7 @@ class SubmissionReleaseService
     end
     # wait until all submissions and files have been released and then run delta-import to update solr
     bulk_solr_result = SolrDataImportService.new.delta_import
-    return { error: true, msg: "Error occurred during delta-import for solr bulk update" } if bulk_solr_result[:error]
+    return ["Error occurred during delta-import for solr bulk update", ''] if bulk_solr_result[:error]
 
     final_results(submission_ids.count)
   end
@@ -76,13 +76,16 @@ class SubmissionReleaseService
 
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_release_for_publication?
-      submission.restricted? ? status_giver.released_for_publication_metadata_only! : status_giver.released_for_publication!
+      if submission.restricted? || submission.restricted_to_institution?
+        status_giver.released_for_publication_metadata_only!
+      else
+        status_giver.released_for_publication!
+      end
       submission.update!(released_for_publication_at: publication_release_date, released_metadata_at: metadata_release_date, public_id: public_id)
       WorkflowMailer.send_publication_release_messages(submission)
       return unless release_files(original_final_files)
 
       @released_submissions += 1
-      OutboundLionPathRecord.new(submission: submission).report_status_change
       # Archiver.new(s).create!
     rescue StandardError => e
       record_error("Error occurred processing submission id: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}, #{e}")
@@ -106,7 +109,6 @@ class SubmissionReleaseService
 
       update_service.send_email(submission)
       @released_submissions += 1
-      OutboundLionPathRecord.new(submission: submission).report_status_change
       # Archiver.new(s).create!
     rescue StandardError => e
       record_error("Error occurred processing submission id: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}, #{e}")

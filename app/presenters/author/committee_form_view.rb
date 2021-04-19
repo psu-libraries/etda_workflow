@@ -9,16 +9,14 @@ class Author::CommitteeFormView
     @submission.committee_members.count.positive?
   end
 
+  def dissertation?
+    submission.degree_type.slug == 'dissertation'
+  end
+
   def form_title
     return new_committee_label unless update?
 
     update_committee_label
-  end
-
-  def committee_form_partial
-    return 'standard_committee_form' unless submission.using_lionpath?
-
-    'lionpath_committee_form'
   end
 
   def link_text
@@ -28,14 +26,26 @@ class Author::CommitteeFormView
   end
 
   def update_committee_label
-    return 'Update Committee Members' unless submission.using_lionpath?
-
-    'Refresh Committee'
+    if dissertation?
+      'Committee Members'
+    else
+      'Update Committee Members'
+    end
   end
 
   def new_committee_label
-    return 'Add Committee Members' unless submission.using_lionpath?
+    if dissertation?
+      'Committee Members'
+    else
+      'Add Committee Members'
+    end
+  end
 
-    'Verify Committee'
+  def add_member_label
+    if dissertation?
+      'Add Special Signatory'
+    else
+      'Add Committee Member'
+    end
   end
 end

@@ -1,0 +1,2 @@
+<%= render partial: 'admin/submissions/edit_form_actions/standard_actions', locals: { f: f } %>
+<%= f.button :submit, name: 'return_to_author', class: "btn btn-danger", value: "Reject & return to author", title: "Mark as '#{t("#{current_partner.id}.admin_filters.committee_review_rejected.title")}'", data: {confirm: "#{t("text.pending_return_to_author_message")}", toggle:"tooltip", placement:"top" } %>

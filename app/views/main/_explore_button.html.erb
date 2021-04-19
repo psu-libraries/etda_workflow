@@ -1,0 +1,6 @@
+<% if current_partner.sset? %>
+  <p><%= button_to "ETDA Explore", '/', class: "btn btn-main", disabled: true %></p>
+  <p class="hint">*Explore is currently unavailable for The School of Science, Engineering, and Technology</p>
+<% else %>
+  <%= link_to "ETDA Explore", explore_url, class: "btn btn-main" %>
+<% end %>

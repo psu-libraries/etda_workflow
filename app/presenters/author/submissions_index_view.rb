@@ -5,7 +5,6 @@ class Author::SubmissionsIndexView
     @author = author
     # @author.refresh(author.access_id, author.psu_idn)
     @submissions = @author.unpublished_submissions
-    InboundLionPathRecord.transition_to_lionpath(@submissions) if InboundLionPathRecord.active?
   end
 
   def partial_name
@@ -19,9 +18,12 @@ class Author::SubmissionsIndexView
   end
 
   def no_submissions_message
-    return "" unless @author.submissions.released_for_publication.count.zero?
+    if current_partner.graduate?
+      return "You don't have any submissions to complete.
+              Please contact your program office to begin a submission."
+    end
 
-    "You don't have any submissions yet."
+    "You don't have any submissions to complete."
   end
 
   def published_submissions_message

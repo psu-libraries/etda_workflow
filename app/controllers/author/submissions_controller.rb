@@ -1,5 +1,4 @@
 class Author::SubmissionsController < AuthorController
-  class MissingLionPathRecordError < StandardError; end
   before_action :find_submission, except: [:index, :new, :create, :published_submissions_index]
 
   def index
@@ -7,32 +6,19 @@ class Author::SubmissionsController < AuthorController
   end
 
   def new
-    if InboundLionPathRecord.active? && !@author.academic_plan?
-      redirect_to author_root_path
-      flash[:error] = "Unable to find Lion Path thesis information for #{@author.first_name} #{@author.last_name}. Please contact your administrator."
-    end
-    @view = Author::ProgramInformationView.new(nil)
     @submission = @author.submissions.new
   end
 
   def create
-    @submission = if InboundLionPathRecord.active?
-      @author.submissions.new(lionpath_program_params)
-                  else
-      @author.submissions.new(standard_program_params)
-                  end
+    @submission = @author.submissions.new(standard_program_params)
     @submission.author_edit = true
-
     @submission.save!
-    @submission.update!(defended_at: LionPath::Crosswalk.convert_to_datetime(params[:submission][:defended_at])) if @submission.using_lionpath? && current_partner.graduate?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.collecting_committee!
-    OutboundLionPathRecord.new(submission: @submission).report_status_change
     redirect_to author_root_path
     flash[:notice] = 'Program information saved successfully'
   rescue ActiveRecord::RecordInvalid
     flash[:alert] = 'Oops! You may have submitted invalid program information data. Please check that your program information is correct.'
-    @view = Author::ProgramInformationView.new(nil)
     render :new
   rescue SubmissionStatusGiver::InvalidTransition
     redirect_to author_root_path
@@ -41,11 +27,6 @@ class Author::SubmissionsController < AuthorController
 
   def edit
     @submission = find_submission
-    if InboundLionPathRecord.active? && !@author.academic_plan?
-      redirect_to author_root_path
-      flash[:error] = "Unable to find Lion Path thesis information for #{@author.first_name} #{@author.last_name}.  Please contact your administrator"
-    end
-    @view = Author::ProgramInformationView.new(@submission)
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_update_program_information?
   rescue SubmissionStatusGiver::AccessForbidden
@@ -57,19 +38,12 @@ class Author::SubmissionsController < AuthorController
     @submission = find_submission
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_update_program_information?
-    outbound_lionpath_record = OutboundLionPathRecord.new(submission: @submission, original_title: @submission.title, original_alternate_email: @submission.author.alternate_email_address)
-    if @submission.using_lionpath?
-      @submission.update!(lionpath_program_params)
-      @submission.update!(defended_at: LionPath::Crosswalk.convert_to_datetime(params[:submission][:defended_at])) if @submission.using_lionpath? && current_partner.graduate?
-    else
-      @submission.update!(standard_program_params)
-    end
-    outbound_lionpath_record.report_title_change
+    @submission.update!(standard_program_params)
+    status_giver.collecting_committee! if @submission.status_behavior.collecting_program_information?
     redirect_to author_root_path
     flash[:notice] = 'Program information updated successfully'
   rescue ActiveRecord::RecordInvalid
     flash[:alert] = 'Oops! You may have submitted invalid program information data. Please check that your program information is correct.'
-    @view = Author::ProgramInformationView.new(@submission)
     render :edit
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
@@ -101,13 +75,9 @@ class Author::SubmissionsController < AuthorController
     @submission.access_level = 'open_access' if (current_partner.honors? || current_partner.milsch?) && @submission.access_level.blank?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
-    missing_head_redirect
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
-  rescue CommitteeMember::ProgramHeadMissing
-    redirect_to author_submission_head_of_program_path(@submission)
-    flash[:alert] = 'In order to proceed to the final submission stage, you must input the head/chair of your graduate program here.'
   end
 
   def update_final_submission
@@ -137,33 +107,6 @@ class Author::SubmissionsController < AuthorController
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
   end
 
-  def refresh
-    return unless @submission.status_behavior.beyond_collecting_format_review_files?
-
-    if @submission.author.inbound_lion_path_record.refresh_academic_plan(@submission)
-      flash[:notice] = 'Academic plan information successfully refreshed from Lion Path.'
-      redirect_to author_submission_program_information_path(@submission.id)
-    else
-      flash[:alert] = 'There was a problem refreshing your Academic Plan information from Lion Path.  Please contact your administrator.'
-      redirect_to author_root_path
-    end
-  end
-
-  def refresh_date_defended
-    return unless @submission.status_behavior.beyond_collecting_final_submission_files?
-
-    submission_defense_date = @submission.academic_plan.defense_date
-    if submission_defense_date.present?
-      @submission.defended_at = submission_defense_date
-      @submission.save(validate: false)
-      redirect_to author_submission_final_submission_path(@submission.id)
-      flash[:notice] = 'Defense date successfully refreshed from Lion Path'
-    end
-  rescue ActiveRecord::RecordInvalid
-    redirect_to author_root_path
-    flash[:alert] = 'There was a problem refreshing your defense date.  Please contact your administrator'
-  end
-
   def published_submissions_index
     @view = Author::PublishedSubmissionsIndexView.new(@author)
     render 'published_submissions_index'
@@ -182,14 +125,6 @@ class Author::SubmissionsController < AuthorController
   end
 
   private
-
-    def missing_head_redirect
-      raise CommitteeMember::ProgramHeadMissing if program_head_missing
-    end
-
-    def program_head_missing
-      @submission.head_of_program_is_approving? && CommitteeMember.head_of_program(@submission).blank?
-    end
 
     def find_submission
       @submission = @author.submissions.find(params[:submission_id] || params[:id])
@@ -213,18 +148,6 @@ class Author::SubmissionsController < AuthorController
                                          :degree_id,
                                          :title,
                                          :allow_all_caps_in_title)
-    end
-
-    def lionpath_program_params
-      params.require(:submission).permit(:program_id,
-                                         :degree_id,
-                                         :title,
-                                         :allow_all_caps_in_title,
-                                         :author_id,
-                                         :semester,
-                                         :year,
-                                         :defended_at,
-                                         :lion_path_degree_code)
     end
 
     def final_submission_params

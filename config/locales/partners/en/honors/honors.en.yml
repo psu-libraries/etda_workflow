@@ -26,7 +26,7 @@ en:
       url_slug: 'honors'
       email:
         url:  'https://honors-explore.libraries.psu.edu'
-        address: honorsthesis@psu.edu
+        address: SHCAcademics@psu.edu
         list: 'ul-etda-honors-admin@pennstateoffice365.onmicrosoft.com'
         signature: 'Schreyer Honors College<br /> University Park, PA'
         final_submission_rejected:
@@ -38,7 +38,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         final_submission_approved:
           message: |
@@ -53,7 +53,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu 
                     814-867-2505
         format_review_received:
           message: |
@@ -65,7 +65,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu 
                     814-867-2505
         final_submission_received:
           message: |
@@ -77,7 +77,19 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
+                    814-867-2505
+        sent_to_committee:
+          message: |
+                    Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee.
+                    No action is required of you at this time.
+                    You will be notified once your committee has reviewed and made a decision regarding your document.
+
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    SHCAcademics@psu.edu
                     814-867-2505
         committee_member_review_requested:
           message: |
@@ -90,7 +102,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         committee_member_review_reminder:
           message: |
@@ -102,7 +114,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         committee_rejected_admin:
           message: |
@@ -113,7 +125,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         committee_rejected_author:
           message: |
@@ -126,8 +138,19 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
+        pending_returned_to_author:
+          message: |
+            Your %{degree_type} has been rejected by request of an administrator.
+            You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review again.
+
+            Sincerely,
+            The Schreyer Honors College
+            If you have any further questions please contact:  
+            Debra Rodgers, Coordinator of Academic Services 
+            SHCAcademics@psu.edu
+            814-867-2505
         committee_approved:
           message: |
                     Congratulations! Your honors %{degree_type} has been reviewed by your committee and it is approved.
@@ -137,7 +160,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         release_for_publication:
           message: |
@@ -148,7 +171,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         release_for_publication_metadata_only:
           message: |
@@ -160,7 +183,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
         access_level_updated:
           message: |
@@ -175,7 +198,7 @@ en:
                     The Schreyer Honors College
                     If you have any further questions please contact:  
                     Debra Rodgers, Coordinator of Academic Services 
-                    honorsthesis@psu.edu 
+                    SHCAcademics@psu.edu
                     814-867-2505
     program:
       label: Area of Honors
@@ -184,15 +207,17 @@ en:
       list:
         label: Thesis Supervisors
         thesis:
-          thesis_supervisor:
-            name: Thesis Supervisor
-            description: A professor in the area in which the thesis is written, who the student works closely with.
-          thesis_honors_adviser:
-            name: Thesis Honors Advisor
-            description: Faculty member who oversees the thesis work and confirms it is indeed honors work in their area of expertise.
-          faculty_reader:
-            name: Faculty Reader
-            description: This role is only required if the Honors Advisor and Thesis Supervisor are the same person.  This is a faculty member in the discipline in which the thesis is written.
+          help_text: Enter required committee members in the form below.  Type the committee member's name in the form.  After a blank is entered, a list of names will appear.  Use up and down arrow keys to scroll through the list.  When the desired name is highlighted, click the return key to populate the form.  Both the committee member's name and email address will be filled after the selection is made.  Emails will automatically be sent to each committee member once your final submission is submitted and the committee review stage begins.  These emails will provide a link to where committee members can complete their reviews.
+          members:
+            thesis_supervisor:
+              name: Thesis Supervisor
+              description: A professor in the area in which the thesis is written, who the student works closely with.
+            thesis_honors_adviser:
+              name: Thesis Honors Advisor
+              description: Faculty member who oversees the thesis work and confirms it is indeed honors work in their area of expertise.
+            faculty_reader:
+              name: Faculty Reader
+              description: This role is only required if the Honors Advisor and Thesis Supervisor are the same person.  This is a faculty member in the discipline in which the thesis is written.
       author_instructions:
         The honors college only requires two people to read and approve the thesis, an Honors Advisor and Thesis Supervisor. The only time a "Faculty Reader" is required is if the honors advisor and thesis supervisor are the same person.
       special_role: supervisor
@@ -247,7 +272,7 @@ en:
         scope: final_restricted_institution
       restricted: 'Restricted'
       restricted_attr:
-        description_html: 'The option selected secures the body of the thesis for a period of two years. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final honors thesis and confirmed by OTM. At the end of the two-year period, the work will be released automatically for open access unless a written request is made to extend this option for an additional year. The written request for an extension should be sent 30 days prior to the end of the two-year period to the Honors College Records Department, 10 Schreyer Honors College, The Pennsylvania State University, University Park, PA 16802, or by e-mail to <a href="mailto:honorsthesis@psu.edu">honorsthesis@psu.edu</a>. Please note: No one will be able to view your work under this option.'
+        description_html: 'The option selected secures the body of the thesis for a period of two years. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final honors thesis and confirmed by OTM. At the end of the two-year period, the work will be released automatically for open access unless a written request is made to extend this option for an additional year. The written request for an extension should be sent 30 days prior to the end of the two-year period to the Honors College Records Department, 10 Schreyer Honors College, The Pennsylvania State University, University Park, PA 16802, or by e-mail to <a href="mailto:SHCAcademics@psu.edu">SHCAcademics@psu.edu</a>. Please note: No one will be able to view your work under this option.'
         scope: final_withheld
     download:
       login_html: 'Login using your Penn State access account to view the paper.'

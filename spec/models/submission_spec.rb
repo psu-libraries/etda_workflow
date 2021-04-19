@@ -51,6 +51,8 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:removed_hold_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:proquest_agreement).of_type(:boolean) }
   it { is_expected.to have_db_column(:proquest_agreement_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:lionpath_updated_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:campus).of_type(:string) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
@@ -234,25 +236,6 @@ RSpec.describe Submission, type: :model do
     end
   end
 
-  context 'using lionpath?', lionpath: true do
-    it 'knows when lion_path integration is being used' do
-      author = Author.new
-      author.inbound_lion_path_record = nil
-      submission = Submission.new(author: author)
-      expect(submission).not_to be_using_lionpath
-    end
-  end
-
-  context 'academic plan' do
-    it 'knows the correct academic plan' do
-      author = FactoryBot.create(:author)
-      inbound_record = FactoryBot.create(:inbound_lion_path_record, author: author)
-      author.inbound_lion_path_record = inbound_record
-      submission = FactoryBot.create(:submission, author: author)
-      expect(submission.academic_plan).not_to be_nil
-    end
-  end
-
   context 'keywords' do
     it 'has a list of keywords' do
       submission = Submission.new
@@ -284,6 +267,19 @@ RSpec.describe Submission, type: :model do
     end
   end
 
+  context '#check_title_capitalization' do
+    it 'identifies all caps in the title' do
+      submission = Submission.new(title: 'THIS TITLE IS NOT ALLOWED')
+      expect(submission.check_title_capitalization).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
+      expect(submission.errors[:title]).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
+    end
+    it 'allows titles with < 4 uppercase, numbers, and symbols' do
+      submission = Submission.new(title: 'THIS 1855 is %^&**% AlloweD')
+      expect(submission.check_title_capitalization).to eq(nil)
+      expect(submission.errors[:title]).to eq([])
+    end
+  end
+
   context '#restricted_to_institution?' do
     it 'returns true' do
       submission = Submission.new(access_level: 'restricted_to_institution')
@@ -294,22 +290,60 @@ RSpec.describe Submission, type: :model do
   end
 
   context '#voting_committee_members' do
-    it 'returns a list of voting committee members', honors: true, milsch: true do
-      degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
-      submission = Submission.new(degree: degree)
-      submission.build_committee_members_for_partners
-      submission.committee_members.each_with_index do |cm, index|
-        next if index == 0
+    let!(:degree2) { FactoryBot.create :degree, degree_type: DegreeType.default, name: 'mydegree' }
+    let!(:submission2) { FactoryBot.create :submission, degree: degree2 }
+    let(:head_role) { CommitteeRole.find_by(degree_type: degree2.degree_type, is_program_head: true) }
 
-        cm.is_voting = true
-        cm.access_id = 'abc123' if index == 1
-        cm.access_id = 'abc123' if index == 2
-        cm.access_id = 'abc456' if index == 3
-        cm.access_id = 'abc789' if index == 4
-        cm.access_id = 'abc321' if index == 5
+    context 'when head of program is approving' do
+      it 'returns a list of voting committee members without duplication that does not include program head' do
+        allow(submission2).to receive(:head_of_program_is_approving?).and_return true
+        create_committee(submission2)
+        submission2.committee_members.each_with_index do |cm, index|
+          if index == 0
+            cm.committee_role = head_role
+            cm.is_voting = false
+            cm.access_id = 'abc'
+            cm.save!
+            next
+          end
+
+          cm.is_voting = true
+          cm.access_id = 'abc123' if index == 1
+          cm.access_id = 'abc123' if index == 2
+          cm.access_id = 'abc456' if index == 3
+          cm.access_id = 'abc789' if index == 4
+          cm.access_id = 'abc321' if index == 5
+          cm.save!
+        end
+        submission2.reload
+        expect(submission2.voting_committee_members.count).to eq(submission2.committee_members.count - 2)
       end
-      expect(submission.voting_committee_members.count).to eq(submission.committee_members.to_ary.count - 2) if current_partner.graduate?
-      expect(submission.voting_committee_members.count).to eq(submission.committee_members.to_ary.count - 1) unless current_partner.graduate?
+    end
+
+    context 'when head of program is not approving' do
+      it 'returns a list of voting committee members without duplication that includes the program head' do
+        allow(submission2).to receive(:head_of_program_is_approving?).and_return false
+        create_committee(submission2)
+        submission2.committee_members.each_with_index do |cm, index|
+          if index == 0
+            cm.committee_role = head_role
+            cm.is_voting = false
+            cm.access_id = 'abc'
+            cm.save!
+            next
+          end
+
+          cm.is_voting = true
+          cm.access_id = 'abc123' if index == 1
+          cm.access_id = 'abc123' if index == 2
+          cm.access_id = 'abc456' if index == 3
+          cm.access_id = 'abc789' if index == 4
+          cm.access_id = 'abc321' if index == 5
+          cm.save!
+        end
+        submission2.reload
+        expect(submission2.voting_committee_members.count).to eq(submission2.committee_members.count - 1)
+      end
     end
   end
 
@@ -365,18 +399,13 @@ RSpec.describe Submission, type: :model do
     let!(:degree_type) { FactoryBot.create :degree_type }
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, head_of_program_is_approving: true, degree_type_id: degree_type.id }
 
-    before do
-      WorkflowMailer.deliveries = []
-      submission.degree = degree
-    end
-
     context 'when status is waiting for committee review' do
       context 'when approval status is approved' do
         it 'changes status to waiting for head of program review if program head is approving' do
           allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
           allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('')
           submission = FactoryBot.create :submission, :waiting_for_committee_review
-          allow(CommitteeMember).to receive(:head_of_program).with(submission).and_return(FactoryBot.create(:committee_member))
+          allow(CommitteeMember).to receive(:program_head).with(submission).and_return(FactoryBot.create(:committee_member))
           submission.update_status_from_committee
           expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
           expect(WorkflowMailer.deliveries.count).to eq 1
@@ -386,20 +415,20 @@ RSpec.describe Submission, type: :model do
           allow_any_instance_of(Submission).to receive(:head_of_program_is_approving?).and_return false
           allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
           submission = FactoryBot.create :submission, :waiting_for_committee_review
-          allow(CommitteeMember).to receive(:head_of_program).with(submission).and_return(FactoryBot.create(:committee_member))
+          allow(CommitteeMember).to receive(:program_head).with(submission).and_return(FactoryBot.create(:committee_member))
           submission.update_status_from_committee
           expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
-          expect(WorkflowMailer.deliveries.count).to eq 0
+          expect(WorkflowMailer.deliveries.count).to eq 1
         end
       end
+    end
 
-      context 'when approval status is rejected' do
-        it 'changes status to waiting for committee review rejected' do
-          allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
-          submission = FactoryBot.create :submission, :waiting_for_committee_review
-          submission.update_status_from_committee
-          expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
-        end
+    context 'when approval status is rejected' do
+      it 'changes status to waiting for committee review rejected' do
+        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
+        submission = FactoryBot.create :submission, :waiting_for_committee_review
+        submission.update_status_from_committee
+        expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
       end
     end
 

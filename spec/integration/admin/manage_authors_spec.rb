@@ -6,13 +6,17 @@ RSpec.describe "Manage Authors", js: true do
   let!(:author2) { FactoryBot.create :author, confidential_hold: true }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_authors_path
   end
 
   it 'has a list of authors' do
-    submission1 = FactoryBot.create :submission, :waiting_for_final_submission_response, created_at: Time.zone.now
-    submission2 = FactoryBot.create :submission, :released_for_publication, created_at: (Time.zone.now - 2.years)
+    submission1 = FactoryBot.create :submission, :waiting_for_final_submission_response,
+                                    created_at: Time.zone.now,
+                                    updated_at: (Time.zone.now - 2.years)
+    submission2 = FactoryBot.create :submission, :released_for_publication,
+                                    created_at: (Time.zone.now - 2.years),
+                                    updated_at: (Time.zone.now - 2.years)
     author1.submissions = [submission1, submission2]
     allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)
     allow_any_instance_of(Author).to receive(:populate_with_ldap_attributes).and_return(true)
@@ -59,6 +63,9 @@ RSpec.describe "Manage Authors", js: true do
     click_button('Update Author')
     # expect(page).to have_content('Author successfully updated')
     author1.reload
+    expect(author1.admin_edited_at).to be_truthy
+    expect(submission1.updated_at.year).to eq DateTime.now.year
+    expect(submission2.updated_at.year).to eq DateTime.now.year
     visit edit_admin_author_path(author1)
     expect(page).to have_field('First name', with: 'correctname')
     click_link('Cancel')

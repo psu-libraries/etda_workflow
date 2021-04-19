@@ -20,7 +20,7 @@ RSpec.describe Admin::AuthorView do
     it 'returns a list item without a link if submission does not have a format review file' do
       submission_new = FactoryBot.create :submission, :collecting_committee, created_at: Time.zone.now
       author.submissions = [submission_new]
-      expect(view.submission_list).to eq("<ul><li>#{submission_new.title}<br/>status: #{submission_new.status}, created: #{Time.zone.now.strftime('%m/%d/%Y')}</li></ul>")
+      expect(view.submission_list).to eq("<ul><li><a href='/admin/submissions/#{submission_new.id}/edit'>#{submission_new.title}</a><br/>status: collecting committee, created: #{Time.zone.now.strftime('%m/%d/%Y')}</li></ul>")
     end
   end
 end

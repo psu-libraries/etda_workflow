@@ -4,11 +4,10 @@ RSpec.describe "when an admin releases the submission for publication", js: true
   let(:author) { FactoryBot.create :author }
   let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, author: author }
   let(:committee) { create_committee(submission) }
-  let(:inbound_lion_path_record) { FactoryBot.create :inbound_lion_path_record }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit root_path
     FileUtilityHelper.new.copy_test_file(Rails.root.join(final_submission_file.current_location))
   end
@@ -75,7 +74,7 @@ RSpec.describe "when an admin releases the submission for publication", js: true
       submission.reload
       released_location = Rails.root.join(final_submission_file.current_location)
       expect(FileUtilityHelper.new).to be_file_was_moved(unreleased_location, released_location)
-      expect(submission.status).to eq 'released for publication'
+      expect(submission.status).to eq 'released for publication metadata only'
       expect(submission.access_level).to eq 'restricted_to_institution'
       expect(submission.released_for_publication_at).not_to be_nil
       expect(submission.released_for_publication_at.strftime('%Y %m %d')).to eq "#{Time.zone.now.year.to_i + 2} 12 30"
@@ -112,7 +111,7 @@ RSpec.describe "when an admin releases the submission for publication", js: true
       submission.reload
       released_location = Rails.root.join(final_submission_file.current_location)
       expect(FileUtilityHelper.new).to be_file_was_moved(unreleased_location, released_location)
-      expect(submission.status).to eq 'released for publication'
+      expect(submission.status).to eq 'released for publication metadata only'
       expect(submission.access_level).to eq 'restricted_to_institution'
       expect(submission.released_for_publication_at).not_to be_nil
       expect(submission.released_for_publication_at.strftime('%Y %m %d')).to eq "#{Time.zone.now.year.to_i + 2} 12 30"

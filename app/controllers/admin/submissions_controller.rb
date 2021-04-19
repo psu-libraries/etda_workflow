@@ -54,10 +54,7 @@ class Admin::SubmissionsController < AdminController
     ids.each do |id|
       submission = Submission.find(id)
       submission.author_edit = false
-      unless submission.nil?
-        OutboundLionPathRecord.new(submission: submission).report_deleted_submission
-        submission.destroy
-      end
+      submission&.destroy
     end
     flash[:notice] = 'Submissions deleted successfully'
     redirect_to Rails.application.routes.url_helpers.admin_root_path
@@ -112,6 +109,23 @@ class Admin::SubmissionsController < AdminController
     update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     response = update_service.waiting_for_final_submission
     redirect_to response[:redirect_path]
+    flash[:notice] = response[:msg]
+  rescue ActiveRecord::RecordInvalid
+    @view = Admin::SubmissionFormView.new(@submission, session)
+    render :edit
+  rescue SubmissionStatusGiver::AccessForbidden
+    redirect_to session.delete(:return_to)
+    flash[:alert] = 'This submission\'s final submission information has already been evaluated.'
+  rescue SubmissionStatusGiver::InvalidTransition
+    redirect_to session.delete(:return_to)
+    flash[:alert] = 'Oops! You may have submitted invalid final submission data. Please check that the submission\'s final submission information is correct.'
+  end
+
+  def record_final_submission_pending_response
+    @submission = Submission.find(params[:id])
+    update_service = FinalSubmissionPendingService.new(@submission, params, current_remote_user)
+    response = update_service.respond
+    redirect_to response[:redirect_to]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
     @view = Admin::SubmissionFormView.new(@submission, session)
@@ -194,27 +208,6 @@ class Admin::SubmissionsController < AdminController
     @submission.update! is_printed: 1 unless @submission.is_printed?
     redirect_to admin_submissions_index_path(@submission.degree_type.slug, 'format_review_submitted')
     flash[:notice] = "Printed submission information for #{@submission.author.first_name} #{@submission.author.last_name}"
-  end
-
-  def refresh_committee
-    @submission = Submission.find(params[:id])
-    @submission.author.populate_lion_path_record(@submission.author.psu_idn, @submission.author.access_id)
-    if @submission.academic_plan.committee_members_refresh
-      flash[:notice] = 'Committee successfully refreshed from Lion Path'
-    else
-      flash[:alert] = 'Unable to refresh committee member information from Lion Path.'
-    end
-    redirect_to admin_edit_submission_path(@submission.id)
-  end
-
-  def refresh_academic_plan
-    @submission = Submission.find(params[:id])
-    if @submission.author.inbound_lion_path_record.refresh_academic_plan(@submission)
-      flash[:notice] = 'Academic plan information successfully refreshed from Lion Path'
-    else
-      flash[:alert] = 'There was a problem refreshing your academic plan information.  Please contact your administrator'
-    end
-    redirect_to admin_edit_submission_path(@submission.id)
   end
 
   def send_email_reminder

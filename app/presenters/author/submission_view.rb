@@ -20,6 +20,16 @@ class Author::SubmissionView < SimpleDelegator
     created_at.strftime('%B %-e, %Y')
   end
 
+  def step_one_class
+    if status_behavior.beyond_collecting_program_information?
+      'complete'
+    elsif status_behavior.collecting_program_information?
+      'current'
+    else
+      ''
+    end
+  end
+
   def step_one_description
     if status_behavior.beyond_collecting_committee?
       ("Provide program information <a href='" + "/author/submissions/#{id}/program_information" + "' class='medium'>[Review Program Information <span class='sr-only'>program information for submission '#{title}'</span>]</a>").html_safe
@@ -28,21 +38,38 @@ class Author::SubmissionView < SimpleDelegator
     end
   end
 
+  def step_one_status
+    status = {}
+    if status_behavior.beyond_collecting_program_information? && lionpath_updated_at.blank?
+      status[:text] = "completed on #{created_on}"
+      status[:partial_name] = '/author/shared/completed_indicator'
+    elsif status_behavior.beyond_collecting_program_information?
+      status[:text] = "created on #{created_on}"
+      status[:partial_name] = '/author/shared/completed_indicator'
+    else
+      status[:text] = "created on #{created_on}"
+    end
+    status
+  end
+
   def step_two_class
     if status_behavior.beyond_collecting_committee?
       'complete'
-    else
+    elsif status_behavior.collecting_committee?
       'current'
+    else
+      ''
     end
   end
 
   def step_two_description
-    if status_behavior.collecting_committee?
+    if status_behavior.collecting_committee? && degree_type.slug == 'dissertation'
+      ("<a href='" + "/author/submissions/#{id}/committee_members/edit" + "'>" + step_two_name + "</a>").html_safe
+    elsif status_behavior.collecting_committee?
       ("<a href='" + "/author/submissions/#{id}/committee_members/new" + "'>" + step_two_name + "</a>").html_safe
     elsif status_behavior.ok_to_update_committee?
-      return (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members/edit" + "' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>" + "<a href='" + "/author/submissions/#{id}/head_of_program" + "' class='medium'>[Edit Head of Program <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe if head_of_program_is_approving?
-      return (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members/edit" + "' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe unless head_of_program_is_approving?
-    elsif status_behavior.beyond_collecting_format_review_files? || using_lionpath?
+      (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members/edit" + "' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe
+    elsif status_behavior.beyond_collecting_format_review_files?
       (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members" + "' class='medium'>[Review My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe
     else
       step_two_name
@@ -58,9 +85,7 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_two_name
-    return 'Provide Committee ' unless using_lionpath?
-
-    'Verify Committee'
+    'Provide Committee '
   end
 
   def step_three_class

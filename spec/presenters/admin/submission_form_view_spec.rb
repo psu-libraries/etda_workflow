@@ -228,8 +228,8 @@ RSpec.describe Admin::SubmissionFormView do
     context "When the status is 'waiting for committee review'" do
       before { submission.status = 'waiting for committee review' }
 
-      it "returns the normal update path" do
-        expect(view.form_for_url).to eq admin_submission_path(submission)
+      it "returns final submission pending response" do
+        expect(view.form_for_url).to eq admin_submissions_final_submission_pending_response_path(submission)
       end
     end
 
@@ -355,72 +355,6 @@ RSpec.describe Admin::SubmissionFormView do
       end
     end
   end
-
-  describe 'committee_form for Lion Path' do
-    let(:author) { FactoryBot.create :author }
-
-    context 'the lion path committee_form is returned' do
-      it 'returns the standard committee form when lion path is active' do
-        allow_any_instance_of(Submission).to receive(:using_lionpath?).and_return(true)
-        inbound_lion_path_record = InboundLionPathRecord.new(author_id: author.id, lion_path_degree_code: LionPath::MockLionPathRecord.first_degree_code, current_data: LionPath::MockLionPathRecord.current_data)
-        author.inbound_lion_path_record = inbound_lion_path_record
-        expect(view.committee_form).to eq('lionpath_committee_form')
-        expect(view.program_information_partial).to eq('lionpath_program_information')
-      end
-    end
-  end
-
-  describe 'committee_form' do
-    let(:author) { FactoryBot.create :author }
-    let(:submission) { FactoryBot.create :submission, author: author }
-
-    context 'the standard_committee_form is returned' do
-      it 'returns the standard committee form when lion path is inactive' do
-        author.inbound_lion_path_record = nil
-        allow(InboundLionPathRecord).to receive(:active?).and_return(false)
-        expect(view.committee_form).to eq('standard_committee_form')
-        expect(view.program_information_partial).to eq('standard_program_information')
-      end
-    end
-  end
-
-  describe 'defense_date_partial_for_final_fields' do
-    let(:author) { FactoryBot.create :author }
-    let(:submission) { FactoryBot.create :submission, author: author }
-    let(:inbound_lion_path_record) { FactoryBot.create :inbound_lion_path_record, author: author }
-
-    context 'the lion path defense date is used' do
-      if InboundLionPathRecord.active?
-        it 'uses the hidden defense date' do
-          # allow(InboundLionPathRecord).to receive(:active).and_return(true)
-          expect(view.defense_date_partial_for_final_fields).to eq('/admin/submissions/edit/defended_at_date_hidden') if current_partner.graduate?
-        end
-      end
-    end
-
-    context 'the date input by student is used' do
-      it 'displays datepicker date' do
-        author.inbound_lion_path_record = nil
-        # allow(InboundLionPathRecord).to receive(:active).and_return(false)
-        expect(view.defense_date_partial_for_final_fields).to eq('/admin/submissions/edit/standard_defended_at_date')
-      end
-    end
-  end
-  # describe 'psu_only' do
-  #   let(:submission) { FactoryBot.create :submission, access_level: 'restricted_to_institution' }
-  #
-  #   context 'when access_level is restricted_to_institution for graduate submissions' do
-  #     it 'returns true' do
-  #       expect(view.psu_only(submission.current_access_level.attributes)).to eql('Restricted (Penn State Only)')
-  #     end
-  #   end
-  #   context 'when access_level is not restricted_to_institution' do
-  #     it 'returns true' do
-  #       submission.access_level = 'Restricted'
-  #       expect(view.psu_only(submission.current_access_level.attributes)).to be_falsey
-  #     end
-  #   end
-  # end
 
   describe 'release_date_history' do
     it 'displays partial release date and expected full release date for restricted submissions' do

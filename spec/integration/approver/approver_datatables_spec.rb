@@ -12,12 +12,13 @@ RSpec.describe 'Approver datatables', type: :integration, js: true do
   before do
     submission.final_submission_files << final_submission_file
     submission.degree.degree_type.approval_configuration = approval_configuration
-    webaccess_authorize_approver
+    oidc_authorize_approver
   end
 
   it "updates approver's committee member records and lists them" do
     expect(Approver.find_by(access_id: 'approverflow').committee_members.count).to eq 0
     visit '/approver/reviews'
+    expect(page).to have_link('walkthrough')
     expect(page).to have_content('Contact Us')
     expect(page).to have_content('My Reviews')
     expect(page).to have_content('Submission Title')

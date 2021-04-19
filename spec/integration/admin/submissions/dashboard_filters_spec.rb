@@ -22,7 +22,7 @@ RSpec.describe "filtering with semester dropdown", js: true do
   let!(:degree_type) { DegreeType.default }
 
   before do
-    webaccess_authorize_admin
+    oidc_authorize_admin
     visit admin_submissions_dashboard_path(DegreeType.default.name)
   end
 

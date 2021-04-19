@@ -6,5 +6,6 @@ FactoryBot.define do
     is_active { true }
     num_required { 1 }
     degree_type
+    is_program_head { false }
   end
 end

@@ -49,6 +49,7 @@ Rails.application.routes.draw do
     delete '/submissions', to: 'submissions#bulk_destroy', as: :delete_submissions
 
     patch '/submissions/:id/format_review_response', to: 'submissions#record_format_review_response', as: :submissions_format_review_response
+    patch '/submissions/:id/final_submission_pending_response', to: 'submissions#record_final_submission_pending_response', as: :submissions_final_submission_pending_response
     patch '/submissions/:id/update_final_submission', to: 'submissions#record_send_back_to_final_submission', as: :submissions_update_final_submission
     patch '/submissions/:id/final_submission_response', to: 'submissions#record_final_submission_response', as: :submissions_final_submission_response
     patch '/submissions/:id/update_released', to: 'submissions#update_released', as: :submissions_update_released
@@ -94,7 +95,6 @@ Rails.application.routes.draw do
       get '/date_defended_refresh', to: 'submissions#refresh_date_defended', as: :refresh_date_defended
 
       resource :committee_members, shallow: true # We only modify the set of committee members en masse
-      get :head_of_program, to: 'committee_members#head_of_program', as: :head_of_program
       get '/committee_members_refresh', to: 'committee_members#refresh', as: :refresh_committee
 
       post '/send_email_reminder', to: 'submissions#send_email_reminder'

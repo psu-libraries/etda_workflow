@@ -34,31 +34,93 @@ RSpec.describe Author::CommitteeFormView do
     end
   end
 
-  context '#committee_form_partial' do
-    author = FactoryBot.create :author
-    submission = FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)], author: author
-    it 'returns the standard_committee_form when no lion path record is available' do
-      view = described_class.new(submission)
-      expect(view.committee_form_partial).to eq('standard_committee_form')
+  describe '#new_committee_label' do
+    let!(:degree1) { FactoryBot.create :degree, degree_type: DegreeType.default }
+    let!(:degree2) { FactoryBot.create :degree, degree_type: (FactoryBot.create :degree_type) }
+    let!(:author) { FactoryBot.create :author }
+
+    context 'when submission is a dissertation' do
+      let!(:submission) do
+        FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)],
+                                       author: author, degree: degree1
+      end
+
+      it 'returns "Committee Members"' do
+        view = described_class.new(submission)
+        expect(view.new_committee_label).to eq('Committee Members')
+      end
     end
-    it 'returns lionpath_committee_form when there is a lion path record' do
-      allow_any_instance_of(Submission).to receive(:using_lionpath?).and_return(true)
-      view = described_class.new(submission)
-      expect(view.committee_form_partial).to eql('lionpath_committee_form')
+
+    context 'when submission is not a dissertation' do
+      let!(:submission) do
+        FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)],
+                                       author: author, degree: degree2
+      end
+
+      it 'returns "Add Committee Members"' do
+        view = described_class.new(submission)
+        expect(view.new_committee_label).to eq('Add Committee Members')
+      end
     end
   end
 
-  context '#new_committee_label' do
-    author = FactoryBot.create :author
-    submission = FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)], author: author
-    it 'returns "Add Committee Members" when no lion path record is available' do
-      view = described_class.new(submission)
-      expect(view.new_committee_label).to eq('Add Committee Members')
+  describe '#update_committee_label' do
+    let!(:degree1) { FactoryBot.create :degree, degree_type: DegreeType.default }
+    let!(:degree2) { FactoryBot.create :degree, degree_type: (FactoryBot.create :degree_type) }
+    let!(:author) { FactoryBot.create :author }
+
+    context 'when submission is a dissertation' do
+      let!(:submission) do
+        FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)],
+                                       author: author, degree: degree1
+      end
+
+      it 'returns "Committee Members"' do
+        view = described_class.new(submission)
+        expect(view.update_committee_label).to eq('Committee Members')
+      end
     end
-    it 'returns "Verify Committee" when there is a lion path record' do
-      allow_any_instance_of(Submission).to receive(:using_lionpath?).and_return(true)
-      view = described_class.new(submission)
-      expect(view.new_committee_label).to eql('Verify Committee')
+
+    context 'when submission is not a dissertation' do
+      let!(:submission) do
+        FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)],
+                                       author: author, degree: degree2
+      end
+
+      it 'returns "Update Committee Members"' do
+        view = described_class.new(submission)
+        expect(view.update_committee_label).to eq('Update Committee Members')
+      end
+    end
+  end
+
+  describe '#add_member_label' do
+    let!(:degree1) { FactoryBot.create :degree, degree_type: DegreeType.default }
+    let!(:degree2) { FactoryBot.create :degree, degree_type: (FactoryBot.create :degree_type) }
+    let!(:author) { FactoryBot.create :author }
+
+    context 'when submission is a dissertation' do
+      let!(:submission) do
+        FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)],
+                                       author: author, degree: degree1
+      end
+
+      it 'returns "Add Special Signatory"' do
+        view = described_class.new(submission)
+        expect(view.add_member_label).to eq('Add Special Signatory')
+      end
+    end
+
+    context 'when submission is not a dissertation' do
+      let!(:submission) do
+        FactoryBot.create :submission, committee_members: [FactoryBot.create(:committee_member)],
+                                       author: author, degree: degree2
+      end
+
+      it 'returns "Add Committee Member"' do
+        view = described_class.new(submission)
+        expect(view.add_member_label).to eq('Add Committee Member')
+      end
     end
   end
 
@@ -70,12 +132,6 @@ RSpec.describe Author::CommitteeFormView do
       view = described_class.new(submission)
       allow(view).to receive(:update?).and_return(true)
       expect(view.link_text).to eql('Update Committee Members')
-    end
-    it 'returns "Refresh Committee" when committee existing using Lion Path' do
-      view = described_class.new(submission)
-      allow(view).to receive(:update?).and_return(true)
-      allow(submission).to receive(:using_lionpath?).and_return(true)
-      expect(view.link_text).to eql('Refresh Committee')
     end
   end
 end

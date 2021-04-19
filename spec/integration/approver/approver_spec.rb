@@ -14,7 +14,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   before do
     submission.final_submission_files << final_submission_file
     submission.degree.degree_type.approval_configuration = approval_configuration
-    webaccess_authorize_approver
+    oidc_authorize_approver
   end
 
   context 'approver matches committee member access_id' do
@@ -51,7 +51,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
 
     it 'can edit status and notes' do
-      allow(CommitteeMember).to receive(:head_of_program).with(submission).and_return(FactoryBot.create(:committee_member))
+      allow(CommitteeMember).to receive(:program_head).with(submission).and_return(FactoryBot.create(:committee_member))
       within("form#edit_committee_member_#{committee_member.id}") do
         find(:css, "#committee_member_status_approved").set true
         fill_in "committee_member_notes", with: 'Some notes.'
