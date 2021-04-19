@@ -212,7 +212,7 @@ class Submission < ApplicationRecord
   end
 
   def core_committee_email_list
-    self.committee_members.joins(:committee_role).where('committee_roles.is_program_head = 0').pluck(:email)
+    committee_members.joins(:committee_role).where('committee_roles.is_program_head = 0').pluck(:email)
   end
 
   def keyword_list
