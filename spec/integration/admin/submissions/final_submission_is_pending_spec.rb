@@ -17,6 +17,7 @@ RSpec.describe "when an admin views the final submission is pending bucket", js:
 
   describe 'selecting a submission' do
     it 'has button to "Reject & return to author"' do
+      create_committee(submission)
       click_link submission.title
       click_button 'Reject & return to author'
       submission.reload
