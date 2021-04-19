@@ -140,17 +140,28 @@ en:
                     Debra Rodgers, Coordinator of Academic Services 
                     SHCAcademics@psu.edu
                     814-867-2505
-        pending_returned_to_author:
+        pending_returned_author:
           message: |
-            Your %{degree_type} has been rejected by request of an administrator.
-            You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review again.
+                    Your %{degree_type} has been rejected by request of an administrator.
+                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review again.
 
-            Sincerely,
-            The Schreyer Honors College
-            If you have any further questions please contact:  
-            Debra Rodgers, Coordinator of Academic Services 
-            SHCAcademics@psu.edu
-            814-867-2505
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    SHCAcademics@psu.edu
+                    814-867-2505
+        pending_returned_committee:
+          message: |
+                    %{author_name}'s eTD submission titled "%{title}" has been rejected at the request of an administrator.
+                    The student has been asked to resubmit their work.  Once they have done this, you will be notified via email to review.
+
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    SHCAcademics@psu.edu
+                    814-867-2505
         committee_approved:
           message: |
                     Congratulations! Your honors %{degree_type} has been reviewed by your committee and it is approved.
