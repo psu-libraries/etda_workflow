@@ -7,19 +7,21 @@ class Lionpath::LionpathChair
     if pc.present?
       pc.update(dept_head_attrs(row))
 
-      unless row['ROLE'].blank?
+      if row['ROLE'].present?
         pic = ProgramChair.find_by(program: this_program, campus: row['Campus'], role: "Professor in Charge")
         if pic.present?
           pic.update(prof_in_charge_attrs(row))
+        else
+          ProgramChair.create({ program: this_program, role: "Professor in Charge" }.merge(prof_in_charge_attrs(row)))
         end
       end
       return
     end
 
     ProgramChair.create({ program: this_program, role: "Department Head" }.merge(dept_head_attrs(row)))
-    unless row['ROLE'].blank?
-      ProgramChair.create({ program: this_program, role: "Professor in Charge" }.merge(prof_in_charge_attrs(row)))
-    end
+    return if row['ROLE'].blank?
+
+    ProgramChair.create({ program: this_program, role: "Professor in Charge" }.merge(prof_in_charge_attrs(row)))
   end
 
   private

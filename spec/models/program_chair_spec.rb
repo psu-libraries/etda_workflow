@@ -18,6 +18,7 @@ RSpec.describe ProgramChair, type: :model do
 
   describe "validations" do
     let(:program_chair) { FactoryBot.create :program_chair }
+
     context "when role is not in #roles" do
       it "is not valid" do
         program_chair.update role: 'Not correct'
