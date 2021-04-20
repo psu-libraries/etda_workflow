@@ -6,6 +6,7 @@
       </div>
       <div id='confirm_desc' class="modal-body" >
         <p><%= I18n.t("graduate.fee_message.#{@submission.degree.degree_type.slug}.message").html_safe %></p>
+        <p>You only need to pay once. Please select "Continue" if you have already paid.</p>
       </div>
       <div class="modal-footer">
         <button id="final-submit-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

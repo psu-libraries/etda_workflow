@@ -37,6 +37,11 @@ module MailerActions
     committee_rejected_author(submission).deliver if submission.degree.degree_type.approval_configuration.email_authors
   end
 
+  def send_pending_returned_emails(submission)
+    pending_returned_author(submission).deliver
+    pending_returned_committee(submission).deliver
+  end
+
   def send_final_submission_approved_email(submission)
     final_submission_approved(submission).deliver
   end

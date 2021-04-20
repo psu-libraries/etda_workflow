@@ -13,9 +13,9 @@ class FinalSubmissionPendingService
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
     if params[:return_to_author]
       status_giver.can_waiting_for_committee_review_rejected?
+      WorkflowMailer.send_pending_returned_emails(submission)
       status_giver.waiting_for_committee_review_rejected!
       submission.update committee_review_rejected_at: DateTime.now
-      WorkflowMailer.pending_returned_to_author(submission).deliver
       { msg: "The submission was successfully returned to the student for resubmission.", redirect_to: submission_path }
     else
       submission.update_status_from_committee

@@ -17,7 +17,8 @@ class Lionpath::LionpathCommitteeRoles
       name: row['Description'],
       is_active: status,
       num_required: 0,
-      lionpath_updated_at: DateTime.now
+      lionpath_updated_at: DateTime.now,
+      is_program_head: 0
     }
   end
 
