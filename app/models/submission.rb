@@ -208,7 +208,7 @@ class Submission < ApplicationRecord
     committee_members.each do |cm|
       list << cm.email
     end
-    list
+    list.uniq
   end
 
   def keyword_list
