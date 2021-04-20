@@ -185,15 +185,9 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @author = submission.author
 
-    if submission.status_behavior.waiting_for_committee_review?
-      mail to: submission.core_committee_email_list,
-           from: current_partner.email_address,
-           subject: "Final Submission Returned to Student for Resubmission"
-    elsif submission.status_behavior.waiting_for_head_of_program_review?
-      mail to: submission.committee_email_list,
-           from: current_partner.email_address,
-           subject: "Final Submission Returned to Student for Resubmission"
-    end
+    mail to: submission.committee_email_list,
+         from: current_partner.email_address,
+         subject: "Final Submission Returned to Student for Resubmission"
   end
 
   def committee_rejected_author(submission)
