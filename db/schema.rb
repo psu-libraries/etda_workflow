@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_18_140133) do
+ActiveRecord::Schema.define(version: 2021_04_20_151410) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -223,6 +223,7 @@ ActiveRecord::Schema.define(version: 2021_03_18_140133) do
     t.datetime "lionpath_updated_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "role"
     t.index ["program_id"], name: "index_program_chairs_on_program_id"
   end
 
