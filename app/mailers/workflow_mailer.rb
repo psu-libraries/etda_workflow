@@ -190,7 +190,7 @@ class WorkflowMailer < ActionMailer::Base
            from: current_partner.email_address,
            subject: "Final Submission Returned to Student for Resubmission"
     elsif submission.status_behavior.waiting_for_head_of_program_review?
-      mail to: submission.program_head.email,
+      mail to: submission.committee_email_list,
            from: current_partner.email_address,
            subject: "Final Submission Returned to Student for Resubmission"
     end

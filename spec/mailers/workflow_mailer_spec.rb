@@ -440,7 +440,7 @@ RSpec.describe WorkflowMailer do
     context "when submission's status is 'waiting for head of program review'" do
       it "is sent to the proper recipient" do
         submission.update status: 'waiting for head of program review'
-        expect(email.to).to eq([submission.program_head.email])
+        expect(email.to).to eq(submission.committee_email_list)
       end
     end
 
