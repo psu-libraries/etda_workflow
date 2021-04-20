@@ -5,7 +5,7 @@ class Lionpath::LionpathChair
 
     pc = ProgramChair.find_by(program: this_program, campus: row['Campus'], role: "Department Head")
     if pc.present?
-      pc.update(dept_head_attrs(row))
+      pc.update(chair_attrs(row))
 
       if row['ROLE'].present?
         pic = ProgramChair.find_by(program: this_program, campus: row['Campus'], role: "Professor in Charge")
@@ -18,7 +18,7 @@ class Lionpath::LionpathChair
       return
     end
 
-    ProgramChair.create({ program: this_program, role: "Department Head" }.merge(dept_head_attrs(row)))
+    ProgramChair.create({ program: this_program, role: "Department Head" }.merge(chair_attrs(row)))
     return if row['ROLE'].blank?
 
     ProgramChair.create({ program: this_program, role: "Professor in Charge" }.merge(prof_in_charge_attrs(row)))
@@ -26,14 +26,14 @@ class Lionpath::LionpathChair
 
   private
 
-  def dept_head_attrs(row)
+  def chair_attrs(row)
     {
-      access_id: row['Access ID'].downcase,
-      first_name: row['First Name'],
-      last_name: row['Last Name'],
+      access_id: row['Chair Access ID'].downcase,
+      first_name: row['Chair First Name'],
+      last_name: row['Chair Last Name'],
       campus: row['Campus'],
-      phone: row['Phone'],
-      email: row['Univ Email'].downcase,
+      phone: row['Chair Phone'],
+      email: row['Chair Univ Email'].downcase,
       lionpath_updated_at: DateTime.now
     }
   end
