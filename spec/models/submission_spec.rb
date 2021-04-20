@@ -423,4 +423,28 @@ RSpec.describe Submission, type: :model do
       end
     end
   end
+
+  describe "#core_committee_email_list" do
+    let(:this_submission) { FactoryBot.create :submission }
+    let(:cm1) { FactoryBot.create :committee_member }
+
+    context "when head of program exists" do
+      let(:cm_role) { FactoryBot.create :committee_role, is_program_head: true }
+      let(:cm2) { FactoryBot.create :committee_member, committee_role: cm_role }
+
+      it "returns a list of committee member emails excluding the program head" do
+        this_submission.committee_members << [cm1, cm2]
+        this_submission.reload
+        expect(this_submission.core_committee_email_list).to eq [cm1.email]
+      end
+    end
+
+    context "when head of program does not exist" do
+      it "returns a list of committee member emails" do
+        this_submission.committee_members << [cm1]
+        this_submission.reload
+        expect(this_submission.core_committee_email_list).to eq [cm1.email]
+      end
+    end
+  end
 end
