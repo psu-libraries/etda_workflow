@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_20_151410) do
+ActiveRecord::Schema.define(version: 2021_04_20_164550) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -224,7 +224,7 @@ ActiveRecord::Schema.define(version: 2021_04_20_151410) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "role"
-    t.index ["program_id"], name: "index_program_chairs_on_program_id"
+    t.index ["program_id"], name: "program_chairs_program_id_fk"
   end
 
   create_table "programs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
