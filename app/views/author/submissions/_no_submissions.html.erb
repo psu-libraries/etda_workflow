@@ -8,7 +8,7 @@
   <div class="col-xs-12">
     <h2>My Submissions</h2>
     <p class="row">
-      <%= render partial: 'admin_submission_buttons' if admin? && current_partner.graduate? %>
+      <%= render partial: 'admin_submission_buttons' if admin? && current_partner.graduate? && !(ENV['HOSTNAME'] == 'etdaworkflow1prod') %>
     </p>
   </div>
 </div>
