@@ -1,6 +1,9 @@
 <div class="row">
   <div class="col-xs-12">
     <h2>My Submissions</h2>
+    <div class="row">
+      <%= render partial: 'admin_submission_buttons' if admin? && current_partner.graduate? && !(ENV['HOSTNAME'] == 'etdaworkflow1prod') %>
+    </div>
   </div>
 </div>
 <div>
@@ -19,7 +22,7 @@
         <h3><%= submission.title %></h3>
 
         <%= @submission_view.formatted_program_information %>
-        <%= @submission_view.delete_link unless current_partner.graduate? %>
+        <%= @submission_view.delete_link unless (current_partner.graduate? && !admin?) %>
       </div>
 
       <%= render 'progress_indicator', submission: submission %>
