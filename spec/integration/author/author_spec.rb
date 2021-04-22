@@ -82,12 +82,12 @@ RSpec.describe 'Author submission page', type: :integration, milsch: true, honor
         visit author_submissions_path
         expect(page).to have_link "Create Dissertation"
         expect(page).to have_link "Create Master's Thesis"
-        expect{ click_link "Create Master's Thesis" }.to change(Submission, :count).by 1
+        expect { click_link "Create Master's Thesis" }.to change(Submission, :count).by 1
         expect(page).to have_content Submission.last.program.name
         expect(page).to have_link "Create Dissertation"
         expect(page).to have_link "Create Master's Thesis"
         expect(page).to have_link "[delete submission"
-        expect{ click_link "Create Dissertation" }.to change(Submission, :count).by 1
+        expect { click_link "Create Dissertation" }.to change(Submission, :count).by 1
         expect(page).to have_content Submission.last.program.name
       end
     end
