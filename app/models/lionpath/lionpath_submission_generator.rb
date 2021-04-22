@@ -21,7 +21,7 @@ class Lionpath::LionpathSubmissionGenerator
                                email: "abc#{rand_num + seq}@psu.edu",
                                is_required: 1,
                                access_id: "abc#{rand_num + seq}",
-                               is_voting: false,
+                               is_voting: true,
                                lionpath_updated_at: DateTime.now,
                                submission: submission)
         seq += 1
