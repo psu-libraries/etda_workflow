@@ -42,32 +42,6 @@ RSpec.describe "Admins can run reports", js: true do
     end
   end
 
-  context 'committee report page', js: true do
-    before do
-      visit admin_submissions_dashboard_path(Degree.first.degree_type)
-      click_link('Reports')
-      click_link('Committee Report')
-    end
-
-    xit 'displays the Committee Report page' do
-      expect(page).to have_content('Committee Report')
-      expect(page).to have_button('Select Visible')
-      expect(page).to have_content('Submission1')
-      expect(page).to have_content('Submission2')
-      expect(page).not_to have_content('Submission3')
-      click_button 'Select Visible'
-      page.assert_selector('tbody .row-checkbox')
-      ckbox = all('tbody .row-checkbox')
-      assert_equal(Submission.released_for_publication.count, ckbox.count)
-      ckbox.each do |cb|
-        expect(have_checked_field(cb)).to be_truthy
-      end
-      expect(page).to have_button('Export CSV')
-      click_button('Export CSV')
-      expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="committee_report.csv"'
-    end
-  end
-
   context 'custom report page' do
     before do
       submission2.access_level = 'restricted'
@@ -89,6 +63,7 @@ RSpec.describe "Admins can run reports", js: true do
       expect(page).to have_content('Custom Report')
       expect(page).to have_button('Select Visible')
       expect(page).to have_content('Submission3')
+      expect(page).to have_content(submission2.program.name)
       click_button 'Select Visible'
       page.assert_selector('tbody .row-checkbox')
       ckbox = all('tbody .row-checkbox')
