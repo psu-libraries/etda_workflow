@@ -66,7 +66,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         click_button 'Save and Continue Submission'
         expect(page).to have_content('My Submissions')
         submission.reload
-        assert_equal submission.committee_email_list, @email_list
+        assert_equal submission.committee_email_list, @email_list.uniq
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count) unless current_partner.graduate?
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count + 1) if current_partner.graduate?
         expect(submission.committee_members.first.access_id).to eq('pbm123') unless current_partner.graduate?
@@ -218,7 +218,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
     it 'allows an additional committee member to be added', js: true do
       # expect(page).to have_content('successfully')
       expect(page).to have_link('Add Committee Member')
-      assert_equal submission.committee_email_list, @email_list unless current_partner.graduate?
+      assert_equal submission.committee_email_list, @email_list.uniq unless current_partner.graduate?
       click_link 'Add Committee Member'
       expect(page).to have_link('[ Remove Committee Member ]')
       fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last

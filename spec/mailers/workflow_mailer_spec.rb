@@ -401,8 +401,8 @@ RSpec.describe WorkflowMailer do
     end
   end
 
-  describe '#pending_returned_to_author' do
-    let(:email) { described_class.pending_returned_to_author(submission) }
+  describe '#pending_returned_author' do
+    let(:email) { described_class.pending_returned_author(submission) }
 
     it "is sent to the proper recipient" do
       expect(email.to).to eq([submission.author.psu_email_address])
@@ -418,6 +418,35 @@ RSpec.describe WorkflowMailer do
 
     it "has desired content" do
       expect(email.body).to match(/has been rejected by request of an administrator/)
+    end
+  end
+
+  describe '#pending_returned_committee' do
+    let(:email) { described_class.pending_returned_committee(submission) }
+    let(:cm_role) { FactoryBot.create :committee_role, is_program_head: true }
+    let(:cm1) { FactoryBot.create :committee_member }
+    let(:cm2) { FactoryBot.create :committee_member, committee_role: cm_role }
+
+    before do
+      submission.committee_members << [cm1, cm2]
+      submission.update status: 'waiting for committee review'
+      submission.reload
+    end
+
+    it "is sent to the proper recipient" do
+      expect(email.to).to eq(submission.committee_email_list)
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("Final Submission Returned to Student for Resubmission")
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/#{submission.author.full_name}'s eTD submission titled "#{submission.title}"/)
     end
   end
 

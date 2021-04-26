@@ -48,6 +48,7 @@ RSpec.describe FinalSubmissionPendingService do
       end
 
       it 'updated metadata, moves the submission to "waiting for committee review rejected", and send email' do
+        submission.committee_members << (FactoryBot.create :committee_member)
         expect(service.respond).to eq(
           msg: "The submission was successfully returned to the student for resubmission.",
           redirect_to: "/admin/submissions/#{submission.id}/edit"
@@ -55,7 +56,7 @@ RSpec.describe FinalSubmissionPendingService do
         submission.reload
         expect(submission.title).to eq 'New Title'
         expect(submission.status).to eq 'waiting for committee review rejected'
-        expect(WorkflowMailer.deliveries.count).to eq 1
+        expect(WorkflowMailer.deliveries.count).to eq 2
       end
     end
   end

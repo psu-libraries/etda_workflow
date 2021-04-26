@@ -423,4 +423,20 @@ RSpec.describe Submission, type: :model do
       end
     end
   end
+
+  describe "#committee_email_list" do
+    let!(:new_submission) { FactoryBot.create :submission }
+    let!(:head_role) { FactoryBot.create :committee_role, is_program_head: true }
+
+    it 'returns a list of emails' do
+      create_committee(new_submission)
+      new_submission.committee_members << (FactoryBot.create :committee_member, committee_role: head_role, email: 'xxx1@psu.edu')
+      new_submission.committee_members.first.update email: "sameemail@psu.edu"
+      new_submission.committee_members.second.update email: "sameemail@psu.edu"
+      expect(new_submission.committee_email_list).to eq ["sameemail@psu.edu",
+                                                         new_submission.committee_members.third.email,
+                                                         new_submission.committee_members.fourth.email,
+                                                         new_submission.committee_members.fifth.email, "xxx1@psu.edu"]
+    end
+  end
 end
