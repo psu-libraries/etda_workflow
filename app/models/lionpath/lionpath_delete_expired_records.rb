@@ -40,10 +40,13 @@ class Lionpath::LionpathDeleteExpiredRecords
     end
 
     # External to PSU committee members will stop updating after they are imported.
-    # Therefore, they need to be excluded from the following query.
+    # Program Heads are no longer being imported, but there are legacy LP Program Heads.
+    # Therefore, they all need to be excluded from the following query.
     def lp_cmtee_mmbrs_to_delete
-      total_lp_cmtee_mmbrs.where('committee_members.external_to_psu_id IS NULL AND committee_members.lionpath_updated_at < ?',
-                                 (DateTime.now - 2.days))
+      total_lp_cmtee_mmbrs.joins(:committee_role)
+          .where('committee_members.external_to_psu_id IS NULL AND committee_members.lionpath_updated_at < ?',
+                 (DateTime.now - 2.days))
+          .where('committee_roles.is_program_head != true')
     end
 
     def safe_to_delete?(total_num, num_to_delete)

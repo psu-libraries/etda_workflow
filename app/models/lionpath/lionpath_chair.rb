@@ -40,12 +40,12 @@ class Lionpath::LionpathChair
 
   def prof_in_charge_attrs(row)
     {
-      access_id: row['DGS/PIC Access ID'].downcase,
+      access_id: row['DGS/PIC Access ID']&.downcase,
       first_name: row['DGS/PIC First Name'],
       last_name: row['DGS/PIC Last Name'],
       campus: row['Campus'],
       phone: row['DGS/PIC Phone'],
-      email: row['DGS/PIC Univ Email'].downcase,
+      email: row['DGS/PIC Univ Email']&.downcase,
       lionpath_updated_at: DateTime.now
     }
   end

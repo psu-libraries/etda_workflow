@@ -25,7 +25,6 @@ class Lionpath::LionpathCsvImporter
       grab_file(resource)
       parse_csv(resource)
     end
-    assign_chairs
     File.delete(lionpath_csv_loc) if File.exist?(lionpath_csv_loc)
     Lionpath::LionpathDeleteExpiredRecords.delete
   end
@@ -44,10 +43,6 @@ class Lionpath::LionpathCsvImporter
     else
       raise InvalidResource
     end
-  end
-
-  def assign_chairs
-    Lionpath::LionpathAssignChairs.new.call
   end
 
   def parse_csv(resource)

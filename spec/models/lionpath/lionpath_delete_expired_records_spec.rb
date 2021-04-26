@@ -1,6 +1,7 @@
 require 'model_spec_helper'
 
 RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
+  let!(:dept_head_role) { FactoryBot.create :committee_role, is_program_head: true }
   let!(:non_lp_sub1) { FactoryBot.create :submission }
   let!(:non_lp_sub2) { FactoryBot.create :submission }
   let!(:non_exp_lp_sub1) { FactoryBot.create :submission, lionpath_updated_at: DateTime.now }
@@ -12,6 +13,9 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
   end
   let!(:non_lp_cm1) { FactoryBot.create :committee_member }
   let!(:non_lp_cm2) { FactoryBot.create :committee_member }
+  let!(:dept_head_lp_cm) do
+    FactoryBot.create :committee_member, committee_role: dept_head_role, lionpath_updated_at: DateTime.now
+  end
   let!(:non_exp_lp_cm1) { FactoryBot.create :committee_member, lionpath_updated_at: DateTime.now }
   let!(:non_exp_lp_cm2) { FactoryBot.create :committee_member, lionpath_updated_at: (DateTime.now - 1.day) }
   let!(:exp_lp_cm1) { FactoryBot.create :committee_member, lionpath_updated_at: (DateTime.now - 2.days) }
@@ -44,6 +48,7 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
       expect { exp_lp_cm2.reload }.to raise_error ActiveRecord::RecordNotFound
       expect(exp_lp_cm3.reload).to eq exp_lp_cm3
       expect(exp_lp_cm4.reload).to eq exp_lp_cm4
+      expect(dept_head_lp_cm.reload).to eq dept_head_lp_cm
       expect(WorkflowMailer.deliveries.count).to eq 0
     end
   end
