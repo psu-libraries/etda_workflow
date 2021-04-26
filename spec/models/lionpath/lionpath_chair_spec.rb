@@ -74,11 +74,11 @@ RSpec.describe Lionpath::LionpathChair do
   context 'when Professor In Charge (PIC) and corresponding Department Head is present in CSV' do
     let(:row) do
       {
-          'Chair Access ID' => 'ABC123', 'Acad Plan' => 'ABC_XYZ', 'Acad Prog' => 'GREM', 'Campus' => 'UP',
-          'Chair Last Name' => 'New Tester', 'Chair First Name' => 'New Test', 'Chair Phone' => '18141234567',
-          'Chair Phone Type' => 'UNIV', 'Chair Univ Email' => 'ABC123@psu.edu', 'ROLE' => 'DPIC',
-          'DGS/PIC Access ID' => 'DEF456', 'DGS/PIC Last Name' => 'PIC Tester', 'DGS/PIC First Name' => 'PIC Test',
-          'DGS/PIC Phone' => '18147654321', 'DGS/PIC Phone Type' => 'UNIV', 'DGS/PIC Univ Email' => 'DEF456@psu.edu'
+        'Chair Access ID' => 'ABC123', 'Acad Plan' => 'ABC_XYZ', 'Acad Prog' => 'GREM', 'Campus' => 'UP',
+        'Chair Last Name' => 'New Tester', 'Chair First Name' => 'New Test', 'Chair Phone' => '18141234567',
+        'Chair Phone Type' => 'UNIV', 'Chair Univ Email' => 'ABC123@psu.edu', 'ROLE' => 'DPIC',
+        'DGS/PIC Access ID' => 'DEF456', 'DGS/PIC Last Name' => 'PIC Tester', 'DGS/PIC First Name' => 'PIC Test',
+        'DGS/PIC Phone' => '18147654321', 'DGS/PIC Phone Type' => 'UNIV', 'DGS/PIC Univ Email' => 'DEF456@psu.edu'
       }
     end
 
