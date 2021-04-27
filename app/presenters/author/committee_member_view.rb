@@ -56,9 +56,9 @@ class Author::CommitteeMemberView
   def program_chair_collection
     collection = []
     model.submission.collect_program_chairs.each do |pc|
-      collection << ["#{pc.first_name.to_s} #{pc.last_name.to_s} (#{pc.role.to_s})",
-                     "#{pc.first_name.to_s} #{pc.last_name.to_s}",
-                     { member_email: "#{pc.email}" }]
+      collection << ["#{pc.first_name} #{pc.last_name} (#{pc.role})",
+                     "#{pc.first_name} #{pc.last_name}",
+                     { member_email: pc.email.to_s }]
     end
     collection
   end

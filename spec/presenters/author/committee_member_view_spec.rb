@@ -99,10 +99,10 @@ RSpec.describe Author::CommitteeMemberView do
       submission.reload
       expect(view.program_chair_collection).to eq [["Test Tester (Professor in Charge)",
                                                     "Test Tester",
-                                                    {:member_email=>"abc1@psu.edu"}],
+                                                    { member_email: program_chair1.email }],
                                                    ["Test Tester (Department Head)",
                                                     "Test Tester",
-                                                    {:member_email=>"abc2@psu.edu"}]]
+                                                    { member_email: program_chair2.email }]]
     end
   end
 end

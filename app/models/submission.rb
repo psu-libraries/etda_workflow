@@ -43,7 +43,7 @@ class Submission < ApplicationRecord
   end
 
   def collect_program_chairs
-    self.program.program_chairs.where('program_chairs.campus = ?', campus)
+    program.program_chairs.where('program_chairs.campus = ?', campus)
   end
 
   after_initialize :set_status_to_collecting_program_information
