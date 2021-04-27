@@ -13,6 +13,7 @@ RSpec.describe Lionpath::LionpathSubmissionGenerator, type: :model do
       expect(admin_author.submissions.first.degree_type.slug).to eq 'master_thesis'
       expect(admin_author.submissions.first.degree.name).to eq 'MS'
       expect(admin_author.submissions.first.program.name).to eq 'Program (MS)'
+      expect(admin_author.submissions.first.campus).to eq 'UP'
       expect(admin_author.submissions.first.lionpath_updated_at).to be_truthy
       expect(admin_author.submissions.first.committee_members.count).to eq 1
       expect(admin_author.submissions.first.committee_members.first.is_voting).to eq false
@@ -35,6 +36,7 @@ RSpec.describe Lionpath::LionpathSubmissionGenerator, type: :model do
       expect(admin_author.submissions.first.degree_type.slug).to eq 'dissertation'
       expect(admin_author.submissions.first.degree.name).to eq 'PHD'
       expect(admin_author.submissions.first.program.name).to eq 'Program (PHD)'
+      expect(admin_author.submissions.first.campus).to eq 'UP'
       expect(admin_author.submissions.first.lionpath_updated_at).to be_truthy
       expect(admin_author.submissions.first.committee_members.count).to eq 6
       expect(admin_author.submissions.first.committee_members.first.is_voting).to eq false

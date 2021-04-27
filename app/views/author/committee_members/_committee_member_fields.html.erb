@@ -7,7 +7,7 @@
   <% if local_presenter.required? %>
     <div class="col-sm-12">
       <h2 class="h2-small block-header"><%= local_presenter.role %> <a href="#"><span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="right" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>"></span></a></h2>
-      <% if !current_partner.honors? && !disabled_bool && !is_external_member %>
+      <% if !current_partner.honors? && !disabled_bool && !is_external_member && !local_presenter.head_of_program? %>
         <p class="email_form_checkbox"><%= check_box 'email_form_release', "switch" %><small> Committee member is not in dropdown list</small></p>
       <% end %>
       <%= f.association :committee_role, as: :hidden, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || []  %>
@@ -50,6 +50,10 @@
           <%= f.input :name, label: local_presenter.name_label,
                       aria: { label: "Use arrow keys to navigate your committee member search results to confirm the proper person" },
                       disabled: disabled_bool, input_html: { class: 'ldap-lookup', value: '' }, required: true %>
+        <% elsif current_partner.graduate? && local_presenter.head_of_program? %>
+          <%= f.input :name, label: local_presenter.name_label, collection: local_presenter.program_chair_collection,
+                      aria: { label: "Use arrow keys to navigate your committee member search results to confirm the proper person" },
+                      input_html: { class: 'ldap-lookup', id: 'program-head-name' }, required: true %>
         <% else %>
           <%= f.input :name, label: local_presenter.name_label,
                       aria: { label: "Use arrow keys to navigate your committee member search results to confirm the proper person" },
@@ -60,6 +64,9 @@
         <% if is_external_member && Lionpath::LionpathCommittee.external_ids.include?(f.object.access_id)%>
           <%= f.input :email, label: local_presenter.email_label,
                       required: true, input_html: { value: '' } %>
+        <% elsif current_partner.graduate? && local_presenter.head_of_program? %>
+          <%= f.input :email, label: local_presenter.email_label,
+                      required: true, input_html: { readonly: !is_external_member, id: 'member-email' } %>
         <% else %>
           <%= f.input :email, label: local_presenter.email_label,
                       required: true, input_html: { readonly: !is_external_member } %>

@@ -16,9 +16,7 @@ class SubmissionStatusGiver
   end
 
   def can_provide_new_committee?
-    submission.degree_type.slug == 'dissertation' ?
-        (validate_current_state! []) :
-        (validate_current_state! [SubmissionStates::CollectingCommittee])
+    validate_current_state! [SubmissionStates::CollectingCommittee]
   end
 
   def can_update_committee?

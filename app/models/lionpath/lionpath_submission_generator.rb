@@ -35,6 +35,7 @@ class Lionpath::LionpathSubmissionGenerator
       author: Author.find_by(access_id: current_remote_user),
       program_id: Program.where("programs.is_active = true AND programs.name LIKE '%#{degree_name}%'").sample.id,
       degree_id: Degree.where(name: degree_name).sample.id,
+      campus: 'UP',
       year: DateTime.now.year,
       semester: Semester.current.split(" ").last,
       lionpath_updated_at: DateTime.now
