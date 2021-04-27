@@ -301,10 +301,21 @@ RSpec.describe Submission, type: :model do
     end
 
     context '#build_committee_members_for_partners' do
-      it 'returns a list of required committee members' do
-        degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
-        submission = Submission.new(degree: degree)
-        expect(submission.build_committee_members_for_partners).not_to be_blank
+      context "when a Program Head/Chair doesn't already exist" do
+        it 'returns a list of required committee members' do
+          degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
+          submission = Submission.new(degree: degree)
+          expect(submission.build_committee_members_for_partners).not_to be_blank
+        end
+      end
+
+      context "when a Program Head/Chair already exists" do
+        it 'returns a list of required committee members' do
+          degree = FactoryBot.create :degree
+          submission = FactoryBot.create :submission, degree: degree
+          expect(submission.build_committee_members_for_partners).not_to be_blank
+          expect(submission.committee_members.to_ary.count).to eq submission.required_committee_roles.count
+        end
       end
     end
 
@@ -440,7 +451,7 @@ RSpec.describe Submission, type: :model do
     end
   end
 
-  describe "#program_head_collection" do
+  describe "#collect_program_chairs" do
     let!(:program) { FactoryBot.create :program }
     let!(:submission3) { FactoryBot.create :submission, campus: 'UP', program: program }
     let!(:program_chair1) do

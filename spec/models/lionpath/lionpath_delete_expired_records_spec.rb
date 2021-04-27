@@ -14,7 +14,7 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
   let!(:non_lp_cm1) { FactoryBot.create :committee_member }
   let!(:non_lp_cm2) { FactoryBot.create :committee_member }
   let!(:dept_head_lp_cm) do
-    FactoryBot.create :committee_member, committee_role: dept_head_role, lionpath_updated_at: DateTime.now
+    FactoryBot.create :committee_member, committee_role: dept_head_role, lionpath_updated_at: (DateTime.now - 5.years)
   end
   let!(:non_exp_lp_cm1) { FactoryBot.create :committee_member, lionpath_updated_at: DateTime.now }
   let!(:non_exp_lp_cm2) { FactoryBot.create :committee_member, lionpath_updated_at: (DateTime.now - 1.day) }
