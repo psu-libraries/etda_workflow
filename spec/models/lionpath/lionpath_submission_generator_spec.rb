@@ -5,10 +5,14 @@ RSpec.describe Lionpath::LionpathSubmissionGenerator, type: :model do
 
   context 'when degree_type param is a masters thesis' do
     it 'generates a masters thesis' do
-      FactoryBot.create :degree, degree_type: DegreeType.second
-      FactoryBot.create :program
+      FactoryBot.create :degree, degree_type: DegreeType.second, name: 'MS'
+      FactoryBot.create :degree, degree_type: DegreeType.default, name: 'PHD'
+      FactoryBot.create :program, name: 'Program (MS)'
+      FactoryBot.create :program, name: 'Program (PHD)'
       expect { described_class.new('adminflow', DegreeType.second).create_submission }.to change(Submission, :count).by 1
       expect(admin_author.submissions.first.degree_type.slug).to eq 'master_thesis'
+      expect(admin_author.submissions.first.degree.name).to eq 'MS'
+      expect(admin_author.submissions.first.program.name).to eq 'Program (MS)'
       expect(admin_author.submissions.first.lionpath_updated_at).to be_truthy
       expect(admin_author.submissions.first.committee_members.count).to eq 1
       expect(admin_author.submissions.first.committee_members.first.is_voting).to eq false
@@ -22,11 +26,15 @@ RSpec.describe Lionpath::LionpathSubmissionGenerator, type: :model do
 
   context 'when degree_type param is a dissertation' do
     it 'generates a dissertation' do
-      FactoryBot.create :degree, degree_type: DegreeType.default
-      FactoryBot.create :program
+      FactoryBot.create :degree, degree_type: DegreeType.second, name: 'MS'
+      FactoryBot.create :degree, degree_type: DegreeType.default, name: 'PHD'
+      FactoryBot.create :program, name: 'Program (MS)'
+      FactoryBot.create :program, name: 'Program (PHD)'
       FactoryBot.create :committee_role, degree_type: DegreeType.default, code: 'XYZ'
       expect { described_class.new('adminflow', DegreeType.default).create_submission }.to change(Submission, :count).by 1
       expect(admin_author.submissions.first.degree_type.slug).to eq 'dissertation'
+      expect(admin_author.submissions.first.degree.name).to eq 'PHD'
+      expect(admin_author.submissions.first.program.name).to eq 'Program (PHD)'
       expect(admin_author.submissions.first.lionpath_updated_at).to be_truthy
       expect(admin_author.submissions.first.committee_members.count).to eq 6
       expect(admin_author.submissions.first.committee_members.first.is_voting).to eq false

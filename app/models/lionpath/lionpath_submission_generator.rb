@@ -8,8 +8,6 @@ class Lionpath::LionpathSubmissionGenerator
 
   def create_submission
     submission = Submission.create(submission_attrs)
-    dept_head = dept_head_role
-    generate_dep_head(submission, dept_head)
     return unless degree_type.slug == 'dissertation'
 
     rand_num = rand(1..994)
@@ -32,30 +30,14 @@ class Lionpath::LionpathSubmissionGenerator
   private
 
   def submission_attrs
+    degree_name = degree_type.slug == 'dissertation' ? 'PHD' : 'MS'
     {
       author: Author.find_by(access_id: current_remote_user),
-      program_id: Program.pluck(:id).sample,
-      degree_id: Degree.joins(:degree_type).where('degree_types.id = ?',
-                                                  degree_type.id).sample.id,
+      program_id: Program.where("programs.is_active = true AND programs.name LIKE '%#{degree_name}%'").sample.id,
+      degree_id: Degree.where(name: degree_name).sample.id,
       year: DateTime.now.year,
       semester: Semester.current.split(" ").last,
       lionpath_updated_at: DateTime.now
     }
-  end
-
-  def generate_dep_head(submission, dept_head_role)
-    rand_num = rand(1..994)
-    CommitteeMember.create(committee_role: dept_head_role,
-                           name: "Fake Person#{rand_num}",
-                           email: "abc#{rand_num}@psu.edu",
-                           is_required: 1,
-                           access_id: "abc#{rand_num}",
-                           is_voting: false,
-                           lionpath_updated_at: DateTime.now,
-                           submission: submission)
-  end
-
-  def dept_head_role
-    CommitteeRole.find_by(degree_type_id: degree_type.id, is_program_head: true)
   end
 end
