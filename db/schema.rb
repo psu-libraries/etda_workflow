@@ -287,6 +287,8 @@ ActiveRecord::Schema.define(version: 2021_03_18_140133) do
     t.boolean "federal_funding"
     t.datetime "placed_on_hold_at"
     t.datetime "removed_hold_at"
+    t.datetime "proquest_agreement_at"
+    t.boolean "proquest_agreement"
     t.string "campus"
     t.datetime "lionpath_updated_at"
     t.index ["author_id"], name: "submissions_author_id_fk"

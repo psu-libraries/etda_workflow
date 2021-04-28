@@ -49,10 +49,11 @@
   <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} %>
   <%= render 'shared/copyright_statement' %>
   <%= f.input :has_agreed_to_terms, label: 'I agree to copyright statement', as: :boolean, wrapper: :vertical_boolean, required: true %>
+  <% if current_partner.graduate? && f.object.degree_type.slug == 'dissertation' %>
+    <%= render 'shared/proquest_agreement' %>
+    <%= f.input :proquest_agreement, label: 'I agree to ProQuest statement', as: :boolean, wrapper: :vertical_boolean, required: true %>
+  <% end %>
   <%= render partial: 'shared/final_submission_confidential_hold_checkbox', locals: {f: f} if @submission.author.confidential? %>
-
-  <%#= render 'shared/release_statement' %>
-  <%#= f.input :has_agreed_to_publication_release, label: 'I agree to release agreement', as: :boolean, wrapper: :vertical_boolean, required: true %>
 
   <%= f.input :final_submission_notes, as: :text, label: "Final Submission Notes to Student", input_html: { class: 'can-toggle-editability' } %>
 </div>
