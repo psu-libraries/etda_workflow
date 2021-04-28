@@ -33,7 +33,9 @@ class Lionpath::LionpathSubmissionGenerator
     degree_name = degree_type.slug == 'dissertation' ? 'PHD' : 'MS'
     {
       author: Author.find_by(access_id: current_remote_user),
-      program_id: Program.where("programs.is_active = true AND programs.name LIKE '%#{degree_name}%'").sample.id,
+      program_id: Program.joins(:program_chairs)
+                         .where("programs.is_active = true AND programs.name LIKE '%#{degree_name}%' AND program_chairs.campus = 'UP'")
+                         .uniq.sample.id,
       degree_id: Degree.where(name: degree_name).sample.id,
       campus: 'UP',
       year: DateTime.now.year,

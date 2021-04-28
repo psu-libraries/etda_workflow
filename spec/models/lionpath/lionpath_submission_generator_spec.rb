@@ -7,8 +7,10 @@ RSpec.describe Lionpath::LionpathSubmissionGenerator, type: :model do
     it 'generates a masters thesis' do
       FactoryBot.create :degree, degree_type: DegreeType.second, name: 'MS'
       FactoryBot.create :degree, degree_type: DegreeType.default, name: 'PHD'
-      FactoryBot.create :program, name: 'Program (MS)'
-      FactoryBot.create :program, name: 'Program (PHD)'
+      program1 = FactoryBot.create :program, name: 'Program (MS)'
+      program2 = FactoryBot.create :program, name: 'Program (PHD)'
+      FactoryBot.create :program_chair, program: program1, campus: 'UP'
+      FactoryBot.create :program_chair, program: program2, campus: 'UP'
       expect { described_class.new('adminflow', DegreeType.second).create_submission }.to change(Submission, :count).by 1
       expect(admin_author.submissions.first.degree_type.slug).to eq 'master_thesis'
       expect(admin_author.submissions.first.degree.name).to eq 'MS'
@@ -23,8 +25,10 @@ RSpec.describe Lionpath::LionpathSubmissionGenerator, type: :model do
     it 'generates a dissertation' do
       FactoryBot.create :degree, degree_type: DegreeType.second, name: 'MS'
       FactoryBot.create :degree, degree_type: DegreeType.default, name: 'PHD'
-      FactoryBot.create :program, name: 'Program (MS)'
-      FactoryBot.create :program, name: 'Program (PHD)'
+      program1 = FactoryBot.create :program, name: 'Program (MS)'
+      program2 = FactoryBot.create :program, name: 'Program (PHD)'
+      FactoryBot.create :program_chair, program: program1, campus: 'UP'
+      FactoryBot.create :program_chair, program: program2, campus: 'UP'
       FactoryBot.create :committee_role, degree_type: DegreeType.default, code: 'XYZ'
       expect { described_class.new('adminflow', DegreeType.default).create_submission }.to change(Submission, :count).by 1
       expect(admin_author.submissions.first.degree_type.slug).to eq 'dissertation'
