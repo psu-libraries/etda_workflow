@@ -49,6 +49,8 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:federal_funding).of_type(:boolean) }
   it { is_expected.to have_db_column(:placed_on_hold_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:removed_hold_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:proquest_agreement).of_type(:boolean) }
+  it { is_expected.to have_db_column(:proquest_agreement_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:lionpath_updated_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:campus).of_type(:string) }
 
@@ -83,8 +85,6 @@ RSpec.describe Submission, type: :model do
 
   it { is_expected.to validate_inclusion_of(:access_level).in_array(AccessLevel::ACCESS_LEVEL_KEYS) }
 
-  it { is_expected.to validate_inclusion_of(:status).in_array(SubmissionStatus::WORKFLOW_STATUS) }
-
   it { is_expected.to accept_nested_attributes_for :committee_members }
   it { is_expected.to accept_nested_attributes_for :format_review_files }
   it { is_expected.to accept_nested_attributes_for :final_submission_files }
@@ -97,6 +97,14 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to delegate_method(:author_last_name).to(:author).as(:last_name) }
   it { is_expected.to delegate_method(:author_full_name).to(:author).as(:full_name) }
   it { is_expected.to delegate_method(:author_psu_email_address).to(:author).as(:psu_email_address) }
+
+  describe 'status validation' do
+    it 'validates the inclusion of status in SubmissionStatus::WORKFLOW_STATUS array' do
+      degree = FactoryBot.create :degree, degree_type: DegreeType.default
+      submission = FactoryBot.create :submission, degree: degree
+      expect(submission).to validate_inclusion_of(:status).in_array(SubmissionStatus::WORKFLOW_STATUS)
+    end
+  end
 
   describe 'conditional submission validations' do
     submission = described_class.new(access_level: AccessLevel.OPEN_ACCESS.current_access_level)
@@ -169,7 +177,7 @@ RSpec.describe Submission, type: :model do
     end
 
     it 'validates federal funding only when authors are editing beyond collecting committee' do
-      submission = FactoryBot.create :submission, :collecting_final_submission_files
+      submission = FactoryBot.create :submission, :waiting_for_final_submission_response
       submission2 = FactoryBot.create :submission, :collecting_program_information
       submission.author_edit = true
       submission.federal_funding = true
@@ -203,235 +211,280 @@ RSpec.describe Submission, type: :model do
       expect(submission2).not_to be_valid
     end
 
-    context 'invention disclosure' do
-      it 'rejects an empty disclosure number' do
-        expect(submission.reject_disclosure_number(id: nil, submission_id: nil, id_number: nil, created_at: nil, updated_at: nil)).to be_falsey
-      end
+    it "validates proquest_agreement if graduate school, dissertation,
+        and author is submitting beyond format review" do
+      skip 'graduate only' unless current_partner.graduate?
+
+      degree = FactoryBot.create :degree, degree_type: DegreeType.default
+      submission = FactoryBot.create :submission, :collecting_format_review_files, degree: degree
+      submission2 = FactoryBot.create :submission, :waiting_for_final_submission_response, degree: degree
+      submission.author_edit = true
+      submission.proquest_agreement = true
+      expect(submission).to be_valid
+      submission2.author_edit = true
+      submission2.proquest_agreement = false
+      expect(submission2).not_to be_valid
+      submission2.author_edit = true
+      submission2.proquest_agreement = true
+      expect(submission2).to be_valid
     end
+  end
 
-    context 'keywords' do
-      it 'has a list of keywords' do
-        submission = Submission.new
-        submission.keywords << Keyword.new(word: 'zero')
-        submission.keywords << Keyword.new(word: 'one')
-        submission.keywords << Keyword.new(word: 'two')
-        expect(submission.delimited_keywords).to eq('zero,one,two')
-        expect(submission.keyword_list).to eq(['zero', 'one', 'two'])
-      end
+  context 'invention disclosure' do
+    it 'rejects an empty disclosure number' do
+      expect(submission.reject_disclosure_number(id: nil, submission_id: nil, id_number: nil, created_at: nil, updated_at: nil)).to be_falsey
     end
+  end
 
-    context '#check_title_capitalization' do
-      it 'identifies all caps in the title' do
-        submission = Submission.new(title: 'THIS TITLE IS NOT ALLOWED')
-        expect(submission.check_title_capitalization).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
-        expect(submission.errors[:title]).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
-      end
-      it 'allows titles with < 4 uppercase, numbers, and symbols' do
-        submission = Submission.new(title: 'THIS 1855 is %^&**% AlloweD')
-        expect(submission.check_title_capitalization).to eq(nil)
-        expect(submission.errors[:title]).to eq([])
-      end
+  context 'keywords' do
+    it 'has a list of keywords' do
+      submission = Submission.new
+      submission.keywords << Keyword.new(word: 'zero')
+      submission.keywords << Keyword.new(word: 'one')
+      submission.keywords << Keyword.new(word: 'two')
+      expect(submission.delimited_keywords).to eq('zero,one,two')
+      expect(submission.keyword_list).to eq(['zero', 'one', 'two'])
     end
+  end
 
-    context '#restricted_to_institution?' do
-      it 'returns true' do
-        submission = Submission.new(access_level: 'restricted_to_institution')
-        expect(submission).to be_restricted_to_institution
-        submission.access_level = 'restricted'
-        expect(submission).not_to be_restricted_to_institution
-      end
+  context '#defended_at_date' do
+    it 'returns defended_at date from student input' do
+      submission = FactoryBot.create :submission, :released_for_publication
+      expect(submission.defended_at).not_to be_blank if current_partner.graduate?
     end
+  end
 
-    context '#voting_committee_members' do
-      let!(:degree2) { FactoryBot.create :degree, degree_type: DegreeType.default, name: 'mydegree' }
-      let!(:submission2) { FactoryBot.create :submission, degree: degree2 }
-      let(:head_role) { CommitteeRole.find_by(degree_type: degree2.degree_type, is_program_head: true) }
+  context '#check_title_capitalization' do
+    it 'identifies all caps in the title' do
+      submission = Submission.new(title: 'THIS TITLE IS NOT ALLOWED')
+      expect(submission.check_title_capitalization).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
+      expect(submission.errors[:title]).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
+    end
+    it 'allows titles with < 4 uppercase, numbers, and symbols' do
+      submission = Submission.new(title: 'THIS 1855 is %^&**% AlloweD')
+      expect(submission.check_title_capitalization).to eq(nil)
+      expect(submission.errors[:title]).to eq([])
+    end
+  end
 
-      context 'when head of program is approving' do
-        it 'returns a list of voting committee members without duplication that does not include program head' do
-          allow(submission2).to receive(:head_of_program_is_approving?).and_return true
-          create_committee(submission2)
-          submission2.committee_members.each_with_index do |cm, index|
-            if index == 0
-              cm.committee_role = head_role
-              cm.is_voting = false
-              cm.access_id = 'abc'
-              cm.save!
-              next
-            end
+  context '#check_title_capitalization' do
+    it 'identifies all caps in the title' do
+      submission = Submission.new(title: 'THIS TITLE IS NOT ALLOWED')
+      expect(submission.check_title_capitalization).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
+      expect(submission.errors[:title]).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
+    end
+    it 'allows titles with < 4 uppercase, numbers, and symbols' do
+      submission = Submission.new(title: 'THIS 1855 is %^&**% AlloweD')
+      expect(submission.check_title_capitalization).to eq(nil)
+      expect(submission.errors[:title]).to eq([])
+    end
+  end
 
-            cm.is_voting = true
-            cm.access_id = 'abc123' if index == 1
-            cm.access_id = 'abc123' if index == 2
-            cm.access_id = 'abc456' if index == 3
-            cm.access_id = 'abc789' if index == 4
-            cm.access_id = 'abc321' if index == 5
+  context '#restricted_to_institution?' do
+    it 'returns true' do
+      submission = Submission.new(access_level: 'restricted_to_institution')
+      expect(submission).to be_restricted_to_institution
+      submission.access_level = 'restricted'
+      expect(submission).not_to be_restricted_to_institution
+    end
+  end
+
+  context '#voting_committee_members' do
+    let!(:degree2) { FactoryBot.create :degree, degree_type: DegreeType.default, name: 'mydegree' }
+    let!(:submission2) { FactoryBot.create :submission, degree: degree2 }
+    let(:head_role) { CommitteeRole.find_by(degree_type: degree2.degree_type, is_program_head: true) }
+
+    context 'when head of program is approving' do
+      it 'returns a list of voting committee members without duplication that does not include program head' do
+        allow(submission2).to receive(:head_of_program_is_approving?).and_return true
+        create_committee(submission2)
+        submission2.committee_members.each_with_index do |cm, index|
+          if index == 0
+            cm.committee_role = head_role
+            cm.is_voting = false
+            cm.access_id = 'abc'
             cm.save!
+            next
           end
-          submission2.reload
-          expect(submission2.voting_committee_members.count).to eq(submission2.committee_members.count - 2)
+
+          cm.is_voting = true
+          cm.access_id = 'abc123' if index == 1
+          cm.access_id = 'abc123' if index == 2
+          cm.access_id = 'abc456' if index == 3
+          cm.access_id = 'abc789' if index == 4
+          cm.access_id = 'abc321' if index == 5
+          cm.save!
         end
+        submission2.reload
+        expect(submission2.voting_committee_members.count).to eq(submission2.committee_members.count - 2)
       end
+    end
 
-      context 'when head of program is not approving' do
-        it 'returns a list of voting committee members without duplication that includes the program head' do
-          allow(submission2).to receive(:head_of_program_is_approving?).and_return false
-          create_committee(submission2)
-          submission2.committee_members.each_with_index do |cm, index|
-            if index == 0
-              cm.committee_role = head_role
-              cm.is_voting = false
-              cm.access_id = 'abc'
-              cm.save!
-              next
-            end
-
-            cm.is_voting = true
-            cm.access_id = 'abc123' if index == 1
-            cm.access_id = 'abc123' if index == 2
-            cm.access_id = 'abc456' if index == 3
-            cm.access_id = 'abc789' if index == 4
-            cm.access_id = 'abc321' if index == 5
+    context 'when head of program is not approving' do
+      it 'returns a list of voting committee members without duplication that includes the program head' do
+        allow(submission2).to receive(:head_of_program_is_approving?).and_return false
+        create_committee(submission2)
+        submission2.committee_members.each_with_index do |cm, index|
+          if index == 0
+            cm.committee_role = head_role
+            cm.is_voting = false
+            cm.access_id = 'abc'
             cm.save!
+            next
           end
-          submission2.reload
-          expect(submission2.voting_committee_members.count).to eq(submission2.committee_members.count - 1)
+
+          cm.is_voting = true
+          cm.access_id = 'abc123' if index == 1
+          cm.access_id = 'abc123' if index == 2
+          cm.access_id = 'abc456' if index == 3
+          cm.access_id = 'abc789' if index == 4
+          cm.access_id = 'abc321' if index == 5
+          cm.save!
+        end
+        submission2.reload
+        expect(submission2.voting_committee_members.count).to eq(submission2.committee_members.count - 1)
+      end
+    end
+  end
+
+  context '#build_committee_members_for_partners' do
+    context "when a Program Head/Chair doesn't already exist" do
+      it 'returns a list of required committee members' do
+        degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
+        submission = Submission.new(degree: degree)
+        expect(submission.build_committee_members_for_partners).not_to be_blank
+      end
+    end
+
+    context "when a Program Head/Chair already exists" do
+      it 'returns a list of required committee members' do
+        degree = FactoryBot.create :degree
+        submission = FactoryBot.create :submission, degree: degree
+        expect(submission.build_committee_members_for_partners).not_to be_blank
+        expect(submission.committee_members.to_ary.count).to eq submission.required_committee_roles.count
+      end
+    end
+  end
+
+  context '#publication_release_date' do
+    it 'returns the release date for open access submissions' do
+      submission = FactoryBot.create :submission, :released_for_publication
+      date_to_release = Time.zone.yesterday
+      expect(submission.publication_release_date(date_to_release)).to eq(date_to_release)
+    end
+    it 'returns release date plus 2 years for submissions not yet published and are not open access' do
+      submission = FactoryBot.create :submission, :waiting_for_publication_release
+      submission.access_level = 'restricted'
+      date_to_release = Time.zone.tomorrow
+      expect(submission.publication_release_date(date_to_release)).to eq(date_to_release + 2.years)
+    end
+  end
+
+  context 'update timestamps' do
+    it 'updates format review timestamps' do
+      submission = FactoryBot.create :submission, :collecting_format_review_files
+      expect(submission.format_review_files_uploaded_at).to be_nil
+      expect(submission.format_review_files_first_uploaded_at).to be_nil
+      time_now = Time.now
+      # time_now_formatted = time_now.strftime("%Y-%m-%d %H:%M:%S.000000000 -0500")
+      time_now_formatted = formatted_time(time_now)
+      submission.update_format_review_timestamps!(time_now)
+      expect(formatted_time(submission.format_review_files_uploaded_at)).to eq(time_now_formatted)
+      expect(formatted_time(submission.format_review_files_first_uploaded_at)).to eq(time_now_formatted)
+    end
+    it 'updates final submission timestamps' do
+      submission = FactoryBot.create :submission, :collecting_final_submission_files
+      expect(submission.final_submission_files_uploaded_at).to be_nil
+      expect(submission.final_submission_files_first_uploaded_at).to be_nil
+      time_now = Time.now
+      time_now_formatted = formatted_time(time_now)
+      # time_now_formatted = time_now.strftime("%Y-%m-%d %H:%M:%S.000000000 -0500")
+      submission.update_final_submission_timestamps!(time_now)
+      expect(formatted_time(submission.final_submission_files_uploaded_at)).to eq(time_now_formatted)
+      expect(formatted_time(submission.final_submission_files_first_uploaded_at)).to eq(time_now_formatted)
+    end
+  end
+
+  describe '#update_status_from_committee' do
+    let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
+    let!(:degree_type) { FactoryBot.create :degree_type }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, head_of_program_is_approving: true, degree_type_id: degree_type.id }
+
+    context 'when status is waiting for committee review' do
+      context 'when approval status is approved' do
+        it 'changes status to waiting for head of program review if program head is approving' do
+          allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
+          allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('')
+          submission = FactoryBot.create :submission, :waiting_for_committee_review
+          allow(CommitteeMember).to receive(:program_head).with(submission).and_return(FactoryBot.create(:committee_member))
+          submission.update_status_from_committee
+          expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
+          expect(WorkflowMailer.deliveries.count).to eq 1
+        end
+
+        it 'changes status to waiting for final submission response' do
+          allow_any_instance_of(Submission).to receive(:head_of_program_is_approving?).and_return false
+          allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
+          submission = FactoryBot.create :submission, :waiting_for_committee_review
+          allow(CommitteeMember).to receive(:program_head).with(submission).and_return(FactoryBot.create(:committee_member))
+          submission.update_status_from_committee
+          expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
+          expect(WorkflowMailer.deliveries.count).to eq 1
         end
       end
     end
 
-    context '#build_committee_members_for_partners' do
-      context "when a Program Head/Chair doesn't already exist" do
-        it 'returns a list of required committee members' do
-          degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
-          submission = Submission.new(degree: degree)
-          expect(submission.build_committee_members_for_partners).not_to be_blank
-        end
-      end
-
-      context "when a Program Head/Chair already exists" do
-        it 'returns a list of required committee members' do
-          degree = FactoryBot.create :degree
-          submission = FactoryBot.create :submission, degree: degree
-          expect(submission.build_committee_members_for_partners).not_to be_blank
-          expect(submission.committee_members.to_ary.count).to eq submission.required_committee_roles.count
-        end
+    context 'when approval status is rejected' do
+      it 'changes status to waiting for committee review rejected' do
+        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
+        submission = FactoryBot.create :submission, :waiting_for_committee_review
+        submission.update_status_from_committee
+        expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
       end
     end
 
-    context '#publication_release_date' do
-      it 'returns the release date for open access submissions' do
-        submission = FactoryBot.create :submission, :released_for_publication
-        date_to_release = Time.zone.yesterday
-        expect(submission.publication_release_date(date_to_release)).to eq(date_to_release)
-      end
-      it 'returns release date plus 2 years for submissions not yet published and are not open access' do
-        submission = FactoryBot.create :submission, :waiting_for_publication_release
-        submission.access_level = 'restricted'
-        date_to_release = Time.zone.tomorrow
-        expect(submission.publication_release_date(date_to_release)).to eq(date_to_release + 2.years)
-      end
-    end
-
-    context 'update timestamps' do
-      it 'updates format review timestamps' do
-        submission = FactoryBot.create :submission, :collecting_format_review_files
-        expect(submission.format_review_files_uploaded_at).to be_nil
-        expect(submission.format_review_files_first_uploaded_at).to be_nil
-        time_now = Time.now
-        # time_now_formatted = time_now.strftime("%Y-%m-%d %H:%M:%S.000000000 -0500")
-        time_now_formatted = formatted_time(time_now)
-        submission.update_format_review_timestamps!(time_now)
-        expect(formatted_time(submission.format_review_files_uploaded_at)).to eq(time_now_formatted)
-        expect(formatted_time(submission.format_review_files_first_uploaded_at)).to eq(time_now_formatted)
-      end
-      it 'updates final submission timestamps' do
-        submission = FactoryBot.create :submission, :collecting_final_submission_files
-        expect(submission.final_submission_files_uploaded_at).to be_nil
-        expect(submission.final_submission_files_first_uploaded_at).to be_nil
-        time_now = Time.now
-        time_now_formatted = formatted_time(time_now)
-        # time_now_formatted = time_now.strftime("%Y-%m-%d %H:%M:%S.000000000 -0500")
-        submission.update_final_submission_timestamps!(time_now)
-        expect(formatted_time(submission.final_submission_files_uploaded_at)).to eq(time_now_formatted)
-        expect(formatted_time(submission.final_submission_files_first_uploaded_at)).to eq(time_now_formatted)
-      end
-    end
-
-    context '#update_status_from_committee' do
-      let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-      let!(:degree_type) { FactoryBot.create :degree_type }
-      let!(:approval_configuration) { FactoryBot.create :approval_configuration, head_of_program_is_approving: true, degree_type_id: degree_type.id }
-
-      before do
-        WorkflowMailer.deliveries = []
-        submission.degree = degree
-      end
-
-      context 'when status is waiting for committee review' do
-        context 'when approval status is approved' do
-          it 'changes status to waiting for head of program review if program head is approving' do
-            allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
-            allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('')
-            submission = FactoryBot.create :submission, :waiting_for_committee_review
-            allow(CommitteeMember).to receive(:program_head).with(submission).and_return(FactoryBot.create(:committee_member))
-            submission.update_status_from_committee
-            expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
-            expect(WorkflowMailer.deliveries.count).to eq 1
-          end
-
-          it 'changes status to waiting for final submission response' do
-            allow_any_instance_of(Submission).to receive(:head_of_program_is_approving?).and_return false
-            allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
-            submission = FactoryBot.create :submission, :waiting_for_committee_review
-            allow(CommitteeMember).to receive(:program_head).with(submission).and_return(FactoryBot.create(:committee_member))
-            submission.update_status_from_committee
-            expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
-            expect(WorkflowMailer.deliveries.count).to eq 1
-          end
-        end
-
-        context 'when approval status is rejected' do
-          it 'changes status to waiting for committee review rejected' do
-            allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
-            submission = FactoryBot.create :submission, :waiting_for_committee_review
-            submission.update_status_from_committee
-            expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
-          end
+    context 'when status is waiting for head of program review' do
+      context 'when approval head of program status is approved' do
+        it 'changes status to waiting for final submission response if graduate school' do
+          allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('approved')
+          submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
+          submission.update_status_from_committee
+          expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
         end
       end
 
-      context 'when status is waiting for head of program review' do
-        context 'when approval head of program status is approved' do
-          it 'changes status to waiting for final submission response if graduate school' do
-            allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('approved')
-            submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
-            submission.update_status_from_committee
-            expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
-          end
-        end
-
-        context 'when approval head of program status is rejected' do
-          it 'changes status to waiting for committee review rejected' do
-            allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('rejected')
-            submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
-            submission.update_status_from_committee
-            expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
-          end
+      context 'when approval head of program status is rejected' do
+        it 'changes status to waiting for committee review rejected' do
+          allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('rejected')
+          submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
+          submission.update_status_from_committee
+          expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
         end
       end
     end
+  end
 
-    describe "#committee_review_requests_init" do
-      it 'sets approval_started_at timestamp for committee members' do
-        submission = FactoryBot.create :submission
-        create_committee submission
-        submission.reload
-        expect(submission.committee_members.first.approval_started_at).to be_falsey
-        submission.committee_review_requests_init
-        submission.reload
-        expect(submission.committee_members.first.approval_started_at).to be_truthy
-      end
+  describe "#committee_review_requests_init" do
+    it 'sets approval_started_at timestamp for committee members' do
+      submission = FactoryBot.create :submission
+      create_committee submission
+      submission.reload
+      expect(submission.committee_members.first.approval_started_at).to be_falsey
+      submission.committee_review_requests_init
+      submission.reload
+      expect(submission.committee_members.first.approval_started_at).to be_truthy
+    end
+  end
+
+  describe "#proquest_agreement" do
+    it "sets proquest_agreement_at when updated to 'true'" do
+      skip 'graduate only' unless current_partner.graduate?
+
+      submission = FactoryBot.create :submission, :collecting_final_submission_files,
+                                     proquest_agreement: nil, proquest_agreement_at: nil
+      submission.update proquest_agreement: true
+      submission.reload
+      expect(submission.proquest_agreement_at).to be_truthy
     end
   end
 

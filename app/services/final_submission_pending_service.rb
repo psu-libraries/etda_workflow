@@ -30,32 +30,6 @@ class FinalSubmissionPendingService
   end
 
   def final_submission_params
-    params.require(:submission).permit(
-      :semester,
-      :year,
-      :author_id,
-      :program_id,
-      :degree_id,
-      :title,
-      :allow_all_caps_in_title,
-      :format_review_notes,
-      :admin_notes,
-      :final_submission_notes,
-      :defended_at,
-      :abstract,
-      :access_level,
-      :is_printed,
-      :has_agreed_to_terms,
-      :has_agreed_to_publication_release,
-      :lion_path_degree_code,
-      :restricted_notes,
-      :federal_funding,
-      committee_members_attributes: [:id, :committee_role_id, :name, :email, :status, :notes, :is_required,
-                                     :is_voting, :federal_funding_used, :_destroy],
-      format_review_files_attributes: [:asset, :asset_cache, :id, :_destroy],
-      final_submission_files_attributes: [:asset, :asset_cache, :id, :_destroy],
-      keywords_attributes: [:word, :id, :_destroy],
-      invention_disclosures_attributes: [:id, :submission_id, :id_number, :_destroy]
-    )
+    FinalSubmissionParams.call(params)
   end
 end

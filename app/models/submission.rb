@@ -74,6 +74,9 @@ class Submission < ApplicationRecord
   validates :defended_at,
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit }
 
+  validates :proquest_agreement,
+            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && degree_type.slug == 'dissertation' && s.author_edit }
+
   validates :public_id,
             uniqueness: { case_sensitive: true },
             allow_nil: true
@@ -339,6 +342,13 @@ class Submission < ApplicationRecord
       CommitteeReminderWorker.perform_in(10.days, id, committee_member.id)
       seen_access_ids << committee_member.access_id
     end
+  end
+
+  def proquest_agreement=(input)
+    super(input)
+    return unless proquest_agreement_changed? && ActiveModel::Type::Boolean.new.cast(input)
+
+    self[:proquest_agreement_at] = DateTime.now
   end
 
   private
