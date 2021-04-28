@@ -21,42 +21,18 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
     end
 
     context "visiting the 'New Committee' page" do
-      context 'when submission is a dissertation' do
-        it "raises forbidden access error" do
-          visit new_author_submission_committee_members_path(submission)
-          expect(page).to have_current_path(author_root_path)
-          expect(page).not_to have_current_path(new_author_submission_committee_members_path(submission))
-        end
-      end
-
-      context 'when submission is a master_thesis' do
-        it "displays committee member edit page" do
-          degree = FactoryBot.create :degree, degree_type: master_thesis
-          submission.update degree: degree
-          visit new_author_submission_committee_members_path(submission)
-          expect(page).not_to have_current_path(author_root_path)
-          expect(page).to have_current_path(new_author_submission_committee_members_path(submission))
-        end
+      it "displays committee member edit page" do
+        visit new_author_submission_committee_members_path(submission)
+        expect(page).not_to have_current_path(author_root_path)
+        expect(page).to have_current_path(new_author_submission_committee_members_path(submission))
       end
     end
 
     context "visiting the 'Update Committee' page" do
-      context 'when submission is a dissertation' do
-        it "displays committee member edit page" do
-          visit edit_author_submission_committee_members_path(submission)
-          expect(page).not_to have_current_path(author_root_path)
-          expect(page).to have_current_path(edit_author_submission_committee_members_path(submission))
-        end
-      end
-
-      context 'when submission is a master_thesis' do
-        it "raises forbidden access error" do
-          degree = FactoryBot.create :degree, degree_type: master_thesis
-          submission.update degree: degree
-          visit edit_author_submission_committee_members_path(submission)
-          expect(page).to have_current_path(author_root_path)
-          expect(page).not_to have_current_path(edit_author_submission_committee_members_path(submission))
-        end
+      it "displays committee member edit page" do
+        visit edit_author_submission_committee_members_path(submission)
+        expect(page).not_to have_current_path(author_root_path)
+        expect(page).to have_current_path(edit_author_submission_committee_members_path(submission))
       end
     end
 

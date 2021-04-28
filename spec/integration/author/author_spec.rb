@@ -66,16 +66,16 @@ RSpec.describe 'Author submission page', type: :integration, milsch: true, honor
 
   context 'Author submission display when author is an admin', milsch: true, honors: true, sset: true do
     let!(:committee_role2) { FactoryBot.create :committee_role, is_program_head: true, degree_type: DegreeType.default }
-    let!(:program) { FactoryBot.create :program }
-    let!(:degree2) { FactoryBot.create :degree, degree_type: DegreeType.default }
+    let!(:program1) { FactoryBot.create :program, name: 'Program (PHD)' }
+    let!(:program2) { FactoryBot.create :program, name: 'Program (MS)' }
+    let!(:degree2) { FactoryBot.create :degree, name: 'PHD', degree_type: DegreeType.default }
 
     context 'when current partner is graduate' do
       before do
         skip 'graduate only' unless current_partner.graduate?
       end
 
-      let!(:degree1) { FactoryBot.create :degree, degree_type: DegreeType.second }
-      let!(:committee_role1) { FactoryBot.create :committee_role, is_program_head: true, degree_type: DegreeType.second }
+      let!(:degree1) { FactoryBot.create :degree, name: 'MS', degree_type: DegreeType.second }
 
       it 'displays buttons to create submissions' do
         FactoryBot.create :admin, access_id: 'authorflow'
