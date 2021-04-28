@@ -42,6 +42,10 @@ class Submission < ApplicationRecord
     CommitteeMember.program_head(self)
   end
 
+  def collect_program_chairs
+    program.program_chairs.where('program_chairs.campus = ?', campus)
+  end
+
   after_initialize :set_status_to_collecting_program_information
   after_initialize :initialize_access_level
 
@@ -317,6 +321,8 @@ class Submission < ApplicationRecord
   # Initialize our committee members with empty records for each of the required roles.
   def build_committee_members_for_partners
     required_committee_roles.each do |role|
+      next if role.is_program_head && program_head.present?
+
       committee_members.build(committee_role: role, is_required: true)
     end
   end

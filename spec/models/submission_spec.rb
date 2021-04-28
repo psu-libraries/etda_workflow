@@ -348,10 +348,21 @@ RSpec.describe Submission, type: :model do
   end
 
   context '#build_committee_members_for_partners' do
-    it 'returns a list of required committee members' do
-      degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
-      submission = Submission.new(degree: degree)
-      expect(submission.build_committee_members_for_partners).not_to be_blank
+    context "when a Program Head/Chair doesn't already exist" do
+      it 'returns a list of required committee members' do
+        degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
+        submission = Submission.new(degree: degree)
+        expect(submission.build_committee_members_for_partners).not_to be_blank
+      end
+    end
+
+    context "when a Program Head/Chair already exists" do
+      it 'returns a list of required committee members' do
+        degree = FactoryBot.create :degree
+        submission = FactoryBot.create :submission, degree: degree
+        expect(submission.build_committee_members_for_partners).not_to be_blank
+        expect(submission.committee_members.to_ary.count).to eq submission.required_committee_roles.count
+      end
     end
   end
 
@@ -490,6 +501,26 @@ RSpec.describe Submission, type: :model do
                                                          new_submission.committee_members.third.email,
                                                          new_submission.committee_members.fourth.email,
                                                          new_submission.committee_members.fifth.email, "xxx1@psu.edu"]
+    end
+  end
+
+  describe "#collect_program_chairs" do
+    let!(:program) { FactoryBot.create :program }
+    let!(:submission3) { FactoryBot.create :submission, campus: 'UP', program: program }
+    let!(:program_chair1) do
+      FactoryBot.create :program_chair, program: program, role: 'Professor in Charge', campus: 'UP'
+    end
+    let!(:program_chair2) do
+      FactoryBot.create :program_chair, program: program, role: 'Department Head', campus: 'UP'
+    end
+    let!(:program_chair3) do
+      FactoryBot.create :program_chair, program: program, role: 'Department Head', campus: 'HY'
+    end
+
+    it 'returns collection of program heads for this submission' do
+      skip 'graduate only' unless current_partner.graduate?
+
+      expect(submission3.collect_program_chairs).to eq [program_chair1, program_chair2]
     end
   end
 end
