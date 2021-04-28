@@ -68,6 +68,8 @@ RSpec.describe 'Author submission page', type: :integration, milsch: true, honor
     let!(:committee_role2) { FactoryBot.create :committee_role, is_program_head: true, degree_type: DegreeType.default }
     let!(:program1) { FactoryBot.create :program, name: 'Program (PHD)' }
     let!(:program2) { FactoryBot.create :program, name: 'Program (MS)' }
+    let!(:program_chair1) { FactoryBot.create :program_chair, program: program1 }
+    let!(:program_chair2) { FactoryBot.create :program_chair, program: program2 }
     let!(:degree2) { FactoryBot.create :degree, name: 'PHD', degree_type: DegreeType.default }
 
     context 'when current partner is graduate' do
