@@ -255,7 +255,7 @@ en:
         label: Committee Members
         master_thesis:
           help_text: Enter required committee members in the form below.  Type the committee member's name in the form.  After a blank is entered, a list of names will appear.  Use up and down arrow keys to scroll through the list.  When the desired name is highlighted, click the return key to populate the form.  Both the committee member's name and email address will be filled after the selection is made.  Emails will automatically be sent to each committee member once your final submission is submitted and the committee review stage begins.  These emails will provide a link to where committee members can complete their reviews.
-          notice: The committee for a Master's thesis must consist of at least one Thesis Advisor and two Committee Members.  You can add committee members at the bottom of the page.  Your Program Head/Chair's information has been imported from LionPATH.  The Program Head/Chair will be the final committee member to review your work.
+          notice: The committee for a Master's thesis must consist of at least one Thesis Advisor and at least one Committee Member.  You can add committee members at the bottom of the page.  Your Program Head/Chair's information has been imported from LionPATH.  The Program Head/Chair will be the final committee member to review your work.
           members:
             thesis_advisor:
               name: Thesis Advisor
@@ -267,7 +267,7 @@ en:
               name: Program Head
               description: Faculty member responsible for leadership in developing the department’s academic programs.
         dissertation:
-          incomplete_error: Your committee is not complete.  Please complete your committee in <a target="_blank" href="https://lionpath.psu.edu">LionPATH</a>.
+          incomplete_error: Your committee is not complete.  Please contact your graduate program offices to complete your committee.
           help_text: Please review your current and official committee. Dissertation Committees are imported from LionPATH based on your approved committee appointment signature form.  Any concerns should be directed to your graduate program offices.  Any changes to the committee members presented below will require new official paperwork.
           notice: Special Signatories (not to be confused with special members) can be added at the bottom of the screen by clicking “Add Special Signatory”.  The role will populate to Special Signatory and is the only option available to add here.  Note that if these members are external to Penn State and do not have Access IDs, they will be prompted to create a OneID account when they visit this site.  For questions regarding Special Signatories please contact <a href="mailto:gradthesis@psu.edu">gradthesis@psu.edu</a>.
           members:

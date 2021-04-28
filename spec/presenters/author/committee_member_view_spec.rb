@@ -84,4 +84,25 @@ RSpec.describe Author::CommitteeMemberView do
       it { is_expected.to eq('Email') }
     end
   end
+
+  describe "#program_chair_collection" do
+    let!(:program) { FactoryBot.create :program }
+    let!(:submission) { FactoryBot.create :submission, campus: 'UP', program: program }
+    let!(:program_chair1) do
+      FactoryBot.create :program_chair, campus: 'UP', role: 'Professor in Charge', program: program
+    end
+    let!(:program_chair2) { FactoryBot.create :program_chair, campus: 'UP', program: program }
+    let!(:program_chair3) { FactoryBot.create :program_chair, campus: 'HY', program: program }
+
+    it 'returns the collection of program chairs for a submissions program' do
+      submission.committee_members << member
+      submission.reload
+      expect(view.program_chair_collection).to eq [["Test Tester (Professor in Charge)",
+                                                    "Test Tester",
+                                                    { member_email: program_chair1.email }],
+                                                   ["Test Tester (Department Head)",
+                                                    "Test Tester",
+                                                    { member_email: program_chair2.email }]]
+    end
+  end
 end

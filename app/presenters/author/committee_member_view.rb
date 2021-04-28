@@ -52,4 +52,14 @@ class Author::CommitteeMemberView
     end
     output.html_safe
   end
+
+  def program_chair_collection
+    collection = []
+    model.submission.collect_program_chairs.each do |pc|
+      collection << ["#{pc.first_name} #{pc.last_name} (#{pc.role})",
+                     "#{pc.first_name} #{pc.last_name}",
+                     { member_email: pc.email.to_s }]
+    end
+    collection
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_18_140133) do
+ActiveRecord::Schema.define(version: 2021_04_20_164550) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -223,7 +223,8 @@ ActiveRecord::Schema.define(version: 2021_03_18_140133) do
     t.datetime "lionpath_updated_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["program_id"], name: "index_program_chairs_on_program_id"
+    t.string "role"
+    t.index ["program_id"], name: "program_chairs_program_id_fk"
   end
 
   create_table "programs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -287,6 +288,8 @@ ActiveRecord::Schema.define(version: 2021_03_18_140133) do
     t.boolean "federal_funding"
     t.datetime "placed_on_hold_at"
     t.datetime "removed_hold_at"
+    t.datetime "proquest_agreement_at"
+    t.boolean "proquest_agreement"
     t.string "campus"
     t.datetime "lionpath_updated_at"
     t.index ["author_id"], name: "submissions_author_id_fk"

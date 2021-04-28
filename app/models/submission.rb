@@ -42,6 +42,10 @@ class Submission < ApplicationRecord
     CommitteeMember.program_head(self)
   end
 
+  def collect_program_chairs
+    program.program_chairs.where('program_chairs.campus = ?', campus)
+  end
+
   after_initialize :set_status_to_collecting_program_information
   after_initialize :initialize_access_level
 
@@ -69,6 +73,9 @@ class Submission < ApplicationRecord
 
   validates :defended_at,
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit }
+
+  validates :proquest_agreement,
+            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && degree_type.slug == 'dissertation' && s.author_edit }
 
   validates :public_id,
             uniqueness: { case_sensitive: true },
@@ -314,6 +321,8 @@ class Submission < ApplicationRecord
   # Initialize our committee members with empty records for each of the required roles.
   def build_committee_members_for_partners
     required_committee_roles.each do |role|
+      next if role.is_program_head && program_head.present?
+
       committee_members.build(committee_role: role, is_required: true)
     end
   end
@@ -333,6 +342,13 @@ class Submission < ApplicationRecord
       CommitteeReminderWorker.perform_in(10.days, id, committee_member.id)
       seen_access_ids << committee_member.access_id
     end
+  end
+
+  def proquest_agreement=(input)
+    super(input)
+    return unless proquest_agreement_changed? && ActiveModel::Type::Boolean.new.cast(input)
+
+    self[:proquest_agreement_at] = DateTime.now
   end
 
   private

@@ -603,38 +603,12 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'collecting committee'", milsch: true, honors: true do
+    context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
 
-      context "when graduate" do
-        it "raises exception if submission is a dissertation" do
-          skip "graduate only" unless current_partner.graduate?
-
-          degree_type = DegreeType.find_by(slug: 'dissertation')
-          degree = FactoryBot.create(:degree, degree_type: degree_type)
-          submission.degree = degree
-          giver = described_class.new(submission)
-          expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
-        end
-
-        it "does not raise exception if submission is a master thesis" do
-          skip "graduate only" unless current_partner.graduate?
-
-          degree_type = DegreeType.find_by(slug: 'master_thesis')
-          degree = FactoryBot.create(:degree, degree_type: degree_type)
-          submission.degree = degree
-          giver = described_class.new(submission)
-          expect { giver.can_provide_new_committee? }.not_to raise_error
-        end
-      end
-
-      context "when not graduate" do
-        it "does not raise exception" do
-          skip "graduate only" if current_partner.graduate?
-
-          giver = described_class.new(submission)
-          expect { giver.can_provide_new_committee? }.not_to raise_error
-        end
+      it "does not raise exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_provide_new_committee? }.not_to raise_error
       end
     end
 
