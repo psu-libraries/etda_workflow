@@ -15,6 +15,6 @@
       </div>
     </div>
   </div>
+  <%= render partial: '/matomo_analytics' if ENV['HOSTNAME'] == 'etdaworkflow1prod' %>
   <%= render partial: 'shared/nav_bar' %>
-  <%= render partial: '/matomo_analytics' unless Rails.env.development? %>
 </header>
