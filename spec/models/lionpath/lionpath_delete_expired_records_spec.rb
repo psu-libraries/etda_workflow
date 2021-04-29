@@ -18,7 +18,7 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
   end
   let!(:exp_lp_sub3) do
     FactoryBot.create :submission, :collecting_program_information, lionpath_updated_at: (DateTime.now - 10.days),
-                      created_at: (DateTime.now - 5.years)
+                                   created_at: (DateTime.now - 5.years)
   end
   let!(:exp_lp_sub4) do
     FactoryBot.create :submission, :collecting_committee, lionpath_updated_at: (DateTime.now - 10.days)
