@@ -36,7 +36,8 @@ class Lionpath::LionpathDeleteExpiredRecords
     end
 
     def lp_subs_to_delete
-      total_lp_subs.where('submissions.lionpath_updated_at < ?', (DateTime.now - 2.days))
+      total_lp_subs.where('submissions.lionpath_updated_at < ? AND submissions.status = "collecting program information"',
+                          (DateTime.now - 2.days))
     end
 
     # External to PSU committee members will stop updating after they are imported.
