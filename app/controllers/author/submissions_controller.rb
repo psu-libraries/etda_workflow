@@ -6,7 +6,15 @@ class Author::SubmissionsController < AuthorController
   end
 
   def new
-    @submission = @author.submissions.new
+    if params[:admin_lionpath]
+      return redirect_to '/401' unless admin?
+
+      degree_type = DegreeType.find_by(slug: params[:degree_type])
+      Lionpath::LionpathSubmissionGenerator.new(current_remote_user, degree_type).create_submission
+      redirect_to author_submissions_path
+    else
+      @submission = @author.submissions.new
+    end
   end
 
   def create
@@ -164,6 +172,7 @@ class Author::SubmissionsController < AuthorController
                                          :lion_path_degree_code,
                                          :restricted_notes,
                                          :federal_funding,
+                                         :proquest_agreement,
                                          invention_disclosures_attributes: [:id, :submission_id, :id_number, :_destroy],
                                          final_submission_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy])
     end

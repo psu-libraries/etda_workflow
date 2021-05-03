@@ -71,8 +71,9 @@ RSpec.describe Lionpath::LionpathCsvImporter do
 
       it 'imports lionpath chair data' do
         lionpath_csv_importer.send(:parse_csv, Lionpath::LionpathChair.new)
-        expect(ProgramChair.count).to eq 5
+        expect(ProgramChair.count).to eq 9
         expect(Program.find(program_1.id).program_chairs.first.last_name).to eq 'Tester1'
+        expect(Program.find(program_1.id).program_chairs.last.first_name).to eq 'PIC1'
       end
     end
 

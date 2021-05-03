@@ -8,16 +8,16 @@ class CommitteeRole < ApplicationRecord
   # The preferred dissertation roles are imported during the LionPATH import
   # However, these roles still exist for legacy submissions
   GRADUATE_ROLES = { 'dissertation' => [
-    { name: 'Program Head/Chair', num_required: 0, is_active: true, is_program_head: true },
-    { name: 'Dissertation Advisor/Co-Advisor', num_required: 1, is_active: true, is_program_head: false },
-    { name: 'Committee Chair/Co-Chair', num_required: 1, is_active: true, is_program_head: false },
-    { name: 'Committee Member', num_required: 2, is_active: true, is_program_head: false },
-    { name: 'Outside Member', num_required: 1, is_active: true, is_program_head: false },
+    { name: 'Program Head/Chair', num_required: 1, is_active: true, is_program_head: true },
+    { name: 'Dissertation Advisor/Co-Advisor', num_required: 0, is_active: true, is_program_head: false },
+    { name: 'Committee Chair/Co-Chair', num_required: 0, is_active: true, is_program_head: false },
+    { name: 'Committee Member', num_required: 0, is_active: true, is_program_head: false },
+    { name: 'Outside Member', num_required: 0, is_active: true, is_program_head: false },
     { name: 'Special Member', num_required: 0, is_active: true, is_program_head: false },
     { name: 'Special Signatory', num_required: 0, is_active: true, is_program_head: false }
   ],
                      'master_thesis' => [
-                       { name: 'Program Head/Chair', num_required: 0, is_active: true, is_program_head: true },
+                       { name: 'Program Head/Chair', num_required: 1, is_active: true, is_program_head: true },
                        { name: 'Thesis Advisor/Co-Advisor', num_required: 1, is_active: true, is_program_head: false },
                        { name: 'Committee Member', num_required: 1, is_active: true, is_program_head: false },
                        { name: 'Special Signatory', num_required: 0, is_active: true, is_program_head: false }

@@ -7,5 +7,6 @@ FactoryBot.define do
     campus { 'UP' }
     phone { 18141234567 }
     email { access_id + '@psu.edu' }
+    role { "Department Head" }
   end
 end

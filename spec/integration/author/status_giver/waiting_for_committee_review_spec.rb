@@ -115,7 +115,6 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
           within('#final-submission-file-fields') do
             all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
           end
-          find('#submission_has_agreed_to_terms').click
           if current_partner.graduate?
             find('span', text: 'Submit final files for review').click
             click_button('Continue')
