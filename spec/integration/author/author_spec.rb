@@ -11,6 +11,7 @@ RSpec.describe 'Author submission page', type: :integration, milsch: true, honor
   context 'Author Submissions Page' do
     it 'displays a paragraph of thesis instructions' do
       expect(page).to have_content('You will need to input your committee, upload your format ')
+      expect(page).to have_link('Accessibility')
     end
     it 'contains a list of submissions' do
       expect(page).to have_content('My Submissions')
