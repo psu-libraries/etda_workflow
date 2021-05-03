@@ -21,9 +21,41 @@ RSpec.describe FinalSubmissionSubmittedService do
   end
 
   describe '#final_rejected_send_committee' do
-    it "sends submissions to 'waiting for committee review rejected'" do
+    it "sends submissions to 'waiting for committee review'" do
       described_class_inst.final_rejected_send_committee
-      expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
+      expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+    end
+  end
+
+  describe '#final_rejected_send_dept_head' do
+    before do
+      create_committee(submission)
+      submission.committee_members << FactoryBot.create(:committee_member,
+                                                        committee_role: CommitteeRole.find_by(degree_type: submission.degree_type,
+                                                                                              is_program_head: true))
+      submission.committee_members.each do |cm|
+        cm.update status: 'approved'
+      end
+    end
+
+    context 'when program head is present' do
+      it "sends submissions to 'waiting for head of program review'" do
+        described_class_inst.final_rejected_send_dept_head
+        submission.reload
+        expect(submission.status).to eq 'waiting for head of program review'
+        expect(WorkflowMailer.deliveries.count).to eq 1
+        expect(submission.program_head.status).to eq ''
+      end
+    end
+
+    context 'when program head is not present' do
+      it "does not change status of submission" do
+        submission.program_head.destroy
+        expect(described_class_inst.final_rejected_send_dept_head).to eq "This submission does not have a program head."
+        submission.reload
+        expect(submission.status).to eq 'waiting for final submission response'
+        expect(WorkflowMailer.deliveries.count).to eq 0
+      end
     end
   end
 end

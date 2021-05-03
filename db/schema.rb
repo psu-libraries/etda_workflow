@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_08_173409) do
+ActiveRecord::Schema.define(version: 2021_04_20_164550) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_173409) do
     t.boolean "federal_funding_used"
     t.bigint "approver_id"
     t.datetime "lionpath_updated_at"
+    t.string "external_to_psu_id"
     t.index ["approver_id"], name: "index_committee_members_on_approver_id"
     t.index ["committee_role_id"], name: "committee_members_committee_role_id_fk"
     t.index ["submission_id"], name: "committee_members_submission_id_fk"
@@ -137,6 +138,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_173409) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "lionpath_updated_at"
+    t.boolean "is_program_head"
     t.index ["degree_type_id"], name: "committee_roles_degree_type_id_fk"
   end
 
@@ -210,7 +212,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_173409) do
     t.index ["submission_id"], name: "keywords_submission_id_fk"
   end
 
-  create_table "program_chairs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "program_chairs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "program_id", null: false
     t.string "access_id", null: false
     t.string "first_name"
@@ -221,7 +223,8 @@ ActiveRecord::Schema.define(version: 2021_03_08_173409) do
     t.datetime "lionpath_updated_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["program_id"], name: "index_program_chairs_on_program_id"
+    t.string "role"
+    t.index ["program_id"], name: "program_chairs_program_id_fk"
   end
 
   create_table "programs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -287,6 +290,8 @@ ActiveRecord::Schema.define(version: 2021_03_08_173409) do
     t.datetime "removed_hold_at"
     t.string "campus"
     t.datetime "lionpath_updated_at"
+    t.datetime "proquest_agreement_at"
+    t.boolean "proquest_agreement"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"

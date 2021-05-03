@@ -38,6 +38,14 @@ class Submission < ApplicationRecord
     ApprovalStatus.new(self)
   end
 
+  def program_head
+    CommitteeMember.program_head(self)
+  end
+
+  def collect_program_chairs
+    program.program_chairs.where('program_chairs.campus = ?', campus)
+  end
+
   after_initialize :set_status_to_collecting_program_information
   after_initialize :initialize_access_level
 
@@ -65,6 +73,9 @@ class Submission < ApplicationRecord
 
   validates :defended_at,
             presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && s.author_edit }
+
+  validates :proquest_agreement,
+            presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && current_partner.graduate? && degree_type.slug == 'dissertation' && s.author_edit }
 
   validates :public_id,
             uniqueness: { case_sensitive: true },
@@ -113,7 +124,7 @@ class Submission < ApplicationRecord
   scope :final_submission_is_approved, -> { where(status: 'waiting for publication release') }
   scope :final_submission_is_on_hold, -> { where(status: 'waiting in final submission on hold') }
   scope :released_for_publication, -> { where('status LIKE "released for publication%"') }
-  scope :final_is_restricted_institution, -> { where(status: 'released for publication', access_level: 'restricted_to_institution') }
+  scope :final_is_restricted_institution, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted_to_institution') }
   scope :final_is_withheld, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted') }
   scope :ok_to_release, -> { where('released_for_publication_at <= ?', Time.zone.today.end_of_day) }
 
@@ -133,6 +144,10 @@ class Submission < ApplicationRecord
     committee_members.each do |committee_member|
       committee_member.update! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
     end
+  end
+
+  def reset_program_head_review
+    program_head&.update status: ''
   end
 
   def initialize_access_level
@@ -200,7 +215,7 @@ class Submission < ApplicationRecord
     committee_members.each do |cm|
       list << cm.email
     end
-    list
+    list.uniq
   end
 
   def keyword_list
@@ -299,12 +314,15 @@ class Submission < ApplicationRecord
       voting_no_dups << member unless seen_access_ids.include? member.access_id
       seen_access_ids << member.access_id
     end
-    voting_no_dups
+    voting_no_dups << program_head unless head_of_program_is_approving?
+    voting_no_dups.compact
   end
 
   # Initialize our committee members with empty records for each of the required roles.
   def build_committee_members_for_partners
     required_committee_roles.each do |role|
+      next if role.is_program_head && program_head.present?
+
       committee_members.build(committee_role: role, is_required: true)
     end
   end
@@ -314,16 +332,23 @@ class Submission < ApplicationRecord
   end
 
   def committee_review_requests_init
+    seen_access_ids = []
     committee_members.each do |committee_member|
       committee_member.update! approval_started_at: DateTime.now
-      seen_access_ids = []
-      next if committee_member.committee_role.name == 'Program Head/Chair' || seen_access_ids.include?(committee_member.access_id)
+      next if committee_member.is_program_head || seen_access_ids.include?(committee_member.access_id)
 
       WorkflowMailer.send_committee_review_requests(self, committee_member)
 
       CommitteeReminderWorker.perform_in(10.days, id, committee_member.id)
       seen_access_ids << committee_member.access_id
     end
+  end
+
+  def proquest_agreement=(input)
+    super(input)
+    return unless proquest_agreement_changed? && ActiveModel::Type::Boolean.new.cast(input)
+
+    self[:proquest_agreement_at] = DateTime.now
   end
 
   private

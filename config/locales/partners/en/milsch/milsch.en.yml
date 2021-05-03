@@ -71,6 +71,17 @@ en:
                     Millennium Scholars Program
                     130 Ritenour Building
                     University Park, PA  16802
+        sent_to_committee:
+          message: |
+                    Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee.
+                    No action is required of you at this time.
+                    You will be notified once your committee has reviewed and made a decision regarding your document.
+
+                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
+                    You may also call (814)867-5105, or send mail to:
+                    Millennium Scholars Program
+                    130 Ritenour Building
+                    University Park, PA  16802
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
@@ -117,6 +128,26 @@ en:
                     You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for
                     your committee to review.
                     For additional information regarding the rejection please consult your %{degree_type} adviser.
+
+                    If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
+                    You may also call (814)867-5105, or send mail to:
+                    Millennium Scholars Program
+                    130 Ritenour Building
+                    University Park, PA  16802
+        pending_returned_author:
+          message: |
+                    Your %{degree_type} has been rejected by request of an administrator.
+                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review again.
+
+                    If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
+                    You may also call (814)867-5105, or send mail to:
+                    Millennium Scholars Program
+                    130 Ritenour Building
+                    University Park, PA  16802
+        pending_returned_committee:
+          message: |
+                    %{author_name}'s eTD submission titled "%{title}" has been rejected at the request of an administrator.
+                    The student has been asked to resubmit their work.  Once they have done this, you will be notified via email to review.
 
                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
                     You may also call (814)867-5105, or send mail to:

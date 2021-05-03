@@ -2,7 +2,7 @@
   "name": "etda_workflow",
   "private": true,
   "dependencies": {
-    "@rails/webpacker": "^5.2.1",
+    "@rails/webpacker": "^5.3.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^8.0.6",
     "babel-polyfill": "^6.26.0",
@@ -37,10 +37,8 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.1",
     "tag-it": "^2.0.0",
-    "terser-webpack-plugin": "^2.3.0",
     "url-loader": "^0.6.2",
     "url-parse": "1.4.7",
-    "webpack": "^4.29",
     "webpack-cli": "^3.3.6",
     "websocket-extensions": "0.1.4",
     "yargs-parser": "^18.1.2"

@@ -25,7 +25,7 @@ module MailerActions
   end
 
   def send_head_of_program_review_request(submission, submission_status)
-    committee_member_review_request(submission, CommitteeMember.head_of_program(submission)).deliver unless submission_status.head_of_program_status == 'approved'
+    committee_member_review_request(submission, CommitteeMember.program_head(submission)).deliver unless submission_status.head_of_program_status == 'approved'
   end
 
   def send_committee_approved_email(submission)
@@ -35,6 +35,11 @@ module MailerActions
   def send_committee_rejected_emails(submission)
     committee_rejected_admin(submission).deliver if submission.degree.degree_type.approval_configuration.email_admins
     committee_rejected_author(submission).deliver if submission.degree.degree_type.approval_configuration.email_authors
+  end
+
+  def send_pending_returned_emails(submission)
+    pending_returned_author(submission).deliver
+    pending_returned_committee(submission).deliver
   end
 
   def send_final_submission_approved_email(submission)

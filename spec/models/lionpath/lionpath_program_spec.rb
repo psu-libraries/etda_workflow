@@ -45,6 +45,7 @@ RSpec.describe Lionpath::LionpathProgram do
 
     it 'populates proper attributes' do
       expect(Author.first.psu_idn).to eq(row_1['ID'].to_s)
+      expect(Author.first.psu_email_address).to eq("#{row_1['Campus ID'].downcase}@psu.edu")
       expect(Author.first.alternate_email_address).to eq(row_1['Alternate Email'])
       expect(Author.first.first_name).to eq('testfirst')
       expect(Author.first.last_name).to eq('testlast')

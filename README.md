@@ -5,11 +5,11 @@
 # Electronic Theses and Dissertations Workflow 
 
 * Ruby version: 2.6
-* Node version 10.17 (using yarn@1.19 as npm)
-* Rails 6.0.3
-* Redis 3.2
-* Sidekiq 5.2
-* Mariadb 10.2
+* Node version 10 (using yarn as npm)
+* Rails 6
+* Redis 3
+* Sidekiq 5
+* Mariadb 10
  
 ## Setup
 
@@ -88,7 +88,7 @@ Student program and committee information is imported daily from LionPATH.  The 
 
 2. Student program information is imported for The Graduate School's Master's Thesis and Dissertation submissions.  New programs are added to the Program table during this import and linked to the student's Submission.
 
-3. Program Head/Chair data is imported. This updates the ProgramChair table with changes and/or new program chairs and is then used to add to a submission's committee for The Graduate School's Master's Thesis and Dissertation submissions.
+3. Program Head/Chair data is imported. This updates the ProgramChair table with changes and/or new program chairs and is then used to populate a dropdown for authors to select their program head when updating their committees.  This import is done for both The Graduate School's Master's Thesis and Dissertation submissions.
 
 4. Committees are imported for The Graduate School's Dissertation submissions.  This adds or updates CommitteeMembers for the student's submission.  These committees use the Committee Roles imported previously from LionPATH.
 

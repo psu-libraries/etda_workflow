@@ -1,4 +1,5 @@
 class WorkflowMailer < ActionMailer::Base
+  class InvalidPartner < StandardError; end
   extend MailerActions
 
   def format_review_received(submission)
@@ -8,6 +9,28 @@ class WorkflowMailer < ActionMailer::Base
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
          subject: "Your format review has been received"
+  end
+
+  def format_review_accepted(submission)
+    raise InvalidPartner unless current_partner.sset?
+
+    @submission = submission
+    @author = submission.author
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "Your format review has been accepted"
+  end
+
+  def format_review_rejected(submission)
+    raise InvalidPartner unless current_partner.sset?
+
+    @submission = submission
+    @author = submission.author
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "Your format review has been rejected"
   end
 
   def final_submission_received(submission)
@@ -67,12 +90,12 @@ class WorkflowMailer < ActionMailer::Base
          subject: "Access Level for your submission has been updated"
   end
 
-  def open_access_report(date_range, csv)
+  def semester_release_report(date_range, csv, filename)
     @date_range = date_range
-    attachments['open_access_report.csv'] = csv
+    attachments[filename.to_s] = csv
     mail to: I18n.t('external_contacts.ul_cataloging.email_address').to_s,
          from: current_partner.email_address,
-         subject: "eTDs Released as Open Access #{@date_range}"
+         subject: "eTDs Released Between #{@date_range}"
   end
 
   def vulnerability_audit_email(audit_results)
@@ -87,6 +110,26 @@ class WorkflowMailer < ActionMailer::Base
     mail to: I18n.t('devs.lead.primary_email_address').to_s,
          from: I18n.t('devs.lead.primary_email_address').to_s,
          subject: 'VERIFY FILES: Misplaced files found'
+  end
+
+  def lionpath_deletion_alert(resource)
+    raise InvalidPartner unless current_partner.graduate?
+
+    @datetime_now = DateTime.now
+    @resource = resource
+
+    mail to: I18n.t('devs.lead.primary_email_address').to_s,
+         from: current_partner.email_address,
+         subject: 'Alert: LionPATH Deletion Exceeded 5%'
+  end
+
+  def sent_to_committee(submission)
+    @submission = submission
+    @author = submission.author
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "Committee Review Initiated"
   end
 
   def committee_member_review_request(submission, committee_member)
@@ -127,6 +170,24 @@ class WorkflowMailer < ActionMailer::Base
     mail to: @committee_member.email,
          from: current_partner.email_address,
          subject: partner_review_request_subject
+  end
+
+  def pending_returned_author(submission)
+    @submission = submission
+    @author = submission.author
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "Final Submission Returned for Resubmission"
+  end
+
+  def pending_returned_committee(submission)
+    @submission = submission
+    @author = submission.author
+
+    mail to: submission.committee_email_list,
+         from: current_partner.email_address,
+         subject: "Final Submission Returned to Student for Resubmission"
   end
 
   def committee_rejected_author(submission)

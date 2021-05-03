@@ -10,7 +10,7 @@ class Author::CommitteeMemberView
   end
 
   def head_of_program?
-    role == 'Program Head/Chair'
+    model.is_program_head
   end
 
   def name_label
@@ -30,7 +30,7 @@ class Author::CommitteeMemberView
   end
 
   def author_possible_roles
-    model.submission.degree_type.try(&:committee_roles).where.not(name: 'Program Head/Chair').order('name asc') || []
+    model.submission.degree_type.try(&:committee_roles).where(is_program_head: false).order('name asc') || []
   end
 
   def admin_possible_roles
@@ -51,5 +51,15 @@ class Author::CommitteeMemberView
       output << "<p><strong>#{v[:name]}</strong> - #{v[:description]}</p>"
     end
     output.html_safe
+  end
+
+  def program_chair_collection
+    collection = []
+    model.submission.collect_program_chairs.each do |pc|
+      collection << ["#{pc.first_name} #{pc.last_name} (#{pc.role})",
+                     "#{pc.first_name} #{pc.last_name}",
+                     { member_email: pc.email.to_s }]
+    end
+    collection
   end
 end

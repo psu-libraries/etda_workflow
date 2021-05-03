@@ -9,7 +9,7 @@
   <div class="col-xs-12">
     <%= simple_form_for [:author, @submission], url: author_submission_update_format_review_path do |f| %>
       <% if @submission.format_review_notes.present? %>
-          <div id="format-review-notes" class="row">
+          <div id="format-review-notes" class="col-sm-12">
             <div class="col-xs-12">
               <label>Format Review notes from the administrator</label>
               <div class="alert alert-<%= @submission.status_behavior.beyond_waiting_for_format_review_response? ? 'info' : 'warning'  %>">
@@ -19,7 +19,6 @@
           </div>
       <% end %>
       <%= render partial: '/author/submissions/title_and_checkbox', locals: {f: f} %>
-      <br/>
       <%= render partial: '/author/submissions/semester_year', locals: {f: f}  %>
       <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} %>
       </br>
@@ -41,6 +40,7 @@
       </div>
 
       <br/>
+      <hr/>
 
       <div class="form-group actions">
         <div class="col-xs-12 col-sm-6 col-md-8">

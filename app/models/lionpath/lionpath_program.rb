@@ -53,6 +53,7 @@ class Lionpath::LionpathProgram
   def author(row)
     author = Author.find_or_create_by(access_id: row['Campus ID'].to_s.downcase) do |attrs|
       attrs.alternate_email_address = row['Alternate Email']
+      attrs.psu_email_address = "#{attrs.access_id}@psu.edu"
     end
     return author if author.persisted?
 

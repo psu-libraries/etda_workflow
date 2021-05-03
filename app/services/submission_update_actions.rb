@@ -46,4 +46,10 @@ class SubmissionUpdateActions
 
     false
   end
+
+  def rejected_dept_head?
+    return true if params[:rejected_dept_head]
+
+    false
+  end
 end

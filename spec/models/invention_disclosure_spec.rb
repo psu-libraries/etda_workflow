@@ -9,7 +9,7 @@ RSpec.describe InventionDisclosure, type: :model do
   it { is_expected.to belong_to :submission }
 
   describe 'requires an invention disclosure number with correct formatting' do
-    let(:submission) { FactoryBot.create :submission, :collecting_final_submission_files }
+    let(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response }
     let(:invention_disclosure) { described_class.new(submission_id: submission.id) }
     let(:this_year) { Time.zone.now.year.to_s }
     let(:last_year) { (Time.zone.now.year - 1).to_s }

@@ -30,9 +30,11 @@ class DegreeType < ApplicationRecord
 
   def self.seed
     NAMES[current_partner.id].each do |name|
-      find_or_create_by!(slug: name.parameterize.underscore) do |new_degree|
+      d = find_or_create_by!(slug: name.parameterize.underscore) do |new_degree|
         new_degree.name = name
       end
+
+      d.update(name: name) if d.persisted?
     end
   end
 

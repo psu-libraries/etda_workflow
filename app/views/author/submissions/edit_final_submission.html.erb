@@ -12,7 +12,7 @@
 
 <%= simple_form_for [:author, @submission], url: author_submission_update_final_submission_path do |f| %>
       <% if @submission.final_submission_notes.present? %>
-        <div id="final-submission-notes" class="row">
+        <div id="final-submission-notes" class="col-sm-12">
           <div class="col-xs-12">
             <label>Final Submission notes from the administrator</label>
             <div class="alert alert-<%= @submission.status_behavior.beyond_waiting_for_final_submission_response? ? 'info' : 'warning'  %>">
@@ -23,7 +23,6 @@
       <% end %>
 
       <%= render partial: 'title_and_checkbox', locals: {f: f} %>
-      <br/>
       <%= render partial: 'semester_year', locals: {f: f}  %>
       <%= render partial: 'defended_at_date', locals: {f: f} if current_partner.graduate? %>
       <br/>
@@ -60,7 +59,12 @@
       <%= render 'shared/copyright_statement' %>
       <%= f.input :has_agreed_to_terms, label: 'I agree to copyright statement', as: :boolean, wrapper: :vertical_boolean, required: true %>
 
-      <%= render partial: 'shared/final_submission_confidential_hold_checkbox', locals: {f: f} if @submission.author.confidential? %>
+      <% if current_partner.graduate? && f.object.degree_type.slug == 'dissertation' %>
+        <%= render 'shared/proquest_agreement' %>
+        <%= f.input :proquest_agreement, label: 'I agree to ProQuest statement', as: :boolean, wrapper: :vertical_boolean, required: true %>
+      <% end %>
+
+    <%= render partial: 'shared/final_submission_confidential_hold_checkbox', locals: {f: f} if @submission.author.confidential? %>
       <%#= render 'shared/release_statement' %>
       <%#= f.input :has_agreed_to_publication_release, label: 'I agree to release agreement', as: :boolean, wrapper: :vertical_boolean, required: true %>
       <div class="form-group actions col-xs-6">

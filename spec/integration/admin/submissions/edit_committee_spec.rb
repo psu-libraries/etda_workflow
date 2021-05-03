@@ -50,18 +50,45 @@ RSpec.describe "Editing committee member information", js: true, honors: true, m
       submission.committee_members << lp_committee_member
     end
 
-    it 'disables the name, email and committee role fields for this committee member' do
-      skip 'graduate only' unless current_partner.graduate?
+    context 'when no committee member is external to PSU' do
+      it 'disables the name, email and committee role fields for this committee member' do
+        skip 'graduate only' unless current_partner.graduate?
 
-      visit admin_edit_submission_path(submission)
-      find("div[data-target='#committee']").click
-      sleep 1
-      within('#committee') do
-        expect(find_all("select.role").last.value).to eq committee_role.id.to_s
-        expect(find_all("select.role").last.disabled?).to eq true
-        expect(find_all("input.ui-autocomplete-input").last.value).to eq 'LP Tester'
-        expect(find_all("input.ui-autocomplete-input").last.disabled?).to eq true
-        expect(find_all("input.email").last.disabled?).to eq true
+        visit admin_edit_submission_path(submission)
+        find("div[data-target='#committee']").click
+        sleep 1
+        within('#committee') do
+          expect(find_all("select.role").last.value).to eq committee_role.id.to_s
+          expect(find_all("select.role").last.disabled?).to eq true
+          expect(find_all("input.ui-autocomplete-input").last.value).to eq 'LP Tester'
+          expect(find_all("input.ui-autocomplete-input").last.disabled?).to eq true
+          expect(find_all("input.email").last.disabled?).to eq true
+        end
+      end
+    end
+
+    context 'when one of the committee members is external to PSU' do
+      let(:external_role) { FactoryBot.create :committee_role, name: 'Special Member', code: 'S', degree_type: DegreeType.default }
+      let!(:committee_member) do
+        FactoryBot.create :committee_member, submission: submission, committee_role: external_role,
+                                             lionpath_updated_at: DateTime.now, external_to_psu_id: 'mgc25',
+                                             access_id: 'mgc25', name: 'Member Committee', email: 'mgc25@psu.edu'
+      end
+
+      it 'displays an open form' do
+        skip 'graduate only' unless current_partner.graduate?
+
+        visit admin_edit_submission_path(submission)
+        find("div[data-target='#committee']").click
+        sleep 1
+        within('#committee') do
+          expect(find_all("select.role").last.value).to eq external_role.id.to_s
+          expect(find_all("select.role").last.disabled?).to eq false
+          expect(find_all("input.ui-autocomplete-input").last.value).to eq committee_member.name
+          expect(find_all("input.ui-autocomplete-input").last.disabled?).to eq false
+          expect(find_all("input.email").last.disabled?).to eq false
+          expect(find_all("input.email").last.value).to eq committee_member.email
+        end
       end
     end
   end

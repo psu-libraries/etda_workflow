@@ -179,7 +179,7 @@ RSpec.describe Author::SubmissionView do
 
         context "when degree_type is 'Dissertation'" do
           it "returns a link to complete step two" do
-            expect(view.step_two_description).to eq "<a href='#{edit_author_submission_committee_members_path(submission)}'>" + view.step_two_name + "</a>"
+            expect(view.step_two_description).to eq "<a href='#{new_author_submission_committee_members_path(submission)}'>" + view.step_two_name + "</a>"
           end
         end
 

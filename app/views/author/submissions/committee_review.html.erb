@@ -19,7 +19,7 @@
       <td><%= member.committee_role.name %></td>
       <td><%= member.status ? member.status.capitalize : nil %></td>
       <td><%= member.notes %></td>
-      <% if (@submission.status_behavior.waiting_for_committee_review? && member.committee_role.name != 'Program Head/Chair')  || (@submission.status_behavior.waiting_for_head_of_program_review? && member.committee_role.name == 'Program Head/Chair') %>
+      <% if (@submission.status_behavior.waiting_for_committee_review? && !member.is_program_head)  || (@submission.status_behavior.waiting_for_head_of_program_review? && member.is_program_head) %>
         <td><%= button_to 'Send Email Reminder', { controller: author_submissions_path, action: "send_email_reminder", committee_member_id: member.id }, method: :post %></td>
       <% else %>
         <td/>

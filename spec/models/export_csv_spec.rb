@@ -40,49 +40,6 @@ RSpec.describe ExportCsv, type: :model do
     end
   end
 
-  describe 'csv for committee_report' do
-    let(:author) { FactoryBot.create :author }
-    let(:author2) {}
-    let(:submission) { FactoryBot.create :submission, :released_for_publication, author: author }
-    let(:export_csv) { described_class.new('committee_report', submission) }
-
-    context 'columns' do
-      it 'has initialized columns' do
-        expect(export_csv.columns).to eq(['Last Name', 'First Name', 'Email', 'Alternate Email', 'Id', 'Title', 'Degree', 'Program', 'Date', 'Committee Members', 'Advisor'])
-      end
-    end
-
-    context 'fields when initialized with one submission' do
-      it 'has one submission' do
-        create_committee(submission)
-        fields = export_csv.fields(submission)
-        expect(fields).not_to be(nil)
-        expect(fields).to include(author.last_name)
-        expect(fields).to include(author.first_name)
-        expect(fields).to include(author.alternate_email_address)
-        expect(fields).to include(submission.title)
-        CommitteeRole.find(CommitteeRole.advisor_role).name
-        # expect(fields).to include(cm)
-      end
-    end
-
-    context 'when given an invalid query type' do
-      it 'returns nil' do
-        export_csv = described_class.new('bogus_query', submission)
-        expect(export_csv.columns).to be_nil
-        expect(export_csv.fields(submission)).to be_nil
-      end
-    end
-
-    context 'no submissions' do
-      it 'returns nil' do
-        export_csv = described_class.new('committee_report', nil)
-        expect(export_csv.columns).not_to be_nil
-        expect(export_csv.fields(nil)).to be_nil
-      end
-    end
-  end
-
   describe 'csv for custom report' do
     let(:author) { FactoryBot.create :author }
     let(:author2) {}
@@ -92,7 +49,7 @@ RSpec.describe ExportCsv, type: :model do
 
     context 'columns' do
       it 'has initialized columns' do
-        expect(export_csv.columns).to eq(['Last Name', 'First Name', 'Id', 'Title', 'Degree', 'Access Level', 'Date', 'Status', 'Invention Disclosure Number'])
+        expect(export_csv.columns).to eq(['Last Name', 'First Name', 'Id', 'Title', 'Degree', 'Program', 'Access Level', 'Date', 'Status', 'Invention Disclosure Number'])
       end
     end
 
@@ -104,6 +61,7 @@ RSpec.describe ExportCsv, type: :model do
         expect(fields).to include(author.first_name)
         expect(fields).to include(submission.title)
         expect(fields).to include(submission.degree_type.name)
+        expect(fields).to include(submission.program.name)
       end
     end
 

@@ -3,21 +3,37 @@ class Lionpath::LionpathCommittee
     this_submission = submission(row)
     return if invalid_submission?(this_submission)
 
+    committee_role = CommitteeRole.find_by(code: row['Role'].to_s)
     if this_submission.committee_members.present?
-      cm = this_submission.committee_members.find_by(access_id: row['Access ID'].downcase.to_s)
+      cm = this_submission.committee_members.find_by(access_id: row['Access ID'].downcase,
+                                                     committee_role: committee_role)
       if cm.present?
-        cm.update committee_member_attrs(row)
+        if self.class.external_ids.include? cm.access_id.downcase
+          cm.update external_to_psu_id: row['Access ID'].downcase
+          return
+        end
+
+        cm.update committee_member_attrs(row, committee_role)
         return
       end
+
+      cm_external = this_submission.committee_members.find_by(external_to_psu_id: row['Access ID'].downcase,
+                                                              committee_role: committee_role)
+      return if cm_external.present?
     end
-    CommitteeMember.create({ submission: this_submission }.merge(committee_member_attrs(row)))
+
+    CommitteeMember.create({ submission: this_submission }.merge(committee_member_attrs(row, committee_role)))
+  end
+
+  def self.external_ids
+    # These Access IDs indicate a committee member is external to PSU
+    %w[mgc25 mgc29 mgc30 mgc31].freeze
   end
 
   private
 
-  def committee_member_attrs(row)
-    committee_role = CommitteeRole.find_by(code: row['Role'].to_s)
-    {
+  def committee_member_attrs(row, committee_role)
+    hash = {
       committee_role: committee_role,
       is_required: true,
       name: "#{row['First Name']} #{row['Last Name']}",
@@ -26,6 +42,8 @@ class Lionpath::LionpathCommittee
       is_voting: true,
       lionpath_updated_at: DateTime.now
     }
+    hash[:external_to_psu_id] = row['Access ID'].downcase if self.class.external_ids.include?(row['Access ID'].downcase)
+    hash
   end
 
   def submission(row)

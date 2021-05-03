@@ -16,9 +16,7 @@ class SubmissionStatusGiver
   end
 
   def can_provide_new_committee?
-    submission.degree_type.slug == 'dissertation' ?
-        (validate_current_state! []) :
-        (validate_current_state! [SubmissionStates::CollectingCommittee])
+    validate_current_state! [SubmissionStates::CollectingCommittee]
   end
 
   def can_update_committee?
@@ -136,18 +134,23 @@ class SubmissionStatusGiver
 
   def can_waiting_for_committee_review?
     validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles,
-                             SubmissionStates::CollectingFinalSubmissionFilesRejected,
+                             SubmissionStates::WaitingForFinalSubmissionResponse,
                              SubmissionStates::WaitingForCommitteeReviewRejected]
   end
 
   def can_waiting_for_head_of_program_review?
-    validate_current_state! [SubmissionStates::WaitingForCommitteeReview]
+    validate_current_state! [SubmissionStates::WaitingForCommitteeReview,
+                            SubmissionStates::WaitingForFinalSubmissionResponse]
+  end
+
+  def can_committee_review_admin_response?
+    validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview,
+                             SubmissionStates::WaitingForCommitteeReview]
   end
 
   def can_waiting_for_committee_review_rejected?
     validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview,
-                             SubmissionStates::WaitingForCommitteeReview,
-                             SubmissionStates::WaitingForFinalSubmissionResponse]
+                             SubmissionStates::WaitingForCommitteeReview]
   end
 
   def can_waiting_for_publication_release?

@@ -166,7 +166,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "does not raise an exception", honors: true do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_for_committee_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_for_committee_review? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -194,6 +194,98 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_waiting_for_committee_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+  end
+
+  describe '#can_waiting_for_committee_review_rejected?' do
+    context "when status is 'collecting program information'" do
+      before { submission.status = 'collecting program information' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_waiting_for_committee_review_rejected? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'collecting committee'" do
+      before { submission.status = 'collecting committee' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_waiting_for_committee_review_rejected? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'collecting format review files'" do
+      before { submission.status = 'collecting format review files' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_waiting_for_committee_review_rejected? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for format review response'" do
+      before { submission.status = 'waiting for format review response' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.ccan_waiting_for_committee_review_rejected? }.to raise_error
+      end
+    end
+
+    context "when status is 'collecting final submission files'" do
+      before { submission.status = 'collecting final submission files' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_waiting_for_committee_review_rejected? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for committee review'" do
+      before { submission.status = 'waiting for committee review' }
+
+      it "does not raise an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_waiting_for_committee_review_rejected? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for final submission response'" do
+      before { submission.status = 'waiting for final submission response' }
+
+      it "raises an exception", honors: true do
+        giver = described_class.new(submission)
+        expect { giver.can_waiting_for_committee_review_rejected? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for publication release'" do
+      before { submission.status = 'waiting for publication release' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_waiting_for_committee_review_rejected? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_waiting_for_committee_review_rejected? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'released for publication'" do
+      before { submission.status = 'released for publication' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_waiting_for_committee_review_rejected? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
   end
@@ -265,9 +357,9 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
 
-      it "raises an exception" do
+      it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_waiting_for_head_of_program_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_waiting_for_head_of_program_review? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -295,6 +387,107 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       it "raises an exception" do
         giver = described_class.new(submission)
         expect { giver.can_waiting_for_head_of_program_review? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+  end
+
+  describe '#can_committee_review_admin_response?' do
+    context "when status is 'collecting program information'" do
+      before { submission.status = 'collecting program information' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_committee_review_admin_response? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'collecting committee'" do
+      before { submission.status = 'collecting committee' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_committee_review_admin_response? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'collecting format review files'" do
+      before { submission.status = 'collecting format review files' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_committee_review_admin_response? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for format review response'" do
+      before { submission.status = 'waiting for format review response' }
+
+      it "does not raise an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_committee_review_admin_response? }.to raise_error
+      end
+    end
+
+    context "when status is 'collecting final submission files'" do
+      before { submission.status = 'collecting final submission files' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_committee_review_admin_response? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for committee review'" do
+      before { submission.status = 'waiting for committee review' }
+
+      it "does not raise exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_committee_review_admin_response? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for head of program review'" do
+      before { submission.status = 'waiting for head of program review' }
+
+      it "does not raise an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_committee_review_admin_response? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for final submission response'" do
+      before { submission.status = 'waiting for final submission response' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_committee_review_admin_response? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for publication release'" do
+      before { submission.status = 'waiting for publication release' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_committee_review_admin_response? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_committee_review_admin_response? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'released for publication'" do
+      before { submission.status = 'released for publication' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_committee_review_admin_response? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
   end
@@ -410,38 +603,12 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       end
     end
 
-    context "when status is 'collecting committee'", milsch: true, honors: true do
+    context "when status is 'collecting committee'" do
       before { submission.status = 'collecting committee' }
 
-      context "when graduate" do
-        it "raises exception if submission is a dissertation" do
-          skip "graduate only" unless current_partner.graduate?
-
-          degree_type = DegreeType.find_by(slug: 'dissertation')
-          degree = FactoryBot.create(:degree, degree_type: degree_type)
-          submission.degree = degree
-          giver = described_class.new(submission)
-          expect { giver.can_provide_new_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
-        end
-
-        it "does not raise exception if submission is a master thesis" do
-          skip "graduate only" unless current_partner.graduate?
-
-          degree_type = DegreeType.find_by(slug: 'master_thesis')
-          degree = FactoryBot.create(:degree, degree_type: degree_type)
-          submission.degree = degree
-          giver = described_class.new(submission)
-          expect { giver.can_provide_new_committee? }.not_to raise_error
-        end
-      end
-
-      context "when not graduate" do
-        it "does not raise exception" do
-          skip "graduate only" if current_partner.graduate?
-
-          giver = described_class.new(submission)
-          expect { giver.can_provide_new_committee? }.not_to raise_error
-        end
+      it "does not raise exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_provide_new_committee? }.not_to raise_error
       end
     end
 

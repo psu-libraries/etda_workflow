@@ -41,12 +41,14 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'restricted_institution_actions' if status_behavior.released_for_publication? && !(access_level.open_access? || access_level.restricted?)
     return 'to_be_released_actions' if status_behavior.waiting_for_publication_release?
     return 'on_hold_actions' if status_behavior.waiting_in_final_submission_on_hold?
+    return 'final_submission_is_pending_actions' if status_behavior.waiting_for_committee_review? | status_behavior.waiting_for_head_of_program_review?
 
     'standard_actions'
   end
 
   def form_for_url
     return "/admin/submissions/#{id}/format_review_response" if status_behavior.waiting_for_format_review_response?
+    return "/admin/submissions/#{id}/final_submission_pending_response" if status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_head_of_program_review?
     return "/admin/submissions/#{id}/final_submission_response" if status_behavior.waiting_for_final_submission_response?
     return "/admin/submissions/#{id}/update_waiting_to_be_released" if status_behavior.waiting_for_publication_release? || status_behavior.waiting_in_final_submission_on_hold?
     return "/admin/submissions/#{id}/update_released" if status_behavior.released_for_publication?

@@ -157,6 +157,13 @@ RSpec.describe Author, type: :model do
       expect(author.first_name).to eq('beforefirst')
       expect(author.middle_name).to eq('Yhoo')
     end
+    it 'updates author psu_email_address if blank' do
+      allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
+      author = described_class.new(access_id: 'testid')
+      author.psu_email_address = nil
+      author.refresh_important_attributes
+      expect(author.psu_email_address).to eq('testid@psu.edu')
+    end
   end
 
   context '#can_edit?' do

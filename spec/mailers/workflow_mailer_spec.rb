@@ -51,6 +51,78 @@ RSpec.describe WorkflowMailer do
     end
   end
 
+  describe '#format_review_accepted' do
+    let(:email) { described_class.format_review_accepted(submission) }
+    let(:partner_email) { current_partner.email_address }
+
+    context "when the current partner is 'sset'", sset: true do
+      before do
+        skip 'sset only' unless current_partner.sset?
+      end
+
+      it "sets an appropriate subject" do
+        expect(email.subject).to match(/format review has been accepted/i)
+      end
+
+      it "is sent from the partner support email address" do
+        expect(email.from).to eq([partner_email])
+      end
+
+      it "is sent to the student's PSU email address" do
+        expect(author.psu_email_address).not_to be_blank
+        expect(email.to).to eq([author.psu_email_address])
+      end
+
+      it "tells them that their format review has been accepted" do
+        expect(email.body).to match(/has been approved by administrators/i)
+      end
+    end
+
+    context "when the current partner is not 'sset'" do
+      it "raises an exception" do
+        skip 'non sset only' if current_partner.sset?
+
+        expect { email.deliver_now }.to raise_error WorkflowMailer::InvalidPartner
+      end
+    end
+  end
+
+  describe '#format_review_rejected' do
+    let(:email) { described_class.format_review_rejected(submission) }
+    let(:partner_email) { current_partner.email_address }
+
+    context "when the current partner is 'sset'", sset: true do
+      before do
+        skip 'sset only' unless current_partner.sset?
+      end
+
+      it "sets an appropriate subject" do
+        expect(email.subject).to match(/format review has been rejected/i)
+      end
+
+      it "is sent from the partner support email address" do
+        expect(email.from).to eq([partner_email])
+      end
+
+      it "is sent to the student's PSU email address" do
+        expect(author.psu_email_address).not_to be_blank
+        expect(email.to).to eq([author.psu_email_address])
+      end
+
+      it "tells them that their format review has been rejected" do
+        expect(email.body).to match(/Project Paper has been rejected/i)
+      end
+    end
+
+    context "when the current partner is not 'sset'" do
+      it "raises an exception" do
+        skip 'non sset only' if current_partner.sset?
+
+        expect { email.deliver_now }.to raise_error WorkflowMailer::InvalidPartner
+      end
+    end
+  end
+
   describe '#final_submission_received' do
     before { allow(Partner).to receive(:current).and_return(partner) }
 
@@ -148,6 +220,26 @@ RSpec.describe WorkflowMailer do
     end
   end
 
+  describe '#sent_to_committee' do
+    let(:email) { described_class.sent_to_committee(submission) }
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq "Committee Review Initiated"
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "is sent to the student's PSU email address" do
+      expect(email.to).to eq([author.psu_email_address])
+    end
+
+    it "tells the author that the final submission has been sent back to the committee" do
+      expect(email.body).to match(/#{submission.degree_type}: "#{submission.title}" has been sent/i)
+    end
+  end
+
   describe '#committee_approved' do
     let(:email) { described_class.committee_approved(submission) }
 
@@ -223,10 +315,10 @@ RSpec.describe WorkflowMailer do
   describe '#open_access_report' do
     let(:date_range) { "#{(Date.today - 6.months).strftime('%D')} - #{Date.today.strftime('%D')}" }
     let(:csv) { CSV.generate { |csv| csv << ['HEADERS'] } }
-    let(:email) { described_class.open_access_report(date_range, csv) }
+    let(:email) { described_class.semester_release_report(date_range, csv, "filename.csv") }
 
     it "sets an appropriate subject" do
-      expect(email.subject).to eq "eTDs Released as Open Access #{date_range}"
+      expect(email.subject).to eq "eTDs Released Between #{date_range}"
     end
 
     it "is sent from the partner support email address" do
@@ -234,11 +326,11 @@ RSpec.describe WorkflowMailer do
     end
 
     it "has csv attachment" do
-      expect(email.attachments.first.filename).to eq("open_access_report.csv")
+      expect(email.attachments.first.filename).to eq("filename.csv")
     end
 
     it "contains information about publications released as open access this semester" do
-      expect(email.parts.first.body.to_s).to match(/were released as Open Access between #{date_range}/i)
+      expect(email.parts.first.body.to_s).to match(/were released between #{date_range}/i)
       expect(email.parts.first.body.to_s).to match(/#{current_partner.name}/i)
     end
   end
@@ -260,6 +352,101 @@ RSpec.describe WorkflowMailer do
 
     it "has body" do
       expect(email.body.raw_source).to eq("Verify Files\r\n\r\nMisplaced files found.")
+    end
+  end
+
+  describe '#lionpath_deletion_alert', milsch: true, honors: true, sset: true do
+    let(:email) { described_class.lionpath_deletion_alert('Submissions') }
+
+    context 'when current_partner is graduate' do
+      before do
+        skip 'graduate only' unless current_partner.graduate?
+      end
+
+      context "when 'resource' parameter is 'Submissions'" do
+        it "is sent from partner email" do
+          expect(email.from).to eq([partner_email])
+        end
+
+        it "is sent to dev lead email" do
+          expect(email.to).to eq([I18n.t('devs.lead.primary_email_address')])
+        end
+
+        it "has subject" do
+          expect(email.subject).to eq("Alert: LionPATH Deletion Exceeded 5%")
+        end
+
+        it "has body" do
+          expect(email.body.raw_source).to match(/More than 5% of LionPATH Submissions were tagged/)
+        end
+      end
+
+      context "when 'resource' parameter is 'Committee Members'" do
+        let(:email) { described_class.lionpath_deletion_alert('Committee Members') }
+
+        it "has body" do
+          expect(email.body.raw_source).to match(/More than 5% of LionPATH Committee Members were tagged/)
+        end
+      end
+    end
+
+    context 'when current_partner is not graduate' do
+      before do
+        skip 'non graduate only' if current_partner.graduate?
+      end
+
+      it 'raises an error' do
+        expect { email.deliver }.to raise_error WorkflowMailer::InvalidPartner
+      end
+    end
+  end
+
+  describe '#pending_returned_author' do
+    let(:email) { described_class.pending_returned_author(submission) }
+
+    it "is sent to the proper recipient" do
+      expect(email.to).to eq([submission.author.psu_email_address])
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("Final Submission Returned for Resubmission")
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/has been rejected by request of an administrator/)
+    end
+  end
+
+  describe '#pending_returned_committee' do
+    let(:email) { described_class.pending_returned_committee(submission) }
+    let(:cm_role) { FactoryBot.create :committee_role, is_program_head: true }
+    let(:cm1) { FactoryBot.create :committee_member }
+    let(:cm2) { FactoryBot.create :committee_member, committee_role: cm_role }
+
+    before do
+      submission.committee_members << [cm1, cm2]
+      submission.update status: 'waiting for committee review'
+      submission.reload
+    end
+
+    it "is sent to the proper recipient" do
+      expect(email.to).to eq(submission.committee_email_list)
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("Final Submission Returned to Student for Resubmission")
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/#{submission.author.full_name}'s eTD submission titled "#{submission.title}"/)
     end
   end
 

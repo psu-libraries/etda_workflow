@@ -63,9 +63,7 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_two_description
-    if status_behavior.collecting_committee? && degree_type.slug == 'dissertation'
-      ("<a href='" + "/author/submissions/#{id}/committee_members/edit" + "'>" + step_two_name + "</a>").html_safe
-    elsif status_behavior.collecting_committee?
+    if status_behavior.collecting_committee?
       ("<a href='" + "/author/submissions/#{id}/committee_members/new" + "'>" + step_two_name + "</a>").html_safe
     elsif status_behavior.ok_to_update_committee?
       (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members/edit" + "' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe

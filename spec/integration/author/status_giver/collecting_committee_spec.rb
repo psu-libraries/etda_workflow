@@ -16,47 +16,20 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
         visit author_submissions_path
         expect(page).to have_current_path(author_submissions_path)
         expect(page).to have_content(author.last_name)
-        expect(page).to have_link('Accessibility')
       end
     end
 
     context "visiting the 'New Committee' page" do
-      context 'when submission is a dissertation' do
-        it "raises forbidden access error" do
-          visit new_author_submission_committee_members_path(submission)
-          expect(page).to have_current_path(author_root_path)
-          expect(page).not_to have_current_path(new_author_submission_committee_members_path(submission))
-        end
-      end
-
-      context 'when submission is a master_thesis' do
-        it "displays committee member edit page" do
-          degree = FactoryBot.create :degree, degree_type: master_thesis
-          submission.update degree: degree
-          visit new_author_submission_committee_members_path(submission)
-          expect(page).not_to have_current_path(author_root_path)
-          expect(page).to have_current_path(new_author_submission_committee_members_path(submission))
-        end
+      it "displays committee member edit page" do
+        visit new_author_submission_committee_members_path(submission)
+        expect(page).to have_current_path(new_author_submission_committee_members_path(submission))
       end
     end
 
     context "visiting the 'Update Committee' page" do
-      context 'when submission is a dissertation' do
-        it "displays committee member edit page" do
-          visit edit_author_submission_committee_members_path(submission)
-          expect(page).not_to have_current_path(author_root_path)
-          expect(page).to have_current_path(edit_author_submission_committee_members_path(submission))
-        end
-      end
-
-      context 'when submission is a master_thesis' do
-        it "raises forbidden access error" do
-          degree = FactoryBot.create :degree, degree_type: master_thesis
-          submission.update degree: degree
-          visit edit_author_submission_committee_members_path(submission)
-          expect(page).to have_current_path(author_root_path)
-          expect(page).not_to have_current_path(edit_author_submission_committee_members_path(submission))
-        end
+      it "displays committee member edit page" do
+        visit edit_author_submission_committee_members_path(submission)
+        expect(page).to have_current_path(edit_author_submission_committee_members_path(submission))
       end
     end
 
@@ -64,25 +37,19 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
       it 'raises a forbidden access error' do
         visit "/author/submissions/#{submission.id}/program_information"
         expect(page).to have_current_path(author_root_path)
-        expect(page).not_to have_current_path("author/submissions/#{submission.id}/program_information")
-        # expect(page).to have_content('You are not allowed to visit that page at this time, please contact your administrator')
       end
     end
 
     context "visiting the 'Update Program Information' page" do
       it 'displays update program information page' do
         visit "/author/submissions/#{submission.id}/edit"
-        expect(page).not_to have_current_path(author_root_path)
         expect(page).to have_current_path("/author/submissions/#{submission.id}/edit")
-        # expect(page).to have_content('You are not allowed to visit that page at this time, please contact your administrator')
       end
     end
 
     context "visiting the 'Review Committee' page" do
       it "raises a forbidden access error" do
         visit author_submission_committee_members_path(submission)
-        # expect(page).to have_content 'You have not completed the required steps to review your committee yet'
-        expect(page).not_to have_current_path(author_root_path)
         expect(page).to have_current_path(author_submission_committee_members_path(submission))
       end
     end
@@ -90,7 +57,6 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
     context "visiting the 'Review Format Review Files' page" do
       it "raises a forbidden access error" do
         visit author_submission_format_review_path(submission)
-        # expect(page).to have_content 'You are not allowed to visit that page at this time, please contact your administrator'
         expect(page).to have_current_path(author_root_path)
       end
     end
@@ -98,7 +64,6 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
     context "visiting the 'Upload Final Submission Files' page" do
       it "raises a forbidden access error" do
         visit author_submission_edit_final_submission_path(submission)
-        # expect(page).to have_content 'You are not allowed to visit that page at this time, please contact your administrator'
         expect(page).to have_current_path(author_root_path)
       end
     end
@@ -106,7 +71,6 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
     context "visiting the 'Review Final Submission Files' page" do
       it "raises a forbidden access error" do
         visit author_submission_final_submission_path(submission)
-        # expect(page).to have_content 'You are not allowed to visit that page at this time, please contact your administrator'
         expect(page).to have_current_path(author_root_path)
       end
     end

@@ -1,6 +1,9 @@
 <div class="row">
   <div class="col-xs-12">
     <h2>My Submissions</h2>
+    <div class="row">
+      <%= render partial: 'admin_submission_buttons' if admin? && current_partner.graduate? %>
+    </div>
   </div>
 </div>
 <div>
@@ -15,12 +18,12 @@
   <% @view.submissions.each do |submission| %>
     <% @submission_view = Author::SubmissionView.new submission %>
 
-    <div id="submission-<%= submission.id %>" class="col-lg-8 submission">
+    <div id="submission-<%= submission.id %>" class="col-sm-8 submission">
       <div class="heading">
         <h3><%= submission.title %></h3>
 
         <%= @submission_view.formatted_program_information %>
-        <%= @submission_view.delete_link unless current_partner.graduate? %>
+        <%= @submission_view.delete_link unless (current_partner.graduate? && !admin?) %>
       </div>
 
       <%= render 'progress_indicator', submission: submission %>
@@ -28,5 +31,6 @@
     </div>
   <% end %>
 
-  <%= render 'new_submission_button' unless current_partner.graduate? %>
+  <%= render 'new_submission_button' unless current_partner.graduate? || current_partner.honors? %>
+  <%= render 'honors_new_submission_button' if current_partner.honors? %>
 </div>

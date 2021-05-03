@@ -228,5 +228,18 @@ RSpec.describe FinalSubmissionUpdateService do
       expect(submission.committee_members.first.notes).to match(/testuser123 changed Voting Attribute to 'False' at:/)
       expect(ActionMailer::Base.deliveries.count).to eq(start_count)
     end
+
+    context 'when params[:rejected_dept_head]' do
+      let(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response }
+
+      it 'returns a message' do
+        allow(submission).to receive(:program_head).and_return FactoryBot.create :committee_member
+        params = ActionController::Parameters.new
+        params[:submission] = { title: 'Title' }
+        params[:rejected_dept_head] = 'Rejected dept head'
+        update_service = described_class.new(params, submission, 'testuser123')
+        expect(update_service.respond_final_submission[:msg]).to eq("The submission was successfully returned to the program head review stage and the program head was notified to visit the site for review.")
+      end
+    end
   end
 end

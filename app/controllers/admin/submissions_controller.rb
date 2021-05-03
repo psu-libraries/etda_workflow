@@ -121,6 +121,23 @@ class Admin::SubmissionsController < AdminController
     flash[:alert] = 'Oops! You may have submitted invalid final submission data. Please check that the submission\'s final submission information is correct.'
   end
 
+  def record_final_submission_pending_response
+    @submission = Submission.find(params[:id])
+    update_service = FinalSubmissionPendingService.new(@submission, params, current_remote_user)
+    response = update_service.respond
+    redirect_to response[:redirect_to]
+    flash[:notice] = response[:msg]
+  rescue ActiveRecord::RecordInvalid
+    @view = Admin::SubmissionFormView.new(@submission, session)
+    render :edit
+  rescue SubmissionStatusGiver::AccessForbidden
+    redirect_to session.delete(:return_to)
+    flash[:alert] = 'This submission\'s final submission information has already been evaluated.'
+  rescue SubmissionStatusGiver::InvalidTransition
+    redirect_to session.delete(:return_to)
+    flash[:alert] = 'Oops! You may have submitted invalid final submission data. Please check that the submission\'s final submission information is correct.'
+  end
+
   def record_final_submission_response
     @submission = Submission.find(params[:id])
     update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)

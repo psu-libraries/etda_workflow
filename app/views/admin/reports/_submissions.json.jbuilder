@@ -5,6 +5,7 @@ json.array! [
   submission.cleaned_title,
   "#{submission.author.last_name}, #{submission.author.first_name}",
   submission.degree_type.name,
+  submission.program ? submission.program.name : nil,
   submission.current_access_level.label,
   submission.status.titleize,
   invention_disclosure_number(submission)

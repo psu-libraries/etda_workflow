@@ -64,10 +64,45 @@ en:
             777 West Harrisburg Pike
             W256 Olmsted Building
             Middletown, PA 17057
+        format_review_accepted:
+          message: |
+            After an initial review, your WC MEng EE Final Project Paper has been approved by administrators.
+            Please visit the site (https://submit-sset.libraries.psu.edu) to upload your final submission.
+            Your final submission is the final draft of your paper that will be reviewed by your committee, which includes your advisor and paper readers.
+
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
+            School of Science, Engineering, and Technology
+            777 West Harrisburg Pike
+            W256 Olmsted Building
+            Middletown, PA 17057
+        format_review_rejected:
+          message: |
+            After an initial review, your WC MEng EE Final Project Paper has been rejected.
+            You will be contacted by your adviser via email with further details.
+
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
+            School of Science, Engineering, and Technology
+            777 West Harrisburg Pike
+            W256 Olmsted Building
+            Middletown, PA 17057
         final_submission_received:
           message: |
             Thank you for submitting your final %{degree_type}. It has been been accepted for committee review.
             You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
+
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
+            School of Science, Engineering, and Technology
+            777 West Harrisburg Pike
+            W256 Olmsted Building
+            Middletown, PA 17057
+        sent_to_committee:
+          message: |
+            Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee.
+            No action is required of you at this time.
+            You will be notified once your committee has reviewed and made a decision regarding your document.
 
             For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
             You may also call (717)948-4349, or send mail to:
@@ -124,6 +159,28 @@ en:
             You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for
             your committee to review.
             For additional information regarding the rejection please consult your %{degree_type} adviser.
+
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
+            School of Science, Engineering, and Technology
+            777 West Harrisburg Pike
+            W256 Olmsted Building
+            Middletown, PA 17057
+        pending_returned_author:
+          message: |
+            Your %{degree_type} has been rejected by request of an administrator.
+            You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review again.
+
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
+            School of Science, Engineering, and Technology
+            777 West Harrisburg Pike
+            W256 Olmsted Building
+            Middletown, PA 17057
+        pending_returned_committee:
+          message: |
+            %{author_name}'s eTD submission titled "%{title}" has been rejected at the request of an administrator.
+            The student has been asked to resubmit their work.  Once they have done this, you will be notified via email to review.
 
             For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
             You may also call (717)948-4349, or send mail to:
