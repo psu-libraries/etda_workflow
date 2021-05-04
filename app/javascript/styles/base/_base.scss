@@ -842,8 +842,12 @@ a.cancel-link{
   }
 }
 
-.funding-radios {
-    margin-left: 10px;
+.vertical-radios {
+  padding-left: 0px;
+
+  span {
+    display: block;
+  }
 }
 
 //Docs page styles

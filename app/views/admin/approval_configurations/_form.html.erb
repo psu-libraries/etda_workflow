@@ -23,7 +23,7 @@
     <%= f.label :email_admins, '<strong>Require approval from head of graduate program?</strong>'.html_safe %>
     <p class="hint">*After the committee approves, the head of the graduate program must then approve for the submission to proceed.</p>
     <div class="row">
-      <div class="col-sm-1">
+      <div class="col-sm-3">
       <%= f.input :head_of_program_is_approving, as: :radio_buttons,
                   collection: [['Yes', true], ['No', false]],
                   wrapper: :vertical_radio_and_checkboxes,
@@ -34,7 +34,7 @@
 
   <%= f.label :email_admins, '<strong>Email admins</strong>'.html_safe %>
   <div class="row">
-    <div class="col-sm-1">
+    <div class="col-sm-3">
       <%= f.input :email_admins, as: :radio_buttons,
                    collection: [['Yes', true], ['No', false]],
                    wrapper: :vertical_radio_and_checkboxes,
@@ -45,7 +45,7 @@
   <%= f.label :email_authors, '<strong>Email authors</strong>'.html_safe %>
   <p class="hint">*Allow emails to be sent to authors when a committee rejects or approves their submission.</p>
   <div class="row">
-    <div class="col-sm-1">
+    <div class="col-sm-3">
       <%= f.input :email_authors, as: :radio_buttons,
                   collection: [['Yes', true], ['No', false]],
                   wrapper: :vertical_radio_and_checkboxes,
