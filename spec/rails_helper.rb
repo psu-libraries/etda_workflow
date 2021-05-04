@@ -63,8 +63,22 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
   config.before(:each, js: true) do
-    Capybara.page.driver.browser.url_blacklist = ['www.google-analytics.com/analytics.js', "www.google-analytics.com"]
-    Capybara.javascript_driver = :poltergeist
+    Capybara.javascript_driver = :selenium
+    Capybara.app_host = "http://172.23.0.6:3001"
+    Capybara.server_port = "3001"
+    Capybara.server_host = '0.0.0.0'
+    # Capybara.run_server = false
+
+    args = ['--no-default-browser-check', '--start-maximized']
+    caps = Selenium::WebDriver::Remote::Capabilities.chrome("chromeOptions" => {"args" => args})
+    Capybara.register_driver :selenium do |app|
+      Capybara::Selenium::Driver.new(
+          app,
+          browser: :remote,
+          url: "http://selenium:4444/wd/hub",
+          desired_capabilities: caps
+      )
+    end
   end
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures

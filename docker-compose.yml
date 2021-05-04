@@ -1,28 +1,11 @@
 version: '3.5'
 services:
-  # chrome:
-  #   image: selenium/node-chrome:3.141.59
-  #   volumes:
-  #     - /dev/shm:/dev/shm
-  #   depends_on:
-  #     - selenium
-  #   environment:
-  #     HUB_HOST: selenium
-  # firefox:
-  #   image: selenium/node-firefox:3.14.0-gallium
-  #   volumes:
-  #     - /dev/shm:/dev/shm
-  #   depends_on:
-  #     - selenium
-  #   environment:
-  #     HUB_HOST: selenium
   selenium:
     image: selenium/standalone-chrome-debug:3.141.59-xenon
     volumes:
       - /dev/shm:/dev/shm
     ports:
       - "4444:4444"
-      - "5901:5900"
   redis:
     image: redis:5.0.5
     volumes:
@@ -56,6 +39,8 @@ services:
 #      sh -c "bundle check || bundle
 #      && bundle exec rake db:migrate
 #      && bundle exec guard"
+    ports:
+    - "3001:3001"
     depends_on:
     - db
     # volumes:
@@ -83,6 +68,7 @@ services:
     command: >
       sh -c "/etda_workflow/entrypoint.sh"
     ports:
+    - "3001:3001"
     - "3000:3000"
     depends_on:
     - db
