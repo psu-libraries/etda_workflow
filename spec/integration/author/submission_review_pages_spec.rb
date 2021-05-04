@@ -75,7 +75,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
       num_windows = page.driver.browser.window_handles.count
       within(format_review_section) do
         format_link = page.find("a.file-link")
-        format_link.trigger('click')
+        format_link.click
       end
       expect(page.driver.browser.window_handles.count).to eql(num_windows + 1)
     end
@@ -104,7 +104,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
       num_windows = page.driver.browser.window_handles.count
       within(final_submission_section) do
         final_link = page.find("a.file-link")
-        final_link.trigger('click')
+        final_link.click
       end
       expect(page.driver.browser.window_handles.count).to eql(num_windows + 1)
     end

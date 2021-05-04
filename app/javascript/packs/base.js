@@ -32,4 +32,3 @@ require('../base/initialize_tooltips.js');
 require('../base/aria_defended_date.js');
 require('../base/fees_confirm_dialog.js');
 require('../base/collapse_indicators.js');
-require('../base/toggle_caret.js');

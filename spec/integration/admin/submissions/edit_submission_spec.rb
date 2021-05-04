@@ -83,7 +83,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
 
     within('#format-review-files') do
       delete_link = find_all('a#file_delete_link').first
-      delete_link.trigger('click')
+      delete_link.click
     end
     expect(page).to have_content("Marked for deletion [undo]")
     click_button 'Update Metadata'
@@ -105,7 +105,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     expect(page).to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
       delete_link = find_all('a#file_delete_link').first
-      delete_link.trigger('click')
+      delete_link.click
     end
     expect(page).to have_content("Marked for deletion [undo]")
     click_button 'Update Metadata'
@@ -130,7 +130,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     expect(page).to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
       delete_link = find_all('a#file_delete_link').first
-      delete_link.trigger('click')
+      delete_link.click
     end
     expect(page).to have_content("Marked for deletion [undo]")
     click_button 'Update Metadata'

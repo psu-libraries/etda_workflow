@@ -36,7 +36,7 @@ RSpec.describe "Admins can run reports", js: true do
   context 'clicking on Report link', js: true do
     it 'displays the available report types' do
       expect(page).to have_link('Reports')
-      page.find('a#reports_menu').trigger('click')
+      page.find('a#reports_menu').click
       expect(page).to have_link('Custom Report')
       expect(page).to have_link('Confidential Hold Report')
     end

@@ -63,11 +63,11 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
   config.before(:each, js: true) do
+    container_ip = Socket.ip_address_list.detect{|intf| intf.ipv4_private?}.ip_address
     Capybara.javascript_driver = :selenium
-    Capybara.app_host = "http://172.23.0.6:3001"
+    Capybara.app_host = "http://#{container_ip}:3001"
     Capybara.server_port = "3001"
     Capybara.server_host = '0.0.0.0'
-    # Capybara.run_server = false
 
     args = ['--no-default-browser-check', '--start-maximized']
     caps = Selenium::WebDriver::Remote::Capabilities.chrome("chromeOptions" => {"args" => args})

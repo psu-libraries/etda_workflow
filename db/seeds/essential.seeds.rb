@@ -9,8 +9,8 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 DegreeType.seed
 CommitteeRole.seed
-ApprovalConfiguration.seed
 if Rails.env == 'development'
+  ApprovalConfiguration.seed
   # Degree depends on DegreeType
   Degree.seed
   Program.seed
