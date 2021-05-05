@@ -39,10 +39,9 @@ services:
 #      sh -c "bundle check || bundle
 #      && bundle exec rake db:migrate
 #      && bundle exec guard"
-    ports:
-    - "3001:3001"
     depends_on:
     - db
+    - selenium
     # volumes:
     # - workflow_files:/etda_workflow/tmp/workflow_files
     # - explore_files:/etda_workflow/tmp/explore_files
@@ -68,7 +67,6 @@ services:
     command: >
       sh -c "/etda_workflow/entrypoint.sh"
     ports:
-    - "3001:3001"
     - "3000:3000"
     depends_on:
     - db
