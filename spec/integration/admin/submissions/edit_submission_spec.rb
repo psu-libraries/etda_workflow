@@ -22,7 +22,6 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
   it 'disables program info if imported from lionpath' do
     submission.update lionpath_updated_at: DateTime.now
     visit admin_edit_submission_path(submission)
-    page.find('div[data-target="#program-information"]').click
     expect(find("select#submission_program_id").disabled?).to eq true
     expect(find("select#submission_degree_id").disabled?).to eq true
     expect(find("select#submission_semester").disabled?).to eq true
@@ -57,7 +56,6 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
 
     click_button "Update Metadata"
     visit admin_edit_submission_path(submission)
-    page.find('div[data-target="#program-information"]').click
     expect(page).to have_current_path(admin_edit_submission_path(submission))
     expect(page.find_field("Title").value).to eq "A Brand New TITLE"
     expect(page.find_field("Allow completely upper-case words in title")).to be_checked
@@ -140,6 +138,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
 
   it 'Allows admin to edit final submission content' do
     visit admin_edit_submission_path(final_submission)
+    sleep 5
     within('#final-submission-information') do
       click_link "Additional File"
       all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
@@ -158,6 +157,10 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
   end
 
   context "when master's thesis" do
+    let!(:approval_configuration2) do
+      FactoryBot.create(:approval_configuration, degree_type: masters_degree.degree_type)
+    end
+
     it 'does not show ProQuest agreement' do
       skip 'graduate only' unless current_partner.graduate?
 
