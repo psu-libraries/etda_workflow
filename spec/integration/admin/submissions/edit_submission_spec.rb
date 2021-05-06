@@ -138,7 +138,6 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
 
   it 'Allows admin to edit final submission content' do
     visit admin_edit_submission_path(final_submission)
-    sleep 5
     within('#final-submission-information') do
       click_link "Additional File"
       all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))

@@ -63,6 +63,8 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
   config.before(:each, js: true) do
+    Capybara.default_max_wait_time = 5
+
     container_ip = Socket.ip_address_list.detect{|intf| intf.ipv4_private?}.ip_address
     Capybara.javascript_driver = :selenium
     Capybara.app_host = "http://#{container_ip}:3001"
