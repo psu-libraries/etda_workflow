@@ -84,7 +84,6 @@ header {
   margin-bottom: 40px;
 
   .navbar-default {
-    height: 50px;
     width: 100%;
 
     .navbar-text {
@@ -760,13 +759,14 @@ a.cancel-link{
 }
 
 .author-col{
-  margin-left: 20%;
+  margin-left: 25%;
   margin-right: 2%;
 }
 
 .admin-col{
   background-color: #000000;
   border-radius: 5px;
+  margin-top: 60px;
   padding-bottom: 50px;
   padding-left: 35px;
   padding-top: 20px;
