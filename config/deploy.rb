@@ -13,7 +13,7 @@ set :repo_url, "git@github.com:/psu-stewardship/#{fetch(:application)}.git"
 
 # Default deploy_to directory is /var/www/my_app_name
 # set :deploy_to, "/var/www/my_app_name"
-set :branch, ENV['REVISION'] || ENV['BRANCH_NAME'] || 'master'
+set :branch, ENV['REVISION'] || ENV['BRANCH_NAME'] || 'main'
 
 set :user, 'deploy'
 set :use_sudo, false
