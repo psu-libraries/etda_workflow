@@ -52,7 +52,7 @@ class Lionpath::LionpathDeleteExpiredRecords
     end
 
     def safe_to_delete?(total_num, num_to_delete)
-      (num_to_delete.to_f / total_num.to_f) < (5.to_f / 100.to_f)
+      (num_to_delete.to_f / total_num.to_f) < (10.to_f / 100.to_f)
     end
 
     def send_email(resource)

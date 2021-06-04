@@ -41,7 +41,7 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
                                          external_to_psu_id: 'mgc25'
   end
 
-  context "when less than 5% of the total number of records are expired" do
+  context "when less than 10% of the total number of records are expired" do
     it "deletes expired lionpath submissions that are less than 5 years old and collecting program information" do
       FactoryBot.create_list :submission, 100, lionpath_updated_at: DateTime.now
       FactoryBot.create_list :committee_member, 100, lionpath_updated_at: DateTime.now
@@ -66,15 +66,17 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
     end
   end
 
-  context "when more than 5% of the total number of records are expired" do
+  context "when more than 10% of the total number of records are expired" do
     it "does not delete expired lionpath submissions" do
       FactoryBot.create_list :committee_member, 100, lionpath_updated_at: DateTime.now
+      FactoryBot.create_list :submission, 10, lionpath_updated_at: DateTime.now
       expect { described_class.delete }.not_to change(Submission, :count)
       expect(WorkflowMailer.deliveries.count).to eq 1
     end
 
     it "does not delete expired lionpath committee_members" do
       FactoryBot.create_list :submission, 100, lionpath_updated_at: DateTime.now
+      FactoryBot.create_list :committee_member, 10, lionpath_updated_at: DateTime.now
       expect { described_class.delete }.not_to change(CommitteeMember, :count)
       expect(WorkflowMailer.deliveries.count).to eq 1
     end
