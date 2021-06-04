@@ -120,7 +120,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: I18n.t('devs.lead.primary_email_address').to_s,
          from: current_partner.email_address,
-         subject: 'Alert: LionPATH Deletion Exceeded 5%'
+         subject: 'Alert: LionPATH Deletion Exceeded 10%'
   end
 
   def sent_to_committee(submission)
