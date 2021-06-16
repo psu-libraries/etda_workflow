@@ -229,7 +229,7 @@ workflows:
           filters:
             branches:
                only:
-                - master
+                - main
       - deploy-preview:
           requires:
             - publish
