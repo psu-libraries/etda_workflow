@@ -6,4 +6,11 @@
     <p class="thesis_info">You will need to input your committee, upload your format review document, and upload your final document to be published. The site administrator will check the format review document for compliance to standards, and send an email detailing any format changes required.  Once the status of your format review is updated to "Approved", a final document may be submitted.  Your committee will then give a final approval.  </p>
   </div>
 </div>
+<!-- TODO: Remove the following info in a year */ -->
+<br />
+<% if current_partner.graduate? %>
+  <div class="alert alert-info">
+    <p class="hint"><span class="text-info"><strong>Note:</strong></span> If you submitted a format review before Spring 2021, please use that submission instead of the submission imported from LionPATH.</p>
+  </div>
+<% end %>
 <%= render @view.partial_name, partial_path: @view.contact_information_path %>
