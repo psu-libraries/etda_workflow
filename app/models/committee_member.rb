@@ -4,6 +4,7 @@ class CommitteeMember < ApplicationRecord
   class ProgramHeadMissing < StandardError; end
 
   validate :validate_email
+  after_save :professor_in_charge_check
   validate :one_head_of_program_check
   validates :committee_role_id,
             :name,
@@ -95,6 +96,7 @@ class CommitteeMember < ApplicationRecord
     return if new_committee_role_id.blank? || (new_committee_role_id == self[:committee_role_id])
 
     self[:committee_role_id] = new_committee_role_id
+
     self[:is_voting] = true unless CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' ||
                                    CommitteeRole.find(new_committee_role_id).is_program_head
     self[:is_voting] = false if CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' ||
@@ -124,5 +126,17 @@ class CommitteeMember < ApplicationRecord
 
     errors.add(:committee_role_id, 'A submission may only have one Program Head/Chair.')
     false
+  end
+
+  def professor_in_charge_check
+    return if self != CommitteeMember.program_head(submission)
+
+    if submission.program.program_chairs.where(access_id: access_id, role: 'Professor in Charge').present?
+      self[:committee_role_id] = submission.degree_type
+                                     .committee_roles.where(name: 'Professor in Charge/Director of Graduate Studies').first.id
+    else
+      self[:committee_role_id] = submission.degree_type
+                                     .committee_roles.where(name: 'Program Head/Chair').first.id
+    end
   end
 end
