@@ -107,8 +107,9 @@ RSpec.describe 'The standard committee form for authors', js: true do
           expect(find("#member-email").readonly?).to eq true
           select("#{program_chair3.first_name} #{program_chair3.last_name}", from: "program-head-name")
           expect(find("#member-email").value).to eq program_chair3.email
-          expect(find_all(".hidden", visible: false)[-3].value).to eq submission_2.degree_type.committee_roles
-                                                                          .find_by(name: 'Professor in Charge/Director of Graduate Studies').id.to_s
+          expect(find_all(".hidden", visible: false)[-3].value)
+            .to eq submission_2.degree_type.committee_roles
+                               .find_by(name: 'Professor in Charge/Director of Graduate Studies').id.to_s
           click_link 'Add Special Signatory'
           fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last
           within fields_for_last_committee_member do
