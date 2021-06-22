@@ -2,7 +2,7 @@ module CommitteeFactory
   def create_committee(submission)
     if submission.degree_type.slug == 'dissertation'
       5.times do
-        role = CommitteeRole.where('committee_roles.name != "Program Head/Chair" AND committee_roles.degree_type_id = ?',
+        role = CommitteeRole.where('committee_roles.is_program_head = 0 AND committee_roles.degree_type_id = ?',
                                    submission.degree_type.id).sample
         submission.committee_members << FactoryBot.create(:committee_member, committee_role: role)
       end

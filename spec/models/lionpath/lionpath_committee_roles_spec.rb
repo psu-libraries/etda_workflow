@@ -19,7 +19,7 @@ RSpec.describe Lionpath::LionpathCommitteeRoles do
 
     it 'updates the existing role' do
       expect { lionpath_committee_roles.import(row1) }.to(change { committee_role.reload.lionpath_updated_at })
-      expect(CommitteeRole.count).to eq 12
+      expect(CommitteeRole.count).to eq 14
       committee_role.reload
       expect(committee_role.is_active).to eq false
       expect(committee_role.is_program_head).to eq false
