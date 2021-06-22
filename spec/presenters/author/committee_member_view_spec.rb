@@ -103,12 +103,12 @@ RSpec.describe Author::CommitteeMemberView do
     it 'returns the collection of program chairs for a submissions program' do
       submission.committee_members << member
       submission.reload
-      expect(view.program_chair_collection).to eq [["Test Tester (Professor in Charge)",
-                                                    "Test Tester",
+      expect(view.program_chair_collection).to eq [["#{program_chair1.first_name} #{program_chair1.last_name} (#{program_chair1.role})",
+                                                    "#{program_chair1.first_name} #{program_chair1.last_name}",
                                                     { committee_role_id: prof_in_charge_role.id,
                                                       member_email: program_chair1.email }],
-                                                   ["Test Tester (Department Head)",
-                                                    "Test Tester",
+                                                   ["#{program_chair2.first_name} #{program_chair2.last_name} (#{program_chair2.role})",
+                                                    "#{program_chair2.first_name} #{program_chair2.last_name}",
                                                     { committee_role_id: program_head_role.id,
                                                       member_email: program_chair2.email }]]
     end
