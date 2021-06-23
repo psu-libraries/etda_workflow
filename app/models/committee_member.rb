@@ -89,7 +89,7 @@ class CommitteeMember < ApplicationRecord
     self[:email] = new_email.strip
     new_access_id = LdapUniversityDirectory.new.retrieve_committee_access_id(self[:email])
     self.access_id = new_access_id
-    return unless committee_member_token.blank? && self.access_id.blank?
+    return unless committee_member_token.blank? && access_id.blank?
 
     token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)
     self.committee_member_token = token
