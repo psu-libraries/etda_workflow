@@ -86,6 +86,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
         let!(:submission_2) { FactoryBot.create :submission, :collecting_committee, author: author, degree: degree_2 }
         let!(:degree_2) { FactoryBot.create :degree, degree_type: DegreeType.default }
         let!(:program_chair2) { FactoryBot.create :program_chair, program: submission_2.program, campus: submission_2.campus }
+        let!(:program_chair3) { FactoryBot.create :program_chair, program: submission_2.program, campus: submission_2.campus, role: 'Professor in Charge' }
         let!(:approval_config) do
           FactoryBot.create :approval_configuration, head_of_program_is_approving: true,
                                                      degree_type: DegreeType.default
@@ -103,11 +104,12 @@ RSpec.describe 'The standard committee form for authors', js: true do
             expect(find("#submission_committee_members_attributes_#{i}_name").disabled?).to eq true
             expect(find("#submission_committee_members_attributes_#{i}_email").readonly?).to eq true
           end
-          if current_partner.graduate?
-            expect(find("#member-email").readonly?).to eq true
-            select("#{program_chair.first_name} #{program_chair.last_name}", from: "program-head-name")
-            expect(find("#member-email").value).to eq program_chair2.email
-          end
+          expect(find("#member-email").readonly?).to eq true
+          select("#{program_chair3.first_name} #{program_chair3.last_name}", from: "program-head-name")
+          expect(find("#member-email").value).to eq program_chair3.email
+          expect(find_all(".hidden", visible: false)[-3].value)
+            .to eq submission_2.degree_type.committee_roles
+                               .find_by(name: 'Professor in Charge/Director of Graduate Studies').id.to_s
           click_link 'Add Special Signatory'
           fields_for_last_committee_member = all('form.edit_submission div.nested-fields').last
           within fields_for_last_committee_member do
@@ -119,6 +121,8 @@ RSpec.describe 'The standard committee form for authors', js: true do
           expect { click_button 'Save and Continue Submission' }.to change { submission_2.committee_members.count }.by 2
           submission_2.reload
           expect(submission_2.status).to eq 'collecting format review files'
+          expect(submission_2.program_head.committee_role.name).to eq 'Professor in Charge/Director of Graduate Studies'
+          expect(submission_2.program_head.access_id).to eq program_chair3.access_id
         end
 
         context 'when a committee member is external to PSU' do
@@ -258,7 +262,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
     before do
       submission.committee_members = []
       submission.status = 'collecting format review files'
-      roles = CommitteeRole.where(degree_type_id: submission.degree.degree_type.id)
+      roles = CommitteeRole.where(degree_type_id: submission.degree.degree_type.id, num_required: 1)
       FactoryBot.create(:program_chair, program: submission.program, campus: submission.campus,
                                         first_name: 'Professor', last_name: 'Buck Murphy 0')
       submission.required_committee_roles.count.times do |i|

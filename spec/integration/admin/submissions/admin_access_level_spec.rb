@@ -3,7 +3,7 @@ RSpec.describe 'Admin submission access_level', js: true do
 
   let(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response, degree: degree }
   let!(:committee_member1) { FactoryBot.create :committee_member, submission: submission, committee_role: CommitteeRole.first }
-  let!(:committee_member2) { FactoryBot.create :committee_member, submission: submission, committee_role: CommitteeRole.second }
+  let!(:committee_member2) { FactoryBot.create :committee_member, submission: submission, committee_role: CommitteeRole.third }
   let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
   let!(:approval_configuration) do
     FactoryBot.create :approval_configuration,

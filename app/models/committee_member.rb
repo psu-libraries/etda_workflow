@@ -95,6 +95,7 @@ class CommitteeMember < ApplicationRecord
     return if new_committee_role_id.blank? || (new_committee_role_id == self[:committee_role_id])
 
     self[:committee_role_id] = new_committee_role_id
+
     self[:is_voting] = true unless CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' ||
                                    CommitteeRole.find(new_committee_role_id).is_program_head
     self[:is_voting] = false if CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' ||
