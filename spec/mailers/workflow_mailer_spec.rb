@@ -3,7 +3,7 @@ require 'model_spec_helper'
 RSpec.describe WorkflowMailer do
   let(:submission) { FactoryBot.create :submission }
   let(:committee_member) { FactoryBot.create :committee_member, submission: submission }
-  let(:commmittee_member_token) { FactoryBot.create :committee_member_token, committee_member: committee_member }
+  # let(:commmittee_member_token) { FactoryBot.create :committee_member_token, committee_member: committee_member }
   let(:access_updated_email) do
     {
       author_alternate_email_address: "author alt address",
