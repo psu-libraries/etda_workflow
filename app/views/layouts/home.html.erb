@@ -18,8 +18,8 @@
 <div id="body-container" class="container-fluid">
   <main>
     <div id="content-container" class="container-fluid">
-      <%= render partial: 'shared/flash_messages' unless flash.empty? %>
       <div id="content-row" class="row">
+        <%= render partial: 'shared/flash_messages' unless flash.empty? %>
 
         <%= yield %>
 

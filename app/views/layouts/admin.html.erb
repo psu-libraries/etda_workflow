@@ -18,12 +18,12 @@
 <div id="body-container" class="container-fluid">
   <main>
     <div class="container-fluid">
-      <%= render partial: 'shared/flash_messages' unless flash.empty? %>
       <div id="content-row" class="row">
         <div class="col-sm-2">
           <%= render 'admin/shared/main_navigation' %>
         </div>
         <div class="col-sm-8 content-main">
+          <%= render partial: 'shared/flash_messages' unless flash.empty? %>
 
           <%= yield %>
 
