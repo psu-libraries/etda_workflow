@@ -148,13 +148,24 @@ RSpec.describe CommitteeMember, type: :model do
         cm.update email: 'test123@psu.edu'
         expect(cm.access_id).to eq 'test123'
       end
+
+      it 'does not add a committee_member_token' do
+        cm.update email: 'test123@psu.edu'
+        expect(cm.committee_member_token).not_to be_present
+      end
     end
 
-    context 'when nil is returned' do
+    context 'when nil is returned from ldap lookup' do
       it "doesn't update access_id" do
         cm.access_id = 'test123'
         allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
         expect { cm.update email: 'test123@psu.edu' }.to change(cm, :access_id).to nil
+      end
+
+      it 'adds a committee_member_token' do
+        allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
+        cm.update email: 'test123@email.com'
+        expect(cm.committee_member_token).to be_present
       end
     end
 

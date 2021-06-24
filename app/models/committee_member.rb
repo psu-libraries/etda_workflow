@@ -89,6 +89,11 @@ class CommitteeMember < ApplicationRecord
     self[:email] = new_email.strip
     new_access_id = LdapUniversityDirectory.new.retrieve_committee_access_id(self[:email])
     self.access_id = new_access_id
+    return unless committee_member_token.blank? && access_id.blank?
+
+    token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)
+    self.committee_member_token = token
+    committee_member_token.save!
   end
 
   def committee_role_id=(new_committee_role_id)
@@ -100,12 +105,6 @@ class CommitteeMember < ApplicationRecord
                                    CommitteeRole.find(new_committee_role_id).is_program_head
     self[:is_voting] = false if CommitteeRole.find(new_committee_role_id).name == 'Special Signatory' ||
                                 CommitteeRole.find(new_committee_role_id).is_program_head
-    ldap_result = LdapUniversityDirectory.new.retrieve_committee_access_id(email)
-    return unless committee_member_token.blank? && ldap_result.blank?
-
-    token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)
-    self.committee_member_token = token
-    committee_member_token.save!
   end
 
   def name=(new_name)

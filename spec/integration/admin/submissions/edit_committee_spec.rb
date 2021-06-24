@@ -51,7 +51,7 @@ RSpec.describe "Editing committee member information", js: true, honors: true, m
     end
 
     context 'when no committee member is external to PSU' do
-      it 'disables the name, email and committee role fields for this committee member' do
+      it 'disables the name and committee role fields for this committee member (does not disable email)' do
         skip 'graduate only' unless current_partner.graduate?
 
         visit admin_edit_submission_path(submission)
@@ -62,7 +62,7 @@ RSpec.describe "Editing committee member information", js: true, honors: true, m
           expect(find_all("select.role").last.disabled?).to eq true
           expect(find_all("input.ui-autocomplete-input").last.value).to eq 'LP Tester'
           expect(find_all("input.ui-autocomplete-input").last.disabled?).to eq true
-          expect(find_all("input.email").last.disabled?).to eq true
+          expect(find_all("input.email").last.disabled?).to eq false
         end
       end
     end
