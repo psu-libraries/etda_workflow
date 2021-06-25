@@ -58,7 +58,7 @@ RSpec.describe "Admins can run reports", js: true do
     end
 
     it 'displays the Custom Report page' do
-      reports_controller = instance_spy('Admin::ReportsController')
+      instance_spy('Admin::ReportsController')
       expect(page).to have_link('Custom Report')
       click_link('Custom Report')
       expect(page).to have_content('Custom Report')

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Admin::ReportsController, type: :controller do
   before do
-    #Skip authentication
+    # Skip authentication
     allow_any_instance_of(AdminController).to receive(:set_session).and_return true
     allow_any_instance_of(AdminController).to receive(:admin_auth).and_return true
   end
