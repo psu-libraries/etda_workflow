@@ -93,16 +93,24 @@ RSpec.describe Author::CommitteeMemberView do
     end
     let!(:program_chair2) { FactoryBot.create :program_chair, campus: 'UP', program: program }
     let!(:program_chair3) { FactoryBot.create :program_chair, campus: 'HY', program: program }
+    let(:prof_in_charge_role) do
+      submission.degree_type.committee_roles.find_by(name: 'Professor in Charge/Director of Graduate Studies')
+    end
+    let(:program_head_role) do
+      submission.degree_type.committee_roles.find_by(name: 'Program Head/Chair')
+    end
 
     it 'returns the collection of program chairs for a submissions program' do
       submission.committee_members << member
       submission.reload
-      expect(view.program_chair_collection).to eq [["Test Tester (Professor in Charge)",
-                                                    "Test Tester",
-                                                    { member_email: program_chair1.email }],
-                                                   ["Test Tester (Department Head)",
-                                                    "Test Tester",
-                                                    { member_email: program_chair2.email }]]
+      expect(view.program_chair_collection).to eq [["#{program_chair1.first_name} #{program_chair1.last_name} (#{program_chair1.role})",
+                                                    "#{program_chair1.first_name} #{program_chair1.last_name}",
+                                                    { committee_role_id: prof_in_charge_role.id,
+                                                      member_email: program_chair1.email }],
+                                                   ["#{program_chair2.first_name} #{program_chair2.last_name} (#{program_chair2.role})",
+                                                    "#{program_chair2.first_name} #{program_chair2.last_name}",
+                                                    { committee_role_id: program_head_role.id,
+                                                      member_email: program_chair2.email }]]
     end
   end
 end

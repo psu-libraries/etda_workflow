@@ -3,7 +3,6 @@ require 'model_spec_helper'
 RSpec.describe WorkflowMailer do
   let(:submission) { FactoryBot.create :submission }
   let(:committee_member) { FactoryBot.create :committee_member, submission: submission }
-  let(:commmittee_member_token) { FactoryBot.create :committee_member_token, committee_member: committee_member }
   let(:access_updated_email) do
     {
       author_alternate_email_address: "author alt address",
@@ -373,11 +372,11 @@ RSpec.describe WorkflowMailer do
         end
 
         it "has subject" do
-          expect(email.subject).to eq("Alert: LionPATH Deletion Exceeded 5%")
+          expect(email.subject).to eq("Alert: LionPATH Deletion Exceeded 10%")
         end
 
         it "has body" do
-          expect(email.body.raw_source).to match(/More than 5% of LionPATH Submissions were tagged/)
+          expect(email.body.raw_source).to match(/More than 10% of LionPATH Submissions were tagged/)
         end
       end
 
@@ -385,7 +384,7 @@ RSpec.describe WorkflowMailer do
         let(:email) { described_class.lionpath_deletion_alert('Committee Members') }
 
         it "has body" do
-          expect(email.body.raw_source).to match(/More than 5% of LionPATH Committee Members were tagged/)
+          expect(email.body.raw_source).to match(/More than 10% of LionPATH Committee Members were tagged/)
         end
       end
     end

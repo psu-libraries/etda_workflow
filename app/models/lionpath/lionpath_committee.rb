@@ -22,7 +22,10 @@ class Lionpath::LionpathCommittee
       return if cm_external.present?
     end
 
-    CommitteeMember.create({ submission: this_submission }.merge(committee_member_attrs(row, committee_role)))
+    CommitteeMember.create(
+      { submission: this_submission,
+        email: "#{row['Access ID'].downcase}@psu.edu" }.merge(committee_member_attrs(row, committee_role))
+    )
   end
 
   def self.external_ids
@@ -37,7 +40,6 @@ class Lionpath::LionpathCommittee
       committee_role: committee_role,
       is_required: true,
       name: "#{row['First Name']} #{row['Last Name']}",
-      email: "#{row['Access ID'].downcase}@psu.edu",
       access_id: row['Access ID'].downcase.to_s,
       is_voting: true,
       lionpath_updated_at: DateTime.now

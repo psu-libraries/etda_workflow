@@ -13,7 +13,7 @@ set :repo_url, "git@github.com:/psu-stewardship/#{fetch(:application)}.git"
 
 # Default deploy_to directory is /var/www/my_app_name
 # set :deploy_to, "/var/www/my_app_name"
-set :branch, ENV['REVISION'] || ENV['BRANCH_NAME'] || 'master'
+set :branch, ENV['REVISION'] || ENV['BRANCH_NAME'] || 'main'
 
 set :user, 'deploy'
 set :use_sudo, false
@@ -137,12 +137,25 @@ namespace :deploy do
     end
   end
 
+  task :seed do
+    desc "reload the database with seed data"
+    on roles(:app) do
+      within current_path do
+        rails_env = fetch(:rails_env, 'production')
+        partner = fetch(:partner)
+
+        execute :rake, "db:seed:essential PARTNER=#{partner} RAILS_ENV=#{rails_env}"
+      end
+    end
+  end
+
   before "deploy:assets:precompile", "deploy:symlink_shared"
   before "deploy:assets:precompile", "yarn:install"
   before "deploy:assets:precompile", "yarn:check"
   # before "deploy:migrate", "deploy:symlink_shared"
 
   after "deploy:updated", "deploy:migrate"
+  after 'deploy:migrate', 'deploy:seed'
 end
 
 # Used to keep x-1 instances of ruby on a machine.  Ex +4 leaves 3 versions on a machine.  +3 leaves 2 versions

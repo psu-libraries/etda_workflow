@@ -10,8 +10,8 @@
 DegreeType.seed
 CommitteeRole.seed
 if Rails.env == 'development'
+  # Degree and ApprovalConfiguration depends on DegreeType
   ApprovalConfiguration.seed
-  # Degree depends on DegreeType
   Degree.seed
   Program.seed
 end

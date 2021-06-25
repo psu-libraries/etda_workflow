@@ -3,7 +3,12 @@ RSpec.describe 'Special committee page', type: :integration, js: true do
 
   let!(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, final_submission_files_uploaded_at: DateTime.now, final_submission_approved_at: DateTime.now }
   let!(:committee_member) { FactoryBot.create :committee_member, submission: submission, status: '', email: 'approverflow@gmail.com' }
-  let!(:committee_member_token) { FactoryBot.create :committee_member_token, committee_member: committee_member, authentication_token: '1' }
+  let!(:committee_member_token) { FactoryBot.create :committee_member_token, authentication_token: '1' }
+
+  before do
+    committee_member.committee_member_token = nil
+    committee_member.committee_member_token = committee_member_token
+  end
 
   it 'displays content' do
     visit '/special_committee/1'
@@ -47,7 +52,9 @@ RSpec.describe 'Special committee page', type: :integration, js: true do
 
   it 'marries an approver and multiple committee member records via token when clicking advance button' do
     committee_member_two = FactoryBot.create :committee_member, submission: submission, status: '', email: 'approverflow@gmail.com'
-    committee_member_token_two = FactoryBot.create :committee_member_token, committee_member: committee_member_two, authentication_token: '2'
+    committee_member_token_two = FactoryBot.create :committee_member_token, authentication_token: '2'
+    committee_member_two.committee_member_token = nil
+    committee_member_two.committee_member_token = committee_member_token_two
     visit '/special_committee/1'
     allow_any_instance_of(Devise::Strategies::OidcAuthenticatable).to receive(:remote_user).and_return('approverflow')
     allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)

@@ -111,6 +111,7 @@ RSpec.describe Lionpath::LionpathProgram do
       let(:sp2021_sub) { FactoryBot.create :submission, semester: 'Spring', year: 2021 }
 
       it 'does not import the record' do
+        allow(Semester).to receive(:current).and_return "2021 Spring"
         author.submissions << sp2021_sub
         author.reload
         expect { lionpath_program.import(row_3) }.to change(Submission, :count).by 0

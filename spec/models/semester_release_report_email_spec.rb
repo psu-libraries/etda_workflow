@@ -160,11 +160,11 @@ RSpec.describe SemesterReleaseReportEmail do
         expect(semester_release_report_email.send(:date_range)).to eq "10/01/#{this_year - 1} - 01/31/#{this_year}"
       end
     end
-  end
 
-  describe '#filename' do
-    it 'returns ETD_FALL_RELEASE_REPORT.csv' do
-      expect(semester_release_report_email.send(:filename)).to eq 'ETD_FALL_RELEASE_REPORT.csv'
+    describe '#filename' do
+      it 'returns ETD_FALL_RELEASE_REPORT.csv' do
+        expect(semester_release_report_email.send(:filename)).to eq 'ETD_FALL_RELEASE_REPORT.csv'
+      end
     end
   end
 end

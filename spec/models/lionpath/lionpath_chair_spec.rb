@@ -64,7 +64,7 @@ RSpec.describe Lionpath::LionpathChair do
         expect { lionpath_chair.import(row) }.to change(ProgramChair, :count).by 1
         expect(ProgramChair.count).to eq 2
         expect(Program.find(program.id).program_chairs.first.campus).to eq 'AB'
-        expect(Program.find(program.id).program_chairs.first.first_name).to eq 'Test'
+        expect(Program.find(program.id).program_chairs.first.first_name).to eq program_chair.first_name
         expect(Program.find(program.id).program_chairs.second.campus).to eq 'UP'
         expect(Program.find(program.id).program_chairs.second.first_name).to eq 'New Test'
       end
