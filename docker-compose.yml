@@ -2,6 +2,7 @@ version: '3.5'
 services:
   selenium:
     image: selenium/standalone-chrome
+    shm_size: '2gb'
     volumes:
       - /dev/shm:/dev/shm
     ports:
@@ -25,6 +26,7 @@ services:
     stdin_open: true
     user: root
     image: etda_workflow_web:latest
+    shm_size: '2gb'
     # build:
       # context: . 
       # target: base
