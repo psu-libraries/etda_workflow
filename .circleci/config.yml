@@ -55,7 +55,7 @@ jobs:
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
   integration_test_grad:
-    resource_class: large
+    resource_class: xlarge
     docker:
       - image: devago/docker-compose
     environment:
