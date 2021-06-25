@@ -71,7 +71,7 @@ RSpec.configure do |config|
     Capybara.server_port = "3001"
     Capybara.server_host = '0.0.0.0'
 
-    args = ['--no-default-browser-check', '--start-maximized']
+    args = ['--no-default-browser-check', '--start-maximized', '--disable-dev-shm-usage']
     caps = Selenium::WebDriver::Remote::Capabilities.chrome("chromeOptions" => {"args" => args})
     Capybara.register_driver :selenium do |app|
       Capybara::Selenium::Driver.new(
