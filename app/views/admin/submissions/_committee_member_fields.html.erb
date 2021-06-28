@@ -1,6 +1,6 @@
 <% disabled_bool = (current_partner.graduate? && f.object.lionpath_updated_at.present? && !f.object.external_to_psu_id.present? && !f.object.committee_role.is_program_head) %>
 <div class="nested-fields admin card border-default committee-member-information">
-  <div class="status-row card-header">
+  <div class="status-row">
     <div class="col-sm-6">
       <%= f.association :committee_role,
                         collection: @submission.degree_type.try(&:committee_roles).order('name asc') || [] ,

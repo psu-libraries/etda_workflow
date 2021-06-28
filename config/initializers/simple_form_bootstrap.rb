@@ -123,7 +123,7 @@ SimpleForm.setup do |config|
     b.use :html5
     b.use :placeholder
 
-    b.use :label, class: 'control-label'
+    b.use :label, class: 'control-label col-sm-3'
 
     b.wrapper tag: 'div', class: 'col-sm-12 vertical-radios' do |ba|
       ba.use :input
