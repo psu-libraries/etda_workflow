@@ -18,6 +18,7 @@ RSpec.describe "Unrelease a submission", js: true, honors: true, milsch: true do
     FileUtilityHelper.new.copy_test_file(Rails.root.join(final_submission_file.current_location))
     oidc_authorize_admin
     visit admin_edit_submission_path(submission)
+    allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
     fill_in "Title", with: "A Better Title"
   end
 
@@ -53,6 +54,7 @@ RSpec.describe 'Unrelease a submission with errors', js: true, honors: true, mil
     oidc_authorize_admin
     bad_submission.program_id = 0
     visit admin_edit_submission_path(bad_submission)
+    allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
     click_button "Withdraw Publication"
   end
 

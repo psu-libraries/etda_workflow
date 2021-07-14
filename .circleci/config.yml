@@ -85,8 +85,8 @@ jobs:
         paths:
           - integration_coverage.json
   unit_test_grad:
-    machine:
-      image: ubuntu-2004:202104-01
+    docker:
+      - image: devago/docker-compose
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -94,6 +94,8 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/workspace
+      - setup_remote_docker:
+          version: 20.10.6
       - checkout
       - run:
           name: "Unit Test Graduate"

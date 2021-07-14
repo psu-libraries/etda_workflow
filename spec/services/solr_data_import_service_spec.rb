@@ -50,7 +50,9 @@ RSpec.describe SolrDataImportService, type: :model do
   end
 
   it 'executes command and returns an error' do
+    solr = solr_data_import_service.send('solr')
     error_result = { :error => true, "statusMessages" => { "" => "An error occurred! Check the log messages for more information" } }
+    allow(solr).to receive(:get).with("#{current_partner.id}_core/dataimport", params: {"clean"=>false, "command"=>"delta-import"}).and_return(error_result)
     expect(solr_data_import_service.send('execute_cmd', 'command' => 'delta-import', 'clean' => false)).to eql(error_result)
   end
 

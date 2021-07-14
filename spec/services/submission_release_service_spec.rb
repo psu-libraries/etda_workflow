@@ -4,6 +4,10 @@ require 'shoulda-matchers'
 RSpec.describe SubmissionReleaseService do
   let(:service) { described_class.new }
 
+  before do
+    allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
+  end
+
   describe '#publish' do
     context "when release_type is 'Release selected for publication'" do
       let(:release_type) { 'Release selected for publication' }
