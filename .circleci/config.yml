@@ -2,7 +2,6 @@ version: 2.1
 
 jobs:
   build:
-    machine: true
     docker:
       - image: devago/docker-compose
     environment:
@@ -38,7 +37,6 @@ jobs:
           - etda-workflow.tar
           - cc-test-reporter
   rubocop:
-    machine: true
     docker:
       - image: devago/docker-compose
     environment:
@@ -59,7 +57,6 @@ jobs:
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
   integration_test_grad:
-    machine: true
     docker:
       - image: devago/docker-compose
     environment:
@@ -88,9 +85,8 @@ jobs:
         paths:
           - integration_coverage.json
   unit_test_grad:
-    machine: true
-    docker:
-      - image: devago/docker-compose
+    machine:
+      image: ubuntu-2004:202104-01
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -117,7 +113,6 @@ jobs:
           paths:
             - unit_coverage.json
   publish:
-    machine: true
     docker:
       - image: devago/docker-compose
     environment:
@@ -143,7 +138,6 @@ jobs:
             docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
             docker push $REGISTRY_URL:$CIRCLE_SHA1
   test_partners:
-    machine: true
     docker:
       - image: devago/docker-compose
     environment:
