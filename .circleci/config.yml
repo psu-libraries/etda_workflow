@@ -38,7 +38,7 @@ jobs:
           - cc-test-reporter
   rubocop:
     docker:
-      - image: devago/docker-compose
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.1.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -46,7 +46,8 @@ jobs:
     steps:
     - attach_workspace:
         at: /tmp/workspace
-    - setup_remote_docker
+    - setup_remote_docker:
+        version: 20.10.6
     - checkout
     - run:
         name: "Rubocop"
@@ -57,7 +58,7 @@ jobs:
           RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
   integration_test_grad:
     docker:
-      - image: devago/docker-compose
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.1.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -65,7 +66,8 @@ jobs:
     steps:
     - attach_workspace:
         at: /tmp/workspace
-    - setup_remote_docker
+    - setup_remote_docker:
+        version: 20.10.6
     - checkout
     - run:
         name: "Integration Test Graduate"
@@ -84,7 +86,7 @@ jobs:
           - integration_coverage.json
   unit_test_grad:
     docker:
-      - image: devago/docker-compose
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.1.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -92,7 +94,8 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/workspace
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 20.10.6
       - checkout
       - run:
           name: "Unit Test Graduate"
@@ -111,13 +114,14 @@ jobs:
             - unit_coverage.json
   publish:
     docker:
-      - image: devago/docker-compose
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.1.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 20.10.6
       - checkout
       - attach_workspace:
           at: /tmp/workspace
@@ -135,7 +139,7 @@ jobs:
             docker push $REGISTRY_URL:$CIRCLE_SHA1
   test_partners:
     docker:
-      - image: devago/docker-compose
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.1.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -143,7 +147,8 @@ jobs:
     steps:
     - attach_workspace:
         at: /tmp/workspace
-    - setup_remote_docker
+    - setup_remote_docker:
+        version: 20.10.6
     - checkout
     - run:
         name: "Setup Workspace"
