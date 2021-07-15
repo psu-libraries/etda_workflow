@@ -9,7 +9,8 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
-    - setup_remote_docker
+    - setup_remote_docker:
+        version: 20.10.6
     - checkout
     # - restore_cache:
     #     keys:
@@ -45,7 +46,8 @@ jobs:
     steps:
     - attach_workspace:
         at: /tmp/workspace
-    - setup_remote_docker
+    - setup_remote_docker:
+        version: 20.10.6
     - checkout
     - run:
         name: "Rubocop"
@@ -64,7 +66,8 @@ jobs:
     steps:
     - attach_workspace:
         at: /tmp/workspace
-    - setup_remote_docker
+    - setup_remote_docker:
+        version: 20.10.6
     - checkout
     - run:
         name: "Integration Test Graduate"
@@ -91,7 +94,8 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/workspace
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 20.10.6
       - checkout
       - run:
           name: "Unit Test Graduate"
@@ -116,7 +120,8 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
       DOCKER_USERNAME: 'robot$circleci'
     steps:
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 20.10.6
       - checkout
       - attach_workspace:
           at: /tmp/workspace
@@ -142,7 +147,8 @@ jobs:
     steps:
     - attach_workspace:
         at: /tmp/workspace
-    - setup_remote_docker
+    - setup_remote_docker:
+        version: 20.10.6
     - checkout
     - run:
         name: "Setup Workspace"

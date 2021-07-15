@@ -184,7 +184,6 @@ namespace :yarn do
       puts '***running yarn check'
       execute "cd #{release_path} && yarn check --integrity --frozen-lockfile --production"
       execute "cd #{release_path} && yarn check --verify-tree --frozen-lockfile --production"
-      execute "cd #{release_path} && yarn check --frozen-lockfile --production"
     end
   end
 end
