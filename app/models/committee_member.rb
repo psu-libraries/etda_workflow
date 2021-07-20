@@ -21,7 +21,7 @@ class CommitteeMember < ApplicationRecord
   def self.advisors(submission)
     advisors_array = []
     submission.committee_members.each do |cm|
-      advisors_array << cm if cm.committee_role.name.downcase.match /advisor|adviser/
+      advisors_array << cm if cm.committee_role.name.downcase =~ /advisor|adviser/
     end
     advisors_array
   end
