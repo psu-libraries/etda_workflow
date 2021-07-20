@@ -36,16 +36,21 @@ setup_report_tables = function() {
 
     const default_semester = $('table').attr('data-default-semester');
     const select = $('.semester');
-    select.val(default_semester)
+    select.val(default_semester);
+    const degree_type = $('.degree_type');
 
     $('.custom-report-index.datatable').dataTable(
         (custom_report_options = {
             ajax: { url: (table.attr('data-ajax-url') + '.json'),
-                    data: { semester: function selected_semester() {
-                        return select.val().toString()
+                    data: {
+                        semester: function selected_semester() {
+                            return select.val().toString();
+                        },
+                        degree_type: function selected_degree_type() {
+                            return degree_type.val().toString();
+                        }
                     }
-                }
-            },
+                },
             columns: column_options(),
             rowCallback(row, custom_report_data) {
                 const id = custom_report_data[0];
@@ -54,6 +59,11 @@ setup_report_tables = function() {
             initComplete() {
                 this.api().column( 0 ).visible( false );
                 select.change(function() {
+                    const table = $('.custom-report-index.datatable').DataTable()
+                    table.clear().draw();
+                    table.ajax.reload();
+                });
+                degree_type.change(function() {
                     const table = $('.custom-report-index.datatable').DataTable()
                     table.clear().draw();
                     table.ajax.reload();

@@ -3,7 +3,10 @@ class Admin::ReportsController < AdminController
     @semester_list = Submission.order('year DESC').pluck(:year, :semester).uniq.map{|str| ["#{str[0].to_s} #{str[1]}"]}
     if params[:format] == 'json'
       semester = params[:semester].split(' ')
-      @submissions = Submission.where('submissions.year = ? AND submissions.semester = ?', semester.first, semester.second)
+      @submissions = Submission
+                         .joins(degree: :degree_type)
+                         .where('submissions.year = ? AND submissions.semester = ? AND degree_types.name = ?',
+                                semester.first, semester.second, params[:degree_type])
     end
     respond_to do |format|
       format.html
