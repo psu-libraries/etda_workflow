@@ -1,9 +1,9 @@
 class Admin::ReportsController < AdminController
   def custom_report_index
     @semester_list = Submission.order('year DESC').pluck(:year, :semester).uniq.map { |str| ["#{str[0]} #{str[1]}"] }
+    @semester_list << Semester.current unless @semester_list.include? Semester.current
     if params[:format] == 'json'
-      semester = Submission.last.year.to_s + ' ' + Submission.last.semester.to_s
-      semester = params[:semester].split(' ') if params[:semester].present?
+      semester = params[:semester].split(' ')
       @submissions = Submission
                      .joins(degree: :degree_type)
                      .where('submissions.year = ? AND submissions.semester = ? AND degree_types.name = ?',
