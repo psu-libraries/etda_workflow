@@ -7,4 +7,5 @@ json.array! [
   submission.program ? submission.program.name : nil,
   submission.current_access_level.label,
   submission.status.titleize,
+  CommitteeMember.advisor_name(submission)
 ]
