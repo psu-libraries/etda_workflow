@@ -44,10 +44,10 @@ setup_report_tables = function() {
             ajax: { url: (table.attr('data-ajax-url') + '.json'),
                     data: {
                         semester: function selected_semester() {
-                            return select.val().toString();
+                            return select.val();
                         },
                         degree_type: function selected_degree_type() {
-                            return degree_type.val().toString();
+                            return degree_type.val();
                         }
                     }
                 },
