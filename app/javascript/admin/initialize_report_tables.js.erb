@@ -3,22 +3,23 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-//= require dataTables.js
-//= require dataTables.bootstrap.js
 var $ = require('jquery');
 window.jQuery = $;
+var DataTable = require('datatables.net-bs');
+
+$('table').DataTable();
 
 setup_report_tables = function() {
 
-    const table = $('.datatable');
+    let custom_report_options
 
-    if (!table.length) { return; }
+    table = $('.datatable');
+
+    if (table === null) { return; }
 
     const report_common_options = {
         deferRender: true,
         processing: true,
-        pageLength: 25,
-        stateSave: true,
         stateDuration: 60 * 60 * 24,
         paginate: false,
         language: {
@@ -40,7 +41,10 @@ setup_report_tables = function() {
     $('.custom-report-index.datatable').dataTable(
         (custom_report_options = {
             ajax: { url: (table.attr('data-ajax-url') + '.json'),
-                data: { semester: function semester() { return select.val().toString() } }
+                    data: { semester: function selected_semester() {
+                        return select.val().toString()
+                    }
+                }
             },
             columns: column_options(),
             rowCallback(row, custom_report_data) {
@@ -49,7 +53,7 @@ setup_report_tables = function() {
             },
             initComplete() {
                 this.api().column( 0 ).visible( false );
-                select.on('change', function() {
+                select.change(function() {
                     const table = $('.custom-report-index.datatable').DataTable()
                     table.clear().draw();
                     table.ajax.reload();

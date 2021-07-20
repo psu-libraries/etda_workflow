@@ -1,7 +1,6 @@
 json.array! [
   submission.id,
   "<input type='checkbox' class='row-checkbox' />",
-  submission.semester_and_year,
   "#{submission.author.last_name}, #{submission.author.first_name}",
   submission.degree_type.name,
   submission.program ? submission.program.name : nil,
