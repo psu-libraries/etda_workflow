@@ -1,6 +1,14 @@
 class Admin::ReportsController < AdminController
   def custom_report_index
-    @submissions = Submission.all
+    @semester_list = Submission.order('year DESC').pluck(:year, :semester).uniq.map { |str| ["#{str[0]} #{str[1]}"] }
+    @semester_list << Semester.current unless @semester_list.include? Semester.current
+    if params[:format] == 'json'
+      semester = params[:semester].split(' ')
+      @submissions = Submission
+                     .joins(degree: :degree_type)
+                     .where('submissions.year = ? AND submissions.semester = ? AND degree_types.name = ?',
+                            semester.first, semester.second, params[:degree_type])
+    end
     respond_to do |format|
       format.html
       format.json
@@ -13,25 +21,6 @@ class Admin::ReportsController < AdminController
     respond_to do |format|
       format.csv { render template: 'admin/reports/csv_export_report.csv.erb' }
       headers['Content-Disposition'] = 'attachment; filename="custom_report.csv"'
-      headers['Content-Type'] ||= 'text/csv'
-      headers['Content-Type'] ||= 'text/xls'
-    end
-  end
-
-  def committee_report_index
-    @submissions = Submission.released_for_publication
-    respond_to do |format|
-      format.html
-      format.json
-    end
-  end
-
-  def committee_report_export
-    ids = params[:submission_ids].split(',').map(&:to_i)
-    @csv_report_export = ExportCsv.new('committee_report', Submission.where(id: ids))
-    respond_to do |format|
-      format.csv { render template: 'admin/reports/csv_export_report.csv.erb' }
-      headers['Content-Disposition'] = 'attachment; filename="committee_report.csv"'
       headers['Content-Type'] ||= 'text/csv'
       headers['Content-Type'] ||= 'text/xls'
     end
