@@ -6,10 +6,10 @@ class Approver::ApproversController < ApproverController
 
   def index
     @approver = current_approver
-    ApproverService.new(current_approver).update_committee_w_access_id
-    @committee_members = @approver.committee_members.select {
-        |n| n if n.submission.status_behavior.beyond_collecting_final_submission_files?
-    }
+    ApproversService.new(current_approver).update_committee_w_access_id
+    @committee_members = @approver.committee_members.select do |n|
+      n if n.submission.status_behavior.beyond_collecting_final_submission_files?
+    end
   end
 
   def edit
@@ -22,7 +22,7 @@ class Approver::ApproversController < ApproverController
     return if @committee_member.committee_role.name.include? 'Advisor'
 
     @submission.committee_members.each do |member|
-      redirect_to approver_path(member) if is_advisor?(member, @committee_member)
+      redirect_to approver_path(member) if advisor?(member, @committee_member)
     end
   end
 
@@ -52,14 +52,14 @@ class Approver::ApproversController < ApproverController
     @committee_member_token = CommitteeMemberToken.find_by(authentication_token: params[:authentication_token])
     return redirect_to approver_approver_reviews_path unless @committee_member_token
 
-    ApproverService.new(current_approver).update_committee_w_token(@committee_member_token)
+    ApproversService.new(current_approver).update_committee_w_token(@committee_member_token)
     redirect_to approver_approver_reviews_path
   end
 
   private
 
-  def is_advisor?(cm, original_cm)
-    (cm.access_id == original_cm.access_id) && (cm.committee_role.name.include? 'Advisor')
+  def advisor?(c_member, original_c_member)
+    (c_member.access_id == original_c_member.access_id) && (c_member.committee_role.name.include? 'Advisor')
   end
 
   def verify_approver

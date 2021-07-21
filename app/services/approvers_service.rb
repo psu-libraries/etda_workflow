@@ -1,4 +1,4 @@
-class ApproverService
+class ApproversService
   attr_accessor :approver
 
   def initialize(approver)

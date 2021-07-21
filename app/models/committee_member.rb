@@ -142,7 +142,7 @@ class CommitteeMember < ApplicationRecord
   def validate_federal_funding_used
     return true if approver_controller.blank?
 
-    return true unless ((federal_funding_used.blank?) && self.committee_role.name.include?("Advisor"))
+    return true unless federal_funding_used.blank? && committee_role.name.include?("Advisor")
 
     errors.add(:federal_funding_used, 'You must indicate if federal funding was utilized for this submission.')
     false
@@ -151,7 +151,7 @@ class CommitteeMember < ApplicationRecord
   def validate_notes
     return true if approver_controller.blank?
 
-    return true unless (status == 'rejected' && notes.blank?)
+    return true unless status == 'rejected' && notes.blank?
 
     errors.add(:notes, 'You must include an explanation for rejection in the "Notes for Student" form.')
     false
