@@ -105,7 +105,7 @@ RSpec.describe CommitteeMember, type: :model do
       end
 
       it 'is not valid' do
-        expect(cm).not_to be_valid
+        expect(cm).not_to be_valid if current_partner.graduate?
       end
 
       it 'is valid' do
@@ -113,6 +113,14 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm).to be_valid
         cm.federal_funding_used = false
         expect(cm).to be_valid
+      end
+
+      context 'when current_partner is not graduate' do
+        it 'is valid', milsch: true, honors: true, sset: true do
+          skip "Non Graduate Only" if current_partner.graduate?
+
+          expect(cm).to be_valid
+        end
       end
     end
 

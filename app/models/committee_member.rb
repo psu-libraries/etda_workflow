@@ -137,7 +137,7 @@ class CommitteeMember < ApplicationRecord
   end
 
   def validate_federal_funding_used
-    return true if approver_controller.blank?
+    return true if approver_controller.blank? || !current_partner.graduate?
 
     return true unless federal_funding_used.nil? && committee_role.name.include?("Advisor")
 
