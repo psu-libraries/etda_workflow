@@ -2,9 +2,13 @@
 
 class CommitteeMember < ApplicationRecord
   class ProgramHeadMissing < StandardError; end
+  attr_accessor :approver_controller
 
   validate :validate_email
   validate :one_head_of_program_check
+  validate :validate_status
+  validate :validate_notes
+  validate :validate_federal_funding_used
   validates :committee_role_id,
             :name,
             :email, presence: true
@@ -123,6 +127,33 @@ class CommitteeMember < ApplicationRecord
                    .count(true) < 2)
 
     errors.add(:committee_role_id, 'A submission may only have one Program Head/Chair.')
+    false
+  end
+
+  def validate_status
+    return true if approver_controller.blank?
+
+    return true unless status == ""
+
+    errors.add(:status, 'You must select whether you approve or reject before submitting your review')
+    false
+  end
+
+  def validate_federal_funding_used
+    return true if approver_controller.blank?
+
+    return true unless ((federal_funding_used.blank?) && self.committee_role.name.include?("Advisor"))
+
+    errors.add(:federal_funding_used, 'You must indicate if federal funding was utilized for this submission.')
+    false
+  end
+
+  def validate_notes
+    return true if approver_controller.blank?
+
+    return true unless (status == 'rejected' && notes.blank?)
+
+    errors.add(:notes, 'You must include an explanation for rejection in the "Notes for Student" form.')
     false
   end
 end
