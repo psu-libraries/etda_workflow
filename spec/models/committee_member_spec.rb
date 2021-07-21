@@ -64,6 +64,82 @@ RSpec.describe CommitteeMember, type: :model do
       cm.is_required = true
       expect(cm).to be_valid
     end
+
+    describe 'validate_status' do
+      before do
+        cm.name = 'Professor Buck Murphy'
+        cm.email = 'buck@hotmail.com'
+        cm.submission_id = submission.id
+        cm.is_required = true
+        cm.notes = 'Notes'
+        cm.approver_controller = true
+      end
+
+      it 'is not valid' do
+        cm.status = nil
+        expect(cm).not_to be_valid
+        cm.status = ''
+        expect(cm).not_to be_valid
+      end
+
+      it 'is valid' do
+        cm.status = 'rejected'
+        expect(cm).to be_valid
+        cm.status = 'approved'
+        expect(cm).to be_valid
+      end
+    end
+
+    describe 'validate_federal_funding_used' do
+      let(:advisor) { FactoryBot.create :committee_role, name: 'Advisor' }
+
+      before do
+        cm.name = 'Professor Buck Murphy'
+        cm.email = 'buck@hotmail.com'
+        cm.submission_id = submission.id
+        cm.is_required = true
+        cm.notes = 'Notes'
+        cm.status = 'approved'
+        cm.committee_role = advisor
+        cm.approver_controller = true
+      end
+
+      it 'is not valid' do
+        expect(cm).not_to be_valid
+      end
+
+      it 'is valid' do
+        cm.federal_funding_used = true
+        expect(cm).to be_valid
+        cm.federal_funding_used = false
+        expect(cm).to be_valid
+      end
+    end
+
+    describe 'validate_notes' do
+      before do
+        cm.name = 'Professor Buck Murphy'
+        cm.email = 'buck@hotmail.com'
+        cm.submission_id = submission.id
+        cm.is_required = true
+        cm.status = 'rejected'
+        cm.approver_controller = true
+      end
+
+      it 'is not valid' do
+        expect(cm).not_to be_valid
+        cm.notes = ''
+        expect(cm).not_to be_valid
+      end
+
+      it 'is valid' do
+        cm.notes = 'Notes'
+        expect(cm).to be_valid
+        cm.status = 'approved'
+        cm.notes = nil
+        expect(cm).to be_valid
+      end
+    end
   end
 
   describe 'status' do

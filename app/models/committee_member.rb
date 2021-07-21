@@ -4,11 +4,8 @@ class CommitteeMember < ApplicationRecord
   class ProgramHeadMissing < StandardError; end
   attr_accessor :approver_controller
 
-  validate :validate_email
-  validate :one_head_of_program_check
-  validate :validate_status
-  validate :validate_notes
-  validate :validate_federal_funding_used
+  validate :validate_email, :one_head_of_program_check, :validate_status,
+           :validate_notes, :validate_federal_funding_used
   validates :committee_role_id,
             :name,
             :email, presence: true
@@ -133,16 +130,16 @@ class CommitteeMember < ApplicationRecord
   def validate_status
     return true if approver_controller.blank?
 
-    return true unless status == ""
+    return true if status.present?
 
-    errors.add(:status, 'You must select whether you approve or reject before submitting your review')
+    errors.add(:status, 'You must select whether you approve or reject before submitting your review.')
     false
   end
 
   def validate_federal_funding_used
     return true if approver_controller.blank?
 
-    return true unless federal_funding_used.blank? && committee_role.name.include?("Advisor")
+    return true unless federal_funding_used.nil? && committee_role.name.include?("Advisor")
 
     errors.add(:federal_funding_used, 'You must indicate if federal funding was utilized for this submission.')
     false
