@@ -25,7 +25,14 @@
         <button class="deselect-visible-button btn btn-sm btn-default">Deselect Visible</button>
         <%= select('submission',
                    'semester_year',
-                   @submissions.order('year DESC').pluck(:year, :semester).uniq.map{|str| ["#{str[0].to_s} #{str[1]}"]}, {}, :class=> 'form-control input-sm semester pull-right') %>
+                   @semester_list,
+                   {},
+                   :class=> 'form-control input-sm semester pull-right') %>
+        <%= select('submission',
+                   'degree_type',
+                   DegreeType.pluck(:name),
+                   {},
+                   :class=> 'form-control input-sm degree_type pull-right') %>
       </div>
     </div>
 </div>
@@ -35,16 +42,13 @@
   <tr>
       <th data-name="id" data-orderable="false">&nbsp;</th><%# for the hidden id %>
       <th data-name="checkbox" data-orderable="false">&nbsp;</th><%# for the checkbox %>
-      <th data-name="semester_year" data-orderable="true">Date</th>
-      <th data-name="submission_title" data-orderable="true">Title</th>
       <th data-name="submission_author" data-orderable="true">Author</th>
-      <th data-name="degree_type" data-orderable="true">Degree Type</th>
+      <th data-name="author_psu_idn" data-orderable="true">PSU ID #</th>
+      <th data-name="degree_type" data-orderable="true">Degree</th>
       <th data-name="program_name" data-orderable="true">Program Name</th>
       <th data-name="access_level" data-orderable="true">Access Level</th>
       <th data-name="submission_status" data-orderable="true">Status</th>
-      <% if current_partner.graduate? %>
-        <th data-name="invention_disclosure_number" data-orderable="false">Invention Disclosure Number</th>
-      <% end %>
+      <th data-name="advisor_name" data-orderable="true">Advisor Name</th>
   </tr>
  </thead>
 
