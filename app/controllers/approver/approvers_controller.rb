@@ -5,37 +5,31 @@ class Approver::ApproversController < ApproverController
   include ActionView::Helpers::UrlHelper
 
   def index
-    @approver = Approver.find_by(access_id: current_approver.access_id)
-    update_approver_committee_members(@approver)
-    @committee_members = @approver.committee_members.select { |n| n if n.submission.status_behavior.beyond_collecting_final_submission_files? }
+    @approver = current_approver
+    ApproversService.new(current_approver).update_committee_w_access_id
+    @committee_members = @approver.committee_members.select do |n|
+      n if n.submission.status_behavior.beyond_collecting_final_submission_files?
+    end
   end
 
   def edit
     @committee_member = CommitteeMember.find(params[:id])
     @submission = @committee_member.submission
-    @review_complete = SubmissionStatus.new(@submission).beyond_waiting_for_head_of_program_review?
     @author = @submission.author
+    @review_complete = SubmissionStatus.new(@submission).beyond_waiting_for_head_of_program_review?
     @most_relevant_file_links = most_relevant_file_links
     @view = Approver::ApproversView.new(@submission)
     return if @committee_member.committee_role.name.include? 'Advisor'
 
     @submission.committee_members.each do |member|
-      redirect_to approver_path(member) if (member.access_id == @committee_member.access_id) && (member.committee_role.name.include? 'Advisor')
+      redirect_to approver_path(member) if advisor?(member, @committee_member)
     end
   end
 
   def update
     @committee_member = CommitteeMember.find(params[:id])
     @submission = @committee_member.submission
-    if params[:committee_member][:status] == ""
-      flash[:error] = 'Validation Failed: You must select whether you approve or reject before submitting your review.'
-      return redirect_to(approver_path(params[:id]))
-    end
-    if (params[:committee_member][:federal_funding_used] == "") && @committee_member.committee_role.name.include?("Advisor")
-      flash[:error] = 'Validation Failed: As an Advisor, you must indicate if federal funding was utilized for this submission.'
-      return redirect_to(approver_path(params[:id]))
-    end
-    @committee_member.update!(committee_member_params)
+    @committee_member.update!(committee_member_params.merge(approver_controller: true))
     Approver.status_merge(@committee_member)
     @submission.update_status_from_committee
     redirect_to approver_root_path
@@ -43,13 +37,6 @@ class Approver::ApproversController < ApproverController
   rescue ActiveRecord::RecordInvalid => e
     flash[:error] = e.record.errors.values.join(" ")
     redirect_to approver_path(params[:id])
-  end
-
-  def verify_approver
-    @committee_member = CommitteeMember.find(params[:id])
-    @submission = @committee_member.submission
-    redirect_to '/404' if @approver.nil? || current_approver.nil?
-    redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member)
   end
 
   def download_final_submission
@@ -61,29 +48,29 @@ class Approver::ApproversController < ApproverController
     end
   end
 
-  def committee_reviews
-    @committee_member = CommitteeMember.find(params[:id])
-    @submission = @committee_member.submission
-  end
-
   def special_committee_link
     @committee_member_token = CommitteeMemberToken.find_by(authentication_token: params[:authentication_token])
     return redirect_to approver_approver_reviews_path unless @committee_member_token
 
-    marry_via_token(@committee_member_token)
+    ApproversService.new(current_approver).update_committee_w_token(@committee_member_token)
     redirect_to approver_approver_reviews_path
   end
 
   private
 
-  def marry_via_token(committee_member_token)
-    committee_member = committee_member_token.committee_member
-    approver = Approver.find_by(access_id: current_approver.access_id)
-    update_approver_committee_members_on_marry(approver, committee_member)
+  def advisor?(c_member, original_c_member)
+    (c_member.access_id == original_c_member.access_id) && (c_member.committee_role.name.include? 'Advisor')
+  end
+
+  def verify_approver
+    @committee_member = CommitteeMember.find(params[:id])
+    @submission = @committee_member.submission
+    redirect_to '/404' if @approver.nil? || current_approver.nil?
+    redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member)
   end
 
   def committee_member_params
-    params.require(:committee_member).permit(:notes, :status, :federal_funding_used)
+    params.require(:committee_member).permit(:notes, :status, :federal_funding_used, :approver_controller)
   end
 
   def most_relevant_file_links
@@ -95,26 +82,5 @@ class Approver::ApproversController < ApproverController
       end
     end
     links.join(" ")
-  end
-
-  def update_approver_committee_members(approver)
-    committee_members = CommitteeMember.where(access_id: approver.access_id)
-    committee_members.each do |committee_member|
-      next if committee_member.approver_id == approver.id
-
-      committee_member.approver_id = approver.id
-      committee_member.save!
-    end
-  end
-
-  def update_approver_committee_members_on_marry(approver, initial_committee_member)
-    committee_member_email = initial_committee_member.email
-    committee_members = CommitteeMember.where(email: committee_member_email)
-    committee_members.each do |committee_member|
-      committee_member.update_attribute :access_id, approver.access_id
-      approver.committee_members << committee_member
-      committee_member.committee_member_token ? CommitteeMemberToken.find(committee_member.committee_member_token.id).destroy : next
-    end
-    approver.save!
   end
 end

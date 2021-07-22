@@ -72,6 +72,7 @@ Metrics/ClassLength:
   - app/mailers/workflow_mailer.rb
   - app/controllers/approver/approvers_controller.rb
   - app/controllers/author/submissions_controller.rb
+  - app/models/committee_member.rb
 
 Metrics/CyclomaticComplexity:
   Exclude:
