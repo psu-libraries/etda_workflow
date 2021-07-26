@@ -36,6 +36,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
 
   describe 'bulk releasing submissions', js: true do
     before do
+      allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
       oidc_authorize_admin
     end
 
