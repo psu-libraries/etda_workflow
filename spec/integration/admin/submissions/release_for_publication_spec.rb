@@ -7,6 +7,7 @@ RSpec.describe "when an admin releases the submission for publication", js: true
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
 
   before do
+    allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
     oidc_authorize_admin
     visit root_path
     FileUtilityHelper.new.copy_test_file(Rails.root.join(final_submission_file.current_location))

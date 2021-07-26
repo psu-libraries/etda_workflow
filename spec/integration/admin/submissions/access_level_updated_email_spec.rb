@@ -5,6 +5,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
     # admin = FactoryBot.create :admin, site_administrator: true, administrator: true
 
     before do
+      allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
       oidc_authorize_admin
     end
 
