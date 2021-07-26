@@ -28,6 +28,8 @@ setup_datatables = function() {
         stateDuration: 60 * 60 * 24,
         paginate: true,
         language: {
+            sSearch: "<div class='form-inline'><strong>Search:</strong> _INPUT_</div>",
+            lengthMenu: "<div class='form-inline'><strong>Show</strong> _MENU_ <strong>entries</strong></div>",
             loadingRecords: "&nbsp;",
             processing: "<div class='spinner'><div class='spinner-info'>Loading Data...</div></div>"
         },

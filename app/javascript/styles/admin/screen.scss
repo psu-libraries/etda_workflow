@@ -11,104 +11,6 @@
   margin: 27px 0px 0px;
 }
 
-.dataTables_wrapper {
-  .dataTables_filter {
-    max-width: 100%;
-
-    input {
-      width: 285px;
-      max-width: 100%;
-      margin-left: 0px;
-    }
-  }
-}
-
-@media (max-width: 992px) {
-  .dataTables_wrapper {
-    .row {
-      .col-xs-12 {
-        padding-left: 5px;
-        padding-right: 5px;
-      }
-    }
-
-    .dataTables_info {
-      margin-bottom: 5px;
-      color: $gray-light;
-    }
-
-    .dataTables_length {
-      width: 100%;
-      label {
-        width: 100%;
-        line-height: 30px;
-        select {
-          float: left;
-          width: 75%;
-          max-width: 115px;
-          margin-right: 5px;
-        }
-      }
-    }
-
-    .dataTables_filter {
-      float: none;
-      label {
-        width: 100%;
-        input {
-          width: 100%;
-        }
-      }
-    }
-
-    .dataTables_processing {
-      left: 5px;
-      right: 5px;
-    }
-  }
-}
-
-table {
-  &.dataTable {
-    thead {
-      th, td {
-         border-color: $table-border-color;
-      }
-    }
-
-    &.no-footer {
-      order-color: $table-border-color;
-    }
-  }
-}
-
-table.dataTable {
-  &.admin-submissions-index {
-    tbody {
-      tr {
-        td:first-child {
-          display: none;
-        }
-      }
-    }
-    thead {
-      tr {
-        th:first-child {
-          display: none;
-        }
-      }
-    }
-  }
-
-  .release-label {
-    font-weight: normal;
-    font-size: 100%;
-  }
-  .badge-none {
-    color: $text-color;
-  }
-}
-
 #bulk-actions {
   display: none;
   border-top: 1px solid $gray-lighter;
@@ -226,6 +128,7 @@ table.dataTable {
     .panel-heading {
       background-color: #fff;
       padding-left: 20px;
+      padding-left: 20px;
       padding-right: 20px;
 
       .panel-title {
@@ -305,9 +208,19 @@ table.dataTable {
   border: 1px solid lightgray;
 }
 
-// search box on all datatables pages
+//search box on all datatables pages
 .dataTables_filter{
   float: right;
+
+  strong {
+    margin: 5px;
+  }
+}
+
+.dataTables_length {
+  strong {
+    margin: 5px;
+  }
 }
 
 .withdraw-msg {

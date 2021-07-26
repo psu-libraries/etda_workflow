@@ -5,7 +5,7 @@
 </div>
 
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
         <div id="bulk-actions">
             <h5>Bulk Actions
                 <span class="small"><span class="number-of-selected-rows"></span> submissions selected ( <span class="number-of-visible-selected-rows"></span> visible )</span></h5>
@@ -27,12 +27,12 @@
                    'semester_year',
                    @semester_list,
                    {},
-                   :class=> 'form-control input-sm semester pull-right') %>
+                   :class=> 'form-control input-sm semester float-right') %>
         <%= select('submission',
                    'degree_type',
                    DegreeType.pluck(:name),
                    {},
-                   :class=> 'form-control input-sm degree_type pull-right') %>
+                   :class=> 'form-control input-sm degree_type float-right') %>
       </div>
     </div>
 </div>
