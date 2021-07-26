@@ -3,25 +3,90 @@ RSpec.describe "Admins can run reports", js: true do
 
   submission_year = Semester.current.split[0]
   submission_semester = Semester.current.split[1]
-  # let(:admin) { FactoryBot.create :admin }
-  let(:degree_type) { FactoryBot.create :degree_type, name: 'Dissertation', slug: 'dissertation' }
-  let!(:author1) { FactoryBot.create :author, access_id: 'xyz321', psu_email_address: 'xyz321@psu.edu', first_name: 'Author', last_name: 'One' }
-  let!(:author2) { FactoryBot.create :author, access_id: 'abc987', psu_email_address: 'abc987@psu.edu', first_name: 'Author', last_name: 'Two' }
-  let!(:author3) { FactoryBot.create :author, access_id: 'abc123', psu_email_address: 'abc123@psu.edu', first_name: 'Author', last_name: 'Three', confidential_hold: 1, confidential_hold_set_at: DateTime.now }
-  # let(:degree) { Degree.first }
-  let!(:degree) { FactoryBot.create :degree, degree_type_id: DegreeType.default.id, name: 'PHD', description: 'PHD', is_active: true }
-  let!(:submission1) { FactoryBot.create :submission, :released_for_publication, author: author1, year: submission_year, semester: submission_semester, title: 'Submission1', degree_id: degree.id, access_level: 'open_access' }
-  let!(:submission2) { FactoryBot.create :submission, :released_for_publication, author: author2, year: submission_year, semester: submission_semester, title: 'Submission2', degree_id: degree.id, access_level: 'restricted' }
-  let!(:submission3) { FactoryBot.create :submission, :waiting_for_format_review_response, author: author2, year: submission_year, semester: submission_semester, title: 'Submission3' }
-  let(:invention_number) { "#{submission_year}-1234" }
+  let(:degree_type1) { DegreeType.first }
+  let(:degree_type2) { DegreeType.last }
+  let!(:author1) do
+    FactoryBot.create :author,
+                      access_id: 'xyz321',
+                      psu_email_address: 'xyz321@psu.edu',
+                      first_name: 'Author',
+                      last_name: 'One'
+  end
+  let!(:author2) do
+    FactoryBot.create :author,
+                      access_id: 'abc987',
+                      psu_email_address: 'abc987@psu.edu',
+                      first_name: 'Author',
+                      last_name: 'Two'
+  end
+  let!(:author3) do
+    FactoryBot.create :author,
+                      access_id: 'abc123',
+                      psu_email_address: 'abc123@psu.edu',
+                      first_name: 'Author',
+                      last_name: 'Three',
+                      confidential_hold: 1,
+                      confidential_hold_set_at: DateTime.now
+  end
+  let!(:degree1) do
+    FactoryBot.create :degree,
+                      degree_type_id: degree_type1.id,
+                      name: 'PHD',
+                      description: 'PHD',
+                      is_active: true
+  end
+  let!(:degree2) do
+    FactoryBot.create :degree,
+                      degree_type_id: degree_type2.id,
+                      name: 'MS',
+                      description: 'MS',
+                      is_active: true
+  end
+  let!(:submission1) do
+    FactoryBot.create :submission,
+                      :released_for_publication,
+                      author: author1,
+                      year: submission_year,
+                      semester: submission_semester,
+                      title: 'Submission1',
+                      degree_id: degree1.id,
+                      access_level: 'open_access'
+  end
+  let!(:submission2) do
+    FactoryBot.create :submission,
+                      :released_for_publication,
+                      author: author2,
+                      year: submission_year,
+                      semester: submission_semester,
+                      title: 'Submission2',
+                      degree_id: degree1.id,
+                      access_level: 'restricted'
+  end
+  let!(:submission3) do
+    FactoryBot.create :submission,
+                      :waiting_for_format_review_response,
+                      author: author2,
+                      year: submission_year,
+                      semester: submission_semester,
+                      title: 'Submission3',
+                      program: (FactoryBot.create :program, name: 'Test'),
+                      degree_id: degree2.id
+  end
+  let!(:submission4) do
+    FactoryBot.create :submission,
+                      :released_for_publication,
+                      author: author3,
+                      year: (submission_year.to_i + 1).to_s,
+                      semester: submission_semester,
+                      title: 'Submission2',
+                      degree_id: degree1.id,
+                      access_level: 'restricted'
+  end
 
   before do
     create_committee(submission1)
     create_committee(submission2)
-    # submission1.save!
-    submission2.invention_disclosures << InventionDisclosure.new(id_number: invention_number)
     submission2.access_level = 'restricted'
-    # submission2.save!
     oidc_authorize_admin
     visit admin_submissions_dashboard_path(Degree.first.degree_type)
   end
@@ -50,48 +115,45 @@ RSpec.describe "Admins can run reports", js: true do
       click_link('Reports')
     end
 
-    it 'displays the invention disclosure number and access level' do
+    it 'displays the access level' do
       expect(page).to have_link('Custom Report')
       click_link('Custom Report')
-      expect(page).to have_content(invention_number) if current_partner.graduate?
       expect(page).to have_content('Restricted')
     end
 
-    it 'displays the Custom Report page' do
-      instance_spy('Admin::ReportsController')
+    it 'displays the Custom Report page and allows filtering by semester' do
       expect(page).to have_link('Custom Report')
       click_link('Custom Report')
       expect(page).to have_content('Custom Report')
       expect(page).to have_button('Select Visible')
-      expect(page).to have_content('Submission3')
+      expect(page).to have_content(author1.last_name)
+      expect(page).to have_content(author2.last_name)
+      expect(page).not_to have_content(author3.last_name)
       expect(page).to have_content(submission2.program.name)
+      expect(page).not_to have_content(submission3.program.name) if current_partner.graduate?
       click_button 'Select Visible'
       page.assert_selector('tbody .row-checkbox')
       ckbox = all('tbody .row-checkbox')
-      assert_equal(Submission.where(year: submission_year, semester: submission_semester).count, ckbox.count)
+      assert_equal(Submission.where(year: submission_year,
+                                    semester: submission_semester).select { |s| s.degree_type == degree_type1 }.count,
+                   ckbox.count)
       ckbox.each do |cb|
         expect(have_checked_field(cb)).to be_truthy
       end
+      select "#{submission4.year} #{submission4.semester}", from: 'submission_semester_year'
+      expect(page).to have_content(author3.last_name)
+      expect(page).not_to have_content(author1.last_name)
+      expect(page).not_to have_content(author2.last_name)
+      click_button 'Select Visible'
       expect(page).to have_button('Export CSV')
       click_button('Export CSV')
     end
-  end
 
-  context 'final_submission_approved' do
-    before do
-      submission1.status = 'waiting for publication release'
-      submission2.status = 'waiting for publication release'
-      submission1.save
-      submission2.save
-      visit(admin_submissions_index_path(DegreeType.default, 'final_submission_approved'))
+    it 'allows filtering by degree type' do
+      click_link('Custom Report')
       sleep 1
-    end
-
-    it 'displays the final submissions' do
-      expect(page).to have_content('Final Submission to be Released')
-      click_button('Select Visible')
-      expect(page).to have_button('Export CSV')
-      click_button 'Export CSV'
+      select degree_type2.name, from: 'submission_degree_type'
+      expect(page).to have_content(submission3.program.name)
     end
   end
 

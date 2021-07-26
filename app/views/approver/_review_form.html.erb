@@ -4,7 +4,7 @@
       <strong>Files I need to review:</strong>
       <div id="file_links">
         <%=raw @most_relevant_file_links %></div>
-      </br>
+      <br/>
       <p>I accept and approve <%= @author.full_name %>'s <%= @submission.degree.degree_type.name.to_s.downcase %> and agree to distribution as indicated by the access level.</p>
       <div class="col-sm-5">
       <%= f.input :status, as: :radio_buttons,
@@ -12,7 +12,7 @@
                   wrapper: :vertical_radio_and_checkboxes,
                   label: false %>
       </div>
-      <%= f.input :notes, :label => "Notes for Student (optional)", :input_html => { :class => 'notes_select' } %>
+      <%= f.input :notes, :label => "Notes for Student (required only if rejecting)", :input_html => { :class => 'notes_select' } %>
       <% if current_partner.graduate? && @committee_member.committee_role.name.include?("Advisor") %>
         <%= f.input :federal_funding_used, as: :radio_buttons,
                     :required => true,

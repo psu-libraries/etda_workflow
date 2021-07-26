@@ -13,8 +13,14 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
     let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, author: author, degree: degree }
     let(:committee_member) { FactoryBot.create :committee_member, submission: submission, access_id: 'approverflow' }
     let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
-    let(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, email_admins: true }
-    let(:head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', is_program_head: true, degree_type: submission.degree.degree_type) }
+    let(:approval_configuration) do
+      FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, email_admins: true
+    end
+    let(:head_role) do
+      CommitteeRole.find_by(name: 'Program Head/Chair',
+                            is_program_head: true,
+                            degree_type: submission.degree.degree_type)
+    end
 
     context 'when author tries visiting various pages' do
       before do
@@ -182,6 +188,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         within("form#edit_committee_member_#{committee_member.id}") do
           find(:css, "#committee_member_status_rejected").set true
         end
+        find('#committee_member_notes').send_keys('Notes')
         click_button 'Submit Review'
         expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
         expect(WorkflowMailer.deliveries.count).to eq 2

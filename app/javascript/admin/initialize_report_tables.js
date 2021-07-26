@@ -3,24 +3,23 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-//= require dataTables.js
-//= require dataTables.bootstrap.js
 var $ = require('jquery');
 window.jQuery = $;
+var DataTable = require('datatables.net-bs');
+
+$('table').DataTable();
 
 setup_report_tables = function() {
 
-    let committee_report_options, custom_report_options;
-    const table = $('.datatable');
+    let custom_report_options
 
-    if (!table.length) { return; }
+    table = $('.datatable');
+
+    if (table === null) { return; }
 
     const report_common_options = {
-        ajax: (table.attr('data-ajax-url') + '.json'),
         deferRender: true,
         processing: true,
-        pageLength: 25,
-        stateSave: true,
         stateDuration: 60 * 60 * 24,
         paginate: false,
         language: {
@@ -35,8 +34,23 @@ setup_report_tables = function() {
             return { "name": column.data('name'), "orderable": column.data('orderable'), "visible": column.data('visible') };})
     ;
 
-    return $('.custom-report-index.datatable').dataTable(
+    const default_semester = $('table').attr('data-default-semester');
+    const select = $('.semester');
+    select.val(default_semester);
+    const degree_type = $('.degree_type');
+
+    $('.custom-report-index.datatable').dataTable(
         (custom_report_options = {
+            ajax: { url: (table.attr('data-ajax-url') + '.json'),
+                    data: {
+                        semester: function selected_semester() {
+                            return select.val();
+                        },
+                        degree_type: function selected_degree_type() {
+                            return degree_type.val();
+                        }
+                    }
+                },
             columns: column_options(),
             rowCallback(row, custom_report_data) {
                 const id = custom_report_data[0];
@@ -44,20 +58,16 @@ setup_report_tables = function() {
             },
             initComplete() {
                 this.api().column( 0 ).visible( false );
-                const column = this.api().column("semester_year:name");
-                const default_semester = $(this).data('default-semester');
-                const select = $('.semester').on('change', function() {
-                    const val = $.fn.dataTable.util.escapeRegex($(this).val() || '');
-                    column.search( (val ? `^${val}$` : '') , true, false).draw();
+                select.change(function() {
+                    const table = $('.custom-report-index.datatable').DataTable()
+                    table.clear().draw();
+                    table.ajax.reload();
                 });
-
-                const selected_item = default_semester;
-
-                select.val(selected_item).change();
-
-                const $filters = $("#row-selection-buttons");
-
-                return select.val(selected_item).prop('selected', true);
+                degree_type.change(function() {
+                    const table = $('.custom-report-index.datatable').DataTable()
+                    table.clear().draw();
+                    table.ajax.reload();
+                });
             }
         }),
         $.extend(custom_report_options, report_common_options)
