@@ -132,8 +132,6 @@ class Submission < ApplicationRecord
     self.status = 'collecting program information' if new_record? && status.nil?
   end
 
-
-
   def reset_committee_reviews
     committee_members.each do |committee_member|
       committee_member.update! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now

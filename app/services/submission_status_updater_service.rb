@@ -42,8 +42,6 @@ class SubmissionStatusUpdaterService
     end
   end
 
-  private
-
   def send_to_committee_review_rejected
     status_giver.can_waiting_for_committee_review_rejected?
     status_giver.waiting_for_committee_review_rejected!

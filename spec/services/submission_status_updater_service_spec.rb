@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'shoulda-matchers'
 
 RSpec.describe SubmissionStatusUpdaterService do
-
   describe '#update_status_from_committee' do
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
     let!(:degree_type) { FactoryBot.create :degree_type }

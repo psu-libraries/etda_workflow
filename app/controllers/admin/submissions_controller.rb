@@ -26,9 +26,7 @@ class Admin::SubmissionsController < AdminController
       submission_update_service = FormatReviewUpdateService.new(params, @submission, current_remote_user)
     end
     response = submission_update_service.update_record
-    if @submission.status == 'waiting for committee review' || @submission.status == 'waiting for head of program review'
-      SubmissionStatusUpdaterService.new(@submission).update_status_from_committee
-    end
+    SubmissionStatusUpdaterService.new(@submission).update_status_from_committee if @submission.status == 'waiting for committee review' || @submission.status == 'waiting for head of program review'
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
   rescue ActiveRecord::RecordInvalid
