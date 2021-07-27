@@ -24,8 +24,8 @@ module MailerActions
     final_submission_approved(submission).deliver
   end
 
-  def send_head_of_program_review_request(submission, submission_status)
-    committee_member_review_request(submission, CommitteeMember.program_head(submission)).deliver unless submission_status.head_of_program_status == 'approved'
+  def send_head_of_program_review_request(submission, approval_status)
+    committee_member_review_request(submission, CommitteeMember.program_head(submission)).deliver unless approval_status.head_of_program_status == 'approved'
   end
 
   def send_committee_approved_email(submission)
