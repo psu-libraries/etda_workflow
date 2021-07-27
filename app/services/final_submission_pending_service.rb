@@ -18,7 +18,7 @@ class FinalSubmissionPendingService
       submission.update committee_review_rejected_at: DateTime.now
       { msg: "The submission was successfully returned to the student for resubmission.", redirect_to: submission_path }
     else
-      submission.update_status_from_committee
+      SubmissionStatusUpdaterService.new(submission).update_status_from_committee
       { msg: "The submission was successfully updated.", redirect_to: submission_path }
     end
   end

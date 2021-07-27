@@ -31,7 +31,7 @@ class Approver::ApproversController < ApproverController
     @submission = @committee_member.submission
     @committee_member.update!(committee_member_params.merge(approver_controller: true))
     Approver.status_merge(@committee_member)
-    @submission.update_status_from_committee
+    SubmissionStatusUpdaterService.new(@submission).update_status_from_committee
     redirect_to approver_root_path
     flash[:notice] = 'Review submitted successfully'
   rescue ActiveRecord::RecordInvalid => e

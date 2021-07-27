@@ -132,13 +132,7 @@ class Submission < ApplicationRecord
     self.status = 'collecting program information' if new_record? && status.nil?
   end
 
-  def update_status_from_committee
-    if status == 'waiting for committee review'
-      update_status_from_base_committee
-    elsif status == 'waiting for head of program review'
-      update_status_from_head_of_program
-    end
-  end
+
 
   def reset_committee_reviews
     committee_members.each do |committee_member|
@@ -364,46 +358,6 @@ class Submission < ApplicationRecord
       false
     else
       true
-    end
-  end
-
-  def update_status_from_base_committee
-    submission_status = ApprovalStatus.new(self)
-    status_giver = SubmissionStatusGiver.new(self)
-    if submission_status.status == 'approved'
-      if head_of_program_is_approving?
-        status_giver.can_waiting_for_head_of_program_review?
-        status_giver.waiting_for_head_of_program_review!
-        update_attribute(:committee_review_accepted_at, DateTime.now)
-        WorkflowMailer.send_head_of_program_review_request(self, submission_status)
-        update_status_from_head_of_program
-      else
-        status_giver.can_waiting_for_final_submission_response?
-        status_giver.waiting_for_final_submission_response!
-        update_attribute(:committee_review_accepted_at, DateTime.now)
-        WorkflowMailer.send_committee_approved_email(self)
-      end
-    elsif submission_status.status == 'rejected'
-      status_giver.can_waiting_for_committee_review_rejected?
-      status_giver.waiting_for_committee_review_rejected!
-      update_attribute(:committee_review_rejected_at, DateTime.now)
-      WorkflowMailer.send_committee_rejected_emails(self)
-    end
-  end
-
-  def update_status_from_head_of_program
-    submission_head_of_program_status = ApprovalStatus.new(self).head_of_program_status
-    status_giver = SubmissionStatusGiver.new(self)
-    if submission_head_of_program_status == 'approved'
-      status_giver.can_waiting_for_final_submission_response?
-      status_giver.waiting_for_final_submission_response!
-      update_attribute(:head_of_program_review_accepted_at, DateTime.now)
-      WorkflowMailer.send_committee_approved_email(self)
-    elsif submission_head_of_program_status == 'rejected'
-      status_giver.can_waiting_for_committee_review_rejected?
-      status_giver.waiting_for_committee_review_rejected!
-      update_attribute(:head_of_program_review_rejected_at, DateTime.now)
-      WorkflowMailer.send_committee_rejected_emails(self)
     end
   end
 end
