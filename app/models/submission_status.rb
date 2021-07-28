@@ -13,6 +13,7 @@ class SubmissionStatus
       'collecting final submission files',
       'collecting final submission files rejected',
       'waiting for final submission response',
+      'waiting for advisor review',
       'waiting for committee review',
       'waiting for head of program review',
       'waiting for committee review rejected',
