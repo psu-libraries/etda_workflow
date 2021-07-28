@@ -63,6 +63,10 @@ class SubmissionStatus
     current_status == 'waiting for final submission response'
   end
 
+  def waiting_for_advisor_review?
+    current_status == 'waiting for advisor review'
+  end
+
   def waiting_for_committee_review?
     current_status == 'waiting for committee review'
   end
@@ -108,6 +112,10 @@ class SubmissionStatus
   end
 
   def beyond_collecting_final_submission_files?
+    waiting_for_advisor_review? || beyond_waiting_for_advisor_review?
+  end
+
+  def beyond_waiting_for_advisor_review?
     waiting_for_committee_review? || beyond_waiting_for_committee_review?
   end
 
