@@ -245,6 +245,15 @@ RSpec.describe CommitteeMember, type: :model do
       end
     end
 
+    context 'when email is non psu email' do
+      context 'when user is found in ldap' do
+        it 'updates access id' do
+          cm.access_id = nil
+          expect { cm.update email: 'buck@hotmail.com' }.to change(cm, :access_id).to 'pbm123'
+        end
+      end
+    end
+
     context 'when nil is returned from ldap lookup' do
       it "doesn't update access_id" do
         cm.access_id = 'test123'
