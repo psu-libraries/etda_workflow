@@ -227,10 +227,28 @@ RSpec.describe CommitteeMember, type: :model do
       cm.committee_role_id = committee_role.id
     end
 
-    context 'when email is a psu email' do
+    context 'when email is a regular psu email' do
       it 'updates access_id' do
-        cm.update email: 'test123@psu.edu'
+        cm.update email: 'tes13@psu.edu'
         expect(cm.access_id).to eq 'test123'
+        cm.update email: 'abc432@psu.edu'
+        expect(cm.access_id).to eq 'abc432'
+        cm.update email: 'xyv1234@psu.edu'
+        expect(cm.access_id).to eq 'xyv1234'
+        cm.update email: 'qwe1@psu.edu'
+        expect(cm.access_id).to eq 'qwe1'
+      end
+
+      it 'does not add a committee_member_token' do
+        cm.update email: 'test123@psu.edu'
+        expect(cm.committee_member_token).not_to be_present
+      end
+    end
+
+    context 'when email is an alias psu email' do
+      it 'leaves access_id as nil' do
+        cm.update email: 'testerperson@psu.edu'
+        expect(cm.access_id).to eq nil
         cm.update email: 'abc432@psu.edu'
         expect(cm.access_id).to eq 'abc432'
         cm.update email: 'xyv1234@psu.edu'

@@ -90,11 +90,7 @@ class CommitteeMember < ApplicationRecord
 
     self[:email] = new_email_stripped
 
-    new_access_id = if new_email_stripped.match?(/.*@psu.edu$/)
-                      new_email_stripped.gsub('@psu.edu', '')
-                    else
-                      LdapUniversityDirectory.new.retrieve_committee_access_id(self[:email])
-                    end
+    new_access_id = DirectoryService.get_accessid_by_email(new_email_stripped)
 
     self.access_id = new_access_id
     return unless committee_member_token.blank? && access_id.blank?
