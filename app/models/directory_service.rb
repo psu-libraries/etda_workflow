@@ -3,7 +3,7 @@ class DirectoryService
     def get_accessid_by_email(email_address)
       parsed_response = JSON.parse(RestClient.get(url(email_address), headers)).first
 
-      return parsed_response if parsed_response.present?
+      return parsed_response.first if parsed_response.present?
 
       nil
     end
