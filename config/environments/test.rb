@@ -51,6 +51,7 @@ Rails.application.configure do
   # TODO Remove constants from initializer (autoload to deprecate in future Rails versions)
   LdapUniversityDirectory = MockUniversityDirectory
   VirusScanner = MockVirusScanner
+  DirectoryService = MockDirectoryService
   WORKFLOW_BASE_PATH = 'tmp/workflow/'
   EXPLORE_BASE_PATH = 'tmp/explore/'
   VERSION_NUMBER_FILE = 'spec/fixtures/version_number.rb'
