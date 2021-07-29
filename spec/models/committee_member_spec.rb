@@ -227,16 +227,10 @@ RSpec.describe CommitteeMember, type: :model do
       cm.committee_role_id = committee_role.id
     end
 
-    context 'when email is a psu email' do
+    context 'when email is found in directory search' do
       it 'updates access_id' do
-        cm.update email: 'test123@psu.edu'
-        expect(cm.access_id).to eq 'test123'
         cm.update email: 'abc432@psu.edu'
         expect(cm.access_id).to eq 'abc432'
-        cm.update email: 'xyv1234@psu.edu'
-        expect(cm.access_id).to eq 'xyv1234'
-        cm.update email: 'qwe1@psu.edu'
-        expect(cm.access_id).to eq 'qwe1'
       end
 
       it 'does not add a committee_member_token' do
@@ -245,24 +239,13 @@ RSpec.describe CommitteeMember, type: :model do
       end
     end
 
-    context 'when email is non psu email' do
-      context 'when user is found in ldap' do
-        it 'updates access id' do
-          cm.access_id = nil
-          expect { cm.update email: 'buck@hotmail.com' }.to change(cm, :access_id).to 'pbm123'
-        end
-      end
-    end
-
-    context 'when nil is returned from ldap lookup' do
+    context 'when nil is returned from directory search' do
       it "doesn't update access_id" do
         cm.access_id = 'test123'
-        allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
-        expect { cm.update email: 'test123@test.psu.edu' }.to change(cm, :access_id).to nil
+        expect { cm.update email: 'test123@test.email.com' }.to change(cm, :access_id).to nil
       end
 
       it 'adds a committee_member_token' do
-        allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
         cm.update email: 'test123@test.email.com'
         expect(cm.committee_member_token).to be_present
       end
