@@ -240,7 +240,7 @@ RSpec.describe CommitteeMember, type: :model do
     end
 
     context 'when nil is returned from directory search' do
-      it "doesn't update access_id" do
+      it "changes access id to nil" do
         cm.access_id = 'test123'
         expect { cm.update email: 'test123@test.email.com' }.to change(cm, :access_id).to nil
       end
@@ -256,6 +256,25 @@ RSpec.describe CommitteeMember, type: :model do
         cm.update email: '       test123@psu.edu       '
         expect(cm.email).to eq 'test123@psu.edu'
         expect(cm.access_id).to eq 'test123'
+      end
+    end
+
+    context 'when committee member has been imported from LP' do
+      it "doesn't update access id" do
+        cm.access_id = 'abc123'
+        cm.lionpath_updated_at = DateTime.now
+        cm.update email: 'buck@hotmail.com'
+        expect(cm.email).to eq 'buck@hotmail.com'
+        expect(cm.access_id).to eq 'abc123'
+      end
+    end
+
+    context 'when committee member has not been imported from LP' do
+      it "updates access id" do
+        cm.access_id = 'abc123'
+        cm.update email: 'buck@hotmail.com'
+        expect(cm.email).to eq 'buck@hotmail.com'
+        expect(cm.access_id).to eq 'pbm123'
       end
     end
   end
