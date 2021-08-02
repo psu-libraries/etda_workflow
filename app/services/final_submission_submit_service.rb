@@ -25,12 +25,10 @@ class FinalSubmissionSubmitService
   private
 
   def committee_reject_submit
-    status_giver.can_waiting_for_committee_review?
-    status_giver.waiting_for_committee_review!
+    collect_final
     submission.reset_committee_reviews
     submission.update_final_submission_timestamps!(Time.zone.now)
     WorkflowMailer.send_final_submission_received_email(submission)
-    submission.committee_review_requests_init
   end
 
   def final_sub_reject_submit
@@ -47,8 +45,14 @@ class FinalSubmissionSubmitService
   end
 
   def collect_final
-    status_giver.can_waiting_for_committee_review?
-    status_giver.waiting_for_committee_review!
-    submission.committee_review_requests_init
+    if current_partner.graduate?
+      status_giver.can_waiting_for_advisor_review?
+      status_giver.waiting_for_advisor_review!
+      WorkflowMailer.committee_member_review_request(submission, CommitteeMember.advisors(submission).first)
+    else
+      status_giver.can_waiting_for_committee_review?
+      status_giver.waiting_for_committee_review!
+      submission.committee_review_requests_init
+    end
   end
 end
