@@ -92,7 +92,7 @@ class CommitteeMember < ApplicationRecord
 
     new_access_id = DirectoryService.get_accessid_by_email(new_email_stripped)
 
-    self.access_id = new_access_id
+    self.access_id = new_access_id if lionpath_updated_at.blank?
     return unless committee_member_token.blank? && access_id.blank?
 
     token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)
