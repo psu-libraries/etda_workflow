@@ -36,6 +36,7 @@ class SubmissionStatusUpdaterService
     if approval_status.status == 'approved'
       if submission.head_of_program_is_approving?
         send_to_program_head
+        submission.program_head.update approval_started_at: DateTime.now
         update_status_from_head_of_program
       else
         send_to_final_submission_response

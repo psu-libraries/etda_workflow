@@ -4,8 +4,26 @@ require 'shoulda-matchers'
 RSpec.describe SubmissionStatusUpdaterService do
   describe '#update_status_from_committee' do
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-    let!(:degree_type) { FactoryBot.create :degree_type }
-    let!(:approval_configuration) { FactoryBot.create :approval_configuration, head_of_program_is_approving: true, degree_type_id: degree_type.id }
+    let!(:approval_configuration) do
+      FactoryBot.create :approval_configuration, head_of_program_is_approving: true, degree_type: DegreeType.default
+    end
+
+    context 'when status is waiting for advisor review' do
+      context 'when advisor approves and there are no funding discrepancies' do
+        it 'changes status to waiting for committee review' do
+          submission = FactoryBot.create :submission, :waiting_for_advisor_review, degree: degree
+          create_committee submission
+          submission.reload
+          submission.federal_funding = true
+          advisor = CommitteeMember.advisors(submission).first
+          advisor.status = 'approved'
+          advisor.federal_funding_used = true
+          described_class.new(submission).update_status_from_committee
+          submission.reload
+          expect(submission.status).to eq 'waiting for committee review'
+        end
+      end
+    end
 
     context 'when status is waiting for committee review' do
       context 'when approval status is approved' do

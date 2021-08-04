@@ -409,11 +409,9 @@ RSpec.describe Submission, type: :model do
     it 'sets approval_started_at timestamp for committee members' do
       submission = FactoryBot.create :submission
       create_committee submission
-      submission.reload
-      expect(submission.committee_members.first.approval_started_at).to be_falsey
       submission.committee_review_requests_init
       submission.reload
-      expect(submission.committee_members.first.approval_started_at).to be_truthy
+      expect(submission.committee_members.pluck(:approval_started_at).compact.count).to eq submission.committee_members.count - 1
     end
   end
 
@@ -441,7 +439,8 @@ RSpec.describe Submission, type: :model do
       expect(new_submission.committee_email_list).to eq ["sameemail@psu.edu",
                                                          new_submission.committee_members.third.email,
                                                          new_submission.committee_members.fourth.email,
-                                                         new_submission.committee_members.fifth.email, "xxx1@psu.edu"]
+                                                         new_submission.committee_members.fifth.email,
+                                                         new_submission.committee_members[5].email, "xxx1@psu.edu"]
     end
   end
 
