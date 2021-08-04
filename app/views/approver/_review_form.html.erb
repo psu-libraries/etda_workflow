@@ -11,7 +11,11 @@
                   wrapper: :vertical_radio_and_checkboxes,
                   label: false %>
       <%= f.input :notes, :label => "Notes for Student (required only if rejecting)", :input_html => { :class => 'notes_select' } %>
-      <% if current_partner.graduate? && @committee_member.committee_role.name.include?("Advisor") %>
+      <% if current_partner.graduate? && @committee_member.committee_role.name.downcase.match(/advisor|adviser/) %>
+        <%= f.label :federal_funding_used, 'Were Federal Funds utilized for this submission?'.html_safe %>
+        <div class="alert alert-info">
+          <p class="hint"><strong>Notice:</strong> The author of this submission has indicated that federal funding <u><strong>was<%= @submission.federal_funding ? nil : ' not' %></strong></u> used.</p>
+        </div>
         <%= f.input :federal_funding_used, as: :radio_buttons,
                     :required => true,
                     collection: [["I confirm that, as required by federal guidelines, all federal funds used for the work
@@ -20,7 +24,7 @@
                                    reflect the view of the funding agency.", true],
                                  ["I confirm that no federal funds were used for the work described in this #{@submission.degree.degree_type.name.to_s.downcase}. ", false]],
                     wrapper: :vertical_radio_and_checkboxes,
-                    label: 'Were Federal Funds utilized for this submission?'.html_safe %>
+                    label: false %>
       <% end %>
       <div class="form-group actions col-xs-4">
         <%= f.button :submit, "Submit Review" %>

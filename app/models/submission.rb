@@ -327,7 +327,9 @@ class Submission < ApplicationRecord
     seen_access_ids = []
     committee_members.each do |committee_member|
       committee_member.update! approval_started_at: DateTime.now
-      next if committee_member.is_program_head || seen_access_ids.include?(committee_member.access_id)
+      next if committee_member.is_program_head ||
+          committee_member.committee_role.name.downcase.match(/advisor|adviser/) ||
+          seen_access_ids.include?(committee_member.access_id)
 
       WorkflowMailer.send_committee_review_requests(self, committee_member)
 

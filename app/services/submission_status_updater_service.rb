@@ -8,7 +8,9 @@ class SubmissionStatusUpdaterService
   end
 
   def update_status_from_committee
-    if submission.status == 'waiting for committee review'
+    if submission.status == 'waiting for advisor review'
+      update_status_from_advisor
+    elsif submission.status == 'waiting for committee review'
       update_status_from_base_committee
     elsif submission.status == 'waiting for head of program review'
       update_status_from_head_of_program
@@ -16,6 +18,19 @@ class SubmissionStatusUpdaterService
   end
 
   private
+
+  def update_status_from_advisor
+    if CommitteeMember.advisors(submission).first.status == 'approved' && !funding_discrepancy?
+      send_to_committee_review
+      update_status_from_base_committee
+    elsif CommitteeMember.advisors(submission).first.status == 'approved' && funding_discrepancy?
+      send_to_committee_review_rejected
+      submission.update_attribute(:committee_review_rejected_at, DateTime.now)
+    elsif CommitteeMember.advisors(submission).first.status == 'rejected'
+      send_to_committee_review_rejected
+      submission.update_attribute(:committee_review_rejected_at, DateTime.now)
+    end
+  end
 
   def update_status_from_base_committee
     if approval_status.status == 'approved'
@@ -42,6 +57,12 @@ class SubmissionStatusUpdaterService
     end
   end
 
+  def send_to_committee_review
+    status_giver.can_waiting_for_committee_review?
+    status_giver.waiting_for_committee_review!
+    submission.committee_review_requests_init
+  end
+
   def send_to_committee_review_rejected
     status_giver.can_waiting_for_committee_review_rejected?
     status_giver.waiting_for_committee_review_rejected!
@@ -59,5 +80,9 @@ class SubmissionStatusUpdaterService
     status_giver.waiting_for_head_of_program_review!
     submission.update_attribute(:committee_review_accepted_at, DateTime.now)
     WorkflowMailer.send_head_of_program_review_request(submission, approval_status)
+  end
+
+  def funding_discrepancy?
+    submission.federal_funding != CommitteeMember.advisors(submission).first.federal_funding_used
   end
 end
