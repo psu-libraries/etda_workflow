@@ -48,8 +48,8 @@ class FinalSubmissionSubmitService
     if current_partner.graduate? && CommitteeMember.advisors(submission).present?
       status_giver.can_waiting_for_advisor_review?
       status_giver.waiting_for_advisor_review!
-      CommitteeMember.advisors(submission).first.update! approval_started_at: DateTime.now
-      WorkflowMailer.committee_member_review_request(submission, CommitteeMember.advisors(submission).first)
+      CommitteeMember.advisors(submission).first.update approval_started_at: DateTime.now
+      WorkflowMailer.committee_member_review_request(submission, CommitteeMember.advisors(submission).first).deliver
     else
       status_giver.can_waiting_for_committee_review?
       status_giver.waiting_for_committee_review!
