@@ -25,9 +25,11 @@ class SubmissionStatusUpdaterService
       update_status_from_base_committee
     elsif CommitteeMember.advisors(submission).first.status == 'approved' && funding_discrepancy?
       send_to_committee_review_rejected
+      WorkflowMailer.advisor_funding_discrepancy(submission).deliver
       submission.update_attribute(:committee_review_rejected_at, DateTime.now)
     elsif CommitteeMember.advisors(submission).first.status == 'rejected'
       send_to_committee_review_rejected
+      WorkflowMailer.advisor_rejected(submission).deliver
       submission.update_attribute(:committee_review_rejected_at, DateTime.now)
     end
   end
@@ -44,6 +46,7 @@ class SubmissionStatusUpdaterService
       end
     elsif approval_status.status == 'rejected'
       send_to_committee_review_rejected
+      WorkflowMailer.send_committee_rejected_emails(submission)
       submission.update_attribute(:committee_review_rejected_at, DateTime.now)
     end
   end
@@ -54,6 +57,7 @@ class SubmissionStatusUpdaterService
       submission.update_attribute(:head_of_program_review_accepted_at, DateTime.now)
     elsif approval_status.head_of_program_status == 'rejected'
       send_to_committee_review_rejected
+      WorkflowMailer.send_committee_rejected_emails(submission)
       submission.update_attribute(:head_of_program_review_rejected_at, DateTime.now)
     end
   end
@@ -67,7 +71,6 @@ class SubmissionStatusUpdaterService
   def send_to_committee_review_rejected
     status_giver.can_waiting_for_committee_review_rejected?
     status_giver.waiting_for_committee_review_rejected!
-    WorkflowMailer.send_committee_rejected_emails(submission)
   end
 
   def send_to_final_submission_response

@@ -172,6 +172,28 @@ class WorkflowMailer < ActionMailer::Base
          subject: partner_review_request_subject
   end
 
+  def advisor_rejected(submission)
+    @submission = submission
+    @author = submission.author
+    @advisor = CommitteeMember.advisors(submission).first
+    @degree_type =
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "Advisor Rejected Submission"
+  end
+
+  def advisor_funding_discrepancy(submission)
+    @submission = submission
+    @author = submission.author
+    @advisor = CommitteeMember.advisors(submission).first
+
+    mail to: @author.psu_email_address,
+         cc: @advisor.email,
+         from: current_partner.email_address,
+         subject: "Advisor Funding Discrepancy"
+  end
+
   def pending_returned_author(submission)
     @submission = submission
     @author = submission.author
