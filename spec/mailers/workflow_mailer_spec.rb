@@ -515,8 +515,18 @@ RSpec.describe WorkflowMailer do
       expect(email.subject).to eq("Advisor Funding Discrepancy")
     end
 
-    it "has desired content" do
-      expect(email.body).to match(/ETD system that federal funds were/)
+    context 'when advisor chose true for federal funding' do
+      it "has desired content" do
+        CommitteeMember.advisors(submission).first.update federal_funding_used: true
+        expect(email.body).to match(/ETD system that federal funds were used/)
+      end
+    end
+
+    context 'when advisor chose false for federal funding' do
+      it "has desired content" do
+        CommitteeMember.advisors(submission).first.update federal_funding_used: false
+        expect(email.body).to match(/ETD system that federal funds were not used/)
+      end
     end
   end
 
