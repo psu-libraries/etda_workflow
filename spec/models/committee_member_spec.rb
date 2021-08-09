@@ -260,12 +260,25 @@ RSpec.describe CommitteeMember, type: :model do
     end
 
     context 'when committee member has been imported from LP' do
-      it "doesn't update access id" do
-        cm.access_id = 'abc123'
-        cm.lionpath_updated_at = DateTime.now
-        cm.update email: 'buck@hotmail.com'
-        expect(cm.email).to eq 'buck@hotmail.com'
-        expect(cm.access_id).to eq 'abc123'
+      context 'when committee role is not is_program_head' do
+        it "doesn't update access id" do
+          cm.access_id = 'abc123'
+          cm.lionpath_updated_at = DateTime.now
+          cm.update email: 'buck@hotmail.com'
+          expect(cm.email).to eq 'buck@hotmail.com'
+          expect(cm.access_id).to eq 'abc123'
+        end
+      end
+
+      context 'when committee role is_program_head' do
+        it "updates access id" do
+          cm.committee_role.is_program_head = true
+          cm.access_id = 'abc123'
+          cm.lionpath_updated_at = DateTime.now
+          cm.update email: 'xyz123@psu.edu'
+          expect(cm.email).to eq 'xyz123@psu.edu'
+          expect(cm.access_id).to eq 'xyz123'
+        end
       end
     end
 
