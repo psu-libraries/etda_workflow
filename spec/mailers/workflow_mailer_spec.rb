@@ -472,6 +472,53 @@ RSpec.describe WorkflowMailer do
     end
   end
 
+  describe '#advisor_rejected' do
+    let(:email) { described_class.advisor_rejected(submission) }
+
+    it "is sent to the proper recipient" do
+      expect(email.to).to eq([submission.author.psu_email_address])
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("Advisor Rejected Submission")
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/rejected by your advisor/)
+    end
+  end
+
+  describe '#advisor_funding_discrepancy' do
+    let(:email) { described_class.advisor_funding_discrepancy(submission) }
+    before do
+      create_committee(submission)
+    end
+
+    it "is sent to the proper recipient" do
+      expect(email.to).to eq([submission.author.psu_email_address])
+    end
+
+    it "cc's advisor" do
+      expect(email.cc).to eq([CommitteeMember.advisors(submission).first.email])
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("Advisor Funding Discrepancy")
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/ETD system that federal funds were/)
+    end
+  end
+
   describe '#committee_member_review_request' do
     let(:email) { described_class.committee_member_review_request(submission, committee_member) }
 

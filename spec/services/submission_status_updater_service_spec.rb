@@ -37,7 +37,7 @@ RSpec.describe SubmissionStatusUpdaterService do
           described_class.new(submission).update_status_from_committee
           submission.reload
           expect(submission.status).to eq 'waiting for committee review rejected'
-          expect(WorkflowMailer.deliveries.count).to eq 2
+          expect(WorkflowMailer.deliveries.count).to eq 1
         end
       end
 
@@ -53,7 +53,7 @@ RSpec.describe SubmissionStatusUpdaterService do
           described_class.new(submission).update_status_from_committee
           submission.reload
           expect(submission.status).to eq 'waiting for committee review rejected'
-          expect(WorkflowMailer.deliveries.count).to eq 2
+          expect(WorkflowMailer.deliveries.count).to eq 1
         end
       end
     end
