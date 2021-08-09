@@ -327,7 +327,7 @@ class Submission < ApplicationRecord
     seen_access_ids = []
     committee_members.each do |committee_member|
       next if committee_member.is_program_head ||
-              committee_member.committee_role.name.downcase.match(/advisor|adviser/) ||
+              (committee_member.committee_role.name.downcase.match(/advisor|adviser/) && current_partner.graduate?) ||
               seen_access_ids.include?(committee_member.access_id)
 
       committee_member.update! approval_started_at: DateTime.now

@@ -50,7 +50,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         expect(submission.federal_funding).to eq false
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         if current_partner.graduate?
-          expect(WorkflowMailer.deliveries.count).to eq(6)
+          expect(WorkflowMailer.deliveries.count).to eq(2)
           expect(submission.proquest_agreement).to eq true
           expect(submission.proquest_agreement_at).to be_truthy
         end
@@ -90,7 +90,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?
         expect(submission.status).to eq 'waiting for committee review' unless current_partner.graduate?
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
-        expect(WorkflowMailer.deliveries.count).to eq(6) if current_partner.graduate?
+        expect(WorkflowMailer.deliveries.count).to eq(2) if current_partner.graduate?
         expect(WorkflowMailer.deliveries.count).to eq(3) if current_partner.honors?
         expect(WorkflowMailer.deliveries.count).to eq(2) if current_partner.milsch?
       end
