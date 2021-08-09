@@ -494,6 +494,7 @@ RSpec.describe WorkflowMailer do
 
   describe '#advisor_funding_discrepancy' do
     let(:email) { described_class.advisor_funding_discrepancy(submission) }
+
     before do
       create_committee(submission)
     end

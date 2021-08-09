@@ -76,7 +76,7 @@ RSpec.describe FinalSubmissionSubmitService do
           final_submission_params = {}
           described_class.new(submission, status_giver, final_submission_params).submit_final_submission
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
-          expect(submission.committee_members.pluck(:status)).to eq Array.new(5,'')
+          expect(submission.committee_members.pluck(:status)).to eq Array.new(5, '')
         end
       end
 
@@ -89,7 +89,7 @@ RSpec.describe FinalSubmissionSubmitService do
             final_submission_params = {}
             described_class.new(submission, status_giver, final_submission_params).submit_final_submission
             expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
-            expect(submission.committee_members.pluck(:status)).to eq Array.new(5,'')
+            expect(submission.committee_members.pluck(:status)).to eq Array.new(5, '')
           end
         end
 
@@ -99,7 +99,7 @@ RSpec.describe FinalSubmissionSubmitService do
             final_submission_params = {}
             described_class.new(submission, status_giver, final_submission_params).submit_final_submission
             expect(Submission.find(submission.id).status).to eq 'waiting for advisor review'
-            expect(submission.committee_members.pluck(:status)).to eq Array.new(6,'')
+            expect(submission.committee_members.pluck(:status)).to eq Array.new(6, '')
           end
         end
       end

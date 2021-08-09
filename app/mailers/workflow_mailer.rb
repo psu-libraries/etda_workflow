@@ -176,7 +176,6 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @author = submission.author
     @advisor = CommitteeMember.advisors(submission).first
-    @degree_type =
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
