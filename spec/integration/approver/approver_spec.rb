@@ -64,8 +64,61 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
 
     context 'approver is advisor and part of graduate school' do
+      let(:author) { FactoryBot.create :author }
+      let(:program) { FactoryBot.create :program }
+
+      before do
+        submission.committee_members << (FactoryBot.create :committee_member, committee_role: committee_role_not_advisor)
+        submission.committee_members << (FactoryBot.create :committee_member, committee_role: committee_role_not_advisor)
+        submission.committee_members << (FactoryBot.create :committee_member, committee_role: committee_role_not_advisor)
+        submission.update author: author
+        submission.update program: program
+        submission.update status: 'waiting for advisor review'
+        submission.reload
+      end
+
       it 'asks about federal funding used' do
         expect(page).to have_content('Were Federal Funds utilized for this submission?') if current_partner.graduate?
+      end
+
+      context 'when advisor accepts and federal funding matches author' do
+        it 'proceeds to the rest of the committee review and emails committee members' do
+          submission.update federal_funding: true
+          submission.reload
+          find(:css, "#committee_member_status_approved").set true
+          find(:css, "#committee_member_federal_funding_used_true").set true
+          click_button 'Submit Review'
+          submission.reload
+          expect(submission.status).to eq 'waiting for committee review'
+          expect(WorkflowMailer.deliveries.count).to eq 3
+        end
+      end
+
+      context 'when advisor accepts and federal funding does not match author' do
+        it 'sent to "committee review rejected" and email is sent to author' do
+          submission.update federal_funding: false
+          submission.reload
+          find(:css, "#committee_member_status_approved").set true
+          find(:css, "#committee_member_federal_funding_used_true").set true
+          click_button 'Submit Review'
+          submission.reload
+          expect(submission.status).to eq 'waiting for committee review rejected'
+          expect(WorkflowMailer.deliveries.count).to eq 1
+        end
+      end
+
+      context 'when advisor rejects' do
+        it 'sent to "committee review rejected" and email is sent to author' do
+          submission.update federal_funding: true
+          submission.reload
+          find(:css, "#committee_member_status_rejected").set true
+          fill_in "committee_member_notes", with: 'Some notes.'
+          find(:css, "#committee_member_federal_funding_used_true").set true
+          click_button 'Submit Review'
+          submission.reload
+          expect(submission.status).to eq 'waiting for committee review rejected'
+          expect(WorkflowMailer.deliveries.count).to eq 1
+        end
       end
     end
 
