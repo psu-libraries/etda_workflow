@@ -98,6 +98,23 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to delegate_method(:author_full_name).to(:author).as(:full_name) }
   it { is_expected.to delegate_method(:author_psu_email_address).to(:author).as(:psu_email_address) }
 
+  describe '#advisor' do
+    it 'returns the advisor committee member for the submission' do
+      submission = FactoryBot.create :submission
+      advisor_role = FactoryBot.create :committee_role, name: 'Submission Advisor'
+      non_advisor_role = FactoryBot.create :committee_role, name: 'Committee Member'
+      committee_member1 = FactoryBot.create :committee_member, committee_role: advisor_role
+      committee_member2 = FactoryBot.create :committee_member, committee_role: non_advisor_role
+      expect(submission.advisor).to eq nil
+      submission.committee_members << committee_member2
+      submission.reload
+      expect(submission.advisor).to eq nil
+      submission.committee_members << committee_member1
+      submission.reload
+      expect(submission.advisor).to eq committee_member1
+    end
+  end
+
   describe 'status validation' do
     it 'validates the inclusion of status in SubmissionStatus::WORKFLOW_STATUS array' do
       degree = FactoryBot.create :degree, degree_type: DegreeType.default

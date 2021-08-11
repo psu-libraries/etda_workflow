@@ -117,7 +117,7 @@ class Submission < ApplicationRecord
   scope :format_review_is_submitted, -> { where(status: 'waiting for format review response') }
   scope :format_review_is_completed, -> { where('status = ? OR status = ?', "collecting final submission files", "format review is accepted").where(final_submission_rejected_at: nil) }
 
-  scope :final_submission_is_pending, -> { where(status: ['waiting for committee review', 'waiting for head of program review']) }
+  scope :final_submission_is_pending, -> { where(status: ['waiting for advisor review', 'waiting for committee review', 'waiting for head of program review']) }
   scope :committee_review_is_rejected, -> { where(status: 'waiting for committee review rejected') }
   scope :final_submission_is_incomplete, -> { where(status: "collecting final submission files rejected").where.not(final_submission_rejected_at: nil) }
   scope :final_submission_is_submitted, -> { where(status: 'waiting for final submission response') }
@@ -127,6 +127,10 @@ class Submission < ApplicationRecord
   scope :final_is_restricted_institution, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted_to_institution') }
   scope :final_is_withheld, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted') }
   scope :ok_to_release, -> { where('released_for_publication_at <= ?', Time.zone.today.end_of_day) }
+
+  def advisor
+    CommitteeMember.advisors(self).first
+  end
 
   def set_status_to_collecting_program_information
     self.status = 'collecting program information' if new_record? && status.nil?

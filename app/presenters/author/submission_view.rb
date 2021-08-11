@@ -173,9 +173,10 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_six_class
-    if status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_committee_review_rejected?
-      'current'
-    elsif status_behavior.waiting_for_head_of_program_review?
+    if status_behavior.waiting_for_advisor_review? ||
+       status_behavior.waiting_for_committee_review? ||
+       status_behavior.waiting_for_head_of_program_review? ||
+       status_behavior.waiting_for_committee_review_rejected?
       'current'
     elsif status_behavior.beyond_waiting_for_head_of_program_review?
       'complete'
@@ -185,7 +186,10 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_six_description
-    if status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_head_of_program_review? || status_behavior.beyond_waiting_for_committee_review_rejected?
+    if status_behavior.waiting_for_advisor_review? ||
+       status_behavior.waiting_for_committee_review? ||
+       status_behavior.waiting_for_head_of_program_review? ||
+       status_behavior.beyond_waiting_for_committee_review_rejected?
       ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
     elsif status_behavior.waiting_for_committee_review_rejected?
       ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>" + "<a href='" + "/author/submissions/#{id}/final_submission/edit" + "' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
@@ -203,9 +207,9 @@ class Author::SubmissionView < SimpleDelegator
       status[:text] = "approved#{formatted_timestamp_of(head_of_program_review_accepted_at)}" if head_of_program_is_approving?
       status[:text] = "approved#{formatted_timestamp_of(committee_review_accepted_at)}" unless head_of_program_is_approving?
       status[:partial_name] = '/author/shared/completed_indicator'
-    elsif status_behavior.waiting_for_committee_review?
-      status[:partial_name] = '/author/shared/waiting_indicator'
-    elsif status_behavior.waiting_for_head_of_program_review?
+    elsif status_behavior.waiting_for_advisor_review? ||
+          status_behavior.waiting_for_committee_review? ||
+          status_behavior.waiting_for_head_of_program_review?
       status[:partial_name] = '/author/shared/waiting_indicator'
     end
     status

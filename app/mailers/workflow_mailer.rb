@@ -138,6 +138,7 @@ class WorkflowMailer < ActionMailer::Base
     @author = submission.author
     @review_url = "#{EtdUrls.new.workflow}/approver"
 
+    @committee_member.update approval_started_at: DateTime.now if @committee_member.approval_started_at.blank?
     @committee_member.update_last_reminder_at DateTime.now
 
     mail to: @committee_member.email,
@@ -152,6 +153,7 @@ class WorkflowMailer < ActionMailer::Base
     @author = submission.author
     @review_url = "#{EtdUrls.new.workflow}/special_committee/#{@token}"
 
+    @committee_member.update approval_started_at: DateTime.now if @committee_member.approval_started_at.blank?
     @committee_member.update_last_reminder_at DateTime.now
 
     mail to: @committee_member.email,
@@ -165,6 +167,7 @@ class WorkflowMailer < ActionMailer::Base
     @author = submission.author
     @review_url = "#{EtdUrls.new.workflow}/approver"
 
+    @committee_member.update approval_started_at: DateTime.now if @committee_member.approval_started_at.blank?
     @committee_member.update_last_reminder_at DateTime.now
 
     mail to: @committee_member.email,
@@ -175,7 +178,7 @@ class WorkflowMailer < ActionMailer::Base
   def advisor_rejected(submission)
     @submission = submission
     @author = submission.author
-    @advisor = CommitteeMember.advisors(submission).first
+    @advisor = submission.advisor
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
@@ -185,7 +188,7 @@ class WorkflowMailer < ActionMailer::Base
   def advisor_funding_discrepancy(submission)
     @submission = submission
     @author = submission.author
-    @advisor = CommitteeMember.advisors(submission).first
+    @advisor = submission.advisor
 
     mail to: @author.psu_email_address,
          cc: @advisor.email,
@@ -205,8 +208,10 @@ class WorkflowMailer < ActionMailer::Base
   def pending_returned_committee(submission)
     @submission = submission
     @author = submission.author
+    to = submission.status_behavior.waiting_for_advisor_review? ? submission.advisor.email :
+                                                                  submission.committee_email_list
 
-    mail to: submission.committee_email_list,
+    mail to: to,
          from: current_partner.email_address,
          subject: "Final Submission Returned to Student for Resubmission"
   end

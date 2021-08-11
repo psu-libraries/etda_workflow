@@ -470,6 +470,18 @@ RSpec.describe WorkflowMailer do
       expect(email.body).to match(/\/approver/)
       expect(email.body).to match(/Reminder:/)
     end
+
+    it "updates submission's approval_started_at if blank" do
+      committee_member.update approval_started_at: nil
+      committee_member.reload
+      email.deliver
+      expect(committee_member.approval_started_at).to be_truthy
+      timestamp = (DateTime.now - 1.day)
+      committee_member.update approval_started_at: timestamp
+      committee_member.reload
+      email.deliver
+      expect(committee_member.approval_started_at.to_date).to eq timestamp.to_date
+    end
   end
 
   describe '#advisor_rejected' do
@@ -504,7 +516,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "cc's advisor" do
-      expect(email.cc).to eq([CommitteeMember.advisors(submission).first.email])
+      expect(email.cc).to eq([submission.advisor.email])
     end
 
     it "is sent from the partner support email address" do
@@ -517,14 +529,14 @@ RSpec.describe WorkflowMailer do
 
     context 'when advisor chose true for federal funding' do
       it "has desired content" do
-        CommitteeMember.advisors(submission).first.update federal_funding_used: true
+        submission.advisor.update federal_funding_used: true
         expect(email.body).to match(/ETD system that federal funds were used/)
       end
     end
 
     context 'when advisor chose false for federal funding' do
       it "has desired content" do
-        CommitteeMember.advisors(submission).first.update federal_funding_used: false
+        submission.advisor.update federal_funding_used: false
         expect(email.body).to match(/ETD system that federal funds were not used/)
       end
     end
@@ -550,6 +562,18 @@ RSpec.describe WorkflowMailer do
     it "has desired content" do
       expect(email.body).to match(/\/approver/)
       expect(email.body).to match(/Hello/)
+    end
+
+    it "updates submission's approval_started_at if blank" do
+      committee_member.update approval_started_at: nil
+      committee_member.reload
+      email.deliver
+      expect(committee_member.approval_started_at).to be_truthy
+      timestamp = (DateTime.now - 1.day)
+      committee_member.update approval_started_at: timestamp
+      committee_member.reload
+      email.deliver
+      expect(committee_member.approval_started_at.to_date).to eq timestamp.to_date
     end
   end
 
@@ -577,6 +601,18 @@ RSpec.describe WorkflowMailer do
 
         expect(email.body).to match(/\/special_committee\/#{commmittee_member_token.authentication_token.to_s}/)
         expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
+      end
+
+      it "updates submission's approval_started_at if blank" do
+        committee_member.update approval_started_at: nil
+        committee_member.reload
+        email.deliver
+        expect(committee_member.approval_started_at).to be_truthy
+        timestamp = (DateTime.now - 1.day)
+        committee_member.update approval_started_at: timestamp
+        committee_member.reload
+        email.deliver
+        expect(committee_member.approval_started_at.to_date).to eq timestamp.to_date
       end
     end
 

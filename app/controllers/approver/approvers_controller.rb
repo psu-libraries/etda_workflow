@@ -8,7 +8,7 @@ class Approver::ApproversController < ApproverController
     @approver = current_approver
     ApproversService.new(current_approver).update_committee_w_access_id
     @committee_members = @approver.committee_members.select do |n|
-      n if n.submission.status_behavior.beyond_collecting_final_submission_files?
+      n if n.approval_started_at.present? && n.submission.status_behavior.beyond_collecting_final_submission_files?
     end
   end
 

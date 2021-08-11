@@ -20,14 +20,14 @@ class SubmissionStatusUpdaterService
   private
 
   def update_status_from_advisor
-    if CommitteeMember.advisors(submission).first.status == 'approved' && !funding_discrepancy?
+    if submission.advisor.status == 'approved' && !funding_discrepancy?
       send_to_committee_review
       update_status_from_base_committee
-    elsif CommitteeMember.advisors(submission).first.status == 'approved' && funding_discrepancy?
+    elsif submission.advisor.status == 'approved' && funding_discrepancy?
       send_to_committee_review_rejected
       WorkflowMailer.advisor_funding_discrepancy(submission).deliver
       submission.update_attribute(:committee_review_rejected_at, DateTime.now)
-    elsif CommitteeMember.advisors(submission).first.status == 'rejected'
+    elsif submission.advisor.status == 'rejected'
       send_to_committee_review_rejected
       WorkflowMailer.advisor_rejected(submission).deliver
       submission.update_attribute(:committee_review_rejected_at, DateTime.now)
@@ -38,7 +38,6 @@ class SubmissionStatusUpdaterService
     if approval_status.status == 'approved'
       if submission.head_of_program_is_approving?
         send_to_program_head
-        submission.program_head.update approval_started_at: DateTime.now
         update_status_from_head_of_program
       else
         send_to_final_submission_response
@@ -83,10 +82,11 @@ class SubmissionStatusUpdaterService
     status_giver.can_waiting_for_head_of_program_review?
     status_giver.waiting_for_head_of_program_review!
     submission.update_attribute(:committee_review_accepted_at, DateTime.now)
+    submission.program_head.update approval_started_at: DateTime.now
     WorkflowMailer.send_head_of_program_review_request(submission, approval_status)
   end
 
   def funding_discrepancy?
-    submission.federal_funding != CommitteeMember.advisors(submission).first.federal_funding_used
+    submission.federal_funding != submission.advisor.federal_funding_used
   end
 end

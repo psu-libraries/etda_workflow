@@ -15,12 +15,13 @@ RSpec.describe SubmissionStatusUpdaterService do
           create_committee submission
           submission.reload
           submission.federal_funding = true
-          advisor = CommitteeMember.advisors(submission).first
+          advisor = submission.advisor
           advisor.status = 'approved'
           advisor.federal_funding_used = true
           described_class.new(submission).update_status_from_committee
           submission.reload
           expect(submission.status).to eq 'waiting for committee review'
+          expect(submission.committee_members.select{ |i| i.approval_started_at.present? }.count).to eq 5
           expect(WorkflowMailer.deliveries.count).to eq submission.committee_members.count - 1
         end
       end
@@ -31,7 +32,7 @@ RSpec.describe SubmissionStatusUpdaterService do
           create_committee submission
           submission.reload
           submission.federal_funding = false
-          advisor = CommitteeMember.advisors(submission).first
+          advisor = submission.advisor
           advisor.status = 'approved'
           advisor.federal_funding_used = true
           described_class.new(submission).update_status_from_committee
@@ -47,7 +48,7 @@ RSpec.describe SubmissionStatusUpdaterService do
           create_committee submission
           submission.reload
           submission.federal_funding = true
-          advisor = CommitteeMember.advisors(submission).first
+          advisor = submission.advisor
           advisor.status = 'rejected'
           advisor.federal_funding_used = true
           described_class.new(submission).update_status_from_committee
@@ -65,8 +66,10 @@ RSpec.describe SubmissionStatusUpdaterService do
           allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('')
           submission = FactoryBot.create :submission, :waiting_for_committee_review
           allow(CommitteeMember).to receive(:program_head).with(submission).and_return(FactoryBot.create(:committee_member))
+          expect(submission.program_head.approval_started_at).to be_falsey
           described_class.new(submission).update_status_from_committee
           expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
+          expect(submission.program_head.approval_started_at).to be_truthy
           expect(WorkflowMailer.deliveries.count).to eq 1
         end
 

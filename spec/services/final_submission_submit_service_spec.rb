@@ -40,7 +40,7 @@ RSpec.describe FinalSubmissionSubmitService do
       context 'when current_partner is graduate' do
         context 'when advisor is not present' do
           it "proceeds submission to waiting for committee review" do
-            CommitteeMember.advisors(submission).first.destroy!
+            submission.advisor.destroy!
             submission.reload
             submission.status = 'collecting final submission files'
             final_submission_params = {}
@@ -55,6 +55,7 @@ RSpec.describe FinalSubmissionSubmitService do
             final_submission_params = {}
             described_class.new(submission, status_giver, final_submission_params).submit_final_submission
             expect(Submission.find(submission.id).status).to eq 'waiting for advisor review'
+            expect(submission.advisor.approval_started_at).to be_truthy
           end
         end
       end
@@ -83,7 +84,7 @@ RSpec.describe FinalSubmissionSubmitService do
       context 'when current_partner is graduate' do
         context 'when advisor is not present' do
           it "proceeds submission to waiting for committee review and resets committee statuses" do
-            CommitteeMember.advisors(submission).first.destroy!
+            submission.advisor.destroy!
             submission.reload
             submission.status = 'waiting for committee review rejected'
             final_submission_params = {}
