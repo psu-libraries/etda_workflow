@@ -21,7 +21,7 @@ RSpec.describe SubmissionStatusUpdaterService do
           described_class.new(submission).update_status_from_committee
           submission.reload
           expect(submission.status).to eq 'waiting for committee review'
-          expect(submission.committee_members.select{ |i| i.approval_started_at.present? }.count).to eq 5
+          expect(submission.committee_members.select { |i| i.approval_started_at.present? }.count).to eq 5
           expect(WorkflowMailer.deliveries.count).to eq submission.committee_members.count - 1
         end
       end

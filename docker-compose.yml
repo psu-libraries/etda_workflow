@@ -79,7 +79,7 @@ services:
       APP_HOST: web
       MYSQL_HOST: db
       RAILS_ENV: development
-      PARTNER: ${PARTNER:-"graduate"}
+      PARTNER: ${PARTNER:-graduate}
     command: >
       sh -c "/etda_workflow/entrypoint.sh"
     ports:

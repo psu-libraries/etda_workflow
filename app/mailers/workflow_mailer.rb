@@ -208,8 +208,11 @@ class WorkflowMailer < ActionMailer::Base
   def pending_returned_committee(submission)
     @submission = submission
     @author = submission.author
-    to = submission.status_behavior.waiting_for_advisor_review? ? submission.advisor.email :
-                                                                  submission.committee_email_list
+    to = if submission.status_behavior.waiting_for_advisor_review?
+           submission.advisor.email
+         else
+           submission.committee_email_list
+         end
 
     mail to: to,
          from: current_partner.email_address,
