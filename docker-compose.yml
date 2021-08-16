@@ -29,12 +29,12 @@ services:
       # context: . 
       # target: base
     environment:
-      JS: ${JS:-false}
+      JS: ${JS:-"false"}
       REDIS_HOST: redis
       APP_HOST: web
       MYSQL_HOST: db
       RAILS_ENV: test
-      PARTNER: ${PARTNER:-graduate}
+      PARTNER: ${PARTNER:-"graduate"}
     command: >
 #      sh -c "bundle check || bundle
 #      && bundle exec rake db:migrate
@@ -63,7 +63,7 @@ services:
       APP_HOST: web
       MYSQL_HOST: db
       RAILS_ENV: development
-      PARTNER: ${PARTNER:-graduate}
+      PARTNER: ${PARTNER:-"graduate"}
     command: >
       sh -c "/etda_workflow/entrypoint.sh"
     ports:

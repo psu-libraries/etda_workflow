@@ -227,10 +227,10 @@ RSpec.describe CommitteeMember, type: :model do
       cm.committee_role_id = committee_role.id
     end
 
-    context 'when email is a psu email' do
+    context 'when email is found in directory search' do
       it 'updates access_id' do
-        cm.update email: 'test123@psu.edu'
-        expect(cm.access_id).to eq 'test123'
+        cm.update email: 'abc432@psu.edu'
+        expect(cm.access_id).to eq 'abc432'
       end
 
       it 'does not add a committee_member_token' do
@@ -239,16 +239,14 @@ RSpec.describe CommitteeMember, type: :model do
       end
     end
 
-    context 'when nil is returned from ldap lookup' do
-      it "doesn't update access_id" do
+    context 'when nil is returned from directory search' do
+      it "changes access id to nil" do
         cm.access_id = 'test123'
-        allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
-        expect { cm.update email: 'test123@psu.edu' }.to change(cm, :access_id).to nil
+        expect { cm.update email: 'test123@test.email.com' }.to change(cm, :access_id).to nil
       end
 
       it 'adds a committee_member_token' do
-        allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve_committee_access_id).and_return(nil)
-        cm.update email: 'test123@email.com'
+        cm.update email: 'test123@test.email.com'
         expect(cm.committee_member_token).to be_present
       end
     end
@@ -258,6 +256,38 @@ RSpec.describe CommitteeMember, type: :model do
         cm.update email: '       test123@psu.edu       '
         expect(cm.email).to eq 'test123@psu.edu'
         expect(cm.access_id).to eq 'test123'
+      end
+    end
+
+    context 'when committee member has been imported from LP' do
+      context 'when committee role is not is_program_head' do
+        it "doesn't update access id" do
+          cm.access_id = 'abc123'
+          cm.lionpath_updated_at = DateTime.now
+          cm.update email: 'buck@hotmail.com'
+          expect(cm.email).to eq 'buck@hotmail.com'
+          expect(cm.access_id).to eq 'abc123'
+        end
+      end
+
+      context 'when committee role is_program_head' do
+        it "updates access id" do
+          cm.committee_role.is_program_head = true
+          cm.access_id = 'abc123'
+          cm.lionpath_updated_at = DateTime.now
+          cm.update email: 'xyz123@psu.edu'
+          expect(cm.email).to eq 'xyz123@psu.edu'
+          expect(cm.access_id).to eq 'xyz123'
+        end
+      end
+    end
+
+    context 'when committee member has not been imported from LP' do
+      it "updates access id" do
+        cm.access_id = 'abc123'
+        cm.update email: 'buck@hotmail.com'
+        expect(cm.email).to eq 'buck@hotmail.com'
+        expect(cm.access_id).to eq 'pbm123'
       end
     end
   end

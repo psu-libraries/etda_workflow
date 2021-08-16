@@ -85,11 +85,14 @@ class CommitteeMember < ApplicationRecord
   end
 
   def email=(new_email)
-    return if new_email == self[:email]
+    new_email_stripped = new_email.strip
+    return if new_email_stripped == self[:email]
 
-    self[:email] = new_email.strip
-    new_access_id = LdapUniversityDirectory.new.retrieve_committee_access_id(self[:email])
-    self.access_id = new_access_id
+    self[:email] = new_email_stripped
+
+    new_access_id = DirectoryService.get_accessid_by_email(new_email_stripped)
+
+    self.access_id = new_access_id if lionpath_updated_at.blank? || is_program_head
     return unless committee_member_token.blank? && access_id.blank?
 
     token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)
