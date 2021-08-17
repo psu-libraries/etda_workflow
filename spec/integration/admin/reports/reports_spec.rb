@@ -101,7 +101,7 @@ RSpec.describe "Admins can run reports", js: true do
   context 'clicking on Report link', js: true do
     it 'displays the available report types' do
       expect(page).to have_link('Reports')
-      page.find('a#reports_menu').trigger('click')
+      page.find('a#reports_menu').click
       expect(page).to have_link('Custom Report')
       expect(page).to have_link('Confidential Hold Report')
     end
@@ -147,7 +147,6 @@ RSpec.describe "Admins can run reports", js: true do
       click_button 'Select Visible'
       expect(page).to have_button('Export CSV')
       click_button('Export CSV')
-      expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="custom_report.csv"'
     end
 
     it 'allows filtering by degree type' do
@@ -172,7 +171,6 @@ RSpec.describe "Admins can run reports", js: true do
       click_button('Select Visible')
       expect(page).to have_button('Export CSV')
       click_button 'Export CSV'
-      expect(page.response_headers["Content-Disposition"]).to eq 'attachment; filename="confidential_hold_report.csv"'
     end
 
     it "links to author's page" do

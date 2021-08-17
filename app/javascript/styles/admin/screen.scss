@@ -11,104 +11,6 @@
   margin: 27px 0px 0px;
 }
 
-.dataTables_wrapper {
-  .dataTables_filter {
-    max-width: 100%;
-
-    input {
-      width: 285px;
-      max-width: 100%;
-      margin-left: 0px;
-    }
-  }
-}
-
-@media (max-width: 992px) {
-  .dataTables_wrapper {
-    .row {
-      .col-xs-12 {
-        padding-left: 5px;
-        padding-right: 5px;
-      }
-    }
-
-    .dataTables_info {
-      margin-bottom: 5px;
-      color: $gray-light;
-    }
-
-    .dataTables_length {
-      width: 100%;
-      label {
-        width: 100%;
-        line-height: 30px;
-        select {
-          float: left;
-          width: 75%;
-          max-width: 115px;
-          margin-right: 5px;
-        }
-      }
-    }
-
-    .dataTables_filter {
-      float: none;
-      label {
-        width: 100%;
-        input {
-          width: 100%;
-        }
-      }
-    }
-
-    .dataTables_processing {
-      left: 5px;
-      right: 5px;
-    }
-  }
-}
-
-table {
-  &.dataTable {
-    thead {
-      th, td {
-         border-color: $table-border-color;
-      }
-    }
-
-    &.no-footer {
-      order-color: $table-border-color;
-    }
-  }
-}
-
-table.dataTable {
-  &.admin-submissions-index {
-    tbody {
-      tr {
-        td:first-child {
-          display: none;
-        }
-      }
-    }
-    thead {
-      tr {
-        th:first-child {
-          display: none;
-        }
-      }
-    }
-  }
-
-  .release-label {
-    font-weight: normal;
-    font-size: 100%;
-  }
-  .label-none {
-    color: $text-color;
-  }
-}
-
 #bulk-actions {
   display: none;
   border-top: 1px solid $gray-lighter;
@@ -150,21 +52,36 @@ table.dataTable {
 }
 
 .panel {
+  border-radius: 10px;
+  padding-bottom: 10px;
+  margin-top: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
 
   &.filter {
     display: block;
     color: $text-color;
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
     @include transition(all 0.2s ease);
 
+    .panel-body {
+      margin-left: 20px;
+      margin-top: 15px;
+    }
+
     .panel-heading {
+      padding: 1px 20px 1px 20px;
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
       background-color: $gray-lightest;
-      border-color: $link-color;
 
       .panel-title {
         color: $link-color;
+        margin-top: 15px;
+        margin-bottom: 15px;
 
         .badge {
-          background-color: $link-color;
+          background-color: $primary;
           color: #fff;
         }
 
@@ -203,8 +120,16 @@ table.dataTable {
   &.no-submissions {
     color: $gray-light;
 
+    .panel-body {
+      margin-left: 20px;
+      margin-top: 15px;
+    }
+
     .panel-heading {
       background-color: #fff;
+      padding-left: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
 
       .panel-title {
         color: #767676;
@@ -219,8 +144,8 @@ table.dataTable {
 }
 
 .form-section-heading {
-  @extend .h5;
-  padding: 10px;
+  @extend .h4;
+  padding: 15px;
   margin: 0px 0px 10px;
   background-color: $gray-lightest;
   border-radius: 6px 6px 0px 0px;
@@ -283,9 +208,19 @@ table.dataTable {
   border: 1px solid lightgray;
 }
 
-// search box on all datatables pages
+//search box on all datatables pages
 .dataTables_filter{
   float: right;
+
+  strong {
+    margin: 5px;
+  }
+}
+
+.dataTables_length {
+  strong {
+    margin: 5px;
+  }
 }
 
 .withdraw-msg {
@@ -303,7 +238,7 @@ table.dataTable {
     float: right;
     margin: 0;
     margin-top: -4em;
-    padding: 0;
+    padding-left: 10px;
   }
 }
 .record-count-top {
@@ -319,4 +254,8 @@ table.dataTable {
 
 .select-status {
   text-transform: capitalize;
+}
+
+.print-column {
+  min-width: 125px;
 }
