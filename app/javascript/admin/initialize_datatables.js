@@ -6,7 +6,7 @@
 
 var $ = require('jquery');
 window.jQuery = $;
-var DataTable = require('datatables.net-bs');
+var DataTable = require('datatables.net-bs4');
 
 $('table').DataTable();
 
@@ -28,6 +28,8 @@ setup_datatables = function() {
         stateDuration: 60 * 60 * 24,
         paginate: true,
         language: {
+            sSearch: "<div class='form-inline'><strong>Search:</strong> _INPUT_</div>",
+            lengthMenu: "<div class='form-inline'><strong>Show</strong> _MENU_ <strong>entries</strong></div>",
             loadingRecords: "&nbsp;",
             processing: "<div class='spinner'><div class='spinner-info'>Loading Data...</div></div>"
         },
@@ -162,7 +164,7 @@ setup_datatables = function() {
 
     if ($('.admin-submissions-index.datatable').length) {
         const default_semester = $('.admin-submissions-index.datatable').data('default-semester');
-        $filters.append($('<label class="pull-right"></label>').append(select));
+        $filters.append($('<label class="float-right"></label>').append(select));
         for (i = 0; i < semesters.length; i++) {
             select.append(`<option value="${semesters[i]}">${semesters[i]}</option>`)
         }
