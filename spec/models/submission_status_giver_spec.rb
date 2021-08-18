@@ -577,9 +577,9 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for advisor review'" do
       before { submission.status = 'waiting for advisor review' }
 
-      it "raises an exception" do
+      it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_committee_review_admin_response? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_committee_review_admin_response? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 

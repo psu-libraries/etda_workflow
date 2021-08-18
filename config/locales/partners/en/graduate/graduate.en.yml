@@ -165,7 +165,7 @@ en:
                     University Park, PA  16802
         advisor_funding_discrepancy:
           message: |
-                    Your advisor has indicated in the ETD system that federal funds were%{funding_wording} used for your %{degree_type}.
+                    Your advisor has indicated that federal funds were%{funding_wording} used for your %{degree_type}.
                     You have indicated otherwise. Please consult with your %{degree_type} advisor about this discrepancy.
                     When you have completed your revisions, please resubmit your %{degree_type} for committee review.
 

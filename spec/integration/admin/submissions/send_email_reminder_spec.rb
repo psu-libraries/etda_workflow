@@ -44,6 +44,40 @@ RSpec.describe "Sending an email reminder", js: true do
     end
   end
 
+  context "when submission status is waiting for advisor review" do
+    before do
+      committee_member1.update committee_role: (FactoryBot.create :committee_role, name: 'Advisor')
+      submission1.update status: 'waiting for advisor review'
+      submission1.reload
+      visit admin_edit_submission_path(submission1)
+    end
+
+    it 'has send email reminder button' do
+      find("div[data-target='#committee']").click
+
+      within('#committee') do
+        expect(page).to have_button('Send Email Reminder')
+      end
+    end
+  end
+
+  context "when submission status is waiting for head of program review" do
+    before do
+      committee_member1.update committee_role: (FactoryBot.create :committee_role, is_program_head: true)
+      submission1.update status: 'waiting for head of program review'
+      submission1.reload
+      visit admin_edit_submission_path(submission1)
+    end
+
+    it 'has send email reminder button' do
+      find("div[data-target='#committee']").click
+
+      within('#committee') do
+        expect(page).to have_button('Send Email Reminder')
+      end
+    end
+  end
+
   context 'when submission status is not waiting for committee approval' do
     before do
       visit admin_edit_submission_path(submission2)

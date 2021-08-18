@@ -225,8 +225,24 @@ RSpec.describe Admin::SubmissionFormView do
       end
     end
 
+    context "When the status is 'waiting for advisor review'" do
+      before { submission.status = 'waiting for advisor review' }
+
+      it "returns final submission pending response" do
+        expect(view.form_for_url).to eq admin_submissions_final_submission_pending_response_path(submission)
+      end
+    end
+
     context "When the status is 'waiting for committee review'" do
       before { submission.status = 'waiting for committee review' }
+
+      it "returns final submission pending response" do
+        expect(view.form_for_url).to eq admin_submissions_final_submission_pending_response_path(submission)
+      end
+    end
+
+    context "When the status is 'waiting for head of program review'" do
+      before { submission.status = 'waiting for head of program review' }
 
       it "returns final submission pending response" do
         expect(view.form_for_url).to eq admin_submissions_final_submission_pending_response_path(submission)

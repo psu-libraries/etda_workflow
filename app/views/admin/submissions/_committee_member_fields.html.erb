@@ -22,7 +22,7 @@
       <% if (@submission.status_behavior.waiting_for_advisor_review? && f.object == @submission.advisor) ||
             (@submission.status_behavior.waiting_for_committee_review? && !f.object.is_program_head && !(f.object == @submission.advisor)) ||
             (@submission.status_behavior.waiting_for_head_of_program_review? && f.object.is_program_head) %>
-        <button type="button" id="send_email_reminder" value="<%= f.object.id.to_s %>">Send Email Reminder</button>
+        <button type="button" class="btn btn-light" id="send_email_reminder" value="<%= f.object.id.to_s %>">Send Email Reminder</button>
       <% end %>
     </div>
     <%= "<p class='hint'>Approved at: #{f.object.approved_at.strftime("%B %d, %Y")} #{f.object.approved_at.strftime("%I:%M %p")}</p>".html_safe if f.object.status == 'approved' %>
