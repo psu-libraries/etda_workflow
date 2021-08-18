@@ -530,14 +530,14 @@ RSpec.describe WorkflowMailer do
     context 'when advisor chose true for federal funding' do
       it "has desired content" do
         submission.advisor.update federal_funding_used: true
-        expect(email.body).to match(/ETD system that federal funds were used/)
+        expect(email.body).to match(/ that federal funds were used/)
       end
     end
 
     context 'when advisor chose false for federal funding' do
       it "has desired content" do
         submission.advisor.update federal_funding_used: false
-        expect(email.body).to match(/ETD system that federal funds were not used/)
+        expect(email.body).to match(/ that federal funds were not used/)
       end
     end
   end
