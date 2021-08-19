@@ -20,7 +20,7 @@
       <td><%= member.status ? member.status.capitalize : nil %></td>
       <td><%= member.notes %></td>
       <% if (@submission.status_behavior.waiting_for_advisor_review? && member == @submission.advisor) ||
-            (@submission.status_behavior.waiting_for_committee_review? && !member.is_program_head && !(member == @submission.advisor)) ||
+            (@submission.status_behavior.waiting_for_committee_review? && !member.is_program_head && (!(member == @submission.advisor) || !current_partner.graduate?)) ||
             (@submission.status_behavior.waiting_for_head_of_program_review? && member.is_program_head) %>
         <td><%= button_to 'Send Email Reminder',
                           { controller: author_submissions_path,

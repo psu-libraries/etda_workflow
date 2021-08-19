@@ -20,7 +20,7 @@
                   label_method: :last, value_method: :first,
                   include_blank: true, input_html: { class: "select-status" } %>
       <% if (@submission.status_behavior.waiting_for_advisor_review? && f.object == @submission.advisor) ||
-            (@submission.status_behavior.waiting_for_committee_review? && !f.object.is_program_head && !(f.object == @submission.advisor)) ||
+            (@submission.status_behavior.waiting_for_committee_review? && !f.object.is_program_head && (!(f.object == @submission.advisor) || !current_partner.graduate?)) ||
             (@submission.status_behavior.waiting_for_head_of_program_review? && f.object.is_program_head) %>
         <button type="button" class="btn btn-light" id="send_email_reminder" value="<%= f.object.id.to_s %>">Send Email Reminder</button>
       <% end %>

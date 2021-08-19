@@ -422,13 +422,20 @@ RSpec.describe Submission, type: :model do
     end
   end
 
-  describe "#committee_review_requests_init" do
-    it 'sets approval_started_at timestamp for committee members' do
+  describe "#committee_review_requests_init", honors: true do
+    it 'sets approval_started_at timestamp for committee members and sends email to committee members only once' do
       submission = FactoryBot.create :submission
       create_committee submission
+      if current_partner.graduate?
+        submission.committee_members.second.update access_id: 'abc123'
+        submission.committee_members.third.update access_id: 'abc123'
+      end
+      submission.reload
       submission.committee_review_requests_init
       submission.reload
-      expect(submission.committee_members.pluck(:approval_started_at).compact.count).to eq submission.committee_members.count - 1
+      expect(submission.committee_members.pluck(:approval_started_at).compact.count).to eq submission.committee_members.count - 1 if current_partner.graduate?
+      expect(submission.committee_members.pluck(:approval_started_at).compact.count).to eq submission.committee_members.count unless current_partner.graduate?
+      expect(WorkflowMailer.deliveries.count).to eq submission.committee_members.count - 2 if current_partner.graduate?
     end
   end
 
