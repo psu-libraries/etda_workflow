@@ -74,15 +74,18 @@ RSpec.describe "when admin responds to final submission", js: true do
     end
   end
 
-  describe "when an admin clicks 'Send to committee'" do
-    it "updates status to 'waiting for committee review'" do
+  describe "when an admin clicks 'Send to committee'", honors: true, sset: true, milsch: true do
+    it "updates status to 'waiting for advisor review' for graduate and 'waiting for committee review' for other partners" do
+      create_committee submission
+      submission.reload
       visit admin_edit_submission_path(submission)
       page.accept_confirm do
         click_button 'Send to committee'
       end
       expect(page).to have_content('successfully returned to the committee review stage and the committee was notified to visit the site for review.')
       submission.reload
-      expect(submission.status).to eq 'waiting for committee review'
+      expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?
+      expect(submission.status).to eq 'waiting for committee review' unless current_partner.graduate?
       expect(WorkflowMailer.deliveries.last.subject).to eq "Committee Review Initiated"
     end
   end
