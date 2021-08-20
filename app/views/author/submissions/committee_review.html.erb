@@ -7,7 +7,9 @@
     <th>Role</th>
     <th>Status</th>
     <th>Notes</th>
-    <% if @submission.status_behavior.waiting_for_committee_review? || @submission.status_behavior.waiting_for_head_of_program_review? %>
+    <% if @submission.status_behavior.waiting_for_advisor_review? ||
+          @submission.status_behavior.waiting_for_committee_review? ||
+          @submission.status_behavior.waiting_for_head_of_program_review? %>
       <th>Action</th>
     <% end %>
   </tr>
