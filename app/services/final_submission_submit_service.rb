@@ -49,6 +49,8 @@ class FinalSubmissionSubmitService
       status_giver.can_waiting_for_advisor_review?
       status_giver.waiting_for_advisor_review!
       submission.advisor.update approval_started_at: DateTime.now
+      return unless submission.advisor.status == 'approved'
+
       WorkflowMailer.committee_member_review_request(submission, submission.advisor).deliver
     else
       status_giver.can_waiting_for_committee_review?
