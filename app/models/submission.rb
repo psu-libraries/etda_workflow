@@ -334,7 +334,7 @@ class Submission < ApplicationRecord
               (committee_member.committee_role.name.downcase.match(/advisor|adviser/) && current_partner.graduate?)
 
       committee_member.update! approval_started_at: DateTime.now
-      next if seen_access_ids.include?(committee_member.access_id)
+      next if seen_access_ids.include?(committee_member.access_id) || approval_status_behavior.status == 'approved'
 
       WorkflowMailer.send_committee_review_requests(self, committee_member)
 
