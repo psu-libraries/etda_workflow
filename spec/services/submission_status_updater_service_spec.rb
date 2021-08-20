@@ -24,6 +24,23 @@ RSpec.describe SubmissionStatusUpdaterService do
           expect(submission.committee_members.select { |i| i.approval_started_at.present? }.count).to eq 5
           expect(WorkflowMailer.deliveries.count).to eq submission.committee_members.count - 1
         end
+
+        context "when advisor's federal_funding_used is nil" do
+          it 'changes status to waiting for committee review' do
+            submission = FactoryBot.create :submission, :waiting_for_advisor_review, degree: degree
+            create_committee submission
+            submission.reload
+            submission.federal_funding = true
+            advisor = submission.advisor
+            advisor.status = 'approved'
+            advisor.federal_funding_used = nil
+            described_class.new(submission).update_status_from_committee
+            submission.reload
+            expect(submission.status).to eq 'waiting for committee review'
+            expect(submission.committee_members.select { |i| i.approval_started_at.present? }.count).to eq 5
+            expect(WorkflowMailer.deliveries.count).to eq submission.committee_members.count - 1
+          end
+        end
       end
 
       context 'when advisor approves and there are funding discrepancies' do
