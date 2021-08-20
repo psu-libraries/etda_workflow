@@ -425,6 +425,7 @@ RSpec.describe Submission, type: :model do
   describe "#committee_review_requests_init", honors: true do
     it 'sets approval_started_at timestamp for committee members and sends email to committee members only once' do
       submission = FactoryBot.create :submission
+      allow(submission).to receive(:head_of_program_is_approving?).and_return false
       create_committee submission
       if current_partner.graduate?
         submission.committee_members.second.update access_id: 'abc123'
