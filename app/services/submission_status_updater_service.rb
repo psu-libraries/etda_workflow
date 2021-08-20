@@ -83,7 +83,7 @@ class SubmissionStatusUpdaterService
     status_giver.waiting_for_head_of_program_review!
     submission.update_attribute(:committee_review_accepted_at, DateTime.now)
     submission.program_head.update approval_started_at: DateTime.now
-    return unless approval_status.head_of_program_status == 'approved'
+    return if approval_status.head_of_program_status == 'approved'
 
     WorkflowMailer.send_head_of_program_review_request(submission, approval_status)
   end
