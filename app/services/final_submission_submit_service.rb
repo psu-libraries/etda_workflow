@@ -25,8 +25,8 @@ class FinalSubmissionSubmitService
   private
 
   def committee_reject_submit
-    collect_final
     submission.reset_committee_reviews
+    collect_final
     submission.update_final_submission_timestamps!(Time.zone.now)
     WorkflowMailer.send_final_submission_received_email(submission)
   end
