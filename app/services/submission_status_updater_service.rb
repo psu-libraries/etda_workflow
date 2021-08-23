@@ -89,7 +89,7 @@ class SubmissionStatusUpdaterService
   end
 
   def funding_discrepancy?
-    return false if submission.advisor.federal_funding_used.blank?
+    return false if submission.advisor.federal_funding_used.nil?
 
     submission.federal_funding != submission.advisor.federal_funding_used
   end
