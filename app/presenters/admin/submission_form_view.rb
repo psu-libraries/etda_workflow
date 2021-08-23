@@ -20,6 +20,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'Format Review Evaluation' if status_behavior.waiting_for_format_review_response?
     return 'Edit Completed Format Review' if status_behavior.collecting_final_submission_files? && !status_behavior.final_submission_rejected?
     return 'Edit Incomplete Final Submission' if status_behavior.collecting_final_submission_files? && status_behavior.final_submission_rejected?
+    return 'Waiting for Advisor Review' if status_behavior.waiting_for_advisor_review?
     return 'Waiting for Committee Review' if status_behavior.waiting_for_committee_review?
     return 'Waiting for Head/Chair Review' if status_behavior.waiting_for_head_of_program_review?
     return 'Committee Review Rejected' if status_behavior.waiting_for_committee_review_rejected?
@@ -41,14 +42,14 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'restricted_institution_actions' if status_behavior.released_for_publication? && !(access_level.open_access? || access_level.restricted?)
     return 'to_be_released_actions' if status_behavior.waiting_for_publication_release?
     return 'on_hold_actions' if status_behavior.waiting_in_final_submission_on_hold?
-    return 'final_submission_is_pending_actions' if status_behavior.waiting_for_committee_review? | status_behavior.waiting_for_head_of_program_review?
+    return 'final_submission_is_pending_actions' if status_behavior.waiting_for_advisor_review? || status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_head_of_program_review?
 
     'standard_actions'
   end
 
   def form_for_url
     return "/admin/submissions/#{id}/format_review_response" if status_behavior.waiting_for_format_review_response?
-    return "/admin/submissions/#{id}/final_submission_pending_response" if status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_head_of_program_review?
+    return "/admin/submissions/#{id}/final_submission_pending_response" if status_behavior.waiting_for_advisor_review? || status_behavior.waiting_for_committee_review? || status_behavior.waiting_for_head_of_program_review?
     return "/admin/submissions/#{id}/final_submission_response" if status_behavior.waiting_for_final_submission_response?
     return "/admin/submissions/#{id}/update_waiting_to_be_released" if status_behavior.waiting_for_publication_release? || status_behavior.waiting_in_final_submission_on_hold?
     return "/admin/submissions/#{id}/update_released" if status_behavior.released_for_publication?

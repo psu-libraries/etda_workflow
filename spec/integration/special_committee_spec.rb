@@ -1,9 +1,17 @@
 RSpec.describe 'Special committee page', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
-  let!(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, final_submission_files_uploaded_at: DateTime.now, final_submission_approved_at: DateTime.now }
-  let!(:committee_member) { FactoryBot.create :committee_member, submission: submission, status: '', email: 'approverflow@gmail.com' }
-  let!(:committee_member_token) { FactoryBot.create :committee_member_token, authentication_token: '1' }
+  let!(:submission) do
+    FactoryBot.create :submission, :waiting_for_committee_review, final_submission_files_uploaded_at: DateTime.now,
+                                                                  final_submission_approved_at: DateTime.now
+  end
+  let!(:committee_member) do
+    FactoryBot.create :committee_member, submission: submission, status: '', email: 'approverflow@gmail.com',
+                                         approval_started_at: DateTime.now
+  end
+  let!(:committee_member_token) do
+    FactoryBot.create :committee_member_token, authentication_token: '1'
+  end
 
   before do
     committee_member.committee_member_token = nil

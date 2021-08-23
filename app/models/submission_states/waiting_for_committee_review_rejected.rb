@@ -5,7 +5,8 @@ module SubmissionStates
     @name = 'waiting for committee review rejected'
 
     def initialize
-      @transitions_to = [SubmissionStates::WaitingForCommitteeReview]
+      @transitions_to = [SubmissionStates::WaitingForCommitteeReview,
+                         SubmissionStates::WaitingForAdvisorReview]
     end
 
     def status_date(submission)

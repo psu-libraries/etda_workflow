@@ -26,23 +26,83 @@ RSpec.describe FinalSubmissionSubmitService do
 
   describe "#submit_final_submission" do
     context "when author submits final submission for the first time" do
-      it "proceeds submission to next step in workflow" do
-        submission.status = 'collecting final submission files'
-        final_submission_params = {}
-        described_class.new(submission, status_giver, final_submission_params).submit_final_submission
-        expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+      context 'when current_partner is non-graduate', honors: true, milsch: true, sset: true do
+        it "proceeds submission to waiting for committee review" do
+          skip 'Non-graduate only' if current_partner.graduate?
+
+          submission.status = 'collecting final submission files'
+          final_submission_params = {}
+          described_class.new(submission, status_giver, final_submission_params).submit_final_submission
+          expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+        end
+      end
+
+      context 'when current_partner is graduate' do
+        context 'when advisor is not present' do
+          it "proceeds submission to waiting for committee review" do
+            submission.advisor.destroy!
+            submission.reload
+            submission.status = 'collecting final submission files'
+            final_submission_params = {}
+            described_class.new(submission, status_giver, final_submission_params).submit_final_submission
+            expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+          end
+        end
+
+        context 'when advisor is present' do
+          it "proceeds submission to waiting for advisor review" do
+            submission.status = 'collecting final submission files'
+            final_submission_params = {}
+            described_class.new(submission, status_giver, final_submission_params).submit_final_submission
+            expect(Submission.find(submission.id).status).to eq 'waiting for advisor review'
+            expect(submission.advisor.approval_started_at).to be_truthy
+          end
+        end
       end
     end
 
     context "when author submits final submission after committee rejects" do
-      it "proceeds submission to next step in workflow and resets committee statuses" do
-        submission.status = 'waiting for committee review rejected'
-        committee_member = FactoryBot.create :committee_member, status: 'Rejected'
-        submission.committee_members << committee_member
-        final_submission_params = {}
-        described_class.new(submission, status_giver, final_submission_params).submit_final_submission
-        expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
-        expect(CommitteeMember.find(committee_member.id).status).to eq ''
+      before do
+        submission.committee_members.each do |cm|
+          cm.update status: 'rejected'
+        end
+        submission.reload
+      end
+
+      context 'when current_partner is non-graduate', honors: true, milsch: true, sset: true do
+        it "proceeds submission to waiting for committee review and resets committee statuses" do
+          skip 'Non-graduate only' if current_partner.graduate?
+
+          submission.status = 'waiting for committee review rejected'
+          final_submission_params = {}
+          described_class.new(submission, status_giver, final_submission_params).submit_final_submission
+          expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+          expect(submission.committee_members.pluck(:status)).to eq Array.new(submission.committee_members.count, '')
+        end
+      end
+
+      context 'when current_partner is graduate' do
+        context 'when advisor is not present' do
+          it "proceeds submission to waiting for committee review and resets committee statuses" do
+            submission.advisor.destroy!
+            submission.reload
+            submission.status = 'waiting for committee review rejected'
+            final_submission_params = {}
+            described_class.new(submission, status_giver, final_submission_params).submit_final_submission
+            expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+            expect(submission.committee_members.pluck(:status)).to eq Array.new(5, '')
+          end
+        end
+
+        context 'when advisor is present' do
+          it "proceeds submission to waiting for advisor review and resets committee statuses" do
+            submission.status = 'waiting for committee review rejected'
+            final_submission_params = {}
+            described_class.new(submission, status_giver, final_submission_params).submit_final_submission
+            expect(Submission.find(submission.id).status).to eq 'waiting for advisor review'
+            expect(submission.committee_members.pluck(:status)).to eq Array.new(6, '')
+          end
+        end
       end
     end
   end

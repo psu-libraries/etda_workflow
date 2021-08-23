@@ -122,11 +122,11 @@ setup_datatables = function() {
             ajax: (table.attr('data-ajax-url') + '.json'),
             initComplete() {
                 const column = this.api().column("submission_status:name");
-                column.search("Waiting For Committee Review( Rejected)?|Waiting For Head Of Program Review", true, false).draw();
+                column.search("Waiting For Committee Review( Rejected)?|Waiting For Head Of Program Review|Waiting For Advisor Review", true, false).draw();
                 approver_select.on('change', function() {
                     const val = $.fn.dataTable.util.escapeRegex($(this).val() || '');
                     if (val === 'Active Reviews') {
-                        column.search("Waiting For Committee Review( Rejected)?|Waiting For Head Of Program Review", true, false).draw();
+                        column.search("Waiting For Committee Review( Rejected)?|Waiting For Head Of Program Review|Waiting For Advisor Review", true, false).draw();
                     } else if (val === 'Finished Reviews') {
                         column.search("Waiting For Publication Release|Released For Publication( Metadata Only)?|Waiting For Final Submission Response", true, false).draw();
                     } else {

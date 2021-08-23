@@ -8,7 +8,7 @@ class Approver::ApproversController < ApproverController
     @approver = current_approver
     ApproversService.new(current_approver).update_committee_w_access_id
     @committee_members = @approver.committee_members.select do |n|
-      n if n.submission.status_behavior.beyond_collecting_final_submission_files?
+      n if n.approval_started_at.present? && n.submission.status_behavior.beyond_collecting_final_submission_files?
     end
   end
 
@@ -31,7 +31,7 @@ class Approver::ApproversController < ApproverController
     @submission = @committee_member.submission
     @committee_member.update!(committee_member_params.merge(approver_controller: true))
     Approver.status_merge(@committee_member)
-    @submission.update_status_from_committee
+    SubmissionStatusUpdaterService.new(@submission).update_status_from_committee
     redirect_to approver_root_path
     flash[:notice] = 'Review submitted successfully'
   rescue ActiveRecord::RecordInvalid => e

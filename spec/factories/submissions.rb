@@ -65,6 +65,11 @@ FactoryBot.define do
       proquest_agreement_at { Time.zone.now }
     end
 
+    trait :waiting_for_advisor_review do
+      status { "waiting for advisor review" }
+      final_submission_traits
+    end
+
     trait :waiting_for_committee_review do
       status { "waiting for committee review" }
       final_submission_traits

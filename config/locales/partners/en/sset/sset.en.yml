@@ -90,7 +90,7 @@ en:
         final_submission_received:
           message: |
             Thank you for submitting your final %{degree_type}. It has been been accepted for committee review.
-            You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
+            You will be notified after your committee has completed the review.
 
             For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
             You may also call (717)948-4349, or send mail to:
@@ -119,6 +119,25 @@ en:
             Please login to %{review_url} and complete this request.
             We ask that you complete this review within two weeks from receipt of this request.
             If you are serving on this committee in multiple roles, you will only need to submit your review once.
+
+            Sincerely,
+            The School of Science, Engineering, and Technology
+
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
+            School of Science, Engineering, and Technology
+            777 West Harrisburg Pike
+            W256 Olmsted Building
+            Middletown, PA 17057
+        special_committee_review_request:
+          message: |
+            Hello %{committee_member_name},
+
+            The School of Science, Engineering, and Technology of The Pennsylvania State University and %{full_name} require you to review and
+            digitally sign a proposed work for which you have been listed as a committee member.
+            In order to proceed and provide input on their work, please follow this link:
+            %{review_url}
+            or you can copy and paste this into your browser.
 
             Sincerely,
             The School of Science, Engineering, and Technology

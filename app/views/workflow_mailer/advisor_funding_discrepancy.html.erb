@@ -1,0 +1,5 @@
+Dear <%= @author.full_name %>,
+
+<%= t( "#{current_partner.id}.partner.email.advisor_funding_discrepancy.message",
+       degree_type: @submission.degree_type,
+       funding_wording: @advisor.federal_funding_used ? '' : ' not') %>

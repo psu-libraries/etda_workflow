@@ -78,6 +78,12 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.final_submission_approved_at = Time.now
     expect(described_class.new(submission)).not_to be_collecting_final_submission_files_rejected
   end
+  it 'responds to #waiting_for_advisor_review?' do
+    submission.status = 'waiting for advisor review'
+    expect(described_class.new(submission)).to be_waiting_for_advisor_review
+    submission.status = 'waiting for advisor rev'
+    expect(described_class.new(submission)).not_to be_waiting_for_advisor_review
+  end
   it 'responds to #waiting_for_committee_review?' do
     submission.status = 'waiting for committee review'
     expect(described_class.new(submission)).to be_waiting_for_committee_review
@@ -154,6 +160,16 @@ RSpec.describe SubmissionStatus, type: :model do
     expect(described_class.new(submission)).not_to be_beyond_waiting_for_format_review_response
     submission.status = ''
     expect(described_class.new(submission)).not_to be_beyond_waiting_for_format_review_response
+  end
+  it 'responds to #beyond_waiting_for_advisor_review?' do
+    submission.status = 'waiting for committee review'
+    expect(described_class.new(submission)).to be_beyond_waiting_for_advisor_review
+    submission.status = 'waiting for advisor review'
+    expect(described_class.new(submission)).not_to be_beyond_waiting_for_advisor_review
+    submission.status = 'waiting for format review response'
+    expect(described_class.new(submission)).not_to be_beyond_waiting_for_advisor_review
+    submission.status = 'waiting for publication release'
+    expect(described_class.new(submission)).to be_beyond_waiting_for_advisor_review
   end
   it 'responds to #beyond_waiting_for_committee_review?' do
     submission.status = 'waiting for head of program review'

@@ -51,7 +51,8 @@ class SubmissionStatusGiver
                              SubmissionStates::WaitingForPublicationRelease,
                              SubmissionStates::WaitingInFinalSubmissionOnHold,
                              SubmissionStates::ReleasedForPublication,
-                             SubmissionStates::CollectingFormatReviewFilesRejected]
+                             SubmissionStates::CollectingFormatReviewFilesRejected,
+                             SubmissionStates::WaitingForAdvisorReview]
   end
 
   def can_create_or_edit_committee?
@@ -82,7 +83,8 @@ class SubmissionStatusGiver
                              SubmissionStates::WaitingInFinalSubmissionOnHold,
                              SubmissionStates::ReleasedForPublication,
                              SubmissionStates::CollectingFormatReviewFilesRejected,
-                             SubmissionStates::CollectingFinalSubmissionFilesRejected]
+                             SubmissionStates::CollectingFinalSubmissionFilesRejected,
+                             SubmissionStates::WaitingForAdvisorReview]
   end
 
   def can_review_format_review_files?
@@ -98,7 +100,8 @@ class SubmissionStatusGiver
                              SubmissionStates::WaitingForPublicationRelease,
                              SubmissionStates::WaitingInFinalSubmissionOnHold,
                              SubmissionStates::ReleasedForPublication,
-                             SubmissionStates::CollectingFinalSubmissionFilesRejected]
+                             SubmissionStates::CollectingFinalSubmissionFilesRejected,
+                             SubmissionStates::WaitingForAdvisorReview]
   end
 
   def can_upload_final_submission_files?
@@ -115,7 +118,8 @@ class SubmissionStatusGiver
                              SubmissionStates::WaitingForFinalSubmissionResponse,
                              SubmissionStates::WaitingForPublicationRelease,
                              SubmissionStates::WaitingInFinalSubmissionOnHold,
-                             SubmissionStates::ReleasedForPublication]
+                             SubmissionStates::ReleasedForPublication,
+                             SubmissionStates::WaitingForAdvisorReview]
   end
 
   def can_respond_to_format_review?
@@ -132,9 +136,16 @@ class SubmissionStatusGiver
     validate_current_state! [SubmissionStates::WaitingForFinalSubmissionResponse]
   end
 
+  def can_waiting_for_advisor_review?
+    validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles,
+                             SubmissionStates::WaitingForFinalSubmissionResponse,
+                             SubmissionStates::WaitingForCommitteeReviewRejected]
+  end
+
   def can_waiting_for_committee_review?
     validate_current_state! [SubmissionStates::CollectingFinalSubmissionFiles,
                              SubmissionStates::WaitingForFinalSubmissionResponse,
+                             SubmissionStates::WaitingForAdvisorReview,
                              SubmissionStates::WaitingForCommitteeReviewRejected]
   end
 
@@ -145,12 +156,14 @@ class SubmissionStatusGiver
 
   def can_committee_review_admin_response?
     validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview,
-                             SubmissionStates::WaitingForCommitteeReview]
+                             SubmissionStates::WaitingForCommitteeReview,
+                             SubmissionStates::WaitingForAdvisorReview]
   end
 
   def can_waiting_for_committee_review_rejected?
     validate_current_state! [SubmissionStates::WaitingForHeadOfProgramReview,
-                             SubmissionStates::WaitingForCommitteeReview]
+                             SubmissionStates::WaitingForCommitteeReview,
+                             SubmissionStates::WaitingForAdvisorReview]
   end
 
   def can_waiting_for_publication_release?
@@ -203,6 +216,10 @@ class SubmissionStatusGiver
 
   def waiting_for_final_submission_response!
     transition_to SubmissionStates::WaitingForFinalSubmissionResponse
+  end
+
+  def waiting_for_advisor_review!
+    transition_to SubmissionStates::WaitingForAdvisorReview
   end
 
   def waiting_for_committee_review!

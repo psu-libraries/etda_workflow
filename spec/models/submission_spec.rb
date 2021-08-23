@@ -98,6 +98,23 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to delegate_method(:author_full_name).to(:author).as(:full_name) }
   it { is_expected.to delegate_method(:author_psu_email_address).to(:author).as(:psu_email_address) }
 
+  describe '#advisor' do
+    it 'returns the advisor committee member for the submission' do
+      submission = FactoryBot.create :submission
+      advisor_role = FactoryBot.create :committee_role, name: 'Submission Advisor'
+      non_advisor_role = FactoryBot.create :committee_role, name: 'Committee Member'
+      committee_member1 = FactoryBot.create :committee_member, committee_role: advisor_role
+      committee_member2 = FactoryBot.create :committee_member, committee_role: non_advisor_role
+      expect(submission.advisor).to eq nil
+      submission.committee_members << committee_member2
+      submission.reload
+      expect(submission.advisor).to eq nil
+      submission.committee_members << committee_member1
+      submission.reload
+      expect(submission.advisor).to eq committee_member1
+    end
+  end
+
   describe 'status validation' do
     it 'validates the inclusion of status in SubmissionStatus::WORKFLOW_STATUS array' do
       degree = FactoryBot.create :degree, degree_type: DegreeType.default
@@ -405,74 +422,21 @@ RSpec.describe Submission, type: :model do
     end
   end
 
-  describe '#update_status_from_committee' do
-    let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-    let!(:degree_type) { FactoryBot.create :degree_type }
-    let!(:approval_configuration) { FactoryBot.create :approval_configuration, head_of_program_is_approving: true, degree_type_id: degree_type.id }
-
-    context 'when status is waiting for committee review' do
-      context 'when approval status is approved' do
-        it 'changes status to waiting for head of program review if program head is approving' do
-          allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
-          allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('')
-          submission = FactoryBot.create :submission, :waiting_for_committee_review
-          allow(CommitteeMember).to receive(:program_head).with(submission).and_return(FactoryBot.create(:committee_member))
-          submission.update_status_from_committee
-          expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
-          expect(WorkflowMailer.deliveries.count).to eq 1
-        end
-
-        it 'changes status to waiting for final submission response' do
-          allow_any_instance_of(Submission).to receive(:head_of_program_is_approving?).and_return false
-          allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
-          submission = FactoryBot.create :submission, :waiting_for_committee_review
-          allow(CommitteeMember).to receive(:program_head).with(submission).and_return(FactoryBot.create(:committee_member))
-          submission.update_status_from_committee
-          expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
-          expect(WorkflowMailer.deliveries.count).to eq 1
-        end
-      end
-    end
-
-    context 'when approval status is rejected' do
-      it 'changes status to waiting for committee review rejected' do
-        allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
-        submission = FactoryBot.create :submission, :waiting_for_committee_review
-        submission.update_status_from_committee
-        expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
-      end
-    end
-
-    context 'when status is waiting for head of program review' do
-      context 'when approval head of program status is approved' do
-        it 'changes status to waiting for final submission response if graduate school' do
-          allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('approved')
-          submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
-          submission.update_status_from_committee
-          expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
-        end
-      end
-
-      context 'when approval head of program status is rejected' do
-        it 'changes status to waiting for committee review rejected' do
-          allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('rejected')
-          submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
-          submission.update_status_from_committee
-          expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
-        end
-      end
-    end
-  end
-
-  describe "#committee_review_requests_init" do
-    it 'sets approval_started_at timestamp for committee members' do
+  describe "#committee_review_requests_init", honors: true do
+    it 'sets approval_started_at timestamp for committee members and sends email to committee members only once' do
       submission = FactoryBot.create :submission
+      allow(submission).to receive(:head_of_program_is_approving?).and_return false
       create_committee submission
+      if current_partner.graduate?
+        submission.committee_members.second.update access_id: 'abc123'
+        submission.committee_members.third.update access_id: 'abc123'
+      end
       submission.reload
-      expect(submission.committee_members.first.approval_started_at).to be_falsey
       submission.committee_review_requests_init
       submission.reload
-      expect(submission.committee_members.first.approval_started_at).to be_truthy
+      expect(submission.committee_members.pluck(:approval_started_at).compact.count).to eq submission.committee_members.count - 1 if current_partner.graduate?
+      expect(submission.committee_members.pluck(:approval_started_at).compact.count).to eq submission.committee_members.count unless current_partner.graduate?
+      expect(WorkflowMailer.deliveries.count).to eq submission.committee_members.count - 2 if current_partner.graduate?
     end
   end
 
@@ -500,7 +464,8 @@ RSpec.describe Submission, type: :model do
       expect(new_submission.committee_email_list).to eq ["sameemail@psu.edu",
                                                          new_submission.committee_members.third.email,
                                                          new_submission.committee_members.fourth.email,
-                                                         new_submission.committee_members.fifth.email, "xxx1@psu.edu"]
+                                                         new_submission.committee_members.fifth.email,
+                                                         new_submission.committee_members[5].email, "xxx1@psu.edu"]
     end
   end
 

@@ -69,9 +69,8 @@ en:
                     814-867-2505
         final_submission_received:
           message: |
-                    Thank you for submitting your final %{degree_type}. 
-                    You will be notified by email of your Honors thesis approval or if changes are required
-                    within 2-3 weeks after submitting your final.
+                    Thank you for submitting your final %{degree_type}. It will now be automatically sent to your committee for review and approval.
+                    You will be notified once your committee has reviewed and made a decision regarding your document.
 
                     Sincerely,
                     The Schreyer Honors College
@@ -97,6 +96,22 @@ en:
                     The Schreyer Honors College and %{full_name} need your prompt attention to review and digitally sign
                     a proposed work that you have been a part of.  Please login to %{review_url} and complete this request
                     within five business days.
+
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    SHCAcademics@psu.edu
+                    814-867-2505
+        special_committee_review_request:
+          message: |
+                    Hello %{committee_member_name},
+
+                    The Schreyer Honors College of The Pennsylvania State University and %{full_name} require you to review and
+                    digitally sign a proposed work for which you have been listed as a committee member.
+                    In order to proceed and provide input on their work, please follow this link:
+                    %{review_url}
+                    or you can copy and paste this into your browser.
 
                     Sincerely,
                     The Schreyer Honors College
@@ -165,7 +180,7 @@ en:
         committee_approved:
           message: |
                     Congratulations! Your honors %{degree_type} has been reviewed by your committee and it is approved.
-                    The next step is to have your final submission reviewed by the Schreyer Honors College; you will receive an email once it is approved.
+                    The next step is to have your final submission reviewed by the Schreyer Honors College.  You will receive an email once it is approved.
 
                     Sincerely,
                     The Schreyer Honors College

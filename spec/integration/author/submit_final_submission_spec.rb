@@ -13,7 +13,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
 
     context "when I submit the 'Upload Final Submission Files' form" do
-      it 'loads the page', honors: true, milsch: true do
+      it 'loads the page' do
         submission.proquest_agreement = nil
         submission.proquest_agreement_at = nil
         submission.defended_at = Time.zone.yesterday
@@ -44,12 +44,13 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         end
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.status).to eq 'waiting for committee review'
+        expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?
+        expect(submission.status).to eq 'waiting for committee review' unless current_partner.graduate?
         submission.reload
         expect(submission.federal_funding).to eq false
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         if current_partner.graduate?
-          expect(WorkflowMailer.deliveries.count).to eq(6)
+          expect(WorkflowMailer.deliveries.count).to eq(2)
           expect(submission.proquest_agreement).to eq true
           expect(submission.proquest_agreement_at).to be_truthy
         end
@@ -59,7 +60,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     end
 
     context "when I submit the 'Upload Final Submission Files' form after committee rejection" do
-      it 'proceeds to "waiting for final submission response" and resets committee reviews' do
+      it 'proceeds to committee review stage and resets committee reviews' do
         submission.committee_members.first.update_attribute :status, 'rejected'
         submission.status = 'waiting for committee review rejected'
         submission.defended_at = Time.zone.yesterday
@@ -86,9 +87,10 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         submission.reload
         expect(page).to have_current_path(author_root_path)
         expect(submission.committee_members.first.status).to eq ''
-        expect(submission.status).to eq 'waiting for committee review'
+        expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?
+        expect(submission.status).to eq 'waiting for committee review' unless current_partner.graduate?
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
-        expect(WorkflowMailer.deliveries.count).to eq(6) if current_partner.graduate?
+        expect(WorkflowMailer.deliveries.count).to eq(2) if current_partner.graduate?
         expect(WorkflowMailer.deliveries.count).to eq(3) if current_partner.honors?
         expect(WorkflowMailer.deliveries.count).to eq(2) if current_partner.milsch?
       end
@@ -124,7 +126,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         end
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.status).to eq 'waiting for committee review'
+        expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?
+        expect(submission.status).to eq 'waiting for committee review' unless current_partner.graduate?
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         expect(submission.final_submission_files.count).to eq(2)
         visit "/author/submissions/#{submission.id}/final_submission"
@@ -165,7 +168,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         end
         # expect(page).to have_content('successfully')
         submission.reload
-        expect(submission.status).to eq 'waiting for committee review'
+        expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?
+        expect(submission.status).to eq 'waiting for committee review' unless current_partner.graduate?
         submission.reload
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
       end

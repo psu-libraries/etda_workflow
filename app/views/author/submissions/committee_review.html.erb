@@ -7,7 +7,9 @@
     <th>Role</th>
     <th>Status</th>
     <th>Notes</th>
-    <% if @submission.status_behavior.waiting_for_committee_review? || @submission.status_behavior.waiting_for_head_of_program_review? %>
+    <% if @submission.status_behavior.waiting_for_advisor_review? ||
+          @submission.status_behavior.waiting_for_committee_review? ||
+          @submission.status_behavior.waiting_for_head_of_program_review? %>
       <th>Action</th>
     <% end %>
   </tr>
@@ -19,8 +21,15 @@
       <td><%= member.committee_role.name %></td>
       <td><%= member.status ? member.status.capitalize : nil %></td>
       <td><%= member.notes %></td>
-      <% if (@submission.status_behavior.waiting_for_committee_review? && !member.is_program_head)  || (@submission.status_behavior.waiting_for_head_of_program_review? && member.is_program_head) %>
-        <td><%= button_to 'Send Email Reminder', { controller: author_submissions_path, action: "send_email_reminder", committee_member_id: member.id }, method: :post %></td>
+      <% if (@submission.status_behavior.waiting_for_advisor_review? && member == @submission.advisor) ||
+            (@submission.status_behavior.waiting_for_committee_review? && !member.is_program_head && (!(member == @submission.advisor) || !current_partner.graduate?)) ||
+            (@submission.status_behavior.waiting_for_head_of_program_review? && member.is_program_head) %>
+        <td><%= button_to 'Send Email Reminder',
+                          { controller: author_submissions_path,
+                            action: "send_email_reminder",
+                            committee_member_id: member.id },
+                          method: :post,
+                          class: 'btn btn-light' %></td>
       <% else %>
         <td/>
       <% end %>

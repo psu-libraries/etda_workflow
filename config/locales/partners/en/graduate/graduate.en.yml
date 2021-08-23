@@ -151,6 +151,30 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
+        advisor_rejected:
+          message: |
+                    Your %{degree_type} has been rejected by your advisor.
+                    Please consult with your %{degree_type} advisor about revising your submission.  When you have completed
+                    your revisions, please resubmit your %{degree_type} for committee review.
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+        advisor_funding_discrepancy:
+          message: |
+                    Your advisor has indicated that federal funds were%{funding_wording} used for your %{degree_type}.
+                    You have indicated otherwise. Please consult with your %{degree_type} advisor about this discrepancy.
+                    When you have completed your revisions, please resubmit your %{degree_type} for committee review.
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
         committee_rejected_admin:
           message: |
                     The committee for %{author_name}'s %{degree_type} has rejected their submission.
@@ -340,7 +364,7 @@ en:
       master_thesis:
         message: "Please pay the $25 thesis fee before submitting your final.  The fee can be paid at the <a href='https://secure.gradsch.psu.edu/paymentportal/' target='_blank'>Payment Section</a> of the Graduate School Thesis and Dissertation Information <a href='https://gradschool.psu.edu/completing-your-degree/thesis-and-dissertation-information/' target='_blank'>webpage</a>."
       dissertation:
-        message: "Please pay the $95. dissertation fee before submitting your final.  The fee can be paid at the <a href='https://secure.gradsch.psu.edu/paymentportal/' target='_blank'>Payment Section</a> of the Graduate School Thesis and Dissertation Information <a href='https://gradschool.psu.edu/completing-your-degree/thesis-and-dissertation-information/' target='_blank'>webpage</a>."
+        message: "Please pay the $95 dissertation fee before submitting your final.  The fee can be paid at the <a href='https://secure.gradsch.psu.edu/paymentportal/' target='_blank'>Payment Section</a> of the Graduate School Thesis and Dissertation Information <a href='https://gradschool.psu.edu/completing-your-degree/thesis-and-dissertation-information/' target='_blank'>webpage</a>."
     admin:
       umg: 'cn=umg/psu.sas.etda-graduate-admins,dc=psu,dc=edu'
       submission:
