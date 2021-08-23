@@ -100,6 +100,23 @@ en:
                     Millennium Scholars Program
                     130 Ritenour Building
                     University Park, PA  16802
+        special_committee_review_request:
+          message: |
+                    Hello %{committee_member_name},
+
+                    The Millennium Scholars Program of The Pennsylvania State University and %{full_name} require you to review and
+                    digitally sign a proposed work for which you have been listed as a committee member.
+                    In order to proceed and provide input on their work, please follow this link:
+                    %{review_url}
+                    or you can copy and paste this into your browser.
+
+                    Sincerely,
+                    The Millennium Scholars Program
+
+                    You may also call (814)867-5105, or send mail to:
+                    Millennium Scholars Program
+                    130 Ritenour Building
+                    University Park, PA  16802
         committee_member_review_reminder:
           message: |
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.

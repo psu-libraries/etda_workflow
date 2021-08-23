@@ -104,6 +104,22 @@ en:
                     Debra Rodgers, Coordinator of Academic Services 
                     SHCAcademics@psu.edu
                     814-867-2505
+        special_committee_review_request:
+          message: |
+                    Hello %{committee_member_name},
+
+                    The Schreyer Honors College of The Pennsylvania State University and %{full_name} require you to review and
+                    digitally sign a proposed work for which you have been listed as a committee member.
+                    In order to proceed and provide input on their work, please follow this link:
+                    %{review_url}
+                    or you can copy and paste this into your browser.
+
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    SHCAcademics@psu.edu
+                    814-867-2505
         committee_member_review_reminder:
           message: |
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.

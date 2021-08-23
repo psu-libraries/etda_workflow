@@ -129,6 +129,25 @@ en:
             777 West Harrisburg Pike
             W256 Olmsted Building
             Middletown, PA 17057
+        special_committee_review_request:
+          message: |
+            Hello %{committee_member_name},
+
+            The School of Science, Engineering, and Technology of The Pennsylvania State University and %{full_name} require you to review and
+            digitally sign a proposed work for which you have been listed as a committee member.
+            In order to proceed and provide input on their work, please follow this link:
+            %{review_url}
+            or you can copy and paste this into your browser.
+
+            Sincerely,
+            The School of Science, Engineering, and Technology
+
+            For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
+            You may also call (717)948-4349, or send mail to:
+            School of Science, Engineering, and Technology
+            777 West Harrisburg Pike
+            W256 Olmsted Building
+            Middletown, PA 17057
         committee_member_review_reminder:
           message: |
             Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
