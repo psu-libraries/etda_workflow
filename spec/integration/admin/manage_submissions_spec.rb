@@ -16,7 +16,7 @@ RSpec.describe "Manage Submissions", js: true do
 
   describe 'Admin Delete submissions' do
     context 'bulk deletes submissions' do
-      it 'deletes the submissions' do
+      it 'deletes the submissions', retry: 5 do
         FactoryBot.create :submission, :waiting_for_publication_release, author: author1
         expect(page).to have_content('Final Submission to be Released')
         expect(page).to have_content('Showing')
