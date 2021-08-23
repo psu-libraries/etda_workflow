@@ -90,7 +90,7 @@ en:
         final_submission_received:
           message: |
             Thank you for submitting your final %{degree_type}. It has been been accepted for committee review.
-            You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
+            You will be notified after your committee has completed the review.
 
             For questions or concerns, please email the World Campus staff at EEOnline@psu.edu
             You may also call (717)948-4349, or send mail to:

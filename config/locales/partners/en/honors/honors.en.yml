@@ -69,9 +69,8 @@ en:
                     814-867-2505
         final_submission_received:
           message: |
-                    Thank you for submitting your final %{degree_type}. 
-                    You will be notified by email of your Honors thesis approval or if changes are required
-                    within 2-3 weeks after submitting your final.
+                    Thank you for submitting your final %{degree_type}. It will now be automatically sent to your committee for review and approval.
+                    You will be notified once your committee has reviewed and made a decision regarding your document.
 
                     Sincerely,
                     The Schreyer Honors College
@@ -181,7 +180,7 @@ en:
         committee_approved:
           message: |
                     Congratulations! Your honors %{degree_type} has been reviewed by your committee and it is approved.
-                    The next step is to have your final submission reviewed by the Schreyer Honors College; you will receive an email once it is approved.
+                    The next step is to have your final submission reviewed by the Schreyer Honors College.  You will receive an email once it is approved.
 
                     Sincerely,
                     The Schreyer Honors College
