@@ -33,6 +33,7 @@ class FinalSubmissionSubmittedService
   def final_rejected_send_committee
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
     submission.save
+    submission.reset_committee_reviews
     if current_partner.graduate? && submission.advisor.present?
       status_giver.can_waiting_for_advisor_review?
       status_giver.waiting_for_advisor_review!
@@ -43,7 +44,6 @@ class FinalSubmissionSubmittedService
       status_giver.waiting_for_committee_review!
       submission.committee_review_requests_init
     end
-    submission.reset_committee_reviews
     WorkflowMailer.sent_to_committee(@submission).deliver
     "The submission was successfully returned to the committee review stage and the committee was notified to visit the site for review."
   end

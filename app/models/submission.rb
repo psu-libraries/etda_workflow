@@ -138,7 +138,8 @@ class Submission < ApplicationRecord
 
   def reset_committee_reviews
     committee_members.each do |committee_member|
-      committee_member.update! status: '', approved_at: nil, rejected_at: nil, reset_at: DateTime.now
+      committee_member.update! status: '', approved_at: nil, rejected_at: nil,
+                               reset_at: DateTime.now, approval_started_at: nil
     end
   end
 
@@ -331,10 +332,10 @@ class Submission < ApplicationRecord
     seen_access_ids = []
     committee_members.each do |committee_member|
       next if committee_member.is_program_head ||
-              (committee_member.committee_role.name.downcase.match(/advisor|adviser/) && current_partner.graduate?)
+              (committee_member == committee_member.submission.advisor && current_partner.graduate?)
 
       committee_member.update! approval_started_at: DateTime.now
-      next if seen_access_ids.include?(committee_member.access_id) || approval_status_behavior.status == 'approved'
+      next if seen_access_ids.include?(committee_member.access_id) || committee_member.status == 'approved'
 
       WorkflowMailer.send_committee_review_requests(self, committee_member)
 
