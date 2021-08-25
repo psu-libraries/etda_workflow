@@ -222,8 +222,14 @@ class WorkflowMailer < ActionMailer::Base
   def committee_rejected_author(submission)
     @submission = submission
     @author = submission.author
+    @review_results = ReviewResultsEmail.new(submission).generate
+    to = if current_partner.graduate?
+           [@author.psu_email_address, submission.advisor&.email, submission.chairs&.pluck(:email)].flatten.uniq.compact
+         else
+           @author.psu_email_address
+         end
 
-    mail to: @author.psu_email_address,
+    mail to: to,
          from: current_partner.email_address,
          subject: "Committee Rejected Final Submission"
   end
@@ -233,6 +239,20 @@ class WorkflowMailer < ActionMailer::Base
     @author = submission.author
 
     mail to: current_partner.email_list,
+         from: current_partner.email_address,
+         subject: "Committee Rejected Final Submission"
+  end
+
+  def committee_rejected_committee(submission)
+    @submission = submission
+    @author = submission.author
+    to = if current_partner.graduate?
+           submission.committee_email_list -= [submission.advisor.email, submission.chairs.pluck(:email)].flatten.uniq
+         else
+           submission.committee_email_list
+         end
+
+    mail to: to,
          from: current_partner.email_address,
          subject: "Committee Rejected Final Submission"
   end

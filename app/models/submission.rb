@@ -132,6 +132,14 @@ class Submission < ApplicationRecord
     CommitteeMember.advisors(self).first
   end
 
+  def chairs
+    chairs_array = []
+    committee_members.each do |cm|
+      chairs_array << cm if cm.committee_role.name.downcase =~ /(?<!\/)chair/
+    end
+    chairs_array
+  end
+
   def set_status_to_collecting_program_information
     self.status = 'collecting program information' if new_record? && status.nil?
   end

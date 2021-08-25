@@ -27,7 +27,7 @@ class ApprovalStatus
   end
 
   def status
-    return 'none' unless (all_have_voted? || rejected)
+    return 'none' unless all_have_voted? || rejected
 
     none || approved || rejected || pending
   end

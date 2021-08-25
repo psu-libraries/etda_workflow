@@ -267,7 +267,50 @@ RSpec.describe WorkflowMailer do
     end
   end
 
+  describe '#committee_rejected_author' do
+    let(:email) { described_class.committee_rejected_author(submission) }
+    before do
+      create_committee submission
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq "Committee Rejected Final Submission"
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "is sent to proper recipients depending on partner", honors: true, sset: true, milsch: true do
+      expect(email.to).to eq([current_partner.email_list]) if current_partner.graduate?
+      expect(email.to).to eq([author.psu_email_address]) unless current_partner.graduate?
+    end
+
+    it "tells the author that the final submission has been approved" do
+    end
+  end
+
   describe '#committee_rejected_admin' do
+    let(:email) { described_class.committee_rejected_admin(submission) }
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq "Committee Rejected Final Submission"
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "is sent to the student's PSU email address" do
+      expect(email.to).to eq([current_partner.email_list])
+    end
+
+    it "tells the author that the final submission has been approved" do
+      expect(email.body).to match(/has rejected their submission/i)
+    end
+  end
+
+  describe '#committee_rejected_committee' do
     let(:email) { described_class.committee_rejected_admin(submission) }
 
     it "sets an appropriate subject" do

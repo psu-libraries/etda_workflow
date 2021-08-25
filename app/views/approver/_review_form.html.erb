@@ -13,7 +13,7 @@
                   label: false %>
       </div>
       <%= f.input :notes, :label => "Notes for Student (required only if rejecting)", :input_html => { :class => 'notes_select' } %>
-      <% if current_partner.graduate? && @committee_member.committee_role.name.downcase.match(/advisor|adviser/) %>
+      <% if current_partner.graduate? && @committee_member == @submission.advisor %>
         <%= f.label :federal_funding_used, 'Were Federal Funds utilized for this submission?'.html_safe %>
         <div class="alert alert-info">
           <strong class="hint"><strong>Notice:</strong> The author of this submission has indicated that federal funding <u><strong>was<%= @submission.federal_funding ? nil : ' not' %></strong></u> used.</strong>

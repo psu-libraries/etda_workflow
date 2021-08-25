@@ -142,7 +142,7 @@ class CommitteeMember < ApplicationRecord
   def validate_federal_funding_used
     return true if approver_controller.blank? || !current_partner.graduate?
 
-    return true unless federal_funding_used.nil? && committee_role.name.include?("Advisor")
+    return true unless federal_funding_used.nil? && (self == submission.advisor)
 
     errors.add(:federal_funding_used, 'You must indicate if federal funding was utilized for this submission.')
     false
