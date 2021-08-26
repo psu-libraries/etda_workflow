@@ -246,10 +246,13 @@ class WorkflowMailer < ActionMailer::Base
   def committee_rejected_committee(submission)
     @submission = submission
     @author = submission.author
+    @title = submission.title
+    @email_list = @submission.committee_email_list
+
     to = if current_partner.graduate?
-           submission.committee_email_list -= [submission.advisor.email, submission.chairs.pluck(:email)].flatten.uniq
+           @email_list -= [@submission.advisor&.email, @submission.chairs.pluck(:email)].flatten.uniq
          else
-           submission.committee_email_list
+           @email_list
          end
 
     mail to: to,

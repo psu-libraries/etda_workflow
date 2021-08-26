@@ -282,11 +282,21 @@ RSpec.describe WorkflowMailer do
     end
 
     it "is sent to proper recipients depending on partner", honors: true, sset: true, milsch: true do
-      expect(email.to).to eq([current_partner.email_list]) if current_partner.graduate?
+      if current_partner.graduate?
+        committee_member = FactoryBot.create :committee_member,
+                                             email: submission.committee_members.first.email,
+                                             committee_role: (FactoryBot.create :committee_role, name: 'Advisor Chair')
+        submission.committee_members << committee_member
+        expect(email.to).to eq([author.psu_email_address,
+                                submission.committee_members.first.email,
+                                submission.committee_members.second.email])
+      end
       expect(email.to).to eq([author.psu_email_address]) unless current_partner.graduate?
     end
 
     it "tells the author that the final submission has been approved" do
+      expect(email.body).to match(/This was the result of your committee's review:/) if current_partner.graduate?
+      expect(email.body).to match(/You will need to make the necessary revisions/) unless current_partner.graduate?
     end
   end
 
@@ -310,8 +320,11 @@ RSpec.describe WorkflowMailer do
     end
   end
 
-  describe '#committee_rejected_committee' do
-    let(:email) { described_class.committee_rejected_admin(submission) }
+  describe '#committee_rejected_committee', honors: true, sset: true, milsch: true do
+    let(:email) { described_class.committee_rejected_committee(submission) }
+    before do
+      create_committee submission
+    end
 
     it "sets an appropriate subject" do
       expect(email.subject).to eq "Committee Rejected Final Submission"
@@ -322,11 +335,12 @@ RSpec.describe WorkflowMailer do
     end
 
     it "is sent to the student's PSU email address" do
-      expect(email.to).to eq([current_partner.email_list])
+      expect(email.to).to eq(submission.committee_members.pluck(:email)[2..]) if current_partner.graduate?
+      expect(email.to).to eq(submission.committee_members.pluck(:email)) unless current_partner.graduate?
     end
 
     it "tells the author that the final submission has been approved" do
-      expect(email.body).to match(/has rejected their submission/i)
+      expect(email.body).to match(/has been rejected by its committee/i)
     end
   end
 
