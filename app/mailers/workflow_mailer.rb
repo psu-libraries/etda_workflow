@@ -250,7 +250,7 @@ class WorkflowMailer < ActionMailer::Base
     @email_list = @submission.committee_email_list
 
     to = if current_partner.graduate?
-           @email_list -= [@submission.advisor&.email, @submission.chairs.pluck(:email)].flatten.uniq
+           @email_list -= [@submission.advisor&.email, @submission.chairs&.pluck(:email)].flatten.uniq
          else
            @email_list
          end

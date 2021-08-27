@@ -96,12 +96,12 @@ RSpec.describe CommitteeMember, type: :model do
       before do
         cm.name = 'Professor Buck Murphy'
         cm.email = 'buck@hotmail.com'
-        cm.submission_id = submission.id
         cm.is_required = true
         cm.notes = 'Notes'
         cm.status = 'approved'
         cm.committee_role = advisor
         cm.approver_controller = true
+        submission.committee_members << cm
       end
 
       it 'is not valid' do
