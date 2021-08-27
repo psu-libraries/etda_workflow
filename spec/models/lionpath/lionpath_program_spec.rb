@@ -87,7 +87,7 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.campus).to eq('UP')
     end
 
-    context 'when submission is already beyond_waiting_for_final_submission_response' do
+    context 'when submission is already beyond_waiting_for_final_submission_response_rejected?' do
       it 'does not update program info' do
         submission.update status: 'waiting for publication release'
         submission.reload

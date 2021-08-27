@@ -69,7 +69,7 @@ RSpec.describe Lionpath::LionpathCommittee do
         expect(CommitteeMember.find(committee_member.id).email).to eq 'xyz321@psu.edu'
       end
 
-      context 'when submission is beyond_waiting_for_final_submission_response' do
+      context 'when submission is beyond_waiting_for_final_submission_response_rejected?' do
         it "doesn't update committee member" do
           committee_member.submission.update status: 'waiting for publication release'
           committee_member.submission.reload

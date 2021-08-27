@@ -15,7 +15,7 @@ class Lionpath::LionpathProgram
       submission = author.submissions.find_by(degree_id: degree.id, program: program)
 
       if submission.present?
-        unless submission.status_behavior.beyond_waiting_for_final_submission_response?
+        unless submission.status_behavior.beyond_waiting_for_final_submission_response_rejected?
           submission.update submission_attrs(row)
         end
         return
