@@ -13,7 +13,9 @@ class Lionpath::LionpathCommittee
           return
         end
 
-        cm.update committee_member_attrs(row, committee_role)
+        unless cm.submission.status_behavior.beyond_waiting_for_final_submission_response?
+          cm.update committee_member_attrs(row, committee_role)
+        end
         return
       end
 

@@ -86,6 +86,18 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.semester).to eq('Summer')
       expect(Author.first.submissions.first.campus).to eq('UP')
     end
+
+    context 'when submission is already beyond_waiting_for_final_submission_response' do
+      it 'does not update program info' do
+        submission.update status: 'waiting for publication release'
+        submission.reload
+        expect { lionpath_program.import(row_1) }.not_to change { Submission.find(submission.id).lionpath_updated_at }
+        expect(Author.first.submissions.first.degree.name).to eq submission.degree.name
+        expect(Author.first.submissions.first.year).to eq submission.year
+        expect(Author.first.submissions.first.semester).to eq submission.semester
+        expect(Author.first.submissions.first.campus).to eq submission.campus
+      end
+    end
   end
 
   context 'when program from lionpath is before 2021' do
