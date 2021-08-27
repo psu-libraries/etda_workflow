@@ -91,7 +91,7 @@ RSpec.describe Lionpath::LionpathProgram do
       it 'does not update program info' do
         submission.update status: 'waiting for publication release'
         submission.reload
-        expect { lionpath_program.import(row_1) }.not_to change { Submission.find(submission.id).lionpath_updated_at }
+        expect { lionpath_program.import(row_1) }.not_to(change { Submission.find(submission.id).lionpath_updated_at })
         expect(Author.first.submissions.first.degree.name).to eq submission.degree.name
         expect(Author.first.submissions.first.year).to eq submission.year
         expect(Author.first.submissions.first.semester).to eq submission.semester

@@ -13,9 +13,7 @@ class Lionpath::LionpathCommittee
           return
         end
 
-        unless cm.submission.status_behavior.beyond_waiting_for_final_submission_response_rejected?
-          cm.update committee_member_attrs(row, committee_role)
-        end
+        committee_member_update(cm, row, committee_role)
         return
       end
 
@@ -36,6 +34,11 @@ class Lionpath::LionpathCommittee
   end
 
   private
+
+  def committee_member_update(committee_member, row, committee_role)
+    committee_member.update committee_member_attrs(row, committee_role) unless
+        committee_member.submission.status_behavior.beyond_waiting_for_final_submission_response_rejected?
+  end
 
   def committee_member_attrs(row, committee_role)
     hash = {
