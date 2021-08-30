@@ -68,6 +68,17 @@ RSpec.describe Lionpath::LionpathCommittee do
         expect(CommitteeMember.find(committee_member.id).committee_role).to eq committee_role
         expect(CommitteeMember.find(committee_member.id).email).to eq 'xyz321@psu.edu'
       end
+
+      context 'when submission is beyond_waiting_for_final_submission_response_rejected?' do
+        it "doesn't update committee member" do
+          committee_member.submission.update status: 'waiting for publication release'
+          committee_member.submission.reload
+          expect { lionpath_committee.import(row) }.not_to(change { CommitteeMember.find(committee_member.id).lionpath_updated_at })
+          expect(CommitteeMember.find(committee_member.id).name).to eq committee_member.name
+          expect(CommitteeMember.find(committee_member.id).committee_role).to eq committee_member.committee_role
+          expect(CommitteeMember.find(committee_member.id).email).to eq committee_member.email
+        end
+      end
     end
 
     context 'when submission does not have the committee member from the lionpath record' do

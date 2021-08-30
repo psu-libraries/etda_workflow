@@ -40,6 +40,10 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
     FactoryBot.create :committee_member, lionpath_updated_at: (DateTime.now - 10.days),
                                          external_to_psu_id: 'mgc25'
   end
+  let!(:exp_lp_cm5) do
+    FactoryBot.create :committee_member, lionpath_updated_at: (DateTime.now - 2.days), submission: submission
+  end
+  let!(:submission) { FactoryBot.create :submission, :waiting_for_publication_release }
 
   context "when less than 10% of the total number of records are expired" do
     it "deletes expired lionpath submissions that are less than 5 years old and collecting program information" do
@@ -53,7 +57,7 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
       expect(WorkflowMailer.deliveries.count).to eq 0
     end
 
-    it "deletes expired lionpath committee_members that are less than 5 years old, not external to PSU, and not program chairs" do
+    it "deletes expired lionpath committee_members that are less than 5 years old, not external to PSU, not program chairs, and not beyond waiting for final submission response rejected" do
       FactoryBot.create_list :committee_member, 100, lionpath_updated_at: DateTime.now
       FactoryBot.create_list :submission, 100, lionpath_updated_at: DateTime.now
       expect { described_class.delete }.to change(CommitteeMember, :count).by(-2)
@@ -61,6 +65,7 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
       expect { exp_lp_cm2.reload }.to raise_error ActiveRecord::RecordNotFound
       expect(exp_lp_cm3.reload).to eq exp_lp_cm3
       expect(exp_lp_cm4.reload).to eq exp_lp_cm4
+      expect(exp_lp_cm5.reload).to eq exp_lp_cm5
       expect(dept_head_lp_cm.reload).to eq dept_head_lp_cm
       expect(WorkflowMailer.deliveries.count).to eq 0
     end
