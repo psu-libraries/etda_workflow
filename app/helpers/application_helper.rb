@@ -17,15 +17,15 @@ module ApplicationHelper
   def author_nav_active?(nav_name)
     case nav_name
     when 'submissions'
-       'active' if not_published_page || controller_name == 'committee_members' || controller_name == 'submission_format_review'
+      'active' if not_published_page || controller_name == 'committee_members' || controller_name == 'submission_format_review'
     when 'author'
-       'active' if controller_name == 'authors' && action_name != 'technical_tips'
+      'active' if controller_name == 'authors' && action_name != 'technical_tips'
     when 'tips'
-       'active' if action_name == 'technical_tips'
+      'active' if action_name == 'technical_tips'
     when 'published'
       'active' if action_name == 'published_submissions_index'
     else
-       ''
+      ''
     end
   end
 

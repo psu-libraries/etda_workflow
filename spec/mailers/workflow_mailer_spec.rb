@@ -269,6 +269,7 @@ RSpec.describe WorkflowMailer do
 
   describe '#committee_rejected_author' do
     let(:email) { described_class.committee_rejected_author(submission) }
+
     before do
       create_committee submission
     end
@@ -322,6 +323,7 @@ RSpec.describe WorkflowMailer do
 
   describe '#committee_rejected_committee', honors: true, sset: true, milsch: true do
     let(:email) { described_class.committee_rejected_committee(submission) }
+
     before do
       create_committee submission
     end
@@ -656,7 +658,7 @@ RSpec.describe WorkflowMailer do
       it "has desired content" do
         skip 'Graduate Only' unless current_partner.graduate?
 
-        expect(email.body).to match(/\/special_committee\/#{commmittee_member_token.authentication_token.to_s}/)
+        expect(email.body).to match(/\/special_committee\/#{commmittee_member_token.authentication_token}/)
         expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
       end
 

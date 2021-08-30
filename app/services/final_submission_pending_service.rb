@@ -25,11 +25,11 @@ class FinalSubmissionPendingService
 
   private
 
-  def submission_path
-    Rails.application.routes.url_helpers.admin_edit_submission_path(submission)
-  end
+    def submission_path
+      Rails.application.routes.url_helpers.admin_edit_submission_path(submission)
+    end
 
-  def final_submission_params
-    FinalSubmissionParams.call(params)
-  end
+    def final_submission_params
+      FinalSubmissionParams.call(params)
+    end
 end

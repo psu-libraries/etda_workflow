@@ -65,11 +65,11 @@ class Author::CommitteeMemberView
 
   private
 
-  def committee_role_id(role)
-    if role == 'Professor in Charge'
-      model.submission.degree_type.committee_roles.where(name: 'Professor in Charge/Director of Graduate Studies').first.id
-    else
-      model.submission.degree_type.committee_roles.where(name: 'Program Head/Chair').first.id
+    def committee_role_id(role)
+      if role == 'Professor in Charge'
+        model.submission.degree_type.committee_roles.where(name: 'Professor in Charge/Director of Graduate Studies').first.id
+      else
+        model.submission.degree_type.committee_roles.where(name: 'Program Head/Chair').first.id
+      end
     end
-  end
 end

@@ -2,6 +2,7 @@ require 'model_spec_helper'
 
 RSpec.describe ReviewResultsEmail do
   subject(:review_results_email) { described_class.new(submission) }
+
   let(:submission) { FactoryBot.create :submission }
 
   describe 'generate' do

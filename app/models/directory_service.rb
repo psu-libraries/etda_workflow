@@ -10,20 +10,20 @@ class DirectoryService
 
     private
 
-    def endpoint_url
-      "https://prod.apps.psu.edu/directory-service-web/resources/people"
-    end
+      def endpoint_url
+        "https://prod.apps.psu.edu/directory-service-web/resources/people"
+      end
 
-    def query(email_address)
-      "?emailAddress=#{email_address}"
-    end
+      def query(email_address)
+        "?emailAddress=#{email_address}"
+      end
 
-    def url(email_address)
-      endpoint_url + query(email_address)
-    end
+      def url(email_address)
+        endpoint_url + query(email_address)
+      end
 
-    def headers
-      { accept: 'application/vnd-psu.edu-v1+json' }
-    end
+      def headers
+        { accept: 'application/vnd-psu.edu-v1+json' }
+      end
   end
 end

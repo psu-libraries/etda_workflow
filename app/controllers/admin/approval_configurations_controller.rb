@@ -21,9 +21,9 @@ class Admin::ApprovalConfigurationsController < AdminController
 
   private
 
-  def approval_configuration_params
-    approval_configuration_params_permitted = [:approval_deadline_on, :email_admins, :email_authors, :configuration_threshold, :use_percentage, :head_of_program_is_approving]
+    def approval_configuration_params
+      approval_configuration_params_permitted = [:approval_deadline_on, :email_admins, :email_authors, :configuration_threshold, :use_percentage, :head_of_program_is_approving]
 
-    params.require(:approval_configuration).permit(approval_configuration_params_permitted)
-  end
+      params.require(:approval_configuration).permit(approval_configuration_params_permitted)
+    end
 end

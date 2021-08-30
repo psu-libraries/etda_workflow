@@ -24,38 +24,38 @@ class FinalSubmissionSubmitService
 
   private
 
-  def committee_reject_submit
-    submission.reset_committee_reviews
-    collect_final
-    submission.update_final_submission_timestamps!(Time.zone.now)
-    WorkflowMailer.send_final_submission_received_email(submission)
-  end
-
-  def final_sub_reject_submit
-    status_giver.can_waiting_for_final_submission_response?
-    status_giver.waiting_for_final_submission_response!
-    submission.update_final_submission_timestamps!(Time.zone.now)
-    WorkflowMailer.send_final_submission_received_email(submission)
-  end
-
-  def collect_final_sub_submit
-    collect_final
-    submission.update_final_submission_timestamps!(Time.zone.now)
-    WorkflowMailer.send_final_submission_received_email(submission)
-  end
-
-  def collect_final
-    if current_partner.graduate? && submission.advisor.present?
-      status_giver.can_waiting_for_advisor_review?
-      status_giver.waiting_for_advisor_review!
-      submission.advisor.update approval_started_at: DateTime.now
-      return if submission.advisor.status == 'approved'
-
-      WorkflowMailer.committee_member_review_request(submission, submission.advisor).deliver
-    else
-      status_giver.can_waiting_for_committee_review?
-      status_giver.waiting_for_committee_review!
-      submission.committee_review_requests_init
+    def committee_reject_submit
+      submission.reset_committee_reviews
+      collect_final
+      submission.update_final_submission_timestamps!(Time.zone.now)
+      WorkflowMailer.send_final_submission_received_email(submission)
     end
-  end
+
+    def final_sub_reject_submit
+      status_giver.can_waiting_for_final_submission_response?
+      status_giver.waiting_for_final_submission_response!
+      submission.update_final_submission_timestamps!(Time.zone.now)
+      WorkflowMailer.send_final_submission_received_email(submission)
+    end
+
+    def collect_final_sub_submit
+      collect_final
+      submission.update_final_submission_timestamps!(Time.zone.now)
+      WorkflowMailer.send_final_submission_received_email(submission)
+    end
+
+    def collect_final
+      if current_partner.graduate? && submission.advisor.present?
+        status_giver.can_waiting_for_advisor_review?
+        status_giver.waiting_for_advisor_review!
+        submission.advisor.update approval_started_at: DateTime.now
+        return if submission.advisor.status == 'approved'
+
+        WorkflowMailer.committee_member_review_request(submission, submission.advisor).deliver
+      else
+        status_giver.can_waiting_for_committee_review?
+        status_giver.waiting_for_committee_review!
+        submission.committee_review_requests_init
+      end
+    end
 end

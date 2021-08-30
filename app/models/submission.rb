@@ -361,17 +361,17 @@ class Submission < ApplicationRecord
 
   private
 
-  def format_review_file_check
-    # no validation for admin users
-    return true unless author_edit
-    # only require file when author submitting format review
-    return true unless status_behavior.collecting_format_review_files?
+    def format_review_file_check
+      # no validation for admin users
+      return true unless author_edit
+      # only require file when author submitting format review
+      return true unless status_behavior.collecting_format_review_files?
 
-    if format_review_files.nil? || format_review_files.blank?
-      # errors[] << 'You must upload a format review file.'
-      false
-    else
-      true
+      if format_review_files.nil? || format_review_files.blank?
+        # errors[] << 'You must upload a format review file.'
+        false
+      else
+        true
+      end
     end
-  end
 end

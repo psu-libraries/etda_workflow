@@ -55,31 +55,31 @@ class Semester
 
   private
 
-  def valid_semester?(current_semester, this_semester)
-    # all semesters valid during spring and current semester is always OK for the current year
-    return true if current_semester == 'Spring' || current_semester == this_semester
+    def valid_semester?(current_semester, this_semester)
+      # all semesters valid during spring and current semester is always OK for the current year
+      return true if current_semester == 'Spring' || current_semester == this_semester
 
-    # during summer may choose summer or fall for the current year
-    return true if current_semester == 'Summer' && this_semester == 'Fall'
+      # during summer may choose summer or fall for the current year
+      return true if current_semester == 'Summer' && this_semester == 'Fall'
 
-    false
-  end
-
-  class << self
-    def today
-      Time.zone.today
+      false
     end
 
-    def year
-      today.year
-    end
+    class << self
+      def today
+        Time.zone.today
+      end
 
-    def fall_start
-      Date.new(year, 8, 16)
-    end
+      def year
+        today.year
+      end
 
-    def summer_start
-      Date.new(year, 5, 16)
+      def fall_start
+        Date.new(year, 8, 16)
+      end
+
+      def summer_start
+        Date.new(year, 5, 16)
+      end
     end
-  end
 end

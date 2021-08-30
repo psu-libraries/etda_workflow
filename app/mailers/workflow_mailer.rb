@@ -273,13 +273,13 @@ class WorkflowMailer < ActionMailer::Base
 
   private
 
-  def partner_review_request_subject
-    if current_partner.graduate?
-      "#{@submission.degree_type} Needs Approval"
-    elsif current_partner.honors?
-      "Honors Thesis Needs Approval"
-    elsif current_partner.milsch?
-      "Millennium Scholars Thesis Review"
+    def partner_review_request_subject
+      if current_partner.graduate?
+        "#{@submission.degree_type} Needs Approval"
+      elsif current_partner.honors?
+        "Honors Thesis Needs Approval"
+      elsif current_partner.milsch?
+        "Millennium Scholars Thesis Review"
+      end
     end
-  end
 end

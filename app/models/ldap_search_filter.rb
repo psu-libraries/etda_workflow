@@ -39,15 +39,15 @@ class LdapSearchFilter
 
   private
 
-  def faculty_staff_filter
-    Net::LDAP::Filter.intersect(Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'FACULTY'), Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'STAFF'))
-  end
+    def faculty_staff_filter
+      Net::LDAP::Filter.intersect(Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'FACULTY'), Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'STAFF'))
+    end
 
-  def emeritus_retired_filter
-    Net::LDAP::Filter.intersect(Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'EMERITUS'), Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'RETIREE'))
-  end
+    def emeritus_retired_filter
+      Net::LDAP::Filter.intersect(Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'EMERITUS'), Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'RETIREE'))
+    end
 
-  def combined_filter
-    Net::LDAP::Filter.intersect(faculty_staff_filter, emeritus_retired_filter)
-  end
+    def combined_filter
+      Net::LDAP::Filter.intersect(faculty_staff_filter, emeritus_retired_filter)
+    end
 end

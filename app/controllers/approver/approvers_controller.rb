@@ -58,29 +58,29 @@ class Approver::ApproversController < ApproverController
 
   private
 
-  def advisor?(c_member, original_c_member)
-    (c_member.access_id == original_c_member.access_id) && (c_member.committee_role.name.include? 'Advisor')
-  end
-
-  def verify_approver
-    @committee_member = CommitteeMember.find(params[:id])
-    @submission = @committee_member.submission
-    redirect_to '/404' if @approver.nil? || current_approver.nil?
-    redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member)
-  end
-
-  def committee_member_params
-    params.require(:committee_member).permit(:notes, :status, :federal_funding_used, :approver_controller)
-  end
-
-  def most_relevant_file_links
-    links = []
-    if @submission.final_submission_files.any?
-      @submission.final_submission_files.map do |f|
-        link = link_to f.asset_identifier, approver_approver_file_path(f.id), 'target': '_blank', 'data-no-turbolink': true
-        links.push(link)
-      end
+    def advisor?(c_member, original_c_member)
+      (c_member.access_id == original_c_member.access_id) && (c_member.committee_role.name.include? 'Advisor')
     end
-    links.join(" ")
-  end
+
+    def verify_approver
+      @committee_member = CommitteeMember.find(params[:id])
+      @submission = @committee_member.submission
+      redirect_to '/404' if @approver.nil? || current_approver.nil?
+      redirect_to '/401' unless @approver_ability.can?(:edit, @committee_member)
+    end
+
+    def committee_member_params
+      params.require(:committee_member).permit(:notes, :status, :federal_funding_used, :approver_controller)
+    end
+
+    def most_relevant_file_links
+      links = []
+      if @submission.final_submission_files.any?
+        @submission.final_submission_files.map do |f|
+          link = link_to f.asset_identifier, approver_approver_file_path(f.id), 'target': '_blank', 'data-no-turbolink': true
+          links.push(link)
+        end
+      end
+      links.join(" ")
+    end
 end

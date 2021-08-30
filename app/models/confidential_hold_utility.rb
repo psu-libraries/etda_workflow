@@ -50,29 +50,29 @@ class ConfidentialHoldUtility
 
   private
 
-  def send_update_to_confidential_email(author)
-    # send email
-    # WorkflowMailer.confidential_hold_set_email(author).deliver_now
-  end
+    def send_update_to_confidential_email(author)
+      # send email
+      # WorkflowMailer.confidential_hold_set_email(author).deliver_now
+    end
 
-  def send_release_hold_email(author)
-    # WorkflowMailer.confidential_hold_released_email(author).deliver_now
-    # send email
-  end
+    def send_release_hold_email(author)
+      # WorkflowMailer.confidential_hold_released_email(author).deliver_now
+      # send email
+    end
 
-  def changed_to_confidential?
-    return true if currently_confidential? && !was_confidential?
+    def changed_to_confidential?
+      return true if currently_confidential? && !was_confidential?
 
-    false
-  end
+      false
+    end
 
-  def confidential_hold_released?
-    return true if !currently_confidential? && was_confidential?
+    def confidential_hold_released?
+      return true if !currently_confidential? && was_confidential?
 
-    false
-  end
+      false
+    end
 
-  def was_confidential?
-    original_confidential_status
-  end
+    def was_confidential?
+      original_confidential_status
+    end
 end

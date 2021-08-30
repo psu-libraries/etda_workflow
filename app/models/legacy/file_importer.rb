@@ -33,7 +33,7 @@ class Legacy::FileImporter
        record_message "Total of #{@files_copied} files were copied.  See logs for more information"
        @display_logger.info "See logs for more information"
     rescue StandardError
-       @import_logger.log("Quitting: Error occurred")
+      @import_logger.log("Quitting: Error occurred")
      end
   end
 
@@ -63,8 +63,8 @@ class Legacy::FileImporter
       record_message "Total of #{@files_copied} files were copied. See logs for more information"
       record_message "Missing files count #{@missing_file_name}"
     rescue StandardError
-        record_message 'Quitting: error occurred'
-        abort
+      record_message 'Quitting: error occurred'
+      abort
     end
   end
 
@@ -112,12 +112,12 @@ class Legacy::FileImporter
   end
 
   def build_checksum(file_path, filename)
-      Digest::MD5.new.file(File.join(file_path, filename))
+    Digest::MD5.new.file(File.join(file_path, filename))
   rescue Errno::ENOENT => e
-      @import_logger.info e.message.to_s
-      msg = "File not found when building checksum:  #{file_path}/#{filename}"
-      record_message msg
-      false
+    @import_logger.info e.message.to_s
+    msg = "File not found when building checksum:  #{file_path}/#{filename}"
+    record_message msg
+    false
   end
 
   def record_message(msg)

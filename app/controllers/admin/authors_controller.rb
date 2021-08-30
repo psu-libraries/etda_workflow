@@ -28,22 +28,22 @@ class Admin::AuthorsController < AdminController
 
   private
 
-  def author_params
-    author_params_permitted = [:access_id,
-                               :first_name,
-                               :middle_name,
-                               :last_name,
-                               :alternate_email_address,
-                               :psu_email_address,
-                               :phone_number,
-                               :is_alternate_email_public,
-                               :address_1,
-                               :address_2,
-                               :city,
-                               :state,
-                               :zip,
-                               :country]
+    def author_params
+      author_params_permitted = [:access_id,
+                                 :first_name,
+                                 :middle_name,
+                                 :last_name,
+                                 :alternate_email_address,
+                                 :psu_email_address,
+                                 :phone_number,
+                                 :is_alternate_email_public,
+                                 :address_1,
+                                 :address_2,
+                                 :city,
+                                 :state,
+                                 :zip,
+                                 :country]
 
-    params.require(:author).permit(author_params_permitted)
-  end
+      params.require(:author).permit(author_params_permitted)
+    end
 end

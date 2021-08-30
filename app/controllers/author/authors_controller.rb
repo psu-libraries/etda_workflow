@@ -38,28 +38,28 @@ class Author::AuthorsController < AuthorController
 
   private
 
-  def verify_author
-    @author = Author.find(params[:id])
-    redirect_to '/404' if @author.nil? || current_author.nil?
-    redirect_to '/401' unless @author_ability.can? :edit, @author
-  end
+    def verify_author
+      @author = Author.find(params[:id])
+      redirect_to '/404' if @author.nil? || current_author.nil?
+      redirect_to '/401' unless @author_ability.can? :edit, @author
+    end
 
-  def author_params
-    author_params_list = [:access_id,
-                          :first_name,
-                          :middle_name,
-                          :last_name,
-                          :alternate_email_address,
-                          :psu_email_address,
-                          :phone_number,
-                          :is_alternate_email_public,
-                          :address_1,
-                          :address_2,
-                          :city,
-                          :state,
-                          :zip,
-                          :country]
+    def author_params
+      author_params_list = [:access_id,
+                            :first_name,
+                            :middle_name,
+                            :last_name,
+                            :alternate_email_address,
+                            :psu_email_address,
+                            :phone_number,
+                            :is_alternate_email_public,
+                            :address_1,
+                            :address_2,
+                            :city,
+                            :state,
+                            :zip,
+                            :country]
 
-    params.require(:author).permit(author_params_list)
-  end
+      params.require(:author).permit(author_params_list)
+    end
 end

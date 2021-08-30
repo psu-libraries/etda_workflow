@@ -33,16 +33,16 @@ class Admin::DegreesController < AdminController
 
   private
 
-  def degree_update_params
-    params.require(:degree).permit(:description,
-                                   :degree_type_id,
-                                   :is_active)
-  end
+    def degree_update_params
+      params.require(:degree).permit(:description,
+                                     :degree_type_id,
+                                     :is_active)
+    end
 
-  def degree_create_params
-    params.require(:degree).permit(:name,
-                                   :description,
-                                   :degree_type_id,
-                                   :is_active)
-  end
+    def degree_create_params
+      params.require(:degree).permit(:name,
+                                     :description,
+                                     :degree_type_id,
+                                     :is_active)
+    end
 end
