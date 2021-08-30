@@ -35,6 +35,7 @@ module MailerActions
   def send_committee_rejected_emails(submission)
     committee_rejected_admin(submission).deliver if submission.degree.degree_type.approval_configuration.email_admins
     committee_rejected_author(submission).deliver if submission.degree.degree_type.approval_configuration.email_authors
+    committee_rejected_committee(submission).deliver
   end
 
   def send_pending_returned_emails(submission)

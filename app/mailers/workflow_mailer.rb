@@ -255,6 +255,8 @@ class WorkflowMailer < ActionMailer::Base
            @email_list
          end
 
+    return if to.blank?
+
     mail to: to,
          from: current_partner.email_address,
          subject: "Committee Rejected Final Submission"
