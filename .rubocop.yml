@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 require: rubocop-rspec
 
 AllCops:
@@ -45,13 +43,28 @@ Rails:
 #    - 'spec/zlib/tasks/**'
 #    - 'lib/tasks/**/*'
 
-Metrics/LineLength:
-  Enabled: true
+Layout/LineLength:
+  Enabled: false
 
 Metrics/AbcSize:
   Enabled: false
 
 Metrics/MethodLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+Style/NumericLiterals:
   Enabled: false
 
 Metrics/ClassLength:
@@ -109,7 +122,7 @@ Layout/MultilineBlockLayout:
   Exclude:
 
 Layout/IndentationConsistency:
-  EnforcedStyle: rails
+  EnforcedStyle: indented_internal_methods
 
 
 Naming/VariableName:
@@ -156,11 +169,6 @@ Style/GlobalVars:
   Exclude:
     - 'node_modules/node-sass/src/libsass/extconf.rb'
 
-Style/BracesAroundHashParameters:
-  Exclude:
-    - 'config/deploy.rb'
-    - 'spec/services/solr_data_import_service_spec.rb'
-
 Layout/SpaceInsideBlockBraces:
   Exclude:
     - 'spec/services/solr_data_import_service_spec.rb'
@@ -177,7 +185,7 @@ Naming/PredicateName:
   Exclude:
     - 'app/validators/virus_free_validator.rb'
 
-Lint/HandleExceptions:
+Lint/SuppressedException:
   Exclude:
     - 'spec/component/models/legacy/importers/degree_importer_spec.rb'
 
@@ -193,22 +201,6 @@ Lint/UnreachableCode:
   Exclude:
     - 'app/presenters/admin/submission_form_view.rb'
 
-Rails/Date:
-  Enabled: false
-
-Rails/Output:
-  Exclude:
-    - 'config/deploy.rb'
-    - 'config/qa-grad.rb'
-    - 'config/qa-honors.rb'
-
-Rails/SkipsModelValidations:
-  Enabled: false
-  Enabled: false
-
-Rails/TimeZone:
-  Enabled: false
-
 RSpec/ExampleWording:
   CustomTransform:
     be: is
@@ -218,8 +210,6 @@ RSpec/ExampleWording:
   IgnoredWords:
     - only
 
-Rails/FilePath:
-  Enabled: false
 RSpec/FilePath:
   Enabled: false
 
@@ -241,12 +231,6 @@ RSpec/DescribeClass:
 
 RSpec/MultipleDescribes:
   Enabled: false
-
-RSpec/MultipleExpectations:
-  Exclude:
-   - 'spec/lib/tasks/legacy/legacy_importer_spec.rb'
-   - 'spec/integration/admin/manage_authors_spec.rb'
-   - 'spec/integration/admin/submissions/edit_released_unreleased_spec.rb'
 
 RSpec/VerifiedDoubles:
   Exclude:
@@ -296,17 +280,6 @@ Style/MixinUsage:
     - 'bin/setup'
     - 'bin/update'
 
-Style/FrozenStringLiteralComment:
-  Exclude:
-    - 'bin/bundle'
-    - 'bin/rails'
-    - 'bin/rake'
-    - 'bin/setup'
-    - 'bin/spring'
-    - 'bin/update'
-    - 'bin/yarn'
-    - 'db/schema.rb'
-
 Style/SymbolArray:
   Enabled: false
 
@@ -337,24 +310,12 @@ RSpec/AnyInstance:
 RSpec/LetSetup:
   Enabled: false
 
-Rails/OutputSafety:
-  Enabled: false
-
-Rails/DynamicFindBy:
-  Enabled: false
-
 RSpec/ExpectActual:
   Exclude:
     - 'spec/controllers/**/**'
-
-Performance/Casecmp:
-  Enabled: false
 
 Naming/MemoizedInstanceVariableName:
   Enabled: false
 
 Style/MultipleComparison:
-  Enabled: false
-
-Rails/ActiveRecordAliases:
   Enabled: false

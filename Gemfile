@@ -83,7 +83,7 @@ group :development, :test do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'listen', '>= 3.0.5', '< 3.2'
   # Linter
-  gem 'rubocop', '~> 0.61.1'
+  gem 'rubocop', '~> 0.93.1'
   gem 'rubocop-rspec', '~>  1.30.1'
   # Coverage report
   gem 'simplecov', '~> 0.17.0'
