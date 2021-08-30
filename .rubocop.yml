@@ -67,6 +67,9 @@ RSpec/ContextWording:
 Style/NumericLiterals:
   Enabled: false
 
+Style/FormatStringToken:
+  Enabled: false
+
 Metrics/ClassLength:
   Exclude:
   - app/models/submission.rb
