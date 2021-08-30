@@ -28,7 +28,7 @@ class Approver::ApproversController < ApproverController
 
   def update
     @committee_member = CommitteeMember.find(params[:id])
-    @submission = @committee_member.submission
+    @submission = Submission.find(@committee_member.submission.id)
     @committee_member.update!(committee_member_params.merge(approver_controller: true))
     Approver.status_merge(@committee_member)
     SubmissionStatusUpdaterService.new(@submission).update_status_from_committee
