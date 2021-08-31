@@ -191,7 +191,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         find('#committee_member_notes').send_keys('Notes')
         click_button 'Submit Review'
         expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
-        expect(WorkflowMailer.deliveries.count).to eq 2
+        expect(WorkflowMailer.deliveries.count).to eq 3
       end
     end
   end
