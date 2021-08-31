@@ -26,7 +26,7 @@ every :day, at: '1am', roles: [:app] do
   partner_rake 'confidential:update'
 end
 
-every '0 1 30 1,5,8 *', roles: [:app] do
+every '0 23 30 1,5,8 *', roles: [:app] do
   partner_rake 'report:semester_release'
 end
 
