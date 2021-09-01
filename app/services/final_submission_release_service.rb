@@ -22,37 +22,37 @@ class FinalSubmissionReleaseService
 
   private
 
-  def final_unrelease_message(solr_result, file_verification_results)
-    msg = solr_result[:error] ? solr_error_msg : success_msg
-    # the following loop prints full file path details.  After app is stable, consider removing this.
-    # The same information is also printed in production.log
-    unless file_verification_results[:valid]
-      msg << file_error_msg
-      file_verification_results[:file_error_list].each do |error_msg|
-        msg << error_msg
+    def final_unrelease_message(solr_result, file_verification_results)
+      msg = solr_result[:error] ? solr_error_msg : success_msg
+      # the following loop prints full file path details.  After app is stable, consider removing this.
+      # The same information is also printed in production.log
+      unless file_verification_results[:valid]
+        msg << file_error_msg
+        file_verification_results[:file_error_list].each do |error_msg|
+          msg << error_msg
+        end
       end
+      msg
     end
-    msg
-  end
 
-  def solr_error_msg
-    author_name = submission.author_first_name.to_s + ' ' + submission.author_last_name.to_s
-    "Solr indexing error occurred when un-publishing submission for #{author_name}"
-  end
+    def solr_error_msg
+      author_name = submission.author_first_name.to_s + ' ' + submission.author_last_name.to_s
+      "Solr indexing error occurred when un-publishing submission for #{author_name}"
+    end
 
-  def success_msg
-    "Submission for #{submission.author_first_name} #{submission.author_last_name} was successfully un-published."
-  end
+    def success_msg
+      "Submission for #{submission.author_first_name} #{submission.author_last_name} was successfully un-published."
+    end
 
-  def file_error_msg
-    "\nError occurred relocating file for submission id #{submission.id}.  Please contact an administrator:  "
-  end
+    def file_error_msg
+      "\nError occurred relocating file for submission id #{submission.id}.  Please contact an administrator:  "
+    end
 
-  def admin_edit_sub_path
-    url_helpers.admin_edit_submission_path(submission.id.to_s)
-  end
+    def admin_edit_sub_path
+      url_helpers.admin_edit_submission_path(submission.id.to_s)
+    end
 
-  def url_helpers
-    Rails.application.routes.url_helpers
-  end
+    def url_helpers
+      Rails.application.routes.url_helpers
+    end
 end

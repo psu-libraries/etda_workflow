@@ -7,8 +7,8 @@ RSpec.describe "Manage Degrees", js: true do
   let!(:degree2) { FactoryBot.create :degree }
 
   before do
-     oidc_authorize_admin
-     visit admin_degrees_path
+    oidc_authorize_admin
+    visit admin_degrees_path
   end
 
   it 'has a list of degrees' do

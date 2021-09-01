@@ -8,24 +8,24 @@ class AuthorController < ApplicationController
 
   protected
 
-  def set_session
-    sign_out if session[:user_role] != 'author'
-    session[:user_role] = 'author'
-  end
+    def set_session
+      sign_out if session[:user_role] != 'author'
+      session[:user_role] = 'author'
+    end
 
-  def author_auth
-    authenticate_author!
-    @author = current_author
-    author_ability
-    session[:user_name] = current_author.full_name
-  end
+    def author_auth
+      authenticate_author!
+      @author = current_author
+      author_ability
+      session[:user_name] = current_author.full_name
+    end
 
-  def author_ability
-    @author_ability ||= AuthorAbility.new(@author, nil, nil)
-  end
+    def author_ability
+      @author_ability ||= AuthorAbility.new(@author, nil, nil)
+    end
 
-  def update_confidential_hold
-    update_service = ConfidentialHoldUpdateService.new(@author, 'login_controller')
-    update_service.update
-  end
+    def update_confidential_hold
+      update_service = ConfidentialHoldUpdateService.new(@author, 'login_controller')
+      update_service.update
+    end
 end

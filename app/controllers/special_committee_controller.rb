@@ -12,9 +12,9 @@ class SpecialCommitteeController < ApplicationController
 
   private
 
-  def auto_redirect
-    return unless current_remote_user
+    def auto_redirect
+      return unless current_remote_user
 
-    redirect_to approver_special_committee_link_path(params[:authentication_token])
-  end
+      redirect_to approver_special_committee_link_path(params[:authentication_token])
+    end
 end

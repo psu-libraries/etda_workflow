@@ -30,9 +30,9 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
 
   def asset_prefix
     if model.class_name == 'final-submission-file'
-       Rails.root.join(WORKFLOW_BASE_PATH, 'final_submission_files')
+      Rails.root.join(WORKFLOW_BASE_PATH, 'final_submission_files')
     else
-       Rails.root.join(WORKFLOW_BASE_PATH, 'format_review_files')
+      Rails.root.join(WORKFLOW_BASE_PATH, 'format_review_files')
     end
   end
 

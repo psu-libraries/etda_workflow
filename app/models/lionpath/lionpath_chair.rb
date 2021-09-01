@@ -26,31 +26,31 @@ class Lionpath::LionpathChair
 
   private
 
-  def chair_attrs(row)
-    {
-      access_id: row['Chair Access ID'].downcase,
-      first_name: row['Chair First Name'],
-      last_name: row['Chair Last Name'],
-      campus: row['Campus'],
-      phone: row['Chair Phone'],
-      email: row['Chair Univ Email'].downcase,
-      lionpath_updated_at: DateTime.now
-    }
-  end
+    def chair_attrs(row)
+      {
+        access_id: row['Chair Access ID'].downcase,
+        first_name: row['Chair First Name'],
+        last_name: row['Chair Last Name'],
+        campus: row['Campus'],
+        phone: row['Chair Phone'],
+        email: row['Chair Univ Email'].downcase,
+        lionpath_updated_at: DateTime.now
+      }
+    end
 
-  def prof_in_charge_attrs(row)
-    {
-      access_id: row['DGS/PIC Access ID']&.downcase,
-      first_name: row['DGS/PIC First Name'],
-      last_name: row['DGS/PIC Last Name'],
-      campus: row['Campus'],
-      phone: row['DGS/PIC Phone'],
-      email: row['DGS/PIC Univ Email']&.downcase,
-      lionpath_updated_at: DateTime.now
-    }
-  end
+    def prof_in_charge_attrs(row)
+      {
+        access_id: row['DGS/PIC Access ID']&.downcase,
+        first_name: row['DGS/PIC First Name'],
+        last_name: row['DGS/PIC Last Name'],
+        campus: row['Campus'],
+        phone: row['DGS/PIC Phone'],
+        email: row['DGS/PIC Univ Email']&.downcase,
+        lionpath_updated_at: DateTime.now
+      }
+    end
 
-  def program(row)
-    Program.find_by(code: row['Acad Plan'])
-  end
+    def program(row)
+      Program.find_by(code: row['Acad Plan'])
+    end
 end

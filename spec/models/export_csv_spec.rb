@@ -32,11 +32,11 @@ RSpec.describe ExportCsv, type: :model do
     end
 
     context 'no submissions' do
-       it 'returns nil' do
-         export_csv = described_class.new('final_submission_approved', nil)
-         expect(export_csv.columns).not_to be_nil
-         expect(export_csv.fields(nil)).to be_nil
-       end
+      it 'returns nil' do
+        export_csv = described_class.new('final_submission_approved', nil)
+        expect(export_csv.columns).not_to be_nil
+        expect(export_csv.fields(nil)).to be_nil
+      end
     end
   end
 

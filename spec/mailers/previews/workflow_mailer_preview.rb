@@ -1,7 +1,7 @@
 class WorkflowMailerPreview < ActionMailer::Preview
   if current_partner.graduate?
     def format_review_received
-      WorkflowMailer.format_review_received(@submission)
+      WorkflowMailer.format_review_received(Submission.last)
     end
 
     def final_submission_received
@@ -56,5 +56,10 @@ class WorkflowMailerPreview < ActionMailer::Preview
     @submissions = [Submission.first, Submission.second, Submission.third]
     csv = CSV.generate { |c| c << ['HEADERS'] }
     WorkflowMailer.open_access_report('1/1/01 - 1/1/02', csv)
+  end
+
+  def committee_rejected_author
+    submission = Submission.where(status: 'waiting for final submission response').sample
+    WorkflowMailer.committee_rejected_author(submission)
   end
 end

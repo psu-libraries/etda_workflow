@@ -46,19 +46,19 @@ class FinalSubmissionApprovedService
 
   private
 
-  def admin_edit_sub_path
-    url_helpers.admin_edit_submission_path(submission.id.to_s)
-  end
+    def admin_edit_sub_path
+      url_helpers.admin_edit_submission_path(submission.id.to_s)
+    end
 
-  def admin_hold_sub_index_path
-    url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_on_hold')
-  end
+    def admin_hold_sub_index_path
+      url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_on_hold')
+    end
 
-  def admin_approved_sub_index_path
-    url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_approved')
-  end
+    def admin_approved_sub_index_path
+      url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_approved')
+    end
 
-  def url_helpers
-    Rails.application.routes.url_helpers
-  end
+    def url_helpers
+      Rails.application.routes.url_helpers
+    end
 end

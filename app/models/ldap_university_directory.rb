@@ -85,48 +85,48 @@ class LdapUniversityDirectory
 
   private
 
-  def get_ldap_attribute(this_access_id, this_attribute)
-    attrs = directory_lookup('uid', this_access_id)
-    return '' if attrs.blank?
-    return attrs.first[this_attribute].first unless this_attribute == 'psmemberof'
+    def get_ldap_attribute(this_access_id, this_attribute)
+      attrs = directory_lookup('uid', this_access_id)
+      return '' if attrs.blank?
+      return attrs.first[this_attribute].first unless this_attribute == 'psmemberof'
 
-    attrs.first[this_attribute]
-  end
-
-  def ldap_configuration
-    # Only ever read this once.
-    @ldap_configuration ||= Rails.application.config_for(:ldap)
-  end
-
-  def directory_lookup(query_type, search_string)
-    attrs = []
-    with_connection do |conn|
-      attrs = conn.search(base: ldap_configuration['base'], filter: Net::LDAP::Filter.eq(query_type, search_string), attributes: attrs)
-      raise ResultError, conn.get_operation_result.message if attrs.nil?
+      attrs.first[this_attribute]
     end
-    attrs
-  end
 
-  def with_connection
-    Net::LDAP.open(host: ldap_configuration['host'],
-                   port: ldap_configuration['port'],
-                   encryption: { method: :simple_tls },
-                   auth: { method: :simple, username: "uid=#{ldap_configuration['user']},dc=psu,dc=edu",
-                           password: ldap_configuration['password'] }) do |connection|
-      yield connection
+    def ldap_configuration
+      # Only ever read this once.
+      @ldap_configuration ||= Rails.application.config_for(:ldap)
     end
-  rescue Net::LDAP::Error
-    raise UnreachableError
-  end
 
-  def string_has_wildcard_character?(term)
-    (term =~ /\*/) != nil
-  end
+    def directory_lookup(query_type, search_string)
+      attrs = []
+      with_connection do |conn|
+        attrs = conn.search(base: ldap_configuration['base'], filter: Net::LDAP::Filter.eq(query_type, search_string), attributes: attrs)
+        raise ResultError, conn.get_operation_result.message if attrs.nil?
+      end
+      attrs
+    end
 
-  def searchterm_valid?(term)
-    return false if term.blank?
-    return false unless term.present? && term =~ /^[a-zÀ-ÖØ-öø-ÿ '\-.]+$/i
+    def with_connection
+      Net::LDAP.open(host: ldap_configuration['host'],
+                     port: ldap_configuration['port'],
+                     encryption: { method: :simple_tls },
+                     auth: { method: :simple, username: "uid=#{ldap_configuration['user']},dc=psu,dc=edu",
+                             password: ldap_configuration['password'] }) do |connection|
+        yield connection
+      end
+    rescue Net::LDAP::Error
+      raise UnreachableError
+    end
 
-    true
-  end
+    def string_has_wildcard_character?(term)
+      (term =~ /\*/) != nil
+    end
+
+    def searchterm_valid?(term)
+      return false if term.blank?
+      return false unless term.present? && term =~ /^[a-zÀ-ÖØ-öø-ÿ '\-.]+$/i
+
+      true
+    end
 end

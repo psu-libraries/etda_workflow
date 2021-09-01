@@ -35,42 +35,42 @@ class Lionpath::LionpathCommittee
 
   private
 
-  def committee_member_update(committee_member, row, committee_role)
-    committee_member.update committee_member_attrs(row, committee_role) unless
-        committee_member.submission.status_behavior.beyond_waiting_for_final_submission_response_rejected?
-  end
+    def committee_member_update(committee_member, row, committee_role)
+      committee_member.update committee_member_attrs(row, committee_role) unless
+          committee_member.submission.status_behavior.beyond_waiting_for_final_submission_response_rejected?
+    end
 
-  def committee_member_attrs(row, committee_role)
-    hash = {
-      committee_role: committee_role,
-      is_required: true,
-      name: "#{row['First Name']} #{row['Last Name']}",
-      access_id: row['Access ID'].downcase.to_s,
-      is_voting: true,
-      lionpath_updated_at: DateTime.now
-    }
-    hash[:external_to_psu_id] = row['Access ID'].downcase if self.class.external_ids.include?(row['Access ID'].downcase)
-    hash
-  end
+    def committee_member_attrs(row, committee_role)
+      hash = {
+        committee_role: committee_role,
+        is_required: true,
+        name: "#{row['First Name']} #{row['Last Name']}",
+        access_id: row['Access ID'].downcase.to_s,
+        is_voting: true,
+        lionpath_updated_at: DateTime.now
+      }
+      hash[:external_to_psu_id] = row['Access ID'].downcase if self.class.external_ids.include?(row['Access ID'].downcase)
+      hash
+    end
 
-  def submission(row)
-    this_author = author(row)
-    return if this_author.blank? || this_author.submissions.blank?
+    def submission(row)
+      this_author = author(row)
+      return if this_author.blank? || this_author.submissions.blank?
 
-    this_author.submissions
-               .joins(degree: [:degree_type])
-               .find_by("degree_types.slug = 'dissertation' AND submissions.lionpath_updated_at IS NOT NULL")
-  end
+      this_author.submissions
+                 .joins(degree: [:degree_type])
+                 .find_by("degree_types.slug = 'dissertation' AND submissions.lionpath_updated_at IS NOT NULL")
+    end
 
-  def invalid_date?(submission)
-    submission.year < 2021
-  end
+    def invalid_date?(submission)
+      submission.year < 2021
+    end
 
-  def invalid_submission?(submission)
-    submission.blank? || submission.lionpath_updated_at.blank? || invalid_date?(submission)
-  end
+    def invalid_submission?(submission)
+      submission.blank? || submission.lionpath_updated_at.blank? || invalid_date?(submission)
+    end
 
-  def author(row)
-    Author.find_by(access_id: row['Student Campus ID'].downcase.to_s)
-  end
+    def author(row)
+      Author.find_by(access_id: row['Student Campus ID'].downcase.to_s)
+    end
 end

@@ -117,43 +117,43 @@ class CommitteeMember < ApplicationRecord
 
   private
 
-  def one_head_of_program_check
-    return true unless committee_role.present? && submission.present? && is_program_head
+    def one_head_of_program_check
+      return true unless committee_role.present? && submission.present? && is_program_head
 
-    program_head = CommitteeMember.program_head(submission)
-    head_committee_member_id = (program_head ? program_head.id : nil)
-    return true if (head_committee_member_id.nil? || head_committee_member_id == self[:id]) &&
-                   (submission.committee_members.collect { |n| n.committee_role.present? ? n.is_program_head : nil }
-                   .count(true) < 2)
+      program_head = CommitteeMember.program_head(submission)
+      head_committee_member_id = (program_head ? program_head.id : nil)
+      return true if (head_committee_member_id.nil? || head_committee_member_id == self[:id]) &&
+                     (submission.committee_members.collect { |n| n.committee_role.present? ? n.is_program_head : nil }
+                     .count(true) < 2)
 
-    errors.add(:committee_role_id, 'A submission may only have one Program Head/Chair.')
-    false
-  end
+      errors.add(:committee_role_id, 'A submission may only have one Program Head/Chair.')
+      false
+    end
 
-  def validate_status
-    return true if approver_controller.blank?
+    def validate_status
+      return true if approver_controller.blank?
 
-    return true if status.present?
+      return true if status.present?
 
-    errors.add(:status, 'You must select whether you approve or reject before submitting your review.')
-    false
-  end
+      errors.add(:status, 'You must select whether you approve or reject before submitting your review.')
+      false
+    end
 
-  def validate_federal_funding_used
-    return true if approver_controller.blank? || !current_partner.graduate?
+    def validate_federal_funding_used
+      return true if approver_controller.blank? || !current_partner.graduate?
 
-    return true unless federal_funding_used.nil? && committee_role.name.include?("Advisor")
+      return true unless federal_funding_used.nil? && (self == submission.advisor)
 
-    errors.add(:federal_funding_used, 'You must indicate if federal funding was utilized for this submission.')
-    false
-  end
+      errors.add(:federal_funding_used, 'You must indicate if federal funding was utilized for this submission.')
+      false
+    end
 
-  def validate_notes
-    return true if approver_controller.blank?
+    def validate_notes
+      return true if approver_controller.blank?
 
-    return true unless status == 'rejected' && notes.blank?
+      return true unless status == 'rejected' && notes.blank?
 
-    errors.add(:notes, 'You must include an explanation for rejection in the "Notes for Student" form.')
-    false
-  end
+      errors.add(:notes, 'You must include an explanation for rejection in the "Notes for Student" form.')
+      false
+    end
 end

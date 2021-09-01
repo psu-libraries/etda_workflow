@@ -93,7 +93,7 @@ class Admin::SubmissionsIndexView
     @default_semester =
       if %w[final_submission_approved released_for_publication
             final_restricted_institution final_witheld].include?(@scope.to_s)
-         session_semester || Semester.current
+        session_semester || Semester.current
       else
         session_semester || 'All Semesters'
       end

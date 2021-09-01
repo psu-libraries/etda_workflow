@@ -60,7 +60,7 @@ class Admin::SubmissionView < SimpleDelegator
 
   private
 
-  def format_date(date)
-    date.try(:strftime, '%Y-%m-%d')
-  end
+    def format_date(date)
+      date.try(:strftime, '%Y-%m-%d')
+    end
 end

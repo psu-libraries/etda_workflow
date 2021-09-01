@@ -33,11 +33,11 @@ class Admin::ProgramsController < AdminController
 
   private
 
-  def program_update_params
-    params.require(:program).permit(:is_active)
-  end
+    def program_update_params
+      params.require(:program).permit(:is_active)
+    end
 
-  def program_create_params
-    params.require(:program).permit(:name, :is_active)
-  end
+    def program_create_params
+      params.require(:program).permit(:name, :is_active)
+    end
 end

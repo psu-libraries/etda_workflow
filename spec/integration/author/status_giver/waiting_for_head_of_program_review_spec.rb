@@ -122,7 +122,7 @@ RSpec.describe "Step 6: Waiting for Head of Program Review'", js: true do
           find('#committee_member_notes').send_keys('Notes')
           click_button 'Submit Review'
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
-          expect(WorkflowMailer.deliveries.count).to eq 2
+          expect(WorkflowMailer.deliveries.count).to eq 3
         end
 
         it "proceeds to 'waiting for committee review rejected' if rejected but doesn't send emails" do
@@ -135,7 +135,7 @@ RSpec.describe "Step 6: Waiting for Head of Program Review'", js: true do
           find('#committee_member_notes').send_keys('Notes')
           click_button 'Submit Review'
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
-          expect(WorkflowMailer.deliveries.count).to eq 0
+          expect(WorkflowMailer.deliveries.count).to eq 1
         end
       end
     end

@@ -10,19 +10,19 @@ class Lionpath::LionpathCommitteeRoles
 
   private
 
-  def committee_role_attrs(row)
-    status = (row['Status'] == 'A')
-    {
-      degree_type_id: dissertation_id,
-      name: row['Description'],
-      is_active: status,
-      num_required: 0,
-      lionpath_updated_at: DateTime.now,
-      is_program_head: 0
-    }
-  end
+    def committee_role_attrs(row)
+      status = (row['Status'] == 'A')
+      {
+        degree_type_id: dissertation_id,
+        name: row['Description'],
+        is_active: status,
+        num_required: 0,
+        lionpath_updated_at: DateTime.now,
+        is_program_head: 0
+      }
+    end
 
-  def dissertation_id
-    DegreeType.find_by(slug: 'dissertation').id
-  end
+    def dissertation_id
+      DegreeType.find_by(slug: 'dissertation').id
+    end
 end

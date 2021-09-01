@@ -106,8 +106,11 @@ RSpec.describe SubmissionStatusUpdaterService do
       it 'changes status to waiting for committee review rejected' do
         allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
         submission = FactoryBot.create :submission, :waiting_for_committee_review
+        create_committee submission
+        submission.reload
         described_class.new(submission).update_status_from_committee
         expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
+        expect(WorkflowMailer.deliveries.count).to eq 3
       end
     end
 
@@ -125,8 +128,11 @@ RSpec.describe SubmissionStatusUpdaterService do
         it 'changes status to waiting for committee review rejected' do
           allow_any_instance_of(ApprovalStatus).to receive(:head_of_program_status).and_return('rejected')
           submission = FactoryBot.create :submission, :waiting_for_head_of_program_review
+          create_committee submission
+          submission.reload
           described_class.new(submission).update_status_from_committee
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review rejected'
+          expect(WorkflowMailer.deliveries.count).to eq 3
         end
       end
     end

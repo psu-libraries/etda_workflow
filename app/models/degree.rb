@@ -99,7 +99,7 @@ class Degree < ApplicationRecord
 
   private
 
-  def set_is_active_to_true
-    self.is_active = true if new_record? && is_active.nil?
-  end
+    def set_is_active_to_true
+      self.is_active = true if new_record? && is_active.nil?
+    end
 end

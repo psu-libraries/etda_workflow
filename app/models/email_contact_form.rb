@@ -51,15 +51,15 @@ class EmailContactForm < MailForm::Base
 
   private
 
-  def to_address
-    return I18n.t('ul_etda_support_email_address').to_s if issue_type.to_sym == :failures
+    def to_address
+      return I18n.t('ul_etda_support_email_address').to_s if issue_type.to_sym == :failures
 
-    current_partner.email_address.to_s
-  end
+      current_partner.email_address.to_s
+    end
 
-  def from_address
-    return email if issue_type.to_sym == :failures
+    def from_address
+      return email if issue_type.to_sym == :failures
 
-    EtdaWorkflow::Application.config.action_mailer.default_options[:from]
-  end
+      EtdaWorkflow::Application.config.action_mailer.default_options[:from]
+    end
 end

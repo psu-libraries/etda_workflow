@@ -190,7 +190,20 @@ en:
           message: |
                     The committee reviewing your %{degree_type} has rejected your submission.
                     You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review.
-                    For additional information regarding the rejection please consult your %{degree_type} adviser.
+                    This was the result of your committee's review:
+
+                    %{review_results}
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+        committee_rejected_committee:
+          message: |
+                    %{author_name}'s %{degree_type} titled "%{title}" has been rejected by its committee.
+                    The student has been asked to resubmit their work.  Once they have done this, you will be notified via email to review.
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:

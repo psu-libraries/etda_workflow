@@ -91,12 +91,12 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def set_url
-    ApplicationUrl.current = request.original_url
-    ApplicationUrl.stage
-  end
+    def set_url
+      ApplicationUrl.current = request.original_url
+      ApplicationUrl.stage
+    end
 
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:access_id)
-  end
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.permit(:access_id)
+    end
 end

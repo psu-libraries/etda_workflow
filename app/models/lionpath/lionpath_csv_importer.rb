@@ -31,48 +31,48 @@ class Lionpath::LionpathCsvImporter
 
   private
 
-  def grab_file(resource)
-    if resource.is_a?(Lionpath::LionpathCommitteeRoles)
-      `#{bin_path} #{LIONPATH_FILE_PATTERNS[:committee_role]}`
-    elsif resource.is_a?(Lionpath::LionpathProgram)
-      `#{bin_path} #{LIONPATH_FILE_PATTERNS[:program]}`
-    elsif resource.is_a?(Lionpath::LionpathChair)
-      `#{bin_path} #{LIONPATH_FILE_PATTERNS[:chair]}`
-    elsif resource.is_a?(Lionpath::LionpathCommittee)
-      `#{bin_path} #{LIONPATH_FILE_PATTERNS[:committee]}`
-    else
-      raise InvalidResource
+    def grab_file(resource)
+      if resource.is_a?(Lionpath::LionpathCommitteeRoles)
+        `#{bin_path} #{LIONPATH_FILE_PATTERNS[:committee_role]}`
+      elsif resource.is_a?(Lionpath::LionpathProgram)
+        `#{bin_path} #{LIONPATH_FILE_PATTERNS[:program]}`
+      elsif resource.is_a?(Lionpath::LionpathChair)
+        `#{bin_path} #{LIONPATH_FILE_PATTERNS[:chair]}`
+      elsif resource.is_a?(Lionpath::LionpathCommittee)
+        `#{bin_path} #{LIONPATH_FILE_PATTERNS[:committee]}`
+      else
+        raise InvalidResource
+      end
     end
-  end
 
-  def parse_csv(resource)
-    csv_options = { headers: true, encoding: "ISO-8859-1:UTF-8", quote_char: '"', force_quotes: true }
-    CSV.foreach(lionpath_csv_loc, csv_options) do |row|
-      resource.import(row)
-    rescue StandardError => e
-      Rails.logger.error(error_json(e, resource))
+    def parse_csv(resource)
+      csv_options = { headers: true, encoding: "ISO-8859-1:UTF-8", quote_char: '"', force_quotes: true }
+      CSV.foreach(lionpath_csv_loc, csv_options) do |row|
+        resource.import(row)
+      rescue StandardError => e
+        Rails.logger.error(error_json(e, resource))
+      end
     end
-  end
 
-  def error_json(error, resource)
-    {
-      lionpath: {
-        error: error.to_s,
-        resource: resource.class.name,
-        timestamp: DateTime.now
-      }
-    }.to_json
-  end
+    def error_json(error, resource)
+      {
+        lionpath: {
+          error: error.to_s,
+          resource: resource.class.name,
+          timestamp: DateTime.now
+        }
+      }.to_json
+    end
 
-  def lionpath_csv_loc
-    "#{tmp_dir}lionpath.csv"
-  end
+    def lionpath_csv_loc
+      "#{tmp_dir}lionpath.csv"
+    end
 
-  def tmp_dir
-    "#{Rails.root}/tmp/"
-  end
+    def tmp_dir
+      "#{Rails.root}/tmp/"
+    end
 
-  def bin_path
-    "#{Rails.root}/bin/lionpath-csv.sh"
-  end
+    def bin_path
+      "#{Rails.root}/bin/lionpath-csv.sh"
+    end
 end

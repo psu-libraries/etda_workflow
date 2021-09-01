@@ -155,6 +155,17 @@ en:
                     Debra Rodgers, Coordinator of Academic Services 
                     SHCAcademics@psu.edu
                     814-867-2505
+        committee_rejected_committee:
+          message: |
+                    %{author_name}'s %{degree_type} titled "%{title}" has been rejected by its committee.
+                    The student has been asked to resubmit their work.  Once they have done this, you will be notified via email to review.
+
+                    Sincerely,
+                    The Schreyer Honors College
+                    If you have any further questions please contact:  
+                    Debra Rodgers, Coordinator of Academic Services 
+                    SHCAcademics@psu.edu
+                    814-867-2505
         pending_returned_author:
           message: |
                     Your %{degree_type} has been rejected by request of an administrator.

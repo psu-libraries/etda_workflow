@@ -14,31 +14,31 @@ class PublicIdMinter
 
   private
 
-  def unique_id
-    tmp_id = @id_segment[0]
-    pos = 1
-    while pos < @id_segment.length
-      tmp_id += @id_segment[pos]
-      return tmp_id if Submission.find_by(public_id: tmp_id).nil?
+    def unique_id
+      tmp_id = @id_segment[0]
+      pos = 1
+      while pos < @id_segment.length
+        tmp_id += @id_segment[pos]
+        return tmp_id if Submission.find_by(public_id: tmp_id).nil?
 
-      pos += 1
+        pos += 1
+      end
+      ''
     end
-    ''
-  end
 
-  def access_id_info(author)
-    return nil if author.nil?
-    return "-#{author.id}" if author.access_id.empty?
+    def access_id_info(author)
+      return nil if author.nil?
+      return "-#{author.id}" if author.access_id.empty?
 
-    author.access_id
-  end
+      author.access_id
+    end
 
-  def author_id_info(author)
-    return nil if author.nil?
+    def author_id_info(author)
+      return nil if author.nil?
 
-    str = "-#{author.id}"
-    return '' if str == '-'
+      str = "-#{author.id}"
+      return '' if str == '-'
 
-    str
-  end
+      str
+    end
 end

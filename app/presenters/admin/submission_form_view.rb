@@ -78,13 +78,13 @@ class Admin::SubmissionFormView < SimpleDelegator
 
     case access_level
     when 'restricted'
-        "<b>Metadata released:</b> #{date_information(released_metadata_at)}<br /><b>Scheduled for full release: </b> #{date_information(released_for_publication_at)}".html_safe
+      "<b>Metadata released:</b> #{date_information(released_metadata_at)}<br /><b>Scheduled for full release: </b> #{date_information(released_for_publication_at)}".html_safe
     when 'restricted_to_institution'
-        "<b>Released to Penn State Community: </b> #{date_information(released_metadata_at)}<br /><b>Scheduled for full release: </b>#{date_information(released_for_publication_at)}".html_safe
+      "<b>Released to Penn State Community: </b> #{date_information(released_metadata_at)}<br /><b>Scheduled for full release: </b>#{date_information(released_for_publication_at)}".html_safe
     else
-        metadata_str = ''
-        metadata_str = "<b>Metadata released:</b> #{date_information(released_metadata_at)}<br />" unless released_metadata_at.nil?
-        metadata_str + "<b>Released for publication: </b>#{date_information(released_for_publication_at)}".html_safe
+      metadata_str = ''
+      metadata_str = "<b>Metadata released:</b> #{date_information(released_metadata_at)}<br />" unless released_metadata_at.nil?
+      metadata_str + "<b>Released for publication: </b>#{date_information(released_for_publication_at)}".html_safe
     end
   end
 

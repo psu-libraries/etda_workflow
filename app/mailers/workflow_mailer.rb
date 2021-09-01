@@ -222,8 +222,14 @@ class WorkflowMailer < ActionMailer::Base
   def committee_rejected_author(submission)
     @submission = submission
     @author = submission.author
+    @review_results = ReviewResultsEmail.new(submission).generate
+    to = if current_partner.graduate?
+           [@author.psu_email_address, submission.advisor&.email, submission.chairs&.pluck(:email)].flatten.uniq.compact
+         else
+           @author.psu_email_address
+         end
 
-    mail to: @author.psu_email_address,
+    mail to: to,
          from: current_partner.email_address,
          subject: "Committee Rejected Final Submission"
   end
@@ -233,6 +239,25 @@ class WorkflowMailer < ActionMailer::Base
     @author = submission.author
 
     mail to: current_partner.email_list,
+         from: current_partner.email_address,
+         subject: "Committee Rejected Final Submission"
+  end
+
+  def committee_rejected_committee(submission)
+    @submission = submission
+    @author = submission.author
+    @title = submission.title
+    @email_list = @submission.committee_email_list
+
+    to = if current_partner.graduate?
+           @email_list -= [@submission.advisor&.email, @submission.chairs&.pluck(:email)].flatten.uniq
+         else
+           @email_list
+         end
+
+    return if to.blank?
+
+    mail to: to,
          from: current_partner.email_address,
          subject: "Committee Rejected Final Submission"
   end
@@ -250,13 +275,13 @@ class WorkflowMailer < ActionMailer::Base
 
   private
 
-  def partner_review_request_subject
-    if current_partner.graduate?
-      "#{@submission.degree_type} Needs Approval"
-    elsif current_partner.honors?
-      "Honors Thesis Needs Approval"
-    elsif current_partner.milsch?
-      "Millennium Scholars Thesis Review"
+    def partner_review_request_subject
+      if current_partner.graduate?
+        "#{@submission.degree_type} Needs Approval"
+      elsif current_partner.honors?
+        "Honors Thesis Needs Approval"
+      elsif current_partner.milsch?
+        "Millennium Scholars Thesis Review"
+      end
     end
-  end
 end
