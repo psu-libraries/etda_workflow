@@ -94,6 +94,7 @@ class WorkflowMailer < ActionMailer::Base
     @date_range = date_range
     attachments[filename.to_s] = csv
     mail to: I18n.t('external_contacts.ul_cataloging.email_address').to_s,
+         cc: I18n.t('devs.lead.primary_email_address'),
          from: current_partner.email_address,
          subject: "eTDs Released Between #{@date_range}"
   end

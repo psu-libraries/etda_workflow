@@ -15,7 +15,7 @@ class SemesterReleaseReportEmail
     end
 
     def filename
-      "ETD_#{Semester.last.split(' ').last.upcase}_RELEASE_REPORT.csv"
+      "ETD_#{Semester.last.gsub(' ', '').upcase}_RELEASE_REPORT.csv"
     end
 
     def headers
@@ -37,7 +37,7 @@ class SemesterReleaseReportEmail
     end
 
     def submissions
-      Submission.where("submissions.status LIKE '%released for publication%'")
+      Submission.where("submissions.status = 'released for publication' AND submissions.access_level = 'open_access'")
                 .where('submissions.released_for_publication_at >= ? AND submissions.released_for_publication_at <= ?',
                        Date.strptime("#{start_month}/01/#{semester_year}", '%m/%d/%Y'), today)
                 .or(Submission.where("submissions.status LIKE '%released for publication%'")
@@ -53,9 +53,9 @@ class SemesterReleaseReportEmail
       if Semester.last.include? 'Spring'
         '02'
       elsif Semester.last.include? 'Summer'
-        '07'
+        '06'
       elsif Semester.last.include? 'Fall'
-        '10'
+        '09'
       else
         '02'
       end
