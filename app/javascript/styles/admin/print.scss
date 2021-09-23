@@ -1,5 +1,6 @@
 div.print-it {
-  font-size: small;
+  width: 100%;
+  font-size: medium;
   margin-left:  2em;
   margin-right: 2em;
   line-height: 2em;
@@ -72,11 +73,15 @@ div.noprint {
   display: none;
 }
 @media print {
-  ul#admin-nav{
+  .no-print{
     display: none;
   }
   header.print_signatory_page {
     display: none;
+  }
+  div.col-sm-12-print {
+    width:100%;
+    float:left;
   }
 }
 
