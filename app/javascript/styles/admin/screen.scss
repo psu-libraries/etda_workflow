@@ -259,3 +259,10 @@
 .print-column {
   min-width: 125px;
 }
+
+@media screen {
+  .col-sm-8-no-print {
+    width:66%;
+    float:left;
+  }
+}
