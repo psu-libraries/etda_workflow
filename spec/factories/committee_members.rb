@@ -11,7 +11,6 @@ FactoryBot.define do
     is_voting { true }
     notes { '' }
     status { nil }
-    approval_started_at { DateTime.now }
   end
 
   trait :required do
@@ -20,6 +19,10 @@ FactoryBot.define do
 
   trait :optional do
     is_required { false }
+  end
+
+  trait :review_started do
+    approval_started_at { DateTime.now }
   end
 
   # trait :advisor do
