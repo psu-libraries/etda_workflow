@@ -9,7 +9,8 @@ class ApprovalStatus
       'none',
       'pending',
       'approved',
-      'rejected'
+      'rejected',
+      'did not vote'
     ].freeze
 
   def initialize(submission)
@@ -27,7 +28,7 @@ class ApprovalStatus
   end
 
   def status
-    return 'none' unless all_have_voted? || rejected
+    return 'none' unless evaluation_threshold? || rejected
 
     none || approved || rejected || pending
   end
@@ -62,12 +63,16 @@ class ApprovalStatus
       (voting_committee_members.count.to_f * (approval_configuration.configuration_threshold.to_f / 100)).ceil
     end
 
-    def all_have_voted?
+    def evaluation_threshold?
       committee_members.each do |member|
         next if member == head_of_program && @current_submission.head_of_program_is_approving?
 
-        return false unless member.status == 'approved' || member.status == 'rejected'
+        next if member == current_submission.advisor && current_partner.graduate?
+
+        return false unless (member.status == 'approved' || member.status == 'rejected') ||
+            (DateTime.now > (member.approval_started_at + 7.days))
       end
+
       true
     end
 end

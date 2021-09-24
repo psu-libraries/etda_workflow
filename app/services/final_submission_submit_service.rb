@@ -52,6 +52,7 @@ class FinalSubmissionSubmitService
         return if submission.advisor.status == 'approved'
 
         WorkflowMailer.committee_member_review_request(submission, submission.advisor).deliver
+        CommitteeReminderWorker.perform_in(4.days, submission.id, submission.advisor.id)
       else
         status_giver.can_waiting_for_committee_review?
         status_giver.waiting_for_committee_review!

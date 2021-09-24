@@ -438,6 +438,95 @@ RSpec.describe ApprovalStatus, type: :model do
         end
       end
     end
+
+    context 'when submission is beyond 7 day threshold for core committee' do
+      context "when percentage for approval is 66" do
+        before do
+          submission.degree.degree_type.approval_configuration = approval_configuration4
+        end
+
+        context "when 75% of committee members approve and 25% did not vote" do
+          it "returns approved" do
+            submission.committee_members << FactoryBot.create(:committee_member,
+                                                              submission: submission,
+                                                              status: 'approved',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - 7.days))
+            submission.committee_members << FactoryBot.create(:committee_member,
+                                                              submission: submission,
+                                                              status: 'approved',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - 7.days))
+            submission.committee_members << FactoryBot.create(:committee_member,
+                                                              submission: submission,
+                                                              status: 'approved',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - 7.days))
+            submission.committee_members << FactoryBot.create(:committee_member,
+                                                              submission: submission,
+                                                              status: '',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - 7.days))
+
+            expect(described_class.new(submission).status).to eq('approved')
+          end
+        end
+
+        context "when 75% of committee members approve and 25% reject" do
+          it "returns approved" do
+            submission.committee_members << FactoryBot.create(:committee_member,
+                                                              submission: submission,
+                                                              status: 'approved',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - 7.days))
+            submission.committee_members << FactoryBot.create(:committee_member,
+                                                              submission: submission,
+                                                              status: 'approved',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - 7.days))
+            submission.committee_members << FactoryBot.create(:committee_member,
+                                                              submission: submission,
+                                                              status: 'approved',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - 7.days))
+            submission.committee_members << FactoryBot.create(:committee_member,
+                                                              submission: submission,
+                                                              status: 'rejected',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - 7.days))
+
+            expect(described_class.new(submission).status).to eq('approved')
+          end
+        end
+
+        context "when 50% of committee members approve and 25% reject and 25% did not vote" do
+          it "returns pending" do
+            submission.committee_members << FactoryBot.create(:committee_member,
+                                                              submission: submission,
+                                                              status: 'approved',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - 7.days))
+            submission.committee_members << FactoryBot.create(:committee_member,
+                                                              submission: submission,
+                                                              status: 'approved',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - 7.days))
+            submission.committee_members << FactoryBot.create(:committee_member,
+                                                              submission: submission,
+                                                              status: '',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - 7.days))
+            submission.committee_members << FactoryBot.create(:committee_member,
+                                                              submission: submission,
+                                                              status: 'rejected',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - 7.days))
+
+            expect(described_class.new(submission).status).to eq('pending')
+          end
+        end
+      end
+    end
   end
 
   describe "#head_of_program_status" do

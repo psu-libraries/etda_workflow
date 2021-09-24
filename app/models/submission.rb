@@ -347,7 +347,7 @@ class Submission < ApplicationRecord
 
       WorkflowMailer.send_committee_review_requests(self, committee_member)
 
-      CommitteeReminderWorker.perform_in(10.days, id, committee_member.id)
+      CommitteeReminderWorker.perform_in(4.days, id, committee_member.id)
       seen_access_ids << committee_member.access_id
     end
   end
