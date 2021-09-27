@@ -68,7 +68,7 @@ class CommitteeMember < ApplicationRecord
   end
 
   def status=(new_status)
-    return errors.add(:status, 'Invalid status.') unless STATUS.include? new_status
+    errors.add(:status, 'Invalid status.') unless STATUS.include? new_status
 
     return if new_status == self[:status]
 

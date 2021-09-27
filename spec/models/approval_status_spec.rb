@@ -533,9 +533,11 @@ RSpec.describe ApprovalStatus, type: :model do
     before do
       head_role = CommitteeRole.find_by(is_program_head: true, degree_type_id: submission.degree.degree_type_id)
       submission.committee_members = []
-      FactoryBot.create(:committee_member, :review_started,
-                        status: 'pending', committee_role_id: head_role.id,
-                        submission: submission) if current_partner.graduate?
+      if current_partner.graduate?
+        FactoryBot.create(:committee_member, :review_started,
+                          status: 'pending', committee_role_id: head_role.id,
+                          submission: submission)
+      end
     end
 
     context 'when head of program is approving' do

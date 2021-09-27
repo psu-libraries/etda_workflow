@@ -66,14 +66,29 @@ class ApprovalStatus
 
     def evaluation_threshold?
       committee_members.each do |member|
-        next if member == head_of_program && @current_submission.head_of_program_is_approving?
+        next if program_head?(member)
 
-        next if member == current_submission.advisor && current_partner.graduate?
+        next if graduate_advisor?(member)
 
-        return false unless (member.status == 'approved' || member.status == 'rejected') ||
-            (member.approval_started_at.present? && (DateTime.now > (member.approval_started_at + 7.days)))
+        return false unless member_voted?(member) || beyond_seven_days?(member)
       end
 
       true
+    end
+
+    def beyond_seven_days?(committee_member)
+      committee_member.approval_started_at.present? && (DateTime.now > (committee_member.approval_started_at + 7.days))
+    end
+
+    def program_head?(committee_member)
+      committee_member == head_of_program && @current_submission.head_of_program_is_approving?
+    end
+
+    def graduate_advisor?(committee_member)
+      committee_member == current_submission.advisor && current_partner.graduate?
+    end
+
+    def member_voted?(committee_member)
+      committee_member.status == 'approved' || committee_member.status == 'rejected'
     end
 end
