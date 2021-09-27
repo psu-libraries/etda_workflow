@@ -71,7 +71,7 @@ class ApprovalStatus
         next if member == current_submission.advisor && current_partner.graduate?
 
         return false unless (member.status == 'approved' || member.status == 'rejected') ||
-            (DateTime.now > (member.approval_started_at + 7.days))
+            (member.approval_started_at.present? && (DateTime.now > (member.approval_started_at + 7.days)))
       end
 
       true
