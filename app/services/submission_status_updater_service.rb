@@ -38,9 +38,11 @@ class SubmissionStatusUpdaterService
       if approval_status.status == 'approved'
         if submission.head_of_program_is_approving?
           send_to_program_head
+          mark_did_not_vote
           update_status_from_head_of_program
         else
           send_to_final_submission_response
+          mark_did_not_vote
           submission.update_attribute(:committee_review_accepted_at, DateTime.now)
         end
       elsif approval_status.status == 'rejected'
@@ -92,5 +94,13 @@ class SubmissionStatusUpdaterService
       return false if submission.advisor.federal_funding_used.to_s.empty?
 
       submission.federal_funding != submission.advisor.federal_funding_used
+    end
+
+    def mark_did_not_vote
+      submission.committee_members.each do |cm|
+        next if cm.committee_role.is_program_head?
+
+        cm.update(status: 'did not vote') if (cm.status.blank? || cm.status == 'pending')
+      end
     end
 end

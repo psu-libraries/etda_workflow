@@ -6,12 +6,10 @@ class ApprovalStatus
 
   WORKFLOW_STATUS =
     [
-      '',
       'none',
       'pending',
       'approved',
       'rejected',
-      'did not vote'
     ].freeze
 
   def initialize(submission)

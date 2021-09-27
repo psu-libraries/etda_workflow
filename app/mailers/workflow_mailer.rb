@@ -176,6 +176,27 @@ class WorkflowMailer < ActionMailer::Base
          subject: partner_review_request_subject
   end
 
+  def seventh_day_to_chairs(submission)
+    @submission = submission
+    @author = submission.author
+    @committee_list = submission.voting_committee_members.select { |cm| %w[accepted rejected].exclude?(cm.status) }
+
+    mail to: [CommitteeMember.program_head(submission).email, submission.chairs&.pluck(:email)].flatten.uniq.compact,
+         from: current_partner.email_address,
+         subject: "#{author.first_name} #{author.last_name} Committee 7-day Deadline Reached"
+  end
+
+  def seventh_day_to_author(submission)
+    @submission = submission
+    @author = submission.author
+    @committee_chair = "(#{submission.chairs.first.name}) "
+    @program_head = "(#{CommitteeMember.program_head(@submission).name}) "
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "ETD Committee Processing"
+  end
+
   def advisor_rejected(submission)
     @submission = submission
     @author = submission.author

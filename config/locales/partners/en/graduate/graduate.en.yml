@@ -151,6 +151,35 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
+        seventh_day_to_chairs:
+          message: |
+                    The committee for %{author_name}'s %{degree_type} has not completed its review after 7 days.
+                    The committee members that have not voted yet are:
+
+                    %{committee_list}
+
+                    Please secure the necessary votes within the next 5 business days.
+                    Sincerely,
+                    The Graduate School of The Pennsylvania State University
+
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+        seventh_day_to_authors:
+          message: |
+                    Your %{degree_type} is being looked into by the committee chair %{committee_chair}and program head %{program_head}
+                    to secure the necessary votes for completion.  This matter should be fixed in the next 5 business days.
+                    No action is required of you at this time.
+                    Sincerely,
+                    The Graduate School of The Pennsylvania State University
+
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
         advisor_rejected:
           message: |
                     Your %{degree_type} has been rejected by your advisor.
