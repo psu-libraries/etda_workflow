@@ -17,7 +17,7 @@ class CommitteeMember < ApplicationRecord
 
   delegate :is_program_head, to: :committee_role
 
-  STATUS = ["pending", "approved", "rejected"].freeze
+  STATUS = ApprovalStatus::WORKFLOW_STATUS
 
   def self.advisors(submission)
     advisors_array = []
@@ -68,6 +68,8 @@ class CommitteeMember < ApplicationRecord
   end
 
   def status=(new_status)
+    return errors.add(:status, 'Invalid status.') unless STATUS.include? new_status
+
     return if new_status == self[:status]
 
     self[:status] = new_status

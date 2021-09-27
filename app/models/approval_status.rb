@@ -6,6 +6,7 @@ class ApprovalStatus
 
   WORKFLOW_STATUS =
     [
+      '',
       'none',
       'pending',
       'approved',
