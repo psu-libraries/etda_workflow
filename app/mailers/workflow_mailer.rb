@@ -179,18 +179,23 @@ class WorkflowMailer < ActionMailer::Base
   def seventh_day_to_chairs(submission)
     @submission = submission
     @author = submission.author
-    @committee_list = submission.voting_committee_members.select { |cm| %w[accepted rejected].exclude?(cm.status) }
+    committee_list = submission.voting_committee_members.collect { |cm|
+      "#{cm.name} (#{cm.email})" if %w[approved rejected].exclude?(cm.status)
+    }
+    @committee_list_strf = committee_list.compact.join(', ')
 
     mail to: [CommitteeMember.program_head(submission).email, submission.chairs&.pluck(:email)].flatten.uniq.compact,
          from: current_partner.email_address,
-         subject: "#{author.first_name} #{author.last_name} Committee 7-day Deadline Reached"
+         subject: "#{@author.first_name} #{@author.last_name} Committee 7-day Deadline Reached"
   end
 
   def seventh_day_to_author(submission)
+    program_head_name = CommitteeMember.program_head(submission)&.name
+    committee_chair_name = submission.chairs.first&.name
     @submission = submission
     @author = submission.author
-    @committee_chair = "(#{submission.chairs.first.name}) "
-    @program_head = "(#{CommitteeMember.program_head(@submission).name}) "
+    @committee_chair = (committee_chair_name ? ('(' + committee_chair_name + ') ') : nil)
+    @program_head = (program_head_name ? ('(' + program_head_name + ') ') : nil)
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,

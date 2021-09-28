@@ -19,7 +19,6 @@ class CommitteeMember < ApplicationRecord
 
   STATUS = [
       '',
-      'none',
       'pending',
       'approved',
       'rejected',

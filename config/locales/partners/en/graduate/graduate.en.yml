@@ -154,7 +154,7 @@ en:
         seventh_day_to_chairs:
           message: |
                     The committee for %{author_name}'s %{degree_type} has not completed its review after 7 days.
-                    The committee members that have not voted yet are:
+                    The committee members that must vote but have not are:
 
                     %{committee_list}
 
@@ -162,12 +162,13 @@ en:
                     Sincerely,
                     The Graduate School of The Pennsylvania State University
 
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:
                     Office of Theses and Dissertations
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
-        seventh_day_to_authors:
+        seventh_day_to_author:
           message: |
                     Your %{degree_type} is being looked into by the committee chair %{committee_chair}and program head %{program_head}
                     to secure the necessary votes for completion.  This matter should be fixed in the next 5 business days.
@@ -175,6 +176,7 @@ en:
                     Sincerely,
                     The Graduate School of The Pennsylvania State University
 
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:
                     Office of Theses and Dissertations
                     115 Kern Building

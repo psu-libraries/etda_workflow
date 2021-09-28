@@ -27,7 +27,7 @@ class SeventhDayEvaluationWorker
 
     def non_graduate_emails(submission)
       submission.voting_committee_members.each do |cm|
-        WorkflowMailer.send_committee_review_reminders(submission, cm) if %w[accepted rejected].exclude? cm.status
+        WorkflowMailer.send_committee_review_reminders(submission, cm) if %w[approved rejected].exclude? cm.status
       end
     end
 end
