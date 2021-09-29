@@ -199,7 +199,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
-         subject: "ETD Committee Processing"
+         subject: "ETD Committee Still Processing"
   end
 
   def advisor_rejected(submission)

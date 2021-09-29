@@ -8,10 +8,10 @@ class SeventhDayEvaluationWorker
 
     approval_status = submission.approval_status_behavior.status
     if approval_status == 'pending'
-      if current_partner.graduate?
-        graduate_emails(submission)
+      if current_partner.graduate? && submission.degree_type.slug == 'dissertation'
+        dissertation_emails(submission)
       else
-        non_graduate_emails(submission)
+        non_dissertation_emails(submission)
       end
     else
       SubmissionStatusUpdaterService.new(submission).update_status_from_committee
@@ -20,12 +20,12 @@ class SeventhDayEvaluationWorker
 
   private
 
-    def graduate_emails(submission)
+    def dissertation_emails(submission)
       WorkflowMailer.seventh_day_to_chairs(submission).deliver
       WorkflowMailer.seventh_day_to_author(submission).deliver
     end
 
-    def non_graduate_emails(submission)
+    def non_dissertation_emails(submission)
       submission.voting_committee_members.each do |cm|
         WorkflowMailer.send_committee_review_reminders(submission, cm) if %w[approved rejected].exclude? cm.status
       end
