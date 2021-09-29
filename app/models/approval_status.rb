@@ -9,7 +9,7 @@ class ApprovalStatus
       'none',
       'pending',
       'approved',
-      'rejected',
+      'rejected'
     ].freeze
 
   def initialize(submission)

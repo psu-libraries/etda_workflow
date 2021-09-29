@@ -686,4 +686,43 @@ RSpec.describe WorkflowMailer do
       end
     end
   end
+
+  describe '#seventh_day_to_chairs' do
+    let(:email) { described_class.seventh_day_to_chairs(submission) }
+    let(:cm_role) { FactoryBot.create :committee_role, is_program_head: true, degree_type: DegreeType.default }
+    let(:cm1) { FactoryBot.create :committee_member, committee_role: cm_role, is_voting: false }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: DegreeType.default }
+
+    before do
+      create_committee submission
+      submission.committee_members << cm1
+      submission.update status: 'waiting for committee review'
+      submission.committee_members.first.update status: 'approved'
+      submission.committee_members.second.update status: 'approved'
+      submission.reload
+    end
+
+    it "is sent to the proper recipients" do
+      expect(email.to).to eq([submission.program_head.email, submission.chairs.pluck(:email)].flatten)
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("#{submission.author.first_name} #{submission.author.last_name} Committee 7-day Deadline Reached")
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/has not completed its review after 7 days/)
+      expect(email.body).not_to match(/Professor Buck Murphy (#{submission.committee_members.first.email})/)
+      expect(email.body).not_to match(/Professor Buck Murphy (#{submission.committee_members.second.email})/)
+      expect(email.body).not_to match(/Professor Buck Murphy (#{submission.committee_members.last.email})/)
+      expect(email.body).to match(/(#{submission.committee_members.third.email})/)
+      expect(email.body).to match(/(#{submission.committee_members.fourth.email})/)
+      expect(email.body).to match(/(#{submission.committee_members.fifth.email})/)
+      expect(email.body).to match(/(#{submission.committee_members[5].email})/)
+    end
+  end
 end
