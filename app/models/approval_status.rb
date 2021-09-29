@@ -79,11 +79,11 @@ class ApprovalStatus
     end
 
     def program_head?(committee_member)
-      committee_member == head_of_program && @current_submission.head_of_program_is_approving?
+      @current_submission.head_of_program_is_approving? && committee_member == head_of_program
     end
 
     def graduate_advisor?(committee_member)
-      committee_member == current_submission.advisor && current_partner.graduate?
+      current_partner.graduate? && committee_member == current_submission.advisor
     end
 
     def member_voted?(committee_member)
