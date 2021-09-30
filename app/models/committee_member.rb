@@ -18,11 +18,11 @@ class CommitteeMember < ApplicationRecord
   delegate :is_program_head, to: :committee_role
 
   STATUS = [
-      '',
-      'pending',
-      'approved',
-      'rejected',
-      'did not vote'
+    '',
+    'pending',
+    'approved',
+    'rejected',
+    'did not vote'
   ].freeze
 
   def self.advisors(submission)

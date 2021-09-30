@@ -100,7 +100,7 @@ class SubmissionStatusUpdaterService
       submission.committee_members.each do |cm|
         next if cm.committee_role.is_program_head? && submission.head_of_program_is_approving?
 
-        cm.update(status: 'did not vote') if (cm.status.blank? || cm.status == 'pending')
+        cm.update(status: 'did not vote') if cm.status.blank? || cm.status == 'pending'
       end
     end
 end
