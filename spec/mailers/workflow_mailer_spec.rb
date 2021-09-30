@@ -519,10 +519,8 @@ RSpec.describe WorkflowMailer do
       expect(email.from).to eq([partner_email])
     end
 
-    it "sets an appropriate subject", honors: true, milsch: true do
-      expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
-      expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
-      expect(email.subject).to eq("Millennium Scholars #{submission.degree_type} Review") if current_partner.milsch?
+    it "sets an appropriate subject", honors: true, milsch: true, sset: true do
+      expect(email.subject).to eq("#{current_partner.name} #{submission.degree_type} Review Reminder")
     end
 
     it "has desired content" do
@@ -612,10 +610,8 @@ RSpec.describe WorkflowMailer do
       expect(email.from).to eq([partner_email])
     end
 
-    it "sets an appropriate subject", honors: true, milsch: true do
-      expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
-      expect(email.subject).to eq("Honors Thesis Needs Approval") if current_partner.honors?
-      expect(email.subject).to eq("Millennium Scholars Thesis Review") if current_partner.milsch?
+    it "sets an appropriate subject", honors: true, milsch: true, sset: true do
+      expect(email.subject).to eq("#{current_partner.name} #{submission.degree_type} Review Request")
     end
 
     it "has desired content" do
@@ -649,10 +645,8 @@ RSpec.describe WorkflowMailer do
         expect(email.from).to eq([partner_email])
       end
 
-      it "sets an appropriate subject", honors: true, milsch: true do
-        expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
-        expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
-        expect(email.subject).to eq("Millennium Scholars #{submission.degree_type} Review") if current_partner.milsch?
+      it "sets an appropriate subject", honors: true, milsch: true, sset: true do
+        expect(email.subject).to eq("#{current_partner.name} #{submission.degree_type} Review Request")
       end
 
       it "has desired content" do

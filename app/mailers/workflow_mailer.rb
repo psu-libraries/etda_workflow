@@ -144,7 +144,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @committee_member.email,
          from: current_partner.email_address,
-         subject: "#{current_partner} #{submission.degree_type} Review Reminder"
+         subject: "#{current_partner.name} #{submission.degree_type} Review Request"
   end
 
   def special_committee_review_request(submission, committee_member)
@@ -159,7 +159,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @committee_member.email,
          from: current_partner.email_address,
-         subject: "#{current_partner} #{submission.degree_type} Review Reminder"
+         subject: "#{current_partner.name} #{submission.degree_type} Review Request"
   end
 
   def committee_member_review_reminder(submission, committee_member)
@@ -173,7 +173,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @committee_member.email,
          from: current_partner.email_address,
-         subject: "#{current_partner} #{submission.degree_type} Review Reminder"
+         subject: "#{current_partner.name} #{submission.degree_type} Review Reminder"
   end
 
   def seventh_day_to_chairs(submission)
