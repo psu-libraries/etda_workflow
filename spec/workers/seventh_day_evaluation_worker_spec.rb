@@ -59,7 +59,6 @@ RSpec.describe SeventhDayEvaluationWorker do
             skip "non graduate only" if current_partner.graduate?
 
             Sidekiq::Testing.inline! do
-              byebug
               expect { described_class.perform_async(submission.id) }.to change { WorkflowMailer.deliveries.size }.by(2) if current_partner.honors?
               expect { described_class.perform_async(submission.id) }.to change { WorkflowMailer.deliveries.size }.by(1) if current_partner.milsch?
               expect { described_class.perform_async(submission.id) }.to change { WorkflowMailer.deliveries.size }.by(4) if current_partner.sset?
