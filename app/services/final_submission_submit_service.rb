@@ -62,10 +62,12 @@ class FinalSubmissionSubmitService
     def initiate_committee_review
       status_giver.can_waiting_for_committee_review?
       status_giver.waiting_for_committee_review!
-      unless %w[approved rejected].include? submission.approval_status_behavior.status
-        SeventhDayEvaluationWorker.perform_in(7.days, submission.id)
-      end
+      SeventhDayEvaluationWorker.perform_in(7.days, submission.id) if %w[approved rejected].exclude? approval_status
       submission.committee_review_requests_init
       SubmissionStatusUpdaterService.new(submission).update_status_from_committee
+    end
+
+    def approval_status
+      submission.approval_status_behavior.status
     end
 end
