@@ -11,6 +11,7 @@ RSpec.describe FinalSubmissionSubmitService do
   end
 
   before do
+    SeventhDayEvaluationWorker.clear
     create_committee(submission)
   end
 
@@ -34,6 +35,7 @@ RSpec.describe FinalSubmissionSubmitService do
           final_submission_params = {}
           described_class.new(submission, status_giver, final_submission_params).submit_final_submission
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+          expect(SeventhDayEvaluationWorker.jobs.size).to eq 1
         end
       end
 
@@ -46,6 +48,7 @@ RSpec.describe FinalSubmissionSubmitService do
             final_submission_params = {}
             described_class.new(submission, status_giver, final_submission_params).submit_final_submission
             expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+            expect(SeventhDayEvaluationWorker.jobs.size).to eq 1
           end
         end
 
@@ -56,6 +59,7 @@ RSpec.describe FinalSubmissionSubmitService do
             described_class.new(submission, status_giver, final_submission_params).submit_final_submission
             expect(Submission.find(submission.id).status).to eq 'waiting for advisor review'
             expect(submission.advisor.approval_started_at).to be_truthy
+            expect(SeventhDayEvaluationWorker.jobs.size).to eq 0
           end
         end
       end
@@ -78,6 +82,7 @@ RSpec.describe FinalSubmissionSubmitService do
           described_class.new(submission, status_giver, final_submission_params).submit_final_submission
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
           expect(submission.committee_members.pluck(:status)).to eq Array.new(submission.committee_members.count, '')
+          expect(SeventhDayEvaluationWorker.jobs.size).to eq 1
         end
       end
 
@@ -91,6 +96,7 @@ RSpec.describe FinalSubmissionSubmitService do
             described_class.new(submission, status_giver, final_submission_params).submit_final_submission
             expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
             expect(submission.committee_members.pluck(:status)).to eq Array.new(5, '')
+            expect(SeventhDayEvaluationWorker.jobs.size).to eq 1
           end
         end
 
@@ -101,6 +107,7 @@ RSpec.describe FinalSubmissionSubmitService do
             described_class.new(submission, status_giver, final_submission_params).submit_final_submission
             expect(Submission.find(submission.id).status).to eq 'waiting for advisor review'
             expect(submission.committee_members.pluck(:status)).to eq Array.new(6, '')
+            expect(SeventhDayEvaluationWorker.jobs.size).to eq 0
           end
         end
       end

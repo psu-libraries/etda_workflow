@@ -1,10 +1,9 @@
 class FinalSubmissionSubmitService
-  attr_accessor :submission, :status_giver, :approval_status, :final_submission_params
+  attr_accessor :submission, :status_giver, :final_submission_params
 
   def initialize(submission, status_giver, final_submission_params)
     @submission = submission
     @status_giver = status_giver
-    @approval_status = submission.approval_status_behavior.status
     @final_submission_params = final_submission_params
   end
 
@@ -49,14 +48,24 @@ class FinalSubmissionSubmitService
         status_giver.can_waiting_for_advisor_review?
         status_giver.waiting_for_advisor_review!
         submission.advisor.update approval_started_at: DateTime.now
-        return if submission.advisor.status == 'approved'
-
-        WorkflowMailer.committee_member_review_request(submission, submission.advisor).deliver
-        CommitteeReminderWorker.perform_in(4.days, submission.id, submission.advisor.id)
+        if submission.advisor.status == 'approved'
+          SubmissionStatusUpdaterService.new(submission).update_status_from_committee
+        else
+          WorkflowMailer.committee_member_review_request(submission, submission.advisor).deliver
+          CommitteeReminderWorker.perform_in(4.days, submission.id, submission.advisor.id)
+        end
       else
-        status_giver.can_waiting_for_committee_review?
-        status_giver.waiting_for_committee_review!
-        submission.committee_review_requests_init
+        initiate_committee_review
       end
+    end
+
+    def initiate_committee_review
+      status_giver.can_waiting_for_committee_review?
+      status_giver.waiting_for_committee_review!
+      unless %w[approved rejected].include? submission.approval_status_behavior.status
+        SeventhDayEvaluationWorker.perform_in(7.days, submission.id)
+      end
+      submission.committee_review_requests_init
+      SubmissionStatusUpdaterService.new(submission).update_status_from_committee
     end
 end

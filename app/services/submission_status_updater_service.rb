@@ -66,6 +66,9 @@ class SubmissionStatusUpdaterService
     def send_to_committee_review
       status_giver.can_waiting_for_committee_review?
       status_giver.waiting_for_committee_review!
+      unless %w[approved rejected].include? approval_status.status
+        SeventhDayEvaluationWorker.perform_in(7.days, submission.id)
+      end
       submission.committee_review_requests_init
     end
 
