@@ -37,6 +37,6 @@ class Author::SubmissionsIndexView
   end
 
   def update_contact_information?
-    @author.alternate_email_address.nil?
+    @author.alternate_email_address.blank? || @author.address_1.blank?
   end
 end
