@@ -12,10 +12,22 @@ RSpec.describe Author::SubmissionsIndexView do
     it 'returns true for a remote user that is not in our database' do
       expect(view_for_new_author).to be_update_contact_information
     end
-    it 'returns true for an author that does not have address_1 data' do
-      author_wo_address.address_1 = nil
-      expect(described_class.new(author_wo_address)).to be_update_contact_information
+    context 'when partner is graduate' do
+      it 'returns true for an author that does not have address_1 data' do
+        author_wo_address.address_1 = nil
+        expect(described_class.new(author_wo_address)).to be_update_contact_information
+      end
     end
+
+    context 'when partner is non graduate', sset: true, milsch: true, honors: true do
+      it 'returns false for an author that does not have address_1 data' do
+        skip 'non graduate only' if current_partner.graduate?
+
+        author_wo_address.address_1 = nil
+        expect(described_class.new(author_wo_address)).not_to be_update_contact_information
+      end
+    end
+
     it 'returns false for a remote user that is in our database' do
       expect(view_for_existing_author).not_to be_update_contact_information
     end
