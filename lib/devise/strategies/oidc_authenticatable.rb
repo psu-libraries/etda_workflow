@@ -51,7 +51,8 @@ module Devise
 
       def remote_user(headers)
         nil_values = ["", "(null)"]
-        access_id = headers.fetch('REMOTE_USER', nil) || headers.fetch('HTTP_REMOTE_USER', nil)
+        remote_user_header = ENV.fetch('REMOTE_USER_HEADER', 'REMOTE_USER')
+        access_id = headers.fetch(remote_user_header)
         return nil if nil_values.include?(access_id)
         return access_id
       end
