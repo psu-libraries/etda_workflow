@@ -8,10 +8,13 @@ Rails.application.routes.draw do
   devise_for :admins, path: 'admin'
 
   get '/logout', to: 'application#logout', as: :logout
-  get '/login', to: 'application#login', as: :login
   get '/about', to: 'application#about', as: :about_page
   get '/main', to: 'application#main', as: :main_page
   get '/docs', to: 'application#docs', as: :docs_page
+
+  authenticate :author do 
+    get '/login', to: 'application#login', as: :login
+  end
 
   get '/', to: redirect(path: '/main')
 
