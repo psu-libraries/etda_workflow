@@ -9,7 +9,10 @@ class AdminController < ApplicationController
   protected
 
     def set_session
-      sign_out if session[:user_role] != 'admin'
+      if current_remote_user.nil?
+        session[:return_to] = request.url
+        redirect_to '/login'
+      end
       session[:user_role] = 'admin'
     end
 

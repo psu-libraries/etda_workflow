@@ -30,6 +30,15 @@ RSpec.describe 'Devise Login', type: :request do
     expect(Admin.find_by(access_id: 'xxb13')).not_to be_nil
   end
 
+  it 'signs approver in and out' do
+    headers = { 'HTTP_REMOTE_USER' => 'ajk5603', 'REQUEST_URI' => '/approver' }
+    expect(Approver.find_by(access_id: 'ajk5603')).to be_nil
+    request.headers.merge! headers
+    Devise::Strategies::OidcAuthenticatable.new(headers).authenticate!
+    get root_path
+    expect(Approver.find_by(access_id: 'ajk5603')).not_to be_nil
+  end
+
   it 'does not authenticate an admin who is not in ldap admin group' do
     headers = { 'HTTP_REMOTE_USER' => 'saw140', 'REQUEST_URI' => '/admin/degrees' }
     expect(Admin.find_by(access_id: 'saw140')).to be_nil
