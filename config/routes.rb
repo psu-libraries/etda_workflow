@@ -11,10 +11,7 @@ Rails.application.routes.draw do
   get '/about', to: 'application#about', as: :about_page
   get '/main', to: 'application#main', as: :main_page
   get '/docs', to: 'application#docs', as: :docs_page
-
-  authenticate :author do 
-    get '/login', to: 'application#login', as: :login
-  end
+  get '/login', to: 'application#login', as: :login
 
   get '/', to: redirect(path: '/main')
 
