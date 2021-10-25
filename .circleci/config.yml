@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.1.0
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -176,7 +176,7 @@ jobs:
           docker-compose down
   deploy-qa:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/public/drone-utils:latest
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
     environment:
       CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
       CONFIG_ENV: qa
@@ -192,7 +192,7 @@ jobs:
             ./generate_circle_application.sh
   deploy-preview:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/public/drone-utils:latest
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
     environment:
       CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
       IMAGE_REPOSITORY: harbor.k8s.libraries.psu.edu/library/etda-workflow
