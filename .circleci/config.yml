@@ -1,53 +1,6 @@
 version: 2.1
 
 jobs:
-  test:
-    parallelism: 2
-    docker:
-      - image: circleci/ruby:2.6.6-buster-node-browsers
-      - image: redis:5.0.5
-      - image: mysql:5.7
-        environment:
-          MYSQL_ROOT_PASSWORD: password
-    environment:
-      RAILS_ENV: test
-      MYSQL_USER: root
-      MYSQL_PASSWORD: password
-    steps:
-    - checkout
-    - restore_cache:
-        keys:
-          - bundle-{{ checksum "Gemfile.lock" }}
-    - restore_cache:
-        keys:
-          - yarn-{{ checksum "yarn.lock" }}
-    - run:
-        name: "Bundle"
-        command: |
-          gem install bundler
-          bundle check --path vendor/bundle || bundle install --deployment
-    - run:
-        name: "Yarn"
-        command: |
-          yarn install --cache-folder ~/.cache/yarn --frozen-lockfile
-    - run:
-        name: "Wait for Redis"
-        command: dockerize -wait tcp://localhost:6379 -timeout 1m
-    - run:
-        name: "Wait for Mysql"
-        command: dockerize -wait tcp://localhost:3306 -timeout 2m
-    - save_cache:
-        paths:
-          - vendor/bundle
-        key: bundle-{{ checksum "Gemfile.lock" }}
-    - save_cache:
-        key: yarn-{{ checksum "yarn.lock" }}
-        paths:
-          - ~/.cache/yarn
-    - run:
-        name: "RSpec"
-        command: |
-          ./bin/ci-rspec
   build:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.1.0
@@ -223,7 +176,7 @@ jobs:
           docker-compose down
   deploy-qa:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
+      - image: harbor.k8s.libraries.psu.edu/public/drone-utils:latest
     environment:
       CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
       CONFIG_ENV: qa
@@ -239,12 +192,11 @@ jobs:
             ./generate_circle_application.sh
   deploy-preview:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
+      - image: harbor.k8s.libraries.psu.edu/public/drone-utils:latest
     environment:
       CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
       IMAGE_REPOSITORY: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
     - add_ssh_keys
     - run:
         name: "Updating Config Repo"
@@ -258,4 +210,37 @@ workflows:
   version: 2
   etda-workflow:
     jobs:
-      - test
+      - build
+      - rubocop:
+          requires:
+            - build
+      - integration_test_grad:
+          requires:
+            - build
+      - unit_test_grad:
+          requires:
+            - build
+      - test_partners:
+          requires:
+            - build
+      - publish:
+          requires:
+            - unit_test_grad
+            - integration_test_grad
+            - test_partners
+            - rubocop
+      - deploy-qa:
+          requires:
+            - publish
+          filters:
+            branches:
+               only:
+                - main
+      - deploy-preview:
+          requires:
+            - publish
+          filters:
+            branches:
+              only:
+                - /preview\/.*/
+                - develop
