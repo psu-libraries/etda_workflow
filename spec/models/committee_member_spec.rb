@@ -293,8 +293,6 @@ RSpec.describe CommitteeMember, type: :model do
           expect(cm.access_id).to eq 'xyz123'
         end
       end
-
-
     end
 
     context 'when committee member has not been imported from LP' do
