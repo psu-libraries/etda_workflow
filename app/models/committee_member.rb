@@ -68,6 +68,8 @@ class CommitteeMember < ApplicationRecord
   end
 
   def status=(new_status)
+    return if self[:status] == new_status
+    
     self[:status] = new_status
     case new_status
     when 'pending'
