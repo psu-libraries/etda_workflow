@@ -68,8 +68,6 @@ class CommitteeMember < ApplicationRecord
   end
 
   def status=(new_status)
-    return if new_status == self[:status]
-
     self[:status] = new_status
     case new_status
     when 'pending'
@@ -86,8 +84,6 @@ class CommitteeMember < ApplicationRecord
 
   def email=(new_email)
     new_email_stripped = new_email.strip
-    return if new_email_stripped == self[:email]
-
     self[:email] = new_email_stripped
 
     new_access_id = DirectoryService.get_accessid_by_email(new_email_stripped)
@@ -101,7 +97,7 @@ class CommitteeMember < ApplicationRecord
   end
 
   def committee_role_id=(new_committee_role_id)
-    return if new_committee_role_id.blank? || (new_committee_role_id == self[:committee_role_id])
+    return if new_committee_role_id.blank?
 
     self[:committee_role_id] = new_committee_role_id
 
