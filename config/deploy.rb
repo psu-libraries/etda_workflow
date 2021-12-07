@@ -6,7 +6,7 @@ lock "~> 3.12"
 
 set :application, "etda_workflow"
 # set :partner, fetch(:partner, 'graduate')
-set :repo_url, "git@github.com:/psu-stewardship/#{fetch(:application)}.git"
+set :repo_url, "git@github.com:/psu-libraries/#{fetch(:application)}.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
