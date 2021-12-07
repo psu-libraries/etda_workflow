@@ -26,7 +26,7 @@
     "http-proxy": "^1.18.1",
     "imports-loader": "^0.7.1",
     "jquery": "3.5.1",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui": "^1.13.0",
     "jquery-ujs": "^1.2.2",
     "liquid-fire": "^0.29.2",
     "mem": "^4.0.0",
