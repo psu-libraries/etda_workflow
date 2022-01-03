@@ -7,7 +7,6 @@ jobs:
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
-      DOCKER_USERNAME: 'robot$circleci'
     steps:
     - setup_remote_docker:
         version: 20.10.6
@@ -42,7 +41,6 @@ jobs:
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
-      DOCKER_USERNAME: 'robot$circleci'
     steps:
     - attach_workspace:
         at: /tmp/workspace
@@ -62,7 +60,6 @@ jobs:
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
-      DOCKER_USERNAME: 'robot$circleci'
     steps:
     - attach_workspace:
         at: /tmp/workspace
@@ -90,7 +87,6 @@ jobs:
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
-      DOCKER_USERNAME: 'robot$circleci'
     steps:
       - attach_workspace:
           at: /tmp/workspace
@@ -118,7 +114,6 @@ jobs:
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
-      DOCKER_USERNAME: 'robot$circleci'
     steps:
       - setup_remote_docker:
           version: 20.10.6
@@ -143,7 +138,6 @@ jobs:
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
-      DOCKER_USERNAME: 'robot$circleci'
     steps:
     - attach_workspace:
         at: /tmp/workspace
@@ -176,7 +170,7 @@ jobs:
           docker-compose down
   deploy-qa:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/public/drone-utils:latest
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
     environment:
       CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
       CONFIG_ENV: qa
@@ -192,7 +186,7 @@ jobs:
             ./generate_circle_application.sh
   deploy-preview:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/public/drone-utils:latest
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
     environment:
       CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
       IMAGE_REPOSITORY: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -210,26 +204,33 @@ workflows:
   version: 2
   etda-workflow:
     jobs:
-      - build
+      - build:
+          context: org-global
       - rubocop:
+          context: org-global
           requires:
             - build
       - integration_test_grad:
+          context: org-global
           requires:
             - build
       - unit_test_grad:
+          context: org-global
           requires:
             - build
       - test_partners:
+          context: org-global
           requires:
             - build
       - publish:
+          context: org-global
           requires:
             - unit_test_grad
             - integration_test_grad
             - test_partners
             - rubocop
       - deploy-qa:
+          context: org-global
           requires:
             - publish
           filters:
@@ -237,6 +238,7 @@ workflows:
                only:
                 - main
       - deploy-preview:
+          context: org-global
           requires:
             - publish
           filters:
