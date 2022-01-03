@@ -5,8 +5,8 @@ class ApprovalStatus
               :approval_configuration, :head_of_program
 
   # Note that 'pending' status and 'none' status are different
-  # 'Pending' means that the submission is past the evaluation_threshold and is not 'approved' or 'rejected'
-  # 'None' means that the submission is not past the evaluation_threshold and is not 'rejected'
+  # 'Pending' means that the submission is past the evaluation_threshold? and is not 'approved' or 'rejected'
+  # 'None' means that the submission is not past the evaluation_threshold? and is not 'rejected'
   WORKFLOW_STATUS =
     [
       'none',

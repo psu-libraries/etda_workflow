@@ -238,7 +238,7 @@ RSpec.describe CommitteeMember, type: :model do
       end
     end
 
-    context "when status is changed to 'something ivalid'" do
+    context "when status is changed to 'something invalid'" do
       it 'raises error' do
         expect(cm.update(status: 'something invalid')).to eq false
       end
