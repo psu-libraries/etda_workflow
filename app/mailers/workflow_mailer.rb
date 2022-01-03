@@ -194,7 +194,7 @@ class WorkflowMailer < ActionMailer::Base
     committee_chair_name = submission.chairs.first&.name
     @submission = submission
     @author = submission.author
-    @committee_chair = (committee_chair_name ? ('(' + committee_chair_name + ') ') : nil)
+    @committee_chair = (committee_chair_name ? (' chair (' + committee_chair_name + ') and') : nil)
     @program_head = (program_head_name ? ('(' + program_head_name + ') ') : nil)
 
     mail to: @author.psu_email_address,

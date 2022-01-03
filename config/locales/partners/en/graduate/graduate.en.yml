@@ -170,7 +170,7 @@ en:
                     University Park, PA  16802
         seventh_day_to_author:
           message: |
-                    Your %{degree_type} is being looked into by the committee chair %{committee_chair}and program head %{program_head}
+                    Your %{degree_type} is being looked into by your committee's%{committee_chair} program head/chair %{program_head}
                     to secure the necessary votes for completion.  This matter should be fixed in the next 5 business days.
                     No action is required of you at this time.
                     Sincerely,
