@@ -21,6 +21,10 @@ FactoryBot.define do
     is_required { false }
   end
 
+  trait :review_started do
+    approval_started_at { DateTime.now }
+  end
+
   # trait :advisor do
   #   committee_role_id = CommitteeRole.where(name: "#{I18n.t('current_partner.id.committee.special_role')}")
   #

@@ -217,6 +217,32 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.rejected_at).to be_nil
       end
     end
+
+    context "when status is changed to ''" do
+      before do
+        cm.status = ''
+      end
+
+      it 'updates status column' do
+        expect(cm.status).to eq("")
+      end
+    end
+
+    context "when status is changed to 'did not vote'" do
+      before do
+        cm.status = 'did not vote'
+      end
+
+      it 'updates status column' do
+        expect(cm.status).to eq("did not vote")
+      end
+    end
+
+    context "when status is changed to 'something invalid'" do
+      it 'raises error' do
+        expect(cm.update(status: 'something invalid')).to eq false
+      end
+    end
   end
 
   describe 'email' do

@@ -62,4 +62,14 @@ class WorkflowMailerPreview < ActionMailer::Preview
     submission = Submission.where(status: 'waiting for final submission response').sample
     WorkflowMailer.committee_rejected_author(submission)
   end
+
+  def seventh_day_to_chairs
+    submission = Submission.where(status: 'waiting for committee review').sample
+    WorkflowMailer.seventh_day_to_chairs(submission)
+  end
+
+  def seventh_day_to_author
+    submission = Submission.where(status: 'waiting for committee review').sample
+    WorkflowMailer.seventh_day_to_author(submission)
+  end
 end

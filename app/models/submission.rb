@@ -343,11 +343,12 @@ class Submission < ApplicationRecord
               (committee_member == committee_member.submission.advisor && current_partner.graduate?)
 
       committee_member.update! approval_started_at: DateTime.now
-      next if seen_access_ids.include?(committee_member.access_id) || committee_member.status == 'approved'
+      next if seen_access_ids.include?(committee_member.access_id) ||
+              (%w[approved rejected].include? committee_member.status)
 
       WorkflowMailer.send_committee_review_requests(self, committee_member)
 
-      CommitteeReminderWorker.perform_in(10.days, id, committee_member.id)
+      CommitteeReminderWorker.perform_in(4.days, id, committee_member.id)
       seen_access_ids << committee_member.access_id
     end
   end
