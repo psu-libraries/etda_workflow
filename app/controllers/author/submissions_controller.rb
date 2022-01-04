@@ -91,7 +91,7 @@ class Author::SubmissionsController < AuthorController
   rescue FeePaymentService::FeeNotPaid
     redirect_to author_root_path
     flash[:fee_dialog] = I18n.t("graduate.fee_message.#{@submission.degree.degree_type.slug}.message").html_safe
-  rescue Net::ReadTimeout, Net::OpenTimeout, SocketError
+  rescue RuntimeError
     redirect_to author_root_path
     flash[:alert] = "An error occurred while processing your request.  Please contact an administrator using the 'Contact Us' tab above, or try again at another time."
   end

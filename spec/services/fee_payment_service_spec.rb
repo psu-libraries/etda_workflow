@@ -55,7 +55,7 @@ RSpec.describe FeePaymentService do
   end
 
   context "when the gradsch API returns an error" do
-    it 'raises StandardError error' do
+    it 'raises RuntimeError error' do
       stub_request(:get, "https://secure.gradsch.psu.edu/services/etd/etdPayment.cfm?degree=PHD&psuid=#{submission.author.psu_idn}")
         .with(
           headers: {
@@ -65,12 +65,12 @@ RSpec.describe FeePaymentService do
           }
         )
         .to_return(status: 200, body: "\r\n    {\"data\":[{\"ETDPAYMENTFOUND\":\"Error\"}],\"error\":\"Invalid Parameters\"}\r\n    ", headers: {})
-      expect { service.fee_is_paid? }.to raise_error StandardError
+      expect { service.fee_is_paid? }.to raise_error RuntimeError
     end
   end
 
   context "when request times out" do
-    it 'raises Net::OpenTimeout error' do
+    it 'raises RuntimeError error' do
       stub_request(:get, "https://secure.gradsch.psu.edu/services/etd/etdPayment.cfm?degree=PHD&psuid=#{submission.author.psu_idn}")
         .with(
           headers: {
@@ -79,7 +79,7 @@ RSpec.describe FeePaymentService do
             'User-Agent' => 'Ruby'
           }
         ).to_timeout
-      expect { service.fee_is_paid? }.to raise_error Net::OpenTimeout
+      expect { service.fee_is_paid? }.to raise_error RuntimeError
     end
   end
 end

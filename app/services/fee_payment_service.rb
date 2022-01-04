@@ -6,13 +6,18 @@ class FeePaymentService
   end
 
   def fee_is_paid?
-    result = JSON.parse(HTTParty.get(full_url, verify: false).parsed_response)
+    begin
+      result = JSON.parse(HTTParty.get(full_url, verify: false).parsed_response)
+    rescue Net::ReadTimeout, Net::OpenTimeout, SocketError => e
+      Rails.logger.error e.message
+      raise e
+    end
     if result["data"].first["ETDPAYMENTFOUND"].to_s == "Y"
       true
     elsif result["data"].first["ETDPAYMENTFOUND"].to_s == "N"
       raise FeeNotPaid
     else
-      raise StandardError, result["error"].to_s
+      raise result["error"].to_s
     end
   end
 
