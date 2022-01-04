@@ -79,7 +79,7 @@ class Author::SubmissionsController < AuthorController
 
   def edit_final_submission
     @submission = find_submission
-    FeePaymentService.new(@submission).fee_is_paid? if current_partner.graduate? # && (!Rails.env.development? || ENV["HOSTNAME"] == 'etdaworkflow1stage')
+    FeePaymentService.new(@submission).fee_is_paid? if current_partner.graduate? && !development_instance?
 
     @view = Author::FinalSubmissionFilesView.new(@submission)
     @submission.access_level = 'open_access' if (current_partner.honors? || current_partner.milsch?) && @submission.access_level.blank?
