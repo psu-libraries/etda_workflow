@@ -133,7 +133,7 @@ group :test do
   # Retry on failure for finicky spec
   gem 'rspec-retry', '~> 0.6.0'
   # Stub http requests
-  gem 'webmock', '~> 3.8.0'
+  gem 'webmock', '~> 3.14.0'
 end
 
 group :production do

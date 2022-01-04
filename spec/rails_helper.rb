@@ -21,6 +21,7 @@ require 'devise'
 require 'cancan/ability'
 require 'shoulda/matchers'
 require 'rspec/retry'
+require 'webmock/rspec'
 
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?

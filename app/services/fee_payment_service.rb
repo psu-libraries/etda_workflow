@@ -5,7 +5,7 @@ class FeePaymentService
     @submission = submission
   end
 
-  def payed?
+  def fee_is_paid?
     result = JSON.parse(HTTParty.get(full_url, verify: false).parsed_response)
     if result["data"].first["ETDPAYMENTFOUND"].to_s == "Y"
       true
