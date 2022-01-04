@@ -79,6 +79,8 @@ class Author::SubmissionsController < AuthorController
 
   def edit_final_submission
     @submission = find_submission
+    FeePaymentService.new(@submission).fee_is_paid? # if !Rails.env.development? || ENV["HOSTNAME"] == 'etdaworkflow1stage'
+
     @view = Author::FinalSubmissionFilesView.new(@submission)
     @submission.access_level = 'open_access' if (current_partner.honors? || current_partner.milsch?) && @submission.access_level.blank?
     status_giver = SubmissionStatusGiver.new(@submission)
@@ -86,6 +88,12 @@ class Author::SubmissionsController < AuthorController
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+  rescue FeePaymentService::FeeNotPaid
+    redirect_to author_root_path
+    flash[:fee_dialog] = I18n.t("graduate.fee_message.#{@submission.degree.degree_type.slug}.message").html_safe
+  rescue Net::ReadTimeout, Net::OpenTimeout, SocketError
+    redirect_to author_root_path
+    flash[:alert] = "An error occurred while processing your request.  Please contact an administrator using the 'Contact Us' tab above, or try again at another time."
   end
 
   def update_final_submission
