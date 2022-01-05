@@ -522,8 +522,8 @@ RSpec.describe Submission, type: :model do
       it 'uses the year and semester' do
         submission.author_submitted_year = nil
         submission.author_submitted_semester = nil
-        expect(submission.preferred_semester_and_year).
-            to eq "#{submission.semester} #{submission.year}"
+        expect(submission.preferred_semester_and_year)
+          .to eq "#{submission.semester} #{submission.year}"
       end
     end
 
@@ -533,8 +533,8 @@ RSpec.describe Submission, type: :model do
         submission.author_submitted_semester = 'Spring'
         submission.year = nil
         submission.semester = nil
-        expect(submission.preferred_semester_and_year).
-            to eq "#{submission.author_submitted_semester} #{submission.author_submitted_year}"
+        expect(submission.preferred_semester_and_year)
+          .to eq "#{submission.author_submitted_semester} #{submission.author_submitted_year}"
       end
     end
 
@@ -544,8 +544,8 @@ RSpec.describe Submission, type: :model do
         submission.author_submitted_semester = 'Spring'
         submission.year = (Date.today.year + 1.year)
         submission.semester = 'Fall'
-        expect(submission.preferred_semester_and_year).
-            to eq "#{submission.author_submitted_semester} #{submission.author_submitted_year}"
+        expect(submission.preferred_semester_and_year)
+          .to eq "#{submission.author_submitted_semester} #{submission.author_submitted_year}"
       end
     end
   end

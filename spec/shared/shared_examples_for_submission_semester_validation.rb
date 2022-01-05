@@ -30,4 +30,4 @@ RSpec.shared_examples "Submission semester validation" do |parameter|
     submission.update((parameter + 'semester').to_sym => '')
     expect(submission).to be_valid
   end
-end 
+end
