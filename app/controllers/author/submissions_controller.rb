@@ -150,7 +150,9 @@ class Author::SubmissionsController < AuthorController
 
     def standard_program_params
       params.require(:submission).permit(:semester,
+                                         :author_submitted_semester,
                                          :year,
+                                         :author_submitted_year,
                                          :author_id,
                                          :program_id,
                                          :degree_id,
@@ -162,7 +164,9 @@ class Author::SubmissionsController < AuthorController
       params.require(:submission).permit(:title,
                                          :allow_all_caps_in_title,
                                          :semester,
+                                         :author_submitted_semester,
                                          :year,
+                                         :author_submitted_year,
                                          :defended_at,
                                          :abstract,
                                          :access_level,

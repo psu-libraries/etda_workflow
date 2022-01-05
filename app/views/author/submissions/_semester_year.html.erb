@@ -1,21 +1,18 @@
-<% lionpath_import = f.object.lionpath_updated_at.present? %>
 <div class="row">
   &nbsp;
 </div>
   <div class="row col-sm-3">
-  <%= f.input :semester,
+  <%= f.input :author_submitted_semester,
               label: 'Semester Intending to Graduate',
               collection: Semester::SEMESTERS,
               prompt: "Please Select",
-              required: true,
-              disabled: lionpath_import %>
+              required: true %>
 </div>
   <div class="row col-sm-3">
-  <%= f.input :year,
+  <%= f.input :author_submitted_year,
               label: 'Graduation Year',
               collection: Semester.graduation_years,
               prompt: "Please Select",
               required: true,
-              disabled: lionpath_import,
               rows: 2 %>
 </div>

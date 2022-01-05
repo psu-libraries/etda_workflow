@@ -3,13 +3,10 @@
 <br />
 <div class="col-sm-12">
   <div class="alert alert-info">
-    <p class="hint">Program information is imported from LionPATH.</p>
-    <p class="hint">Please review and contact your program office with any discrepancies.</p>
-    <p class="hint"><span class="text-info"><strong>NOTE:</strong></span>
-      Your “Semester Intending to Graduate” and “Graduation Year” below will update when you
-      activate your intent to graduate.  This process opens at the start of every semester for
-      a period of approximately 3 weeks.  You may move forward with submitting your thesis
-      or dissertation while you wait to activate your intent to graduate.</p>
+    <strong class="hint">
+      <span class="text-info"><strong>Notice:</strong></span> Program and degree information is imported from LionPATH.
+      Please review and contact your program office with any discrepancies.
+    </strong>
   </div>
 </div>
 <% end %>
@@ -27,12 +24,12 @@
   </div>
 </div>
 <div class="row col-sm-12">
-  <%= f.input :semester, label: 'Semester Intending to Graduate',
+  <%= f.input :author_submitted_semester, label: 'Semester Intending to Graduate',
               collection: Semester::SEMESTERS, prompt: "Please Select",
-              required: true, disabled: lionpath_import %>
+              required: true %>
 </div>
 <div class="row col-sm-12">
-  <%= f.input :year, label: 'Graduation Year',
+  <%= f.input :author_submitted_year, label: 'Graduation Year',
               collection: Semester.graduation_years, prompt: "Please Select",
-              required: true, disabled: lionpath_import %>
+              required: true %>
 </div>

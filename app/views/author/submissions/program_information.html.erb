@@ -23,12 +23,12 @@
 
     <div id="semester" class="review-group <%= even_odd(@row_count) %>">
       <h2 class="h4">Semester Intending to Graduate</h2>
-      <p><%= @submission.semester %></p>
+      <p><%= @submission.preferred_semester %></p>
     </div>
 
     <div id="year" class="review-group <%= even_odd(@row_count) %>">
       <h2 class="h4">Graduation Year</h2>
-      <p><%= @submission.year %></p>
+      <p><%= @submission.preferred_year %></p>
     </div>
   </div>
 </div>

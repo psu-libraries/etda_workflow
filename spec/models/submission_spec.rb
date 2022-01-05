@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'model_spec_helper'
+require_relative '../shared/shared_examples_for_submission_semester_validation'
 
 RSpec.describe Submission, type: :model do
   submission = described_class.new(access_level: AccessLevel.OPEN_ACCESS.current_access_level, status: 'collecting final submission files')
@@ -53,6 +54,8 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:proquest_agreement_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:lionpath_updated_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:campus).of_type(:string) }
+  it { is_expected.to have_db_column(:author_submitted_semester).of_type(:string) }
+  it { is_expected.to have_db_column(:author_submitted_year).of_type(:integer) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
@@ -132,35 +135,8 @@ RSpec.describe Submission, type: :model do
       expect(submission.access_level_key).to eq('open_access')
     end
 
-    it 'validates semester only when authors are editing' do
-      submission = FactoryBot.create :submission
-      submission.semester = 'Fall'
-      expect(submission).to be_valid
-      submission.semester = ''
-      submission.author_edit = true
-      expect(submission).not_to be_valid
-      submission.semester = 'bogus'
-      expect(submission).not_to be_valid
-      submission.author_edit = false
-      expect(submission).to be_valid
-      submission.semester = ''
-      expect(submission).to be_valid
-    end
-
-    it 'validates year only when authors are editing' do
-      submission = FactoryBot.create :submission
-      submission.year = '2018'
-      expect(submission).to be_valid
-      submission.year = ''
-      submission.author_edit = true
-      expect(submission).not_to be_valid
-      submission.year = 'abc'
-      expect(submission).not_to be_valid
-      submission.author_edit = false
-      expect(submission).to be_valid
-      submission.year = ''
-      expect(submission).to be_valid
-    end
+    include_examples "Submission semester validation", ""
+    include_examples "Submission semester validation", "author_submitted_"
 
     it 'validates title length when only authors are editing' do
       submission = FactoryBot.create :submission
@@ -486,6 +462,91 @@ RSpec.describe Submission, type: :model do
       skip 'graduate only' unless current_partner.graduate?
 
       expect(submission3.collect_program_chairs).to eq [program_chair1, program_chair2]
+    end
+  end
+
+  describe "#preferred_year" do
+    context 'when year is present but author_submitted_year is not' do
+      it 'returns year' do
+        submission.author_submitted_year = nil
+        submission.year = Date.today.year
+        expect(submission.preferred_year).to eq submission.year
+      end
+    end
+
+    context 'when author_submitted_year is present but year is not' do
+      it 'returns author_submitted_year' do
+        submission.author_submitted_year = Date.today.year
+        submission.year = nil
+        expect(submission.preferred_year).to eq submission.author_submitted_year
+      end
+    end
+
+    context 'when year is present and author_submitted_year is present' do
+      it 'returns author_submitted_year' do
+        submission.author_submitted_year = Date.today.year
+        submission.year = Date.today.year
+        expect(submission.preferred_year).to eq submission.author_submitted_year
+      end
+    end
+  end
+
+  describe "#preferred_semester" do
+    context 'when semester is present but author_submitted_semester is not' do
+      it 'returns semester' do
+        submission.author_submitted_semester = nil
+        submission.semester = 'Spring'
+        expect(submission.preferred_semester).to eq submission.semester
+      end
+    end
+
+    context 'when author_submitted_semester is present but semester is not' do
+      it 'returns author_submitted_semester' do
+        submission.author_submitted_semester = 'Fall'
+        submission.semester = nil
+        expect(submission.preferred_semester).to eq submission.author_submitted_semester
+      end
+    end
+
+    context 'when semester is present and author_submitted_semester is present' do
+      it 'returns author_submitted_semester' do
+        submission.author_submitted_semester = 'Spring'
+        submission.semester = 'Fall'
+        expect(submission.preferred_semester).to eq submission.author_submitted_semester
+      end
+    end
+  end
+
+  describe "#preferred_semester_and_year" do
+    context 'when year and semester are present but author_submitted_year and author_submitted_semester are not' do
+      it 'uses the year and semester' do
+        submission.author_submitted_year = nil
+        submission.author_submitted_semester = nil
+        expect(submission.preferred_semester_and_year).
+            to eq "#{submission.semester} #{submission.year}"
+      end
+    end
+
+    context 'when author_submitted_year and author_submitted_semester are present but year and semester are not' do
+      it 'uses the author_submitted year and semester' do
+        submission.author_submitted_year = Date.today.year
+        submission.author_submitted_semester = 'Spring'
+        submission.year = nil
+        submission.semester = nil
+        expect(submission.preferred_semester_and_year).
+            to eq "#{submission.author_submitted_semester} #{submission.author_submitted_year}"
+      end
+    end
+
+    context 'when year and semester are present and author_submitted_year and author_submitted_semester are present' do
+      it 'uses the author_submitted year and semester' do
+        submission.author_submitted_year = Date.today.year
+        submission.author_submitted_semester = 'Spring'
+        submission.year = (Date.today.year + 1.year)
+        submission.semester = 'Fall'
+        expect(submission.preferred_semester_and_year).
+            to eq "#{submission.author_submitted_semester} #{submission.author_submitted_year}"
+      end
     end
   end
 end
