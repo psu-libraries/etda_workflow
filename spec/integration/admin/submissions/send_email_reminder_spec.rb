@@ -21,7 +21,7 @@ RSpec.describe "Sending an email reminder", js: true do
       visit admin_edit_submission_path(submission1)
     end
 
-    it 'sends an email reminder if authorized to' do
+    it 'sends an email reminder if authorized to', retry: 5 do
       find("div[data-target='#committee']").click
 
       within('#committee') do
