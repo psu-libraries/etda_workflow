@@ -46,8 +46,8 @@ RSpec.describe "Admins can run reports", js: true do
     FactoryBot.create :submission,
                       :released_for_publication,
                       author: author1,
-                      year: submission_year,
-                      semester: submission_semester,
+                      author_submitted_year: submission_year,
+                      author_submitted_semester: submission_semester,
                       title: 'Submission1',
                       degree_id: degree1.id,
                       access_level: 'open_access'
@@ -56,8 +56,8 @@ RSpec.describe "Admins can run reports", js: true do
     FactoryBot.create :submission,
                       :released_for_publication,
                       author: author2,
-                      year: submission_year,
-                      semester: submission_semester,
+                      author_submitted_year: submission_year,
+                      author_submitted_semester: submission_semester,
                       title: 'Submission2',
                       degree_id: degree1.id,
                       access_level: 'restricted'
@@ -66,8 +66,8 @@ RSpec.describe "Admins can run reports", js: true do
     FactoryBot.create :submission,
                       :waiting_for_format_review_response,
                       author: author2,
-                      year: submission_year,
-                      semester: submission_semester,
+                      author_submitted_year: submission_year,
+                      author_submitted_semester: submission_semester,
                       title: 'Submission3',
                       program: (FactoryBot.create :program, name: 'Test'),
                       degree_id: degree2.id
@@ -76,8 +76,8 @@ RSpec.describe "Admins can run reports", js: true do
     FactoryBot.create :submission,
                       :released_for_publication,
                       author: author3,
-                      year: (submission_year.to_i + 1).to_s,
-                      semester: submission_semester,
+                      author_submitted_year: (submission_year.to_i + 1).to_s,
+                      author_submitted_semester: submission_semester,
                       title: 'Submission2',
                       degree_id: degree1.id,
                       access_level: 'restricted'
@@ -134,13 +134,14 @@ RSpec.describe "Admins can run reports", js: true do
       click_button 'Select Visible'
       page.assert_selector('tbody .row-checkbox')
       ckbox = all('tbody .row-checkbox')
-      assert_equal(Submission.where(year: submission_year,
-                                    semester: submission_semester).select { |s| s.degree_type == degree_type1 }.count,
-                   ckbox.count)
+      assert_equal(Submission.where(author_submitted_year: submission_year,
+                                    author_submitted_semester: submission_semester)
+                       .select{ |s| s.degree_type == degree_type1 }.count, ckbox.count)
+      end
       ckbox.each do |cb|
         expect(have_checked_field(cb)).to be_truthy
       end
-      select "#{submission4.year} #{submission4.semester}", from: 'submission_semester_year'
+      select "#{submission4.preferred_year} #{submission4.preferred_semester}", from: 'submission_semester_year'
       expect(page).to have_content(author3.last_name)
       expect(page).not_to have_content(author1.last_name)
       expect(page).not_to have_content(author2.last_name)

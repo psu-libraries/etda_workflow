@@ -2,7 +2,9 @@ module FinalSubmissionParams
   def self.call(params)
     params.require(:submission).permit(
       :semester,
+      :author_submitted_semester,
       :year,
+      :author_submitted_year,
       :author_id,
       :program_id,
       :degree_id,

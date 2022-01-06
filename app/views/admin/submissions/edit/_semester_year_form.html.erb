@@ -1,4 +1,4 @@
-<% if current_partner.graduate? %>
+<% if current_partner.graduate? && disabled_bool %>
   <div class="row">
     <div class="col-sm-6">
       <%= f.input :semester, label: 'LionPath Imported Semester Intending to Graduate',

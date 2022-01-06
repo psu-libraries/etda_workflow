@@ -50,8 +50,8 @@ class Author::SubmissionFormatReviewController < AuthorController
     def format_review_params
       params.require(:submission).permit(:title,
                                          :allow_all_caps_in_title,
-                                         :semester,
-                                         :year,
+                                         :author_submitted_semester,
+                                         :author_submitted_year,
                                          :federal_funding,
                                          format_review_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy])
     end

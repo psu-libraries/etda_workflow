@@ -3,20 +3,20 @@ RSpec.describe "filtering with semester dropdown", js: true do
 
   let!(:submission1) do
     FactoryBot.create(:submission, :released_for_publication,
-                      semester: Semester.current.split(" ")[1],
-                      year: Semester.current.split(" ")[0])
+                      author_submitted_semester: Semester.current.split(" ")[1],
+                      author_submitted_year: Semester.current.split(" ")[0])
   end
 
   let!(:submission2) do
     FactoryBot.create(:submission, :released_for_publication,
-                      semester: Semester.current.split(" ")[1],
-                      year: Semester.current.split(" ")[0].to_f - 2)
+                      author_submitted_semester: Semester.current.split(" ")[1],
+                      author_submitted_year: Semester.current.split(" ")[0].to_f - 2)
   end
 
   let!(:submission3) do
     FactoryBot.create(:submission, :waiting_for_committee_review,
-                      semester: Semester.current.split(" ")[1],
-                      year: Semester.current.split(" ")[0].to_f - 2)
+                      author_submitted_semester: Semester.current.split(" ")[1],
+                      author_submitted_year: Semester.current.split(" ")[0].to_f - 2)
   end
 
   let!(:degree_type) { DegreeType.default }
@@ -32,7 +32,7 @@ RSpec.describe "filtering with semester dropdown", js: true do
       expect(page).to have_content Semester.current
       expect(page).to have_content submission1.title
       expect(page).not_to have_content submission2.title
-      find('select.semester').find(:option, "#{submission2.year} #{submission2.semester}").select_option
+      find('select.semester').find(:option, "#{submission2.preferred_year} #{submission2.preferred_semester}").select_option
       expect(page).not_to have_content submission1.title
       expect(page).to have_content submission2.title
       find('select.semester').find(:option, "All Semesters").select_option

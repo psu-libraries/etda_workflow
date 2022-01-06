@@ -8,7 +8,7 @@ FactoryBot.define do
     degree
     semester { "Spring" }
     year { Time.zone.today.next_year.year }
-    author_submitted_semester { "Fall" }
+    author_submitted_semester { Semester.current.split(' ')[1] }
     author_submitted_year { Time.zone.today.year }
     access_level { 'open_access' }
     defended_at { Time.zone.tomorrow if current_partner.graduate? }

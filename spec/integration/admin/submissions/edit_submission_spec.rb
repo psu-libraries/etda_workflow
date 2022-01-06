@@ -8,7 +8,11 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
   let!(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type) }
   let!(:role) { CommitteeRole.second }
-  let!(:submission) { FactoryBot.create(:submission, :collecting_committee, author: author, program: program) }
+  let!(:submission) { FactoryBot.create(:submission,
+                                        :collecting_committee,
+                                        author: author,
+                                        program: program,
+                                        author_submitted_semester: 'Spring') }
   let(:admin) { FactoryBot.create :admin }
   let(:final_submission) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: author) }
   let(:final_masters_submission) do
