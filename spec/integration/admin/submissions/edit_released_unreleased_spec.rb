@@ -7,11 +7,13 @@ RSpec.describe "Editing a released submission as an admin", js: true do
   describe 'making changes while a submission is published' do
     let!(:author) { FactoryBot.create(:author) }
     let!(:role) { CommitteeRole.second }
-    let(:submission) { FactoryBot.create(:submission,
-                                         :released_for_publication,
-                                         author: author,
-                                         semester: 'Fall',
-                                         year: DateTime.now.year) }
+    let(:submission) do
+      FactoryBot.create(:submission,
+                        :released_for_publication,
+                        author: author,
+                        semester: 'Fall',
+                        year: DateTime.now.year)
+    end
     let(:committee) { create_committee(submission) }
     let(:invention_disclosures) { create(:invention_disclosure, submission) }
 

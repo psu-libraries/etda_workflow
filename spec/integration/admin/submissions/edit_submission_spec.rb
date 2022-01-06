@@ -8,11 +8,13 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
   let!(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type) }
   let!(:role) { CommitteeRole.second }
-  let!(:submission) { FactoryBot.create(:submission,
-                                        :collecting_committee,
-                                        author: author,
-                                        program: program,
-                                        semester: 'Spring') }
+  let!(:submission) do
+    FactoryBot.create(:submission,
+                      :collecting_committee,
+                      author: author,
+                      program: program,
+                      semester: 'Spring')
+  end
   let(:admin) { FactoryBot.create :admin }
   let(:final_submission) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: author) }
   let(:final_masters_submission) do
@@ -23,13 +25,35 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     oidc_authorize_admin
   end
 
-  it 'disables program info if imported from lionpath' do
-    submission.update lionpath_updated_at: DateTime.now
-    visit admin_edit_submission_path(submission)
-    expect(find("select#submission_program_id").disabled?).to eq true
-    expect(find("select#submission_degree_id").disabled?).to eq true
-    expect(find("select#submission_lionpath_semester").disabled?).to eq true
-    expect(find("select#submission_lionpath_year").disabled?).to eq true
+  describe 'lionpath display variations' do
+    context 'when submission is imported from lionpath' do
+      it 'displays disabled program info' do
+        submission.update lionpath_updated_at: DateTime.now
+        visit admin_edit_submission_path(submission)
+        expect(find("select#submission_program_id").disabled?).to eq true
+        expect(find("select#submission_degree_id").disabled?).to eq true
+        expect(find("select#submission_lionpath_semester").disabled?).to eq true
+        expect(find("select#submission_semester").disabled?).to eq false
+        expect(find("select#submission_lionpath_year").disabled?).to eq true
+        expect(find("select#submission_year").disabled?).to eq false
+        expect(page).to have_content "LionPath Imported Semester Intending to Graduate"
+        expect(page).to have_content "LionPath Imported Graduation Year"
+        expect(page).to have_content "Author Submitted Semester Intending to Graduate"
+        expect(page).to have_content "Author Submitted Graduation Year"
+      end
+    end
+
+    context 'when submission is not imported from lionpath' do
+      it 'does not disable program data and does not show any lionpath fields' do
+        visit admin_edit_submission_path(submission)
+        expect(find("select#submission_program_id").disabled?).to eq false
+        expect(find("select#submission_degree_id").disabled?).to eq false
+        expect(page).not_to have_content "LionPath Imported Semester Intending to Graduate"
+        expect(page).not_to have_content "LionPath Imported Graduation Year"
+        expect(page).not_to have_content "Author Submitted Semester Intending to Graduate"
+        expect(page).not_to have_content "Author Submitted Graduation Year"
+      end
+    end
   end
 
   it "Saves the updated submission data for a submission with status collecting committee", retry: 5 do

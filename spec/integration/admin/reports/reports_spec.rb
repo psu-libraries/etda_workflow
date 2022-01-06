@@ -136,7 +136,7 @@ RSpec.describe "Admins can run reports", js: true do
       ckbox = all('tbody .row-checkbox')
       assert_equal(Submission.where(year: submission_year,
                                     semester: submission_semester)
-                       .select{ |s| s.degree_type == degree_type1 }.count, ckbox.count)
+                       .select { |s| s.degree_type == degree_type1 }.count, ckbox.count)
       ckbox.each do |cb|
         expect(have_checked_field(cb)).to be_truthy
       end
