@@ -12,7 +12,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
       FactoryBot.create :submission,
                         :collecting_program_information,
                         author: author,
-                        author_submitted_semester: 'Fall'
+                        semester: 'Fall'
     end
 
     context "visiting the 'Author Submissions Index Page' page" do
@@ -91,10 +91,10 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
         expect(find("select[id='submission_program_id']").disabled?).to eq true
         expect(find("select[id='submission_degree_id']").value).to eq Degree.first.id.to_s
         expect(find("select[id='submission_degree_id']").disabled?).to eq true
-        expect(find("select[id='submission_author_submitted_semester']").value).to eq 'Fall'
-        expect(find("select[id='submission_author_submitted_semester']").disabled?).to eq false
-        expect(find("select[id='submission_author_submitted_year']").value).to eq DateTime.now.year.to_s
-        expect(find("select[id='submission_author_submitted_year']").disabled?).to eq false
+        expect(find("select[id='submission_semester']").value).to eq 'Fall'
+        expect(find("select[id='submission_semester']").disabled?).to eq false
+        expect(find("select[id='submission_year']").value).to eq DateTime.now.year.to_s
+        expect(find("select[id='submission_year']").disabled?).to eq false
         click_on "Update #{submission.degree_type} Title"
         expect(Submission.find(submission.id).title).to eq 'Test Title'
         expect(Submission.find(submission.id).status).to eq 'collecting committee'
@@ -106,7 +106,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
 
       before do
         submission.update program_id: program.id, year: DateTime.now.year,
-                          title: 'Title', author_submitted_semester: 'Fall',
+                          title: 'Title', semester: 'Fall',
                           degree_id: Degree.first.id, status: 'collecting format review files'
       end
 

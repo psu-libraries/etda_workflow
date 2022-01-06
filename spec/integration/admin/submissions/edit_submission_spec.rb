@@ -12,7 +12,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
                                         :collecting_committee,
                                         author: author,
                                         program: program,
-                                        author_submitted_semester: 'Spring') }
+                                        semester: 'Spring') }
   let(:admin) { FactoryBot.create :admin }
   let(:final_submission) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: author) }
   let(:final_masters_submission) do
@@ -28,8 +28,8 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
     visit admin_edit_submission_path(submission)
     expect(find("select#submission_program_id").disabled?).to eq true
     expect(find("select#submission_degree_id").disabled?).to eq true
-    expect(find("select#submission_semester").disabled?).to eq true
-    expect(find("select#submission_year").disabled?).to eq true
+    expect(find("select#submission_lionpath_semester").disabled?).to eq true
+    expect(find("select#submission_lionpath_year").disabled?).to eq true
   end
 
   it "Saves the updated submission data for a submission with status collecting committee", retry: 5 do

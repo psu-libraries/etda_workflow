@@ -55,8 +55,8 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.program.lionpath_updated_at).to be_truthy
       expect(Author.first.submissions.first.lionpath_updated_at).to be_truthy
       expect(Author.first.submissions.first.degree.name).to eq(row_1['Acadademic Plan'].split('_')[1].to_s)
-      expect(Author.first.submissions.first.year).to eq(2021)
-      expect(Author.first.submissions.first.semester).to eq('Summer')
+      expect(Author.first.submissions.first.lionpath_year).to eq(2021)
+      expect(Author.first.submissions.first.lionpath_semester).to eq('Summer')
       expect(Author.first.submissions.first.campus).to eq('UP')
       expect(Author.first.submissions.first.status).to eq('collecting program information')
     end
@@ -82,8 +82,8 @@ RSpec.describe Lionpath::LionpathProgram do
       expect { lionpath_program.import(row_1) }.to change(Submission, :count).by 0
       expect(Author.first.submissions.first.lionpath_updated_at).to be_truthy
       expect(Author.first.submissions.first.degree.name).to eq(row_1['Acadademic Plan'].split('_')[1].to_s)
-      expect(Author.first.submissions.first.year).to eq(2021)
-      expect(Author.first.submissions.first.semester).to eq('Summer')
+      expect(Author.first.submissions.first.lionpath_year).to eq(2021)
+      expect(Author.first.submissions.first.lionpath_semester).to eq('Summer')
       expect(Author.first.submissions.first.campus).to eq('UP')
     end
 
@@ -93,8 +93,8 @@ RSpec.describe Lionpath::LionpathProgram do
         submission.reload
         expect { lionpath_program.import(row_1) }.not_to(change { Submission.find(submission.id).lionpath_updated_at })
         expect(Author.first.submissions.first.degree.name).to eq submission.degree.name
-        expect(Author.first.submissions.first.year).to eq submission.year
-        expect(Author.first.submissions.first.semester).to eq submission.semester
+        expect(Author.first.submissions.first.lionpath_year).to eq submission.lionpath_year
+        expect(Author.first.submissions.first.lionpath_semester).to eq submission.lionpath_semester
         expect(Author.first.submissions.first.campus).to eq submission.campus
       end
     end

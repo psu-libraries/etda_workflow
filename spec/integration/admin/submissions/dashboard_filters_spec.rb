@@ -3,20 +3,20 @@ RSpec.describe "filtering with semester dropdown", js: true do
 
   let!(:submission1) do
     FactoryBot.create(:submission, :released_for_publication,
-                      author_submitted_semester: Semester.current.split(" ")[1],
-                      author_submitted_year: Semester.current.split(" ")[0])
+                      semester: Semester.current.split(" ")[1],
+                      year: Semester.current.split(" ")[0])
   end
 
   let!(:submission2) do
     FactoryBot.create(:submission, :released_for_publication,
-                      author_submitted_semester: Semester.current.split(" ")[1],
-                      author_submitted_year: Semester.current.split(" ")[0].to_f - 2)
+                      semester: Semester.current.split(" ")[1],
+                      year: Semester.current.split(" ")[0].to_f - 2)
   end
 
   let!(:submission3) do
     FactoryBot.create(:submission, :waiting_for_committee_review,
-                      author_submitted_semester: Semester.current.split(" ")[1],
-                      author_submitted_year: Semester.current.split(" ")[0].to_f - 2)
+                      semester: Semester.current.split(" ")[1],
+                      year: Semester.current.split(" ")[0].to_f - 2)
   end
 
   let!(:degree_type) { DegreeType.default }

@@ -2,14 +2,14 @@
   &nbsp;
 </div>
   <div class="row col-sm-3">
-  <%= f.input :author_submitted_semester,
+  <%= f.input :semester,
               label: 'Semester Intending to Graduate',
               collection: Semester::SEMESTERS,
               prompt: "Please Select",
               required: true %>
 </div>
   <div class="row col-sm-3">
-  <%= f.input :author_submitted_year,
+  <%= f.input :year,
               label: 'Graduation Year',
               collection: Semester.graduation_years,
               prompt: "Please Select",

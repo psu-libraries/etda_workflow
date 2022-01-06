@@ -146,8 +146,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         submission.save(validate: false)
         expect(submission.final_submission_files_uploaded_at).to be_nil
         visit author_submission_edit_final_submission_path(submission)
-        expect(page).to have_css '#submission_author_submitted_year'
-        expect(page).to have_css '#submission_author_submitted_semester'
+        expect(page).to have_css '#submission_year'
+        expect(page).to have_css '#submission_semester'
         expect(page).to have_css '#submission_title'
         fill_in 'Title', with: 'This has a format review legacy record'
         select Time.zone.now.next_year.year.to_s, from: 'submission[year]'

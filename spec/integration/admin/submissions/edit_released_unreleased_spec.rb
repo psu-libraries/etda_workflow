@@ -10,8 +10,8 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     let(:submission) { FactoryBot.create(:submission,
                                          :released_for_publication,
                                          author: author,
-                                         author_submitted_semester: 'Fall',
-                                         author_submitted_year: DateTime.now.year) }
+                                         semester: 'Fall',
+                                         year: DateTime.now.year) }
     let(:committee) { create_committee(submission) }
     let(:invention_disclosures) { create(:invention_disclosure, submission) }
 

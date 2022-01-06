@@ -18,7 +18,6 @@ class Author::SubmissionsController < AuthorController
   end
 
   def create
-    byebug
     @submission = @author.submissions.new(standard_program_params)
     @submission.author_edit = true
     @submission.save!
@@ -44,7 +43,6 @@ class Author::SubmissionsController < AuthorController
   end
 
   def update
-    byebug
     @submission = find_submission
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_update_program_information?
@@ -151,8 +149,8 @@ class Author::SubmissionsController < AuthorController
     end
 
     def standard_program_params
-      params.require(:submission).permit(:author_submitted_semester,
-                                         :author_submitted_year,
+      params.require(:submission).permit(:semester,
+                                         :year,
                                          :author_id,
                                          :program_id,
                                          :degree_id,
@@ -163,8 +161,8 @@ class Author::SubmissionsController < AuthorController
     def final_submission_params
       params.require(:submission).permit(:title,
                                          :allow_all_caps_in_title,
-                                         :author_submitted_semester,
-                                         :author_submitted_year,
+                                         :semester,
+                                         :year,
                                          :defended_at,
                                          :abstract,
                                          :access_level,
