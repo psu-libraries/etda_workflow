@@ -50,7 +50,7 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
     context "visiting the 'Review Committee' page" do
       it "raises a forbidden access error" do
         visit author_submission_committee_members_path(submission)
-        expect(page).to have_current_path(author_submission_committee_members_path(submission))
+        expect(page).to have_current_path(author_root_path)
       end
     end
 

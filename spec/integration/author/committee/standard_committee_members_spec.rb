@@ -65,18 +65,19 @@ RSpec.describe 'The standard committee form for authors', js: true do
         expect(submission.committee_members.count).to eq(submission.required_committee_roles.count)
         expect(submission.committee_members.first.access_id).to eq('pbm123') unless current_partner.graduate?
         expect(submission.committee_members.second.access_id).to eq('pbm123') if current_partner.graduate?
-        visit author_submission_committee_members_path(submission)
+        visit edit_author_submission_committee_members_path(submission)
         submission.required_committee_roles.count.times do |i|
+          emails = find_all('input.email')
           if i == 0 && current_partner.graduate?
             expect(page).to have_content(program_chair.first_name + ' ' + program_chair.last_name)
-            expect(page).to have_content(program_chair.email)
+            expect(emails[i].value).to eq(program_chair.email)
             next
           end
           # expect(page).to have_content role.name
           name = "Professor Buck Murphy #{i}"
           email = "buck@hotmail.com"
-          expect(page).to have_content(name)
-          expect(page).to have_content(email)
+          expect(find("#submission_committee_members_attributes_#{i}_name").value).to eq(name)
+          expect(emails[i].value).to eq(email)
         end
       end
     end
