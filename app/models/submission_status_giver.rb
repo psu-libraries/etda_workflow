@@ -59,24 +59,12 @@ class SubmissionStatusGiver
     validate_current_state! [SubmissionStates::CollectingCommittee,
                              SubmissionStates::CollectingFormatReviewFiles,
                              SubmissionStates::CollectingFormatReviewFilesRejected,
-                             SubmissionStates::WaitingForFormatReviewResponse,
                              SubmissionStates::CollectingFinalSubmissionFiles,
-                             SubmissionStates::CollectingFinalSubmissionFilesRejected,
-                             SubmissionStates::FormatReviewAccepted,
-                             SubmissionStates::WaitingForCommitteeReview,
-                             SubmissionStates::WaitingForHeadOfProgramReview,
-                             SubmissionStates::WaitingForCommitteeReviewRejected,
-                             SubmissionStates::WaitingForFinalSubmissionResponse,
-                             SubmissionStates::WaitingForPublicationRelease,
-                             SubmissionStates::ReleasedForPublication,
-                             SubmissionStates::CollectingFormatReviewFilesRejected,
                              SubmissionStates::CollectingFinalSubmissionFilesRejected]
   end
 
   def can_review_committee?
     validate_current_state! [SubmissionStates::WaitingForFormatReviewResponse,
-                             SubmissionStates::CollectingFinalSubmissionFiles,
-                             SubmissionStates::CollectingFinalSubmissionFilesRejected,
                              SubmissionStates::FormatReviewAccepted,
                              SubmissionStates::WaitingForFinalSubmissionResponse,
                              SubmissionStates::WaitingForPublicationRelease,
@@ -84,7 +72,10 @@ class SubmissionStatusGiver
                              SubmissionStates::ReleasedForPublication,
                              SubmissionStates::CollectingFormatReviewFilesRejected,
                              SubmissionStates::CollectingFinalSubmissionFilesRejected,
-                             SubmissionStates::WaitingForAdvisorReview]
+                             SubmissionStates::WaitingForAdvisorReview,
+                             SubmissionStates::WaitingForCommitteeReview,
+                             SubmissionStates::WaitingForHeadOfProgramReview,
+                             SubmissionStates::WaitingForCommitteeReviewRejected]
   end
 
   def can_review_format_review_files?

@@ -49,10 +49,9 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
     end
 
     context "visiting the 'Review Committee' page" do
-      it 'displays the committee information page' do
+      it 'raises a forbidden access error' do
         visit author_submission_committee_members_path(submission)
-        expect(page).to have_content(submission.committee_members.first.name)
-        expect(page).to have_current_path(author_submission_committee_members_path(submission))
+        expect(page).to have_current_path(author_root_path)
       end
     end
 
