@@ -8,7 +8,12 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
 
     let!(:author) { current_author }
     let!(:admin)  { current_admin }
-    let!(:submission) { FactoryBot.create :submission, :collecting_program_information, author: author }
+    let!(:submission) do
+      FactoryBot.create :submission,
+                        :collecting_program_information,
+                        author: author,
+                        semester: 'Fall'
+    end
 
     context "visiting the 'Author Submissions Index Page' page" do
       it 'loads the page' do
@@ -87,9 +92,9 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
         expect(find("select[id='submission_degree_id']").value).to eq Degree.first.id.to_s
         expect(find("select[id='submission_degree_id']").disabled?).to eq true
         expect(find("select[id='submission_semester']").value).to eq 'Fall'
-        expect(find("select[id='submission_semester']").disabled?).to eq true
+        expect(find("select[id='submission_semester']").disabled?).to eq false
         expect(find("select[id='submission_year']").value).to eq DateTime.now.year.to_s
-        expect(find("select[id='submission_year']").disabled?).to eq true
+        expect(find("select[id='submission_year']").disabled?).to eq false
         click_on "Update #{submission.degree_type} Title"
         expect(Submission.find(submission.id).title).to eq 'Test Title'
         expect(Submission.find(submission.id).status).to eq 'collecting committee'
@@ -101,8 +106,8 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
 
       before do
         submission.update program_id: program.id, year: DateTime.now.year,
-                          title: 'Title', semester: 'Fall', degree_id: Degree.first.id,
-                          status: 'collecting format review files'
+                          title: 'Title', semester: 'Fall',
+                          degree_id: Degree.first.id, status: 'collecting format review files'
       end
 
       it "doesn't change status of submission", milsch: true, honors: true, sset: true do

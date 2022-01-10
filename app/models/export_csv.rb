@@ -33,7 +33,7 @@ class ExportCsv
       field_list = [r.author.access_id, r.cleaned_title, r.id, r.author.last_name, r.author.first_name, r.author.middle_name, r.program_name, CommitteeMember.advisor_name(r), r.current_access_level.label]
       field_list = [r.cleaned_title, r.id, r.author.last_name, r.author.first_name, r.author.middle_name, r.program_name, r.committee_members.map(&:name).join('; '), r.current_access_level.label] if current_partner.graduate?
     when 'custom_report'
-      field_list = [r.author.last_name, r.author.first_name, r.id, r.cleaned_title, r.degree_type.name, r.program_name, r.current_access_level.label, r.semester_and_year, r.status]
+      field_list = [r.author.last_name, r.author.first_name, r.id, r.cleaned_title, r.degree_type.name, r.program_name, r.current_access_level.label, r.preferred_semester_and_year, r.status]
       #      field_list.append(r.invention_disclosure.first.id_number) if current_partner.graduate? && !r.invention_disclosure.nil?
     when 'confidential_hold_report'
       field_list = [r.id, r.access_id, r.last_name, r.first_name, r.psu_email_address, r.alternate_email_address, r.psu_idn, r.confidential_hold_set_at]

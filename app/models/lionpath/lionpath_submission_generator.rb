@@ -38,8 +38,8 @@ class Lionpath::LionpathSubmissionGenerator
                            .uniq.sample.id,
         degree_id: Degree.where(name: degree_name).sample.id,
         campus: 'UP',
-        year: DateTime.now.year,
-        semester: Semester.current.split(" ").last,
+        lionpath_year: DateTime.now.year,
+        lionpath_semester: Semester.current.split(" ").last,
         lionpath_updated_at: DateTime.now
       }
     end

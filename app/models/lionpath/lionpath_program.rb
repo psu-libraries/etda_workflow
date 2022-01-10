@@ -33,8 +33,8 @@ class Lionpath::LionpathProgram
     def submission_attrs(row)
       {
         degree: degree(row),
-        semester: semester(row),
-        year: year(row),
+        lionpath_semester: semester(row),
+        lionpath_year: year(row),
         campus: row['Campus'],
         lionpath_updated_at: DateTime.now
       }

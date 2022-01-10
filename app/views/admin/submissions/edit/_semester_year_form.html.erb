@@ -1,0 +1,33 @@
+<% if current_partner.graduate? && f.object.lionpath_updated_at.present? %>
+  <div class="row">
+    <div class="col-sm-6">
+      <%= f.input :lionpath_semester, label: 'LionPath Imported Semester Intending to Graduate',
+                  collection: Semester::SEMESTERS, prompt: "Please Select",
+                  disabled: true, input_html: { class: 'can-toggle-selectability' } %>
+    </div>
+    <div class="col-sm-6">
+      <%= f.input :semester, label: 'Author Submitted Semester Intending to Graduate',
+                  collection: Semester::SEMESTERS, prompt: "Please Select",
+                  input_html: { class: 'can-toggle-selectability' } %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <%= f.input :lionpath_year, label: 'LionPath Imported Graduation Year',
+                  collection: Semester.all_years, prompt: "Please Select",
+                  disabled: true, input_html: { class: 'can-toggle-selectability' } %>
+    </div>
+    <div class="col-sm-6">
+      <%= f.input :year, label: 'Author Submitted Graduation Year',
+                  collection: Semester.all_years, prompt: "Please Select",
+                  input_html: { class: 'can-toggle-selectability' } %>
+    </div>
+  </div>
+<% else %>
+  <%= f.input :semester, label: 'Semester Intending to Graduate',
+              collection: Semester::SEMESTERS, prompt: "Please Select",
+              disabled: disabled_bool, input_html: { class: 'can-toggle-selectability' } %>
+  <%= f.input :year, label: 'Graduation Year',
+              collection: Semester.all_years, prompt: "Please Select",
+              disabled: disabled_bool, input_html: { class: 'can-toggle-selectability' } %>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_20_164550) do
+ActiveRecord::Schema.define(version: 2022_01_05_151227) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -292,6 +292,8 @@ ActiveRecord::Schema.define(version: 2021_04_20_164550) do
     t.datetime "lionpath_updated_at"
     t.datetime "proquest_agreement_at"
     t.boolean "proquest_agreement"
+    t.integer "lionpath_year"
+    t.string "lionpath_semester"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"
