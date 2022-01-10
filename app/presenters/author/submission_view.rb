@@ -305,15 +305,15 @@ class Author::SubmissionView < SimpleDelegator
     end
 
     def formatted_semester
-      return semester unless semester.nil?
+      return preferred_semester unless preferred_semester.nil?
 
       '[semester not provided]'
     end
 
     def formatted_year
-      return '[year not provided]' if year.nil?
+      return '[year not provided]' if preferred_year.nil?
 
-      year.to_s
+      preferred_year.to_s
     end
 
     def formatted_timestamp_of(datetime)

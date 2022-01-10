@@ -58,7 +58,7 @@ class AccessLevelUpdatedEmail
         old_access_level_label: previous_level_label,
         title: submission.title,
         degree_type: graduate_degree_type,
-        graduation_year: submission.year
+        graduation_year: submission.preferred_year
       }
     end
 end
