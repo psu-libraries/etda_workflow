@@ -1,0 +1,16 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="dialog-confirm" aria-labelledby="confirm_title" aria-describedby="confirm_desc">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id='confirm_title' class="modal-title">Notice</h4>
+      </div>
+      <div id='confirm_desc' class="modal-body" >
+        <p><%= flash[:fee_dialog].html_safe %></p>
+        <p>You only need to pay once.</p>
+      </div>
+      <div class="modal-footer">
+        <button id="final-submit" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>

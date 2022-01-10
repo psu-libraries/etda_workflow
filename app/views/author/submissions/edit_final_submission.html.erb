@@ -8,7 +8,6 @@
 <%= render partial: 'shared/error_messages', locals: { object: @submission } %>
 
 <%= render partial: 'confirm_dialog' %>
-<%= render partial: 'fees_confirm_dialog' %>
 
 <% if current_partner.graduate? %>
   <br />
@@ -80,8 +79,7 @@
       <%#= render 'shared/release_statement' %>
       <%#= f.input :has_agreed_to_publication_release, label: 'I agree to release agreement', as: :boolean, wrapper: :vertical_boolean, required: true %>
       <div class="form-group actions col-xs-6">
-        <%= f.button :submit, class: "btn-success author-final-submit", value: "Submit final files for review" unless current_partner.graduate? %>
-        <%= '<span class="btn btn-success author-final-submit" id="submit-final-submission">Submit final files for review</span>'.html_safe if current_partner.graduate? %>
+        <%= f.button :submit, class: "btn-success", value: "Submit final files for review" %>
         <%= link_to "Cancel", author_root_path, class: 'btn btn-light' %>
       </div>
   <% end %>
