@@ -6,7 +6,7 @@
     <div class="col-xs-6 submission_info">
       <p>
       <div><strong>Submission Title: </strong><%=@committee_member.submission.title%></div>
-      <div><strong>Graduation Semester: </strong><%= @submission.semester + ' ' + @submission.year.to_s %></div>
+      <div><strong>Graduation Semester: </strong><%= @submission.preferred_semester_and_year %></div>
       <div><strong>Federal Funding Used: </strong><%= @submission.federal_funding ? 'Yes' : 'No' %></div>
       <div><strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %></div>
       <div><strong>Phone:</strong> <%= @author.phone_number %></div>

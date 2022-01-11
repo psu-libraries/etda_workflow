@@ -68,8 +68,8 @@ gem 'rsolr', '~> 2.3.0'
 gem 'enumerize', '~> 2.3.0'
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 gem 'byebug', '~> 11.1.0', platforms: %i[mri mingw x64_mingw]
-# Restclient for http requests
-gem 'rest-client', '~> 2.1.0'
+# HTTParty for http requests
+gem 'httparty', '~> 0.20.0'
 # For db seeding
 gem 'seedbank', '~> 0.5.0'
 # Loading assets
@@ -133,7 +133,7 @@ group :test do
   # Retry on failure for finicky spec
   gem 'rspec-retry', '~> 0.6.0'
   # Stub http requests
-  gem 'webmock', '~> 3.8.0'
+  gem 'webmock', '~> 3.14.0'
 end
 
 group :production do

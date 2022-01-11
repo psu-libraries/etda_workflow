@@ -24,7 +24,7 @@ class SemesterReleaseReportEmail
 
     def row(submission)
       [submission.author.last_name.to_s, submission.author.first_name.to_s, submission.title.strip.to_s,
-       submission.degree.degree_type.name.to_s, "#{submission.semester} #{submission.year}",
+       submission.degree.degree_type.name.to_s, "#{submission.preferred_semester} #{submission.preferred_year}",
        released_at(submission), submission.access_level.to_s]
     end
 

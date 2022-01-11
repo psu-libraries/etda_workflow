@@ -32,7 +32,7 @@ RSpec.describe "filtering with semester dropdown", js: true do
       expect(page).to have_content Semester.current
       expect(page).to have_content submission1.title
       expect(page).not_to have_content submission2.title
-      find('select.semester').find(:option, "#{submission2.year} #{submission2.semester}").select_option
+      find('select.semester').find(:option, "#{submission2.preferred_year} #{submission2.preferred_semester}").select_option
       expect(page).not_to have_content submission1.title
       expect(page).to have_content submission2.title
       find('select.semester').find(:option, "All Semesters").select_option

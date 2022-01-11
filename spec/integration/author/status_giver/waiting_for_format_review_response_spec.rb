@@ -46,7 +46,7 @@ RSpec.describe 'Step 4: Waiting for Format Review Response', js: true do
     end
 
     context "visiting the 'Review Committee' page" do
-      it "raises a forbidden access error" do
+      it "displays committee member show page" do
         visit author_submission_committee_members_path(submission)
         expect(page).to have_current_path(author_submission_committee_members_path(submission))
       end

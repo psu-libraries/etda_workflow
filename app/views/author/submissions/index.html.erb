@@ -3,6 +3,9 @@
   <div class="col-xs-12">
     <br/>
     <p class="thesis_info">You will need to input your committee, upload your format review document, and upload your final document to be published. The site administrator will check the format review document for compliance to standards, and send an email detailing any format changes required.  Once the status of your format review is updated to "Approved", a final document may be submitted.  Your committee will then give a final approval.  </p>
+    <% if current_partner.graduate? %>
+      <p class="thesis_info">There is a <strong>one-time</strong> fee for each thesis and/or dissertation submission required prior to the final submission of the thesis or dissertation.  The fee can be paid at the <a href='https://secure.gradsch.psu.edu/paymentportal/' target='_blank'>Payment Section</a> of the Graduate School Thesis and Dissertation Information <a href='https://gradschool.psu.edu/completing-your-degree/thesis-and-dissertation-information/' target='_blank'>webpage</a>.  You will not be permitted to submit your final document unless the fee is paid.</p>
+    <% end %>
   </div>
 </div>
 <!-- TODO: Remove the following info in a year */ -->
@@ -13,3 +16,7 @@
   </div>
 <% end %>
 <%= render @view.partial_name, partial_path: @view.contact_information_path %>
+<% if current_partner.graduate? && flash[:fee_dialog].present? %>
+  <span id="fee-dialog"></span>
+  <%= render partial: 'fee_payment_dialog' %>
+<% end %>

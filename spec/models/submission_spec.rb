@@ -53,6 +53,8 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:proquest_agreement_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:lionpath_updated_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:campus).of_type(:string) }
+  it { is_expected.to have_db_column(:lionpath_semester).of_type(:string) }
+  it { is_expected.to have_db_column(:lionpath_year).of_type(:integer) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
@@ -132,33 +134,33 @@ RSpec.describe Submission, type: :model do
       expect(submission.access_level_key).to eq('open_access')
     end
 
-    it 'validates semester only when authors are editing' do
+    it "validates year only when authors are editing" do
       submission = FactoryBot.create :submission
-      submission.semester = 'Fall'
+      submission.update(year: '2018')
       expect(submission).to be_valid
-      submission.semester = ''
+      submission.update(year: '')
       submission.author_edit = true
       expect(submission).not_to be_valid
-      submission.semester = 'bogus'
+      submission.update(year: 'abc')
       expect(submission).not_to be_valid
       submission.author_edit = false
       expect(submission).to be_valid
-      submission.semester = ''
+      submission.update(year: '')
       expect(submission).to be_valid
     end
 
-    it 'validates year only when authors are editing' do
+    it "validates semester only when authors are editing" do
       submission = FactoryBot.create :submission
-      submission.year = '2018'
+      submission.update(semester: 'Spring')
       expect(submission).to be_valid
-      submission.year = ''
+      submission.update(semester: '')
       submission.author_edit = true
       expect(submission).not_to be_valid
-      submission.year = 'abc'
+      submission.update(semester: 'abc')
       expect(submission).not_to be_valid
       submission.author_edit = false
       expect(submission).to be_valid
-      submission.year = ''
+      submission.update(semester: '')
       expect(submission).to be_valid
     end
 
@@ -244,6 +246,30 @@ RSpec.describe Submission, type: :model do
       submission2.author_edit = true
       submission2.proquest_agreement = true
       expect(submission2).to be_valid
+    end
+
+    it "validates lionpath_semester is in Semester::SEMESTERS list" do
+      submission = FactoryBot.create :submission
+      submission.update(lionpath_semester: 'Fall')
+      expect(submission).to be_valid
+      submission.update(lionpath_semester: '')
+      expect(submission).to be_valid
+      submission.update(lionpath_semester: nil)
+      expect(submission).to be_valid
+      submission.update(lionpath_semester: 'bogus')
+      expect(submission).not_to be_valid
+    end
+
+    it "validates lionpath_year is numbers" do
+      submission = FactoryBot.create :submission
+      submission.update(lionpath_year: '2021')
+      expect(submission).to be_valid
+      submission.update(lionpath_year: '')
+      expect(submission).to be_valid
+      submission.update(lionpath_year: nil)
+      expect(submission).to be_valid
+      submission.update(lionpath_year: 'bogus')
+      expect(submission).not_to be_valid
     end
   end
 
@@ -486,6 +512,91 @@ RSpec.describe Submission, type: :model do
       skip 'graduate only' unless current_partner.graduate?
 
       expect(submission3.collect_program_chairs).to eq [program_chair1, program_chair2]
+    end
+  end
+
+  describe "#preferred_year" do
+    context 'when year is present but lionpath_year is not' do
+      it 'returns year' do
+        submission.lionpath_year = nil
+        submission.year = Date.today.year
+        expect(submission.preferred_year).to eq submission.year
+      end
+    end
+
+    context 'when lionpath_year is present but year is not' do
+      it 'returns lionpath_year' do
+        submission.lionpath_year = Date.today.year
+        submission.year = nil
+        expect(submission.preferred_year).to eq submission.lionpath_year
+      end
+    end
+
+    context 'when year is present and lionpath_year is present' do
+      it 'returns year' do
+        submission.lionpath_year = Date.today.year
+        submission.year = Date.today.year
+        expect(submission.preferred_year).to eq submission.year
+      end
+    end
+  end
+
+  describe "#preferred_semester" do
+    context 'when semester is present but lionpath_semester is not' do
+      it 'returns semester' do
+        submission.lionpath_semester = nil
+        submission.semester = 'Spring'
+        expect(submission.preferred_semester).to eq submission.semester
+      end
+    end
+
+    context 'when lionpath_semester is present but semester is not' do
+      it 'returns lionpath_semester' do
+        submission.lionpath_semester = 'Fall'
+        submission.semester = nil
+        expect(submission.preferred_semester).to eq submission.lionpath_semester
+      end
+    end
+
+    context 'when semester is present and lionpath_semester is present' do
+      it 'returns semester' do
+        submission.lionpath_semester = 'Spring'
+        submission.semester = 'Fall'
+        expect(submission.preferred_semester).to eq submission.semester
+      end
+    end
+  end
+
+  describe "#preferred_semester_and_year" do
+    context 'when year and semester are present but lionpath_year and lionpath_semester are not' do
+      it 'uses the year and semester' do
+        submission.lionpath_year = nil
+        submission.lionpath_semester = nil
+        expect(submission.preferred_semester_and_year)
+          .to eq "#{submission.semester} #{submission.year}"
+      end
+    end
+
+    context 'when lionpath_year and lionpath_semester are present but year and semester are not' do
+      it 'uses the imported year and semester' do
+        submission.lionpath_year = Date.today.year
+        submission.lionpath_semester = 'Spring'
+        submission.year = nil
+        submission.semester = nil
+        expect(submission.preferred_semester_and_year)
+          .to eq "#{submission.lionpath_semester} #{submission.lionpath_year}"
+      end
+    end
+
+    context 'when year and semester are present and lionpath_year and lionpath_semester are present' do
+      it 'uses the year and semester' do
+        submission.lionpath_year = Date.today.year
+        submission.lionpath_semester = 'Spring'
+        submission.year = (Date.today.year + 1.year)
+        submission.semester = 'Fall'
+        expect(submission.preferred_semester_and_year)
+          .to eq "#{submission.semester} #{submission.year}"
+      end
     end
   end
 end

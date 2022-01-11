@@ -56,8 +56,23 @@ class Submission < ApplicationRecord
             :degree_id,
             :program_id, presence: true
 
-  validates :semester, presence: true, inclusion: { in: Semester::SEMESTERS }, if: proc { |s| s.author_edit }
-  validates :year, numericality: { only_integer: true }, presence: true, if: proc { |s| s.author_edit }
+  validates :semester,
+            presence: true,
+            inclusion: { in: Semester::SEMESTERS },
+            if: proc { |s| s.author_edit }
+
+  validates :lionpath_semester,
+            allow_blank: true,
+            inclusion: { in: Semester::SEMESTERS }
+
+  validates :year,
+            numericality: { only_integer: true },
+            presence: true,
+            if: proc { |s| s.author_edit }
+
+  validates :lionpath_year,
+            allow_blank: true,
+            numericality: { only_integer: true }
 
   validates :title,
             length: { maximum: 400 },
@@ -189,8 +204,16 @@ class Submission < ApplicationRecord
     !(exists || (!restricted? && !published?))
   end
 
-  def semester_and_year
-    "#{year} #{semester}"
+  def preferred_semester_and_year
+    "#{semester} #{year}".presence || "#{lionpath_semester} #{lionpath_year}"
+  end
+
+  def preferred_year
+    year.presence || lionpath_year
+  end
+
+  def preferred_semester
+    semester.presence || lionpath_semester
   end
 
   def admin_can_edit?

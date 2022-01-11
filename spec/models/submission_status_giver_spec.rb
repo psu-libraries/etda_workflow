@@ -1229,7 +1229,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "does not raise exception" do
         giver = described_class.new(submission)
-        expect { giver.can_create_or_edit_committee? }.not_to raise_error
+        expect { giver.can_create_or_edit_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -1238,16 +1238,16 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "does not raise exception" do
         giver = described_class.new(submission)
-        expect { giver.can_create_or_edit_committee? }.not_to raise_error
+        expect { giver.can_create_or_edit_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
     context "when status is 'waiting for format review response'" do
       before { submission.status = 'waiting for format review response' }
 
-      it "does not raise an exception" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_create_or_edit_committee? }.not_to raise_error
+        expect { giver.can_create_or_edit_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -1256,7 +1256,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_create_or_edit_committee? }.not_to raise_error
+        expect { giver.can_create_or_edit_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -1272,36 +1272,36 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for committee review'" do
       before { submission.status = 'waiting for committee review' }
 
-      it "does not raise an exception" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_create_or_edit_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_create_or_edit_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
     context "when status is 'waiting for head of program review'" do
       before { submission.status = 'waiting for head of program review' }
 
-      it "does not raise an exception" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_create_or_edit_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_create_or_edit_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
     context "when status is 'waiting for final submission response'" do
       before { submission.status = 'waiting for final submission response' }
 
-      it "does not raise an exception" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_create_or_edit_committee? }.not_to raise_error
+        expect { giver.can_create_or_edit_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
     context "when status is 'waiting for publication release'" do
       before { submission.status = 'waiting for publication release' }
 
-      it "does not raise an exception" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_create_or_edit_committee? }.not_to raise_error
+        expect { giver.can_create_or_edit_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -1317,9 +1317,9 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'released for publication'" do
       before { submission.status = 'released for publication' }
 
-      it "does not raise an exception" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_create_or_edit_committee? }.not_to raise_error
+        expect { giver.can_create_or_edit_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
   end
@@ -1364,9 +1364,9 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'collecting final submission files'" do
       before { submission.status = 'collecting final submission files' }
 
-      it "does not raise an exception" do
+      it "raises an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_review_committee? }.not_to raise_error
+        expect { giver.can_review_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -1382,18 +1382,18 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     context "when status is 'waiting for committee review'" do
       before { submission.status = 'waiting for committee review' }
 
-      it "raises an exception" do
+      it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_review_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_review_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
     context "when status is 'waiting for head of program review'" do
       before { submission.status = 'waiting for head of program review' }
 
-      it "raises an exception" do
+      it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_review_committee? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        expect { giver.can_review_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -1402,7 +1402,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_review_committee? }.not_to raise_error
+        expect { giver.can_review_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -1411,16 +1411,16 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_review_committee? }.not_to raise_error
+        expect { giver.can_review_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
     context "when status is 'waiting in final submission on hold'" do
       before { submission.status = 'waiting in final submission on hold' }
 
-      it "raises an exception" do
+      it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_review_committee? }.not_to raise_error
+        expect { giver.can_review_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
 
@@ -1429,7 +1429,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
 
       it "does not raise an exception" do
         giver = described_class.new(submission)
-        expect { giver.can_review_committee? }.not_to raise_error
+        expect { giver.can_review_committee? }.not_to raise_error(SubmissionStatusGiver::AccessForbidden)
       end
     end
   end
