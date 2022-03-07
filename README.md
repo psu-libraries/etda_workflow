@@ -4,7 +4,7 @@
 
 # Electronic Theses and Dissertations Workflow 
 
-* Ruby version: 2.6
+* Ruby version: 2.7
 * Node version 10 (using yarn as npm)
 * Rails 6
 * Redis 3
