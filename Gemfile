@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '2.6.6'
+ruby '2.7.4'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
@@ -36,7 +36,7 @@ gem 'font-awesome-rails', '~> 4.7.0.0'
 # Authentication gem
 gem "devise", ">= 4.7.1"
 # Shared libraries for workflow and explore
-gem 'etda_utilities', git: "https://github.com/psu-stewardship/etda_utilities.git", branch: 'master'
+gem 'etda_utilities', git: "https://github.com/psu-stewardship/etda_utilities.git", branch: 'main'
 # Ldap client
 gem 'net-ldap', '~> 0.16.1'
 # Country drop-downs
