@@ -65,7 +65,7 @@ RUN chown -R etda /etda_workflow
 RUN chown -R etda /etda_workflow/.ssh
 
 USER etda
-RUN gem install bundler:2.0.2
+RUN gem install bundler:2.3.8
 COPY --chown=etda vendor/ vendor/
 RUN bundle install --path vendor/bundle
 
