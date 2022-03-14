@@ -32,19 +32,15 @@ class FeePaymentService
     end
 
     def query
-      "?psuid=#{author_psu_idn}&degree=#{degree_type_code}"
+      "?psuid=#{author_psu_idn}&degree=#{degree_name}"
     end
 
     def author_psu_idn
       submission.author.psu_idn
     end
 
-    def degree_type_code
-      if submission.degree_type.name == "Dissertation"
-        "PHD"
-      else
-        "MS"
-      end
+    def degree_name
+      submission.degree.name
     end
 
     attr_accessor :submission
