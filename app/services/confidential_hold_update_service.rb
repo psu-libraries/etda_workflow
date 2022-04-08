@@ -1,11 +1,12 @@
 class ConfidentialHoldUpdateService
   class InvalidActionLocality < StandardError; end
-  attr_accessor :author
+  attr_accessor :author, :ldap_directory
   attr_reader :updater
 
-  def initialize(author, action_locality)
+  def initialize(author, action_locality, ldap_directory: LdapUniversityDirectory.new)
     @updater = assign_updater(action_locality.to_s)
     @author = author
+    @ldap_directory = ldap_directory
   end
 
   def update
@@ -18,8 +19,7 @@ class ConfidentialHoldUpdateService
   private
 
     def grab_ldap_results
-      directory = LdapUniversityDirectory.new
-      directory.retrieve(@author.access_id, 'uid', LdapResultsMap::AUTHOR_LDAP_MAP)
+      ldap_directory.retrieve(@author.access_id, 'uid', LdapResultsMap::AUTHOR_LDAP_MAP)
     end
 
     def update_confidential_hold(conf_hold_result)

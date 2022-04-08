@@ -18,8 +18,9 @@ namespace :confidential do
   desc 'Update authors that have a confidential hold status in ldap'
   task update: :environment do
     start = Time.now
+    directory = LdapUniversityDirectory.new
     Author.all.each do |author|
-      conf_hold_update_service = ConfidentialHoldUpdateService.new author, 'rake_task'
+      conf_hold_update_service = ConfidentialHoldUpdateService.new author, 'rake_task', directory
       conf_hold_update_service.update
     end
     puts "Process completed in #{(Time.now - start)} sec."
