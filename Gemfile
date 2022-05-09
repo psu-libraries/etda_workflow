@@ -16,6 +16,8 @@ gem 'webpacker', '~> 3.5.5'
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 4.5.0'
+# Resque pool
+gem 'resque-pool', '~> 0.7.0'
 # SideKiq for queueing jobs
 gem 'sidekiq', '~> 5.2.10'
 # When downgrading Sidekiq, rack needed to be downgraded as well.
