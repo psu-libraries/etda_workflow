@@ -178,6 +178,10 @@ class Submission < ApplicationRecord
     title.try(:split, ' ') || []
   end
 
+  def federal_funding_display
+    federal_funding ? 'Yes' : 'No'
+  end
+
   def check_title_capitalization
     return if allow_all_caps_in_title
 

@@ -12,6 +12,7 @@ require( 'datatables.net-bs4' );
 require('../styles/base/_base.scss');
 require('../styles/admin/screen.scss');
 require('../styles/admin/print.scss');
+require('../styles/admin/report_tables.scss');
 require('../admin/initialize_report_tables.js');
 require('../admin/print_format_review.js');
 require('../admin/send_email_reminder.js');
