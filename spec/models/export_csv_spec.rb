@@ -83,7 +83,7 @@ RSpec.describe ExportCsv, type: :model do
                                submission.degree_type.name,
                                submission.program_name,
                                submission.current_access_level.label,
-                               submission.status.titleize,
+                               submission.admin_status,
                                submission.preferred_semester_and_year,
                                submission.federal_funding_display,
                                CommitteeMember.advisor_name(submission),

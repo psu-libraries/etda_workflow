@@ -57,7 +57,7 @@ class ExportCsv
         r.degree_type.name,
         r.program_name,
         r.current_access_level.label,
-        r.status.titleize,
+        r.admin_status,
         r.preferred_semester_and_year,
         r.federal_funding_display,
         CommitteeMember.advisor_name(r),

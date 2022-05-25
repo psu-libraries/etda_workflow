@@ -2,6 +2,9 @@
 
 class Submission < ApplicationRecord
   extend Enumerize
+
+  include AdminStatuses
+
   belongs_to :author
   belongs_to :program
   belongs_to :degree
