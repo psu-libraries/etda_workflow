@@ -6,7 +6,6 @@ class Lionpath::LionpathCsvImporter
   LIONPATH_RESOURCES = [
     Lionpath::LionpathCommitteeRoles.new,
     Lionpath::LionpathProgram.new,
-    Lionpath::LionpathChair.new,
     Lionpath::LionpathCommittee.new
   ].freeze
 
@@ -14,7 +13,6 @@ class Lionpath::LionpathCsvImporter
   LIONPATH_FILE_PATTERNS = {
     committee_role: 'PE_SR_G_ETD_ACT_COMROLES',
     program: 'PE_SR_G_ETD_STDNT_PLAN_PRC',
-    chair: 'PE_SR_G_ETD_CHAIR_PRC',
     committee: 'PE_SR_G_ETD_COMMITTEE_PRC'
   }.freeze
 
