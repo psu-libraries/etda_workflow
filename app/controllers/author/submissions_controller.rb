@@ -82,7 +82,7 @@ class Author::SubmissionsController < AuthorController
     FeePaymentService.new(@submission).fee_is_paid? if current_partner.graduate? && !development_instance?
 
     @view = Author::FinalSubmissionFilesView.new(@submission)
-    @submission.access_level = 'open_access' if (current_partner.honors? || current_partner.milsch?) && @submission.access_level.blank?
+    default_open_access(@submission)
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_final_submission_files?
   rescue SubmissionStatusGiver::AccessForbidden
@@ -141,6 +141,10 @@ class Author::SubmissionsController < AuthorController
   end
 
   private
+
+    def default_open_access(submission)
+      submission.access_level = 'open_access' if (current_partner.honors? || current_partner.milsch?) && submission.access_level.blank?
+    end
 
     def find_submission
       @submission = @author.submissions.find(params[:submission_id] || params[:id])

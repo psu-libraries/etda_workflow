@@ -6,8 +6,8 @@ class ProgramChairCollectionService
   def collection
     collection = []
     gpms_response.each do |pc|
-      collection << ["#{pc['NAME']} (#{committee_role_name(pc["ROLE"])})",
-                     "#{pc['NAME']}",
+      collection << ["#{pc['NAME']} (#{committee_role_name(pc['ROLE'])})",
+                     (pc['NAME']).to_s,
                      { member_email: (pc["ACCESSID"].downcase.to_s + '@psu.edu'),
                        committee_role_id: committee_role_id(committee_role_id(pc["ROLE"])) }]
     end
@@ -20,9 +20,9 @@ class ProgramChairCollectionService
 
     def committee_role_name(role)
       if role == 'DGSPIC'
-        'Professor in Charge/Director of Graduate Studies'
+        'Professor in Charge'
       else
-        'Program Head/Chair'
+        'Program Head'
       end
     end
 
@@ -35,12 +35,7 @@ class ProgramChairCollectionService
     end
 
     def gpms_response
-      begin
-        JSON(HTTParty.get(gpms_prog_chair_url, verify: false).parsed_response)["data"]
-      rescue Net::ReadTimeout, Net::OpenTimeout, SocketError => e
-        Rails.logger.error e.message
-        raise e
-      end
+      JSON(HTTParty.get(gpms_prog_chair_url, verify: false).parsed_response)["data"]
     end
 
     def gpms_prog_chair_url
