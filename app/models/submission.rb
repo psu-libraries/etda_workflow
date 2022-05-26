@@ -182,6 +182,8 @@ class Submission < ApplicationRecord
   end
 
   def federal_funding_display
+    return if federal_funding.nil?
+
     federal_funding ? 'Yes' : 'No'
   end
 

@@ -299,9 +299,9 @@ RSpec.describe Submission, type: :model do
 
   describe '#federal_funding_display' do
     context 'when federal_funding is nil' do
-      it 'returns No' do
+      it 'returns nil' do
         submission = Submission.new(federal_funding: nil)
-        expect(submission.federal_funding_display).to eq('No')
+        expect(submission.federal_funding_display).to be_nil
       end
     end
 
