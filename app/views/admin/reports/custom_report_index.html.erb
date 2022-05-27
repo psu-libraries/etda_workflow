@@ -37,20 +37,23 @@
     </div>
 </div>
 
-<table id="custom-report-index" class="table table-striped custom-report-index datatable bulk-actions" data-ajax-url="<%= admin_custom_report_index_path %>" data-default-semester="<%= Semester.current %>">
- <thead>
-  <tr>
-      <th data-name="id" data-orderable="false">&nbsp;</th><%# for the hidden id %>
-      <th data-name="checkbox" data-orderable="false">&nbsp;</th><%# for the checkbox %>
-      <th data-name="submission_author" data-orderable="true">Author</th>
-      <th data-name="author_psu_idn" data-orderable="true">PSU ID #</th>
-      <th data-name="degree_type" data-orderable="true">Degree</th>
-      <th data-name="program_name" data-orderable="true">Program Name</th>
-      <th data-name="access_level" data-orderable="true">Access Level</th>
-      <th data-name="submission_status" data-orderable="true">Status</th>
-      <th data-name="advisor_name" data-orderable="true">Advisor Name</th>
-  </tr>
- </thead>
-
-
+<table id="custom-report-index" class="table table-sm table-striped custom-report-index datatable bulk-actions" data-ajax-url="<%= admin_custom_report_index_path %>" data-default-semester="<%= Semester.current %>">
+  <thead>
+    <tr>
+        <th data-name="id" data-orderable="false">&nbsp;</th><%# for the hidden id %>
+        <th data-name="checkbox" data-orderable="false">&nbsp;</th><%# for the checkbox %>
+        <th data-name="submission_author" data-orderable="true">Author</th>
+        <th data-name="author_psu_idn" data-orderable="true">PSU ID #</th>
+        <th data-name="title" data-orderable="true">Title</th>
+        <th data-name="degree_type" data-orderable="true">Degree</th>
+        <th data-name="program_name" data-orderable="true">Program Name</th>
+        <th data-name="access_level" data-orderable="true">Access Level</th>
+        <th data-name="submission_status" data-orderable="true">Status</th>
+        <th data-name="federal_funding_display" data-ofderable="true">Federal Funding?</th>
+        <th data-name="advisor_name" data-orderable="true">Advisor Name</th>
+        <th data-name="psu_email_address" data-orderable="true">PSU Email</th>
+        <th data-name="alternate_email_address" data-orderable="true">Alternate Email</th>
+        <th data-name="notes" data-orderable="false">Notes</th>
+    </tr>
+  </thead>
 </table>

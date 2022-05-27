@@ -6,6 +6,6 @@ json.array! [
   submission_view.author.first_name,
   "#{AccessLevel.partner_access_levels['access_level'][submission_view.access_level.to_s]} <br/>" + invention_disclosure_number(submission_view).to_s,
   submission_view.final_submission_files_uploaded_date,
-  submission_view.semester_and_year.presence || 'Date unknown',
+  submission_view.preferred_semester_and_year.presence || 'Date unknown',
   submission_view.most_relevant_file_links.join(' ')
 ]

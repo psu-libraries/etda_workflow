@@ -24,9 +24,7 @@ class ApplicationController < ActionController::Base
     rescue_from Errno::ECONNREFUSED, with: :render_500
     rescue_from ActionDispatch::Cookies::CookieOverflow, with: :render_500
     rescue_from RuntimeError, with: :render_500
-    rescue_from RestClient::Unauthorized, RestClient::Forbidden, with: :render_401
     rescue_from Author::NotAuthorizedToEdit, with: :render_401
-    rescue_from RestClient::ExceptionWithResponse, with: :render_500
   end
 
   helper_method :admin?

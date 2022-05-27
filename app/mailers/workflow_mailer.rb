@@ -144,7 +144,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @committee_member.email,
          from: current_partner.email_address,
-         subject: partner_review_request_subject
+         subject: "#{current_partner.name} #{submission.degree_type} Review Request"
   end
 
   def special_committee_review_request(submission, committee_member)
@@ -159,7 +159,7 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @committee_member.email,
          from: current_partner.email_address,
-         subject: partner_review_request_subject
+         subject: "#{current_partner.name} #{submission.degree_type} Review Request"
   end
 
   def committee_member_review_reminder(submission, committee_member)
@@ -173,7 +173,33 @@ class WorkflowMailer < ActionMailer::Base
 
     mail to: @committee_member.email,
          from: current_partner.email_address,
-         subject: partner_review_request_subject
+         subject: "#{current_partner.name} #{submission.degree_type} Review Reminder"
+  end
+
+  def seventh_day_to_chairs(submission)
+    @submission = submission
+    @author = submission.author
+    committee_list = submission.voting_committee_members.collect do |cm|
+      "#{cm.name} (#{cm.email})" if %w[approved rejected].exclude?(cm.status)
+    end
+    @committee_list_strf = committee_list.compact.join(', ')
+
+    mail to: [CommitteeMember.program_head(submission)&.email, submission.chairs&.pluck(:email)].flatten.uniq.compact,
+         from: current_partner.email_address,
+         subject: "#{@author.first_name} #{@author.last_name} Committee 7-day Deadline Reached"
+  end
+
+  def seventh_day_to_author(submission)
+    program_head_name = CommitteeMember.program_head(submission)&.name
+    committee_chair_name = submission.chairs.first&.name
+    @submission = submission
+    @author = submission.author
+    @committee_chair = (committee_chair_name ? (' chair (' + committee_chair_name + ') and') : nil)
+    @program_head = (program_head_name ? ('(' + program_head_name + ') ') : nil)
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "ETD Committee Still Processing"
   end
 
   def advisor_rejected(submission)
@@ -273,16 +299,4 @@ class WorkflowMailer < ActionMailer::Base
          from: current_partner.email_address,
          subject: "Your #{@submission.degree_type} has been approved by committee"
   end
-
-  private
-
-    def partner_review_request_subject
-      if current_partner.graduate?
-        "#{@submission.degree_type} Needs Approval"
-      elsif current_partner.honors?
-        "Honors Thesis Needs Approval"
-      elsif current_partner.milsch?
-        "Millennium Scholars Thesis Review"
-      end
-    end
 end

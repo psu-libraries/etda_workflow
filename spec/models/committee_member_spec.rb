@@ -217,6 +217,32 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm.rejected_at).to be_nil
       end
     end
+
+    context "when status is changed to ''" do
+      before do
+        cm.status = ''
+      end
+
+      it 'updates status column' do
+        expect(cm.status).to eq("")
+      end
+    end
+
+    context "when status is changed to 'did not vote'" do
+      before do
+        cm.status = 'did not vote'
+      end
+
+      it 'updates status column' do
+        expect(cm.status).to eq("did not vote")
+      end
+    end
+
+    context "when status is changed to 'something invalid'" do
+      it 'raises error' do
+        expect(cm.update(status: 'something invalid')).to eq false
+      end
+    end
   end
 
   describe 'email' do
@@ -261,12 +287,25 @@ RSpec.describe CommitteeMember, type: :model do
 
     context 'when committee member has been imported from LP' do
       context 'when committee role is not is_program_head' do
-        it "doesn't update access id" do
-          cm.access_id = 'abc123'
-          cm.lionpath_updated_at = DateTime.now
-          cm.update email: 'buck@hotmail.com'
-          expect(cm.email).to eq 'buck@hotmail.com'
-          expect(cm.access_id).to eq 'abc123'
+        context 'when committee member is internal to psu' do
+          it "doesn't update access id" do
+            cm.access_id = 'abc123'
+            cm.lionpath_updated_at = DateTime.now
+            cm.update email: 'buck@hotmail.com'
+            expect(cm.email).to eq 'buck@hotmail.com'
+            expect(cm.access_id).to eq 'abc123'
+          end
+        end
+
+        context 'when committee member is external to psu' do
+          it "updates access id" do
+            cm.access_id = 'abc123'
+            cm.lionpath_updated_at = DateTime.now
+            cm.external_to_psu_id = 'mgc25'
+            cm.update email: 'xyz123@psu.edu'
+            expect(cm.email).to eq 'xyz123@psu.edu'
+            expect(cm.access_id).to eq 'xyz123'
+          end
         end
       end
 

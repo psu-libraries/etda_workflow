@@ -519,10 +519,8 @@ RSpec.describe WorkflowMailer do
       expect(email.from).to eq([partner_email])
     end
 
-    it "sets an appropriate subject", honors: true, milsch: true do
-      expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
-      expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
-      expect(email.subject).to eq("Millennium Scholars #{submission.degree_type} Review") if current_partner.milsch?
+    it "sets an appropriate subject", honors: true, milsch: true, sset: true do
+      expect(email.subject).to eq("#{current_partner.name} #{submission.degree_type} Review Reminder")
     end
 
     it "has desired content" do
@@ -612,10 +610,8 @@ RSpec.describe WorkflowMailer do
       expect(email.from).to eq([partner_email])
     end
 
-    it "sets an appropriate subject", honors: true, milsch: true do
-      expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
-      expect(email.subject).to eq("Honors Thesis Needs Approval") if current_partner.honors?
-      expect(email.subject).to eq("Millennium Scholars Thesis Review") if current_partner.milsch?
+    it "sets an appropriate subject", honors: true, milsch: true, sset: true do
+      expect(email.subject).to eq("#{current_partner.name} #{submission.degree_type} Review Request")
     end
 
     it "has desired content" do
@@ -649,10 +645,8 @@ RSpec.describe WorkflowMailer do
         expect(email.from).to eq([partner_email])
       end
 
-      it "sets an appropriate subject", honors: true, milsch: true do
-        expect(email.subject).to eq("Honors #{submission.degree_type} Needs Approval") if current_partner.honors?
-        expect(email.subject).to eq("#{submission.degree_type} Needs Approval") if current_partner.graduate?
-        expect(email.subject).to eq("Millennium Scholars #{submission.degree_type} Review") if current_partner.milsch?
+      it "sets an appropriate subject", honors: true, milsch: true, sset: true do
+        expect(email.subject).to eq("#{current_partner.name} #{submission.degree_type} Review Request")
       end
 
       it "has desired content" do
@@ -684,6 +678,79 @@ RSpec.describe WorkflowMailer do
         expect(email.body).to match(/\/special_committee\/X/)
         expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
       end
+    end
+  end
+
+  describe '#seventh_day_to_chairs' do
+    let(:email) { described_class.seventh_day_to_chairs(submission) }
+    let(:cm_role) { FactoryBot.create :committee_role, is_program_head: true, degree_type: DegreeType.default }
+    let(:cm1) { FactoryBot.create :committee_member, committee_role: cm_role, is_voting: false }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: DegreeType.default }
+
+    before do
+      create_committee submission
+      submission.committee_members << cm1
+      submission.update status: 'waiting for committee review'
+      submission.committee_members.first.update status: 'approved'
+      submission.committee_members.second.update status: 'approved'
+      submission.reload
+    end
+
+    it "is sent to the proper recipients" do
+      expect(email.to).to eq([submission.program_head.email, submission.chairs.pluck(:email)].flatten)
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("#{submission.author.first_name} #{submission.author.last_name} Committee 7-day Deadline Reached")
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/has not completed its review after 7 days/)
+      expect(email.body).not_to match(/Professor Buck Murphy (#{submission.committee_members.first.email})/)
+      expect(email.body).not_to match(/Professor Buck Murphy (#{submission.committee_members.second.email})/)
+      expect(email.body).not_to match(/Professor Buck Murphy (#{submission.committee_members.last.email})/)
+      expect(email.body).to match(/(#{submission.committee_members.third.email})/)
+      expect(email.body).to match(/(#{submission.committee_members.fourth.email})/)
+      expect(email.body).to match(/(#{submission.committee_members.fifth.email})/)
+      expect(email.body).to match(/(#{submission.committee_members[5].email})/)
+    end
+  end
+
+  describe '#seventh_day_to_author' do
+    let(:email) { described_class.seventh_day_to_author(submission) }
+    let(:cm_role) { FactoryBot.create :committee_role, is_program_head: true, degree_type: DegreeType.default }
+    let(:cm1) { FactoryBot.create :committee_member, committee_role: cm_role, is_voting: false, name: 'Test Test' }
+    let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: DegreeType.default }
+
+    before do
+      create_committee submission
+      submission.committee_members << cm1
+      submission.update status: 'waiting for committee review'
+      submission.committee_members.first.update status: 'approved'
+      submission.committee_members.second.update status: 'approved'
+      submission.reload
+    end
+
+    it "is sent to the proper recipients" do
+      expect(email.to).to eq([submission.author.psu_email_address])
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("ETD Committee Still Processing")
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/necessary votes for completion.  This matter should be fixed in the next 5 business days/)
+      expect(email.body).to match(/#{submission.chairs.first.name}/)
+      expect(email.body).to match(/#{submission.program_head.name}/)
     end
   end
 end

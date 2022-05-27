@@ -44,7 +44,7 @@ class WorkflowMailerPreview < ActionMailer::Preview
 
   def access_level_updated
     @submission = Submission.first
-    WorkflowMailer.access_level_updated('author_full_name': @submission.author_full_name, 'title': @submission.title, 'degree_type': @submission.degree_type.name, 'new_access_level_label': 'Open Access', 'old_access_level_label': 'Restricted', 'graduation_year': @submission.year)
+    WorkflowMailer.access_level_updated('author_full_name': @submission.author_full_name, 'title': @submission.title, 'degree_type': @submission.degree_type.name, 'new_access_level_label': 'Open Access', 'old_access_level_label': 'Restricted', 'graduation_year': @submission.preferred_year)
   end
 
   def vulnerability_audit_email
@@ -61,5 +61,15 @@ class WorkflowMailerPreview < ActionMailer::Preview
   def committee_rejected_author
     submission = Submission.where(status: 'waiting for final submission response').sample
     WorkflowMailer.committee_rejected_author(submission)
+  end
+
+  def seventh_day_to_chairs
+    submission = Submission.where(status: 'waiting for committee review').sample
+    WorkflowMailer.seventh_day_to_chairs(submission)
+  end
+
+  def seventh_day_to_author
+    submission = Submission.where(status: 'waiting for committee review').sample
+    WorkflowMailer.seventh_day_to_author(submission)
   end
 end

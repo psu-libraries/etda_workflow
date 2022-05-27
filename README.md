@@ -1,10 +1,10 @@
-[![CircleCI](https://circleci.com/gh/psu-stewardship/etda_workflow.svg?style=svg)](https://circleci.com/gh/psu-stewardship/etda_workflow)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a38c9040c48fe53aaa85/maintainability)](https://codeclimate.com/github/psu-stewardship/etda_workflow/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/a38c9040c48fe53aaa85/test_coverage)](https://codeclimate.com/github/psu-stewardship/etda_workflow/test_coverage)
+[![CircleCI](https://circleci.com/gh/psu-libraries/etda_workflow.svg?style=svg)](https://circleci.com/gh/psu-stewardship/etda_workflow)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a38c9040c48fe53aaa85/maintainability)](https://codeclimate.com/github/psu-libraries/etda_workflow/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/a38c9040c48fe53aaa85/test_coverage)](https://codeclimate.com/github/psu-libraries/etda_workflow/test_coverage)
 
 # Electronic Theses and Dissertations Workflow 
 
-* Ruby version: 2.6
+* Ruby version: 2.7
 * Node version 10 (using yarn as npm)
 * Rails 6
 * Redis 3

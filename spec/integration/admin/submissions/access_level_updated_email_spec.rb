@@ -25,7 +25,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
       open_email(email_to_address)
       expect(current_email.body).to match(/Old Availability - Restricted/i)
       expect(current_email.body).to match(/New Availability - Open Access/i)
-      expect(current_email).to have_content submission.year
+      expect(current_email).to have_content submission.preferred_year
       expect(current_email).to have_content submission.author_full_name
       expect(current_email).to have_content submission.title
       expect(current_email.subject).to match(/Access Level for your submission has been updated/i)

@@ -57,7 +57,7 @@ class Author::CommitteeMembersController < AuthorController
   end
 
   def show
-    status_giver.can_create_or_edit_committee?
+    status_giver.can_review_committee?
   rescue SubmissionStatusGiver::AccessForbidden
     flash[:alert] = 'You have not completed the required steps to review your committee yet'
     redirect_to author_root_path

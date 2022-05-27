@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '2.6.6'
+ruby '2.7.4'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
@@ -15,11 +15,11 @@ gem 'webpacker', '~> 3.5.5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
-gem 'redis', '~> 4.1.0'
+gem 'redis', '~> 4.5.0'
 # Resque pool
 gem 'resque-pool', '~> 0.7.0'
 # SideKiq for queueing jobs
-gem 'sidekiq', '~> 5.2.9'
+gem 'sidekiq', '~> 5.2.10'
 # When downgrading Sidekiq, rack needed to be downgraded as well.
 # This can be removed for Sidekiq 6 or greater.
 gem 'rack', '= 2.1.4'
@@ -36,7 +36,7 @@ gem 'font-awesome-rails', '~> 4.7.0.0'
 # Authentication gem
 gem "devise", ">= 4.7.1"
 # Shared libraries for workflow and explore
-gem 'etda_utilities', git: "https://github.com/psu-stewardship/etda_utilities.git", branch: 'master'
+gem 'etda_utilities', '~> 0.0'
 # Ldap client
 gem 'net-ldap', '~> 0.16.1'
 # Country drop-downs
@@ -68,8 +68,8 @@ gem 'rsolr', '~> 2.3.0'
 gem 'enumerize', '~> 2.3.0'
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 gem 'byebug', '~> 11.1.0', platforms: %i[mri mingw x64_mingw]
-# Restclient for http requests
-gem 'rest-client', '~> 2.1.0'
+# HTTParty for http requests
+gem 'httparty', '~> 0.20.0'
 # For db seeding
 gem 'seedbank', '~> 0.5.0'
 # Loading assets
@@ -133,7 +133,7 @@ group :test do
   # Retry on failure for finicky spec
   gem 'rspec-retry', '~> 0.6.0'
   # Stub http requests
-  gem 'webmock', '~> 3.8.0'
+  gem 'webmock', '~> 3.14.0'
 end
 
 group :production do

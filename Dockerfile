@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM ruby:2.6.6 as base
+FROM ruby:2.7.4 as base
 
 ## NodeJS
 ENV NODE_VERSION 12.22.3
@@ -65,7 +65,7 @@ RUN chown -R etda /etda_workflow
 RUN chown -R etda /etda_workflow/.ssh
 
 USER etda
-RUN gem install bundler:2.0.2
+RUN gem install bundler:2.3.8
 COPY --chown=etda vendor/ vendor/
 RUN bundle install --path vendor/bundle
 

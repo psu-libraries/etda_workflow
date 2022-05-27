@@ -17,7 +17,13 @@ class CommitteeMember < ApplicationRecord
 
   delegate :is_program_head, to: :committee_role
 
-  STATUS = ["pending", "approved", "rejected"].freeze
+  STATUS = [
+    '',
+    'pending',
+    'approved',
+    'rejected',
+    'did not vote'
+  ].freeze
 
   def self.advisors(submission)
     advisors_array = []
@@ -68,6 +74,8 @@ class CommitteeMember < ApplicationRecord
   end
 
   def status=(new_status)
+    errors.add(:status, 'Invalid status.') unless STATUS.include? new_status
+
     return if new_status == self[:status]
 
     self[:status] = new_status
@@ -92,7 +100,7 @@ class CommitteeMember < ApplicationRecord
 
     new_access_id = DirectoryService.get_accessid_by_email(new_email_stripped)
 
-    self.access_id = new_access_id if lionpath_updated_at.blank? || is_program_head
+    self.access_id = new_access_id if lionpath_updated_at.blank? || is_program_head || external_to_psu_id.present?
     return unless committee_member_token.blank? && access_id.blank?
 
     token = CommitteeMemberToken.new authentication_token: SecureRandom.urlsafe_base64(nil, false)

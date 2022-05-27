@@ -1,0 +1,7 @@
+Hello,
+
+<%= t( "#{current_partner.id}.partner.email.seventh_day_to_chairs.message",
+       author_name: "#{@author.first_name} #{@author.last_name}",
+       title: @submission.title,
+       degree_type: @submission.degree_type,
+       committee_list: @committee_list_strf ) %>

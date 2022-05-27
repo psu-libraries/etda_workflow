@@ -50,7 +50,8 @@ RSpec.describe "Admins can run reports", js: true do
                       semester: submission_semester,
                       title: 'Submission1',
                       degree_id: degree1.id,
-                      access_level: 'open_access'
+                      access_level: 'open_access',
+                      admin_notes: 'Some Admin Notes'
   end
   let!(:submission2) do
     FactoryBot.create :submission,
@@ -130,17 +131,18 @@ RSpec.describe "Admins can run reports", js: true do
       expect(page).to have_content(author2.last_name)
       expect(page).not_to have_content(author3.last_name)
       expect(page).to have_content(submission2.program.name)
+      expect(page).to have_content(submission1.admin_notes)
       expect(page).not_to have_content(submission3.program.name) if current_partner.graduate?
       click_button 'Select Visible'
       page.assert_selector('tbody .row-checkbox')
       ckbox = all('tbody .row-checkbox')
       assert_equal(Submission.where(year: submission_year,
-                                    semester: submission_semester).select { |s| s.degree_type == degree_type1 }.count,
-                   ckbox.count)
+                                    semester: submission_semester)
+                       .select { |s| s.degree_type == degree_type1 }.count, ckbox.count)
       ckbox.each do |cb|
         expect(have_checked_field(cb)).to be_truthy
       end
-      select "#{submission4.year} #{submission4.semester}", from: 'submission_semester_year'
+      select "#{submission4.preferred_year} #{submission4.preferred_semester}", from: 'submission_semester_year'
       expect(page).to have_content(author3.last_name)
       expect(page).not_to have_content(author1.last_name)
       expect(page).not_to have_content(author2.last_name)

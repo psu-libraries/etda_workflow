@@ -49,10 +49,9 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
     end
 
     context "visiting the 'Review Committee' page" do
-      it 'displays the committee information page' do
+      it 'raises a forbidden access error' do
         visit author_submission_committee_members_path(submission)
-        expect(page).to have_content(submission.committee_members.first.name)
-        expect(page).to have_current_path(author_submission_committee_members_path(submission))
+        expect(page).to have_current_path(author_root_path)
       end
     end
 
@@ -65,9 +64,60 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', js: true do
     end
 
     context "visiting the 'Upload Final Submission Files page'" do
-      it 'displays the upload final submission files page' do
-        visit author_submission_edit_final_submission_path(submission)
-        expect(page).to have_current_path(author_submission_edit_final_submission_path(submission))
+      context 'when current_partner is graduate' do
+        before do
+          skip 'Graduate Only' unless current_partner.graduate?
+        end
+
+        context 'when student has paid their fee' do
+          it 'displays the upload final submission files page' do
+            visit author_submission_edit_final_submission_path(submission)
+            expect(page).to have_current_path(author_submission_edit_final_submission_path(submission))
+          end
+        end
+
+        context 'when student has not paid their fee' do
+          before do
+            WebMock.reset!
+            stub_request(:get, /https:\/\/secure.gradsch.psu.edu\/services\/etd\/etdPayment.cfm/)
+              .to_return(status: 200, body: "\r\n    {\"data\":[{\"ETDPAYMENTFOUND\":\"N\"}],\"error\":\"\"}\r\n    ")
+          end
+
+          it 'redirects to the author root page and displays a dialog' do
+            visit author_submission_edit_final_submission_path(submission)
+            expect(page).to have_current_path(author_root_path)
+            dialog = find('#dialog-confirm')
+            expect(dialog[:class]).to eq "modal fade show"
+            sleep 1
+            click_button('Ok')
+            dialog = find('#dialog-confirm')
+            expect(dialog[:class]).to eq "modal fade"
+          end
+        end
+
+        context 'when an error is encountered' do
+          before do
+            WebMock.reset!
+            stub_request(:get, /https:\/\/secure.gradsch.psu.edu\/services\/etd\/etdPayment.cfm/).to_timeout
+          end
+
+          it 'redirects to the author root page and displays flash' do
+            visit author_submission_edit_final_submission_path(submission)
+            expect(page).to have_current_path(author_root_path)
+            expect(page).to have_content('An error occurred while processing your request')
+          end
+        end
+      end
+
+      context 'when current_partner is not graduate' do
+        before do
+          skip 'Non-graduate Only' if current_partner.graduate?
+        end
+
+        it 'displays the upload final submission files page' do
+          visit author_submission_edit_final_submission_path(submission)
+          expect(page).to have_current_path(author_submission_edit_final_submission_path(submission))
+        end
       end
     end
 

@@ -1,7 +1,7 @@
 RSpec.describe 'Submitting a final submission as an author', js: true do
   require 'integration/integration_spec_helper'
 
-  describe "When collecting final submission files", honors: true, milsch: true do
+  describe "When collecting final submission files", honors: true, milsch: true, sset: true do
     before do
       oidc_authorize_author
     end
@@ -35,13 +35,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
         check 'I agree to ProQuest statement' if current_partner.graduate?
-        if current_partner.graduate?
-          find('span', text: 'Submit final files for review').click
-          expect(page).to have_content('Please pay the')
-          click_button('Continue')
-        else
-          click_button 'Submit final files for review'
-        end
+        click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
         expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?
@@ -76,13 +70,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         check 'I agree to copyright statement'
-        if current_partner.graduate?
-          check 'I agree to ProQuest statement'
-          find('span', text: 'Submit final files for review').click
-          click_button('Continue')
-        else
-          click_button 'Submit final files for review'
-        end
+        check 'I agree to ProQuest statement' if current_partner.graduate?
+        click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
         expect(page).to have_current_path(author_root_path)
@@ -117,13 +106,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         all('input[type="file"]').last.set(fixture('final_submission_file_01.pdf'))
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
-        if current_partner.graduate?
-          check 'I agree to ProQuest statement'
-          find('span', text: 'Submit final files for review').click
-          click_button('Continue')
-        else
-          click_button 'Submit final files for review'
-        end
+        check 'I agree to ProQuest statement' if current_partner.graduate?
+        click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
         expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?
@@ -159,13 +143,8 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         check 'I agree to copyright statement'
-        if current_partner.graduate?
-          check 'I agree to ProQuest statement'
-          find('span', text: 'Submit final files for review').click
-          click_button('Continue')
-        else
-          click_button 'Submit final files for review'
-        end
+        check 'I agree to ProQuest statement' if current_partner.graduate?
+        click_button 'Submit final files for review'
         # expect(page).to have_content('successfully')
         submission.reload
         expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?

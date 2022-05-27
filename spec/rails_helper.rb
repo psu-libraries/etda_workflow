@@ -22,6 +22,10 @@ require 'cancan/ability'
 require 'shoulda/matchers'
 require 'rspec/retry'
 
+# WebMock: Allow localhost and selenium:4444 so we do not block communication between test instance and webdriver.
+require 'webmock/rspec'
+WebMock.disable_net_connect!(allow_localhost: true, allow: %r{selenium:4444})
+
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 
@@ -114,4 +118,10 @@ RSpec.configure do |config|
 
   # FactoryBot configuration
   config.include FactoryBot::Syntax::Methods
+
+  # WebMock before integration tests
+  config.before(:each, js: true) do
+    stub_request(:get, /https:\/\/secure.gradsch.psu.edu\/services\/etd\/etdPayment.cfm/).
+        to_return(status: 200, body: "\r\n    {\"data\":[{\"ETDPAYMENTFOUND\":\"Y\"}],\"error\":\"\"}\r\n    ")
+  end
 end

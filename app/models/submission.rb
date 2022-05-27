@@ -2,6 +2,9 @@
 
 class Submission < ApplicationRecord
   extend Enumerize
+
+  include AdminStatuses
+
   belongs_to :author
   belongs_to :program
   belongs_to :degree
@@ -56,8 +59,23 @@ class Submission < ApplicationRecord
             :degree_id,
             :program_id, presence: true
 
-  validates :semester, presence: true, inclusion: { in: Semester::SEMESTERS }, if: proc { |s| s.author_edit }
-  validates :year, numericality: { only_integer: true }, presence: true, if: proc { |s| s.author_edit }
+  validates :semester,
+            presence: true,
+            inclusion: { in: Semester::SEMESTERS },
+            if: proc { |s| s.author_edit }
+
+  validates :lionpath_semester,
+            allow_blank: true,
+            inclusion: { in: Semester::SEMESTERS }
+
+  validates :year,
+            numericality: { only_integer: true },
+            presence: true,
+            if: proc { |s| s.author_edit }
+
+  validates :lionpath_year,
+            allow_blank: true,
+            numericality: { only_integer: true }
 
   validates :title,
             length: { maximum: 400 },
@@ -163,6 +181,12 @@ class Submission < ApplicationRecord
     title.try(:split, ' ') || []
   end
 
+  def federal_funding_display
+    return if federal_funding.nil?
+
+    federal_funding ? 'Yes' : 'No'
+  end
+
   def check_title_capitalization
     return if allow_all_caps_in_title
 
@@ -189,8 +213,16 @@ class Submission < ApplicationRecord
     !(exists || (!restricted? && !published?))
   end
 
-  def semester_and_year
-    "#{year} #{semester}"
+  def preferred_semester_and_year
+    "#{semester} #{year}".presence || "#{lionpath_semester} #{lionpath_year}"
+  end
+
+  def preferred_year
+    year.presence || lionpath_year
+  end
+
+  def preferred_semester
+    semester.presence || lionpath_semester
   end
 
   def admin_can_edit?
@@ -343,11 +375,12 @@ class Submission < ApplicationRecord
               (committee_member == committee_member.submission.advisor && current_partner.graduate?)
 
       committee_member.update! approval_started_at: DateTime.now
-      next if seen_access_ids.include?(committee_member.access_id) || committee_member.status == 'approved'
+      next if seen_access_ids.include?(committee_member.access_id) ||
+              (%w[approved rejected].include? committee_member.status)
 
       WorkflowMailer.send_committee_review_requests(self, committee_member)
 
-      CommitteeReminderWorker.perform_in(10.days, id, committee_member.id)
+      CommitteeReminderWorker.perform_in(4.days, id, committee_member.id)
       seen_access_ids << committee_member.access_id
     end
   end

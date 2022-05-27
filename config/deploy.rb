@@ -6,7 +6,7 @@ lock "~> 3.12"
 
 set :application, "etda_workflow"
 # set :partner, fetch(:partner, 'graduate')
-set :repo_url, "git@github.com:/psu-stewardship/#{fetch(:application)}.git"
+set :repo_url, "git@github.com:/psu-libraries/#{fetch(:application)}.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -155,7 +155,7 @@ namespace :deploy do
   # before "deploy:migrate", "deploy:symlink_shared"
 
   after "deploy:updated", "deploy:migrate"
-  after 'deploy:migrate', 'deploy:seed'
+  after 'deploy:cleanup', 'deploy:seed'
 end
 
 # Used to keep x-1 instances of ruby on a machine.  Ex +4 leaves 3 versions on a machine.  +3 leaves 2 versions
