@@ -28,6 +28,8 @@ class ExportCsv
         'Advisor Name',
         'PSU Email',
         'Alternate Email',
+        'Academic Program',
+        'Degree Checkout Status',
         'Admin Notes'
       ]
     when 'confidential_hold_report'
@@ -63,6 +65,8 @@ class ExportCsv
         CommitteeMember.advisor_name(r),
         r.author.psu_email_address,
         r.author.alternate_email_address,
+        r.academic_program,
+        r.degree_checkout_status,
         r.admin_notes
       ]
     when 'confidential_hold_report'

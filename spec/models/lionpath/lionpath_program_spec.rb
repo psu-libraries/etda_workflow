@@ -11,7 +11,7 @@ RSpec.describe Lionpath::LionpathProgram do
       'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Campus ID' => 'xxb13', 'Exp Grad' => 2215,
       'Acadademic Plan' => 'BIOE_PHD', 'Degree' => 'PHD', 'Transcript Descr' => 'Bioengineering (PHD)',
       'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
-      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP'
+      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG'
     }
   end
 
@@ -20,7 +20,7 @@ RSpec.describe Lionpath::LionpathProgram do
       'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Campus ID' => 'xxb13', 'Exp Grad' => 2205,
       'Acadademic Plan' => 'BIOE_PHD', 'Degree' => 'PHD', 'Transcript Descr' => 'Bioengineering (PHD)',
       'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
-      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP'
+      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG'
     }
   end
 
@@ -29,7 +29,7 @@ RSpec.describe Lionpath::LionpathProgram do
       'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Campus ID' => 'xxb13', 'Exp Grad' => 2211,
       'Acadademic Plan' => 'BIOE_MS', 'Degree' => 'MS', 'Transcript Descr' => 'Bioengineering (PHD)',
       'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
-      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP'
+      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG'
     }
   end
 
@@ -59,6 +59,8 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.lionpath_semester).to eq('Summer')
       expect(Author.first.submissions.first.campus).to eq('UP')
       expect(Author.first.submissions.first.status).to eq('collecting program information')
+      expect(Author.first.submissions.first.academic_program).to eq('GREN')
+      expect(Author.first.submissions.first.degree_checkout_status).to eq('EG')
     end
   end
 

@@ -36,7 +36,9 @@ class Lionpath::LionpathProgram
         lionpath_semester: semester(row),
         lionpath_year: year(row),
         campus: row['Campus'],
-        lionpath_updated_at: DateTime.now
+        lionpath_updated_at: DateTime.now,
+        academic_program: row['Acad Prog'],
+        degree_checkout_status: row['ChkoutStat']
       }
     end
 
