@@ -2,32 +2,31 @@ RSpec.describe 'The standard committee form for authors', js: true do
   require 'integration/integration_spec_helper'
 
   let(:author) { current_author }
+  let(:response_body) do
+    { "data":
+          [{ "ACCESSID": "abc123", "NAME": "Test ProgHead", "ROLE": "ProgHead" },
+           { "ACCESSID": "bca321", "NAME": "Test DGSPIC", "ROLE": "DGSPIC" }],
+      "error": "" }.to_json
+  end
 
   if current_partner.graduate?
     let(:submission) { FactoryBot.create :submission, :collecting_committee, author: author, degree: degree }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.find_by(slug: 'master_thesis') }
-    let(:response_body) do
-      {"data":
-           [ {"ACCESSID":"abc123", "NAME":"Test ProgHead", "ROLE":"ProgHead"} ,
-             {"ACCESSID":"bca321", "NAME":"Test DGSPIC", "ROLE":"DGSPIC"} ],
-       "error":""}.to_json
-    end
 
-    before do
-      stub_request(:get, %r{https://secure.gradsch.psu.edu/services/etd/etdThDsAppr.cfm}).
-          with(
-              headers: {
-                  'Accept'=>'*/*',
-                  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                  'User-Agent'=>'Ruby'
-              }).
-          to_return(status: 200, body: response_body, headers: {})
-    end
   else
     let(:submission) { FactoryBot.create :submission, :collecting_committee, author: author }
   end
 
   before do
+    stub_request(:get, %r{https://secure.gradsch.psu.edu/services/etd/etdThDsAppr.cfm})
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'User-Agent' => 'Ruby'
+        }
+      )
+      .to_return(status: 200, body: response_body, headers: {})
     oidc_authorize_author
     visit new_author_submission_committee_members_path(submission)
   end

@@ -9,7 +9,7 @@ class ProgramChairCollectionService
       collection << ["#{pc['NAME']} (#{committee_role_name(pc['ROLE'])})",
                      (pc['NAME']).to_s,
                      { member_email: (pc["ACCESSID"].downcase.to_s + '@psu.edu'),
-                       committee_role_id: committee_role_id(committee_role_id(pc["ROLE"])) }]
+                       committee_role_id: committee_role_id(pc["ROLE"]) }]
     end
     collection
   end

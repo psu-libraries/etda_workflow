@@ -495,26 +495,6 @@ RSpec.describe Submission, type: :model do
     end
   end
 
-  describe "#collect_program_chairs" do
-    let!(:program) { FactoryBot.create :program }
-    let!(:submission3) { FactoryBot.create :submission, campus: 'UP', program: program }
-    let!(:program_chair1) do
-      FactoryBot.create :program_chair, program: program, role: 'Professor in Charge', campus: 'UP'
-    end
-    let!(:program_chair2) do
-      FactoryBot.create :program_chair, program: program, role: 'Department Head', campus: 'UP'
-    end
-    let!(:program_chair3) do
-      FactoryBot.create :program_chair, program: program, role: 'Department Head', campus: 'HY'
-    end
-
-    it 'returns collection of program heads for this submission' do
-      skip 'graduate only' unless current_partner.graduate?
-
-      expect(submission3.collect_program_chairs).to eq [program_chair1, program_chair2]
-    end
-  end
-
   describe "#preferred_year" do
     context 'when year is present but lionpath_year is not' do
       it 'returns year' do

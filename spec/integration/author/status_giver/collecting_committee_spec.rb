@@ -2,14 +2,29 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'collecting committee'" do
-    before do
-      oidc_authorize_author
-    end
-
     let!(:author) { current_author }
     let!(:admin)  { current_admin }
     let!(:submission) { FactoryBot.create :submission, :collecting_committee, author: author }
     let(:master_thesis) { DegreeType.second }
+    let(:response_body) do
+      { "data":
+           [{ "ACCESSID": "abc123", "NAME": "Test ProgHead", "ROLE": "ProgHead" },
+            { "ACCESSID": "bca321", "NAME": "Test DGSPIC", "ROLE": "DGSPIC" }],
+        "error": "" }.to_json
+    end
+
+    before do
+      stub_request(:get, %r{https://secure.gradsch.psu.edu/services/etd/etdThDsAppr.cfm})
+        .with(
+          headers: {
+            'Accept' => '*/*',
+            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'User-Agent' => 'Ruby'
+          }
+        )
+        .to_return(status: 200, body: response_body, headers: {})
+      oidc_authorize_author
+    end
 
     context "visiting the 'Author Submissions Index Page' page" do
       it 'loads the page' do
