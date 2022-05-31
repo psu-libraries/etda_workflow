@@ -14,12 +14,20 @@ class EtdUrls
   private
 
     def explore_url
-      explore_str = "https://" + EtdaUtilities::Hosts.new.explore_host(current_partner.id, Rails.application.secrets.stage)
+      explore_str = if ENV['EXPLORE_HOST']
+                      "https://#{ENV['EXPLORE_HOST']}"
+                    else
+                      "https://" + EtdaUtilities::Hosts.new.explore_host(current_partner.id, Rails.application.secrets.stage)
+                    end
       explore_str
     end
 
     def workflow_url
-      workflow_str = "https://" + EtdaUtilities::Hosts.new.workflow_submit_host(current_partner.id, Rails.application.secrets.stage)
+      workflow_str = if ENV['WORKFLOW_HOST']
+                      "https://#{ENV['WORKFLOW_HOST']}"
+                     else
+                      "https://" + EtdaUtilities::Hosts.new.workflow_submit_host(current_partner.id, Rails.application.secrets.stage)
+                     end
       workflow_str
     end
 end
