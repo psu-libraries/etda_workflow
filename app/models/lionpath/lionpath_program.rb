@@ -37,7 +37,7 @@ class Lionpath::LionpathProgram
         lionpath_year: year(row),
         campus: row['Campus'],
         lionpath_updated_at: DateTime.now,
-        academic_program: row['Acad Prog'],
+        academic_program: row['Acad Prog'].gsub(/^GR/, ''),
         degree_checkout_status: row['ChkoutStat']
       }
     end

@@ -59,7 +59,7 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.lionpath_semester).to eq('Summer')
       expect(Author.first.submissions.first.campus).to eq('UP')
       expect(Author.first.submissions.first.status).to eq('collecting program information')
-      expect(Author.first.submissions.first.academic_program).to eq('GREN')
+      expect(Author.first.submissions.first.academic_program).to eq('EN')
       expect(Author.first.submissions.first.degree_checkout_status).to eq('EG')
     end
   end
