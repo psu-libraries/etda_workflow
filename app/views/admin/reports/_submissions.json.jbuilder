@@ -12,5 +12,7 @@ json.array! [
   CommitteeMember.advisor_name(submission),
   submission.author.psu_email_address,
   submission.author.alternate_email_address,
+  submission.academic_program,
+  submission.degree_checkout_status,
   submission.admin_notes&.truncate(30)
 ]

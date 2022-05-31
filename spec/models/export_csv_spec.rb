@@ -64,6 +64,8 @@ RSpec.describe ExportCsv, type: :model do
                                            'Advisor Name',
                                            'PSU Email',
                                            'Alternate Email',
+                                           'Academic Program',
+                                           'Degree Checkout Status',
                                            'Admin Notes'
                                          ])
       end
@@ -89,6 +91,8 @@ RSpec.describe ExportCsv, type: :model do
                                CommitteeMember.advisor_name(submission),
                                submission.author.psu_email_address,
                                submission.author.alternate_email_address,
+                               submission.academic_program,
+                               submission.degree_checkout_status,
                                submission.admin_notes
                              ])
       end

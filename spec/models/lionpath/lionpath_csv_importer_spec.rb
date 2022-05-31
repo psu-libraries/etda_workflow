@@ -59,6 +59,8 @@ RSpec.describe Lionpath::LionpathCsvImporter do
         expect(Author.find(author_1.id).submissions.first.program.name).to eq 'Bioengineering (PHD)'
         expect(Author.find(author_1.id).submissions.first.degree.degree_type.slug).to eq 'dissertation'
         expect(Author.find(author_3.id).submissions.first.degree.degree_type.slug).to eq 'master_thesis'
+        expect(Author.find(author_3.id).submissions.first.academic_program).to eq 'MD'
+        expect(Author.find(author_4.id).submissions.first.degree_checkout_status).to eq 'EG'
       end
     end
 
