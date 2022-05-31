@@ -17,7 +17,7 @@ class SolrDataImportService
       result = solr.get dataimport, params: params
       return result if result[:error]
 
-      solr_status_checker = RSolr.connect url: solr_url, core: current_core
+      solr_status_checker = RSolr.connect url: solr_url, core: solr_collection
       # wait until the process has finished
 
       processing_is_incomplete = true
@@ -40,7 +40,7 @@ class SolrDataImportService
     end
 
     def solr
-      @solr ||= RSolr.connect url: solr_url, core: current_core
+      @solr ||= RSolr.connect url: solr_url, core: solr_collection
       @solr
     end
 
@@ -52,15 +52,42 @@ class SolrDataImportService
       { 'command' => 'full-import', 'clean' => true }
     end
 
-    def solr_url
-      return 'http://localhost:8983/solr' if Rails.env.development?
+    def solr_username
+      ENV.fetch('SOLR_USERNAME', nil)
+    end
 
-      url = EtdUrls.new.explore
-      url + '/solr'
+    def solr_password
+      ENV.fetch('SOLR_PASSWORD', nil)
+    end
+
+    def solr_host
+      default_host = if Rails.env.development?
+                       'localhost'
+                     else
+                       EtdUrls.new.explore.gsub(/https?\:\/\//, '')
+                     end
+      ENV.fetch('SOLR_HOST', default_host)
+    end
+
+    def solr_collection
+      ENV.fetch('SOLR_COLLECTION', current_core)
+    end
+
+    def solr_port
+      ENV.fetch('SOLR_PORT', 8983)
+    end
+
+    def solr_url
+      url = if solr_username && solr_password
+              "http://#{solr_username}:#{URI.encode_www_form_component(solr_password)}@#{solr_host}:#{solr_port}/solr"
+            else
+              "http://#{solr_host}/solr"
+            end
+      url
     end
 
     def dataimport
-      "#{current_core}/dataimport"
+      "#{solr_collection}/dataimport"
     end
 
     def current_core
