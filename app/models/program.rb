@@ -2,7 +2,6 @@
 
 class Program < ApplicationRecord
   has_many :submissions
-  has_many :program_chairs
 
   validates :name, presence: true
   validates :name, uniqueness: { scope: :code, case_sensitive: true }
