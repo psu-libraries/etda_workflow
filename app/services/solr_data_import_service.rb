@@ -82,7 +82,7 @@ class SolrDataImportService
       url = if solr_username && solr_password
               "http://#{solr_username}:#{URI.encode_www_form_component(solr_password)}@#{solr_host}:#{solr_port}/solr"
             else
-              "http://#{solr_host}/solr"
+              "https://#{solr_host}/solr"
             end
       url
     end
