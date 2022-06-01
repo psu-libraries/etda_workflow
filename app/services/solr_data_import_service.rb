@@ -18,7 +18,7 @@ class SolrDataImportService
       Rails.logger.info result
       return result if result[:error]
 
-      solr_status_checker = RSolr.connect url: solr_url, core: solr_collection
+      solr_status_checker = RSolr.connect url: solr_url, core: solr_collection, update_format: :xml
       # wait until the process has finished
 
       processing_is_incomplete = true
