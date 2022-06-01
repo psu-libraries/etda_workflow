@@ -45,11 +45,11 @@ class SolrDataImportService
     end
 
     def delta_import_params
-      { 'command' => 'delta-import', 'clean' => false, :wt => 'ruby' }
+      { 'command' => 'delta-import', 'clean' => false, :wt => :xml }
     end
 
     def full_import_params
-      { 'command' => 'full-import', 'clean' => true, :wt => 'ruby' }
+      { 'command' => 'full-import', 'clean' => true, :wt => :xml }
     end
 
     def solr_username
