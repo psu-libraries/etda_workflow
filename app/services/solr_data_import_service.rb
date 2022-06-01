@@ -15,7 +15,6 @@ class SolrDataImportService
 
     def execute_cmd(params)
       result = solr.get dataimport, params: params
-      Rails.logger.info result
       return result if result[:error]
 
       solr_status_checker = RSolr.connect url: solr_url, core: solr_collection
@@ -46,11 +45,11 @@ class SolrDataImportService
     end
 
     def delta_import_params
-      { 'command' => 'delta-import', 'clean' => false, :wt => 'ruby' }
+      { 'command' => 'delta-import', 'clean' => false }
     end
 
     def full_import_params
-      { 'command' => 'full-import', 'clean' => true, :wt => 'ruby' }
+      { 'command' => 'full-import', 'clean' => true }
     end
 
     def solr_username
