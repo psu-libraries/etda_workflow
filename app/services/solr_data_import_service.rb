@@ -18,7 +18,7 @@ class SolrDataImportService
       Rails.logger.info result
       return result if result[:error]
 
-      solr_status_checker = RSolr.connect url: solr_url, core: solr_collection, update_format: :xml
+      solr_status_checker = RSolr.connect url: solr_url, core: solr_collection
       # wait until the process has finished
 
       processing_is_incomplete = true
@@ -46,11 +46,11 @@ class SolrDataImportService
     end
 
     def delta_import_params
-      { 'command' => 'delta-import', 'clean' => false, :wt => :xml }
+      { 'command' => 'delta-import', 'clean' => false }
     end
 
     def full_import_params
-      { 'command' => 'full-import', 'clean' => true, :wt => :xml }
+      { 'command' => 'full-import', 'clean' => true }
     end
 
     def solr_username
