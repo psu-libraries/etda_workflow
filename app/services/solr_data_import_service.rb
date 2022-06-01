@@ -15,7 +15,7 @@ class SolrDataImportService
 
     def execute_cmd(params)
       result = solr.get dataimport, params: params
-      puts result
+      Rails.logger result
       return result if result[:error]
 
       solr_status_checker = RSolr.connect url: solr_url, core: solr_collection
