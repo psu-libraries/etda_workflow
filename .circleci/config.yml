@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.1.0
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow

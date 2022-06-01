@@ -9,7 +9,10 @@ class ApproverController < ApplicationController
   protected
 
     def set_session
-      sign_out if session[:user_role] != 'approver'
+      if current_remote_user.nil?
+        session[:return_to] = request.url
+        redirect_to '/login'
+      end
       session[:user_role] = 'approver'
     end
 
