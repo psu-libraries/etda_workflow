@@ -22,7 +22,7 @@ gem 'resque-pool', '~> 0.7.0'
 gem 'sidekiq', '~> 5.2.10'
 # When downgrading Sidekiq, rack needed to be downgraded as well.
 # This can be removed for Sidekiq 6 or greater.
-gem 'rack', '= 2.1.4'
+gem 'rack', '2.1.4.1'
 # Used to schedule cron jobs on the servers
 gem 'whenever', '~> 1.0.0'
 # Use SCSS for stylesheets
