@@ -106,12 +106,16 @@ Rails.application.configure do
   #   # config.logger    = ActiveSupport::TaggedLogging.new(logger)
   # end
 
+  Clamby.configure({
+    :daemonize => true
+  })
+
   Dir.glob('lib/capistrano/tasks/**/*.rake').each { |r| import r }
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  VirusScanner = ClamScan::Client
+  VirusScanner = Clamby
   UniversityDirectory = LdapUniversityDirectory
   WORKFLOW_BASE_PATH = Rails.root.join('workflow_data_files/').to_s
   EXPLORE_BASE_PATH =  Rails.root.join('explore_data_files/').to_s

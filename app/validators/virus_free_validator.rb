@@ -14,6 +14,6 @@ class VirusFreeValidator < ActiveModel::EachValidator
     #  end
 
     def has_a_virus?(value)
-      value.present? && !VirusScanner.scan(location: value.url).safe?
+      value.present? && !VirusScanner.safe?(value.url)
     end
 end

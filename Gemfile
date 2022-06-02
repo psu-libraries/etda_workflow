@@ -46,7 +46,7 @@ gem 'simple_form', '>= 5.0.0'
 # File uploads
 gem 'carrierwave', '~> 1.3.0'
 # Virus scanning for file uploads
-gem 'clam_scan', '~> 0.0.0'
+gem 'clamby'
 # For image resizing
 gem "mini_magick", ">= 4.9.4"
 # Easily handle nested forms
