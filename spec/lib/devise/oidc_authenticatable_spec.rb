@@ -12,7 +12,7 @@ RSpec.describe Devise::Strategies::OidcAuthenticatable do
     context 'when author' do
       let(:author) { FactoryBot.create(:author) }
       let(:request) { double(headers: { 'HTTP_REMOTE_USER' => author.access_id, 'REQUEST_URI' => '/author/submissions' },
-                             session: { user_name: nil }) }
+                             session: { webaccess_id: nil }) }
 
       context 'with a new user' do
         before { allow(Author).to receive(:find_by_access_id).with(author.access_id).and_return(nil) }
@@ -51,7 +51,7 @@ RSpec.describe Devise::Strategies::OidcAuthenticatable do
     context 'when admin' do
       let(:admin) { FactoryBot.create(:admin) }
       let(:request) { double(headers: { 'HTTP_REMOTE_USER' => admin.access_id, 'REQUEST_URI' => '/admin/dissertation' },
-                             session: { user_name: nil }) }
+                             session: { webaccess_id: nil }) }
 
       context 'with a new user' do
         before { allow(Admin).to receive(:find_by_access_id).with(admin.access_id).and_return(nil) }
@@ -78,7 +78,7 @@ RSpec.describe Devise::Strategies::OidcAuthenticatable do
     context 'when approver' do
       let(:approver) { FactoryBot.create(:approver) }
       let(:request) { double(headers: { 'HTTP_REMOTE_USER' => approver.access_id, 'REQUEST_URI' => "/approver/committee_member/1" },
-                             session: { user_name: nil }) }
+                             session: { webaccess_id: nil }) }
 
       context 'with a new user' do
         before { allow(Approver).to receive(:find_by_access_id).with(approver.access_id).and_return(nil) }
@@ -103,7 +103,7 @@ RSpec.describe Devise::Strategies::OidcAuthenticatable do
   describe 'fail!' do
     context 'when directing to /author' do
       let(:request) { double(headers: { 'HTTP_REMOTE_USER' => nil, 'REQUEST_URI' => '/author/submissions' },
-                             session: { user_name: nil }) }
+                             session: { webaccess_id: nil }) }
 
       it 'fails' do
         expect(subject).not_to be_valid
@@ -113,7 +113,7 @@ RSpec.describe Devise::Strategies::OidcAuthenticatable do
 
     context 'when directing to /admin' do
       let(:request) { double(headers: { 'HTTP_REMOTE_USER' => nil, 'REQUEST_URI' => '/admin/dissertation' },
-                             session: { user_name: nil }) }
+                             session: { webaccess_id: nil }) }
 
       it 'fails' do
         expect(subject).not_to be_valid
@@ -123,7 +123,7 @@ RSpec.describe Devise::Strategies::OidcAuthenticatable do
 
     context 'when directing to /approver' do
       let(:request) { double(headers: { 'HTTP_REMOTE_USER' => nil, 'REQUEST_URI' => '/approver/committee_member/1' },
-                             session: { user_name: nil }) }
+                             session: { webaccess_id: nil }) }
 
       it 'fails' do
         expect(subject).not_to be_valid
@@ -133,11 +133,11 @@ RSpec.describe Devise::Strategies::OidcAuthenticatable do
   end
 
   describe 'pass' do
-    context 'when session[:user_name] is present' do
+    context 'when session[:webaccess_id] is present' do
       let(:request) { double(headers: { 'HTTP_REMOTE_USER' => nil, 'REQUEST_URI' => '/author/committee_member/1' },
-                             session: { user_name: 'abc123' }) }
+                             session: { webaccess_id: 'abc123' }) }
       it 'returns nil' do
-        expect(subject.authenticate!).to eq(nil)
+        expect(subject.authenticate!).to eq(:success)
       end
     end
   end

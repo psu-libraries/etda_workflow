@@ -2,6 +2,9 @@
 
 class Submission < ApplicationRecord
   extend Enumerize
+
+  include AdminStatuses
+
   belongs_to :author
   belongs_to :program
   belongs_to :degree
@@ -172,6 +175,12 @@ class Submission < ApplicationRecord
 
   def title_words
     title.try(:split, ' ') || []
+  end
+
+  def federal_funding_display
+    return if federal_funding.nil?
+
+    federal_funding ? 'Yes' : 'No'
   end
 
   def check_title_capitalization

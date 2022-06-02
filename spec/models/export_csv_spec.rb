@@ -49,7 +49,25 @@ RSpec.describe ExportCsv, type: :model do
 
     context 'columns' do
       it 'has initialized columns' do
-        expect(export_csv.columns).to eq(['Last Name', 'First Name', 'Id', 'Title', 'Degree', 'Program', 'Access Level', 'Date', 'Status', 'Invention Disclosure Number'])
+        expect(export_csv.columns).to eq([
+                                           'Submission ID',
+                                           'Last Name',
+                                           'First Name',
+                                           'PSU ID',
+                                           'Title',
+                                           'Degree',
+                                           'Program',
+                                           'Access Level',
+                                           'Status',
+                                           'Date',
+                                           'Federal Funding?',
+                                           'Advisor Name',
+                                           'PSU Email',
+                                           'Alternate Email',
+                                           'Academic Program',
+                                           'Degree Checkout Status',
+                                           'Admin Notes'
+                                         ])
       end
     end
 
@@ -57,11 +75,26 @@ RSpec.describe ExportCsv, type: :model do
       it 'has one submission' do
         fields = export_csv.fields(submission)
         expect(fields).not_to be(nil)
-        expect(fields).to include(author.last_name)
-        expect(fields).to include(author.first_name)
-        expect(fields).to include(submission.title)
-        expect(fields).to include(submission.degree_type.name)
-        expect(fields).to include(submission.program.name)
+
+        expect(fields).to eq([
+                               submission.id,
+                               submission.author.last_name,
+                               submission.author.first_name,
+                               submission.author.psu_id,
+                               submission.cleaned_title,
+                               submission.degree_type.name,
+                               submission.program_name,
+                               submission.current_access_level.label,
+                               submission.admin_status,
+                               submission.preferred_semester_and_year,
+                               submission.federal_funding_display,
+                               CommitteeMember.advisor_name(submission),
+                               submission.author.psu_email_address,
+                               submission.author.alternate_email_address,
+                               submission.academic_program,
+                               submission.degree_checkout_status,
+                               submission.admin_notes
+                             ])
       end
     end
 

@@ -5,11 +5,11 @@ module Devise
   module Strategies
     class OidcAuthenticatable < Authenticatable
       def authenticate!
-        return pass if request.session[:user_name].present?
-
         access_id = remote_user(request.headers)
 
         return fail! unless access_id.present?
+
+        request.session[:webaccess_id] = access_id
 
         this_object = authentication_type || Author.class
         a = this_object.find_by_access_id(access_id)
@@ -46,14 +46,22 @@ module Devise
         this_remote_user = remote_user(request.headers)
         return true unless this_remote_user.nil?
 
+        return true unless request.session[:webaccess_id].nil?
+
         false
       end
 
       def remote_user(headers)
-        nil_values = ["", "(null)"]
-        access_id = headers.fetch('REMOTE_USER', nil) || headers.fetch('HTTP_REMOTE_USER', nil)
-        return nil if nil_values.include?(access_id)
-        return access_id
+        if request.session[:webaccess_id]
+          request.session[:webaccess_id]
+        else
+          nil_values = ["", "(null)"]
+          remote_user_header = ENV.fetch('REMOTE_USER_HEADER', 'HTTP_REMOTE_USER')
+          access_id = headers.fetch(remote_user_header, nil) || headers.fetch('REMOTE_USER', nil)
+          return nil if nil_values.include?(access_id)
+          access_id = access_id.split('@')[0] if access_id
+          access_id
+        end
       end
 
       protected

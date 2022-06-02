@@ -297,6 +297,29 @@ RSpec.describe Submission, type: :model do
     end
   end
 
+  describe '#federal_funding_display' do
+    context 'when federal_funding is nil' do
+      it 'returns nil' do
+        submission = Submission.new(federal_funding: nil)
+        expect(submission.federal_funding_display).to be_nil
+      end
+    end
+
+    context 'when federal_funding is false' do
+      it 'returns No' do
+        submission = Submission.new(federal_funding: false)
+        expect(submission.federal_funding_display).to eq('No')
+      end
+    end
+
+    context 'when federal_funding is true' do
+      it 'returns Yes' do
+        submission = Submission.new(federal_funding: true)
+        expect(submission.federal_funding_display).to eq('Yes')
+      end
+    end
+  end
+
   context '#check_title_capitalization' do
     it 'identifies all caps in the title' do
       submission = Submission.new(title: 'THIS TITLE IS NOT ALLOWED')

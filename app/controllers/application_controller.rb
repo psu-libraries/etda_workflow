@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
   def login
     Rails.logger.info 'LOGGING IN APP CONTROLLER'
     # '/login' is to be protected at the webserver level
-    redirect_to session['return_to'] || '/'
+    redirect_to session[:return_to] || '/'
   end
 
   def logout
@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_remote_user
-    Devise::Strategies::OidcAuthenticatable.new(nil).remote_user(request.headers)
+    session[:webaccess_id]
   end
 
   def render_404(exception)
