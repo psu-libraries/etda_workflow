@@ -72,4 +72,16 @@ class WorkflowMailerPreview < ActionMailer::Preview
     submission = Submission.where(status: 'waiting for committee review').sample
     WorkflowMailer.seventh_day_to_author(submission)
   end
+
+  def committee_member_review_request_to_core_members
+    submission = Submission.where(status: 'waiting for committee review').sample
+    committee_member = submission.committee_members.select(&:core_committee_member?).first
+    WorkflowMailer.send_committee_review_requests(submission, committee_member)
+  end
+
+  def committee_member_review_request_to_other_members
+    submission = Submission.where(status: 'waiting for committee review').sample
+    committee_member = submission.committee_members.reject(&:core_committee_member?).first
+    WorkflowMailer.send_committee_review_requests(submission, committee_member)
+  end
 end
