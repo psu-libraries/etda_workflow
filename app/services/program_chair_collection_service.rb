@@ -36,7 +36,13 @@ class ProgramChairCollectionService
 
     def gpms_response
       begin
-        JSON(HTTParty.get(gpms_prog_chair_url, verify: false).parsed_response)["data"]
+        response = JSON(HTTParty.get(gpms_prog_chair_url, verify: false).parsed_response)
+        if response["error"].present?
+          Rails.logger.error response["error"].to_s
+          raise RuntimeError, response["error"].to_s
+        end
+
+        response["data"]
       rescue Net::ReadTimeout, Net::OpenTimeout, SocketError => e
         Rails.logger.error e.message
         raise e
