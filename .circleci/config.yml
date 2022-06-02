@@ -170,7 +170,7 @@ jobs:
           docker-compose down
   deploy:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
       CONFIG_REPO: git@github.com:psu-stewardship/etda-config.git
     steps:
