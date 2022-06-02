@@ -63,7 +63,7 @@ gem 'logstash-event', '~> 1.2.0'
 gem 'lograge', '~> 0.11.0'
 gem 'lograge-sql', '~> 1.1.0'
 # Ruby client for Apache solr
-gem 'rsolr', '~> 2.3.0'
+gem 'rsolr', '~> 2.5.0'
 # Enumerated attributes with I18n
 gem 'enumerize', '~> 2.3.0'
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
