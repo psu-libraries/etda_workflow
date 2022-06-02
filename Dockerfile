@@ -57,6 +57,7 @@ COPY package.json /etda_workflow
 RUN yarn
 
 COPY --chown=etda . /etda_workflow
+COPY --chown=etda config/clamd.conf /etc/clamav
 
 RUN mkdir -p tmp/cache
 
