@@ -64,21 +64,6 @@ RSpec.describe Lionpath::LionpathCsvImporter do
       end
     end
 
-    context 'when lionpath_resource is LionpathChair' do
-      let(:fixture_location) { "#{Rails.root}/spec/fixtures/lionpath/lionpath_chair.csv" }
-      let!(:program_1) { FactoryBot.create :program, code: 'SDS_MS' }
-      let!(:program_2) { FactoryBot.create :program, code: 'NUTR_MS' }
-      let!(:program_3) { FactoryBot.create :program, code: 'NUTR_PHD' }
-      let!(:program_4) { FactoryBot.create :program, code: 'NEURS_MS' }
-
-      it 'imports lionpath chair data' do
-        lionpath_csv_importer.send(:parse_csv, Lionpath::LionpathChair.new)
-        expect(ProgramChair.count).to eq 9
-        expect(Program.find(program_1.id).program_chairs.first.last_name).to eq 'Tester1'
-        expect(Program.find(program_1.id).program_chairs.last.first_name).to eq 'PIC1'
-      end
-    end
-
     context 'when lionpath_resource is LionpathCommittee' do
       let(:fixture_location) { "#{Rails.root}/spec/fixtures/lionpath/lionpath_committee.csv" }
       let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'abc123' }

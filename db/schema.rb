@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_27_134621) do
+ActiveRecord::Schema.define(version: 2022_05_31_192802) do
 
   create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -212,21 +212,6 @@ ActiveRecord::Schema.define(version: 2022_05_27_134621) do
     t.index ["submission_id"], name: "keywords_submission_id_fk"
   end
 
-  create_table "program_chairs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "program_id", null: false
-    t.string "access_id", null: false
-    t.string "first_name"
-    t.string "last_name"
-    t.string "campus"
-    t.bigint "phone"
-    t.string "email"
-    t.datetime "lionpath_updated_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "role"
-    t.index ["program_id"], name: "program_chairs_program_id_fk"
-  end
-
   create_table "programs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -318,7 +303,6 @@ ActiveRecord::Schema.define(version: 2022_05_27_134621) do
   add_foreign_key "format_review_files", "submissions", name: "format_review_files_submission_id_fk"
   add_foreign_key "invention_disclosures", "submissions", name: "invention_disclosures_submission_id_fk"
   add_foreign_key "keywords", "submissions", name: "keywords_submission_id_fk"
-  add_foreign_key "program_chairs", "programs", name: "program_chairs_program_id_fk"
   add_foreign_key "submissions", "authors", name: "submissions_author_id_fk"
   add_foreign_key "submissions", "degrees", name: "submissions_degree_id_fk"
   add_foreign_key "submissions", "programs", name: "submissions_program_id_fk"
