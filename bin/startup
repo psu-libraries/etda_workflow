@@ -9,7 +9,7 @@ if [ -z "${CLAMD_HOST}" ]; then
   echo "CLAMD_HOST not set"
 else 
   if grep -q TCPAddr /etc/clamav/clamd.conf; then 
-    sed -i "s/TCPAddr.*/TCPAddr ${CLAMD_HOST} /etc/clamav/clamd.conf"
+    sed -i "s/TCPAddr.*/TCPAddr ${CLAMD_HOST}/g" /etc/clamav/clamd.conf
   else
     echo "TCPAddr ${CLAMD_HOST}" >> /etc/clamav/clamd.conf
   fi
