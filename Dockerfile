@@ -27,7 +27,6 @@ RUN apt-get update && \
   apt-get install --no-install-recommends mariadb-client clamav clamdscan wget libpng-dev make -y && \
   rm -rf /var/lib/apt/lists/*
 
-
 ENV TZ=America/New_York
 
 WORKDIR /etda_workflow
@@ -58,6 +57,7 @@ RUN yarn
 
 COPY --chown=etda . /etda_workflow
 COPY --chown=etda config/clamd.conf /etc/clamav
+RUN chmod 777 /etc/clamav
 
 RUN mkdir -p tmp/cache
 

@@ -1,0 +1,24 @@
+#!/bin/bash
+set -e
+
+if [ -f /vault/secrets/config ]; then
+  . /vault/secrets/config
+fi
+
+if [ -z "${CLAMD_HOST}" ]; then
+  echo "CLAMD_HOST not set"
+else 
+  if grep -q TCPAddr /etc/clamav/clamd.conf; then 
+    sed -i "s/TCPAddr.*/TCPAddr ${CLAMD_HOST} /etc/clamav/clamd.conf"
+  else
+    echo "TCPAddr ${CLAMD_HOST}" >> /etc/clamav/clamd.conf
+  fi
+fi 
+
+if [ "${RAILS_ENV:-development}" != "production" ]; then
+  bundle check || bundle
+  bundle exec rails db:create db:migrate db:seed:essential
+fi
+
+rm -f tmp/pids/server.pid
+bundle exec rails s -b '0.0.0.0'
