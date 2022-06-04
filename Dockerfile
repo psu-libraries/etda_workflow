@@ -45,6 +45,7 @@ RUN usermod -G clamav etda
 RUN mkdir -p /etda_workflow/.ssh
 RUN chown -R etda /etda_workflow
 RUN chown -R etda /etda_workflow/.ssh
+RUN chmod 777 /etc/clamav
 
 USER etda
 RUN gem install bundler:2.3.8
@@ -57,7 +58,6 @@ RUN yarn
 
 COPY --chown=etda . /etda_workflow
 COPY --chown=etda config/clamd.conf /etc/clamav
-RUN chmod 777 /etc/clamav
 
 RUN mkdir -p tmp/cache
 
