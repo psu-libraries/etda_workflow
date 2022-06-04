@@ -61,7 +61,7 @@ RUN chmod 777 /etc/clamav
 
 RUN mkdir -p tmp/cache
 
-CMD ["./entrypoint.sh"]
+CMD ["/etda_workflow/bin/startup"]
 
 FROM base as rspec
 CMD ["/etda_workflow/bin/ci-rspec"]
@@ -72,5 +72,5 @@ RUN bundle install --without development test
 
 RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
 
-CMD ["./entrypoint.sh"]
+CMD ["/etda_workflow/bin/startup"]
 

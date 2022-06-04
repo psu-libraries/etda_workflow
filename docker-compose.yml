@@ -65,7 +65,7 @@ services:
       RAILS_ENV: development
       PARTNER: ${PARTNER:-graduate}
     command: >
-      sh -c "/etda_workflow/entrypoint.sh"
+      sh -c "/etda_workflow/bin/startup"
     ports:
     - "3000:3000"
     depends_on:
