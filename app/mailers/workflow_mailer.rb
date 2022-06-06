@@ -142,6 +142,8 @@ class WorkflowMailer < ActionMailer::Base
     @committee_member.update approval_started_at: DateTime.now if @committee_member.approval_started_at.blank?
     @committee_member.update_last_reminder_at DateTime.now
 
+    @core_member_note = @committee_member.core_committee_member? ? "You have seven days to complete your review." : ""
+
     mail to: @committee_member.email,
          from: current_partner.email_address,
          subject: "#{current_partner.name} #{submission.degree_type} Review Request"
