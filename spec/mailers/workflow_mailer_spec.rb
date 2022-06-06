@@ -630,19 +630,6 @@ RSpec.describe WorkflowMailer do
       email.deliver
       expect(committee_member.approval_started_at.to_date).to eq timestamp.to_date
     end
-
-    it "has the seven day warning note for core committee members" do
-      expect(email.body).to match(/seven days/)
-    end
-
-    context "non-core committee members" do
-      let(:cm_role) { FactoryBot.create :committee_role, is_program_head: true }
-      let(:committee_member) { FactoryBot.create :committee_member, committee_role: cm_role, submission: submission }
-
-      it "does not have the seven day note for other committee members" do
-        expect(email.body).not_to match(/seven days/)
-      end
-    end
   end
 
   describe '#special_committee_review_reminder' do
@@ -679,6 +666,22 @@ RSpec.describe WorkflowMailer do
         committee_member.reload
         email.deliver
         expect(committee_member.approval_started_at.to_date).to eq timestamp.to_date
+      end
+
+      context "initial request" do
+        it "has the seven day warning note" do
+          expect(email.body).to match(/seven days/)
+        end
+      end
+
+      context "reminder email" do
+        it "does not have the seven day note for other committee members" do
+          timestamp = (DateTime.now - 1.day)
+          committee_member.update approval_started_at: timestamp
+          committee_member.reload
+          email.deliver
+          expect(email.body).not_to match(/seven days/)
+        end
       end
     end
 

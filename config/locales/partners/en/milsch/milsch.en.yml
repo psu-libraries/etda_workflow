@@ -108,7 +108,7 @@ en:
                     digitally sign a proposed work for which you have been listed as a committee member.
                     In order to proceed and provide input on their work, please follow this link:
                     %{review_url}
-                    or you can copy and paste this into your browser.
+                    or you can copy and paste this into your browser. %{seven_day_note}
 
                     Sincerely,
                     The Millennium Scholars Program
