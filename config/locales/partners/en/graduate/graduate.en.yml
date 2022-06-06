@@ -114,6 +114,7 @@ en:
                     listed as a committee member.
                     Please login to %{review_url} and complete this request.
                     If you are serving on this committee in multiple roles, you will only need to submit your review once.
+                    %{core_member_note}
                     If you have any further questions please contact gradthesis@psu.edu.
                     Sincerely,
                     The Graduate School
@@ -132,6 +133,7 @@ en:
                     In order to proceed and provide input on their work, please follow this link:
                     %{review_url}
                     or you can copy and paste this into your browser.
+                    %{seven_day_note}
                     If you have any further questions please contact gradthesis@psu.edu.
                     Sincerely,
                     The Graduate School of The Pennsylvania State University

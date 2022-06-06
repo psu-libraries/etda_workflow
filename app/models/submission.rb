@@ -367,8 +367,7 @@ class Submission < ApplicationRecord
   def committee_review_requests_init
     seen_access_ids = []
     committee_members.each do |committee_member|
-      next if committee_member.is_program_head ||
-              (committee_member == committee_member.submission.advisor && current_partner.graduate?)
+      next unless committee_member.core_committee_member?
 
       committee_member.update! approval_started_at: DateTime.now
       next if seen_access_ids.include?(committee_member.access_id) ||

@@ -123,6 +123,10 @@ class CommitteeMember < ApplicationRecord
     super(new_name.strip)
   end
 
+  def core_committee_member?
+    !(is_program_head || (self == submission.advisor && current_partner.graduate?))
+  end
+
   private
 
     def one_head_of_program_check
