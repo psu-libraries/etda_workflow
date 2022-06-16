@@ -54,11 +54,11 @@ RSpec.describe FormatReviewFile, type: :model do
     infected_file = FormatReviewFile.new(asset: File.open(fixture('eicar_standard_antivirus_test_file.txt')))
 
     it 'validates that the asset is virus free' do
-      allow(VirusScanner).to receive(:scan).and_return(double(safe?: true)) if virus_scan_is_mocked?
+      allow(VirusScanner).to receive(:safe?).and_return(true) if virus_scan_is_mocked?
       good_file.valid?
       expect(good_file.errors[:asset]).to be_empty
 
-      allow(VirusScanner).to receive(:scan).and_return(double(safe?: false)) if virus_scan_is_mocked?
+      allow(VirusScanner).to receive(:safe?).and_return(false) if virus_scan_is_mocked?
       infected_file.valid?
       expect(infected_file.errors[:asset]).to include I18n.t('errors.messages.virus_free')
     end

@@ -24,26 +24,8 @@ RUN npm install -g yarn@1.19.1
 
 # Clam AV 
 RUN apt-get update && \ 
-  apt-get install --no-install-recommends mariadb-client clamav clamdscan clamav-daemon wget libpng-dev make -y && \
+  apt-get install --no-install-recommends mariadb-client clamav clamdscan wget libpng-dev make -y && \
   rm -rf /var/lib/apt/lists/*
-
-RUN mkdir /var/run/clamav && \
-    chown clamav:clamav /var/run/clamav && \
-    chmod 750 /var/run/clamav
-
-RUN touch  /etc/clamav/clamd.conf
-
-RUN curl -Lo /var/lib/clamav/main.cvd http://database.clamav.net/main.cvd && \
-    curl -Lo /var/lib/clamav/daily.cvd http://database.clamav.net/daily.cvd && \
-    curl -Lo /var/lib/clamav/bytecode.cvd http://database.clamav.net/bytecode.cvd && \
-    chown clamav:clamav /var/lib/clamav/*.cvd && \
-    chown clamav:clamav /var/log/clamav/*
-
-RUN chmod g+w /var/lib/clamav
-  
-RUN sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/clamd.conf && \
-    echo "TCPSocket 3310" >> /etc/clamav/clamd.conf && \
-    sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/freshclam.conf
 
 ENV TZ=America/New_York
 
@@ -63,6 +45,7 @@ RUN usermod -G clamav etda
 RUN mkdir -p /etda_workflow/.ssh
 RUN chown -R etda /etda_workflow
 RUN chown -R etda /etda_workflow/.ssh
+RUN chmod 777 /etc/clamav
 
 USER etda
 RUN gem install bundler:2.3.8
@@ -74,15 +57,11 @@ COPY package.json /etda_workflow
 RUN yarn
 
 COPY --chown=etda . /etda_workflow
+COPY --chown=etda config/clamd.conf /etc/clamav
 
 RUN mkdir -p tmp/cache
 
-CMD ["./entrypoint.sh"]
-
-USER root
-RUN chmod -R 775 /var/log/clamav
-RUN chmod -R 775 /var/run/clamav
-USER etda
+CMD ["/etda_workflow/bin/startup"]
 
 FROM base as rspec
 CMD ["/etda_workflow/bin/ci-rspec"]
@@ -93,5 +72,5 @@ RUN bundle install --without development test
 
 RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
 
-CMD ["./entrypoint.sh"]
+CMD ["/etda_workflow/bin/startup"]
 
