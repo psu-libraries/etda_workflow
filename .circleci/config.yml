@@ -168,13 +168,11 @@ jobs:
           PARTNER=sset docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
-  deploy-qa:
+  deploy:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
-      CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
-      CONFIG_ENV: qa
-      IMAGE_REPOSITORY: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      CONFIG_REPO: git@github.com:psu-libraries/etda-config.git
     steps:
     - add_ssh_keys
     - run:
@@ -182,24 +180,8 @@ jobs:
         command: |
             ssh-keyscan github.com > ~/.ssh/known_hosts
             git clone $CONFIG_REPO
-            cd etda-workflow-config
-            ./generate_circle_application.sh
-  deploy-preview:
-    docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
-    environment:
-      CONFIG_REPO: git@github.com:psu-stewardship/etda-workflow-config.git
-      IMAGE_REPOSITORY: harbor.k8s.libraries.psu.edu/library/etda-workflow
-    steps:
-    - add_ssh_keys
-    - run:
-        name: "Updating Config Repo"
-        command: |
-           ssh-keyscan github.com > ~/.ssh/known_hosts
-           git clone $CONFIG_REPO
-           cd etda-workflow-config
-           ./generate_circle_application.sh
-
+            cd etda-config
+            ./bin/generate_app
 workflows:
   version: 2
   etda-workflow:
@@ -229,20 +211,12 @@ workflows:
             - integration_test_grad
             - test_partners
             - rubocop
-      - deploy-qa:
+      - deploy:
           context: org-global
           requires:
             - publish
           filters:
             branches:
                only:
-                - main
-      - deploy-preview:
-          context: org-global
-          requires:
-            - publish
-          filters:
-            branches:
-              only:
                 - /preview\/.*/
-                - develop
+                - main
