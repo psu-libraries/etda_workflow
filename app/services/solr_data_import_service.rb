@@ -11,10 +11,10 @@ class SolrDataImportService
     execute_cmd(full_import_params)
   end
 
-  def index_submission(submission, commit = true)
+  def index_submission(submission, commit_to_solr)
     as_solr = SolrSubmission.new(submission).to_solr
     solr.add as_solr
-    solr.send_commit if commit
+    send_commit if commit_to_solr
   end
 
   def send_commit

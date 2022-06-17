@@ -270,7 +270,7 @@ class Submission < ApplicationRecord
   def committee_member_and_role
     member_roles = []
     committee_members.each do |member|
-      member_and_role = "#{member.name} #{member.committee_role.name}"
+      member_and_role = "#{member.name}, #{member.committee_role.name}"
       member_roles.append(member_and_role)
     end
     member_roles

@@ -6,7 +6,7 @@ namespace :workflow do
     task index_all: :environment do 
       puts 'starting index'
       Submission.where('status = "released for publication"').each do |submission|
-        SolrDataImportService.new.index_submission(submission, commit=false)
+        SolrDataImportService.new.index_submission(submission, false)
       end
       puts 'sending commit'
       SolrDataImportService.new.send_commit

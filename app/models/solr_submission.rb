@@ -19,6 +19,7 @@ class SolrSubmission
       author_first_name: 'first_name_ssi',
       degree_type_slug: ['degree_type_slug_ssi'],
       degree_type_name: ['degree_type_ssi'],
+      legacy_id: 'db_legacy_id',
       program_name: ['program_name_tesi', 'program_name_ssi'],
       committee_member_names: ['committee_member_name_ssim', 'committee_member_name_tesim'],
       committee_member_emails: ['committee_member_email_ssim'],
