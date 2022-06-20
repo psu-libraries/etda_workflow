@@ -8,6 +8,9 @@ namespace :workflow do
       Submission.where('status = "released for publication"').each do |submission|
         SolrDataImportService.new.index_submission(submission, false)
       end
+      Submission.where('status = "released for publication metadata only"').each do |submission|
+        SolrDataImportService.new.index_submission(submission, false)
+      end
       puts 'sending commit'
       SolrDataImportService.new.send_commit
     end
