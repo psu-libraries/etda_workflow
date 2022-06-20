@@ -20,10 +20,11 @@ class Lionpath::LionpathCsvImporter
     raise InvalidPartner unless current_partner.graduate?
 
     LIONPATH_RESOURCES.each do |resource|
+      File.delete(lionpath_csv_loc) if File.exist?(lionpath_csv_loc)
       grab_file(resource)
       parse_csv(resource)
+      File.delete(lionpath_csv_loc) if File.exist?(lionpath_csv_loc)
     end
-    File.delete(lionpath_csv_loc) if File.exist?(lionpath_csv_loc)
     Lionpath::LionpathDeleteExpiredRecords.delete
   end
 
@@ -34,8 +35,6 @@ class Lionpath::LionpathCsvImporter
         `#{bin_path} #{LIONPATH_FILE_PATTERNS[:committee_role]}`
       elsif resource.is_a?(Lionpath::LionpathProgram)
         `#{bin_path} #{LIONPATH_FILE_PATTERNS[:program]}`
-      elsif resource.is_a?(Lionpath::LionpathChair)
-        `#{bin_path} #{LIONPATH_FILE_PATTERNS[:chair]}`
       elsif resource.is_a?(Lionpath::LionpathCommittee)
         `#{bin_path} #{LIONPATH_FILE_PATTERNS[:committee]}`
       else

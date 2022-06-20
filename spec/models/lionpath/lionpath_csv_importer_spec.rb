@@ -12,6 +12,13 @@ RSpec.describe Lionpath::LionpathCsvImporter do
       end
     end
 
+    context 'when lionpath_resource is bogus' do
+      it 'raises an error' do
+        bogus = class_double('Lionpath::Bogus')
+        expect { lionpath_csv_importer.send(:grab_file, bogus) }.to raise_error(Lionpath::LionpathCsvImporter::InvalidResource)
+      end
+    end
+
     context 'when error occurs during csv parsing' do
       let(:fixture_location) { "#{Rails.root}/spec/fixtures/lionpath/lionpath_committee.csv" }
 
