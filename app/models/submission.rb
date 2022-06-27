@@ -221,6 +221,39 @@ class Submission < ApplicationRecord
     semester.presence || lionpath_semester
   end
 
+  # TODO: Implement the following methods (next 30 lines) where appropriate
+  def degree_name
+    degree.name
+  end
+
+  def degree_type_name
+    degree_type.name
+  end
+
+  def degree_type_slug
+    degree_type.slug
+  end
+
+  def program_name
+    program.name
+  end
+
+  def degree_description
+    degree.description
+  end
+
+  def author_last_name
+    author.last_name
+  end
+
+  def author_middle_name
+    author.middle_name
+  end
+
+  def author_first_name
+    author.first_name
+  end
+
   def admin_can_edit?
     true
   end
