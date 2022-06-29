@@ -5,9 +5,20 @@ require 'model_spec_helper'
 RSpec.describe SolrDataImportService, type: :model do
   solr_data_import_service = described_class.new
 
-  it 'returns solr_url' do
-    expect(solr_data_import_service.send('solr_url')).to eq("https://etda.localhost:3000/solr")
+  context 'when solr username and password present' do
+    it 'returns solr_url' do
+      allow(solr_data_import_service).to receive(:solr_username).and_return 'username'
+      allow(solr_data_import_service).to receive(:solr_password).and_return 'password'
+      expect(solr_data_import_service.send('solr_url')).to eq("http://username:password@etda.localhost:3000:8983/solr/graduate_core")
+    end
   end
+
+  context 'when solr username and password are not present' do
+    it 'returns solr_url' do
+      expect(solr_data_import_service.send('solr_url')).to eq("https://etda.localhost:3000/solr")
+    end
+  end
+
   it 'returns delta-import params' do
     expect(solr_data_import_service.send('delta_import_params')).to eq('command' => 'delta-import', 'clean' => false)
   end

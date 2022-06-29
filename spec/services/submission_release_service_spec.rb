@@ -62,5 +62,35 @@ RSpec.describe SubmissionReleaseService do
         expect(submission.access_level).to eq 'open_access'
       end
     end
+
+    context 'SOLR_HOST is present' do
+      let(:release_type) { 'Release as Open Access' }
+      let(:submission) do
+        FactoryBot.create :submission, :final_is_restricted_to_institution
+      end
+
+      it 'indexes submission individually and does not delta import' do
+        ENV['SOLR_HOST'] = 'solr/host'
+        stub_request(:post, "https://solr/host/solr/update?wt=json")
+        expect_any_instance_of(SolrDataImportService).to receive(:index_submission)
+        expect_any_instance_of(SolrDataImportService).not_to receive(:delta_import)
+        service.publish([submission.id], DateTime.now, release_type)
+        ENV['SOLR_HOST'] = nil
+      end
+    end
+
+    context 'SOLR_HOST is not present' do
+      let(:release_type) { 'Release as Open Access' }
+      let(:submission) do
+        FactoryBot.create :submission, :final_is_restricted_to_institution
+      end
+
+      it 'does not index submission individually and does a delta import' do
+        ENV['SOLR_HOST'] = nil
+        expect_any_instance_of(SolrDataImportService).not_to receive(:index_submission)
+        expect_any_instance_of(SolrDataImportService).to receive(:delta_import)
+        service.publish([submission.id], DateTime.now, release_type)
+      end
+    end
   end
 end
