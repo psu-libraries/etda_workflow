@@ -11,6 +11,16 @@ class SolrDataImportService
     execute_cmd(full_import_params)
   end
 
+  def index_submission(submission, commit_to_solr)
+    as_solr = SolrSubmission.new(submission).to_solr
+    solr.add as_solr
+    send_commit if commit_to_solr
+  end
+
+  def send_commit
+    solr.commit
+  end
+
   private
 
     def execute_cmd(params)
@@ -79,7 +89,7 @@ class SolrDataImportService
 
     def solr_url
       url = if solr_username && solr_password
-              "http://#{solr_username}:#{URI.encode_www_form_component(solr_password)}@#{solr_host}:#{solr_port}/solr"
+              "http://#{solr_username}:#{URI.encode_www_form_component(solr_password)}@#{solr_host}:#{solr_port}/solr/#{solr_collection}"
             else
               "https://#{solr_host}/solr"
             end

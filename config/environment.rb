@@ -8,7 +8,7 @@ require_relative 'application'
 # The development instances are used for manually testing new development features.
 # Use this method to build logic around features that may impede manual testing.
 def development_instance?
-  Rails.env.development? || ENV["HOSTNAME"] == 'etdaworkflow1qa' || ENV["HOSTNAME"] == 'etdaworkflow1dev'
+  Rails.env.development? || ENV["HOSTNAME"] == 'etdaworkflow1qa' || ENV["HOSTNAME"] == 'etdaworkflow1dev' || ENV['DEVELOPMENT_INSTANCE'].present?
 end
 
 # Initialize the Rails application.
