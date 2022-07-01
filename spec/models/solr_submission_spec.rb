@@ -12,7 +12,8 @@ RSpec.describe SolrSubmission, type: :model do
              final_submission_legacy_old_id: 321,
              public_id: '1234abc32',
              released_metadata_at: DateTime.now,
-             final_submission_files_uploaded_at: DateTime.now
+             final_submission_files_uploaded_at: DateTime.now,
+             defended_at: DateTime.now
     end
     let(:final_submission_file_1) { create :final_submission_file }
     let(:final_submission_file_2) { create :final_submission_file }
@@ -41,7 +42,7 @@ RSpec.describe SolrSubmission, type: :model do
                                               "db_id" => submission.id,
                                               "db_legacy_id" => submission.legacy_id,
                                               "db_legacy_old_id" => submission.final_submission_legacy_old_id,
-                                              "defended_at_dtsi" => submission.defended_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
+                                              "defended_at_dtsi" => submission.defended_at.getutc,
                                               "degree_description_ssi" => submission.degree_description,
                                               "degree_name_ssi" => submission.degree_name,
                                               "degree_type_slug_ssi" => submission.degree_type_slug,
@@ -50,7 +51,7 @@ RSpec.describe SolrSubmission, type: :model do
                                                                    submission.final_submission_files.second.asset_identifier],
                                               "final_submission_file_isim" => [submission.final_submission_files.first.id,
                                                                                submission.final_submission_files.second.id],
-                                              "final_submission_files_uploaded_at_dtsi" => submission.final_submission_files_uploaded_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
+                                              "final_submission_files_uploaded_at_dtsi" => submission.final_submission_files_uploaded_at.getutc,
                                               "first_name_ssi" => submission.author_first_name,
                                               "id" => submission.public_id,
                                               "keyword_ssim" => submission.keywords.collect(&:word),
@@ -60,7 +61,7 @@ RSpec.describe SolrSubmission, type: :model do
                                               "middle_name_ssi" => submission.author_middle_name,
                                               "program_name_ssi" => submission.program_name,
                                               "program_name_tesi" => submission.program_name,
-                                              "released_metadata_at_dtsi" => submission.released_metadata_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
+                                              "released_metadata_at_dtsi" => submission.released_metadata_at.getutc,
                                               "semester_ssi" => submission.semester,
                                               "title_ssi" => submission.title,
                                               "title_tesi" => submission.title,
