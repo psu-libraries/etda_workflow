@@ -50,15 +50,15 @@ class SolrSubmission < SimpleDelegator
     end
 
     def final_submission_files_uploaded_at_dtsi
-      final_submission_files_uploaded_at.getutc || nil
+      final_submission_files_uploaded_at&.getutc
     end
 
     def released_metadata_at_dtsi
-      released_metadata_at.getutc || nil
+      released_metadata_at&.getutc
     end
 
     def defended_at_dtsi
-      defended_at.getutc || nil
+      defended_at&.getutc
     end
 
     def committee_member_and_role

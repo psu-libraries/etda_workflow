@@ -13,7 +13,7 @@ RSpec.describe SolrSubmission, type: :model do
              public_id: '1234abc32',
              released_metadata_at: DateTime.now,
              final_submission_files_uploaded_at: DateTime.now,
-             defended_at: DateTime.now
+             defended_at: nil
     end
     let(:final_submission_file_1) { create :final_submission_file }
     let(:final_submission_file_2) { create :final_submission_file }
@@ -42,7 +42,7 @@ RSpec.describe SolrSubmission, type: :model do
                                               "db_id" => submission.id,
                                               "db_legacy_id" => submission.legacy_id,
                                               "db_legacy_old_id" => submission.final_submission_legacy_old_id,
-                                              "defended_at_dtsi" => submission.defended_at.getutc,
+                                              "defended_at_dtsi" => nil,
                                               "degree_description_ssi" => submission.degree_description,
                                               "degree_name_ssi" => submission.degree_name,
                                               "degree_type_slug_ssi" => submission.degree_type_slug,
