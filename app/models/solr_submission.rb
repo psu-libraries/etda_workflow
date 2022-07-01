@@ -50,15 +50,15 @@ class SolrSubmission < SimpleDelegator
     end
 
     def final_submission_files_uploaded_at_dtsi
-      final_submission_files_uploaded_at.strftime('%Y-%m-%dT%H:%M:%SZ')
+      final_submission_files_uploaded_at.getutc || nil
     end
 
     def released_metadata_at_dtsi
-      released_metadata_at.strftime('%Y-%m-%dT%H:%M:%SZ')
+      released_metadata_at.getutc || nil
     end
 
     def defended_at_dtsi
-      defended_at.strftime('%Y-%m-%dT%H:%M:%SZ')
+      defended_at.getutc || nil
     end
 
     def committee_member_and_role
