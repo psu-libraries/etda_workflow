@@ -1,3 +1,5 @@
+require 'net/sftp'
+
 class Lionpath::LionpathCsvImporter
   class InvalidResource < StandardError; end
   class InvalidPartner < StandardError; end
@@ -28,15 +30,26 @@ class Lionpath::LionpathCsvImporter
     Lionpath::LionpathDeleteExpiredRecords.delete
   end
 
+  def sftp_download(_pattern)
+    sftp = Net::SFTP.start(ENV['LIONPATH_SFTP_SERVER'], ENV['LIONPATH_SFTP_USER'], key_data: [ENV['LIONPATH_SSH_KEY']])
+    file = sftp.dir
+               .glob("out/", LIONPATH_FILE_PATTERNS[:committee_role] + "*")
+               .reject { |file| file.name.starts_with?('.') }
+               .select(&:file?)
+               .max { |a, b| a.attributes.mtime <=> b.attributes.mtime }
+
+    sftp.download!("out/#{file.name}", lionpath_csv_loc)
+  end
+
   private
 
     def grab_file(resource)
       if resource.is_a?(Lionpath::LionpathCommitteeRoles)
-        `#{bin_path} #{LIONPATH_FILE_PATTERNS[:committee_role]}`
+        sftp_download(LIONPATH_FILE_PATTERNS[:committee_role])
       elsif resource.is_a?(Lionpath::LionpathProgram)
-        `#{bin_path} #{LIONPATH_FILE_PATTERNS[:program]}`
+        sftp_download(LIONPATH_FILE_PATTERNS[:program])
       elsif resource.is_a?(Lionpath::LionpathCommittee)
-        `#{bin_path} #{LIONPATH_FILE_PATTERNS[:committee]}`
+        sftp_download(LIONPATH_FILE_PATTERNS[:committee])
       else
         raise InvalidResource
       end
