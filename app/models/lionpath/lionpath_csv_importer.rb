@@ -34,7 +34,7 @@ class Lionpath::LionpathCsvImporter
     sftp = Net::SFTP.start(ENV['LIONPATH_SFTP_SERVER'], ENV['LIONPATH_SFTP_USER'], key_data: [ENV['LIONPATH_SSH_KEY']])
     file = sftp.dir
                .glob("out/", LIONPATH_FILE_PATTERNS[:committee_role] + "*")
-               .reject { |file| file.name.starts_with?('.') }
+               .reject { |f| f.name.starts_with?('.') }
                .select(&:file?)
                .max { |a, b| a.attributes.mtime <=> b.attributes.mtime }
 
