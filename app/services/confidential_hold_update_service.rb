@@ -33,19 +33,19 @@ class ConfidentialHoldUpdateService
     end
 
     def set_conf_hold
-      @author.update! confidential_hold: true, confidential_hold_set_at: DateTime.now
+      @author.attributes = { confidential_hold: true, confidential_hold_set_at: DateTime.now }
       @author.confidential_hold_histories << ConfidentialHoldHistory.create(set_at: DateTime.now, set_by: updater)
-      @author.save!
+      @author.save(validate: false)
     end
 
     def remove_conf_hold
-      @author.update! confidential_hold: false, confidential_hold_set_at: nil
+      @author.attributes = { confidential_hold: false, confidential_hold_set_at: nil }
       last_conf_hold = @author.confidential_hold_histories.last
       if last_conf_hold.present?
-        last_conf_hold.update!(removed_at: DateTime.now, removed_by: updater)
+        last_conf_hold.attribtues = { removed_at: DateTime.now, removed_by: updater }
       else
         @author.confidential_hold_histories << ConfidentialHoldHistory.create(removed_at: DateTime.now, removed_by: updater)
-        @author.save!
+        @author.save(validate: false)
       end
     end
 
