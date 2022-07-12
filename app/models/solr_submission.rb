@@ -21,9 +21,7 @@ class SolrSubmission < SimpleDelegator
       {
         year: 'year_isi',
         public_id: 'id',
-        final_submission_files_uploaded_at: 'final_submission_files_uploaded_at_dtsi',
-        # download_access_group_ssim # bl access control do we neeed?
-        # read_access_group_ssim
+        final_submission_files_uploaded_at_dtsi: 'final_submission_files_uploaded_at_dtsi',
         final_submission_legacy_old_id: 'db_legacy_old_id',
         final_submission_file_isim: 'final_submission_file_isim',
         file_name_ssim: 'file_name_ssim',
@@ -44,11 +42,23 @@ class SolrSubmission < SimpleDelegator
         access_level: 'access_level_ss',
         semester: 'semester_ssi',
         abstract: 'abstract_tesi',
-        defended_at: 'defended_at_dtsi',
-        released_metadata_at: 'released_metadata_at_dtsi',
+        defended_at_dtsi: 'defended_at_dtsi',
+        released_metadata_at_dtsi: 'released_metadata_at_dtsi',
         degree_name: ['degree_name_ssi'],
         degree_description: ['degree_description_ssi']
       }
+    end
+
+    def final_submission_files_uploaded_at_dtsi
+      final_submission_files_uploaded_at&.getutc
+    end
+
+    def released_metadata_at_dtsi
+      released_metadata_at&.getutc
+    end
+
+    def defended_at_dtsi
+      defended_at&.getutc
     end
 
     def committee_member_and_role
