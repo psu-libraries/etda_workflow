@@ -135,7 +135,7 @@ jobs:
       - when:
           condition:
             and:
-              - equal: [ latest, << pipeline.git.branch >> ]
+              - equal: [ main, << pipeline.git.branch >> ]
           steps:
             - run:
               name: "Push Latest"
