@@ -55,9 +55,15 @@ RSpec.describe ConfidentialHoldUpdateService do
   end
 
   describe '#update_all' do
+    let!(:author2) { FactoryBot.create :author, confidential_hold: false, confidential_hold_set_at: nil }
+
     it 'updates confidential hold history with daily report metadata' do
+      allow(described_class).to receive(:ldap_result_connected).and_return({ confidential_hold: true })
       described_class.update_all
       expect(Author.find(author.id).confidential_hold_histories.first.set_by).to eq 'rake_task'
+      expect(Author.find(author.id).confidential_hold).to eq true
+      expect(Author.find(author2.id).confidential_hold_histories.first.set_by).to eq 'rake_task'
+      expect(Author.find(author2.id).confidential_hold).to eq true
     end
   end
 end

@@ -9,16 +9,8 @@ class ConfidentialHoldUpdateService
 
     def update_all
       LdapUniversityDirectory.new.with_connection do |connection|
-        base = Rails.application.config_for(:ldap)['base']
         Author.find_each do |author|
-          attrs = []
-          attrs = connection.search(base: base,
-                                    filter: Net::LDAP::Filter.eq('uid', author.access_id), attributes: attrs)
-          mapped_attributes = LdapResult.new(ldap_record: attrs,
-                                             attribute_map: LdapResultsMap::AUTHOR_LDAP_MAP).map_directory_info
-          next {} if mapped_attributes.blank?
-
-          ldap_result = mapped_attributes.first
+          ldap_result = ldap_result_connected(author, connection)
           next if ldap_result.empty?
 
           update_confidential_hold(author, ldap_result[:confidential_hold], 'rake_task')
@@ -27,6 +19,17 @@ class ConfidentialHoldUpdateService
     end
 
     private
+
+      def ldap_result_connected(author, connection)
+        attrs = []
+        attrs = connection.search(base: base,
+                                  filter: Net::LDAP::Filter.eq('uid', author.access_id), attributes: attrs)
+        mapped_attributes = LdapResult.new(ldap_record: attrs,
+                                           attribute_map: LdapResultsMap::AUTHOR_LDAP_MAP).map_directory_info
+        return {} if mapped_attributes.blank?
+
+        mapped_attributes.first
+      end
 
       def grab_ldap_results(author)
         LdapUniversityDirectory.new.retrieve(author.access_id, 'uid', LdapResultsMap::AUTHOR_LDAP_MAP)
@@ -52,11 +55,15 @@ class ConfidentialHoldUpdateService
         author.attributes = { confidential_hold: false, confidential_hold_set_at: nil }
         last_conf_hold = author.confidential_hold_histories.last
         if last_conf_hold.present?
-          last_conf_hold.attributes = { removed_at: DateTime.now, removed_by: location }
+          last_conf_hold.update!(removed_at: DateTime.now, removed_by: location)
         else
           author.confidential_hold_histories << ConfidentialHoldHistory.create(removed_at: DateTime.now, removed_by: location)
-          author.save(validate: false)
         end
+        author.save(validate: false)
+      end
+
+      def ldap_base
+        Rails.application.config_for(:ldap)['base']
       end
   end
 end
