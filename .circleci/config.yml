@@ -137,11 +137,7 @@ jobs:
             and:
               - equal: [ latest, << pipeline.git.branch >> ]
           steps:
-            - run:
-              command: |
-                docker build -t $REGISTRY_URL:latest .
-                docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
-                docker push $REGISTRY_URL:$CIRCLE_SHA1
+            - run: "echo hi"
             
   test_partners:
     docker:
