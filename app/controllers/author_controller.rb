@@ -28,7 +28,6 @@ class AuthorController < ApplicationController
     end
 
     def update_confidential_hold
-      update_service = ConfidentialHoldUpdateService.new(@author, 'login_controller')
-      update_service.update
+      ConfidentialHoldUpdateService.update(@author)
     end
 end
