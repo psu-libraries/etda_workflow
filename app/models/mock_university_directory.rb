@@ -135,4 +135,8 @@ class MockUniversityDirectory
         administrator: true, site_administrator: true }
     end
   end
+
+  def with_connection
+    yield
+  end
 end
