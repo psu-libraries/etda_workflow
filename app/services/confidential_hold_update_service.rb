@@ -22,7 +22,7 @@ class ConfidentialHoldUpdateService
 
       def ldap_result_connected(author, connection)
         attrs = []
-        attrs = connection.search(base: base,
+        attrs = connection.search(base: ldap_base,
                                   filter: Net::LDAP::Filter.eq('uid', author.access_id), attributes: attrs)
         mapped_attributes = LdapResult.new(ldap_record: attrs,
                                            attribute_map: LdapResultsMap::AUTHOR_LDAP_MAP).map_directory_info
