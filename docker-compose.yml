@@ -64,6 +64,9 @@ services:
       MYSQL_HOST: db
       RAILS_ENV: development
       PARTNER: ${PARTNER:-graduate}
+      LIONPATH_SFTP_SERVER: ${LIONPATH_SFTP_SERVER}
+      LIONPATH_SFTP_USER: ${LIONPATH_SFTP_USER}
+      LIONPATH_SSH_KEY: ${LIONPATH_SSH_KEY}
     command: >
       sh -c "/etda_workflow/bin/startup"
     ports:

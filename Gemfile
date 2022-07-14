@@ -39,6 +39,8 @@ gem "devise", ">= 4.7.1"
 gem 'etda_utilities', '~> 0.0'
 # Ldap client
 gem 'net-ldap', '~> 0.16.1'
+# sftp for lionapth csv imports
+gem "net-sftp", "~> 3.0"
 # Country drop-downs
 gem 'country_select', git: 'https://github.com/stefanpenner/country_select.git', branch: 'master'
 # Form builder
@@ -140,3 +142,4 @@ group :production do
   # Datadog APM
   gem 'ddtrace', '~> 0.33'
 end
+
