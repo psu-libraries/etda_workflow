@@ -30,10 +30,10 @@ class Lionpath::LionpathCsvImporter
     Lionpath::LionpathDeleteExpiredRecords.delete
   end
 
-  def sftp_download(_pattern)
+  def sftp_download(pattern)
     sftp = Net::SFTP.start(ENV['LIONPATH_SFTP_SERVER'], ENV['LIONPATH_SFTP_USER'], key_data: [ENV['LIONPATH_SSH_KEY']])
     file = sftp.dir
-               .glob("out/", LIONPATH_FILE_PATTERNS[:committee_role] + "*")
+               .glob("out/", pattern + "*")
                .reject { |f| f.name.starts_with?('.') }
                .select(&:file?)
                .max { |a, b| a.attributes.mtime <=> b.attributes.mtime }
@@ -80,9 +80,5 @@ class Lionpath::LionpathCsvImporter
 
     def tmp_dir
       "#{Rails.root}/tmp/"
-    end
-
-    def bin_path
-      "#{Rails.root}/bin/lionpath-csv.sh"
     end
 end
