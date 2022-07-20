@@ -6,7 +6,7 @@ jobs:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_REPO: library/etda-explore
+      REGISTRY_REPO: library/etda-workflow
       GITHUB_USER: 'psu-stewardship-bot'
       CONFIG_REPO: git@github.com:psu-libraries/etda-config.git
     steps:
