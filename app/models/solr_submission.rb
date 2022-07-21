@@ -50,32 +50,22 @@ class SolrSubmission < SimpleDelegator
     end
 
     def final_submission_files_uploaded_at_dtsi
-      if final_submission_files_uploaded_at.respond_to?(:getutc)
-        final_submission_files_uploaded_at.getutc
-      elsif final_submission_files_uploaded_at.respond_to?(:to_datetime)
-        final_submission_files_uploaded_at.to_datetime.getutc
-      else
-        nil
-      end
+      convert_to_utc(:final_submission_files_uploaded_at)
     end
 
     def released_metadata_at_dtsi
-      if released_metadata_at.respond_to?(:getutc)
-        released_metadata_at.getutc
-      elsif released_metadata_at.respond_to?(:to_datetime)
-        released_metadata_at.to_datetime.getutc
-      else
-        nil
-      end
+      convert_to_utc(:released_metadata_at)
     end
 
     def defended_at_dtsi
-      if defended_at.respond_to?(:getutc)
-        defended_at.getutc
-      elsif defended_at.respond_to?(:to_datetime)
-        defended_at.to_datetime.getutc
-      else
-        nil
+      convert_to_utc(:defended_at)
+    end
+
+    def convert_to_utc(attr)
+      if send(attr).respond_to?(:getutc)
+        send(attr).getutc
+      elsif send(attr).respond_to?(:to_datetime)
+        send(attr).to_datetime.getutc
       end
     end
 
