@@ -50,15 +50,33 @@ class SolrSubmission < SimpleDelegator
     end
 
     def final_submission_files_uploaded_at_dtsi
-      final_submission_files_uploaded_at&.getutc
+      if final_submission_files_uploaded_at.respond_to?(:getutc)
+        final_submission_files_uploaded_at.getutc
+      elsif final_submission_files_uploaded_at.respond_to?(:to_datetime)
+        final_submission_files_uploaded_at.to_datetime.getutc
+      else
+        nil
+      end
     end
 
     def released_metadata_at_dtsi
-      released_metadata_at&.getutc
+      if released_metadata_at.respond_to?(:getutc)
+        released_metadata_at.getutc
+      elsif released_metadata_at.respond_to?(:to_datetime)
+        released_metadata_at.to_datetime.getutc
+      else
+        nil
+      end
     end
 
     def defended_at_dtsi
-      defended_at&.getutc
+      if defended_at.respond_to?(:getutc)
+        defended_at.getutc
+      elsif defended_at.respond_to?(:to_datetime)
+        defended_at.to_datetime.getutc
+      else
+        nil
+      end
     end
 
     def committee_member_and_role
