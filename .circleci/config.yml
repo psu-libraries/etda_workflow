@@ -150,6 +150,18 @@ jobs:
             docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
             docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
             docker push $REGISTRY_URL:$CIRCLE_SHA1
+      - when:
+          condition:
+            and:
+              - equal: [ main, << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: "Push Latest"
+                command: |
+                  docker load -i /tmp/workspace/etda-workflow.tar
+                  docker build -t $REGISTRY_URL:latest .
+                  docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
+                  docker push $REGISTRY_URL:latest
   test_partners:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.1.0
