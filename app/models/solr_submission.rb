@@ -62,11 +62,9 @@ class SolrSubmission < SimpleDelegator
     end
 
     def convert_to_utc(attr)
-      if send(attr).respond_to?(:getutc)
-        send(attr).getutc
-      elsif send(attr).respond_to?(:to_datetime)
-        send(attr).to_datetime.getutc
-      end
+      return send(attr).getutc if send(attr).respond_to?(:getutc)
+
+      send(attr)&.to_datetime&.getutc
     end
 
     def committee_member_and_role
