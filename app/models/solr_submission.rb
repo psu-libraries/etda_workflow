@@ -50,15 +50,21 @@ class SolrSubmission < SimpleDelegator
     end
 
     def final_submission_files_uploaded_at_dtsi
-      final_submission_files_uploaded_at&.getutc
+      convert_to_utc(:final_submission_files_uploaded_at)
     end
 
     def released_metadata_at_dtsi
-      released_metadata_at&.getutc
+      convert_to_utc(:released_metadata_at)
     end
 
     def defended_at_dtsi
-      defended_at&.getutc
+      convert_to_utc(:defended_at)
+    end
+
+    def convert_to_utc(attr)
+      return send(attr).getutc if send(attr).respond_to?(:getutc)
+
+      send(attr)&.to_datetime&.getutc
     end
 
     def committee_member_and_role

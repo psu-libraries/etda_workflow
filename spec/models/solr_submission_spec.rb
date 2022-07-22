@@ -11,8 +11,11 @@ RSpec.describe SolrSubmission, type: :model do
              legacy_id: 123,
              final_submission_legacy_old_id: 321,
              public_id: '1234abc32',
-             released_metadata_at: DateTime.now,
+             # Test that date converts to UTC datetime
+             released_metadata_at: Date.today,
+             # Test that datetime converts to UTC
              final_submission_files_uploaded_at: DateTime.now,
+             # Test that nil stays nil
              defended_at: nil
     end
     let(:final_submission_file_1) { create :final_submission_file }
@@ -61,7 +64,7 @@ RSpec.describe SolrSubmission, type: :model do
                                               "middle_name_ssi" => submission.author_middle_name,
                                               "program_name_ssi" => submission.program_name,
                                               "program_name_tesi" => submission.program_name,
-                                              "released_metadata_at_dtsi" => submission.released_metadata_at.getutc,
+                                              "released_metadata_at_dtsi" => submission.released_metadata_at.to_datetime.getutc,
                                               "semester_ssi" => submission.semester,
                                               "title_ssi" => submission.title,
                                               "title_tesi" => submission.title,
