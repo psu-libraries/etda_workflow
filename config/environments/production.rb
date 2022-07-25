@@ -119,5 +119,4 @@ Rails.application.configure do
   UniversityDirectory = LdapUniversityDirectory
   WORKFLOW_BASE_PATH = Rails.root.join('workflow_data_files/').to_s
   EXPLORE_BASE_PATH =  Rails.root.join('explore_data_files/').to_s
-  VERSION_NUMBER_FILE = 'config/version_number.rb'
 end

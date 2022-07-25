@@ -85,9 +85,7 @@ module ApplicationHelper
   end
 
   def current_version_number
-    return '' if VERSION_NUMBER.empty?
-
-    current_number = VERSION_NUMBER
+    current_number = ENV.fetch('APP_VERSION', 'vdev')
     "Version: #{current_number.strip}"
   end
 

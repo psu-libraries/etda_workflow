@@ -18,8 +18,6 @@ AllCops:
     - 'Capfile'
     - 'spec/*_helper.rb'
     - 'lib/devise/**/*'
-    - 'config/version_number.rb'
-    - 'spec/fixtures/version_number.rb'
     - 'app/models/submission_status_giver.rb'
     - 'spec/models/submission_status_giver_spec.rb'
 
