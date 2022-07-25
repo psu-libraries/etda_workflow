@@ -23,8 +23,6 @@ gem 'sidekiq', '~> 5.2.10'
 # When downgrading Sidekiq, rack needed to be downgraded as well.
 # This can be removed for Sidekiq 6 or greater.
 gem 'rack', '2.1.4.1'
-# Used to schedule cron jobs on the servers
-gem 'whenever', '~> 1.0.0'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1.0'
 # Jquery for rails
@@ -97,20 +95,9 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring', '~> 2.1.0'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  # Deployment software
-  gem "capistrano", "~> 3.10"
-  gem 'capistrano-bundler', '~> 1.2'
-  gem 'capistrano-rails', '~> 1.2'
-  gem 'capistrano-rbenv', '~> 2.1'
-  gem 'capistrano-rbenv-install', '~> 1.2.0'
-  gem 'capistrano-passenger', '~> 0.2.0'
   # Support for newer ssh keys on newer machines
   gem 'ed25519', '~> 1.2.4'
   gem 'bcrypt_pbkdf', '~> 1.0.0'
-  # ------------
-  # gem 'net-sftp', '2.1.2'
-  # gem 'net-ssh-gateway', '1.2.0'
-  # ------------
 end
 
 group :test do
