@@ -54,5 +54,4 @@ Rails.application.configure do
   DirectoryService = MockDirectoryService
   WORKFLOW_BASE_PATH = 'tmp/workflow/'
   EXPLORE_BASE_PATH = 'tmp/explore/'
-  VERSION_NUMBER_FILE = 'spec/fixtures/version_number.rb'
 end

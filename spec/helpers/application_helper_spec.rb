@@ -24,7 +24,10 @@ RSpec.describe ApplicationHelper do
 
   describe '#current_version_number' do
     it "returns the application's current version number" do
+      ENV['APP_VERSION'] = 'v.101-test'
       expect(current_version_number).to eql('Version: v.101-test')
+      ENV['APP_VERSION'] = nil
+      expect(current_version_number).to eql('Version: vdev')
     end
   end
 
