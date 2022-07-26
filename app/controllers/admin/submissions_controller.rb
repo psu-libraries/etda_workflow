@@ -175,9 +175,11 @@ class Admin::SubmissionsController < AdminController
     @submission = Submission.find(params[:id])
     session[:return_to] = "/admin/#{@submission.degree_type.slug}"
     released_submission_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
-    response = released_submission_service.respond_released_submission
-    flash[:notice] = response[:msg]
-    redirect_to response[:redirect_path]
+    Submission.transaction do
+      response = released_submission_service.respond_released_submission
+      flash[:notice] = response[:msg]
+      redirect_to response[:redirect_path]
+    end
   rescue ActiveRecord::RecordInvalid
     @view = Admin::SubmissionFormView.new(@submission, session)
     render :edit

@@ -1,11 +1,13 @@
 RSpec.describe 'actions that send an email notifying users of an access level update on a submission', js: true do
   require 'integration/integration_spec_helper'
+  before do
+    stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
+  end
 
   describe 'updating the access level for an approved final submission' do
     # admin = FactoryBot.create :admin, site_administrator: true, administrator: true
 
     before do
-      allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
       oidc_authorize_admin
     end
 
@@ -36,7 +38,6 @@ RSpec.describe 'actions that send an email notifying users of an access level up
 
   describe 'bulk releasing submissions', js: true do
     before do
-      allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
       oidc_authorize_admin
     end
 

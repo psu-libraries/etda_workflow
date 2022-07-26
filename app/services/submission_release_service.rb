@@ -21,16 +21,8 @@ class SubmissionReleaseService
       elsif release_type == 'Release as Open Access'
         update_restricted_submission_to_open_access(submission, date_to_release, original_final_files)
       end
-      # Index submission into solr if we are hooked into solr
-      SolrDataImportService.new.index_submission(submission, true) if ENV.fetch('SOLR_HOST', nil)
+      SolrDataImportService.new.index_submission(submission, true)
     end
-
-    # wait until all submissions and files have been released and then run delta-import to update solr
-    unless ENV.fetch('SOLR_HOST', nil)
-      bulk_solr_result = SolrDataImportService.new.delta_import
-      return ["Error occurred during delta-import for solr bulk update", ''] if bulk_solr_result[:error]
-    end
-
     final_results(submission_ids.count)
   end
 

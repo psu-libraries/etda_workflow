@@ -11,14 +11,20 @@ RSpec.describe "Unrelease a submission", js: true, honors: true, milsch: true do
   let(:degree_type) { current_partner.graduate? ? 'dissertation' : 'thesis' }
 
   before do
-    # expect(SolrDataImportService).to receive(:delta_import)
-    #
-    # starting_location = Rails.root.join(final_submission_file.current_location)
-    # FileUtils.cp(Rails.root.join('spec', 'fixtures', 'final_submission_file_01.pdf'), starting_location)
+    stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json").
+         with(
+           body: "{\"delete\":1}",
+           headers: {
+       	  'Accept'=>'*/*',
+       	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	  'Content-Type'=>'application/json',
+       	  'User-Agent'=>'Faraday v2.3.0'
+           }).
+         to_return(status: 200, body: { error: false }.to_json, headers: {})
+
     FileUtilityHelper.new.copy_test_file(Rails.root.join(final_submission_file.current_location))
     oidc_authorize_admin
     visit admin_edit_submission_path(submission)
-    allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
     fill_in "Title", with: "A Better Title"
   end
 
@@ -51,10 +57,20 @@ RSpec.describe 'Unrelease a submission with errors', js: true, honors: true, mil
   let!(:bad_submission) { FactoryBot.create(:submission, :released_for_publication) }
 
   before do
+    stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json").
+         with(
+           body: "{\"delete\":1}",
+           headers: {
+       	  'Accept'=>'*/*',
+       	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	  'Content-Type'=>'application/json',
+       	  'User-Agent'=>'Faraday v2.3.0'
+           }).
+         to_return(status: 200, body: { error: true }.to_json, headers: {})
+
     oidc_authorize_admin
     bad_submission.program_id = 0
     visit admin_edit_submission_path(bad_submission)
-    allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
     click_button "Withdraw Publication"
   end
 
@@ -77,9 +93,19 @@ RSpec.describe 'Unrelease a legacy submission without missing data', js: true, h
   let!(:legacy_submission) { FactoryBot.create(:submission, :released_for_publication_legacy) }
 
   before do
+    stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json").
+         with(
+           body: "{\"delete\":1}",
+           headers: {
+       	  'Accept'=>'*/*',
+       	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	  'Content-Type'=>'application/json',
+       	  'User-Agent'=>'Faraday v2.3.0'
+           }).
+         to_return(status: 200, body: { error: false }.to_json, headers: {})
+
     oidc_authorize_admin
     visit admin_edit_submission_path(legacy_submission)
-    allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
     fill_in "Title", with: "A new title"
   end
 

@@ -22,6 +22,7 @@ RSpec.describe "Editing format review and final submissions as an admin", js: tr
   end
 
   before do
+    stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
     oidc_authorize_admin
   end
 

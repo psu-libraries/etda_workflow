@@ -5,25 +5,6 @@ require 'shoulda-matchers'
 
 RSpec.describe FinalSubmissionUpdateService do
   let(:final_count) { Partner.current.id == 'honors' ? 2 : 1 }
-  let(:solr_result_success) do
-    { error: false,
-      solr_result:
-      { "responseHeader" => { "status" => 0, "QTime" => 2 },
-        "initArgs" => ["defaults", ["config", "db-data-config.xml"]],
-        "command" => "delta-import",
-        "status" => "idle",
-        "importResponse" => "",
-        "statusMessages" => { "Total Requests made to DataSource" => "8",
-                              "Total Rows Fetched" => "0",
-                              "Total Documents Processed" => "0",
-                              "Total Documents Skipped" => "0",
-                              "Delta Dump started" => "2018-07-19 21:37:30",
-                              "Identifying Delta" => "2018-07-19 21:37:30",
-                              "Deltas Obtained" => "2018-07-19 21:37:30",
-                              "Building documents" => "2018-07-19 21:37:30",
-                              "Total Changed Documents" => "0",
-                              "Time taken" => "0:0:0.354" } } }
-  end
 
   let(:committee_member) { FactoryBot.create :committee_member, created_at: DateTime.yesterday }
   let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
@@ -35,6 +16,16 @@ RSpec.describe FinalSubmissionUpdateService do
   end
 
   before do
+    stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json").
+         with(
+           body: /delete/,
+           headers: {
+       	  'Accept'=>'*/*',
+       	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	  'Content-Type'=>'application/json',
+       	  'User-Agent'=>'Faraday v2.3.0'
+           }).
+         to_return(status: 200, body: { error: false }.to_json, headers: {})
     WorkflowMailer.deliveries = []
   end
 
@@ -159,7 +150,6 @@ RSpec.describe FinalSubmissionUpdateService do
     end
 
     it 'removes a submission from waiting to be released and does not send email' do
-      allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
       start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission,
                                      :waiting_for_publication_release,
@@ -188,7 +178,6 @@ RSpec.describe FinalSubmissionUpdateService do
     end
 
     it 'removes a submission from publication and does not send an email - access_level does not change' do
-      allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
       submission = FactoryBot.create :submission,
                                      :released_for_publication,
                                      committee_members: [committee_member]
@@ -207,7 +196,6 @@ RSpec.describe FinalSubmissionUpdateService do
     end
 
     it 'updates a final submission without changing the status' do
-      allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
       start_count = ActionMailer::Base.deliveries.count
       submission = FactoryBot.create :submission,
                                      :collecting_final_submission_files,

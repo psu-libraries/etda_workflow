@@ -16,7 +16,7 @@ class FinalSubmissionReleaseService
                       status: 'waiting for publication release')
     release_service.unpublish(original_final_files) if file_verification_results[:valid]
     # update the index after the paper has been unreleased
-    solr_result = UpdateSubmissionService.new.solr_delta_update(submission)
+    solr_result = SolrDataImportService.new.remove_submission(submission)
     { msg: final_unrelease_message(solr_result, file_verification_results), redirect_path: admin_edit_sub_path }
   end
 
