@@ -363,9 +363,9 @@ class Submission < ApplicationRecord
   end
 
   def self.release_for_publication(submission_ids, date_to_release, release_type)
-    # Submission.transaction do
-    SubmissionReleaseService.new.publish(submission_ids, date_to_release, release_type)
-    # end
+    Submission.transaction do
+      SubmissionReleaseService.new.publish(submission_ids, date_to_release, release_type)
+    end
   end
 
   def self.extend_publication_date(submission_ids, date_to_release)
