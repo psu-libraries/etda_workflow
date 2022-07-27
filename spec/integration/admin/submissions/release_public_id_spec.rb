@@ -14,7 +14,7 @@ RSpec.describe "Release a submission with a public id", js: true, honors: true, 
   let(:submission_3) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author: jane_author) }
 
   before do
-    stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
+    stub_request(:post, /localhost:3000\/solr\/update\?wt=json/)
     oidc_authorize_admin
   end
 
