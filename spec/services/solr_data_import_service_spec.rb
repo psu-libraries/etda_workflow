@@ -39,12 +39,23 @@ RSpec.describe SolrDataImportService, type: :model do
   end
 
   describe '#remove_submission' do
-    let(:submission) { create :submission }
+    let(:submission) { create :submission, public_id: 'publicid' }
 
     before do
       stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
         .with(
-          body: /delete\":#{submission.id}/,
+          body: /delete\":\"publicid/,
+          headers: {
+            'Accept' => '*/*',
+            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'Faraday v2.3.0'
+          }
+        )
+        .to_return(status: 200, body: { error: false }.to_json, headers: {})
+      stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
+        .with(
+          body: "{\"commit\":{}}",
           headers: {
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',

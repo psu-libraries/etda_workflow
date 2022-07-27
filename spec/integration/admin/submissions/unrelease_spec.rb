@@ -4,7 +4,7 @@ RSpec.describe "Unrelease a submission", js: true, honors: true, milsch: true do
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true) }
   let!(:role) { CommitteeRole.first.name }
-  let(:submission) { FactoryBot.create(:submission, :released_for_publication) }
+  let(:submission) { FactoryBot.create(:submission, :released_for_publication, public_id: 'publicid') }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
 
   # let(:admin) { FactoryBot.create :admin }
@@ -13,7 +13,18 @@ RSpec.describe "Unrelease a submission", js: true, honors: true, milsch: true do
   before do
     stub_request(:post, /localhost:3000\/solr\/update\?wt=json/)
       .with(
-        body: "{\"delete\":1}",
+        body: "{\"delete\":\"publicid\"}",
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type' => 'application/json',
+          'User-Agent' => 'Faraday v2.3.0'
+        }
+      )
+      .to_return(status: 200, body: { error: false }.to_json, headers: {})
+    stub_request(:post, /localhost:3000\/solr\/update\?wt=json/)
+      .with(
+        body: "{\"commit\":{}}",
         headers: {
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
@@ -81,12 +92,23 @@ RSpec.describe 'Unrelease a legacy submission without missing data', js: true, h
   let(:author_last_name) { legacy_submission.author.last_name }
   let(:author_first_name) { legacy_submission.author.first_name }
 
-  let!(:legacy_submission) { FactoryBot.create(:submission, :released_for_publication_legacy) }
+  let!(:legacy_submission) { FactoryBot.create(:submission, :released_for_publication_legacy, public_id: 'publicid') }
 
   before do
     stub_request(:post, /localhost:3000\/solr\/update\?wt=json/)
       .with(
-        body: "{\"delete\":1}",
+        body: "{\"delete\":\"publicid\"}",
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type' => 'application/json',
+          'User-Agent' => 'Faraday v2.3.0'
+        }
+      )
+      .to_return(status: 200, body: { error: false }.to_json, headers: {})
+    stub_request(:post, /localhost:3000\/solr\/update\?wt=json/)
+      .with(
+        body: "{\"commit\":{}}",
         headers: {
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',

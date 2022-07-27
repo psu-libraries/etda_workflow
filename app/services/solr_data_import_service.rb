@@ -6,7 +6,8 @@ class SolrDataImportService
   end
 
   def remove_submission(submission)
-    solr.delete_by_id(submission.id)
+    solr.delete_by_id(submission.public_id)
+    send_commit
   end
 
   private
