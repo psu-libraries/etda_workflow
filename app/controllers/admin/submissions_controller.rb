@@ -180,6 +180,11 @@ class Admin::SubmissionsController < AdminController
       flash[:notice] = response[:msg]
       redirect_to response[:redirect_path]
     end
+  rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::EADDRNOTAVAIL => e
+    Rails.logger.error e.inspect
+    SolrLog.info e.inspect unless e.nil?
+    redirect_to admin_edit_submission_path(@submission)
+    flash[:alert] = 'A Solr error occurred! Check the log messages for more information'
   rescue ActiveRecord::RecordInvalid
     @view = Admin::SubmissionFormView.new(@submission, session)
     render :edit

@@ -7,27 +7,30 @@ RSpec.describe SolrDataImportService, type: :model do
 
   describe '#index_submission' do
     let(:submission) { create :submission }
+
     before do
-      stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json").
-         with(
-           body: /title_ssi\":\"#{submission.title}/,
-           headers: {
-       	  'Accept'=>'*/*',
-       	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-       	  'Content-Type'=>'application/json',
-       	  'User-Agent'=>'Faraday v2.3.0'
-           }).
-         to_return(status: 200, body: { error: false }.to_json, headers: {})
-       stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json").
-         with(
-           body: "{\"commit\":{}}",
-           headers: {
-       	  'Accept'=>'*/*',
-       	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-       	  'Content-Type'=>'application/json',
-       	  'User-Agent'=>'Faraday v2.3.0'
-           }).
-         to_return(status: 200, body: { error: false }.to_json, headers: {})
+      stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
+        .with(
+          body: /title_ssi\":\"#{submission.title}/,
+          headers: {
+            'Accept' => '*/*',
+            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'Faraday v2.3.0'
+          }
+        )
+        .to_return(status: 200, body: { error: false }.to_json, headers: {})
+      stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
+        .with(
+          body: "{\"commit\":{}}",
+          headers: {
+            'Accept' => '*/*',
+            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'Faraday v2.3.0'
+          }
+        )
+        .to_return(status: 200, body: { error: false }.to_json, headers: {})
     end
 
     it 'sends update to solr for given submission' do
@@ -37,17 +40,19 @@ RSpec.describe SolrDataImportService, type: :model do
 
   describe '#remove_submission' do
     let(:submission) { create :submission }
+
     before do
-      stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json").
-         with(
-           body: /delete\":#{submission.id}/,
-           headers: {
-       	  'Accept'=>'*/*',
-       	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-       	  'Content-Type'=>'application/json',
-       	  'User-Agent'=>'Faraday v2.3.0'
-           }).
-         to_return(status: 200, body: { error: false }.to_json, headers: {})
+      stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
+        .with(
+          body: /delete\":#{submission.id}/,
+          headers: {
+            'Accept' => '*/*',
+            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'Faraday v2.3.0'
+          }
+        )
+        .to_return(status: 200, body: { error: false }.to_json, headers: {})
     end
 
     it 'sends delete to solr for given submission' do
