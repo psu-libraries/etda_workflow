@@ -7,6 +7,7 @@ RSpec.describe "when an admin releases a restricted submission for publication a
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
 
   before do
+    stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
     FileUtilityHelper.new.copy_test_file(Rails.root.join(final_submission_file.current_location))
     oidc_authorize_admin
     visit root_path
@@ -17,7 +18,6 @@ RSpec.describe "when an admin releases a restricted submission for publication a
     let(:initial_restricted_count) { Submission.where(degree: submission.degree).final_is_withheld.count }
 
     before do
-      allow_any_instance_of(SolrDataImportService).to receive(:delta_import).and_return(error: false)
       submission.released_for_publication_at = Time.zone.now.to_date + 2.years
       submission.released_metadata_at = Time.zone.now.to_date
       submission.status = 'released for publication'

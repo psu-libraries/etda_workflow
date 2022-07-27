@@ -16,18 +16,4 @@ class UpdateSubmissionService
     email = AccessLevelUpdatedEmail.new(Admin::SubmissionView.new(submission, nil))
     email.deliver
   end
-
-  def solr_delta_update(submission)
-    # this occurs each time a final submission is published or unpublished.
-    # All editing to published submissions requires unpublish then publish so this includes metadata changes that must be reindexed
-    results = if ENV.fetch('SOLR_HOST', nil)
-                SolrDataImportService.new.index_submission(submission, true)
-              else
-                SolrDataImportService.new.delta_import
-              end
-
-    return results unless results[:error]
-
-    { error: true, msg: "Error occurred during solr update for record: #{submission.id}, #{submission.author.last_name}, #{submission.author.first_name}" }
-  end
 end
