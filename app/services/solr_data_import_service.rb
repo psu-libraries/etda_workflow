@@ -10,11 +10,11 @@ class SolrDataImportService
     send_commit
   end
 
-  private
+  def send_commit
+    solr.commit
+  end
 
-    def send_commit
-      solr.commit
-    end
+  private
 
     def solr
       @solr ||= RSolr.connect url: solr_url, core: solr_collection
