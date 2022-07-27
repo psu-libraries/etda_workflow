@@ -175,11 +175,9 @@ class Admin::SubmissionsController < AdminController
     @submission = Submission.find(params[:id])
     session[:return_to] = "/admin/#{@submission.degree_type.slug}"
     released_submission_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
-    Submission.transaction do
-      response = released_submission_service.respond_released_submission
-      flash[:notice] = response[:msg]
-      redirect_to response[:redirect_path]
-    end
+    response = released_submission_service.respond_released_submission
+    flash[:notice] = response[:msg]
+    redirect_to response[:redirect_path]
   rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::EADDRNOTAVAIL => e
     Rails.logger.error e.inspect
     SolrLog.info e.inspect unless e.nil?

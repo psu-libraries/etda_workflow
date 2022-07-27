@@ -64,9 +64,9 @@ RSpec.describe 'Unrelease a submission with Solr error', js: true, honors: true,
     click_button "Withdraw Publication"
   end
 
-  it 'does not withdraw the publication and report an error' do
+  it 'withdraws the publication and reports an error' do
     bad_submission.reload
-    expect(bad_submission.status).to eql('released for publication')
+    expect(bad_submission.status).to eql('waiting for publication release')
     expect(page).to have_current_path(admin_edit_submission_path(bad_submission))
     expect(page).to have_content 'A Solr error occurred!'
   end
