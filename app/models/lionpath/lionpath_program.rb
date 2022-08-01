@@ -26,8 +26,11 @@ class Lionpath::LionpathProgram
   private
 
     def submission_update(submission, row)
-      submission.update submission_attrs(row) unless
-          submission.status_behavior.beyond_waiting_for_final_submission_response_rejected?
+      if !submission.status_behavior.beyond_waiting_for_final_submission_response_rejected?
+        submission.update submission_attrs(row)
+      elsif row['ChkoutStat'] != submission.degree_checkout_status
+        submission.update(degree_checkout_status: row['ChkoutStat'], lionpath_updated_at: DateTime.now)
+      end
     end
 
     def submission_attrs(row)
