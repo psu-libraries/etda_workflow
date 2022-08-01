@@ -21,6 +21,6 @@
       </div>
     </div>
   </div>
-  <%= render partial: '/matomo_analytics' if ENV['HOSTNAME'] == 'etdaworkflow1prod' %>
+  <%= render partial: '/matomo_analytics' if ENV['HOSTNAME'].match(/^etda-wf-/).present? %>
   <%= render partial: 'shared/nav_bar' %>
 </header>
