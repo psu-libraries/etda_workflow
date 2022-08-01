@@ -21,6 +21,6 @@
       </div>
     </div>
   </div>
-  <%= render partial: '/matomo_analytics' if ENV['HOSTNAME'].match(/^etda-wf-/).present? %>
+  <%= render partial: '/matomo_analytics' if ENV.fetch('HOSTNAME', 'dev').match(/^etda-wf-/).present? %>
   <%= render partial: 'shared/nav_bar' %>
 </header>
