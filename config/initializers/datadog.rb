@@ -6,6 +6,7 @@ if Rails.env == 'production'
         c.use :redis, service_name: "#{release_name}-redis"
         c.use :active_record, service_name: "#{release_name}-active-record"
         c.use :sidekiq, service_name: "#{release_name}-sidekiq"
+        c.tracer env: ENV['DD_ENV']
     end
 end
 
