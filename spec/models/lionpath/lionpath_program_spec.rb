@@ -91,7 +91,6 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.campus).to eq('UP')
     end
 
-
     context 'when submission is beyond_waiting_for_final_submission_response_rejected?' do
       context 'when degree checkout status is unchanged' do
         it 'does not update program info' do
