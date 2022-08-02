@@ -63,22 +63,11 @@ You're good to go from here!  Any changes made in the project files on your loca
 
 ## Deployment instructions
 
-The Capistrano gem is used for deployment.
-When deploying, three instances of the application are
-deployed, one for each partner.  The following example deploys the master branch to the 'dev' server for each partner:
-`cap dev deploy_all`
+To deploy a preview, prepend your branch name with `preview/` like so: `preview/your-branch-name`. A preview will deploy when you push this branch to GitHub.
 
-The following example deploys the branch named ETDA-1111 to the QA server:
-`cap qa deploy_all BRANCH_NAME=ETDA-1111`
+Any PRs merged to main will automatically be deployed to QA.
 
-To run tasks on the server, use the "invoke" namespace and the "rake" or "command" tasks to run rake tasks or bash commands respectively.  "rake" or "command" will invoke a rake task or bash command for a single specified stage + partner.  "rake_all" or "command_all" will invoke a rake task or bash command across all partners for a specified stage.  Ex:
-
-    cap dev invoke:rake_all[db:seed:essential]
-    cap dev.graduate invoke:command['cat Gemfile.lock']
-    
-*Note: When running bash commands, the parameter to "invoke:command[]" should be in single quotes.*
-
-If using ssh to run tasks on the server, be sure to set the PARTNER environment variable for partner specific tasks.
+To initiate a production deploy, create a new release. Then, merge the automatically created PR in the config repo: https://github.com/psu-libraries/etda-config
 
 ## LionPATH Integration
 
