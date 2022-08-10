@@ -2,10 +2,10 @@
 
 source 'https://rubygems.org'
 
-ruby '2.7.4'
+ruby '3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.1.6.1'
 # Use mysql as the database for Active Record
 gem 'mysql2'
 # Use Puma as the app server
@@ -54,9 +54,7 @@ gem 'cocoon', '~> 1.2.0'
 # User authorization
 gem 'cancancan', '~> 3.1.0'
 # Easy email forms
-gem 'mail_form', '~> 1.8.0'
-# Audit gems
-gem 'bundler-audit', '~> 0.6.0'
+gem 'mail_form', '~> 1.9.0'
 # Logging & Health Checks!
 gem 'okcomputer', '~> 1.18.0'
 gem 'logstash-event', '~> 1.2.0'
@@ -75,13 +73,16 @@ gem 'seedbank', '~> 0.5.0'
 # Loading assets
 gem 'sprockets', '~> 3.7.2'
 # Create pdf documents
-gem 'prawn', '~> 2.2.0'
+gem 'prawn', '~> 2.4.0'
 # Create docx documents
 gem 'caracal', '~> 1.4.0'
+gem 'net-imap', require: false          # For Ruby 3 and Rails 6 mail compatibility
+gem 'net-pop', require: false           # For Ruby 3 and Rails 6 mail compatibility
+gem 'net-smtp', require: false          # For Ruby 3 and Rails 6 mail compatibility
 
 group :development, :test do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen', '~> 3.7.0'
   # Linter
   gem 'rubocop', '~> 0.93.1'
   gem 'rubocop-rspec', '~>  1.30.1'
@@ -129,4 +130,3 @@ group :production do
   # Datadog APM
   gem 'ddtrace', '~> 0.33'
 end
-

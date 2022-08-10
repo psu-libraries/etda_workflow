@@ -1,5 +1,5 @@
 require 'redis'
-config = YAML.load(ERB.new(IO.read(File.join(Rails.root, 'config', 'redis.yml'))).result)[Rails.env].with_indifferent_access
+config = YAML.load(ERB.new(IO.read(File.join(Rails.root, 'config', 'redis.yml'))).result, aliases: true)[Rails.env].with_indifferent_access
 
 if defined?(PhusionPassenger)
   PhusionPassenger.on_event(:starting_worker_process) do |forked|
@@ -11,4 +11,3 @@ if defined?(PhusionPassenger)
 else
   Redis.current = Redis.new(config.merge(thread_safe: true))
 end
-
