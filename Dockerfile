@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM harbor.k8s.libraries.psu.edu/library/ruby-2.7.4-node-12:20220727 as base
+FROM harbor.k8s.libraries.psu.edu/library/ruby-2.7.4-node-12:20220812 as base
 
 # hadolint ignore=DL3008
 RUN apt-get update && \ 
