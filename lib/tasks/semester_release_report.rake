@@ -2,7 +2,7 @@ namespace :report do
 
   desc "Sends email identifying releases for the semester to UL Cataloging"
   task semester_release: :environment do
-    return unless current_partner.graduate?
+    abort 'Partner is not Graduate' unless current_partner.graduate?
 
     start = Time.now
     Rails.logger.info "Sending Semester Report to UL Cataloging..."
