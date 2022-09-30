@@ -75,8 +75,8 @@ RSpec.describe Lionpath::LionpathCsvImporter do
       let(:fixture_location) { "#{Rails.root}/spec/fixtures/lionpath/lionpath_committee.csv" }
       let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'abc123' }
       let!(:submission) do
-        FactoryBot.create :submission, degree: degree, author: author,
-                                       year: 2021, semester: 'Summer', lionpath_updated_at: DateTime.now
+        FactoryBot.create :submission, degree: degree, author: author, year: nil,
+                                       lionpath_year: 2021, semester: 'Summer', lionpath_updated_at: DateTime.now
       end
       let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.first }
 

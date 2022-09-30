@@ -63,7 +63,7 @@ class Lionpath::LionpathCommittee
     end
 
     def invalid_date?(submission)
-      submission.year < 2021
+      submission.preferred_year < 2021
     end
 
     def invalid_submission?(submission)
