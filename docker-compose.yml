@@ -1,7 +1,14 @@
 version: '3.5'
 services:
-  selenium:
+  # Can be used locally with M1 Macs in place of the selenuim container
+  seleniarm:
     image: seleniarm/standalone-chromium
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - "4444:4444"
+  selenium:
+    image: selenium/standalone-chrome
     volumes:
       - /dev/shm:/dev/shm
     ports:
