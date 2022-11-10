@@ -451,22 +451,22 @@ RSpec.describe ApprovalStatus, type: :model do
                                                               submission: submission,
                                                               status: 'approved',
                                                               is_voting: true,
-                                                              approval_started_at: (DateTime.now - 7.days))
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
                                                               submission: submission,
                                                               status: 'approved',
                                                               is_voting: true,
-                                                              approval_started_at: (DateTime.now - 7.days))
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
                                                               submission: submission,
                                                               status: 'approved',
                                                               is_voting: true,
-                                                              approval_started_at: (DateTime.now - 7.days))
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
                                                               submission: submission,
                                                               status: '',
                                                               is_voting: true,
-                                                              approval_started_at: (DateTime.now - 7.days))
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
 
             expect(described_class.new(submission).status).to eq('approved')
           end
@@ -478,22 +478,22 @@ RSpec.describe ApprovalStatus, type: :model do
                                                               submission: submission,
                                                               status: 'approved',
                                                               is_voting: true,
-                                                              approval_started_at: (DateTime.now - 7.days))
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
                                                               submission: submission,
                                                               status: 'approved',
                                                               is_voting: true,
-                                                              approval_started_at: (DateTime.now - 7.days))
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
                                                               submission: submission,
                                                               status: 'approved',
                                                               is_voting: true,
-                                                              approval_started_at: (DateTime.now - 7.days))
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
                                                               submission: submission,
                                                               status: 'rejected',
                                                               is_voting: true,
-                                                              approval_started_at: (DateTime.now - 7.days))
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
 
             expect(described_class.new(submission).status).to eq('approved')
           end
@@ -505,22 +505,22 @@ RSpec.describe ApprovalStatus, type: :model do
                                                               submission: submission,
                                                               status: 'approved',
                                                               is_voting: true,
-                                                              approval_started_at: (DateTime.now - 7.days))
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
                                                               submission: submission,
                                                               status: 'approved',
                                                               is_voting: true,
-                                                              approval_started_at: (DateTime.now - 7.days))
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
                                                               submission: submission,
                                                               status: '',
                                                               is_voting: true,
-                                                              approval_started_at: (DateTime.now - 7.days))
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
                                                               submission: submission,
                                                               status: 'rejected',
                                                               is_voting: true,
-                                                              approval_started_at: (DateTime.now - 7.days))
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
 
             expect(described_class.new(submission).status).to eq('pending')
           end
