@@ -37,9 +37,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         final_submission_approved:
           message: |
                     Your honors %{degree_type} has been approved by Schreyer Honors College.    
@@ -52,9 +51,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu 
-                    814-867-2505
         format_review_received:
           message: |
                     Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with
@@ -64,9 +62,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu 
-                    814-867-2505
         final_submission_received:
           message: |
                     Thank you for submitting your final %{degree_type}. It will now be automatically sent to your committee for review and approval.
@@ -75,9 +72,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         sent_to_committee:
           message: |
                     Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee.
@@ -87,9 +83,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
@@ -100,9 +95,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         special_committee_review_request:
           message: |
                     Hello %{committee_member_name},
@@ -116,9 +110,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         committee_member_review_reminder:
           message: |
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
@@ -128,9 +121,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         committee_rejected_admin:
           message: |
                     The committee for %{author_name}'s %{degree_type} has rejected their submission.
@@ -139,9 +131,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         committee_rejected_author:
           message: |
                     The committee reviewing your %{degree_type} has rejected your submission.
@@ -152,9 +143,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         committee_rejected_committee:
           message: |
                     %{author_name}'s %{degree_type} titled "%{title}" has been rejected by its committee.
@@ -163,9 +153,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         pending_returned_author:
           message: |
                     Your %{degree_type} has been rejected by request of an administrator.
@@ -174,9 +163,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         pending_returned_committee:
           message: |
                     %{author_name}'s eTD submission titled "%{title}" has been rejected at the request of an administrator.
@@ -185,9 +173,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         committee_approved:
           message: |
                     Congratulations! Your honors %{degree_type} has been reviewed by your committee and it is approved.
@@ -196,9 +183,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         release_for_publication:
           message: |
                     Your %{degree_type} titled "%{title}" has been released with the access level of Open Access.
@@ -207,9 +193,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         release_for_publication_metadata_only:
           message: |
                     The metadata for your %{degree_type} titled "%{title}" has been released.
@@ -219,9 +204,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
         access_level_updated:
           message: |
                     The Schreyer Honors College has changed the availability of the following honor thesis as shown below:
@@ -234,9 +218,8 @@ en:
                     Sincerely,
                     The Schreyer Honors College
                     If you have any further questions please contact:  
-                    Debra Rodgers, Coordinator of Academic Services 
+                    Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
-                    814-867-2505
     program:
       label: Area of Honors
     committee:
