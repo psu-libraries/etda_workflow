@@ -206,15 +206,21 @@ RSpec.describe Author, type: :model do
     author = described_class.new(access_id: 'xyz123', psu_email_address: 'xyz123')
     author.save validate: false
     let(:author_ldap_results) { { access_id: 'xyz123', first_name: 'Xyzlaphon', middle_name: 'Yhoo', last_name: 'Zebra', address_1: 'University Libraries', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '814-123-4567', psu_idn: '988888888', confidential_hold: false } }
+    before do
+      allow(ConfidentialHoldUpdateService).to receive(:grab_ldap_results).and_return({ confidential_hold: true })
+      allow(ConfidentialHoldHistory).to receive(:create).and_return nil
+    end
 
     it 'updates author attributes using LDAP information ' do
       expect(author.last_name).to be_blank
+      expect(author.confidential_hold).to be_blank
       expect(author.phone_number).to be_blank
       allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('xyz123', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_ldap_results)
       author.populate_attributes
       expect(author.last_name).to eql('Zebra')
       expect(author.phone_number).to eql('814-123-4567')
       expect(author.full_name).to eql("#{author.first_name} #{author.middle_name} #{author.last_name}")
+      expect(author.confidential_hold).to be true
     end
   end
 
