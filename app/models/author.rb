@@ -61,6 +61,7 @@ class Author < ApplicationRecord
 
   def populate_attributes
     populate_with_ldap_attributes(access_id, 'uid')
+    ConfidentialHoldUpdateService.update(self)
     self
   end
 

@@ -26,8 +26,4 @@ class AuthorController < ApplicationController
     def author_ability
       @author_ability ||= AuthorAbility.new(@author, nil, nil)
     end
-
-    def update_confidential_hold
-      ConfidentialHoldUpdateService.update(@author)
-    end
 end

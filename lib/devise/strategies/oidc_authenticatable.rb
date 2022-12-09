@@ -36,7 +36,10 @@ module Devise
             failure
           else
             obj = a
-            obj.refresh_important_attributes if obj.class.name == 'Author' && obj.admin_edited_at.blank?
+            if obj.class.name == 'Author'
+              obj.refresh_important_attributes if obj.admin_edited_at.blank?
+              ConfidentialHoldUpdateService.update(a)
+            end
             success(obj)
           end
         end

@@ -31,16 +31,18 @@ RSpec.describe Devise::Strategies::OidcAuthenticatable do
             expect(Author).to receive(:create).with(access_id: author.access_id).never
             expect_any_instance_of(Author).to receive(:populate_attributes).never
             expect_any_instance_of(Author).to receive(:refresh_important_attributes).once
+            expect(ConfidentialHoldUpdateService).to receive(:update).once
             expect(subject).to be_valid
             expect(subject.authenticate!).to eq(:success)
           end
         end
         context 'when author metadata has been edited by an admin' do
           before { author.update admin_edited_at: DateTime.now }
-          it 'authenticates without creating new user, populating attributes, or refreshing attributes' do
+          it 'authenticates without creating new user, populating attributes, or refreshing attributes (except confidential hold)' do
             expect(Author).to receive(:create).with(access_id: author.access_id).never
             expect_any_instance_of(Author).to receive(:populate_attributes).never
             expect_any_instance_of(Author).to receive(:refresh_important_attributes).never
+            expect(ConfidentialHoldUpdateService).to receive(:update).once
             expect(subject).to be_valid
             expect(subject.authenticate!).to eq(:success)
           end
