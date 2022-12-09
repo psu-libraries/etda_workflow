@@ -206,6 +206,7 @@ RSpec.describe Author, type: :model do
     author = described_class.new(access_id: 'xyz123', psu_email_address: 'xyz123')
     author.save validate: false
     let(:author_ldap_results) { { access_id: 'xyz123', first_name: 'Xyzlaphon', middle_name: 'Yhoo', last_name: 'Zebra', address_1: 'University Libraries', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '814-123-4567', psu_idn: '988888888', confidential_hold: false } }
+
     before do
       allow(ConfidentialHoldUpdateService).to receive(:grab_ldap_results).and_return({ confidential_hold: true })
       allow(ConfidentialHoldHistory).to receive(:create).and_return nil
