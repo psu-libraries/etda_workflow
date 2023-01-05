@@ -2,7 +2,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/a38c9040c48fe53aaa85/maintainability)](https://codeclimate.com/github/psu-libraries/etda_workflow/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a38c9040c48fe53aaa85/test_coverage)](https://codeclimate.com/github/psu-libraries/etda_workflow/test_coverage)
 
-# Electronic Theses and Dissertations Workflow 
+# Electronic Theses and Dissertations Workflow
 
 * Ruby version: 2.7
 * Node version 10 (using yarn as npm)
@@ -10,7 +10,7 @@
 * Redis 3
 * Sidekiq 5
 * Mariadb 10
- 
+
 ## Setup
 
 Clone the repo to your local device and `cd` to the project root directory
@@ -19,43 +19,43 @@ Clone the repo to your local device and `cd` to the project root directory
 
 *Run `make` or view the Makefile for target definitions*
 
-To build the image and run containers:
+To build the image and run necessary containers:
 
- 1. `make build`
- 2. `make up`
+ 1. `docker-compose build`
+ 2. `docker-compose up -d seleniarm db redis web` **_Note:_** Use `seleniarm` with ARM architecture and `selenium` with others
  3. Check it out at `localhost:3000` in your browser
-    
+
 To copy database data into container:
 
 1. Retrieve an sql dump or compressed backup of the prod or staging database
 2. `docker cp /path/to/file.sql.gz {db_container}:/`
-3. `docker-compose exec db bash` 
+3. `docker-compose exec db bash`
 4. Unzip file if compressed using `gunzip`
-5. `mysql -u root -p -D {database_name} < /path/to/file.sql` 
-    
+5. `mysql -u root -p -D {database_name} < /path/to/file.sql`
+
 To create mock submission files:
 
 *This should be done after the database data is created, or else nothing will be created*
 
-1. `make exec` (running bash in the web container)
+1. `docker-compose exec web bash` (running bash in the web container)
 2. `rake etda_files:create:empty_files` (this may take a while)
 
 To seed data:
 
-1. `make exec`
+1. `docker-compose exec web bash`
 2. `PARTNER={parter} bundle exec rake db:seed:essential`
-    
+
 You're good to go from here!  Any changes made in the project files on your local machine will automatically be updated in the container.  Run `make restart` to restart the puma server if changes do not appear in the web browser.  Remember to check the Makefile for more commands.  If you are running a shell in the web container, you can run all of the rails commands you would normally use for development: ie `rspec, rails restart, rails c, etc.`
 
 ## Testing
- 
-   To run the tests: 
+
+   To run the tests:
    1.  `RAILS_ENV=test bundle exec rspec` tests Graduate School instance   
    2.  `RAILS_ENV=test bundle exec PARTNER=honors rspec` tests Honors College instance
    3.  `RAILS_ENV=test PARTNER=milsch bundle exec rspec` tests Millennium Scholars instance
-   
+
    Running the entire test suite for each partner can take a while.  To run tests for non-graduate instances that are unique to that instance, use tags like this:
-   
+
    1. `RAILS_ENV=test PARTNER=milsch bundle exec rspec --tag milsch`
    1. `RAILS_ENV=test PARTNER=honors bundle exec rspec --tag honors`
 
@@ -63,22 +63,11 @@ You're good to go from here!  Any changes made in the project files on your loca
 
 ## Deployment instructions
 
-The Capistrano gem is used for deployment.
-When deploying, three instances of the application are
-deployed, one for each partner.  The following example deploys the master branch to the 'dev' server for each partner:
-`cap dev deploy_all`
+To deploy a preview, prepend your branch name with `preview/` like so: `preview/your-branch-name`. A preview will deploy when you push this branch to GitHub.
 
-The following example deploys the branch named ETDA-1111 to the QA server:
-`cap qa deploy_all BRANCH_NAME=ETDA-1111`
+Any PRs merged to main will automatically be deployed to QA.
 
-To run tasks on the server, use the "invoke" namespace and the "rake" or "command" tasks to run rake tasks or bash commands respectively.  "rake" or "command" will invoke a rake task or bash command for a single specified stage + partner.  "rake_all" or "command_all" will invoke a rake task or bash command across all partners for a specified stage.  Ex:
-
-    cap dev invoke:rake_all[db:seed:essential]
-    cap dev.graduate invoke:command['cat Gemfile.lock']
-    
-*Note: When running bash commands, the parameter to "invoke:command[]" should be in single quotes.*
-
-If using ssh to run tasks on the server, be sure to set the PARTNER environment variable for partner specific tasks.
+To initiate a production deploy, create a new release. Then, merge the automatically created PR in the config repo: https://github.com/psu-libraries/etda-config
 
 ## LionPATH Integration
 

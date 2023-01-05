@@ -1,5 +1,13 @@
 version: '3.5'
 services:
+  # Can be used locally with M1 Macs in place of the selenuim container
+  seleniarm:
+    image: seleniarm/standalone-chromium
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - "4444:4444"
+    container_name: selenium
   selenium:
     image: selenium/standalone-chrome
     volumes:
@@ -26,7 +34,7 @@ services:
     user: root
     image: etda_workflow_web:latest
     # build:
-      # context: . 
+      # context: .
       # target: base
     environment:
       JS: ${JS:-false}
@@ -56,7 +64,7 @@ services:
     stdin_open: true
     user: root
     build:
-      context: . 
+      context: .
       target: base
     environment:
       REDIS_HOST: redis

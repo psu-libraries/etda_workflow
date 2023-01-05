@@ -19,7 +19,8 @@ RSpec.describe Lionpath::LionpathCommittee do
 
   context "when author's submission's year is before 2021" do
     before do
-      submission.update year: 2020
+      submission.update lionpath_year: 2020
+      submission.update year: nil
     end
 
     it 'does not import data' do
@@ -49,7 +50,7 @@ RSpec.describe Lionpath::LionpathCommittee do
 
   context "when author's submission is beyond Spring 2021" do
     before do
-      submission.update year: 2021, semester: 'Summer'
+      submission.update lionpath_year: 2021, year: nil, semester: 'Summer'
     end
 
     it 'imports data' do
