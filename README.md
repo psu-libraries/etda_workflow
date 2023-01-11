@@ -15,6 +15,10 @@
 
 Clone the repo to your local device and `cd` to the project root directory
 
+If you do not have direnv, use brew to install 
+
+Run `vi .envrc` and add environment variables
+
 ### Docker
 
 *Run `make` or view the Makefile for target definitions*
