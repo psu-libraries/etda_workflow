@@ -13,7 +13,6 @@ RSpec.describe FormatReviewFile, type: :model do
   it { is_expected.to have_db_index(:submission_id) }
   it { is_expected.to have_db_index(:legacy_id) }
 
-  #it { is_expected.to validate_presence_of :submission_id }
   it { is_expected.to belong_to :submission }
 
   # it { is_expected.to validate_presence_of :asset }
