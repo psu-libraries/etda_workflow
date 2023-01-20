@@ -5,7 +5,11 @@ class FormatReviewFile < ApplicationRecord
 
   belongs_to :submission
 
+<<<<<<< Updated upstream
   validates :asset_cache, presence: true, if: proc { |f| !f.submission.nil? && f.submission.author_edit && f.submission.status_behavior.collecting_format_review_files? }
+=======
+  validates :submission_id, :asset, presence: true
+>>>>>>> Stashed changes
   validates :asset, virus_free: true
 
   def class_name
