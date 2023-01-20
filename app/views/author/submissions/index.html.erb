@@ -8,7 +8,6 @@
     <% end %>
   </div>
 </div>
-<br />
 <%= render @view.partial_name, partial_path: @view.contact_information_path %>
 <% if current_partner.graduate? && flash[:fee_dialog].present? %>
   <span id="fee-dialog"></span>
