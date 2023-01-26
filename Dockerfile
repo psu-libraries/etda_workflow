@@ -2,6 +2,8 @@
 FROM harbor.k8s.libraries.psu.edu/library/ruby-2.7.6-node-12:20230116 as base
 
 # hadolint ignore=DL3008
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /usr/share/keyrings/yarn-keyring.asc \
+    && sed -i '1s;^deb;deb [signed-by=/usr/share/keyrings/yarn-keyring.asc];' /etc/apt/sources.list.d/yarn.list
 RUN apt-get update && \ 
   apt-get install --no-install-recommends libmariadb-dev mariadb-client clamav clamdscan wget libpng-dev make -y && \
   rm -rf /var/lib/apt/lists/*
