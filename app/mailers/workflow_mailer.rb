@@ -142,7 +142,7 @@ class WorkflowMailer < ActionMailer::Base
     @committee_member.update approval_started_at: DateTime.now if @committee_member.approval_started_at.blank?
     @committee_member.update_last_reminder_at DateTime.now
 
-    @core_member_note = @committee_member.core_committee_member? ? "You have seven days to complete your review." : ""
+    @core_member_note = @committee_member.core_committee_member? ? "You have seven days to complete your review. Failure to review in the seven days may result in your removal from the committee." : ""
 
     mail to: @committee_member.email,
          from: current_partner.email_address,
@@ -156,7 +156,7 @@ class WorkflowMailer < ActionMailer::Base
     @author = submission.author
     @review_url = "#{EtdUrls.new.workflow}/special_committee/#{@token}"
 
-    @seven_day_note = @committee_member.approval_started_at.blank? ? "You have seven days to complete your review." : ""
+    @seven_day_note = @committee_member.approval_started_at.blank? ? "You have seven days to complete your review. Failure to review in the seven days may result in your removal from the committee." : ""
 
     @committee_member.update approval_started_at: DateTime.now if @committee_member.approval_started_at.blank?
     @committee_member.update_last_reminder_at DateTime.now
