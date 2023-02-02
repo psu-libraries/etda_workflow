@@ -19,4 +19,3 @@
   <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} unless @submission.status_behavior.beyond_waiting_for_format_review_response? %>
   <%= f.input :format_review_notes, as: :text, label: "Format Review Notes to Student".html_safe, input_html: { class: 'can-toggle-editability' } %>
 </div>
-

@@ -10,7 +10,7 @@
       <% if !current_partner.honors? && !disabled_bool && !is_external_member && !local_presenter.head_of_program? %>
         <p class="email_form_checkbox"><%= check_box 'email_form_release', "switch" %><small> Committee member is not in dropdown list</small></p>
       <% end %>
-      <%= f.association :committee_role, as: :hidden, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || []  %>
+      <%= f.association :committee_role, as: :hidden, collection: @submission.degree_type.try(&:committee_roles).order('name asc') || [] %>
       <% unless local_presenter.head_of_program? %>
         <%= f.input :is_voting, as: :hidden, :input_html => { value: 1, readonly: true } %>
       <% end %>
@@ -46,7 +46,7 @@
       </div>
     <% else %>
       <div class="col-sm-6">
-        <% if is_external_member && Lionpath::LionpathCommittee.external_ids.include?(f.object.access_id)%>
+        <% if is_external_member && Lionpath::LionpathCommittee.external_ids.include?(f.object.access_id) %>
           <%= f.input :name, label: local_presenter.name_label,
                       aria: { label: "Use arrow keys to navigate your committee member search results to confirm the proper person" },
                       disabled: disabled_bool, input_html: { class: 'ldap-lookup', value: '' }, required: true %>
@@ -61,7 +61,7 @@
         <% end %>
       </div>
       <div class="col-sm-6">
-        <% if is_external_member && Lionpath::LionpathCommittee.external_ids.include?(f.object.access_id)%>
+        <% if is_external_member && Lionpath::LionpathCommittee.external_ids.include?(f.object.access_id) %>
           <%= f.input :email, label: local_presenter.email_label,
                       required: true, input_html: { value: '' } %>
         <% elsif current_partner.graduate? && local_presenter.head_of_program? %>
@@ -75,4 +75,4 @@
     <% end %>
   </div>
 </div>
-<br/>
+<br>

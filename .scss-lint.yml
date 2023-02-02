@@ -1,0 +1,3 @@
+exclude: 
+ - 'vendor/**/*.scss'
+ - 'node_modules/**/*.scss'

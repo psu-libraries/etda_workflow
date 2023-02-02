@@ -2,11 +2,11 @@
 <div>
 
   <%= simple_form_for [:author, @author] do |f| %>
-    <%= f.input :alternate_email_address, required: true, class: 'form-group', wrapper: :hint_top, hint: I18n.t("#{current_partner.id}.partner.alternate_email_hint")  %>
+    <%= f.input :alternate_email_address, required: true, class: 'form-group', wrapper: :hint_top, hint: I18n.t("#{current_partner.id}.partner.alternate_email_hint") %>
     <%= render partial: 'graduate_checkboxes', locals: {f: f} if current_partner.graduate? %>
     <div class="form-group actions">
       <%= render partial: 'extended_address_form', locals: {f: f} if current_partner.graduate? %>
-      <div class="col-xs-4" >
+      <div class="col-xs-4">
         <%= f.button :submit, class: "btn-primary", value: "Save" %>
         <%= link_to "Cancel", author_root_path, class: 'btn btn-light' %>
       </div>
