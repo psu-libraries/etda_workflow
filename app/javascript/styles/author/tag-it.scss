@@ -1,17 +1,17 @@
-/* Optional scoped theme for tag-it which mimics the zendesk widget. */
+// Optional scoped theme for tag-it which mimics the zendesk widget.
 
 ul.tagit {
   border-style: solid;
   border-width: 1px;
-  border-color: #C6C6C6;
+  border-color: #c6c6c6;
   background: inherit;
   li.tagit-choice {
     -moz-border-radius: 6px;
     border-radius: 6px;
     -webkit-border-radius: 6px;
-    border: 1px solid #CAD8F3;
+    border: 1px solid #cad8f3;
     background: none;
-    background-color: #DEE7F8;
+    background-color: #dee7f8;
     font-weight: normal;
     .tagit-label:not(a) {
       color: #555;
@@ -42,7 +42,7 @@ ul.tagit {
     }
   }
   input[type="text"] {
-    color: #333333;
+    color: #333;
     background: none;
   }
 }
@@ -51,7 +51,7 @@ ul.tagit {
   font-size: 1.1em;
 }
 
-/* Forked from a jQuery UI theme, so that we don't require the jQuery UI CSS as a dependency. */
+// Forked from a jQuery UI theme, so that we don't require the jQuery UI CSS as a dependency.
 
 .tagit-autocomplete.ui-autocomplete {
   position: absolute;
@@ -62,7 +62,7 @@ ul.tagit {
   width: 1px;
 }
 
-/* without this, the menu expands to 100% in IE6 */
+// without this, the menu expands to 100% in IE6
 
 .tagit-autocomplete {
   &.ui-menu {
@@ -97,9 +97,9 @@ ul.tagit {
     }
   }
   &.ui-widget-content {
-    border: 1px solid #aaaaaa;
-    background: #ffffff 50% 50% repeat-x;
-    color: #222222;
+    border: 1px solid #aaa;
+    background: #fff 50% 50% repeat-x;
+    color: #222;
   }
   &.ui-corner-all, .ui-corner-all {
     -moz-border-radius: 4px;
@@ -108,13 +108,13 @@ ul.tagit {
     border-radius: 4px;
   }
   .ui-state-hover, .ui-state-focus {
-    border: 1px solid #999999;
+    border: 1px solid #999;
     background: #dadada;
     font-weight: normal;
     color: #212121;
   }
   .ui-state-active, .ui-widget-content {
-    border: 1px solid #aaaaaa;
+    border: 1px solid #aaa;
   }
 }
 
