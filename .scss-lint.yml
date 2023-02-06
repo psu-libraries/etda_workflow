@@ -1,3 +1,13 @@
 exclude: 
  - 'vendor/**/*.scss'
  - 'node_modules/**/*.scss'
+
+linters:
+  QualifyingElement:
+    enabled: false
+  VendorPrefix:
+    enabled: false
+  MergeableSelector:
+    enabled: false
+  ImportantRule:
+    enabled: false
