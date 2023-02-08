@@ -1,24 +1,24 @@
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/mixins';
-@import '~bootstrap-sass/assets/stylesheets/bootstrap/_variables';
-@import '~bootstrap-sass/assets/stylesheets/bootstrap/_type';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/variables';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/type';
 
-$fa-font-path: "~font-awesome/fonts";
+$fa-font-path: '~font-awesome/fonts';
 @import '~font-awesome/scss/font-awesome';
 
 @import '../../../../vendor/assets/stylesheets/jquery.tagit.css';
 
 $dark-blue: #036 !global;
-$medium-blue: #1C5798 !global;
-$medium-blue-bright: #2674CA !global;
-$medium-blue-light: #75AAE6 !global;
+$medium-blue: #1c5798 !global;
+$medium-blue-bright: #2674ca !global;
+$medium-blue-light: #75aae6 !global;
 $gray-lightest: #fafafa !global;
 $gray-light: #767676 !global;
 $green-dark: #2c882c !global;
-$classic-white: #FFF !global;
+$classic-white: #fff !global;
 $gray-med-dark: #666 !global;
 $blue-light: #aacaef !global;
 $gray-dark: #333 !global;
-$btn-link-disabled-color: lightgrey !global;
+$btn-link-disabled-color: #d3d3d3 !global;
 $gray-base: #000 !default;
 $gray-lighter: lighten($gray-base, 93.5%) !default; // #eee
 $font-size-base: 14px !default;
@@ -42,28 +42,29 @@ a {
   }
 }
 
-/* Override DataTables pagination color schemes */
+// Override DataTables pagination color schemes
 .page-item.active .page-link {
-  color: #fff !important;
-  background-color: $primary !important;
-  border-color: $primary !important;
+  background-color: $primary;
+  border-color: $primary;
+  color: $classic-white !important;
 }
+
 .page-item.disabled .page-link {
-  color: #8c9094 !important;
-  background-color: #fff !important;
+  background-color: $classic-white !important;
   border-color: #d0d4d8 !important;
+  color: #8c9094 !important;
 }
 
 .page-link {
-  color: $primary !important;
-  background-color: #fff !important;
+  background-color: $classic-white !important;
   border: 1px solid #d0d4d8 !important;
+  color: $primary !important;
 }
 
 .page-link:hover {
-  color: #fff !important;
   background-color: $primary !important;
   border-color: $primary !important;
+  color: $classic-white !important;
 }
 
 .btn-primary {
@@ -80,31 +81,31 @@ html {
 }
 
 header {
-  background-color: #000000;
+  background-color: $gray-base;
   margin-bottom: 40px;
 
   .navbar-default {
     width: 100%;
 
     .navbar-text {
-      color: #ffffff;
+      color: $classic-white;
     }
   }
 
-  #shield-and-logo img{
+  #shield-and-logo img {
     margin: 0 auto;
   }
 
-  #psu-shield img{
-    padding-top: 10px;
+  #psu-shield img {
     padding-bottom: 10px;
+    padding-top: 10px;
   }
 
   #logo-old {
-    padding-top: 9px;
     padding-left: 30px;
+    padding-top: 9px;
     a {
-      color: #ffffff;
+      color: $classic-white;
       font-size: $font-size-h3;
 
       &:hover {
@@ -117,11 +118,11 @@ header {
     background-color: $medium-blue-bright;
 
     .navbar-btn.btn-sm {
-      color: #ffffff;
+      color: $classic-white;
       font-size: $font-size-base;
 
       &:hover {
-        color: #000000;
+        color: $gray-base;
       }
     }
 
@@ -129,9 +130,10 @@ header {
       float: right;
     }
 
-    @media (min-width: 768px) {
+    @media 
+    (min-width: 768px) {
       .navbar-text.small {
-        color: #000000;
+        color: $gray-base;
       }
     }
     #top-navigation ul {
@@ -143,8 +145,8 @@ header {
   }
 
   .alert {
-    border-radius: 0px;
-    padding: 15px 0px;
+    border-radius: 0;
+    padding: 15px 0;
 
     .col-xs-12 {
       padding-right: 50px;
@@ -156,7 +158,7 @@ ul.navbar-list {
   list-style: none;
 }
 
-.navbar-list li{
+.navbar-list li {
   margin-bottom: -5px;
   .btn {
     width: 8em;
@@ -183,13 +185,14 @@ ul.navbar-list {
     padding-bottom: 20px;
   }
 }
-
-@media (min-width: 992px) {
+@media 
+(min-width: 992px) {
   .navbar-form {
     padding-bottom: 10px;
   }
 }
-@media (min-width: 768px) {
+@media 
+(min-width: 768px) {
   #main-navigation {
     margin-top: 28px;
   }
@@ -198,13 +201,14 @@ ul.navbar-list {
 #contact-information {
   @extend .small;
 
-  @media (min-width: 768px) {
+  @media 
+  (min-width: 768px) {
     padding: 10px 15px 20px;
   }
 }
 
 footer {
-  bottom: 0px;
+  bottom: 0;
   height: 100%;
   width: 100%;
   padding-top: 20px;
@@ -214,7 +218,7 @@ footer {
     margin-right: 6em;
 
     &:hover {
-      color: #ffffff;
+      color: $classic-white;
       text-decoration: underline;
     }
   }
@@ -223,10 +227,10 @@ footer {
   }
 
   #courtesy-navigation {
-    background-color: #000000;
+    background-color: $gray-base;
     min-height: 40px;
-    margin-bottom: 0px;
-    border-radius: 0px;
+    margin-bottom: 0;
+    border-radius: 0;
 
     .text {
       margin-top: 9px;
@@ -287,7 +291,7 @@ form {
   }
 }
 
-.radio_buttons {
+.radio-buttons {
   margin-right: 8px;
 }
 
@@ -302,7 +306,7 @@ input[name="submission[access_level]"] {
 .file-link {
   @extend .form-control;
   border-color: $gray-lighter;
-  color: blue;
+  color: #00f;
   overflow: hidden;
   text-overflow: ellipsis;
 
@@ -349,11 +353,11 @@ input[name="submission[access_level]"] {
       &.cannot-delete {
         padding-left: 0;
 
-        .remove_fields {
+        .remove-fields {
           display: none;
         }
       }
-      padding-right: 0px;
+      padding-right: 0;
 
       .file-link {
         @extend .file-link;
@@ -383,21 +387,21 @@ input[name="submission[access_level]"] {
   }
 
   .committee-role .form-group {
-    margin-bottom: 0.5em;
+    margin-bottom: .5em;
     width: 50%;
   }
 
   .committee-role {
     display: flex;
     div {
-      padding-right: 0px;
+      padding-right: 0;
     }
   }
 
   .committee-details {
     width: 100%;
     div {
-      padding-right: 0px;
+      padding-right: 0;
     }
   }
 
@@ -409,7 +413,7 @@ input[name="submission[access_level]"] {
     width: 50%
   }
 
-  #send_email_reminder {
+  #send-mail-reminder {
     margin-left: 50px;
     line-height: inherit;
   }
@@ -418,7 +422,7 @@ input[name="submission[access_level]"] {
     margin-left: 200px;
   }
 
-  a.remove_fields {
+  a.remove-fields {
     margin-top: 2.5em;
     font-weight: bold;
     text-size: large;
@@ -434,7 +438,7 @@ textarea {
 }
 
 .form-group.actions .btn {
-  margin-bottom: 0.5em;
+  margin-bottom: .5em;
 }
 
 .radio {
@@ -473,7 +477,7 @@ select.disabled {
   }
 }
 
-#submission_keywords {
+#submission-keywords {
   height: 34px;
 }
 
@@ -501,19 +505,19 @@ select.disabled {
 
 .btn-success {
   background-color: #2e872e;
-  border-color:#236D23;
+  border-color:#236d23;
 }
 
 .btn-gold {
   background-color: #ffd248;
-  border-color: black;
-  color: black;
+  border-color: #000;
+  color: #000;
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 10px;
   padding-top: 10px;
 
-    &:hover {
+&:hover {
       background-color: #ffd492;
     }
 }
@@ -530,14 +534,14 @@ select.disabled {
 
 @media (min-width: 768px) {
   .col-sm-2.access {
-    padding: 0px;
+    padding: 0;
   }
 }
 
 .access-text {
   border-radius: 6px;
   width: 95%;
-  margin: 0.5em auto;
+  margin: .5em auto;
   text-align: center;
   color: $classic-white;
 }
@@ -554,7 +558,7 @@ select.disabled {
   background-color: $medium-blue-bright;
   border-radius: $border-radius-large;
   width: 100%;
-  margin: 0.5em 0px 0px 0px;
+  margin: .5em 0 0 0;
 }
 
 .btn-nav {
@@ -562,11 +566,11 @@ select.disabled {
   width: 100%;
 }
 
-.dropdown-item{
+.dropdown-item {
   background-color: white;
 }
 
-.nav-pills > li.active > a, .nav-pills > li > a:hover, .nav-pills > li.active > a:hover{
+.nav-pills > li.active > a, .nav-pills > li > a:hover, .nav-pills > li.active > a:hover {
   background-color: $blue-light;
   color: $gray-dark;
 }
@@ -607,7 +611,7 @@ p.hint
   }
   .modal-backdrop
   {
-    background-color: #ffffff;
+    background-color: $classic-white;
   }
 }
 
@@ -618,7 +622,7 @@ p.hint
   }
   .modal-backdrop
   {
-    background-color: #ffffff;
+    background-color: $classic-white;
   }
 }
 
@@ -644,7 +648,7 @@ p.hint
 .label-warning,
 .btn-warning
 {
-  background-color: #F0AD1B;
+  background-color: #f0ad1b;
   color: #333;
 }
 
@@ -689,11 +693,11 @@ form.search-query-form .input-group {
 }
 
 
-ul.ui-menu.ui-widget.ui-autocomplete{
+ul.ui-menu.ui-widget.ui-autocomplete {
   z-index: 2;
   background-color: #f5f5f5;
   list-style-type: none;
-  border: 1px solid #000;
+  border: 1px solid $gray-base;
   width: 50%;
   padding: .5em;
   position: absolute;
@@ -701,7 +705,7 @@ ul.ui-menu.ui-widget.ui-autocomplete{
   left: 0;
   cursor: default;
   display: block;
-  color: #000000;
+  color: $gray-base;
 
 }
 
@@ -712,7 +716,7 @@ div.ui-helper-hidden-accessible {
 
 .ui-state-active {
   display: block;
-  background-color: #ffffff;
+  background-color: $classic-white;
   font-weight: bolder;
   width: 100%;
   padding: .25em;
@@ -726,10 +730,10 @@ form abbr[title] {
   text-decoration: none !important;
 }
 
-.required-asterisk{
+.required-asterisk {
   float: right;
 }
-a.cancel-link{
+a.cancel-link {
   font-size: medium;
   vertical-align: middle;
 }
@@ -745,26 +749,26 @@ a.cancel-link{
 }
 
 //Styles for main page
-.btn-main{
+.btn-main {
   background-color: $medium-blue-bright;
-  color: #ffffff;
+  color: $classic-white;
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-.top-container{
+.top-container {
   padding-bottom: 20px;
 }
 
-.author-col{
+.author-col {
   margin-left: 25%;
   margin-right: 2%;
 }
 
-.admin-col{
-  background-color: #000;
+.admin-col {
+  background-color: $gray-base;
   border-radius: 5px;
   margin-top: 60px;
   padding-bottom: 50px;
@@ -843,7 +847,7 @@ a.cancel-link{
 }
 
 .vertical-radios {
-  padding-left: 0px;
+  padding-left: 0;
 
   span {
     display: block;
@@ -872,7 +876,7 @@ a.contact-support-link {
 }
 
 #approver-committees-index span {
-  display:none;
+  display: none;
 }
 
 .approver-index {
@@ -884,5 +888,5 @@ a.contact-support-link {
 }
 
 .special-committee {
-  margin-left: 25%
+  margin-left: 25%;
 }
