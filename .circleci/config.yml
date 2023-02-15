@@ -235,7 +235,8 @@ workflows:
       - integration_test_grad:
           context: org-global
           requires:
-            - build
+            - rubocop
+            - unit_test_grad
       - unit_test_grad:
           context: org-global
           requires:
@@ -243,14 +244,13 @@ workflows:
       - test_partners:
           context: org-global
           requires:
-            - build
+            - rubocop
+            - unit_test_grad
       - publish:
           context: org-global
           requires:
-            - unit_test_grad
             - integration_test_grad
             - test_partners
-            - rubocop
       - deploy:
           context: org-global
           requires:
