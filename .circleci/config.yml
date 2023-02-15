@@ -27,7 +27,7 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
     - setup_remote_docker:
-        version: 20.10.6
+        version: 20.10.12
     - checkout
     # - restore_cache:
     #     keys:
@@ -63,7 +63,7 @@ jobs:
     - attach_workspace:
         at: /tmp/workspace
     - setup_remote_docker:
-        version: 20.10.6
+        version: 20.10.12
     - checkout
     - run:
         name: "Rubocop"
@@ -82,7 +82,7 @@ jobs:
     - attach_workspace:
         at: /tmp/workspace
     - setup_remote_docker:
-        version: 20.10.6
+        version: 20.10.12
     - checkout
     - run:
         name: "Integration Test Graduate"
@@ -109,7 +109,7 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - setup_remote_docker:
-          version: 20.10.6
+          version: 20.10.12
       - checkout
       - run:
           name: "Unit Test Graduate"
@@ -134,7 +134,7 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
       - setup_remote_docker:
-          version: 20.10.6
+          version: 20.10.12
       - checkout
       - attach_workspace:
           at: /tmp/workspace
@@ -172,7 +172,7 @@ jobs:
     - attach_workspace:
         at: /tmp/workspace
     - setup_remote_docker:
-        version: 20.10.6
+        version: 20.10.12
     - checkout
     - run:
         name: "Setup Workspace"
