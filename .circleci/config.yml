@@ -27,7 +27,7 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
     - setup_remote_docker:
-        version: 20.10.12
+        version: 20.10.6
     - checkout
     # - restore_cache:
     #     keys:
@@ -63,7 +63,7 @@ jobs:
     - attach_workspace:
         at: /tmp/workspace
     - setup_remote_docker:
-        version: 20.10.12
+        version: 20.10.6
     - checkout
     - run:
         name: "Rubocop"
@@ -82,7 +82,7 @@ jobs:
     - attach_workspace:
         at: /tmp/workspace
     - setup_remote_docker:
-        version: 20.10.12
+        version: 20.10.6
     - checkout
     - run:
         name: "Integration Test Graduate"
@@ -109,7 +109,7 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - setup_remote_docker:
-          version: 20.10.12
+          version: 20.10.6
       - checkout
       - run:
           name: "Unit Test Graduate"
@@ -134,7 +134,7 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
       - setup_remote_docker:
-          version: 20.10.12
+          version: 20.10.6
       - checkout
       - attach_workspace:
           at: /tmp/workspace
@@ -172,7 +172,7 @@ jobs:
     - attach_workspace:
         at: /tmp/workspace
     - setup_remote_docker:
-        version: 20.10.12
+        version: 20.10.6
     - checkout
     - run:
         name: "Setup Workspace"
@@ -235,8 +235,7 @@ workflows:
       - integration_test_grad:
           context: org-global
           requires:
-            - rubocop
-            - unit_test_grad
+            - build
       - unit_test_grad:
           context: org-global
           requires:
@@ -244,13 +243,14 @@ workflows:
       - test_partners:
           context: org-global
           requires:
-            - rubocop
-            - unit_test_grad
+            - build
       - publish:
           context: org-global
           requires:
+            - unit_test_grad
             - integration_test_grad
             - test_partners
+            - rubocop
       - deploy:
           context: org-global
           requires:
