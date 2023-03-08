@@ -22,7 +22,7 @@ gem 'resque-pool', '~> 0.7.0'
 gem 'sidekiq', '~> 5.2.10'
 # When downgrading Sidekiq, rack needed to be downgraded as well.
 # This can be removed for Sidekiq 6 or greater.
-gem 'rack', '2.1.4.1'
+gem 'rack', '2.1.4.3'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1.0'
 # Jquery for rails
