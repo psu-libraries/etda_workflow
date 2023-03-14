@@ -59,7 +59,7 @@ RSpec.describe ExportCsv, type: :model do
                                            'Program',
                                            'Access Level',
                                            'Status',
-                                           'Date',
+                                           'Graduation Date',
                                            'Federal Funding?',
                                            'Advisor Name',
                                            'PSU Email',

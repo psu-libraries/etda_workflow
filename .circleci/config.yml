@@ -28,6 +28,7 @@ jobs:
     steps:
     - setup_remote_docker:
         version: 20.10.6
+        docker_layer_caching: true
     - checkout
     # - restore_cache:
     #     keys:
@@ -64,6 +65,7 @@ jobs:
         at: /tmp/workspace
     - setup_remote_docker:
         version: 20.10.6
+        docker_layer_caching: true
     - checkout
     - run:
         name: "Rubocop"
@@ -83,6 +85,7 @@ jobs:
         at: /tmp/workspace
     - setup_remote_docker:
         version: 20.10.6
+        docker_layer_caching: true
     - checkout
     - run:
         name: "Integration Test Graduate"
@@ -110,6 +113,7 @@ jobs:
           at: /tmp/workspace
       - setup_remote_docker:
           version: 20.10.6
+          docker_layer_caching: true
       - checkout
       - run:
           name: "Unit Test Graduate"
@@ -135,6 +139,7 @@ jobs:
     steps:
       - setup_remote_docker:
           version: 20.10.6
+          docker_layer_caching: true
       - checkout
       - attach_workspace:
           at: /tmp/workspace
@@ -173,6 +178,7 @@ jobs:
         at: /tmp/workspace
     - setup_remote_docker:
         version: 20.10.6
+        docker_layer_caching: true
     - checkout
     - run:
         name: "Setup Workspace"

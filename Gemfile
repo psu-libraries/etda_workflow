@@ -63,7 +63,7 @@ gem 'lograge-sql', '~> 1.1.0'
 # Ruby client for Apache solr
 gem 'rsolr', '~> 2.5.0'
 # Enumerated attributes with I18n
-gem 'enumerize', '~> 2.3.0'
+gem 'enumerize', '~> 2.6.0'
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 gem 'byebug', '~> 11.1.0', platforms: %i[mri mingw x64_mingw]
 # HTTParty for http requests
