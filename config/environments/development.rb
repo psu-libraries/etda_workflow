@@ -80,14 +80,3 @@ Rails.application.configure do
   # config.file_watcher = ActiveSupport:: EventedFileUpdateChecker // this code doesn't work with M1 chip MacBooks
   config.file_watcher = ActiveSupport::FileUpdateChecker
 end
-
-Rails.application.config.to_prepare do
-  # Mocks
-  # TODO Remove constants from initializer (autoload to deprecate in future Rails versions)
-  LdapUniversityDirectory = MockUniversityDirectory
-  VirusScanner = MockVirusScanner
-  DirectoryService = MockDirectoryService
-  WORKFLOW_BASE_PATH = "tmp/workflow_files/#{Partner.current.id}/"
-  EXPLORE_BASE_PATH = "tmp/explore_files/#{Partner.current.id}/"
-  FILE_SOURCE_BASE_PATH = "/Users/ajk5603/RubymineProjects/etda_workflow/uploads/"
-end

@@ -105,8 +105,9 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.18'
+  gem 'capybara', '~> 3.38'
   gem 'capybara-email'
+  gem 'webrick'
   # Fakes and factories for testing
   gem 'factory_bot_rails', '~> 5.0'
   gem 'faker', '~> 2.11.0'

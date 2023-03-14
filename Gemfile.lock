@@ -395,6 +395,7 @@ GEM
       activesupport (>= 4.2)
       rack-proxy (>= 0.6.1)
       railties (>= 4.2)
+    webrick (1.8.1)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -410,7 +411,7 @@ DEPENDENCIES
   bcrypt_pbkdf (~> 1.0.0)
   byebug (~> 11.1.0)
   cancancan (~> 3.1.0)
-  capybara (~> 3.18)
+  capybara (~> 3.38)
   capybara-email
   caracal (~> 1.4.0)
   carrierwave (~> 1.3.0)
@@ -470,6 +471,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webmock (~> 3.14.0)
   webpacker (~> 3.5.5)
+  webrick
 
 RUBY VERSION
    ruby 3.1.2p20

@@ -46,12 +46,4 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   config.webpacker.check_yarn_integrity = false
-
-  # Mocks
-  # TODO Remove constants from initializer (autoload to deprecate in future Rails versions)
-  LdapUniversityDirectory = MockUniversityDirectory
-  VirusScanner = MockVirusScanner
-  DirectoryService = MockDirectoryService
-  WORKFLOW_BASE_PATH = 'tmp/workflow/'
-  EXPLORE_BASE_PATH = 'tmp/explore/'
 end
