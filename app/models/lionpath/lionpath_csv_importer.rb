@@ -57,7 +57,7 @@ class Lionpath::LionpathCsvImporter
 
     def parse_csv(resource)
       csv_options = { headers: true, encoding: "ISO-8859-1:UTF-8", quote_char: '"', force_quotes: true }
-      CSV.foreach(lionpath_csv_loc, csv_options) do |row|
+      CSV.foreach(lionpath_csv_loc, **csv_options) do |row|
         resource.import(row)
       rescue StandardError => e
         Rails.logger.error(error_json(e, resource))

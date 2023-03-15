@@ -76,13 +76,16 @@ RSpec.configure do |config|
     Capybara.server_host = '0.0.0.0'
 
     args = ['--no-default-browser-check', '--start-maximized', '--kiosk-printing']
-    caps = Selenium::WebDriver::Remote::Capabilities.chrome("chromeOptions" => {"args" => args})
+    options = Selenium::WebDriver::Chrome::Options.new
+    args.each do |arg|
+      options.add_argument(arg)
+    end
     Capybara.register_driver :selenium do |app|
       Capybara::Selenium::Driver.new(
           app,
           browser: :remote,
           url: "http://selenium:4444/wd/hub",
-          desired_capabilities: caps
+          options: options
       )
     end
   end

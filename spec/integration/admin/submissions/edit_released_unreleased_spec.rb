@@ -25,8 +25,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
           headers: {
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v2.3.0'
+            'Content-Type' => 'application/json'
           }
         )
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -36,8 +35,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
           headers: {
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v2.3.0'
+            'Content-Type' => 'application/json'
           }
         )
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
