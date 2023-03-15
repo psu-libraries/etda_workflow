@@ -1,4 +1,4 @@
-RSpec.describe "Release a submission with a public id", js: true, honors: true, milsch: true do
+RSpec.describe "Release a submission with a public id", honors: true, milsch: true do
   require 'integration/integration_spec_helper'
 
   let(:degree_type) { current_partner.graduate? ? 'dissertation' : 'thesis' }
@@ -23,8 +23,8 @@ RSpec.describe "Release a submission with a public id", js: true, honors: true, 
     expect(submission.public_id).to be_blank
     released_count = Submission.released_for_publication.count
     visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')
-    click_button 'Select Visible'
     sleep 1
+    click_button 'Select Visible'
     expect(page).to have_content('Showing')
     page.accept_confirm do
       click_button 'Release selected for publication'
@@ -46,8 +46,8 @@ RSpec.describe "Release a submission with a public id", js: true, honors: true, 
     submission_1.update_attribute(:status, 'waiting for publication release')
     released_count = Submission.released_for_publication.count
     visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')
-    click_button 'Select Visible'
     sleep 1
+    click_button 'Select Visible'
     expect(page).to have_content('Showing')
     page.accept_confirm do
       click_button 'Release selected for publication'
