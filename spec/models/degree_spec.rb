@@ -69,6 +69,7 @@ RSpec.describe Degree, type: :model do
     it 'returns the degree name normalized' do
       expect(described_class.new(name: 'De GrEE').slug).to eq('DE_GREE')
     end
+
     it 'returns nil when given an invalid degree id' do
       expect(described_class.etd_degree_slug(200)).to be_nil
     end

@@ -4,14 +4,10 @@ class LdapResult
   include ActiveModel::Model
   include ActiveModel::AttributeMethods
 
-  attr_accessor :ldap_record
-  attr_accessor :attribute_map
-  attr_accessor :defaults
-  attr_accessor :us_state
-  attr_accessor :department
+  attr_accessor :ldap_record, :attribute_map, :defaults, :us_state, :department
 
-  UPCASE_NAME_LIST = /\b(iii|ii|iv)\b/i.freeze
-  UPCASE_DEPT_LIST = /\b(its|ids|arl|psu)\b/i.freeze
+  UPCASE_NAME_LIST = /\b(iii|ii|iv)\b/i
+  UPCASE_DEPT_LIST = /\b(its|ids|arl|psu)\b/i
 
   def map_directory_info
     mapped_attributes = []

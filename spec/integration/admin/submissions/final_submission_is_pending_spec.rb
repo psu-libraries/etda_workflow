@@ -5,15 +5,15 @@ RSpec.describe "when an admin views the final submission is pending bucket", js:
   let(:submission) do
     FactoryBot.create :submission,
                       :waiting_for_committee_review,
-                      author: author,
+                      author:,
                       semester: Semester.current.split(" ")[1],
                       year: Semester.current.split(" ")[0]
   end
 
   before do
-    FactoryBot.create :submission,
+    FactoryBot.create(:submission,
                       :waiting_for_head_of_program_review,
-                      author: author, semester: Semester.current.split(" ")[1],
+                      author:, semester: Semester.current.split(" ")[1],
                       year: Semester.current.split(" ")[0]
     oidc_authorize_admin
     visit admin_submissions_index_path(submission.degree.degree_type, :final_submission_pending)

@@ -5,6 +5,7 @@ RSpec.describe ApplicationHelper do
     it "returns odd when the next column number is odd" do
       expect(even_odd(1)).to eq('')
     end
+
     it 'returns nothing when the column number is even' do
       expect(even_odd(2)).to eq('odd')
     end
@@ -16,6 +17,7 @@ RSpec.describe ApplicationHelper do
       submission.invention_disclosures = []
       expect(invention_disclosure_number(submission)).to eq('')
     end
+
     it 'returns the invention disclosure number if it exists' do
       submission.invention_disclosures << InventionDisclosure.new(id_number: '2018-aAbC')
       expect(invention_disclosure_number(submission)).to eq('2018-aAbC')
@@ -43,6 +45,7 @@ RSpec.describe ApplicationHelper do
       allow(controller).to receive(:controller_name).and_return('submission_format_review')
       expect(author_nav_active?('submissions')).to eq('active')
     end
+
     it 'returns active class for authors' do
       allow(controller).to receive(:controller_name).and_return('authors')
       allow(controller).to receive(:action_name).and_return('author')
@@ -94,6 +97,7 @@ RSpec.describe ApplicationHelper do
     it 'returns empty string for authors without a hold' do
       expect(confidential_tag_helper(author)).to eq('')
     end
+
     it 'returns confidential alert icon for authors with a hold' do
       author.confidential_hold = true
       expect(confidential_tag_helper(author)).to eq(" <span class='confidential-alert xxs' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='confidential hold'><span class='fa fa-warning'></span></span><span class='sr-only'>#{author.first_name} #{author.last_name} has a confidential hold</span>")
@@ -109,6 +113,7 @@ RSpec.describe ApplicationHelper do
       allow(controller).to receive(:controller_name).and_return('bogus')
       expect(top_nav_active?('main')).not_to eq('active')
     end
+
     it 'returns active class for about' do
       allow(controller).to receive(:controller_name).and_return('application')
       allow(controller).to receive(:action_name).and_return('about')
@@ -117,6 +122,7 @@ RSpec.describe ApplicationHelper do
       allow(controller).to receive(:action_name).and_return('bogus')
       expect(top_nav_active?('about')).not_to eq('active')
     end
+
     it 'returns active class for email contact form' do
       allow(controller).to receive(:controller_name).and_return('email_contact_form')
       expect(top_nav_active?('email')).to eq('active')

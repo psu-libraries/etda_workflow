@@ -2,14 +2,14 @@ RSpec.describe "Editing committee member information", js: true, honors: true, m
   require 'integration/integration_spec_helper'
 
   let!(:author) { FactoryBot.create(:author) }
-  let!(:submission) { FactoryBot.create(:submission, :waiting_for_committee_review, degree: degree, author: author) }
+  let!(:submission) { FactoryBot.create(:submission, :waiting_for_committee_review, degree:, author:) }
   let!(:degree) { FactoryBot.create(:degree, degree_type: DegreeType.default) }
   let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: DegreeType.default }
   let!(:committee_role) { FactoryBot.create :committee_role, degree_type: DegreeType.default }
 
   before do
     create_committee submission
-    submission.committee_members << FactoryBot.create(:committee_member, committee_role: committee_role)
+    submission.committee_members << FactoryBot.create(:committee_member, committee_role:)
     oidc_authorize_admin
   end
 
@@ -43,7 +43,7 @@ RSpec.describe "Editing committee member information", js: true, honors: true, m
   context 'when committee member was created via lionpath import' do
     let(:lp_committee_member) do
       FactoryBot.create :committee_member, name: 'LP Tester',
-                                           lionpath_updated_at: DateTime.now, committee_role: committee_role
+                                           lionpath_updated_at: DateTime.now, committee_role:
     end
 
     before do
@@ -70,7 +70,7 @@ RSpec.describe "Editing committee member information", js: true, honors: true, m
     context 'when one of the committee members is external to PSU' do
       let(:external_role) { FactoryBot.create :committee_role, name: 'Special Member', code: 'S', degree_type: DegreeType.default }
       let!(:committee_member) do
-        FactoryBot.create :committee_member, submission: submission, committee_role: external_role,
+        FactoryBot.create :committee_member, submission:, committee_role: external_role,
                                              lionpath_updated_at: DateTime.now, external_to_psu_id: 'mgc25',
                                              access_id: 'mgc25', name: 'Member Committee', email: 'mgc25@psu.edu'
       end

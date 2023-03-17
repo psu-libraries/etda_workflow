@@ -5,10 +5,10 @@ RSpec.describe Lionpath::LionpathCommittee do
 
   let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'def123' }
   let!(:submission) do
-    FactoryBot.create :submission, author: author, degree: degree,
+    FactoryBot.create :submission, author:, degree:,
                                    status: 'collecting program information', lionpath_updated_at: DateTime.now
   end
-  let!(:degree) { FactoryBot.create :degree, name: 'PHD', degree_type: degree_type }
+  let!(:degree) { FactoryBot.create :degree, name: 'PHD', degree_type: }
   let!(:degree_type) { DegreeType.find_by(slug: 'dissertation') }
   let!(:committee_role) { FactoryBot.create :committee_role, code: 'C', name: 'Chair of Committee' }
   let(:row) do
@@ -59,8 +59,8 @@ RSpec.describe Lionpath::LionpathCommittee do
 
     context 'when submission already has the committee member from the lionpath record' do
       let!(:committee_member) do
-        FactoryBot.create :committee_member, committee_role: committee_role, name: 'wrong',
-                                             access_id: 'abc123', submission: submission, email: 'xyz321@psu.edu'
+        FactoryBot.create :committee_member, committee_role:, name: 'wrong',
+                                             access_id: 'abc123', submission:, email: 'xyz321@psu.edu'
       end
 
       it 'updates that committee member record (does not update email)' do
@@ -94,7 +94,7 @@ RSpec.describe Lionpath::LionpathCommittee do
 
   context 'when author has two dissertations and one is not from lionpath' do
     let!(:submission_2) do
-      FactoryBot.create :submission, author: author, degree: degree,
+      FactoryBot.create :submission, author:, degree:,
                                      status: 'collecting program information'
     end
 
@@ -124,7 +124,7 @@ RSpec.describe Lionpath::LionpathCommittee do
     context 'when the committee member already exists in the db' do
       let!(:committee_member) do
         FactoryBot.create :committee_member, access_id: 'mgc25', email: 'mgc25@psu.edu', name: 'Member Committee',
-                                             committee_role: committee_role2, submission: submission
+                                             committee_role: committee_role2, submission:
       end
 
       context 'when the committee member in the db does not have an external_to_psu_id' do

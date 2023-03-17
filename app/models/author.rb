@@ -20,7 +20,6 @@ class Author < ApplicationRecord
 
   validates :psu_idn,
             :legacy_id, allow_blank: true,
-                        allow_nil: true,
                         uniqueness: { case_sensitive: true }
 
   # validate for graduate authors only
@@ -32,7 +31,7 @@ class Author < ApplicationRecord
 
   validates :alternate_email_address,
             :psu_email_address,
-            format: { with: /\A[\w]([^@\s,;]+)@(([\w-]+\.)+([\w]+))\z/i }
+            format: { with: /\A\w([^@\s,;]+)@(([\w-]+\.)+(\w+))\z/i }
 
   validates :zip, format: { with: /\A\d{5}-\d{4}\z|\A\d{5}\z/, message: "Must be in the format '12345' or '12345-1234'" }, if: proc { current_partner.graduate? }
 

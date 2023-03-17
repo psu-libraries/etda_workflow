@@ -13,7 +13,7 @@ class JSONFormatter < ActiveSupport::Logger::SimpleFormatter
   def call(severity, timestamp, _progname, message)
     return "#{message} \n" if message.json?
 
-    msg = { type: severity, time: timestamp, message: message }
+    msg = { type: severity, time: timestamp, message: }
     event = LogStash::Event.new(msg).to_json
     "#{event} \n"
   end

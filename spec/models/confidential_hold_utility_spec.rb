@@ -46,6 +46,7 @@ RSpec.describe ConfidentialHoldUtility, type: :model do
         ch = described_class.new('conf123', false)
         expect(ch.send('changed?')).to be_truthy
       end
+
       it 'returns true one' do
         allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).with('conf123').and_return(true)
         allow_any_instance_of(LdapUniversityDirectory).to receive(:authors_confidential_status).with('conf123').and_return(true)
@@ -73,11 +74,13 @@ RSpec.describe ConfidentialHoldUtility, type: :model do
       ch = described_class.new('conf12', false)
       expect(ch.hold_set_at(nil, true)).not_to be_nil
     end
+
     it 'does not update the time confidential hold was set when the hold has already been set' do
       allow_any_instance_of(LdapUniversityDirectory).to receive(:authors_confidential_status).with('conf123').and_return(true)
       ch = described_class.new('conf12', false)
       expect(ch.hold_set_at(Time.zone.yesterday, true)).to eq(Time.zone.yesterday)
     end
+
     it 'sets confidential_hold_set_at to nil when the hold is released' do
       allow_any_instance_of(LdapUniversityDirectory).to receive(:authors_confidential_status).with('conf123').and_return(false)
       ch = described_class.new('conf12', true)

@@ -245,7 +245,7 @@ class WorkflowMailer < ActionMailer::Base
            submission.committee_email_list
          end
 
-    mail to: to,
+    mail to:,
          from: current_partner.email_address,
          subject: "Final Submission Returned to Student for Resubmission"
   end
@@ -260,7 +260,7 @@ class WorkflowMailer < ActionMailer::Base
            @author.psu_email_address
          end
 
-    mail to: to,
+    mail to:,
          from: current_partner.email_address,
          subject: "Committee Rejected Final Submission"
   end
@@ -288,7 +288,7 @@ class WorkflowMailer < ActionMailer::Base
 
     return if to.blank?
 
-    mail to: to,
+    mail to:,
          from: current_partner.email_address,
          subject: "Committee Rejected Final Submission"
   end

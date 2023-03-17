@@ -41,7 +41,7 @@ class FinalSubmissionApprovedService
     status_giver.can_waiting_for_publication_release?
     status_giver.waiting_for_publication_release!
     msg = "The submission was successfully removed from its hold and is waiting to be released."
-    { msg: msg, redirect_path: admin_approved_sub_index_path }
+    { msg:, redirect_path: admin_approved_sub_index_path }
   end
 
   private

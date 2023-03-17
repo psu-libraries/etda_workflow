@@ -41,7 +41,7 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
                                          external_to_psu_id: 'mgc25'
   end
   let!(:exp_lp_cm5) do
-    FactoryBot.create :committee_member, lionpath_updated_at: (DateTime.now - 2.days), submission: submission
+    FactoryBot.create :committee_member, lionpath_updated_at: (DateTime.now - 2.days), submission:
   end
   let!(:submission) { FactoryBot.create :submission, :waiting_for_publication_release }
 

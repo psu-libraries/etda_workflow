@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :format_review_file, class: FormatReviewFile do |_f|
+  factory :format_review_file, class: 'FormatReviewFile' do |_f|
     submission
     asset { File.open(fixture('format_review_file_01.pdf')) }
 

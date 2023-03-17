@@ -30,7 +30,7 @@ RSpec.describe 'Special committee page', type: :integration do
     end
 
     it 'marries an approver and multiple committee member records via token when clicking advance button', js: true do
-      committee_member_two = FactoryBot.create :committee_member, submission: submission, status: '', email: 'approverflow@gmail.com'
+      committee_member_two = FactoryBot.create(:committee_member, submission:, status: '', email: 'approverflow@gmail.com'
       committee_member_token_two = FactoryBot.create :committee_member_token, authentication_token: '2'
       committee_member_two.committee_member_token = nil
       committee_member_two.committee_member_token = committee_member_token_two

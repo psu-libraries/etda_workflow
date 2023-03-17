@@ -5,7 +5,7 @@ RSpec.describe "Unrelease a submission", js: true, honors: true, milsch: true do
   let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true) }
   let!(:role) { CommitteeRole.first.name }
   let(:submission) { FactoryBot.create(:submission, :released_for_publication, public_id: 'publicid') }
-  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
+  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: }
 
   # let(:admin) { FactoryBot.create :admin }
   let(:degree_type) { current_partner.graduate? ? 'dissertation' : 'thesis' }

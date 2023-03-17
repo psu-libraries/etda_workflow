@@ -21,7 +21,7 @@ RSpec.describe ConfidentialHoldUpdateService do
 
     it 'removes confidential hold and sets history' do
       author.update confidential_hold: true, confidential_hold_set_at: DateTime.now
-      FactoryBot.create :confidential_hold_history, author: author
+      FactoryBot.create(:confidential_hold_history, author:)
       allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve).and_return(confidential_hold: false)
       described_class.update(author)
       expect(Author.find(author.id).confidential_hold).to eq false
@@ -34,7 +34,7 @@ RSpec.describe ConfidentialHoldUpdateService do
     end
 
     it 'adds another history' do
-      FactoryBot.create :confidential_hold_history, author: author, removed_at: DateTime.now, removed_by: 'login_controller'
+      FactoryBot.create(:confidential_hold_history, author:, removed_at: DateTime.now, removed_by: 'login_controller'
       allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve).and_return(confidential_hold: true)
       described_class.update(author)
       expect(Author.find(author.id).confidential_hold).to eq true
@@ -44,8 +44,8 @@ RSpec.describe ConfidentialHoldUpdateService do
 
     it 'updates last history record' do
       author.update confidential_hold: true, confidential_hold_set_at: DateTime.now
-      FactoryBot.create :confidential_hold_history, author: author, removed_at: DateTime.now, removed_by: 'login_controller'
-      FactoryBot.create :confidential_hold_history, author: author
+      FactoryBot.create(:confidential_hold_history, author:, removed_at: DateTime.now, removed_by: 'login_controller'
+      FactoryBot.create(:confidential_hold_history, author:)
       allow_any_instance_of(LdapUniversityDirectory).to receive(:retrieve).and_return(confidential_hold: false)
       described_class.update(author)
       expect(Author.find(author.id).confidential_hold_histories.count).to eq 2

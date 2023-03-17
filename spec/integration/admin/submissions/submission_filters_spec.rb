@@ -33,6 +33,7 @@ RSpec.describe "Submission filter with semester dropdown", js: true do
     expect(page).to have_select(semester_year)
     expect(page).not_to have_select("#{submission1.year - 6} Spring")
   end
+
   it 'displays access level and invention disclosure' do
     page.find('a#final-submission-submitted').click
     expect(page).to have_content('Restricted')

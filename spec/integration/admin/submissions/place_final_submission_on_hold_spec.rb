@@ -2,9 +2,9 @@ RSpec.describe "Placing a final submission on hold as an admin", js: true do
   require 'integration/integration_spec_helper'
 
   let(:author) { FactoryBot.create :author }
-  let!(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, author: author }
+  let!(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, author: }
   let(:committee) { create_committee(submission) }
-  let!(:hold_submission) { FactoryBot.create(:submission, :waiting_in_final_submission_on_hold, author: author) }
+  let!(:hold_submission) { FactoryBot.create(:submission, :waiting_in_final_submission_on_hold, author:) }
 
   before do
     oidc_authorize_admin

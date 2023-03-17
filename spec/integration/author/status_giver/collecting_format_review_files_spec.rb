@@ -8,7 +8,7 @@ RSpec.describe 'Step 3: Collecting Format Review Files', js: true do
 
     let!(:author) { current_author }
     let!(:admin)  { current_admin }
-    let!(:submission) { FactoryBot.create :submission, :collecting_format_review_files, author: author }
+    let!(:submission) { FactoryBot.create :submission, :collecting_format_review_files, author: }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: true }
 

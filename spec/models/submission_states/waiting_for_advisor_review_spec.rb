@@ -36,7 +36,7 @@ RSpec.describe SubmissionStates::WaitingForAdvisorReview do
   end
 
   describe '#transition' do
-    let(:submission) { FactoryBot.create :submission, :waiting_for_advisor_review, status: status }
+    let(:submission) { FactoryBot.create :submission, :waiting_for_advisor_review, status: }
     let(:subject) { described_class.transition submission }
 
     context 'when submission status WaitingForAdvisorReview' do

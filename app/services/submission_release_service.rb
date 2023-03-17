@@ -1,7 +1,6 @@
 # Release submissions for publication
 class SubmissionReleaseService
-  attr_accessor :new_access_level
-  attr_accessor :previous_access_level
+  attr_accessor :new_access_level, :previous_access_level
 
   def initialize
     @error_message = []
@@ -60,7 +59,7 @@ class SubmissionReleaseService
       record_error(err)
       file_error_list << err
     end
-    { valid: file_error_list.empty? ? true : false, file_error_list: file_error_list }
+    { valid: file_error_list.empty? ? true : false, file_error_list: }
   end
 
   private
@@ -78,7 +77,7 @@ class SubmissionReleaseService
       else
         status_giver.released_for_publication!
       end
-      submission.update!(released_for_publication_at: publication_release_date, released_metadata_at: metadata_release_date, public_id: public_id)
+      submission.update!(released_for_publication_at: publication_release_date, released_metadata_at: metadata_release_date, public_id:)
       WorkflowMailer.send_publication_release_messages(submission)
       return unless release_files(original_final_files)
 

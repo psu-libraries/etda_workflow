@@ -2,14 +2,14 @@ RSpec.describe 'Author submission access_level', js: true do
   require 'integration/integration_spec_helper'
 
   let!(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, author: current_author }
-  let(:committee_member1) { FactoryBot.create :committee_member, submission: submission }
-  let(:committee_member2) { FactoryBot.create :committee_member, submission: submission }
+  let(:committee_member1) { FactoryBot.create :committee_member, submission: }
+  let(:committee_member2) { FactoryBot.create :committee_member, submission: }
   let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
   let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
 
   before do
     oidc_authorize_author
-    FactoryBot.create :format_review_file, submission: submission
+    FactoryBot.create(:format_review_file, submission:)
     # create :final_submission_file, submission: submission
     submission.committee_members << committee_member1
     submission.committee_members << committee_member2
@@ -24,12 +24,14 @@ RSpec.describe 'Author submission access_level', js: true do
         expect(page.find("#submission_access_level_open_access")).to be_checked
         expect(page).not_to have_content('Enter justification')
       end
+
       it 'has a restricted_to_institution radio button' do
         page.find("input#submission_access_level_restricted_to_institution").click
         expect(page.find("input#submission_access_level_restricted_to_institution")).to be_checked
         expect(page).not_to have_content('Enter justification')
         expect(page).not_to have_field('submission_invention_disclosures_attributes_0_id_number')
       end
+
       xit 'has a restricted radio button' do
         page.find("input#submission_access_level_restricted").click
         expect(page.find("input#submission_access_level_restricted")).to be_checked
@@ -54,11 +56,13 @@ RSpec.describe 'Author submission access_level', js: true do
         expect(page.find("li.open_access")).to be_truthy
         expect(page).to have_content('Enter justification')
       end
+
       it 'has a restricted_to_institution description and restricted notes textarea' do
         expect(page.find("li.restricted_to_institution")).to be_truthy
         expect(page.find('textarea#submission_restricted_notes')).to be_truthy
         expect(page).to have_content('Enter justification')
       end
+
       it 'has a restricted radio button and field for invention disclosure' do
         expect(page.find("li.restricted")).to be_truthy
         expect(page).to have_field('submission_invention_disclosures_attributes_0_id_number')

@@ -10,9 +10,9 @@ RSpec.describe "Step 6: Waiting for Head of Program Review'", js: true do
     let(:author) { current_author }
     let(:approver) { current_approver }
     let(:degree) { FactoryBot.create :degree }
-    let(:submission) { FactoryBot.create :submission, :waiting_for_head_of_program_review, author: author, degree: degree }
-    let(:committee_member) { FactoryBot.create :committee_member, submission: submission, access_id: 'approverflow' }
-    let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
+    let(:submission) { FactoryBot.create :submission, :waiting_for_head_of_program_review, author:, degree: }
+    let(:committee_member) { FactoryBot.create :committee_member, submission:, access_id: 'approverflow' }
+    let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: }
     let(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, email_admins: true }
     let(:head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', is_program_head: true, degree_type: submission.degree.degree_type) }
 

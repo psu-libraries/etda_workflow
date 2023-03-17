@@ -46,7 +46,7 @@ RSpec.describe EmailContactForm, honors: true, type: :model do
     context 'when issue_type is  not valid' do
       it 'returns invalid message' do
         mail_form.issue_type = :bogus
-        expect{ mail_form.issue_type_valid? }.to change { mail_form.errors.messages[:issue_type] }.to(['Invalid Issue Type'])
+        expect { mail_form.issue_type_valid? }.to change { mail_form.errors.messages[:issue_type] }.to(['Invalid Issue Type'])
       end
     end
   end

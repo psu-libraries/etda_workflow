@@ -1,9 +1,9 @@
 RSpec.describe "when an admin releases a restricted to institution submission for publication after 2 years", js: true do
   require 'integration/integration_spec_helper'
 
-  let(:submission) { FactoryBot.create :submission, :final_is_restricted_to_institution, author: author }
+  let(:submission) { FactoryBot.create :submission, :final_is_restricted_to_institution, author: }
   let(:author) { FactoryBot.create :author }
-  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
+  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: }
   let(:committee) { FactoryBot.create_committee(submission) }
 
   before do

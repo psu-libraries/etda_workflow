@@ -36,7 +36,7 @@ RSpec.describe SubmissionStates::CollectingProgramInformation do
   end
 
   describe '#transition' do
-    let(:submission) { FactoryBot.create :submission, :final_is_restricted, status: status }
+    let(:submission) { FactoryBot.create :submission, :final_is_restricted, status: }
     let(:subject) { described_class.transition submission }
 
     context 'when submission status CollectingProgramInformation' do

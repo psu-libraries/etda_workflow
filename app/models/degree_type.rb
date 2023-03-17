@@ -34,7 +34,7 @@ class DegreeType < ApplicationRecord
         new_degree.name = name
       end
 
-      d.update(name: name) if d.persisted?
+      d.update(name:) if d.persisted?
     end
   end
 

@@ -12,15 +12,19 @@ RSpec.describe Partner, type: :model do
     it 'returns partner name' do
       expect(subject.name).to eq(I18n.t("#{EtdaUtilities::Partner.current.id}.partner.name"))
     end
+
     it 'returns partner email' do
       expect(subject.email_address).to eq(I18n.t("#{EtdaUtilities::Partner.current.id}.partner.email.address"))
     end
+
     it 'returns partner email list' do
       expect(subject.email_list).to eq(I18n.t("#{EtdaUtilities::Partner.current.id}.partner.email.list"))
     end
+
     it 'returns partner slug' do
       expect(subject.slug).to eq(I18n.t("#{EtdaUtilities::Partner.current.id}.partner.slug"))
     end
+
     it 'returns partner label' do
       expect(subject.program_label).to eq(I18n.t("#{EtdaUtilities::Partner.current.id}.program.label"))
     end

@@ -1,4 +1,4 @@
-require: rubocop-rspec
+require: [rubocop-rspec, rubocop-rails]
 
 AllCops:
   Exclude:
@@ -20,26 +20,6 @@ AllCops:
     - 'lib/devise/**/*'
     - 'app/models/submission_status_giver.rb'
     - 'spec/models/submission_status_giver_spec.rb'
-
-Rails:
-  Enabled: true
-#
-#  Include:
-#    - '**/Rakefile'
-#    - '**/config.ru'
-#
-#  Exclude:
-#    - 'db/**/*'
-#    - 'script/**/*'
-#    - 'vendor/**/*'
-#    - 'config/deploy/**/*'
-#    - 'spec/routing/*'
-#    - 'bin/*'
-#    - 'node_modules/**/*'
-#    - 'webpack.config.js'
-#    - 'spec/zlib/tasks/legacy/**'
-#    - 'spec/zlib/tasks/**'
-#    - 'lib/tasks/**/*'
 
 Layout/LineLength:
   Enabled: false

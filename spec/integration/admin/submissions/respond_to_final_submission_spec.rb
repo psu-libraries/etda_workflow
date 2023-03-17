@@ -4,7 +4,7 @@ RSpec.describe "when admin responds to final submission", js: true do
   let!(:author) { FactoryBot.create :author }
   let!(:degree) { FactoryBot.create :degree }
   let!(:submission) do
-    FactoryBot.create :submission, :waiting_for_final_submission_response, author: author, degree: degree
+    FactoryBot.create :submission, :waiting_for_final_submission_response, author:, degree:
   end
 
   let!(:committee_members) do
@@ -32,8 +32,8 @@ RSpec.describe "when admin responds to final submission", js: true do
       select_day = '1'
       submission.final_submission_approved_at = nil
       create_committee(submission)
-      FactoryBot.create :format_review_file, submission: submission
-      FactoryBot.create :final_submission_file, submission: submission
+      FactoryBot.create(:format_review_file, submission:)
+      FactoryBot.create(:final_submission_file, submission:)
       visit admin_edit_submission_path(submission)
       sleep 2
       fill_in 'Final Submission Notes to Student', with: 'Note on paper is approved'
@@ -59,8 +59,8 @@ RSpec.describe "when admin responds to final submission", js: true do
       submission.status = 'collecting final submission files'
       submission.final_submission_rejected_at = nil
       submission.final_submission_approved_at = nil
-      FactoryBot.create :format_review_file, submission: submission
-      FactoryBot.create :final_submission_file, submission: submission
+      FactoryBot.create(:format_review_file, submission:)
+      FactoryBot.create(:final_submission_file, submission:)
       visit admin_edit_submission_path(submission)
       fill_in 'Final Submission Notes to Student', with: 'Note on need for revisions'
       page.accept_confirm do
@@ -120,7 +120,7 @@ RSpec.describe "when admin responds to final submission", js: true do
 
   describe 'an admin deletes a format review file that is waiting for approval' do
     let!(:submission) { FactoryBot.create :submission, :waiting_for_format_review_response }
-    let!(:format_file) { FactoryBot.create :format_review_file, submission: submission }
+    let!(:format_file) { FactoryBot.create :format_review_file, submission: }
 
     # Add after updating file controller methods for author and admin
 

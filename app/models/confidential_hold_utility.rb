@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 class ConfidentialHoldUtility
-  attr_reader :original_confidential_status
+  attr_reader :original_confidential_status, :this_access_id
   attr_accessor :new_confidential_status
-  attr_reader :this_access_id
 
   def initialize(access_id, original_confidential_status, current_status = nil)
     # original_confidential_status is the conf. hold status currently in the author's record

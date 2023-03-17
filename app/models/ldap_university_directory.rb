@@ -44,7 +44,7 @@ class LdapUniversityDirectory
     return {} if string_has_wildcard_character? input_string
 
     ldap_record = directory_lookup(query_type.to_s, input_string)
-    mapped_attributes = LdapResult.new(ldap_record: ldap_record,
+    mapped_attributes = LdapResult.new(ldap_record:,
                                        attribute_map: attributes_map).map_directory_info
     return {} if mapped_attributes.blank?
 
@@ -53,7 +53,7 @@ class LdapUniversityDirectory
 
   def retrieve_committee_access_id(psu_email)
     ldap_record = directory_lookup('psMailID', psu_email)
-    mapped_attributes = LdapResult.new(ldap_record: ldap_record,
+    mapped_attributes = LdapResult.new(ldap_record:,
                                        attribute_map: LdapResultsMap::COMMITTEE_LDAP_MAP).map_directory_info
     return nil if mapped_attributes.blank?
 
@@ -83,14 +83,12 @@ class LdapUniversityDirectory
     false
   end
 
-  def with_connection
+  def with_connection(&block)
     Net::LDAP.open(host: ldap_configuration['host'],
                    port: ldap_configuration['port'],
                    encryption: { method: :simple_tls },
                    auth: { method: :simple, username: "uid=#{ldap_configuration['user']},dc=psu,dc=edu",
-                           password: ldap_configuration['password'] }) do |connection|
-      yield connection
-    end
+                           password: ldap_configuration['password'] }, &block)
   rescue Net::LDAP::Error
     raise UnreachableError
   end

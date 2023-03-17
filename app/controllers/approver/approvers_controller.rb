@@ -77,7 +77,7 @@ class Approver::ApproversController < ApproverController
       links = []
       if @submission.final_submission_files.any?
         @submission.final_submission_files.map do |f|
-          link = link_to f.asset_identifier, approver_approver_file_path(f.id), 'target': '_blank', 'data-no-turbolink': true
+          link = link_to f.asset_identifier, approver_approver_file_path(f.id), 'target': '_blank', 'data-no-turbolink': true, rel: 'noopener'
           links.push(link)
         end
       end

@@ -1,6 +1,5 @@
 class Admin::SubmissionsIndexView
-  attr_reader :submissions, :session_semester
-  attr_reader :degree_type, :scope
+  attr_reader :submissions, :session_semester, :degree_type, :scope
 
   def initialize(degree_type, scope, context, session_semester)
     @degree_type = DegreeType.find_by!(slug: degree_type)

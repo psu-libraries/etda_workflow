@@ -2,9 +2,9 @@ RSpec.describe "when an admin releases the submission for publication", js: true
   require 'integration/integration_spec_helper'
 
   let(:author) { FactoryBot.create :author }
-  let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, author: author }
+  let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, author: }
   let(:committee) { create_committee(submission) }
-  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
+  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: }
 
   before do
     stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")

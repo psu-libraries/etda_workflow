@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'shoulda-matchers'
 
 RSpec.describe FinalSubmissionSubmitService do
-  let!(:submission) { FactoryBot.create :submission, degree: degree }
+  let!(:submission) { FactoryBot.create :submission, degree: }
   let!(:status_giver) { SubmissionStatusGiver.new(submission) }
   let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
 

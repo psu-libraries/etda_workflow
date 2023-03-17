@@ -12,10 +12,12 @@ RSpec.describe AuthorAbility, type: :model do
       expect(author_ability.can? :edit, author_user).to be_truthy
       expect(author_ability.can? :update, author_user).to be_truthy
     end
+
     it 'does not allow author to delete his or her personal information' do
       expect(author_ability.can? :destroy, author_user).to be_falsey
       expect(author_ability.can? :create, author_user).to be_falsey
     end
+
     it "does not allow author to edit or update a different author's record" do
       different_person = FactoryBot.create :author, access_id: 'different123'
       expect(author_ability.can? :edit, different_person).to be_falsey

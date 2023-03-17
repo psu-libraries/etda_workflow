@@ -8,8 +8,8 @@ RSpec.describe Author::SubmissionView do
     let(:program) { FactoryBot.create :program, name: 'Phys Ed.' }
     let(:degree) { FactoryBot.create :degree, name: 'Doctorate' }
     let(:submission) do
-      FactoryBot.create :submission, program: program,
-                                     degree: degree,
+      FactoryBot.create :submission, program:,
+                                     degree:,
                                      semester: 'Spring',
                                      year: Date.new(2016, 0o6, 0o1).year
     end
@@ -718,17 +718,19 @@ RSpec.describe Author::SubmissionView do
     end
   end
 
-  context '#display_format_review_notes?' do
+  describe '#display_format_review_notes?' do
     it 'does not display if notes are empty' do
       submission.format_review_notes = nil
       expect(view.send('display_format_review_notes?', 3)).to be_falsey
     end
+
     it 'displays notes for step 3' do
       submission.format_review_notes = 'format review note'
       submission.status = 'collecting format review files rejected'
       submission.format_review_rejected_at = Time.zone.yesterday
       expect(view.send('display_format_review_notes?', 3)).to be_truthy
     end
+
     it 'displays notes for step 4 if format review has not been approved' do
       submission.format_review_approved_at = Time.zone.yesterday
       submission.format_review_notes = 'format review note'
@@ -737,17 +739,19 @@ RSpec.describe Author::SubmissionView do
     end
   end
 
-  context '#display_final_submission_notes?' do
+  describe '#display_final_submission_notes?' do
     it 'does not display if notes are empty' do
       submission.final_submission_notes = nil
       expect(view.send('display_final_submission_notes?', 7)).to be_falsey
     end
+
     it 'displays notes for step 7' do
       submission.final_submission_notes = 'final rnote'
       submission.status = 'collecting final submission files rejected'
       submission.final_submission_rejected_at = Time.zone.yesterday
       expect(view.send('display_final_submission_notes?', 7)).to be_truthy
     end
+
     it 'displays notes for step 7 if final submission has been approved' do
       submission.final_submission_approved_at = Time.zone.yesterday
       submission.final_submission_notes = 'final note'
