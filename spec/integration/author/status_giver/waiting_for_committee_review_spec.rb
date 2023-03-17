@@ -140,7 +140,7 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
       end
 
-      it "proceeds to 'waiting for final submission response' when head of program is approving if head already accepted" do
+      it "proceeds to 'waiting for final submission response' when head of program is approving if head already accepted", js: false do
         FactoryBot.create :committee_member, :required, submission: submission, committee_role: head_role, status: 'approved', access_id: 'approverflow'
         submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
         visit approver_path(committee_member)
