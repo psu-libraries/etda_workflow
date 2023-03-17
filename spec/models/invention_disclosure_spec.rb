@@ -61,11 +61,11 @@ RSpec.describe InventionDisclosure, type: :model do
 
     context 'it displays a message' do
       it 'has a description' do
-        expect(InventionDisclosure.description).to eq('The Restricted option should be used exclusively for authors with patent issues.  Authors using this option are required to file an Invention Disclosure form with the Intellectual Property Office in order to obtain an Invention Disclosure Number.')
+        expect(described_class.description).to eq('The Restricted option should be used exclusively for authors with patent issues.  Authors using this option are required to file an Invention Disclosure form with the Intellectual Property Office in order to obtain an Invention Disclosure Number.')
       end
 
       it 'has a prefix length' do
-        expect(InventionDisclosure.prefix_range).to eq(8)
+        expect(described_class.prefix_range).to eq(8)
       end
     end
   end

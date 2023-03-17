@@ -64,7 +64,7 @@ RSpec.describe 'Approver datatables', type: :integration, js: true do
     FactoryBot.create(:committee_member, committee_role:,
                                          approval_started_at: DateTime.now,
                                          submission: completed_submission,
-                                         status: 'Approved', access_id: 'approverflow'
+                                         status: 'Approved', access_id: 'approverflow')
     visit '/approver/reviews'
     expect(page).to have_link(submission.title)
     expect(page).not_to have_link(completed_submission.title)

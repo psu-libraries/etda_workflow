@@ -5,7 +5,7 @@ def formatted_time(this_time)
 end
 
 def formatted_date(this_date)
-  time_date = Time.parse(this_date.to_s) || ''
+  time_date = Time.zone.parse(this_date.to_s) || ''
   return '' if time_date == ''
 
   time_date.strftime('%Y-%m-%d')

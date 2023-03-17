@@ -72,7 +72,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
       expect(page).to have_content(submission1.format_review_files.first.asset.identifier)
       expect(page).to have_link('Return to dashboard')
       format_file_id = "format-review-file-#{submission1.format_review_files.first.id}"
-      format_div = "div#" + format_file_id
+      format_div = "div##{format_file_id}"
       format_review_section = page.find(format_div)
       num_windows = page.driver.browser.window_handles.count
       within(format_review_section) do
@@ -101,7 +101,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
       expect(page).to have_content("Lorem ipsum dolor sit amet")
       expect(page).to have_link('Return to dashboard')
       final_file_id = "final-submission-file-#{submission1.final_submission_files.first.id}"
-      final_div = "div#" + final_file_id
+      final_div = "div##{final_file_id}"
       final_submission_section = page.find(final_div)
       num_windows = page.driver.browser.window_handles.count
       within(final_submission_section) do

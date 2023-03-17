@@ -47,14 +47,14 @@ RSpec.describe SubmissionStatus, type: :model do
 
   it 'responds to #collecting_format_review_files_rejected?' do
     submission.status = 'collecting format review files'
-    submission.format_review_rejected_at = Time.now
+    submission.format_review_rejected_at = Time.zone.now
     expect(described_class.new(submission)).to be_collecting_format_review_files_rejected
     submission.status = 'collecting format review files rejected'
-    submission.format_review_rejected_at = Time.now
+    submission.format_review_rejected_at = Time.zone.now
     expect(described_class.new(submission)).to be_collecting_format_review_files_rejected
     submission.status = 'collecting format review files'
-    submission.format_review_rejected_at = Time.now
-    submission.format_review_approved_at = Time.now
+    submission.format_review_rejected_at = Time.zone.now
+    submission.format_review_approved_at = Time.zone.now
     expect(described_class.new(submission)).not_to be_collecting_format_review_files_rejected
   end
 
@@ -78,10 +78,10 @@ RSpec.describe SubmissionStatus, type: :model do
     submission.status = 'collecting final submission files'
     expect(described_class.new(submission)).not_to be_collecting_final_submission_files_rejected
     submission.status = 'collecting final submission files'
-    submission.final_submission_rejected_at = Time.now
+    submission.final_submission_rejected_at = Time.zone.now
     expect(described_class.new(submission)).to be_collecting_final_submission_files_rejected
     submission.status = 'collecting final submission files rejected'
-    submission.final_submission_approved_at = Time.now
+    submission.final_submission_approved_at = Time.zone.now
     expect(described_class.new(submission)).not_to be_collecting_final_submission_files_rejected
   end
 

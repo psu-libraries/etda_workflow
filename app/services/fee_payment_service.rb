@@ -12,9 +12,10 @@ class FeePaymentService
       Rails.logger.error e.message
       raise e
     end
-    if result["data"].first["ETDPAYMENTFOUND"].to_s == "Y"
+    case result["data"].first["ETDPAYMENTFOUND"].to_s
+    when "Y"
       true
-    elsif result["data"].first["ETDPAYMENTFOUND"].to_s == "N"
+    when "N"
       raise FeeNotPaid
     else
       raise result["error"].to_s

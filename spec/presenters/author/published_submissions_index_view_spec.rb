@@ -12,7 +12,7 @@ RSpec.describe Author::PublishedSubmissionsIndexView do
     it "#release information returns publication date for open_access and restricted_to_institution submissions" do
       date = submission.released_for_publication_at.strftime('%B %-e, %Y')
       expect(view.release_information(submission)).to eql(
-        '<strong>Publication Date: </strong>' + date
+        "<strong>Publication Date: </strong>#{date}"
       )
     end
 
@@ -27,7 +27,7 @@ RSpec.describe Author::PublishedSubmissionsIndexView do
       restricted_author = FactoryBot.create :author
       restricted_submission = FactoryBot.create :submission, :final_is_restricted, author: restricted_author, public_id: 'public-id456'
       date = restricted_submission.released_metadata_at.strftime('%B %-e, %Y')
-      expect(view.release_information(restricted_submission)).to eql('<strong>Abstract Publish Date: </strong>' + date)
+      expect(view.release_information(restricted_submission)).to eql("<strong>Abstract Publish Date: </strong>#{date}")
     end
 
     it "returns 'no_published_submissions' partial when author has no publications" do

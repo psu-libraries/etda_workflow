@@ -53,9 +53,9 @@ class Author < ApplicationRecord
 
   def full_name
     return access_id if first_name.nil? || last_name.nil?
-    return first_name + ' ' + last_name if middle_name.blank?
+    return "#{first_name} #{last_name}" if middle_name.blank?
 
-    first_name + ' ' + middle_name + ' ' + last_name
+    "#{first_name} #{middle_name} #{last_name}"
   end
 
   def populate_attributes

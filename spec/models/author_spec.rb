@@ -255,7 +255,7 @@ RSpec.describe Author, type: :model do
   describe '#full_name' do
     it 'combines first and last name' do
       author = FactoryBot.create :author
-      expect(author.full_name).to eql(author.first_name + ' ' + author.middle_name + ' ' + author.last_name)
+      expect(author.full_name).to eql("#{author.first_name} #{author.middle_name} #{author.last_name}")
     end
 
     it 'returns access_id if name is missing' do

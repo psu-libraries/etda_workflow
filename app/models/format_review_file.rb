@@ -18,7 +18,7 @@ class FormatReviewFile < ApplicationRecord
 
   def full_file_path
     # file path only
-    WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(id)
+    "#{WORKFLOW_BASE_PATH}format_review_files/#{EtdaFilePaths.new.detailed_file_path(id)}"
   end
 
   def current_location

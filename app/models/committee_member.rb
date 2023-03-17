@@ -132,7 +132,7 @@ class CommitteeMember < ApplicationRecord
       return true unless committee_role.present? && submission.present? && is_program_head
 
       program_head = CommitteeMember.program_head(submission)
-      head_committee_member_id = (program_head ? program_head.id : nil)
+      head_committee_member_id = program_head&.id
       return true if (head_committee_member_id.nil? || head_committee_member_id == self[:id]) &&
                      (submission.committee_members.collect { |n| n.committee_role.present? ? n.is_program_head : nil }
                      .count(true) < 2)

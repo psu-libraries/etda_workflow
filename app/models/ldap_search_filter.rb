@@ -19,7 +19,7 @@ class LdapSearchFilter
                          else
                            # Once they're on their third word, assume that they're going
                            # for an exact match, but still typing the last word.
-                           search_words.join(" ") + "*"
+                           "#{search_words.join(' ')}*"
                          end
 
     ldap_name_attribute = search_words.count == 1 ? 'sn' : 'cn'

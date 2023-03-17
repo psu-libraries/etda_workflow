@@ -15,9 +15,10 @@ class SubmissionReleaseService
       file_verification_results = file_verification(original_final_files)
       return ['File not found.', file_verification_results[:file_error_list]] unless file_verification_results[:valid]
 
-      if release_type == 'Release selected for publication'
+      case release_type
+      when 'Release selected for publication'
         publish_a_submission(submission, date_to_release, original_final_files)
-      elsif release_type == 'Release as Open Access'
+      when 'Release as Open Access'
         update_restricted_submission_to_open_access(submission, date_to_release, original_final_files)
       end
       SolrDataImportService.new.index_submission(submission, true)
@@ -121,12 +122,12 @@ class SubmissionReleaseService
     def public_id_ok(new_public_id)
       return true if new_public_id.present?
 
-      record_error("Public ID error" + I18n.t('released_message.submission_error', id: s.id, last_name: s.author.last_name, first_name: s.author.first_name).to_s)
+      record_error("Public ID error#{I18n.t('released_message.submission_error', id: s.id, last_name: s.author.last_name, first_name: s.author.first_name)}")
       false
     end
 
     def record_error(message)
-      Rails.logger.error(Time.zone.now.to_s + 'Final Submission release-unrelease error:' + message)
+      Rails.logger.error("#{Time.zone.now}Final Submission release-unrelease error:#{message}")
       @error_message << message
       @error_count += 1
     end

@@ -4,7 +4,7 @@ require 'model_spec_helper'
 
 RSpec.describe EmailContactForm, honors: true, type: :model do
   let(:mail_form) do
-    EmailContactForm.new(
+    described_class.new(
       full_name: 'Test',
       email: 'test123@psu.edu',
       psu_id: '999999999',

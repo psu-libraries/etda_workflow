@@ -281,7 +281,7 @@ RSpec.describe Submission, type: :model do
 
   context 'keywords' do
     it 'has a list of keywords' do
-      submission = Submission.new
+      submission = described_class.new
       submission.keywords << Keyword.new(word: 'zero')
       submission.keywords << Keyword.new(word: 'one')
       submission.keywords << Keyword.new(word: 'two')
@@ -300,21 +300,21 @@ RSpec.describe Submission, type: :model do
   describe '#federal_funding_display' do
     context 'when federal_funding is nil' do
       it 'returns nil' do
-        submission = Submission.new(federal_funding: nil)
+        submission = described_class.new(federal_funding: nil)
         expect(submission.federal_funding_display).to be_nil
       end
     end
 
     context 'when federal_funding is false' do
       it 'returns No' do
-        submission = Submission.new(federal_funding: false)
+        submission = described_class.new(federal_funding: false)
         expect(submission.federal_funding_display).to eq('No')
       end
     end
 
     context 'when federal_funding is true' do
       it 'returns Yes' do
-        submission = Submission.new(federal_funding: true)
+        submission = described_class.new(federal_funding: true)
         expect(submission.federal_funding_display).to eq('Yes')
       end
     end
@@ -322,13 +322,13 @@ RSpec.describe Submission, type: :model do
 
   describe '#check_title_capitalization' do
     it 'identifies all caps in the title' do
-      submission = Submission.new(title: 'THIS TITLE IS NOT ALLOWED')
+      submission = described_class.new(title: 'THIS TITLE IS NOT ALLOWED')
       expect(submission.check_title_capitalization).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
       expect(submission.errors[:title]).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
     end
 
     it 'allows titles with < 4 uppercase, numbers, and symbols' do
-      submission = Submission.new(title: 'THIS 1855 is %^&**% AlloweD')
+      submission = described_class.new(title: 'THIS 1855 is %^&**% AlloweD')
       expect(submission.check_title_capitalization).to eq(nil)
       expect(submission.errors[:title]).to eq([])
     end
@@ -336,13 +336,13 @@ RSpec.describe Submission, type: :model do
 
   describe '#check_title_capitalization' do
     it 'identifies all caps in the title' do
-      submission = Submission.new(title: 'THIS TITLE IS NOT ALLOWED')
+      submission = described_class.new(title: 'THIS TITLE IS NOT ALLOWED')
       expect(submission.check_title_capitalization).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
       expect(submission.errors[:title]).to eq(["Please check that the title is properly capitalized. If you need to use upper-case words such as acronyms, you must select the option to allow it."])
     end
 
     it 'allows titles with < 4 uppercase, numbers, and symbols' do
-      submission = Submission.new(title: 'THIS 1855 is %^&**% AlloweD')
+      submission = described_class.new(title: 'THIS 1855 is %^&**% AlloweD')
       expect(submission.check_title_capitalization).to eq(nil)
       expect(submission.errors[:title]).to eq([])
     end
@@ -350,7 +350,7 @@ RSpec.describe Submission, type: :model do
 
   describe '#restricted_to_institution?' do
     it 'returns true' do
-      submission = Submission.new(access_level: 'restricted_to_institution')
+      submission = described_class.new(access_level: 'restricted_to_institution')
       expect(submission).to be_restricted_to_institution
       submission.access_level = 'restricted'
       expect(submission).not_to be_restricted_to_institution
@@ -419,7 +419,7 @@ RSpec.describe Submission, type: :model do
     context "when a Program Head/Chair doesn't already exist" do
       it 'returns a list of required committee members' do
         degree = Degree.new(degree_type: DegreeType.default, name: 'mydegree')
-        submission = Submission.new(degree:)
+        submission = described_class.new(degree:)
         expect(submission.build_committee_members_for_partners).not_to be_blank
       end
     end
@@ -454,7 +454,7 @@ RSpec.describe Submission, type: :model do
       submission = FactoryBot.create :submission, :collecting_format_review_files
       expect(submission.format_review_files_uploaded_at).to be_nil
       expect(submission.format_review_files_first_uploaded_at).to be_nil
-      time_now = Time.now
+      time_now = Time.zone.now
       # time_now_formatted = time_now.strftime("%Y-%m-%d %H:%M:%S.000000000 -0500")
       time_now_formatted = formatted_time(time_now)
       submission.update_format_review_timestamps!(time_now)
@@ -466,7 +466,7 @@ RSpec.describe Submission, type: :model do
       submission = FactoryBot.create :submission, :collecting_final_submission_files
       expect(submission.final_submission_files_uploaded_at).to be_nil
       expect(submission.final_submission_files_first_uploaded_at).to be_nil
-      time_now = Time.now
+      time_now = Time.zone.now
       time_now_formatted = formatted_time(time_now)
       # time_now_formatted = time_now.strftime("%Y-%m-%d %H:%M:%S.000000000 -0500")
       submission.update_final_submission_timestamps!(time_now)
