@@ -1,4 +1,4 @@
-RSpec.describe "Last Step: 'waiting for publication release'", js: true do
+RSpec.describe "Last Step: 'waiting for publication release'", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'waiting for publication release'" do

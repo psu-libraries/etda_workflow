@@ -1,4 +1,4 @@
-RSpec.describe 'Submitting a final submission as an author', js: true do
+RSpec.describe 'Submitting a final submission as an author', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When collecting final submission files", honors: true, milsch: true, sset: true do

@@ -1,4 +1,4 @@
-RSpec.describe 'Step 1: Collecting Program Information status', js: true do
+RSpec.describe 'Step 1: Collecting Program Information status', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'collecting program information'" do

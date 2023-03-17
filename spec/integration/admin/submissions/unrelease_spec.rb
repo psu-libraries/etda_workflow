@@ -1,4 +1,4 @@
-RSpec.describe "Unrelease a submission", js: true, honors: true, milsch: true do
+RSpec.describe "Unrelease a submission", type: :integration, js: true, honors: true, milsch: true do
   require 'integration/integration_spec_helper'
 
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }

@@ -1,4 +1,4 @@
-RSpec.describe 'Author submission access_level', js: true do
+RSpec.describe 'Author submission access_level', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let!(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, author: current_author }

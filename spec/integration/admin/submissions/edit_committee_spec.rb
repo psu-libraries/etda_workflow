@@ -1,4 +1,4 @@
-RSpec.describe "Editing committee member information", js: true, honors: true, milsch: true do
+RSpec.describe "Editing committee member information", type: :integration, js: true, honors: true, milsch: true do
   require 'integration/integration_spec_helper'
 
   let!(:author) { FactoryBot.create(:author) }

@@ -1,4 +1,4 @@
-RSpec.describe 'Admin submission access_level', js: true do
+RSpec.describe 'Admin submission access_level', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response, degree: }

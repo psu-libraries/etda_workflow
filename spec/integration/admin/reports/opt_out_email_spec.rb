@@ -1,4 +1,4 @@
-RSpec.describe "Opt out Report", js: true do
+RSpec.describe "Opt out Report", type: :integration, js: true do
   require 'integration/integration_spec_helper'
   describe 'it creates an array of authors with published submissions', js: true do
     let(:author1) { FactoryBot.create :author }

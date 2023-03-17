@@ -1,4 +1,4 @@
-RSpec.describe 'The standard committee form for authors', js: true do
+RSpec.describe 'The standard committee form for authors', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let(:author) { current_author }

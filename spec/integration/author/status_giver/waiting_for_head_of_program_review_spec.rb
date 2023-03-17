@@ -1,4 +1,4 @@
-RSpec.describe "Step 6: Waiting for Head of Program Review'", js: true do
+RSpec.describe "Step 6: Waiting for Head of Program Review'", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'waiting for head of program review'" do

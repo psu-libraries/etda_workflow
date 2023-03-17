@@ -1,4 +1,4 @@
-RSpec.describe "when an admin releases a restricted submission for publication after 2 years", js: true do
+RSpec.describe "when an admin releases a restricted submission for publication after 2 years", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let(:author) { FactoryBot.create :author }

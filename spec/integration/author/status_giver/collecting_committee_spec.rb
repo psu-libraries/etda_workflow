@@ -1,4 +1,4 @@
-RSpec.describe 'Step 2: Collecting Committee status', js: true do
+RSpec.describe 'Step 2: Collecting Committee status', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'collecting committee'" do

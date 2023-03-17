@@ -1,4 +1,4 @@
-RSpec.describe "when an admin approves a format review", js: true do
+RSpec.describe "when an admin approves a format review", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let!(:author) { FactoryBot.create :author }

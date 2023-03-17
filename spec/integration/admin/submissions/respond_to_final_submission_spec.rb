@@ -1,4 +1,4 @@
-RSpec.describe "when admin responds to final submission", js: true do
+RSpec.describe "when admin responds to final submission", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let!(:author) { FactoryBot.create :author }

@@ -1,4 +1,4 @@
-RSpec.describe 'Step 3: Collecting Format Review Files', js: true do
+RSpec.describe 'Step 3: Collecting Format Review Files', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'collecting format review files'" do

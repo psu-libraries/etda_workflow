@@ -1,4 +1,4 @@
-RSpec.describe "Editing format review and final submissions as an admin", js: true do
+RSpec.describe "Editing format review and final submissions as an admin", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let!(:author) { FactoryBot.create(:author) }

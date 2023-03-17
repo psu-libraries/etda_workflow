@@ -37,7 +37,7 @@ services:
       # context: .
       # target: base
     environment:
-      JS: ${JS:-false}
+      INTEGRATION: ${INTEGRATION:-false}
       REDIS_HOST: redis
       APP_HOST: web
       MYSQL_HOST: db

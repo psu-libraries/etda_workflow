@@ -1,4 +1,4 @@
-RSpec.describe "when an admin releases the submission for publication", js: true do
+RSpec.describe "when an admin releases the submission for publication", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let(:author) { FactoryBot.create :author }

@@ -1,4 +1,4 @@
-RSpec.describe "Editing a released submission as an admin", js: true do
+RSpec.describe "Editing a released submission as an admin", type: :integration, js: true do
   require 'integration/integration_spec_helper'
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }

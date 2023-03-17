@@ -1,4 +1,4 @@
-RSpec.describe 'actions that send an email notifying users of an access level update on a submission', js: true do
+RSpec.describe 'actions that send an email notifying users of an access level update on a submission', type: :integration, js: true do
   require 'integration/integration_spec_helper'
   before do
     stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
