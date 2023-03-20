@@ -43,7 +43,7 @@ class EmailContactFormController < ApplicationController
     end
 
     def new_approver_form
-      EmailContactForm.new(email: email_contact_user.access_id + '@psu.edu')
+      EmailContactForm.new(email: "#{email_contact_user.access_id}@psu.edu")
     end
 
     def email_contact_user

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe ApproverController, type: :controller do
   before do
-    @approver_controller = ApproverController.new
+    @approver_controller = described_class.new
     allow(@approver_controller).to receive(:request).and_return(request)
   end
 

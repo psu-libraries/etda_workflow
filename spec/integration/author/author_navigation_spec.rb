@@ -1,4 +1,4 @@
-RSpec.describe "Author Navigation", js: true do
+RSpec.describe "Author Navigation", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   before do

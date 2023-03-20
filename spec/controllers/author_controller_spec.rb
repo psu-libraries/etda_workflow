@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe AuthorController, type: :controller do
   before do
-    @author_controller = AuthorController.new
+    @author_controller = described_class.new
     allow(@author_controller).to receive(:request).and_return(request)
   end
 

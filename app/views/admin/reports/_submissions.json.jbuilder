@@ -5,7 +5,7 @@ json.array! [
   submission.author.psu_idn,
   submission.cleaned_title,
   submission.degree.name,
-  submission.program ? submission.program.name : nil,
+  submission.program&.name,
   submission.current_access_level.label,
   submission.admin_status,
   submission.federal_funding_display,

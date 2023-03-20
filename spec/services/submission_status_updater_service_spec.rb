@@ -15,7 +15,7 @@ RSpec.describe SubmissionStatusUpdaterService do
     context 'when status is waiting for advisor review' do
       context 'when advisor approves and there are no funding discrepancies' do
         it 'changes status to waiting for committee review' do
-          submission = FactoryBot.create :submission, :waiting_for_advisor_review, degree: degree
+          submission = FactoryBot.create(:submission, :waiting_for_advisor_review, degree:)
           create_committee submission
           submission.reload
           submission.federal_funding = true
@@ -33,7 +33,7 @@ RSpec.describe SubmissionStatusUpdaterService do
 
       context "when advisor's federal_funding_used is nil" do
         it 'changes status to waiting for committee review' do
-          submission = FactoryBot.create :submission, :waiting_for_advisor_review, degree: degree
+          submission = FactoryBot.create(:submission, :waiting_for_advisor_review, degree:)
           create_committee submission
           submission.reload
           submission.federal_funding = true
@@ -51,7 +51,7 @@ RSpec.describe SubmissionStatusUpdaterService do
 
       context 'when advisor approves and there are funding discrepancies' do
         it 'changes status to waiting for committee review rejected' do
-          submission = FactoryBot.create :submission, :waiting_for_advisor_review, degree: degree
+          submission = FactoryBot.create(:submission, :waiting_for_advisor_review, degree:)
           create_committee submission
           submission.reload
           submission.federal_funding = false
@@ -68,7 +68,7 @@ RSpec.describe SubmissionStatusUpdaterService do
 
       context 'when advisor rejects' do
         it 'changes status to waiting for committee review rejected' do
-          submission = FactoryBot.create :submission, :waiting_for_advisor_review, degree: degree
+          submission = FactoryBot.create(:submission, :waiting_for_advisor_review, degree:)
           create_committee submission
           submission.reload
           submission.federal_funding = true

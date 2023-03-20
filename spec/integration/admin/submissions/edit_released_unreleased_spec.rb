@@ -1,4 +1,4 @@
-RSpec.describe "Editing a released submission as an admin", js: true do
+RSpec.describe "Editing a released submission as an admin", type: :integration, js: true do
   require 'integration/integration_spec_helper'
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
@@ -10,7 +10,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
     let(:submission) do
       FactoryBot.create(:submission,
                         :released_for_publication,
-                        author: author,
+                        author:,
                         semester: 'Fall',
                         year: DateTime.now.year,
                         public_id: 'publicid')
@@ -25,8 +25,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
           headers: {
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v2.3.0'
+            'Content-Type' => 'application/json'
           }
         )
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -36,8 +35,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
           headers: {
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v2.3.0'
+            'Content-Type' => 'application/json'
           }
         )
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -141,7 +139,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
 
   describe "Remove from  submission to be released", js: true, retry: 5 do
     let!(:author) { FactoryBot.create(:author) }
-    let!(:submission) { FactoryBot.create(:submission, :waiting_for_publication_release, author: author, degree: degree) }
+    let!(:submission) { FactoryBot.create(:submission, :waiting_for_publication_release, author:, degree:) }
     let!(:author_name) { submission.author.last_name }
 
     before do
@@ -171,7 +169,7 @@ RSpec.describe "Editing a released submission as an admin", js: true do
 
   describe "Remove legacy record from  submission to be released", js: true, retry: 10 do
     it "Changes the status to 'final submission submitted' and also saves any updates" do
-      legacy_submission = FactoryBot.create(:submission, :waiting_for_publication_release, degree: degree)
+      legacy_submission = FactoryBot.create(:submission, :waiting_for_publication_release, degree:)
       legacy_submission.legacy_id = 888
       legacy_submission.save
 

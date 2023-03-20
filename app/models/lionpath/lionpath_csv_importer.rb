@@ -33,7 +33,7 @@ class Lionpath::LionpathCsvImporter
   def sftp_download(pattern)
     sftp = Net::SFTP.start(ENV['LIONPATH_SFTP_SERVER'], ENV['LIONPATH_SFTP_USER'], key_data: [ENV['LIONPATH_SSH_KEY']])
     file = sftp.dir
-               .glob("out/", pattern + "*")
+               .glob("out/", "#{pattern}*")
                .reject { |f| f.name.starts_with?('.') }
                .select(&:file?)
                .max { |a, b| a.attributes.mtime <=> b.attributes.mtime }
@@ -44,11 +44,12 @@ class Lionpath::LionpathCsvImporter
   private
 
     def grab_file(resource)
-      if resource.is_a?(Lionpath::LionpathCommitteeRoles)
+      case resource
+      when Lionpath::LionpathCommitteeRoles
         sftp_download(LIONPATH_FILE_PATTERNS[:committee_role])
-      elsif resource.is_a?(Lionpath::LionpathProgram)
+      when Lionpath::LionpathProgram
         sftp_download(LIONPATH_FILE_PATTERNS[:program])
-      elsif resource.is_a?(Lionpath::LionpathCommittee)
+      when Lionpath::LionpathCommittee
         sftp_download(LIONPATH_FILE_PATTERNS[:committee])
       else
         raise InvalidResource
@@ -57,7 +58,7 @@ class Lionpath::LionpathCsvImporter
 
     def parse_csv(resource)
       csv_options = { headers: true, encoding: "ISO-8859-1:UTF-8", quote_char: '"', force_quotes: true }
-      CSV.foreach(lionpath_csv_loc, csv_options) do |row|
+      CSV.foreach(lionpath_csv_loc, **csv_options) do |row|
         resource.import(row)
       rescue StandardError => e
         Rails.logger.error(error_json(e, resource))

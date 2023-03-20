@@ -1,4 +1,4 @@
-RSpec.describe "Admins can run reports", js: true do
+RSpec.describe "Admins can run reports", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   submission_year = Semester.current.split[0]

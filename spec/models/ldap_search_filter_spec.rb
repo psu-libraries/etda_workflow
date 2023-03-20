@@ -16,6 +16,7 @@ RSpec.describe LdapSearchFilter, type: :model do
         filter = described_class.new('jim smith', true).create_filter
         expect(filter.to_json).to eql(ldap_filter.to_json)
       end
+
       it 'does not return the same filter' do
         filter = described_class.new('jim Jones', true).create_filter
         expect(filter.to_json).not_to eql(ldap_filter.to_json)
@@ -31,6 +32,7 @@ RSpec.describe LdapSearchFilter, type: :model do
         filter = described_class.new('lee ', true).create_filter
         expect(filter.to_json).to eql(ldap_filter.to_json)
       end
+
       it 'does not return the same filter' do
         filter = described_class.new('larry ', true).create_filter
         expect(filter.to_json).not_to eql(ldap_filter.to_json)
@@ -46,6 +48,7 @@ RSpec.describe LdapSearchFilter, type: :model do
         filter = described_class.new('lee harvey oswald', true).create_filter
         expect(filter.to_json).to eql(ldap_filter.to_json)
       end
+
       it 'does not return the same filter' do
         filter = described_class.new('bad lee oswald', true).create_filter
         expect(filter.to_json).not_to eql(ldap_filter.to_json)

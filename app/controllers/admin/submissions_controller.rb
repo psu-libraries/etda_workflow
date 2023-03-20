@@ -202,7 +202,7 @@ class Admin::SubmissionsController < AdminController
     @view = Admin::SignatoryPageView.new(author)
     return if author.nil?
 
-    render 'admin/submissions/print/signatory_page', target: :blank, locals: { submission: @submission, author: author }
+    render 'admin/submissions/print/signatory_page', target: :blank, locals: { submission: @submission, author: }
   end
 
   def print_signatory_page_update
@@ -231,7 +231,7 @@ class Admin::SubmissionsController < AdminController
       links = []
       if @submission.final_submission_files.any?
         @submission.final_submission_files.map do |f|
-          link = link_to f.asset_identifier, admin_final_submission_file_path(f.id), 'target': '_blank', 'data-no-turbolink': true
+          link = link_to f.asset_identifier, admin_final_submission_file_path(f.id), 'target': '_blank', 'data-no-turbolink': true, rel: 'noopener'
           links.push(link)
         end
       end

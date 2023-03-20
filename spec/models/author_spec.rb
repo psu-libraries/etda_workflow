@@ -68,6 +68,7 @@ RSpec.describe Author, type: :model do
       expect(FactoryBot.build(:author, psu_idn: '712345678')).not_to be_valid
       expect(FactoryBot.build(:author, psu_idn: '9123456-8')).not_to be_valid
     end
+
     it 'does not check format of phone number' do
       expect(FactoryBot.build(:author, legacy_id: 1, phone_number: '123-xyz-7890')).to be_valid
       expect(FactoryBot.build(:author, legacy_id: 1, phone_number: '1234-567890')).to be_valid
@@ -108,19 +109,21 @@ RSpec.describe Author, type: :model do
 
   it { is_expected.to have_db_index(:legacy_id) }
 
-  context '#ldap_results_valid?' do
+  describe '#ldap_results_valid?' do
     it 'returns false if results are empty' do
       expect(described_class.new(access_id: 'testid').send('ldap_results_valid?', nil)).to be_falsey
     end
+
     it 'returns false if access_ids do not match' do
       expect(described_class.new(access_id: 'wrongid').send('ldap_results_valid?', access_id: 'testid', first_name: "xtester", middle_name: "xmiddle", last_name: "xlast", address_1: "TSB Building", city: "University Park", state: "PA", zip: "16802", phone_number: "555-555-5555", country: "US", psu_idn: "999999999")).to be_falsey
     end
+
     it 'returns true if results are not empty' do
       expect(described_class.new(access_id: 'testid').send('ldap_results_valid?', access_id: 'testid', first_name: "xtester", middle_name: "xmiddle", last_name: "xlast", address_1: "TSB Building", city: "University Park", state: "PA", zip: "16802", phone_number: "555-555-5555", country: "US", psu_idn: "999999999")).to be_truthy
     end
   end
 
-  context '#refresh_important_attributes' do
+  describe '#refresh_important_attributes' do
     let(:author_update_results) { { access_id: 'testid', first_name: ' ', middle_name: 'Yhoo', last_name: 'Ilast', address_1: '0116 H Technology Sppt Bldg', city: 'University Park', state: 'PA', country: '', zip: '16802', phone_number: '814-456-7890', psu_idn: '988888888', confidential_hold: true } }
 
     it 'populates PSU id number if it is not present' do
@@ -131,6 +134,7 @@ RSpec.describe Author, type: :model do
       author.refresh_important_attributes
       expect(author.psu_idn).not_to be_nil
     end
+
     it 'updates PSU idn number' do
       allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
       author = described_class.new(access_id: 'testid')
@@ -140,6 +144,7 @@ RSpec.describe Author, type: :model do
       expect(author.psu_idn).not_to eq('xxxxxxxxx')
       expect(author.psu_idn).to eq('988888888')
     end
+
     it 'updates author name as long as the attribute is not blank in LDAP' do
       allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
       author = described_class.new(access_id: 'testid')
@@ -157,6 +162,7 @@ RSpec.describe Author, type: :model do
       expect(author.first_name).to eq('beforefirst')
       expect(author.middle_name).to eq('Yhoo')
     end
+
     it 'updates author psu_email_address if blank' do
       allow_any_instance_of(LdapUniversityDirectory).to receive('retrieve').with('testid', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP).and_return(author_update_results)
       author = described_class.new(access_id: 'testid')
@@ -166,18 +172,19 @@ RSpec.describe Author, type: :model do
     end
   end
 
-  context '#can_edit?' do
+  describe '#can_edit?' do
     it 'allows the author to edit his or her own record' do
       described_class.current = described_class.new(access_id: 'ME123')
       expect(described_class.new(access_id: 'me123')).to be_can_edit
     end
+
     it "does not allow an author to edit someone else's personal information" do
       described_class.current = described_class.new(access_id: 'me123')
       expect { described_class.new(access_id: 'somebodyelse456').can_edit? }.to raise_error(Author::NotAuthorizedToEdit)
     end
   end
 
-  context '#legacy' do
+  describe '#legacy' do
     it 'identifies legacy records' do
       expect(described_class.new(access_id: 'me123', legacy_id: nil)).not_to be_legacy
       expect(described_class.new(access_id: 'me123', legacy_id: '1')).to be_legacy
@@ -191,10 +198,12 @@ RSpec.describe Author, type: :model do
         author.confidential_hold = false
         expect(author).not_to be_confidential
       end
+
       it 'returns true' do
         author.confidential_hold = true
         expect(author).to be_confidential
       end
+
       it 'returns false if value is nil' do
         author.confidential_hold = nil
         expect(author).not_to be_confidential
@@ -243,11 +252,12 @@ RSpec.describe Author, type: :model do
     end
   end
 
-  context '#full_name' do
+  describe '#full_name' do
     it 'combines first and last name' do
       author = FactoryBot.create :author
-      expect(author.full_name).to eql(author.first_name + ' ' + author.middle_name + ' ' + author.last_name)
+      expect(author.full_name).to eql("#{author.first_name} #{author.middle_name} #{author.last_name}")
     end
+
     it 'returns access_id if name is missing' do
       author = FactoryBot.create :author
       author.first_name = nil
@@ -256,7 +266,7 @@ RSpec.describe Author, type: :model do
     end
   end
 
-  context '#psu_id_number' do
+  describe '#psu_id_number' do
     it 'returns the psu_id number from ldap' do
       author = FactoryBot.create :author
       author.access_id = 'xxb13'

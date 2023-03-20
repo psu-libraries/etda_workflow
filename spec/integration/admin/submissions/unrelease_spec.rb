@@ -1,11 +1,11 @@
-RSpec.describe "Unrelease a submission", js: true, honors: true, milsch: true do
+RSpec.describe "Unrelease a submission", type: :integration, js: true, honors: true, milsch: true do
   require 'integration/integration_spec_helper'
 
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true) }
   let!(:role) { CommitteeRole.first.name }
   let(:submission) { FactoryBot.create(:submission, :released_for_publication, public_id: 'publicid') }
-  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
+  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: }
 
   # let(:admin) { FactoryBot.create :admin }
   let(:degree_type) { current_partner.graduate? ? 'dissertation' : 'thesis' }
@@ -18,7 +18,7 @@ RSpec.describe "Unrelease a submission", js: true, honors: true, milsch: true do
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
-          'User-Agent' => 'Faraday v2.3.0'
+          'User-Agent' => 'Faraday v2.7.4'
         }
       )
       .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -29,7 +29,7 @@ RSpec.describe "Unrelease a submission", js: true, honors: true, milsch: true do
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
-          'User-Agent' => 'Faraday v2.3.0'
+          'User-Agent' => 'Faraday v2.7.4'
         }
       )
       .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -102,7 +102,7 @@ RSpec.describe 'Unrelease a legacy submission without missing data', js: true, h
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
-          'User-Agent' => 'Faraday v2.3.0'
+          'User-Agent' => 'Faraday v2.7.4'
         }
       )
       .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -113,7 +113,7 @@ RSpec.describe 'Unrelease a legacy submission without missing data', js: true, h
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
-          'User-Agent' => 'Faraday v2.3.0'
+          'User-Agent' => 'Faraday v2.7.4'
         }
       )
       .to_return(status: 200, body: { error: false }.to_json, headers: {})

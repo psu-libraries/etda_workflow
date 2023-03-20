@@ -2,10 +2,10 @@
 
 source 'https://rubygems.org'
 
-ruby '2.7.6'
+ruby '3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.1'
 # Use mysql as the database for Active Record
 gem 'mysql2'
 # Use Puma as the app server
@@ -22,7 +22,7 @@ gem 'resque-pool', '~> 0.7.0'
 gem 'sidekiq', '~> 5.2.10'
 # When downgrading Sidekiq, rack needed to be downgraded as well.
 # This can be removed for Sidekiq 6 or greater.
-gem 'rack', '2.1.4.1'
+gem 'rack', '2.2.5'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1.0'
 # Jquery for rails
@@ -54,9 +54,7 @@ gem 'cocoon', '~> 1.2.0'
 # User authorization
 gem 'cancancan', '~> 3.1.0'
 # Easy email forms
-gem 'mail_form', '~> 1.8.0'
-# Audit gems
-gem 'bundler-audit', '~> 0.6.0'
+gem 'mail_form', '~> 1.9.0'
 # Logging & Health Checks!
 gem 'okcomputer', '~> 1.18.0'
 gem 'logstash-event', '~> 1.2.0'
@@ -65,7 +63,7 @@ gem 'lograge-sql', '~> 1.1.0'
 # Ruby client for Apache solr
 gem 'rsolr', '~> 2.5.0'
 # Enumerated attributes with I18n
-gem 'enumerize', '~> 2.3.0'
+gem 'enumerize', '~> 2.6.0'
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 gem 'byebug', '~> 11.1.0', platforms: %i[mri mingw x64_mingw]
 # HTTParty for http requests
@@ -75,16 +73,24 @@ gem 'seedbank', '~> 0.5.0'
 # Loading assets
 gem 'sprockets', '~> 3.7.2'
 # Create pdf documents
-gem 'prawn', '~> 2.2.0'
+gem 'prawn', '~> 2.4.0'
 # Create docx documents
 gem 'caracal', '~> 1.4.0'
+gem 'net-imap', require: false          # For Ruby 3 and Rails 6 mail compatibility
+gem 'net-pop', require: false           # For Ruby 3 and Rails 6 mail compatibility
+gem 'net-smtp', require: false          # For Ruby 3 and Rails 6 mail compatibility
+# Until the incompatibility issue with ruby 3 is fixed, limit psych to < 4
+gem 'psych', '< 4'
+# Matrix methods are needed for deployment
+gem 'matrix', '~> 0.4.2'
 
 group :development, :test do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen', '~> 3.7.0'
   # Linter
-  gem 'rubocop', '~> 0.93.1'
-  gem 'rubocop-rspec', '~>  1.30.1'
+  gem 'rubocop', '~> 1.41.0'
+  gem 'rubocop-rspec', '~>  2.19.0'
+  gem 'rubocop-rails', '~>  2.18.0'
   # Coverage report
   gem 'simplecov', '~> 0.17.0'
 end
@@ -102,8 +108,9 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.18'
+  gem 'capybara', '~> 3.38'
   gem 'capybara-email'
+  gem 'webrick'
   # Fakes and factories for testing
   gem 'factory_bot_rails', '~> 5.0'
   gem 'faker', '~> 2.11.0'
@@ -114,7 +121,7 @@ group :test do
   # Open webpage in browser
   gem 'launchy', '~> 2.5.0'
   # Web driver
-  gem 'selenium-webdriver', '~> 3.0'
+  gem 'selenium-webdriver', '~> 4.0'
   # Database cleaning
   gem "database_cleaner", '~> 1.8.0'
   # Extra matchers for rspec
@@ -129,4 +136,3 @@ group :production do
   # Datadog APM
   gem 'ddtrace', '~> 0.33'
 end
-

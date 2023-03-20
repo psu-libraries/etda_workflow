@@ -9,7 +9,7 @@ RSpec.describe LionpathCommitteeCheckService do
   describe '#check_submission' do
     context 'when submission is not from lionpath' do
       let(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-      let(:submission) { FactoryBot.create :submission, degree: degree }
+      let(:submission) { FactoryBot.create :submission, degree: }
 
       it 'returns nil' do
         expect(described_class.check_submission(submission)).to eq nil
@@ -18,7 +18,7 @@ RSpec.describe LionpathCommitteeCheckService do
 
     context 'when submission is not a dissertation' do
       let(:degree) { FactoryBot.create :degree, degree_type: DegreeType.second }
-      let(:submission) { FactoryBot.create :submission, lionpath_updated_at: DateTime.now, degree: degree }
+      let(:submission) { FactoryBot.create :submission, lionpath_updated_at: DateTime.now, degree: }
 
       it 'returns nil' do
         expect(described_class.check_submission(submission)).to eq nil
@@ -27,7 +27,7 @@ RSpec.describe LionpathCommitteeCheckService do
 
     context 'when submission has a voting committee' do
       let(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-      let(:submission) { FactoryBot.create :submission, lionpath_updated_at: DateTime.now, degree: degree }
+      let(:submission) { FactoryBot.create :submission, lionpath_updated_at: DateTime.now, degree: }
 
       it 'returns nil' do
         create_committee(submission)
@@ -37,7 +37,7 @@ RSpec.describe LionpathCommitteeCheckService do
 
     context 'when submission is from lionpath, is a dissertation, and does not have a voting committee' do
       let(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-      let(:submission) { FactoryBot.create :submission, lionpath_updated_at: DateTime.now, degree: degree }
+      let(:submission) { FactoryBot.create :submission, lionpath_updated_at: DateTime.now, degree: }
       let(:chair_role) { CommitteeRole.find_by(is_program_head: true) }
       let(:committee_member) { FactoryBot.create :committee_member, committee_role: chair_role, is_voting: false }
 

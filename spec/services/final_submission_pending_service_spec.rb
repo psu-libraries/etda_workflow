@@ -3,7 +3,7 @@ require 'shoulda-matchers'
 
 RSpec.describe FinalSubmissionPendingService do
   let(:service) { described_class.new(submission, params, 'adminflow') }
-  let!(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, degree: degree }
+  let!(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, degree: }
   let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
   let!(:approval_config) { FactoryBot.create :approval_configuration, degree_type: DegreeType.default, head_of_program_is_approving: false }
 

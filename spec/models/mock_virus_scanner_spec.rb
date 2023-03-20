@@ -7,6 +7,7 @@ RSpec.describe MockVirusScanner do
     it 'accepts anything' do
       expect { described_class.scan(location: '/dev/null') }.not_to raise_error
     end
+
     it 'returns a MockVirusScanner::Response' do
       expect(described_class.scan).to respond_to :safe?
     end

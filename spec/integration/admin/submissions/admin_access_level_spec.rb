@@ -1,9 +1,9 @@
-RSpec.describe 'Admin submission access_level', js: true do
+RSpec.describe 'Admin submission access_level', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
-  let(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response, degree: degree }
-  let!(:committee_member1) { FactoryBot.create :committee_member, submission: submission, committee_role: CommitteeRole.first }
-  let!(:committee_member2) { FactoryBot.create :committee_member, submission: submission, committee_role: CommitteeRole.third }
+  let(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response, degree: }
+  let!(:committee_member1) { FactoryBot.create :committee_member, submission:, committee_role: CommitteeRole.first }
+  let!(:committee_member2) { FactoryBot.create :committee_member, submission:, committee_role: CommitteeRole.third }
   let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
   let!(:approval_configuration) do
     FactoryBot.create :approval_configuration,
@@ -14,8 +14,8 @@ RSpec.describe 'Admin submission access_level', js: true do
   end
 
   before do
-    FactoryBot.create :format_review_file, submission: submission
-    FactoryBot.create :final_submission_file, submission: submission
+    FactoryBot.create(:format_review_file, submission:)
+    FactoryBot.create(:final_submission_file, submission:)
     submission.committee_members << committee_member1
     submission.committee_members << committee_member2
     submission.access_level = 'open_access'
@@ -29,6 +29,7 @@ RSpec.describe 'Admin submission access_level', js: true do
       expect(find("#submission_access_level_open_access")).to be_checked
       expect(page).to have_content('Enter justification') if current_partner.milsch?
     end
+
     it 'has a restricted_to_institution radio button' do
       page.find("input#submission_access_level_restricted_to_institution").click
       expect(page.find("input#submission_access_level_restricted_to_institution")).to be_checked
@@ -38,6 +39,7 @@ RSpec.describe 'Admin submission access_level', js: true do
       end
       expect(page).to have_field('submission_invention_disclosures_attributes_0_id_number')
     end
+
     it 'has a restricted radio button' do
       page.find("input#submission_access_level_restricted").click
       expect(page.find("input#submission_access_level_restricted")).to be_checked

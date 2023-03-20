@@ -11,10 +11,11 @@ class FinalSubmissionSubmitService
     status_giver.can_upload_final_submission_files?
     submission.update!(final_submission_params)
     submission.update_attribute :publication_release_terms_agreed_to_at, Time.zone.now
-    if submission.status == 'waiting for committee review rejected'
+    case submission.status
+    when 'waiting for committee review rejected'
       committee_reject_submit
       return
-    elsif submission.status == 'collecting final submission files rejected'
+    when 'collecting final submission files rejected'
       final_sub_reject_submit
       return
     end

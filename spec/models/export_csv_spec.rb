@@ -2,7 +2,7 @@ require 'model_spec_helper'
 
 RSpec.describe ExportCsv, type: :model do
   let(:author) { FactoryBot.create :author }
-  let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, author: author }
+  let(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, author: }
   let(:committee) { FactoryBot.create_committee(submission) }
   let(:export_csv) { described_class.new('final_submission_approved', submission) }
 
@@ -43,7 +43,7 @@ RSpec.describe ExportCsv, type: :model do
   describe 'csv for custom report' do
     let(:author) { FactoryBot.create :author }
     let(:author2) {}
-    let(:submission) { FactoryBot.create :submission, :released_for_publication, author: author }
+    let(:submission) { FactoryBot.create :submission, :released_for_publication, author: }
     let(:committee) { create_committee(submission) }
     let(:export_csv) { described_class.new('custom_report', submission) }
 

@@ -1,4 +1,4 @@
-RSpec.describe "Manage Authors", js: true do
+RSpec.describe "Manage Authors", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let!(:degree) { FactoryBot.create :degree }

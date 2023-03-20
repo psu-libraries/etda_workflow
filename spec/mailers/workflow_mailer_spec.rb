@@ -2,7 +2,7 @@ require 'model_spec_helper'
 
 RSpec.describe WorkflowMailer do
   let(:submission) { FactoryBot.create :submission }
-  let(:committee_member) { FactoryBot.create :committee_member, submission: submission }
+  let(:committee_member) { FactoryBot.create :committee_member, submission: }
   let(:access_updated_email) do
     {
       author_alternate_email_address: "author alt address",
@@ -637,7 +637,7 @@ RSpec.describe WorkflowMailer do
 
     context "non-core committee members" do
       let(:cm_role) { FactoryBot.create :committee_role, is_program_head: true }
-      let(:committee_member) { FactoryBot.create :committee_member, committee_role: cm_role, submission: submission }
+      let(:committee_member) { FactoryBot.create :committee_member, committee_role: cm_role, submission: }
 
       it "does not have the seven day note for other committee members" do
         expect(email.body).not_to match(/seven days/)
@@ -647,7 +647,7 @@ RSpec.describe WorkflowMailer do
 
   describe '#special_committee_review_reminder' do
     context 'when committee member token exists' do
-      let!(:commmittee_member_token) { FactoryBot.create :committee_member_token, committee_member: committee_member }
+      let!(:commmittee_member_token) { FactoryBot.create :committee_member_token, committee_member: }
       let(:email) { described_class.special_committee_review_request(submission, committee_member) }
 
       it "is sent to the proper recipient" do

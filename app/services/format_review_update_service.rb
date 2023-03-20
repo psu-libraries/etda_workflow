@@ -1,11 +1,7 @@
 class FormatReviewUpdateService
   include ActionView::Helpers::UrlHelper
 
-  attr_accessor :params
-  attr_accessor :submission
-  attr_accessor :submission_type
-  attr_accessor :update_actions
-  attr_accessor :current_remote_user
+  attr_accessor :params, :submission, :submission_type, :update_actions, :current_remote_user
 
   def initialize(params, submission, current_remote_user)
     @params = params
@@ -18,7 +14,7 @@ class FormatReviewUpdateService
   def update_record
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params)
     msg = "The submission was successfully updated."
-    { msg: msg, redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
+    { msg:, redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
   end
 
   def respond_format_review
@@ -42,7 +38,7 @@ class FormatReviewUpdateService
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params)
       msg += " Format review information was successfully edited by an administrator"
     end
-    { msg: msg, redirect_path: "/admin/#{submission.degree_type.slug}/format_review_submitted" }
+    { msg:, redirect_path: "/admin/#{submission.degree_type.slug}/format_review_submitted" }
   end
 
   private

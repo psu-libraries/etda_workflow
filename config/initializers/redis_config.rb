@@ -11,4 +11,3 @@ if defined?(PhusionPassenger)
 else
   Redis.current = Redis.new(config.merge(thread_safe: true))
 end
-

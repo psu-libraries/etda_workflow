@@ -11,12 +11,12 @@ RSpec.describe SolrDataImportService, type: :model do
     before do
       stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
         .with(
-          body: /title_ssi\":\"#{submission.title}/,
+          body: /title_ssi":"#{submission.title}/,
           headers: {
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v2.3.0'
+            'User-Agent' => 'Faraday v2.7.4'
           }
         )
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -27,7 +27,7 @@ RSpec.describe SolrDataImportService, type: :model do
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v2.3.0'
+            'User-Agent' => 'Faraday v2.7.4'
           }
         )
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -44,12 +44,12 @@ RSpec.describe SolrDataImportService, type: :model do
     before do
       stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
         .with(
-          body: /delete\":\"publicid/,
+          body: /delete":"publicid/,
           headers: {
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v2.3.0'
+            'User-Agent' => 'Faraday v2.7.4'
           }
         )
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -60,7 +60,7 @@ RSpec.describe SolrDataImportService, type: :model do
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v2.3.0'
+            'User-Agent' => 'Faraday v2.7.4'
           }
         )
         .to_return(status: 200, body: { error: false }.to_json, headers: {})

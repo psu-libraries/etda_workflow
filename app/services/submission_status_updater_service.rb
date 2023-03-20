@@ -8,11 +8,12 @@ class SubmissionStatusUpdaterService
   end
 
   def update_status_from_committee
-    if submission.status == 'waiting for advisor review'
+    case submission.status
+    when 'waiting for advisor review'
       update_status_from_advisor
-    elsif submission.status == 'waiting for committee review'
+    when 'waiting for committee review'
       update_status_from_base_committee
-    elsif submission.status == 'waiting for head of program review'
+    when 'waiting for head of program review'
       update_status_from_head_of_program
     end
   end
@@ -35,7 +36,8 @@ class SubmissionStatusUpdaterService
     end
 
     def update_status_from_base_committee
-      if approval_status.status == 'approved'
+      case approval_status.status
+      when 'approved'
         if submission.head_of_program_is_approving?
           send_to_program_head
           mark_did_not_vote
@@ -45,7 +47,7 @@ class SubmissionStatusUpdaterService
           mark_did_not_vote
           submission.update_attribute(:committee_review_accepted_at, DateTime.now)
         end
-      elsif approval_status.status == 'rejected'
+      when 'rejected'
         send_to_committee_review_rejected
         WorkflowMailer.send_committee_rejected_emails(submission)
         submission.update_attribute(:committee_review_rejected_at, DateTime.now)
@@ -53,10 +55,11 @@ class SubmissionStatusUpdaterService
     end
 
     def update_status_from_head_of_program
-      if approval_status.head_of_program_status == 'approved'
+      case approval_status.head_of_program_status
+      when 'approved'
         send_to_final_submission_response
         submission.update_attribute(:head_of_program_review_accepted_at, DateTime.now)
-      elsif approval_status.head_of_program_status == 'rejected'
+      when 'rejected'
         send_to_committee_review_rejected
         WorkflowMailer.send_committee_rejected_emails(submission)
         submission.update_attribute(:head_of_program_review_rejected_at, DateTime.now)

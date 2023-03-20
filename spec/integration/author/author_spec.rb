@@ -13,6 +13,7 @@ RSpec.describe 'Author submission page', type: :integration, milsch: true, honor
       expect(page).to have_content('You will need to input your committee, upload your format ')
       expect(page).to have_link('Accessibility')
     end
+
     it 'contains a list of submissions' do
       expect(page).to have_content('My Submissions')
       expect(page).to have_link('Start a new Submission') unless current_partner.graduate?
@@ -30,7 +31,7 @@ RSpec.describe 'Author submission page', type: :integration, milsch: true, honor
 
   context 'Author submission display when author has a submission that is released for publication but no other submissions' do
     it 'displays completed submission Button' do
-      FactoryBot.create :submission, :released_for_publication, author: author
+      FactoryBot.create(:submission, :released_for_publication, author:)
       visit author_submissions_path(author)
       expect(page).not_to have_content("You don't have any submissions yet.")
       expect(page).not_to have_content('Existing submission found. The status of your previously submitted document is listed below.')
@@ -41,7 +42,7 @@ RSpec.describe 'Author submission page', type: :integration, milsch: true, honor
 
   context 'Author submission display when author has one submission' do
     it "displays 'submission found'" do
-      FactoryBot.create :submission, :collecting_committee, author: author
+      FactoryBot.create(:submission, :collecting_committee, author:)
       visit author_submissions_path
       expect(page).to have_content('Existing submission found. The status of your previously submitted document is listed below:')
       expect(page).to have_link('Provide Committee')

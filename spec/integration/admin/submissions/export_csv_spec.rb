@@ -1,8 +1,8 @@
-RSpec.describe "Exporting a list of approved submissions as an admin", js: true do
+RSpec.describe "Exporting a list of approved submissions as an admin", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let(:author) { FactoryBot.create :author }
-  let!(:submission) { FactoryBot.create :submission, author: author }
+  let!(:submission) { FactoryBot.create :submission, author: }
   let(:committee) { FactoryBot.create_committee(submission) }
 
   context "when an admin exports a CSV file" do
