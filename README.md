@@ -4,12 +4,10 @@
 
 # Electronic Theses and Dissertations Workflow
 
-* Ruby version: 2.7
-* Node version 10 (using yarn as npm)
-* Rails 6
-* Redis 3
+* Ruby version: 3.1
+* Node version 16 (using yarn as npm)
+* Rails 6.1
 * Sidekiq 5
-* Mariadb 10
 
 ## Setup
 
