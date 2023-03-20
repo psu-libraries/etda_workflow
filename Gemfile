@@ -81,6 +81,8 @@ gem 'net-pop', require: false           # For Ruby 3 and Rails 6 mail compatibil
 gem 'net-smtp', require: false          # For Ruby 3 and Rails 6 mail compatibility
 # Until the incompatibility issue with ruby 3 is fixed, limit psych to < 4
 gem 'psych', '< 4'
+# Matrix methods are needed for deployment
+gem 'matrix', '~> 0.4.2'
 
 group :development, :test do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
