@@ -22,7 +22,7 @@ gem 'resque-pool', '~> 0.7.0'
 gem 'sidekiq', '~> 5.2.10'
 # When downgrading Sidekiq, rack needed to be downgraded as well.
 # This can be removed for Sidekiq 6 or greater.
-gem 'rack', '2.2.5'
+gem 'rack', '~> 2.2.6.3'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1.0'
 # Jquery for rails
@@ -67,7 +67,7 @@ gem 'enumerize', '~> 2.6.0'
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 gem 'byebug', '~> 11.1.0', platforms: %i[mri mingw x64_mingw]
 # HTTParty for http requests
-gem 'httparty', '~> 0.20.0'
+gem 'httparty', '~> 0.21'
 # For db seeding
 gem 'seedbank', '~> 0.5.0'
 # Loading assets
