@@ -153,5 +153,18 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
       end
     end
+
+    context 'when an ActiveRecord validation error occurs' do
+      it 'displays error messages' do
+        visit author_submission_edit_final_submission_path(submission)
+        click_button 'Submit final files for review'
+        within('.alert-danger') do
+          expect(page).to have_content 'You must upload a Final Submission File'
+          expect(page).to have_content "Abstract can't be blank"
+          expect(page).to have_content "If you agree to the copyright terms, please check the box to submit"
+          expect(page).to have_content "Proquest agreement can't be blank"
+        end
+      end
+    end
   end
 end
