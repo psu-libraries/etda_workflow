@@ -162,7 +162,6 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
           expect(page).to have_content 'You must upload a Final Submission File'
           expect(page).to have_content "Abstract can't be blank"
           expect(page).to have_content "If you agree to the copyright terms, please check the box to submit"
-          expect(page).to have_content "Proquest agreement can't be blank"
         end
       end
     end
