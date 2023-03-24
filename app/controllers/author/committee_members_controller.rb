@@ -19,7 +19,7 @@ class Author::CommitteeMembersController < AuthorController
     flash[:notice] = 'Committee saved successfully'
     redirect_to author_root_path
   rescue ActiveRecord::RecordInvalid => e
-    flash[:alert] = e.record.errors.values.join(" ")
+    flash[:alert] = e.record.errors.collect(&:message).join(" ")
     render :new
   rescue SubmissionStatusGiver::AccessForbidden
     flash.now[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
@@ -46,7 +46,7 @@ class Author::CommitteeMembersController < AuthorController
       redirect_to edit_author_submission_committee_members_path(@submission)
     end
   rescue ActiveRecord::RecordInvalid => e
-    flash[:alert] = e.record.errors.values.join(" ")
+    flash[:alert] = e.record.errors.collect(&:message).join(" ")
     render :form
   rescue SubmissionStatusGiver::AccessForbidden
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'

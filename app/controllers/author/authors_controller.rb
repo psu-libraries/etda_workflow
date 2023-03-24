@@ -23,7 +23,7 @@ class Author::AuthorsController < AuthorController
     redirect_to author_root_path
     flash[:notice] = 'Contact information updated successfully'
   rescue ActiveRecord::RecordInvalid => e
-    flash.now[:alert] = e.record.errors.values.join(" ")
+    flash.now[:alert] = e.record.errors.collect(&:message).join(" ")
     render :edit
   rescue Author::NotAuthorizedToEdit
     redirect_to '/401'
