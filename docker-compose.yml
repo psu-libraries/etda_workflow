@@ -50,6 +50,7 @@ services:
     depends_on:
     - db
     - selenium
+    - redis
     # volumes:
     # - workflow_files:/etda_workflow/tmp/workflow_files
     # - explore_files:/etda_workflow/tmp/explore_files
