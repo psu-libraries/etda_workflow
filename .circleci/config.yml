@@ -93,7 +93,7 @@ jobs:
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          docker-compose up -d redis db selenium
+          docker-compose up -d db selenium
           PARTNER=graduate docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
           docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
@@ -122,6 +122,7 @@ jobs:
             docker load -i /tmp/workspace/etda-workflow.tar
             export TAG=${CIRCLE_SHA1}
             export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+            docker-compose up -d db selenium
             PARTNER=graduate docker-compose run --name=test --service-ports -d test
             docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
             docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
@@ -190,18 +191,21 @@ jobs:
     - run:
         name: "Test Honors"
         command: |
+          docker-compose up -d db selenium
           PARTNER=honors docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
     - run:
         name: "Test Milsch"
         command: |
+          docker-compose up -d db selenium
           PARTNER=milsch docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
     - run:
         name: "Test SSET"
         command: |
+          docker-compose up -d db selenium
           PARTNER=sset docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
