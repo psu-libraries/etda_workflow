@@ -80,6 +80,7 @@ jobs:
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+    resource_class: large
     steps:
     - attach_workspace:
         at: /tmp/workspace
@@ -93,8 +94,6 @@ jobs:
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          docker-compose up -d db selenium redis
-          sleep 10
           PARTNER=graduate docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
           docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
@@ -110,6 +109,7 @@ jobs:
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+    resource_class: large
     steps:
       - attach_workspace:
           at: /tmp/workspace
@@ -123,8 +123,6 @@ jobs:
             docker load -i /tmp/workspace/etda-workflow.tar
             export TAG=${CIRCLE_SHA1}
             export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-            docker-compose up -d db selenium redis
-            sleep 10
             PARTNER=graduate docker-compose run --name=test --service-ports -d test
             docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
             docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
@@ -177,6 +175,7 @@ jobs:
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+    resource_class: large
     steps:
     - attach_workspace:
         at: /tmp/workspace
@@ -193,24 +192,18 @@ jobs:
     - run:
         name: "Test Honors"
         command: |
-          docker-compose up -d db selenium redis
-          sleep 10
           PARTNER=honors docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
     - run:
         name: "Test Milsch"
         command: |
-          docker-compose up -d db selenium redis
-          sleep 5
           PARTNER=milsch docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
     - run:
         name: "Test SSET"
         command: |
-          docker-compose up -d db selenium redis
-          sleep 5
           PARTNER=sset docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
