@@ -82,7 +82,7 @@ Rails.application.configure do
 
   # Mocks
   # TODO Remove constants from initializer (autoload to deprecate in future Rails versions)
-  LdapUniversityDirectory = MockUniversityDirectory
+  # LdapUniversityDirectory = MockUniversityDirectory
   VirusScanner = MockVirusScanner
   DirectoryService = MockDirectoryService
   WORKFLOW_BASE_PATH = "tmp/workflow_files/#{Partner.current.id}/"
