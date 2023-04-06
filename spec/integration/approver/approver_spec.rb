@@ -6,7 +6,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   let(:submission2) { FactoryBot.create :submission, :waiting_for_publication_release, committee_review_accepted_at: DateTime.now, created_at: Time.zone.now }
   let(:submission3) { FactoryBot.create :submission, :waiting_for_publication_release, committee_review_rejected_at: DateTime.now, created_at: Time.zone.now }
   let(:submission4) { FactoryBot.create :submission, :waiting_for_publication_release, created_at: Time.zone.now }
-  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
+  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: }
   let(:approval_configuration) { FactoryBot.create :approval_configuration, head_of_program_is_approving: false }
   let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor/Co-Advisor" }
   let(:committee_role_not_advisor) { FactoryBot.create :committee_role, name: "Just Normal Member" }
@@ -23,7 +23,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       visit "approver/committee_member/#{committee_member.id}"
     end
 
-    let(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow' }
+    let(:committee_member) { FactoryBot.create :committee_member, committee_role:, submission:, access_id: 'approverflow' }
 
     it 'has link to contact us' do
       expect(page).to have_content('Contact Us')
@@ -47,6 +47,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
         final_link = page.find("a")
         final_link.click
       end
+      sleep 1
       expect(page.driver.browser.window_handles.count).to eql(num_windows + 1)
     end
 
@@ -71,8 +72,8 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
         submission.committee_members << (FactoryBot.create :committee_member, committee_role: committee_role_not_advisor)
         submission.committee_members << (FactoryBot.create :committee_member, committee_role: committee_role_not_advisor)
         submission.committee_members << (FactoryBot.create :committee_member, committee_role: committee_role_not_advisor)
-        submission.update author: author
-        submission.update program: program
+        submission.update(author:)
+        submission.update(program:)
         submission.update status: 'waiting for advisor review'
         submission.reload
       end
@@ -124,7 +125,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
     context 'approver is not advisor' do
       it 'asks about federal funding used' do
-        committee_member = FactoryBot.create :committee_member, committee_role: committee_role_not_advisor, submission: submission, access_id: 'approverflow'
+        committee_member = FactoryBot.create(:committee_member, committee_role: committee_role_not_advisor, submission:, access_id: 'approverflow')
 
         visit "approver/committee_member/#{committee_member.id}"
         expect(page).not_to have_content('Were Federal Funds utilized for this submission?')
@@ -135,7 +136,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   context 'committee review is complete' do
     context 'approval is approved' do
       it 'displays the committee members response' do
-        committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission2, access_id: 'approverflow'
+        committee_member = FactoryBot.create(:committee_member, committee_role:, submission: submission2, access_id: 'approverflow')
         committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
         submission2.degree.degree_type.approval_configuration = approval_configuration
         allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('approved')
@@ -148,7 +149,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
     context 'approval is rejected' do
       it 'displays the committee members response' do
-        committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission3, access_id: 'approverflow'
+        committee_member = FactoryBot.create(:committee_member, committee_role:, submission: submission3, access_id: 'approverflow')
         committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
         submission3.degree.degree_type.approval_configuration = approval_configuration
         allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('rejected')
@@ -161,7 +162,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
     context 'submission is legacy' do
       it 'displays a message' do
-        committee_member = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission4, access_id: 'approverflow'
+        committee_member = FactoryBot.create(:committee_member, committee_role:, submission: submission4, access_id: 'approverflow')
         committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
         submission4.degree.degree_type.approval_configuration = approval_configuration
         allow_any_instance_of(ApprovalStatus).to receive(:status).and_return('none')
@@ -174,14 +175,14 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
   context 'approver does not match committee_member access_id' do
     it 'redirects to 401 error page when targeting review page' do
-      committee_member = FactoryBot.create :committee_member, submission: submission, access_id: 'testuser'
+      committee_member = FactoryBot.create(:committee_member, submission:, access_id: 'testuser')
 
       visit "approver/committee_member/#{committee_member.id}"
       expect(page).to have_current_path('/401')
     end
 
     it 'redirects to 401 error page when targeting submission download' do
-      FactoryBot.create :committee_member, submission: submission, access_id: 'testuser'
+      FactoryBot.create(:committee_member, submission:, access_id: 'testuser')
 
       visit "approver/files/final_submissions/#{final_submission_file.id}"
       expect(page).to have_current_path('/401')
@@ -189,7 +190,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   end
 
   context 'access level tooltip' do
-    let(:committee_member) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow' }
+    let(:committee_member) { FactoryBot.create :committee_member, committee_role:, submission:, access_id: 'approverflow' }
 
     before do
       committee_member.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id
@@ -227,8 +228,8 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
   end
 
   context "advisor is also a committee member" do
-    let!(:committee_member1) { FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow' }
-    let!(:committee_member2) { FactoryBot.create :committee_member, committee_role: committee_role_not_advisor, submission: submission, access_id: 'approverflow' }
+    let!(:committee_member1) { FactoryBot.create :committee_member, committee_role:, submission:, access_id: 'approverflow' }
+    let!(:committee_member2) { FactoryBot.create :committee_member, committee_role: committee_role_not_advisor, submission:, access_id: 'approverflow' }
 
     before do
       submission.committee_members << [committee_member2, committee_member1]
@@ -243,7 +244,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
     end
 
     it "does not redirect if already advisor" do
-      committee_member3 = FactoryBot.create :committee_member, committee_role: committee_role, submission: submission, access_id: 'approverflow'
+      committee_member3 = FactoryBot.create(:committee_member, committee_role:, submission:, access_id: 'approverflow')
       submission.committee_members << committee_member3
       submission.reload
       committee_member3.update_attribute :approver_id, Approver.find_by(access_id: 'approverflow').id

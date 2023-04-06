@@ -1,4 +1,4 @@
-RSpec.describe "Email Contact Form", js: true do
+RSpec.describe "Email Contact Form", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let(:author) { current_author }
@@ -23,15 +23,18 @@ RSpec.describe "Email Contact Form", js: true do
     it "does not contain help link in the footer" do
       expect(page).not_to have_link('Please direct questions to Ask!')
     end
+
     it "displays a service header" do
       expect(page).to have_selector('h1', text: 'Contact Us')
     end
+
     it "has issue type tooltip" do
       tooltip = find('span[data-toggle="tooltip"]')
       tooltip.hover
       expect(page).to have_content(/IT\/administrative support staff | directed to The Libraries engineering team/)
       expect(page).to have_css('div.tooltip')
     end
+
     it "displays the contact email form initialized with author information" do
       expect(page).to have_xpath("//input[@value='Send']")
       expect(page).to have_link('Cancel')

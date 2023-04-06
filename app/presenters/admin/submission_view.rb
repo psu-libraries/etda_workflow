@@ -55,7 +55,7 @@ class Admin::SubmissionView < SimpleDelegator
 
     indicators << '<span class="label label-warning">Rejected</span>' if status_behavior.format_review_rejected? || status_behavior.final_submission_rejected?
 
-    indicators.any? ? (indicators.join(' ') + ' ').html_safe : ''
+    indicators.any? ? "#{indicators.join(' ')} ".html_safe : ''
   end
 
   private

@@ -1,4 +1,4 @@
-RSpec.describe 'Step 1: Collecting Program Information status', js: true do
+RSpec.describe 'Step 1: Collecting Program Information status', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'collecting program information'" do
@@ -11,7 +11,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
     let!(:submission) do
       FactoryBot.create :submission,
                         :collecting_program_information,
-                        author: author,
+                        author:,
                         semester: 'Fall'
     end
 
@@ -160,7 +160,7 @@ RSpec.describe 'Step 1: Collecting Program Information status', js: true do
     let(:author) { current_author }
 
     it "deletes the submission" do
-      FactoryBot.create :submission, :collecting_committee, author: author
+      FactoryBot.create(:submission, :collecting_committee, author:)
       start_count = author.submissions.count
       expect(start_count > 0).to be_truthy
       visit author_root_path

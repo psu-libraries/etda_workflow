@@ -106,6 +106,7 @@ class Submission < ApplicationRecord
   validate :format_review_file_check
 
   attr_reader :previous_access_level
+
   after_update :cache_access_level
 
   def cache_access_level
@@ -222,37 +223,21 @@ class Submission < ApplicationRecord
   end
 
   # TODO: Implement the following methods (next 30 lines) where appropriate
-  def degree_name
-    degree.name
-  end
+  delegate :name, to: :degree, prefix: true
 
-  def degree_type_name
-    degree_type.name
-  end
+  delegate :name, to: :degree_type, prefix: true
 
-  def degree_type_slug
-    degree_type.slug
-  end
+  delegate :slug, to: :degree_type, prefix: true
 
-  def program_name
-    program.name
-  end
+  delegate :name, to: :program, prefix: true
 
-  def degree_description
-    degree.description
-  end
+  delegate :description, to: :degree, prefix: true
 
-  def author_last_name
-    author.last_name
-  end
+  delegate :last_name, to: :author, prefix: true
 
-  def author_middle_name
-    author.middle_name
-  end
+  delegate :middle_name, to: :author, prefix: true
 
-  def author_first_name
-    author.first_name
-  end
+  delegate :first_name, to: :author, prefix: true
 
   def admin_can_edit?
     true
@@ -272,8 +257,7 @@ class Submission < ApplicationRecord
     return '' if title.blank?
 
     clean_title = title.split(/\r\n/).join.strip || ''
-    clean_title = clean_title.strip_control_and_extended_characters
-    clean_title
+    clean_title.strip_control_and_extended_characters
   end
 
   def committee_email_list
@@ -348,8 +332,7 @@ class Submission < ApplicationRecord
     #   released_fo_publication_at = date_to_release
     return date_to_release if open_access?
 
-    two_years_later = date_to_release.to_date + 2.years
-    two_years_later
+    date_to_release.to_date + 2.years
   end
 
   def update_format_review_timestamps!(time)

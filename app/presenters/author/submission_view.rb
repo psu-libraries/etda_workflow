@@ -5,14 +5,14 @@ class Author::SubmissionView < SimpleDelegator
   delegate :class, to: :__getobj__
 
   def formatted_program_information
-    program_name + ' ' + degree.name + ' - ' + formatted_semester + ' ' + formatted_year
+    "#{program_name} #{degree.name} - #{formatted_semester} #{formatted_year}"
   end
 
   def delete_link
     if status_behavior.beyond_collecting_format_review_files? || format_review_notes.present?
       ''
     else
-      ("<span class='delete-link medium'><a href='" + "/author/submissions/#{id}" + "' class='text-danger' data-method='delete' data-confirm='Permanently delete this submission?' rel='nofollow' >[delete submission<span class='sr-only'>submission '#{title}'</span>]</a></span>").html_safe
+      "<span class='delete-link medium'><a href='/author/submissions/#{id}' class='text-danger' data-method='delete' data-confirm='Permanently delete this submission?' rel='nofollow' >[delete submission<span class='sr-only'>submission '#{title}'</span>]</a></span>".html_safe
     end
   end
 
@@ -32,9 +32,9 @@ class Author::SubmissionView < SimpleDelegator
 
   def step_one_description
     if status_behavior.beyond_collecting_committee?
-      ("Provide program information <a href='" + "/author/submissions/#{id}/program_information" + "' class='medium'>[Review Program Information <span class='sr-only'>program information for submission '#{title}'</span>]</a>").html_safe
+      "Provide program information <a href='/author/submissions/#{id}/program_information' class='medium'>[Review Program Information <span class='sr-only'>program information for submission '#{title}'</span>]</a>".html_safe
     else
-      ("Provide program information <a href='" + "/author/submissions/#{id}/edit" + "' class='medium'>[Update Program Information <span class='sr-only'>program information for submission '#{title}'</span>]</a>").html_safe
+      "Provide program information <a href='/author/submissions/#{id}/edit' class='medium'>[Update Program Information <span class='sr-only'>program information for submission '#{title}'</span>]</a>".html_safe
     end
   end
 
@@ -64,11 +64,11 @@ class Author::SubmissionView < SimpleDelegator
 
   def step_two_description
     if status_behavior.collecting_committee?
-      ("<a href='" + "/author/submissions/#{id}/committee_members/new" + "'>" + step_two_name + "</a>").html_safe
+      "<a href='/author/submissions/#{id}/committee_members/new'>#{step_two_name}</a>".html_safe
     elsif status_behavior.ok_to_update_committee?
-      (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members/edit" + "' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe
+      "#{step_two_name}<a href='/author/submissions/#{id}/committee_members/edit' class='medium'>[Update My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>".html_safe
     elsif status_behavior.beyond_collecting_format_review_files?
-      (step_two_name + "<a href='" + "/author/submissions/#{id}/committee_members" + "' class='medium'>[Review My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>").html_safe
+      "#{step_two_name}<a href='/author/submissions/#{id}/committee_members' class='medium'>[Review My Committee <span class='sr-only'>committee for submission '#{title}' </span>]</a>".html_safe
     else
       step_two_name
     end
@@ -190,9 +190,9 @@ class Author::SubmissionView < SimpleDelegator
        status_behavior.waiting_for_committee_review? ||
        status_behavior.waiting_for_head_of_program_review? ||
        status_behavior.beyond_waiting_for_committee_review_rejected?
-      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
+      "Waiting for Committee Review <a href='/author/submissions/#{id}/committee_review' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>".html_safe
     elsif status_behavior.waiting_for_committee_review_rejected?
-      ("Waiting for Committee Review <a href='" + "/author/submissions/#{id}/committee_review" + "' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>" + "<a href='" + "/author/submissions/#{id}/final_submission/edit" + "' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>").html_safe
+      "Waiting for Committee Review <a href='/author/submissions/#{id}/committee_review' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a><a href='/author/submissions/#{id}/final_submission/edit' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>".html_safe
     else
       'Waiting for Committee Review'
     end
@@ -216,7 +216,7 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_seven_description
-    ("<a href=" + "\'/author/submissions/#{id}/final_submission/edit\'" + " class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}' </span>]</a>").html_safe if status_behavior.collecting_final_submission_files_rejected?
+    "<a href=\'/author/submissions/#{id}/final_submission/edit\' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}' </span>]</a>".html_safe if status_behavior.collecting_final_submission_files_rejected?
   end
 
   def step_seven_class

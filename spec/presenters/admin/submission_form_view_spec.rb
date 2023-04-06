@@ -352,7 +352,7 @@ RSpec.describe Admin::SubmissionFormView do
 
   describe 'address' do
     let(:author) { FactoryBot.create :author }
-    let(:submission) { FactoryBot.create :submission, author: author }
+    let(:submission) { FactoryBot.create :submission, author: }
 
     context "the current author's address is returned" do
       it 'returns a full address' do
@@ -378,11 +378,13 @@ RSpec.describe Admin::SubmissionFormView do
       view = described_class.new(submission, session)
       expect(view.release_date_history).to eq("<b>Metadata released:</b> #{formatted_date(submission.released_metadata_at)}<br /><b>Scheduled for full release: </b> #{formatted_date(submission.released_for_publication_at)}")
     end
+
     it 'displays partial release date and expected full release date for restricted-to-institution submissions' do
       submission = FactoryBot.create :submission, :final_is_restricted_to_institution
       view = described_class.new(submission, session)
       expect(view.release_date_history).to eq("<b>Released to Penn State Community: </b> #{formatted_date(submission.released_metadata_at)}<br /><b>Scheduled for full release: </b>#{formatted_date(submission.released_for_publication_at)}")
     end
+
     it 'displays the release date for open submissions' do
       submission = FactoryBot.create :submission, :released_for_publication
       view = described_class.new(submission, session)
@@ -400,6 +402,7 @@ RSpec.describe Admin::SubmissionFormView do
         expect(view.form_section_heading('format-review-files')).to eql("class='form-section-heading collapse show'")
         expect(view.form_section_body('format-review-files')).to eql("class='form-section-body collapse show'")
       end
+
       it 'does not display committee information' do
         submission = FactoryBot.create :submission, status: 'waiting for format review response'
         view = described_class.new(submission, session)
@@ -415,6 +418,7 @@ RSpec.describe Admin::SubmissionFormView do
         expect(view.form_section_heading('final-submission-files')).to eql("class='form-section-heading collapse show'")
         expect(view.form_section_body('final-submission-files')).to eql("class='form-section-body collapse show'")
       end
+
       it 'does not display committee information' do
         submission = FactoryBot.create :submission, status: 'waiting for final submission response'
         view = described_class.new(submission, session)

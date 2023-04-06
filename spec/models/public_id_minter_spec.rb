@@ -6,11 +6,11 @@ RSpec.describe PublicIdMinter do
   subject(:id) { described_class.new(submission).id }
 
   let(:author) { FactoryBot.create :author }
-  let(:submission) { FactoryBot.create :submission, author: author, public_id: '' }
+  let(:submission) { FactoryBot.create :submission, author:, public_id: '' }
   let(:matching_submission) { FactoryBot.create :submission }
 
   describe 'creates a public id' do
-    context "#id" do
+    describe "#id" do
       it "returns unique id using submission.id and author's access_id" do
         expect(id).to eq("#{submission.id}#{submission.author.access_id}")
       end

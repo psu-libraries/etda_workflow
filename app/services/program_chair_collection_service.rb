@@ -8,7 +8,7 @@ class ProgramChairCollectionService
     gpms_response.each do |pc|
       collection << ["#{pc['NAME']} (#{committee_role_name(pc['ROLE'])})",
                      (pc['NAME']).to_s,
-                     { member_email: (pc["ACCESSID"].downcase.to_s + '@psu.edu'),
+                     { member_email: "#{pc['ACCESSID'].downcase}@psu.edu",
                        committee_role_id: committee_role_id(pc["ROLE"]) }]
     end
     collection
@@ -48,7 +48,7 @@ class ProgramChairCollectionService
     end
 
     def gpms_prog_chair_url
-      "https://secure.gradsch.psu.edu/services/etd/etdThDsAppr.cfm" + query
+      "https://secure.gradsch.psu.edu/services/etd/etdThDsAppr.cfm#{query}"
     end
 
     def query

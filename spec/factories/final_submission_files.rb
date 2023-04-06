@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :final_submission_file, class: FinalSubmissionFile do |_f|
+  factory :final_submission_file, class: 'FinalSubmissionFile' do |_f|
     submission
     asset { File.open(fixture('final_submission_file_01.pdf')) }
 

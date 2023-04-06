@@ -2,11 +2,11 @@ require 'presenters/presenters_spec_helper'
 
 RSpec.describe Admin::SubmissionView, type: :decorator do
   author = FactoryBot.create :author
-  submission = FactoryBot.create :submission, :released_for_publication, author: author
+  submission = FactoryBot.create(:submission, :released_for_publication, author:)
   time_yesterday = Time.zone.yesterday
   formatted_yesterday = formatted_time(time_yesterday)
 
-  context '#table_title' do
+  describe '#table_title' do
     it 'returns the title' do
       expect(described_class.new(submission, nil).table_title).to eql(submission.title)
     end

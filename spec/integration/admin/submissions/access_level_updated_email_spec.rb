@@ -1,4 +1,4 @@
-RSpec.describe 'actions that send an email notifying users of an access level update on a submission', js: true do
+RSpec.describe 'actions that send an email notifying users of an access level update on a submission', type: :integration, js: true do
   require 'integration/integration_spec_helper'
   before do
     stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
@@ -13,7 +13,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
 
     it 'sends an email to the appropriate people with the updated access level information' do
       author = FactoryBot.create :author
-      submission = FactoryBot.create :submission, :final_is_restricted, author: author
+      submission = FactoryBot.create(:submission, :final_is_restricted, author:)
       start_count = ActionMailer::Base.deliveries.count
       visit admin_submissions_index_path(DegreeType.default, 'final_withheld')
       sleep 1

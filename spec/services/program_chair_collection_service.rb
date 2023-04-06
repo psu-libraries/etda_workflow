@@ -5,7 +5,7 @@ require 'shoulda-matchers'
 
 RSpec.describe ProgramChairCollectionService do
   let(:pcc_service) { described_class.new(submission) }
-  let(:submission) { create :submission, program: program, campus: 'UP' }
+  let(:submission) { create :submission, program:, campus: 'UP' }
   let(:program) { create :program, code: 'CODE' }
   let(:proghead_role) do
     submission.degree_type.committee_roles.where(name: 'Program Head/Chair').first
@@ -23,7 +23,7 @@ RSpec.describe ProgramChairCollectionService do
           'User-Agent' => 'Ruby'
         }
       )
-      .to_return(status: 200, body: body, headers: {})
+      .to_return(status: 200, body:, headers: {})
   end
 
   context 'when a single program head is returned from webservice call' do

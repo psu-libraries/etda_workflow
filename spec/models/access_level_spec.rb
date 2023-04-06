@@ -7,9 +7,9 @@ RSpec.describe AccessLevel do
   let(:restricted_view_struct) { { type: 'restricted', label: 'Restricted', description: EtdaUtilities::AccessLevel.partner_access_levels['access_level']['restricted_attr']['description_html'] } }
   let(:restricted_to_institution_view_struct) { { type: 'restricted_to_institution', label: 'Restricted (Penn State Only)', description: EtdaUtilities::AccessLevel.partner_access_levels['access_level']['restricted_to_institution_attr']['description_html'] } }
 
-  context '#ACCESS_LEVEL_KEYS' do
+  describe '#ACCESS_LEVEL_KEYS' do
     it 'constant containing all access levels' do
-      expect(described_class::ACCESS_LEVEL_KEYS).to match_array(['open_access', 'restricted_to_institution', 'restricted', ''])
+      expect(described_class::ACCESS_LEVEL_KEYS).to contain_exactly('open_access', 'restricted_to_institution', 'restricted', '')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('open_access')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('restricted')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('restricted_to_institution')
@@ -18,13 +18,13 @@ RSpec.describe AccessLevel do
     end
   end
 
-  context '#paper_access_level_keys' do
+  describe '#paper_access_level_keys' do
     it '#paper_access_level_keys returns an array of access_levels' do
       expect(described_class::ACCESS_LEVEL_KEYS).to match_array(described_class.paper_access_level_keys)
     end
   end
 
-  context '#partner_access_level' do
+  describe '#partner_access_level' do
     it 'returns access level information from a yml file' do
       yml_level = described_class.partner_access_levels['access_level']
       expect(yml_level['open_access']).to include('Open Access')
@@ -33,7 +33,7 @@ RSpec.describe AccessLevel do
     end
   end
 
-  context '#valid_levels' do
+  describe '#valid_levels' do
     it 'returns access_levels including no level' do
       # expect(described_class.valid_levels).to match_array(described_class.paper_access_level_keys + [''])
       expect(described_class.valid_levels).to match_array(described_class.paper_access_level_keys)

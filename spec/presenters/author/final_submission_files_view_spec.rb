@@ -9,9 +9,11 @@ RSpec.describe Author::FinalSubmissionFilesView do
       it 'returns access_level_static partial for Millennium Scholars' do
         expect(view.author_access_level_view).to eql('access_level_static') if current_partner.milsch?
       end
+
       it 'returns access_level_static partial for Honors' do
         expect(view.author_access_level_view).to eql('access_level_standard') if current_partner.honors?
       end
+
       it 'returns access_level_standard partial for Grad School' do
         expect(view.author_access_level_view).to eq('access_level_standard') if current_partner.graduate?
       end

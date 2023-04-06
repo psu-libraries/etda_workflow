@@ -1,4 +1,4 @@
-RSpec.describe "filtering with semester dropdown", js: true do
+RSpec.describe "filtering with semester dropdown", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let!(:submission1) do

@@ -5,6 +5,7 @@ RSpec.shared_examples "a UniversityDirectory" do
     it "exists" do
       expect(directory).to respond_to(:autocomplete)
     end
+
     it "takes one argument" do
       expect(directory.method(:autocomplete).arity).to eq(-2)
     end
@@ -14,6 +15,7 @@ RSpec.shared_examples "a UniversityDirectory" do
     it "exists" do
       expect(directory).to respond_to(:exists?)
     end
+
     it "takes one argument" do
       expect(directory.method(:exists?).arity).to eq(1)
     end
@@ -23,6 +25,7 @@ RSpec.shared_examples "a UniversityDirectory" do
     it "exists" do
       expect(directory).to respond_to(:retrieve)
     end
+
     it "takes two arguments" do
       expect(directory.method(:retrieve).arity).to eq(3)
     end

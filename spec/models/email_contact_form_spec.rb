@@ -4,7 +4,7 @@ require 'model_spec_helper'
 
 RSpec.describe EmailContactForm, honors: true, type: :model do
   let(:mail_form) do
-    EmailContactForm.new(
+    described_class.new(
       full_name: 'Test',
       email: 'test123@psu.edu',
       psu_id: '999999999',
@@ -46,7 +46,7 @@ RSpec.describe EmailContactForm, honors: true, type: :model do
     context 'when issue_type is  not valid' do
       it 'returns invalid message' do
         mail_form.issue_type = :bogus
-        expect(mail_form.issue_type_valid?).to eq ["Invalid Issue Type"]
+        expect { mail_form.issue_type_valid? }.to change { mail_form.errors.messages[:issue_type] }.to(['Invalid Issue Type'])
       end
     end
   end

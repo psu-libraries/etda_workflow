@@ -12,11 +12,13 @@ RSpec.describe Admin::AuthorView do
       expect(author.submissions.count).to eq(2)
       expect(view.submission_list).to eql(submission_list)
     end
+
     it 'returns a message when no submissions exist for the author' do
       author.submissions = []
       expect(author.submissions.count).to eq(0)
       expect(view.submission_list).to eq('<p>No submissions for this author</p>')
     end
+
     it 'returns a list item without a link if submission does not have a format review file' do
       submission_new = FactoryBot.create :submission, :collecting_committee, created_at: Time.zone.now
       author.submissions = [submission_new]

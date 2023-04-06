@@ -87,7 +87,7 @@ RSpec.describe Author::CommitteeMemberView do
 
   describe "#program_chair_collection" do
     let!(:program) { FactoryBot.create :program }
-    let!(:submission) { FactoryBot.create :submission, campus: 'UP', program: program }
+    let!(:submission) { FactoryBot.create :submission, campus: 'UP', program: }
     let(:prof_in_charge_role) do
       submission.degree_type.committee_roles.find_by(name: 'Professor in Charge/Director of Graduate Studies')
     end

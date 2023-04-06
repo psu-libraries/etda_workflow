@@ -7,16 +7,16 @@ RSpec.describe 'Approver datatables', type: :integration, js: true do
                                                                   final_submission_approved_at: DateTime.now
   end
   let(:submission1) { FactoryBot.create :submission, :collecting_final_submission_files, created_at: Time.zone.now }
-  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
+  let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: }
   let(:committee_role) { FactoryBot.create :committee_role, name: "Dissertation Advisor/Co-Advisor" }
   let(:approval_configuration) { FactoryBot.create :approval_configuration }
   let!(:committee_member) do
-    FactoryBot.create :committee_member, committee_role: committee_role,
+    FactoryBot.create :committee_member, committee_role:,
                                          approval_started_at: DateTime.now,
-                                         submission: submission, status: '', access_id: 'approverflow'
+                                         submission:, status: '', access_id: 'approverflow'
   end
   let!(:committee_member2) do
-    FactoryBot.create :committee_member, committee_role: committee_role,
+    FactoryBot.create :committee_member, committee_role:,
                                          approval_started_at: DateTime.now,
                                          submission: submission1, status: '', access_id: 'approverflow'
   end
@@ -61,10 +61,10 @@ RSpec.describe 'Approver datatables', type: :integration, js: true do
                                              :waiting_for_publication_release, created_at: Time.zone.now,
                                                                                final_submission_files_uploaded_at: DateTime.now,
                                                                                final_submission_approved_at: DateTime.now
-    FactoryBot.create :committee_member, committee_role: committee_role,
+    FactoryBot.create(:committee_member, committee_role:,
                                          approval_started_at: DateTime.now,
                                          submission: completed_submission,
-                                         status: 'Approved', access_id: 'approverflow'
+                                         status: 'Approved', access_id: 'approverflow')
     visit '/approver/reviews'
     expect(page).to have_link(submission.title)
     expect(page).not_to have_link(completed_submission.title)

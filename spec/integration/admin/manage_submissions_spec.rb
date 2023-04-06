@@ -1,4 +1,4 @@
-RSpec.describe "Manage Submissions", js: true do
+RSpec.describe "Manage Submissions", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let!(:admin) { FactoryBot.create :author }

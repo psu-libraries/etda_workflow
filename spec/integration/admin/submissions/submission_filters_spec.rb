@@ -1,4 +1,4 @@
-RSpec.describe "Submission filter with semester dropdown", js: true do
+RSpec.describe "Submission filter with semester dropdown", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
@@ -33,6 +33,7 @@ RSpec.describe "Submission filter with semester dropdown", js: true do
     expect(page).to have_select(semester_year)
     expect(page).not_to have_select("#{submission1.year - 6} Spring")
   end
+
   it 'displays access level and invention disclosure' do
     page.find('a#final-submission-submitted').click
     expect(page).to have_content('Restricted')

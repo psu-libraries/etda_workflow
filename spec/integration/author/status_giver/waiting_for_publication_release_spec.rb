@@ -1,4 +1,4 @@
-RSpec.describe "Last Step: 'waiting for publication release'", js: true do
+RSpec.describe "Last Step: 'waiting for publication release'", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'waiting for publication release'" do
@@ -11,7 +11,7 @@ RSpec.describe "Last Step: 'waiting for publication release'", js: true do
     let!(:author) { current_author }
     let!(:admin) { current_admin }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-    let!(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, author: author, degree: degree }
+    let!(:submission) { FactoryBot.create :submission, :waiting_for_publication_release, author:, degree: }
     let!(:approval_configuration) { FactoryBot.create :approval_configuration }
 
     context "visiting the 'Author Submissions Index Page' page" do

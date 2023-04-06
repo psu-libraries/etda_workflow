@@ -14,6 +14,7 @@ RSpec.describe ApproverAbility, type: :model do
       expect(approver_ability.can?(:read, committee_member)).to be_truthy
       expect(approver_ability.can?(:edit, committee_member)).to be_truthy
     end
+
     it "does not allow approver to view, read, edit someone else's committee_member record" do
       different_committee_member = FactoryBot.create :committee_member
       expect(approver_ability.can?(:view, different_committee_member)).to be_falsey

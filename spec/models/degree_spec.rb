@@ -69,6 +69,7 @@ RSpec.describe Degree, type: :model do
     it 'returns the degree name normalized' do
       expect(described_class.new(name: 'De GrEE').slug).to eq('DE_GREE')
     end
+
     it 'returns nil when given an invalid degree id' do
       expect(described_class.etd_degree_slug(200)).to be_nil
     end
@@ -76,15 +77,15 @@ RSpec.describe Degree, type: :model do
 
   describe "#seed" do
     it "seeds db with default degrees", honors: true, milsch: true, sset: true do
-      Degree.seed
+      described_class.seed
       if current_partner.graduate?
-        expect(Degree.count).to eq 7
+        expect(described_class.count).to eq 7
       elsif current_partner.milsch?
-        expect(Degree.count).to eq 1
+        expect(described_class.count).to eq 1
       elsif current_partner.honors?
-        expect(Degree.count).to eq 11
+        expect(described_class.count).to eq 11
       elsif current_partner.sset?
-        expect(Degree.count).to eq 1
+        expect(described_class.count).to eq 1
       end
     end
   end

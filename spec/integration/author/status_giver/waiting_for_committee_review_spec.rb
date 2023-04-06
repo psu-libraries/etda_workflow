@@ -1,4 +1,4 @@
-RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
+RSpec.describe "Step 6: Waiting for Committee Review", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'waiting for committee review'" do
@@ -10,9 +10,9 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
     let(:author) { current_author }
     let(:approver) { current_approver }
     let(:degree) { FactoryBot.create :degree }
-    let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, author: author, degree: degree }
-    let(:committee_member) { FactoryBot.create :committee_member, submission: submission, access_id: 'approverflow' }
-    let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: submission }
+    let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, author:, degree: }
+    let(:committee_member) { FactoryBot.create :committee_member, submission:, access_id: 'approverflow' }
+    let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: }
     let(:approval_configuration) do
       FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, email_admins: true
     end
@@ -140,8 +140,8 @@ RSpec.describe "Step 6: Waiting for Committee Review'", js: true do
         expect(Submission.find(submission.id).status).to eq 'waiting for head of program review'
       end
 
-      it "proceeds to 'waiting for final submission response' when head of program is approving if head already accepted" do
-        FactoryBot.create :committee_member, :required, submission: submission, committee_role: head_role, status: 'approved', access_id: 'approverflow'
+      it "proceeds to 'waiting for final submission response' when head of program is approving if head already accepted", js: false do
+        FactoryBot.create(:committee_member, :required, submission:, committee_role: head_role, status: 'approved', access_id: 'approverflow')
         submission.degree.degree_type.approval_configuration.head_of_program_is_approving = true
         visit approver_path(committee_member)
         within("form#edit_committee_member_#{committee_member.id}") do

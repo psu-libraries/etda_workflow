@@ -1,4 +1,4 @@
-RSpec.describe 'Submitting a final submission as an author', js: true do
+RSpec.describe 'Submitting a final submission as an author', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When collecting final submission files", honors: true, milsch: true, sset: true do
@@ -7,7 +7,7 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
     end
 
     let!(:author) { current_author }
-    let!(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, lion_path_degree_code: 'PHD', author: author, degree: degree }
+    let!(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, lion_path_degree_code: 'PHD', author:, degree: }
     let!(:committee_members) { create_committee(submission) }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
@@ -151,6 +151,18 @@ RSpec.describe 'Submitting a final submission as an author', js: true do
         expect(submission.status).to eq 'waiting for committee review' unless current_partner.graduate?
         submission.reload
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
+      end
+    end
+
+    context 'when an ActiveRecord validation error occurs' do
+      it 'displays error messages' do
+        visit author_submission_edit_final_submission_path(submission)
+        click_button 'Submit final files for review'
+        within('.alert-danger') do
+          expect(page).to have_content 'You must upload a Final Submission File'
+          expect(page).to have_content "Abstract can't be blank"
+          expect(page).to have_content "If you agree to the copyright terms, please check the box to submit"
+        end
       end
     end
   end

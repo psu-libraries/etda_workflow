@@ -1,10 +1,10 @@
-RSpec.describe "Sending an email reminder", js: true do
+RSpec.describe "Sending an email reminder", type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let(:author) { FactoryBot.create :author }
   let(:degree) { FactoryBot.create :degree }
-  let(:submission1) { FactoryBot.create(:submission, :waiting_for_committee_review, author: author, degree: degree) }
-  let(:submission2) { FactoryBot.create(:submission, :collecting_format_review_files, author: author, degree: degree) }
+  let(:submission1) { FactoryBot.create(:submission, :waiting_for_committee_review, author:, degree:) }
+  let(:submission2) { FactoryBot.create(:submission, :collecting_format_review_files, author:, degree:) }
   let(:committee_member1) { FactoryBot.create(:committee_member) }
   let(:committee_member2) { FactoryBot.create(:committee_member) }
   let(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type) }

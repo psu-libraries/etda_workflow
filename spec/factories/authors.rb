@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :author, class: Author do |_p|
+  factory :author, class: 'Author' do |_p|
     sequence :access_id, 1000 do |n|
       "XYZ#{n}"
     end

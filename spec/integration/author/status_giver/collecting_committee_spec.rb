@@ -1,10 +1,10 @@
-RSpec.describe 'Step 2: Collecting Committee status', js: true do
+RSpec.describe 'Step 2: Collecting Committee status', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'collecting committee'" do
     let!(:author) { current_author }
     let!(:admin)  { current_admin }
-    let!(:submission) { FactoryBot.create :submission, :collecting_committee, author: author }
+    let!(:submission) { FactoryBot.create :submission, :collecting_committee, author: }
     let(:master_thesis) { DegreeType.second }
     let(:response_body) do
       { "data":
@@ -101,7 +101,7 @@ RSpec.describe 'Step 2: Collecting Committee status', js: true do
     end
 
     it "deletes the submission" do
-      FactoryBot.create :submission, :collecting_format_review_files, author: author
+      FactoryBot.create(:submission, :collecting_format_review_files, author:)
       start_count = author.submissions.count
       expect(start_count > 0).to be_truthy
       visit author_root_path

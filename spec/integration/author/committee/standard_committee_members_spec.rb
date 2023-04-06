@@ -1,4 +1,4 @@
-RSpec.describe 'The standard committee form for authors', js: true do
+RSpec.describe 'The standard committee form for authors', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   let(:author) { current_author }
@@ -10,11 +10,11 @@ RSpec.describe 'The standard committee form for authors', js: true do
   end
 
   if current_partner.graduate?
-    let(:submission) { FactoryBot.create :submission, :collecting_committee, author: author, degree: degree }
+    let(:submission) { FactoryBot.create :submission, :collecting_committee, author:, degree: }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.find_by(slug: 'master_thesis') }
 
   else
-    let(:submission) { FactoryBot.create :submission, :collecting_committee, author: author }
+    let(:submission) { FactoryBot.create :submission, :collecting_committee, author: }
   end
 
   before do
@@ -99,7 +99,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
 
     context 'when submission is a dissertation' do
       context 'when lionpath committee is present' do
-        let!(:submission_2) { FactoryBot.create :submission, :collecting_committee, author: author, degree: degree_2 }
+        let!(:submission_2) { FactoryBot.create :submission, :collecting_committee, author:, degree: degree_2 }
         let!(:degree_2) { FactoryBot.create :degree, degree_type: DegreeType.default }
         let!(:approval_config) do
           FactoryBot.create :approval_configuration, head_of_program_is_approving: true,
@@ -184,7 +184,7 @@ RSpec.describe 'The standard committee form for authors', js: true do
       context 'when lionpath committee is not present' do
         let(:submission_2) do
           FactoryBot.create :submission, :collecting_committee,
-                            author: author, degree: degree_2, lionpath_updated_at: DateTime.now
+                            author:, degree: degree_2, lionpath_updated_at: DateTime.now
         end
         let(:degree_2) { FactoryBot.create :degree, degree_type: DegreeType.default }
         let(:head_role_2) { CommitteeRole.find_by(degree_type: DegreeType.default, name: 'Program Head/Chair', is_program_head: true) }
