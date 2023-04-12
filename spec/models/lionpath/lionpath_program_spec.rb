@@ -79,7 +79,7 @@ RSpec.describe Lionpath::LionpathProgram do
     let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'xxb13' }
     let!(:program) { FactoryBot.create :program, code: row_1['Acadademic Plan'] }
     let!(:submission) do
-      FactoryBot.create :submission, author: author, degree: degree, program: program, degree_checkout_status: nil
+      FactoryBot.create :submission, author:, degree:, program:, degree_checkout_status: nil
     end
 
     it 'updates the submission' do
@@ -151,7 +151,7 @@ RSpec.describe Lionpath::LionpathProgram do
 
     context 'when another Spring 2021 submission exists that was imported from LionPATH' do
       let(:sp2021_sub) do
-        FactoryBot.create :submission, semester: 'Spring', program: program, degree: degree_ms,
+        FactoryBot.create :submission, semester: 'Spring', program:, degree: degree_ms,
                                        year: 2021, lionpath_updated_at: DateTime.now
       end
 

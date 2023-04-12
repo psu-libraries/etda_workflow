@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :program do |_p|
     name
-    sequence(:code) { |n| 'CODE' + n.to_s }
+    sequence(:code) { |n| "CODE#{n}" }
   end
 end

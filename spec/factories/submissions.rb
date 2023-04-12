@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :submission, class: Submission do |_s|
+  factory :submission, class: 'Submission' do |_s|
     sequence(:title) { |n| "A Title t#{n}" }
     author
     program
@@ -116,7 +116,7 @@ FactoryBot.define do
       format_review_notes { "Format review notes" }
       released_for_publication_at { Time.zone.yesterday + 2.years }
       released_metadata_at { Time.zone.yesterday }
-      invention_disclosures { [InventionDisclosure.create(id_number: '2018-1234', id: id)] }
+      invention_disclosures { [InventionDisclosure.create(id_number: '2018-1234', id:)] }
       final_submission_traits
     end
 
@@ -144,7 +144,7 @@ FactoryBot.define do
     end
 
     after(:create) do |submission|
-      create_list(:keyword, 2, submission: submission)
+      create_list(:keyword, 2, submission:)
     end
   end
 end

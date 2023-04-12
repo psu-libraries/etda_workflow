@@ -32,7 +32,6 @@ class EtdaFilePaths < EtdaUtilities::EtdaFilePaths
   rescue StandardError => e
     Rails.logger.error("Error moving file from #{original_file_location}")
     Rails.logger.error("Actual Error message: #{e}")
-    error_msg = e
-    error_msg
+    e
   end
 end

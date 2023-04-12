@@ -46,7 +46,7 @@ class CommitteeMember < ApplicationRecord
   end
 
   def self.current_committee(submission_id)
-    CommitteeMember.where(submission_id: submission_id).pluck(:committee_role_id, :is_required, :name, :email)
+    CommitteeMember.where(submission_id:).pluck(:committee_role_id, :is_required, :name, :email)
   end
 
   def self.program_head(submission)
@@ -56,9 +56,8 @@ class CommitteeMember < ApplicationRecord
   def validate_email
     return true if email.blank?
 
-    unless email.nil?
-      return true if email.match?(/\A[\w]([^@\s,;]+)@(([\w-]+\.)+(.*))\z/i)
-    end
+    return true if !email.nil? && email.match?(/\A\w([^@\s,;]+)@(([\w-]+\.)+(.*))\z/i)
+
     errors.add(:email, 'is invalid')
     false
   end
@@ -133,7 +132,7 @@ class CommitteeMember < ApplicationRecord
       return true unless committee_role.present? && submission.present? && is_program_head
 
       program_head = CommitteeMember.program_head(submission)
-      head_committee_member_id = (program_head ? program_head.id : nil)
+      head_committee_member_id = program_head&.id
       return true if (head_committee_member_id.nil? || head_committee_member_id == self[:id]) &&
                      (submission.committee_members.collect { |n| n.committee_role.present? ? n.is_program_head : nil }
                      .count(true) < 2)

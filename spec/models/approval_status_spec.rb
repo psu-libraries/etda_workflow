@@ -4,7 +4,7 @@ require 'model_spec_helper'
 
 RSpec.describe ApprovalStatus, type: :model do
   let(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
-  let(:submission) { FactoryBot.create :submission, degree: degree }
+  let(:submission) { FactoryBot.create :submission, degree: }
   let(:approval_configuration1) do
     ApprovalConfiguration.create(configuration_threshold: 0,
                                  use_percentage: 0,
@@ -46,11 +46,11 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when all committee members approve" do
           it "returns approved" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -61,11 +61,11 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when at least one committee member rejects" do
           it "returns rejected" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -76,11 +76,11 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when not all committee members have approved" do
           it "returns none" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'pending',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'pending',
                                                               is_voting: true)
 
@@ -91,11 +91,11 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when one committee member has no status and the other approves" do
           it "returns none" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: nil,
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -106,15 +106,15 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when a committee member is non voting" do
           it 'does not affect submission approval status' do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: false)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -127,12 +127,12 @@ RSpec.describe ApprovalStatus, type: :model do
 
           it 'includes program head in core vote' do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
                                                               committee_role: head_role,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'pending',
                                                               is_voting: false)
 
@@ -149,15 +149,15 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when one committee member rejects and the rest approve" do
           it "returns approved" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -168,15 +168,15 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when one committee member is pending and the rest approve" do
           it "returns none" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'pending',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -187,15 +187,15 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when two commitee members reject and the rest approve" do
           it "returns rejected" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -206,19 +206,19 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when two commitee members reject, one is pending, and the rest approve" do
           it "returns rejected" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'pending',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -229,19 +229,19 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when one committee member rejects, but the rest are pending" do
           it "returns none" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'pending',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'pending',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'pending',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true)
 
@@ -252,11 +252,11 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when one committee member has no status and the other approves" do
           it "returns none" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: nil,
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -281,11 +281,11 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when all committee members approve" do
           it "returns approved" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -296,19 +296,19 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when some committee members approve and some are pending" do
           it "returns none" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'pending',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'pending',
                                                               is_voting: true)
 
@@ -319,11 +319,11 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when at least one committee member rejects" do
           it "returns rejected" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -340,19 +340,19 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when all committee members approve" do
           it "returns approved" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -363,23 +363,23 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when 80 percent approve" do
           it "returns approved" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -390,23 +390,23 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when 40 percent reject" do
           it "returns rejected" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -417,19 +417,19 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when 50 percent approve but 25 percent reject (25 percent pending)" do
           it "returns none" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'pending',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true)
 
@@ -448,22 +448,22 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when 75% of committee members approve and 25% did not vote" do
           it "returns approved" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true,
                                                               approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true,
                                                               approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true,
                                                               approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: '',
                                                               is_voting: true,
                                                               approval_started_at: (DateTime.now - (7.days + 1.hour)))
@@ -475,22 +475,22 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when 75% of committee members approve and 25% reject" do
           it "returns approved" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true,
                                                               approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true,
                                                               approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true,
                                                               approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true,
                                                               approval_started_at: (DateTime.now - (7.days + 1.hour)))
@@ -502,22 +502,22 @@ RSpec.describe ApprovalStatus, type: :model do
         context "when 50% of committee members approve and 25% reject and 25% did not vote" do
           it "returns pending" do
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true,
                                                               approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'approved',
                                                               is_voting: true,
                                                               approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: '',
                                                               is_voting: true,
                                                               approval_started_at: (DateTime.now - (7.days + 1.hour)))
             submission.committee_members << FactoryBot.create(:committee_member, :review_started,
-                                                              submission: submission,
+                                                              submission:,
                                                               status: 'rejected',
                                                               is_voting: true,
                                                               approval_started_at: (DateTime.now - (7.days + 1.hour)))
@@ -536,7 +536,7 @@ RSpec.describe ApprovalStatus, type: :model do
       if current_partner.graduate?
         FactoryBot.create(:committee_member, :review_started,
                           status: 'pending', committee_role_id: head_role.id,
-                          submission: submission)
+                          submission:)
       end
     end
 

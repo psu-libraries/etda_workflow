@@ -19,7 +19,7 @@ class Admin::AuthorsController < AdminController
     redirect_to admin_authors_path
     flash[:notice] = 'Author successfully updated'
   rescue ActiveRecord::RecordInvalid => e
-    flash[:error] = e.record.errors.values.join(" ")
+    flash[:error] = e.record.errors.collect(&:message).join(" ")
     render :edit
   end
 

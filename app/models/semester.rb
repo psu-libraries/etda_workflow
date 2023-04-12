@@ -70,9 +70,7 @@ class Semester
         Time.zone.today
       end
 
-      def year
-        today.year
-      end
+      delegate :year, to: :today
 
       def fall_start
         Date.new(year, 8, 16)

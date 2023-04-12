@@ -36,7 +36,7 @@ class FinalSubmissionReleaseService
     end
 
     def solr_error_msg
-      author_name = submission.author_first_name.to_s + ' ' + submission.author_last_name.to_s
+      author_name = "#{submission.author_first_name} #{submission.author_last_name}"
       "Solr indexing error occurred when un-publishing submission for #{author_name}"
     end
 

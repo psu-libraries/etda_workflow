@@ -1,4 +1,4 @@
-RSpec.describe 'Step 4: Waiting for Format Review Response', js: true do
+RSpec.describe 'Step 4: Waiting for Format Review Response', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'waiting for format review response'" do
@@ -7,7 +7,7 @@ RSpec.describe 'Step 4: Waiting for Format Review Response', js: true do
     end
 
     let!(:author) { current_author }
-    let!(:submission) { FactoryBot.create :submission, :waiting_for_format_review_response, author: author }
+    let!(:submission) { FactoryBot.create :submission, :waiting_for_format_review_response, author: }
 
     context "visiting the 'Author Submissions Index Page' page" do
       it 'loads the page' do

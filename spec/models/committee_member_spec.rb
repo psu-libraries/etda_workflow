@@ -26,6 +26,7 @@ RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_column(:is_voting).of_type(:boolean) }
   it { is_expected.to have_db_column(:lionpath_updated_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:external_to_psu_id).of_type(:string) }
+  it { is_expected.to have_db_column(:faculty_member_id).of_type(:integer) }
   it { is_expected.to have_db_index(:approver_id) }
   it { is_expected.to belong_to(:submission).class_name('Submission') }
   it { is_expected.to belong_to(:committee_role).class_name('CommitteeRole') }
@@ -170,6 +171,7 @@ RSpec.describe CommitteeMember, type: :model do
       it 'updates status column' do
         expect(cm.status).to be_blank
       end
+
       it 'updates timestamps' do
         expect(cm.approved_at).to be_nil
         expect(cm.rejected_at).to be_nil
@@ -184,6 +186,7 @@ RSpec.describe CommitteeMember, type: :model do
       it 'updates status column' do
         expect(cm.status).to eq("approved")
       end
+
       it 'updates timestamps' do
         expect(cm.approved_at).to be_truthy
         expect(cm.rejected_at).to be_nil
@@ -198,6 +201,7 @@ RSpec.describe CommitteeMember, type: :model do
       it 'updates status column' do
         expect(cm.status).to eq("rejected")
       end
+
       it 'updates timestamps' do
         expect(cm.approved_at).to be_nil
         expect(cm.rejected_at).to be_truthy
@@ -212,6 +216,7 @@ RSpec.describe CommitteeMember, type: :model do
       it 'updates status column' do
         expect(cm.status).to eq("pending")
       end
+
       it 'updates timestamps' do
         expect(cm.approved_at).to be_nil
         expect(cm.rejected_at).to be_nil
@@ -380,7 +385,7 @@ RSpec.describe CommitteeMember, type: :model do
     if current_partner.graduate?
       it 'returns the Committee Members who have an Advisor Role' do
         submission = FactoryBot.create(:submission)
-        committee_member = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am " + I18n.t("#{current_partner.id}.committee.special_role"), email: 'advisor@psu.edu', submission_id: submission.id)
+        committee_member = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am #{I18n.t("#{current_partner.id}.committee.special_role")}", email: 'advisor@psu.edu', submission_id: submission.id)
         committee_member.save
         advisor_member = committee_member
         expect(described_class.advisors(submission)).to eq([advisor_member])
@@ -392,7 +397,7 @@ RSpec.describe CommitteeMember, type: :model do
     if current_partner.graduate?
       it 'returns the Committee Member name of first advisor' do
         submission = FactoryBot.create(:submission)
-        committee_member = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am " + I18n.t("#{current_partner.id}.committee.special_role"), email: 'advisor@psu.edu', submission_id: submission.id)
+        committee_member = described_class.create(committee_role_id: CommitteeRole.advisor_role, name: "I am #{I18n.t("#{current_partner.id}.committee.special_role")}", email: 'advisor@psu.edu', submission_id: submission.id)
         committee_member.save
         advisor_member = committee_member.name
         expect(described_class.advisor_name(submission)).to eq(advisor_member)

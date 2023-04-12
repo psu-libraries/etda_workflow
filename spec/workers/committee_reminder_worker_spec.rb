@@ -3,7 +3,7 @@ require 'shoulda-matchers'
 
 RSpec.describe CommitteeReminderWorker do
   let(:submission) { FactoryBot.create :submission }
-  let(:committee_member) { FactoryBot.create :committee_member, submission: submission }
+  let(:committee_member) { FactoryBot.create :committee_member, submission: }
   let(:detached_member) { FactoryBot.create :committee_member }
 
   context "when approval process starts" do

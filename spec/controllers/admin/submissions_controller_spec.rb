@@ -53,6 +53,7 @@ RSpec.describe Admin::SubmissionsController, type: :controller do
       get :index, params: { degree_type: DegreeType.default.slug, scope: 'format_review_submitted' }
       expect(response).to render_template('admin/submissions/index')
     end
+
     it 'displays a submissions index page for final submissions submitted filter' do
       scope = 'final_submission_is_submitted'
       expect(get: admin_submissions_index_path(DegreeType.default.slug, scope)).to route_to(controller: 'admin/submissions', action: 'index', degree_type: DegreeType.default.slug, scope: 'final_submission_is_submitted')

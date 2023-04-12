@@ -1,12 +1,12 @@
 class EtdUrls
   def explore
-    return "http://" + I18n.t("#{current_partner.id}.partner.url_slug") + ".localhost:3000" if Rails.env.test?
+    return "http://#{I18n.t("#{current_partner.id}.partner.url_slug")}.localhost:3000" if Rails.env.test?
 
     explore_url
   end
 
   def workflow
-    return workflow_url + ".localhost:3000" if Rails.env.test?
+    return "#{workflow_url}.localhost:3000" if Rails.env.test?
 
     workflow_url
   end
@@ -14,20 +14,18 @@ class EtdUrls
   private
 
     def explore_url
-      explore_str = if ENV['EXPLORE_HOST']
-                      "https://#{ENV['EXPLORE_HOST']}"
-                    else
-                      "https://" + EtdaUtilities::Hosts.new.explore_host(current_partner.id, Rails.application.secrets.stage)
-                    end
-      explore_str
+      if ENV['EXPLORE_HOST']
+        "https://#{ENV['EXPLORE_HOST']}"
+      else
+        "https://#{EtdaUtilities::Hosts.new.explore_host(current_partner.id, Rails.application.secrets.stage)}"
+      end
     end
 
     def workflow_url
-      workflow_str = if ENV['WORKFLOW_HOST']
-                       "https://#{ENV['WORKFLOW_HOST']}"
-                     else
-                       "https://" + EtdaUtilities::Hosts.new.workflow_submit_host(current_partner.id, Rails.application.secrets.stage)
-                     end
-      workflow_str
+      if ENV['WORKFLOW_HOST']
+        "https://#{ENV['WORKFLOW_HOST']}"
+      else
+        "https://#{EtdaUtilities::Hosts.new.workflow_submit_host(current_partner.id, Rails.application.secrets.stage)}"
+      end
     end
 end

@@ -33,7 +33,7 @@ class FinalSubmissionUpdateService
     elsif update_actions.rejected_dept_head?
       msg += action_service.final_rejected_send_dept_head
     end
-    { msg: msg, redirect_path: admin_submitted_sub_index_path }
+    { msg:, redirect_path: admin_submitted_sub_index_path }
   end
 
   def respond_waiting_to_be_released

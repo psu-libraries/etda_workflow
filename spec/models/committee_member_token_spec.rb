@@ -15,13 +15,13 @@ RSpec.describe CommitteeMemberToken, type: :model do
     it 'updates token_created_on' do
       expect(committee_member_token.token_created_on).to eq Date.yesterday
       committee_member_token.update_attribute :authentication_token, '123fds654'
-      expect(CommitteeMemberToken.find(committee_member_token.id).token_created_on).to eq Date.today
+      expect(described_class.find(committee_member_token.id).token_created_on).to eq Date.today
     end
 
     it "if nil, doesn't update token_created_on" do
       expect(committee_member_token.token_created_on).to eq Date.yesterday
       committee_member_token.update_attribute :authentication_token, nil
-      expect(CommitteeMemberToken.find(committee_member_token.id).token_created_on).to eq Date.yesterday
+      expect(described_class.find(committee_member_token.id).token_created_on).to eq Date.yesterday
     end
   end
 end

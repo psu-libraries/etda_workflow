@@ -37,7 +37,7 @@ services:
       # context: .
       # target: base
     environment:
-      JS: ${JS:-false}
+      INTEGRATION: ${INTEGRATION:-false}
       REDIS_HOST: redis
       APP_HOST: web
       MYSQL_HOST: db
@@ -50,6 +50,7 @@ services:
     depends_on:
     - db
     - selenium
+    - redis
     # volumes:
     # - workflow_files:/etda_workflow/tmp/workflow_files
     # - explore_files:/etda_workflow/tmp/explore_files

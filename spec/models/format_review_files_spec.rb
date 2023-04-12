@@ -31,17 +31,17 @@ RSpec.describe FormatReviewFile, type: :model do
 
   it '#current_location - returns full path of file including file name' do
     submission = FactoryBot.create :submission, :collecting_format_review_files
-    format_file = FormatReviewFile.new(submission_id: submission.id)
+    format_file = described_class.new(submission_id: submission.id)
     format_file.id = 1234
-    allow_any_instance_of(FormatReviewFile).to receive(:asset_identifier).and_return('stubbed_filename.pdf')
-    expect(format_file.current_location).to eq(WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(format_file.id) + 'stubbed_filename.pdf')
+    allow_any_instance_of(described_class).to receive(:asset_identifier).and_return('stubbed_filename.pdf')
+    expect(format_file.current_location).to eq("#{WORKFLOW_BASE_PATH}format_review_files/#{EtdaFilePaths.new.detailed_file_path(format_file.id)}stubbed_filename.pdf")
   end
 
   it '#full_file_path returns the full file path w/o filename' do
     submission = FactoryBot.create :submission, :collecting_format_review_files
-    format_review_file = FormatReviewFile.new(submission_id: submission.id)
+    format_review_file = described_class.new(submission_id: submission.id)
     format_review_file.id = 1234
-    expect(format_review_file.full_file_path).to eq(WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(format_review_file.id))
+    expect(format_review_file.full_file_path).to eq("#{WORKFLOW_BASE_PATH}format_review_files/#{EtdaFilePaths.new.detailed_file_path(format_review_file.id)}")
   end
 
   describe 'virus scanning' do
@@ -51,7 +51,7 @@ RSpec.describe FormatReviewFile, type: :model do
 
     let(:good_file) { FactoryBot.create :format_review_file }
 
-    infected_file = FormatReviewFile.new(asset: File.open(fixture('eicar_standard_antivirus_test_file.txt')))
+    infected_file = described_class.new(asset: File.open(fixture('eicar_standard_antivirus_test_file.txt')))
 
     it 'validates that the asset is virus free' do
       allow(VirusScanner).to receive(:safe?).and_return(true) if virus_scan_is_mocked?

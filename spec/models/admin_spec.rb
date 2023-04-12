@@ -22,14 +22,14 @@ RSpec.describe Admin, type: :model do
   it { is_expected.to have_db_column(:current_sign_in_ip).of_type(:string) }
   it { is_expected.to validate_uniqueness_of(:access_id) }
 
-  context '#admin_user?' do
+  describe '#admin_user?' do
     it 'knows when an author has admin privileges' do
       expect(described_class.new(access_id: 'me123', administrator: true)).to be_administrator
       expect(described_class.new(access_id: 'me123', administrator: nil)).not_to be_administrator
     end
   end
 
-  context '#active_admin_user?' do
+  describe '#active_admin_user?' do
     it 'knows when an author has site administration privileges' do
       author = described_class.new(access_id: 'me123')
       author.site_administrator = true

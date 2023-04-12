@@ -35,7 +35,7 @@ class Approver::ApproversController < ApproverController
     redirect_to approver_root_path
     flash[:notice] = 'Review submitted successfully'
   rescue ActiveRecord::RecordInvalid => e
-    flash[:error] = e.record.errors.values.join(" ")
+    flash[:error] = e.record.errors.collect(&:message).join(" ")
     redirect_to approver_path(params[:id])
   end
 
@@ -77,7 +77,7 @@ class Approver::ApproversController < ApproverController
       links = []
       if @submission.final_submission_files.any?
         @submission.final_submission_files.map do |f|
-          link = link_to f.asset_identifier, approver_approver_file_path(f.id), 'target': '_blank', 'data-no-turbolink': true
+          link = link_to f.asset_identifier, approver_approver_file_path(f.id), 'target': '_blank', 'data-no-turbolink': true, rel: 'noopener'
           links.push(link)
         end
       end

@@ -1,4 +1,4 @@
-RSpec.describe "Editing approval configuration", js: true, honors: true, milsch: true do
+RSpec.describe "Editing approval configuration", type: :integration, js: true, honors: true, milsch: true do
   require 'integration/integration_spec_helper'
 
   let!(:degree) { FactoryBot.create(:degree, name: "Doctor of Philosophy", is_active: true) }

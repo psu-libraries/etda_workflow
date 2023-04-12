@@ -15,10 +15,10 @@ RSpec.describe 'Tagit-keywords', type: :integration, js: true do
       visit author_submission_edit_final_submission_path(submission)
       keyword_list1 = page.find('span.tagit-label').text
       number_of_keywords = page.all('ul.tagit li span.tagit-label').count
-      expect(page).not_to have_content('Are you sure you want to delete keyword "' + keyword_list1[0] + '"?')
+      expect(page).not_to have_content("Are you sure you want to delete keyword \"#{keyword_list1[0]}\"?")
       keyword = page.find('.tagit-label').text
       page.find('.tagit-close').click
-      expect(page).to have_content('Are you sure you want to delete keyword "' + keyword + '"?')
+      expect(page).to have_content("Are you sure you want to delete keyword \"#{keyword}\"?")
       page.find("#ConfirmModal button#delete").click
       expect(page).to have_selector('ul.tagit li span.tagit-label', count: number_of_keywords - 1)
     end
@@ -33,7 +33,7 @@ RSpec.describe 'Tagit-keywords', type: :integration, js: true do
       visit author_submission_edit_final_submission_path(submission)
       keyword = page.find('.tagit-label').text
       page.find('.tagit-close').click
-      expect(page).to have_content('Are you sure you want to delete keyword "' + keyword + '"?')
+      expect(page).to have_content("Are you sure you want to delete keyword \"#{keyword}\"?")
       page.find('button#cancel').click
       expect(page).to have_content(keyword)
     end
@@ -50,10 +50,10 @@ RSpec.describe 'Tagit-keywords', type: :integration, js: true do
       submission2.keywords = []
       new_keyword = 'a newkeyword'
       visit author_submission_edit_final_submission_path(submission2)
-      page.find("li.tagit-new input").set(new_keyword + ',')
+      page.find("li.tagit-new input").set("#{new_keyword},")
       expect(page).to have_content(new_keyword)
       page.find('a.tagit-close').click
-      expect(page).to have_content('Are you sure you want to delete keyword "' + new_keyword + '"?')
+      expect(page).to have_content("Are you sure you want to delete keyword \"#{new_keyword}\"?")
     end
   end
 end

@@ -3,7 +3,6 @@
 if defined?(RSpec)
   require 'rspec/core'
   require 'rspec/core/rake_task'
-  require 'bundler/audit/task'
 
   if defined?(RuboCop)
     require 'rubocop/rake_task'
@@ -54,10 +53,4 @@ if defined?(RSpec)
     Rake::Task['db:seed:essential'].invoke
     Rake::Task['legacy:db:test_fixtures:load'].invoke
   end
-
-
-  # desc 'bundle audit'
-  # Bundler::Audit::Task.new do |task|
-  #   task default: 'bundle:audit'
-  # end
 end

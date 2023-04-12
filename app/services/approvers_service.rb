@@ -11,7 +11,7 @@ class ApproversService
     committee_members.each do |committee_member|
       committee_member.update_attribute :access_id, approver.access_id
       approver.committee_members << committee_member
-      committee_member.committee_member_token ? committee_member.committee_member_token.destroy : next
+      committee_member.committee_member_token ? committee_member.committee_member_token.destroy! : next
     end
     approver.save!
   end

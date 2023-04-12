@@ -33,7 +33,7 @@ class SolrDataImportService
       default_host = if Rails.env.development?
                        'localhost'
                      else
-                       EtdUrls.new.explore.gsub(/https?\:\/\//, '')
+                       EtdUrls.new.explore.gsub(/https?:\/\//, '')
                      end
       ENV.fetch('SOLR_HOST', default_host)
     end
@@ -47,12 +47,11 @@ class SolrDataImportService
     end
 
     def solr_url
-      url = if solr_username && solr_password
-              "http://#{solr_username}:#{URI.encode_www_form_component(solr_password)}@#{solr_host}:#{solr_port}/solr/#{solr_collection}"
-            else
-              "https://#{solr_host}/solr"
-            end
-      url
+      if solr_username && solr_password
+        "http://#{solr_username}:#{URI.encode_www_form_component(solr_password)}@#{solr_host}:#{solr_port}/solr/#{solr_collection}"
+      else
+        "https://#{solr_host}/solr"
+      end
     end
 
     def current_core

@@ -9,11 +9,13 @@ RSpec.describe ErrorsController, type: :controller do
       get 'render_500'
       expect(response).to render_template('error/500')
     end
+
     it 'renders 404 errors' do
       expect(get: '/404', format: :html).to route_to(controller: 'errors', action: 'render_404')
       get 'render_404'
       expect(response).to render_template('error/404')
     end
+
     it 'renders 401 errors' do
       expect(get: '/401').to route_to(controller: 'errors', action: 'render_401')
       get 'render_401'

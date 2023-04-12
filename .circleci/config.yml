@@ -28,6 +28,7 @@ jobs:
     steps:
     - setup_remote_docker:
         version: 20.10.6
+        docker_layer_caching: true
     - checkout
     # - restore_cache:
     #     keys:
@@ -64,6 +65,7 @@ jobs:
         at: /tmp/workspace
     - setup_remote_docker:
         version: 20.10.6
+        docker_layer_caching: true
     - checkout
     - run:
         name: "Rubocop"
@@ -83,6 +85,7 @@ jobs:
         at: /tmp/workspace
     - setup_remote_docker:
         version: 20.10.6
+        docker_layer_caching: true
     - checkout
     - run:
         name: "Integration Test Graduate"
@@ -90,8 +93,10 @@ jobs:
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+          docker-compose up -d db selenium redis
+          sleep 10
           PARTNER=graduate docker-compose run --name=test --service-ports -d test
-          docker exec -e RAILS_ENV=test -e JS=true test /etda_workflow/bin/ci-rspec
+          docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
           docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
           /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o integration_coverage.json -p /etda_workflow/ .resultset.json
           # docker cp test:/app/vendor .
@@ -110,6 +115,7 @@ jobs:
           at: /tmp/workspace
       - setup_remote_docker:
           version: 20.10.6
+          docker_layer_caching: true
       - checkout
       - run:
           name: "Unit Test Graduate"
@@ -117,6 +123,8 @@ jobs:
             docker load -i /tmp/workspace/etda-workflow.tar
             export TAG=${CIRCLE_SHA1}
             export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+            docker-compose up -d db selenium redis
+            sleep 10
             PARTNER=graduate docker-compose run --name=test --service-ports -d test
             docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
             docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
@@ -135,6 +143,7 @@ jobs:
     steps:
       - setup_remote_docker:
           version: 20.10.6
+          docker_layer_caching: true
       - checkout
       - attach_workspace:
           at: /tmp/workspace
@@ -173,6 +182,7 @@ jobs:
         at: /tmp/workspace
     - setup_remote_docker:
         version: 20.10.6
+        docker_layer_caching: true
     - checkout
     - run:
         name: "Setup Workspace"
@@ -183,18 +193,24 @@ jobs:
     - run:
         name: "Test Honors"
         command: |
+          docker-compose up -d db selenium redis
+          sleep 10
           PARTNER=honors docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
     - run:
         name: "Test Milsch"
         command: |
+          docker-compose up -d db selenium redis
+          sleep 5
           PARTNER=milsch docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
     - run:
         name: "Test SSET"
         command: |
+          docker-compose up -d db selenium redis
+          sleep 5
           PARTNER=sset docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down

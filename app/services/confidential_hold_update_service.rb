@@ -47,7 +47,7 @@ class ConfidentialHoldUpdateService
 
       def set_conf_hold(author, location)
         author.attributes = { confidential_hold: true, confidential_hold_set_at: DateTime.now }
-        ConfidentialHoldHistory.create(set_at: DateTime.now, set_by: location, author: author)
+        ConfidentialHoldHistory.create(set_at: DateTime.now, set_by: location, author:)
         author.save(validate: false)
       end
 
@@ -57,7 +57,7 @@ class ConfidentialHoldUpdateService
         if last_conf_hold.present?
           last_conf_hold.update!(removed_at: DateTime.now, removed_by: location)
         else
-          ConfidentialHoldHistory.create(removed_at: DateTime.now, removed_by: location, author: author)
+          ConfidentialHoldHistory.create(removed_at: DateTime.now, removed_by: location, author:)
         end
         author.save(validate: false)
       end

@@ -40,9 +40,11 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
         expect(results.count).to eq(1)
         expect(results.first[:label]).to eq("Alex James Kiessling")
       end
+
       it "returns the person's department" do
         expect(results.first[:dept]).to eq("University Libraries")
       end
+
       it "returns the person's email as the id" do
         expect(results.first[:id]).to eq("ajk5603@psu.edu")
       end
@@ -54,6 +56,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       it "still returns their name" do
         expect(results.second[:label]).to eq("John Fred Williams")
       end
+
       it "returns a message in the id field" do
         expect(results.second[:id]).to match(/not available/)
       end
@@ -65,6 +68,7 @@ RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
       it "still returns their name" do
         expect(results.second[:label]).to eq("John Fred Williams")
       end
+
       it "returns a message in the dept field" do
         expect(results.second[:dept]).to match(/not available/)
       end

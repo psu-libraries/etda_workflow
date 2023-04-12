@@ -6,7 +6,7 @@ class Lionpath::LionpathCommittee
     committee_role = CommitteeRole.find_by(code: row['Role'].to_s)
     if this_submission.committee_members.present?
       cm = this_submission.committee_members.find_by(access_id: row['Access ID'].downcase,
-                                                     committee_role: committee_role)
+                                                     committee_role:)
       if cm.present?
         if self.class.external_ids.include? cm.access_id.downcase
           cm.update external_to_psu_id: row['Access ID'].downcase
@@ -18,7 +18,7 @@ class Lionpath::LionpathCommittee
       end
 
       cm_external = this_submission.committee_members.find_by(external_to_psu_id: row['Access ID'].downcase,
-                                                              committee_role: committee_role)
+                                                              committee_role:)
       return if cm_external.present?
     end
 
@@ -42,7 +42,7 @@ class Lionpath::LionpathCommittee
 
     def committee_member_attrs(row, committee_role)
       hash = {
-        committee_role: committee_role,
+        committee_role:,
         is_required: true,
         name: "#{row['First Name']} #{row['Last Name']}",
         access_id: row['Access ID'].downcase.to_s,

@@ -22,7 +22,7 @@ class Lionpath::LionpathSubmissionGenerator
                              access_id: "abc#{rand_num + seq}",
                              is_voting: true,
                              lionpath_updated_at: DateTime.now,
-                             submission: submission)
+                             submission:)
       seq += 1
     end
   end
