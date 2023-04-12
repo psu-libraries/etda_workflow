@@ -1,4 +1,4 @@
-json.array! [
+array = [
   submission.id,
   "<input type='checkbox' class='row-checkbox' />",
   "#{submission.author.last_name}, #{submission.author.first_name}",
@@ -16,3 +16,7 @@ json.array! [
   submission.degree_checkout_status,
   submission.admin_notes&.truncate(30)
 ]
+
+array.insert(11, CommitteeMember.thesis_supervisor_name(submission)) if current_partner.honors?
+
+json.array!(array) 

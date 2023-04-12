@@ -48,53 +48,56 @@ RSpec.describe ExportCsv, type: :model do
     let(:export_csv) { described_class.new('custom_report', submission) }
 
     context 'columns' do
-      it 'has initialized columns' do
-        expect(export_csv.columns).to eq([
-                                           'Submission ID',
-                                           'Last Name',
-                                           'First Name',
-                                           'PSU ID',
-                                           'Title',
-                                           'Degree',
-                                           'Program',
-                                           'Access Level',
-                                           'Status',
-                                           'Graduation Date',
-                                           'Federal Funding?',
-                                           'Advisor Name',
-                                           'PSU Email',
-                                           'Alternate Email',
-                                           'Academic Program',
-                                           'Degree Checkout Status',
-                                           'Admin Notes'
-                                         ])
+      it 'has initialized columns', honors: true, graduate: true do
+        array =[
+          'Submission ID',
+          'Last Name',
+          'First Name',
+          'PSU ID',
+          'Title',
+          'Degree',
+          'Program',
+          'Access Level',
+          'Status',
+          'Graduation Date',
+          'Federal Funding?',
+          'Advisor Name',
+          'PSU Email',
+          'Alternate Email',
+          'Academic Program',
+          'Degree Checkout Status',
+          'Admin Notes'
+        ]
+        array.insert(12, "Thesis Supervisor Name") if current_partner.honors?
+        expect(export_csv.columns).to eq(array)
       end
     end
 
     context 'fields when initialized with one submission' do
-      it 'has one submission' do
+      it 'has one submission', honors: true, graduate: true do
         fields = export_csv.fields(submission)
         expect(fields).not_to be(nil)
-
-        expect(fields).to eq([
-                               submission.id,
-                               submission.author.last_name,
-                               submission.author.first_name,
-                               submission.author.psu_id,
-                               submission.cleaned_title,
-                               submission.degree_type.name,
-                               submission.program_name,
-                               submission.current_access_level.label,
-                               submission.admin_status,
-                               submission.preferred_semester_and_year,
-                               submission.federal_funding_display,
-                               CommitteeMember.advisor_name(submission),
-                               submission.author.psu_email_address,
-                               submission.author.alternate_email_address,
-                               submission.academic_program,
-                               submission.degree_checkout_status,
-                               submission.admin_notes
-                             ])
+        array = [
+          submission.id,
+          submission.author.last_name,
+          submission.author.first_name,
+          submission.author.psu_id,
+          submission.cleaned_title,
+          submission.degree_type.name,
+          submission.program_name,
+          submission.current_access_level.label,
+          submission.admin_status,
+          submission.preferred_semester_and_year,
+          submission.federal_funding_display,
+          CommitteeMember.advisor_name(submission),
+          submission.author.psu_email_address,
+          submission.author.alternate_email_address,
+          submission.academic_program,
+          submission.degree_checkout_status,
+          submission.admin_notes
+        ]
+        array.insert(12, CommitteeMember.thesis_supervisor_name(submission)) if current_partner.honors?
+        expect(fields).to eq(array)
       end
     end
 
