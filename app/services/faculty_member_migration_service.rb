@@ -7,13 +7,15 @@ class FacultyMemberMigrationService
         results = LdapUniversityDirectory.new.retrieve(member_id, 'uid', LdapResultsMap::FACULTY_LDAP_MAP)
         faculty_member = FacultyMember.create(faculty_member_attrs(results)) if results.present? && results[:primary_affiliation] != 'MEMBER'
       end
-      member.update(faculty_member_id: faculty_member.id)
+      if faculty_member.present?
+        member.update(faculty_member_id: faculty_member.id)
+      end
     end
   end
 
   private
 
-  def faculty_member_attrs(ldap_result)
+  def self.faculty_member_attrs(ldap_result)
     {first_name: ldap_result[:first_name], 
     middle_name: ldap_result[:middle_name],
     last_name: ldap_result[:last_name],
