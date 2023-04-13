@@ -6,7 +6,7 @@ Rails.application.config.to_prepare do
     WORKFLOW_BASE_PATH = 'tmp/workflow/'
     EXPLORE_BASE_PATH = 'tmp/explore/'
   elsif Rails.env == 'development'
-    LdapUniversityDirectory = MockUniversityDirectory
+    # LdapUniversityDirectory = MockUniversityDirectory
     VirusScanner = MockVirusScanner
     DirectoryService = MockDirectoryService
     WORKFLOW_BASE_PATH = "tmp/workflow_files/#{Partner.current.id}/"
