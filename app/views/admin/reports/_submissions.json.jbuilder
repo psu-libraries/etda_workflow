@@ -19,4 +19,4 @@ array = [
 
 array.insert(11, CommitteeMember.thesis_supervisor_name(submission)) if current_partner.honors?
 
-json.array!(array) 
+json.array!(array)

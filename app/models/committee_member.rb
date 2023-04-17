@@ -54,7 +54,7 @@ class CommitteeMember < ApplicationRecord
 
     supervisors_array.first.name
   end
-  
+
   def self.remove_committee_members(submission)
     submission.committee_members.each(&:destroy)
     submission.save

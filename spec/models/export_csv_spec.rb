@@ -49,7 +49,7 @@ RSpec.describe ExportCsv, type: :model do
 
     context 'columns' do
       it 'has initialized columns', honors: true, graduate: true do
-        array =[
+        array = [
           'Submission ID',
           'Last Name',
           'First Name',
