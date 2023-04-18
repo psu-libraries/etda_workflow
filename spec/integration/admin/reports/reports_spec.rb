@@ -123,7 +123,7 @@ RSpec.describe "Admins can run reports", type: :integration, js: true do
       expect(page).to have_content('Restricted')
     end
 
-    it 'displays the Custom Report page and allows filtering by semester' do
+    it 'displays the Custom Report page and allows filtering by semester', graduate: true, honors: true do
       expect(page).to have_link('Custom Report')
       click_link('Custom Report')
       expect(page).to have_content('Custom Report')

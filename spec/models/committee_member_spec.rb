@@ -417,7 +417,7 @@ RSpec.describe CommitteeMember, type: :model do
     end
   end
 
-  context 'thesis supervisor' do
+  context 'thesis supervisor', honors: true do
     if current_partner.honors?
       it 'returns the Committee Member name of first Thesis Supervisor' do
         submission = FactoryBot.create(:submission)
