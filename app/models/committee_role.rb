@@ -72,6 +72,13 @@ class CommitteeRole < ApplicationRecord
     role.id || nil
   end
 
+  def self.thesis_supervisor_role
+    special_role_name = 'thesis supervisor'
+    role = CommitteeRole.find_by("name LIKE '%#{special_role_name}'")
+
+    role.id || nil
+  end
+
   def possible_committee_roles(degree_type)
     degree_type.try(&:committee_roles).order('name asc') || []
   end

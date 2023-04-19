@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_26_164114) do
+ActiveRecord::Schema.define(version: 2023_04_13_194645) do
 
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -307,7 +307,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_164114) do
   add_foreign_key "committee_member_tokens", "committee_members", name: "committee_member_tokens_committee_member_id_fk"
   add_foreign_key "committee_members", "approvers", name: "committee_members_approver_id_fk"
   add_foreign_key "committee_members", "committee_roles", name: "committee_members_committee_role_id_fk"
-  add_foreign_key "committee_members", "faculty_members", name: "committee_members_faculty_member_id_fk"
+  add_foreign_key "committee_members", "faculty_members", name: "committee_members_faculty_member_id_fk", on_delete: :cascade
   add_foreign_key "committee_members", "submissions", name: "committee_members_submission_id_fk"
   add_foreign_key "committee_roles", "degree_types", name: "committee_roles_degree_type_id_fk"
   add_foreign_key "confidential_hold_histories", "authors", name: "confidential_hold_histories_author_id_fk"

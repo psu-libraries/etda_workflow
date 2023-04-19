@@ -40,6 +40,21 @@ class CommitteeMember < ApplicationRecord
     advisors_array.first.name
   end
 
+  def self.thesis_supervisors(submission)
+    supervisors_array = []
+    submission.committee_members.each do |cm|
+      supervisors_array << cm if cm.committee_role.name.downcase == 'thesis supervisor'
+    end
+    supervisors_array
+  end
+
+  def self.thesis_supervisor_name(submission)
+    supervisors_array = CommitteeMember.thesis_supervisors(submission)
+    return '' if supervisors_array.empty?
+
+    supervisors_array.first.name
+  end
+
   def self.remove_committee_members(submission)
     submission.committee_members.each(&:destroy)
     submission.save
