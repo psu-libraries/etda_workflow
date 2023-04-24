@@ -19,7 +19,7 @@ gem 'redis', '~> 4.5.0'
 # Resque pool
 gem 'resque-pool', '~> 0.7.0'
 # SideKiq for queueing jobs
-gem 'sidekiq', '~> 5.2.10'
+gem 'sidekiq', '~> 7.0.8'
 # When downgrading Sidekiq, rack needed to be downgraded as well.
 # This can be removed for Sidekiq 6 or greater.
 gem 'rack', '~> 2.2.6.3'
