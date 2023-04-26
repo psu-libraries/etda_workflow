@@ -2,9 +2,9 @@ class FacultyMemberMigrationService
   def initialize
     @connection = LdapUniversityDirectory.new
   end
-  def self.migrate_faculty_members()
+  def migrate_faculty_members()
     count = 0
-    
+    #Handle foreign key differently, it is deleting multiple records in committee member db when trying to delete the same faculty member in faculty member db
     CommitteeMember.find_each do |member|
       count += 1
       begin 
@@ -31,11 +31,11 @@ class FacultyMemberMigrationService
   # Making collection of ppl without access ids
   private
 
-  def self.faculty_member_attrs(ldap_result)
+  def faculty_member_attrs(ldap_result)
     {first_name: ldap_result[:first_name], 
     middle_name: ldap_result[:middle_name],
     last_name: ldap_result[:last_name],
-    department: ldap_result[:department],
+    department: ldap_result[:dept],
     webaccess_id: ldap_result[:access_id]} 
   end
 
