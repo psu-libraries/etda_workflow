@@ -51,6 +51,7 @@
         <th data-name="submission_status" data-orderable="true">Status</th>
         <th data-name="federal_funding_display" data-ofderable="true">Federal Funding?</th>
         <th data-name="advisor_name" data-orderable="true">Advisor Name</th>
+        <%= '<th data-name="thesis_supervisor_name" data-orderable="true">Thesis Supervisor</th>'.html_safe if current_partner.honors?%>
         <th data-name="psu_email_address" data-orderable="true">PSU Email</th>
         <th data-name="alternate_email_address" data-orderable="true">Alternate Email</th>
         <th data-name="academic_program" data-orderable="true">Academic Program</th>

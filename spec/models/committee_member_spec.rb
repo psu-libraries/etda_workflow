@@ -405,6 +405,30 @@ RSpec.describe CommitteeMember, type: :model do
     end
   end
 
+  context 'thesis supervisors', honors: true do
+    if current_partner.honors?
+      it 'returns the Committee Members who have a Thesis Supervisor Role' do
+        submission = FactoryBot.create(:submission)
+        committee_member = described_class.create(committee_role_id: CommitteeRole.thesis_supervisor_role, name: "I am #{I18n.t("#{current_partner.id}.committee.special_role")}", email: 'advisor@psu.edu', submission_id: submission.id)
+        committee_member.save
+        thesis_supervisor_member = committee_member
+        expect(described_class.thesis_supervisors(submission)).to eq([thesis_supervisor_member])
+      end
+    end
+  end
+
+  context 'thesis supervisor', honors: true do
+    if current_partner.honors?
+      it 'returns the Committee Member name of first Thesis Supervisor' do
+        submission = FactoryBot.create(:submission)
+        committee_member = described_class.create(committee_role_id: CommitteeRole.thesis_supervisor_role, name: "I am #{I18n.t("#{current_partner.id}.committee.special_role")}", email: 'advisor@psu.edu', submission_id: submission.id)
+        committee_member.save
+        thesis_supervisor_member = committee_member.name
+        expect(described_class.thesis_supervisor_name(submission)).to eq(thesis_supervisor_member)
+      end
+    end
+  end
+
   context 'committee_role_id' do
     it 'creates a committee_member_token if special committee member' do
       submission = FactoryBot.create(:submission)

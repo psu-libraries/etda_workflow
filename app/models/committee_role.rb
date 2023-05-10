@@ -30,6 +30,7 @@ class CommitteeRole < ApplicationRecord
   HONORS_ROLES = { 'thesis' => [
     { name: 'Thesis Supervisor',       num_required: 1, is_active: true, is_program_head: false },
     { name: 'Honors Advisor',          num_required: 1, is_active: true, is_program_head: false },
+    { name: 'Thesis Honors Advisor',   num_required: 0, is_active: true, is_program_head: false },
     { name: 'Faculty Reader',          num_required: 0, is_active: true, is_program_head: false }
   ] }.freeze
 
@@ -69,6 +70,13 @@ class CommitteeRole < ApplicationRecord
     # hardcoding until locales file is added
     special_role_name = 'advisor'
     role = CommitteeRole.find_by("name LIKE '%#{special_role_name}'")
+    role.id || nil
+  end
+
+  def self.thesis_supervisor_role
+    special_role_name = 'thesis supervisor'
+    role = CommitteeRole.find_by("name LIKE '%#{special_role_name}'")
+
     role.id || nil
   end
 
