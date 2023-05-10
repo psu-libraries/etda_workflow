@@ -96,7 +96,8 @@ setup_bulk_selectors_and_actions = function() {
 
     const confirm_release_message = function() {
         const names = selected_names();
-        return confirm(`Are you sure you want to release the submissions(s) for authors:\n\n${names}\n as Open Access?`);
+        const noun = number_of_rows_selected() > 1 ? 'submissions' : 'submission';
+        return confirm(`Are you sure you want to release the ${noun} for authors:\n\n${names}\n as Open Access?`);
     };
 
     const update_bulk_actions = function() {
