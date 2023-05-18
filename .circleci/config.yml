@@ -55,6 +55,8 @@ jobs:
           - etda-workflow.tar
           - cc-test-reporter
   rubocop:
+    docker:
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -74,6 +76,8 @@ jobs:
           sleep 50
           RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
   integration_test_grad:
+    docker:
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -101,7 +105,10 @@ jobs:
         root: .
         paths:
           - integration_coverage.json
+    resource_class: large
   unit_test_grad:
+    docker:
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -167,6 +174,8 @@ jobs:
                   docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
                   docker push $REGISTRY_URL:latest
   test_partners:
+    docker:
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
