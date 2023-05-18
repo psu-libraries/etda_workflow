@@ -2,6 +2,8 @@ version: '3.5'
 services:
   # Can be used locally with M1 Macs in place of the selenuim container
   seleniarm:
+    # Change 'beta' to 'latest' once the standalone-chromium
+    # is updated to include chromedriver v114
     image: seleniarm/standalone-chromium:beta
     volumes:
       - /dev/shm:/dev/shm
@@ -9,6 +11,8 @@ services:
       - "4444:4444"
     container_name: selenium
   selenium:
+    # Change 'beta' to 'latest' once the standalone-chromium
+    # is updated to include chromedriver v114
     image: selenium/standalone-chrome:beta
     volumes:
       - /dev/shm:/dev/shm
