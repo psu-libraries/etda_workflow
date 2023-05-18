@@ -73,6 +73,7 @@ jobs:
           docker load -i /tmp/workspace/etda-workflow.tar
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+          sleep 30
           RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
   integration_test_grad:
     docker:
@@ -94,7 +95,6 @@ jobs:
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           docker-compose up -d db selenium redis
-          sleep 10
           PARTNER=graduate docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
           docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
@@ -194,7 +194,7 @@ jobs:
         name: "Test Honors"
         command: |
           docker-compose up -d db selenium redis
-          sleep 10
+          sleep 20
           PARTNER=honors docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
           docker-compose down
