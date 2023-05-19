@@ -9,7 +9,7 @@ services:
       - "4444:4444"
     container_name: selenium
   selenium:
-    image: selenium/standalone-chromium
+    image: selenium/standalone-chrome
     volumes:
       - /dev/shm:/dev/shm
     ports:
