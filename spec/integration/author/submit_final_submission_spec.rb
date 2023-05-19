@@ -92,6 +92,7 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         submission.reload
         expect(submission.final_submission_files_uploaded_at).to be_nil
         visit author_submission_edit_final_submission_path(submission)
+        sleep 1
         expect(page).to have_content('Select one or more files to upload')
         expect(page).not_to have_link('Contact Support')
         select Time.zone.now.next_year.year, from: 'Graduation Year'
