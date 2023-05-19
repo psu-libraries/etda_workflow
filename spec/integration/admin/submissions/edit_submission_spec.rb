@@ -122,7 +122,6 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
 
   it 'Allows admin to upload and delete final submission files' do
     visit admin_edit_submission_path(final_submission)
-    sleep 1
     expect(page).not_to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
       click_link "Additional File"
@@ -143,7 +142,6 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
 
   it 'Allows admin to upload multiple final submission files' do
     visit admin_edit_submission_path(final_submission)
-    sleep 1
     expect(page).not_to have_link('final_submission_file_01.pdf')
     expect(page).not_to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
