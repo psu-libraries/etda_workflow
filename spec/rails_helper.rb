@@ -75,7 +75,7 @@ RSpec.configure do |config|
     Capybara.server_port = "3001"
     Capybara.server_host = '0.0.0.0'
 
-    args = ['--no-default-browser-check', '--start-maximized', '--kiosk-printing']
+    args = ['--no-default-browser-check', '--start-maximized', '--kiosk-printing', '--headless']
     options = Selenium::WebDriver::Chrome::Options.new
     args.each do |arg|
       options.add_argument(arg)
