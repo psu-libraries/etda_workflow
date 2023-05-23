@@ -26,7 +26,7 @@ gem 'rack', '~> 2.2.6.3'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1.0'
 # Jquery for rails
-gem 'jquery-rails', '~> 4.3.0'
+gem 'jquery-rails', '~> 4.4.0'
 # jQuery user interface widgets
 gem 'jquery-ui-rails', '~> 6.0.0'
 # FontAwesome sass integration
