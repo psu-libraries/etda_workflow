@@ -25,5 +25,15 @@ RSpec.describe FacultyMember, type: :model do
 
   describe 'associations' do
     it { is_expected.to have_many(:committee_members) }
+
+    context 'When deleting faculty member associated with committee member' do
+      it 'nullifies committee members' do
+        test_faculty = create :faculty_member
+        test_committee = create :committee_member, faculty_member_id: test_faculty.id
+        expect(test_committee.faculty_member_id).to eq(test_faculty.id)
+        test_faculty.destroy
+        expect(test_committee.reload.faculty_member_id).to eq(nil)
+      end
+    end
   end
 end

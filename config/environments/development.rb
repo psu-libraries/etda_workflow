@@ -79,4 +79,5 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   # config.file_watcher = ActiveSupport:: EventedFileUpdateChecker // this code doesn't work with M1 chip MacBooks
   config.file_watcher = ActiveSupport::FileUpdateChecker
+
 end

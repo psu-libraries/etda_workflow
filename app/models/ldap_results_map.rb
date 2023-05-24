@@ -47,4 +47,11 @@ class LdapResultsMap
     psuidn: { method: :format_psuidn, options: {} },
     confidential_hold: { method: :format_confidential, options: {} }
   }.freeze
+
+  FACULTY_LDAP_MAP = { uid: [:access_id],
+                       givenname: [:first_name],
+                       initials: [:middle_initial],
+                       sn: [:last_name],
+                       psdepartment: [:dept],
+                       edupersonprimaryaffiliation: [:primary_affiliation] }.freeze
 end
