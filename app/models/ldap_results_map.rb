@@ -50,7 +50,7 @@ class LdapResultsMap
 
   FACULTY_LDAP_MAP = { uid: [:access_id],
                        givenname: [:first_name],
-                       initials: [:middle_initial],
+                       cn: [:full_name],
                        sn: [:last_name],
                        psdepartment: [:dept],
                        edupersonprimaryaffiliation: [:primary_affiliation] }.freeze

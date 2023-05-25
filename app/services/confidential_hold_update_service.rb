@@ -20,6 +20,8 @@ class ConfidentialHoldUpdateService
 
     private
 
+      # TODO: This method is nearly identical to FacultyMemberMigrationService#retrieve
+      # Refactor these methods into a single method within LdapUniversityDirectory
       def ldap_result_connected(author, connection)
         attrs = []
         attrs = connection.search(base: ldap_base,
