@@ -14,7 +14,7 @@ class FacultyMemberMigrationService
       end
       member.update(faculty_member_id: faculty_member.id) if faculty_member.present?
     rescue StandardError => e
-      Rails.logger e.message
+      Rails.logger.error e.message
     end
   end
 
