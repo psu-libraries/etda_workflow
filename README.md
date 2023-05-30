@@ -96,4 +96,4 @@ After each run of this import, `Submission` and `CommitteeMember` records import
 
 ## Graduate School Fee
 
-Master's Thesis and Dissertation submissions require a fee to be paid in the Graduate School's systems before students can proceed with submission of their final submission.  This functionality is turned off in development and QA environments.  The logic to determine if the code is running in one of these environments can be found in `config/environment.rb`.
+Master's Thesis and Dissertation submissions require a fee to be paid in the Graduate School's systems before students can proceed with submission of their final submission.  The eTD system checks this via a webservice endpoint in the Graduate School's systems and blocks users from proceeding if the fee is not paid.  This functionality is turned off in development and QA environments.  The logic to determine if the code is running in one of these environments can be found in `config/environment.rb`.
