@@ -83,6 +83,9 @@ gem 'net-smtp', require: false          # For Ruby 3 and Rails 6 mail compatibil
 gem 'psych', '< 4'
 # Matrix methods are needed for deployment
 gem 'matrix', '~> 0.4.2'
+# Support for newer ssh keys on newer machines
+gem 'ed25519', '~> 1.2.4'
+gem 'bcrypt_pbkdf', '~> 1.0.0'
 
 group :development, :test do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
@@ -101,9 +104,6 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring', '~> 2.1.0'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  # Support for newer ssh keys on newer machines
-  gem 'ed25519', '~> 1.2.4'
-  gem 'bcrypt_pbkdf', '~> 1.0.0'
 end
 
 group :test do
