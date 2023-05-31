@@ -47,6 +47,9 @@ To seed data:
 1. `docker-compose exec web bash`
 2. `PARTNER={parter} bundle exec rake db:seed:essential`
 
+**_Note:_** For new devs you may need to add their `Author` and `Admin` records manually.  Alternatively, you can comment out the `MockUniversityDirectory` line
+ in `config/initializers/autoload_constants.rb` for the development environment.  Then proceed to the admin and author routes to automatically create the records with LDAP.
+
 You're good to go from here!  Any changes made in the project files on your local machine will automatically be updated in the container.  Run `make restart` to restart the puma server if changes do not appear in the web browser.  Remember to check the Makefile for more commands.  If you are running a shell in the web container, you can run all of the rails commands you would normally use for development: ie `rspec, rails restart, rails c, etc.`
 
 ## Testing
@@ -61,7 +64,7 @@ You're good to go from here!  Any changes made in the project files on your loca
    1. `RAILS_ENV=test PARTNER=milsch bundle exec rspec --tag milsch`
    1. `RAILS_ENV=test PARTNER=honors bundle exec rspec --tag honors`
 
-   Additionally, there are some component tests that run against Penn State's LDAP directory service: rspec --tag ldap. Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.  When in development or testing, you must edit the development.rb or test.rb file in config/environments and change MockUniversityDirectory to LdapUniversityDirectory to test a true ldap call.
+   Additionally, there are some component tests that run against Penn State's LDAP directory service: rspec --tag ldap. Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.  When in development or testing, you must edit the `config/initializers/autoload_constants.rb` file and comment out the `MockUniversityDirectory` lines for the development and test environments to allow a true ldap call.
 
 ## Deployment instructions
 
@@ -73,7 +76,7 @@ To initiate a production deploy, create a new release. Then, merge the automatic
 
 ## LionPATH Integration
 
-Student program and committee information is imported daily from LionPATH.  The integration runs on a cron job that kicks off at 3am.  There are five tables/resources updated in ETDA by this daily import: Submission, Program, CommitteeMember, CommitteeRole.  The import works in the following order:
+Student program and committee information is imported daily from LionPATH.  The integration runs on a cron job that kicks off at 3am.  There are 4 tables/resources updated in ETDA by this daily import: Submission, Program, CommitteeMember, CommitteeRole.  The import works in the following order:
 
 1. Committee Roles for The Graduate School's Dissertation submissions are imported.  This updates the CommitteeRole table with changes and/or new committee roles.  These roles exactly reflect the roles in LionPATH and are different from Master's Thesis roles.
 
@@ -88,3 +91,9 @@ The LionPATH integration uses sftp to pull CSV dumps of the Committee Roles, Stu
 	Committee Roles: PE_SR_G_ETD_ACT_COMROLES
 	Student Program Information: PE_SR_G_ETD_STDNT_PLAN_PRC
 	Committees: PE_SR_G_ETD_COMMITTEE_PRC
+	
+After each run of this import, `Submission` and `CommitteeMember` records imported from LionPATH are checked to see if they should be deleted.  Any `Submission` still at the collecting program information stage that has not been updated by LionPATH in the last two days will be deleted.  Any `CommitteeMember` that is not external to PSU, not a program head, not associated with a `Submission` beyond the final submission review stage, and hasn't been updated by LionPATH in two days will also be deleted. There is a failsafe that stops the deletion if more than 10% of records are being deleted.
+
+## Graduate School Fee
+
+Master's Thesis and Dissertation submissions require a fee to be paid in the Graduate School's systems before students can proceed with submission of their final submission.  The eTD system checks this via a webservice endpoint in the Graduate School's systems and blocks users from proceeding if the fee is not paid.  This functionality is turned off in development and QA environments.  The logic to determine if the code is running in one of these environments can be found in `config/environment.rb`.
