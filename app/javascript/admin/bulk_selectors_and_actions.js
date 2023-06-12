@@ -7,15 +7,15 @@
 var $ = require('jquery');
 window.jQuery = $;
 
-setup_bulk_selectors_and_actions = function() {
+setup_bulk_selectors_and_actions = function () {
 
     const bulk_actions = $('#bulk-actions');
     const table = $('.bulk-actions');
 
-    const number_of_rows_selected = function() {
+    const number_of_rows_selected = function () {
         let count = 0;
         const data_table = new $.fn.dataTable.Api(table);
-        data_table.rows().nodes().to$().each( function() {
+        data_table.rows().nodes().to$().each(function () {
             if ($(this).find('.row-checkbox').prop('checked')) {
                 return count++;
             }
@@ -23,15 +23,15 @@ setup_bulk_selectors_and_actions = function() {
         return count;
     };
 
-    const number_of_visible_rows_selected = function() {
+    const number_of_visible_rows_selected = function () {
         let count = 0;
         const data_table = new $.fn.dataTable.Api(table);
         data_table.$('tr', {
-                order:  'current',
-                search: 'applied',
-                page:   'current'
-            }
-        ).each( function() {
+            order: 'current',
+            search: 'applied',
+            page: 'current'
+        }
+        ).each(function () {
             if ($(this).find('.row-checkbox').prop('checked')) {
                 return count++;
             }
@@ -39,10 +39,10 @@ setup_bulk_selectors_and_actions = function() {
         return count;
     };
 
-    const selected_ids = function() {
+    const selected_ids = function () {
         const array = [];
         const data_table = new $.fn.dataTable.Api(table);
-        data_table.rows().nodes().to$().each( function() {
+        data_table.rows().nodes().to$().each(function () {
             const id = $(this).attr('data-submission-id');
             if ($(this).find('.row-checkbox').prop('checked')) {
                 return array.push(id);
@@ -51,10 +51,10 @@ setup_bulk_selectors_and_actions = function() {
         return array;
     };
 
-    const selected_names = function() {
+    const selected_names = function () {
         const array = [];
         const data_table = new $.fn.dataTable.Api(table);
-        data_table.rows().nodes().to$().each( function() {
+        data_table.rows().nodes().to$().each(function () {
             const first_name = $(this).children()[4].firstChild.data;
             const last_name = $(this).children()[3].firstChild.data;
             if ($(this).find('.row-checkbox').prop('checked')) {
@@ -64,19 +64,19 @@ setup_bulk_selectors_and_actions = function() {
         return array.join("");
     };
 
-    const update_selected_submission_ids_field = function() {
+    const update_selected_submission_ids_field = function () {
         const fields = bulk_actions.find('input[name="submission_ids"]');
         const ids = selected_ids();
         return fields.val(ids);
     };
 
-    const update_selected_author_ids_field = function() {
+    const update_selected_author_ids_field = function () {
         const fields = bulk_actions.find('input[name="author_ids"]');
         const ids = selected_ids();
         return fields.val(ids);
     };
 
-    const update_selected_release_date = function() {
+    const update_selected_release_date = function () {
         const parent_form = $(this).closest('form');
         const date_field = parent_form.find('input[name="date_to_release"]');
         const date_prefix = $(this).data('date-prefix');
@@ -84,23 +84,23 @@ setup_bulk_selectors_and_actions = function() {
         const day_select = $(`#${date_prefix}_day`);
         const year_select = $(`#${date_prefix}_year`);
         if (!date_field.length) { return; }
-        const mo_da_yr = month_select.val()+'/'+day_select.val()+'/'+year_select.val();
+        const mo_da_yr = month_select.val() + '/' + day_select.val() + '/' + year_select.val();
         return date_field.val(mo_da_yr);
     };
 
-    const update_confirm_delete_messages = function() {
+    const update_confirm_delete_messages = function () {
         const confirm_message = `Are you sure you want to permanently delete the ${number_of_rows_selected()} selected submission(s)?`;
         const delete_submits = bulk_actions.find('input[type="submit"].btn-danger');
         return delete_submits.attr('data-confirm', confirm_message);
     };
 
-    const confirm_release_message = function() {
+    const confirm_release_message = function () {
         const names = selected_names();
         const noun = number_of_rows_selected() > 1 ? 'submissions' : 'submission';
         return confirm(`Are you sure you want to release the ${noun} for authors:\n\n${names}\n as Open Access?`);
     };
 
-    const update_bulk_actions = function() {
+    const update_bulk_actions = function () {
         const selected = number_of_rows_selected();
         bulk_actions.find('h5 .number-of-selected-rows').html(selected);
         const visible = number_of_visible_rows_selected();
@@ -113,9 +113,9 @@ setup_bulk_selectors_and_actions = function() {
         }
     };
 
-    table.on( 'page.dt length.dt search.dt', () => update_bulk_actions());
+    table.on('page.dt length.dt search.dt', () => update_bulk_actions());
 
-    table.on('change', 'tr .row-checkbox', function() {
+    table.on('change', 'tr .row-checkbox', function () {
         update_selected_submission_ids_field();
         update_selected_author_ids_field();
         return update_bulk_actions();
@@ -132,24 +132,24 @@ setup_bulk_selectors_and_actions = function() {
 
     release_as_open_access_button.on('click', confirm_release_message);
 
-    select_visible_buttons.on('click', function() {
+    select_visible_buttons.on('click', function () {
         $('.row-checkbox').prop('checked', true);
         update_selected_submission_ids_field();
         update_selected_author_ids_field();
         return update_bulk_actions();
     });
 
-    deselect_visible_buttons.on('click', function() {
+    deselect_visible_buttons.on('click', function () {
         $('.row-checkbox').prop('checked', false);
         update_selected_submission_ids_field();
         update_selected_author_ids_field();
         return update_bulk_actions();
     });
 
-    select_releasable_buttons.on('click', function() {
+    select_releasable_buttons.on('click', function () {
         const data_table = new $.fn.dataTable.Api(table);
         const column_index = data_table.column('ok_to_release:name').index();
-        data_table.rows( function(i, data, node){
+        data_table.rows(function (i, data, node) {
             const ok_to_release = data[column_index];
             return $(node).find('.row-checkbox').prop('checked', ok_to_release);
         });
@@ -159,8 +159,8 @@ setup_bulk_selectors_and_actions = function() {
         return $(this).blur();
     });
     $('.release-button').on('click', update_selected_release_date);
-    $('.extend-button').on('click',  update_selected_release_date);
-    return $('.csv').on('click',  function() {
+    $('.extend-button').on('click', update_selected_release_date);
+    return $('.csv').on('click', function () {
         const fields = $('#row-selection-buttons').find('input[name="submission_ids"]');
         const ids = selected_ids();
         return fields.val(ids);
