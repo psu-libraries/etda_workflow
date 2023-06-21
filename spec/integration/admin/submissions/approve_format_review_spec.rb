@@ -2,7 +2,9 @@ RSpec.describe "when an admin approves a format review", type: :integration, js:
   require 'integration/integration_spec_helper'
 
   let!(:author) { FactoryBot.create :author }
-  let!(:submission) { FactoryBot.create :submission, :waiting_for_format_review_response, author: }
+  let!(:degree_type) { DegreeType.find_by(slug: 'master_thesis') }
+  let!(:degree) { FactoryBot.create :degree, degree_type: }
+  let!(:submission) { FactoryBot.create :submission, :waiting_for_format_review_response, author:, degree: }
 
   before do
     oidc_authorize_admin
