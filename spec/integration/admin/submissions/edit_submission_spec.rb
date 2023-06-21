@@ -177,6 +177,7 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
     fill_in 'submission_invention_disclosures_attributes_0_id_number', with: 12345
     fill_in 'Admin notes', with: 'Some Notes', exact: true
     click_button 'Update Metadata'
+    sleep 1
     final_submission.reload
     expect(final_submission.admin_notes).to eq 'Some Notes'
     expect(final_submission.federal_funding).to eq false
