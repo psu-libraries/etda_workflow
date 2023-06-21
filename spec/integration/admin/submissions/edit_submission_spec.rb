@@ -3,7 +3,7 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
 
   let!(:author) { FactoryBot.create(:author) }
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
-  let(:degree_type) { DegreeType.find_by(slug: 'master_thesis') }
+  let!(:degree_type) { DegreeType.find_by(slug: 'master_thesis') }
   let!(:masters_degree) { FactoryBot.create :degree, degree_type: }
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
   let!(:approval_configuration) { FactoryBot.create(:approval_configuration, degree_type: degree.degree_type) }
@@ -15,9 +15,9 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
                       program:,
                       semester: 'Spring')
   end
-  let(:admin) { FactoryBot.create :admin }
-  let(:final_submission) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author:) }
-  let(:final_masters_submission) do
+  let!(:admin) { FactoryBot.create :admin }
+  let!(:final_submission) { FactoryBot.create(:submission, :waiting_for_final_submission_response, author:) }
+  let!(:final_masters_submission) do
     FactoryBot.create(:submission, :waiting_for_final_submission_response, author:, degree: masters_degree)
   end
 
