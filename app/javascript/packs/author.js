@@ -5,6 +5,7 @@
 //var $ = require('jquery');
 //window.jQuery = $;
 
+require('./base.js')
 require('bootstrap/dist/css/bootstrap.css');
 require('../author/invention_disclosure.js');
 require('../author/committee_members');

@@ -7,9 +7,7 @@ var $ = require('jquery');
 window.jQuery = $;
 var DataTable = require('datatables.net-bs4');
 
-$('table').DataTable();
-
-setup_report_tables = function() {
+setup_report_tables = function () {
 
     let custom_report_options
 
@@ -30,10 +28,11 @@ setup_report_tables = function() {
     };
 
     const column_options = () =>
-        table.find('th').map(function() {
+        table.find('th').map(function () {
             const column = $(this);
-            return { "name": column.data('name'), "orderable": column.data('orderable'), "visible": column.data('visible') };})
-    ;
+            return { "name": column.data('name'), "orderable": column.data('orderable'), "visible": column.data('visible') };
+        })
+        ;
 
     const default_semester = $('table').attr('data-default-semester');
     const select = $('.semester');
@@ -42,29 +41,30 @@ setup_report_tables = function() {
 
     $('.custom-report-index.datatable').dataTable(
         (custom_report_options = {
-            ajax: { url: (table.attr('data-ajax-url') + '.json'),
-                    data: {
-                        semester: function selected_semester() {
-                            return select.val();
-                        },
-                        degree_type: function selected_degree_type() {
-                            return degree_type.val();
-                        }
+            ajax: {
+                url: (table.attr('data-ajax-url') + '.json'),
+                data: {
+                    semester: function selected_semester() {
+                        return select.val();
+                    },
+                    degree_type: function selected_degree_type() {
+                        return degree_type.val();
                     }
-                },
+                }
+            },
             columns: column_options(),
             rowCallback(row, custom_report_data) {
                 const id = custom_report_data[0];
                 return $(row).attr('data-submission-id', id);
             },
             initComplete() {
-                this.api().column( 0 ).visible( false );
-                select.change(function() {
+                this.api().column(0).visible(false);
+                select.change(function () {
                     const table = $('.custom-report-index.datatable').DataTable()
                     table.clear().draw();
                     table.ajax.reload();
                 });
-                degree_type.change(function() {
+                degree_type.change(function () {
                     const table = $('.custom-report-index.datatable').DataTable()
                     table.clear().draw();
                     table.ajax.reload();

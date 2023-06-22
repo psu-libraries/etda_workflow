@@ -21,7 +21,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
       page.accept_confirm do
         click_button 'Release as Open Access'
       end
-      sleep 1
+      sleep 2
       expect(ActionMailer::Base.deliveries.count).to eq(start_count + 1)
       email_to_address = submission.author.alternate_email_address || submission.author.psu_email_address
       open_email(email_to_address)

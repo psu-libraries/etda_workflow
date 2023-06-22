@@ -8,11 +8,7 @@ var $ = require('jquery');
 window.jQuery = $;
 var DataTable = require('datatables.net-bs4');
 
-$('table').DataTable();
-
-//require( '../../../node_modules/datatables.net' );
-
-setup_datatables = function() {
+setup_datatables = function () {
 
     let admin_submission_options, degree_options, program_options;
     table = $('.datatable');
@@ -36,7 +32,7 @@ setup_datatables = function() {
         fnDrawCallback() {
             const pagination = $('.dataTables_paginate');
             const buttons_we_care_to_see = pagination.find('.paginate_button').not('.disabled, .active');
-            $('span.record-count-top').text(display_page_top_info($('.datatable').DataTable()));
+            $('span.record-count-top').text(display_page_top_info($('.datatable')));
             if (buttons_we_care_to_see.length) {
                 return pagination.show();
             } else {
@@ -46,7 +42,7 @@ setup_datatables = function() {
     };
 
     const author_options = {
-        order: [[ 1, "asc" ]],
+        order: [[1, "asc"]],
         ajax: (table.attr('data-ajax-url') + '.json')
     };
 
@@ -61,19 +57,18 @@ setup_datatables = function() {
             },
             initComplete() {
                 let startswith;
-                return startswith= $('#starts-with_check').on('change', function(event){
-                    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                return startswith = $('#starts-with_check').on('change', function (event) {
+                    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
 
-//only use checkbox for matching on beginning of line on programs page
-                        if  ($.fn.dataTable.tables('visible')[0]['id'] !== 'programs-index') { return true; }
+                        //only use checkbox for matching on beginning of line on programs page
+                        if ($.fn.dataTable.tables('visible')[0]['id'] !== 'programs-index') { return true; }
 
                         startswith = $('#starts-with_check').prop('checked') || false;
                         const term = $('#programs-index_filter input').val().toLowerCase() || '';
                         let i = 0;
                         while (i < data.length) {
                             const position = (data[i].toString().toLowerCase()).indexOf(term);
-                            if ((startswith && (position === 0)) || (!startswith && (position >=0)))
-                              { return true; }
+                            if ((startswith && (position === 0)) || (!startswith && (position >= 0))) { return true; }
                             i++;
                         }
                     });
@@ -123,7 +118,7 @@ setup_datatables = function() {
             initComplete() {
                 const column = this.api().column("submission_status:name");
                 column.search("Waiting For Committee Review( Rejected)?|Waiting For Head Of Program Review|Waiting For Advisor Review", true, false).draw();
-                approver_select.on('change', function() {
+                approver_select.on('change', function () {
                     const val = $.fn.dataTable.util.escapeRegex($(this).val() || '');
                     if (val === 'Active Reviews') {
                         column.search("Waiting For Committee Review( Rejected)?|Waiting For Head Of Program Review|Waiting For Advisor Review", true, false).draw();
@@ -139,10 +134,11 @@ setup_datatables = function() {
     );
 
     const column_options = () =>
-        table.find('th').map(function() {
+        table.find('th').map(function () {
             const column = $(this);
-            return { "name": column.data('name'), "orderable": column.data('orderable'), "visible": column.data('visible') };})
-    ;
+            return { "name": column.data('name'), "orderable": column.data('orderable'), "visible": column.data('visible') };
+        })
+        ;
 
     // Provisioning for admin-submissions-index datatables
     function generate_semesters() {
@@ -174,19 +170,21 @@ setup_datatables = function() {
     // Admin-submissions-index datatables
     $('.admin-submissions-index.datatable').dataTable(
         (admin_submission_options = {
-            ajax: { url: (table.attr('data-ajax-url') + '.json'),
-                    data: { semester: function selected_semester() {
-                                return select.val().toString();
-                        }
+            ajax: {
+                url: (table.attr('data-ajax-url') + '.json'),
+                data: {
+                    semester: function selected_semester() {
+                        return select.val().toString();
                     }
-                },
+                }
+            },
             columns: column_options(),
             rowCallback(row, submission_data) {
                 const id = submission_data[0];
                 return $(row).attr('data-submission-id', id);
             },
             initComplete() {
-                select.change(function(){
+                select.change(function () {
                     const table = $('.admin-submissions-index.datatable').DataTable()
                     table.clear().draw();
                     table.ajax.reload();
@@ -204,15 +202,16 @@ setup_datatables = function() {
 function display_page_top_info(info_table) {
     info_table = $('.datatable').DataTable();
     info = info_table.page.info();
-    var start = info.start+1
+    var start = info.start + 1
     if (info.end == 0 && info.start == 0)
-        start = 0 ;
-    msg = 'Showing '+(start)+' to '+info.end+' of '+info.recordsDisplay+' entries';
-    filter_msg = ' (filtered from '+info.recordsTotal+' total entries)';
+        start = 0;
+    msg = 'Showing ' + (start) + ' to ' + info.end + ' of ' + info.recordsDisplay + ' entries';
+    filter_msg = ' (filtered from ' + info.recordsTotal + ' total entries)';
     final_msg = msg;
     if (info.recordsTotal != info.recordsDisplay)
         final_msg = final_msg + filter_msg;
-    return final_msg; }
+    return final_msg;
+}
 
 
 $(document).ready(setup_datatables);
