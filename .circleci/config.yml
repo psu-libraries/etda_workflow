@@ -156,7 +156,7 @@ jobs:
           name: "Publish The Image"
           command: |
             docker load -i /tmp/workspace/etda-workflow.tar
-            docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
+            docker tag etda_workflow_web:latest $REGISTRY_URL:$CIRCLE_SHA1
             docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
             docker push $REGISTRY_URL:$CIRCLE_SHA1
       - when:
@@ -168,7 +168,7 @@ jobs:
                 name: "Push Latest"
                 command: |
                   docker load -i /tmp/workspace/etda-workflow.tar
-                  docker build -t $REGISTRY_URL:latest .
+                  docker tag etda_workflow_web:latest $REGISTRY_URL:latest
                   docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
                   docker push $REGISTRY_URL:latest
   test_partners:
