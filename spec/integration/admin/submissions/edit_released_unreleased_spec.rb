@@ -93,7 +93,6 @@ RSpec.describe "Editing a released submission as an admin", type: :integration, 
 
       fill_in "Final Submission Notes to Student", with: "New final notes"
       click_button "Withdraw Publication"
-      # expect(page).to have_content "Submission for #{submission.author.first_name} #{submission.author.last_name} was successfully un-published"
 
       visit admin_edit_submission_path(submission)
       submission.reload

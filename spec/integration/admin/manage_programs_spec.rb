@@ -28,7 +28,6 @@ RSpec.describe "Manage Programs", type: :integration, js: true do
       expect(page).to have_content('A New Program')
       expect(page).to have_content('Yes')
     end
-    # expect(page).to have_content("#{current_partner.program_label} successfully created")
     click_link 'A New Program'
     expect(page).to have_content("Edit A New Program")
     find('#program_is_active_false').click
@@ -37,7 +36,6 @@ RSpec.describe "Manage Programs", type: :integration, js: true do
     within('tr', text: 'A New Program') do
       expect(page).to have_content('No')
     end
-    # expect(page).to have_content("#{current_partner.program_label} successfully updated")
     fill_in 'Search records...', with: 'A New'
     expect(page).to have_content('A New Program')
     expect(page).not_to have_content(program.name)

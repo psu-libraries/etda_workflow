@@ -25,19 +25,10 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
     let(:committee_member) { FactoryBot.create :committee_member, committee_role:, submission:, access_id: 'approverflow' }
 
-    it 'has link to contact us' do
+    it 'has link to contact us, can view approval page, can see access level, and can see other committee members reviews' do
       expect(page).to have_content('Contact Us')
-    end
-
-    it 'can view approval page' do
       expect(page).to have_content('Submission Details')
-    end
-
-    it 'can see access level' do
       expect(page).to have_content('Open Access')
-    end
-
-    it 'can see other committee members reviews' do
       expect(page).to have_content('Committee Reviews')
     end
 
@@ -78,12 +69,9 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
         submission.reload
       end
 
-      it 'asks about federal funding used' do
-        expect(page).to have_content('Were Federal Funds utilized for this submission?') if current_partner.graduate?
-      end
-
       context 'when advisor accepts and federal funding matches author' do
         it 'proceeds to the rest of the committee review and emails committee members' do
+          expect(page).to have_content('Were Federal Funds utilized for this submission?') if current_partner.graduate?
           submission.update federal_funding: true
           submission.reload
           find(:css, "#committee_member_status_approved").set true

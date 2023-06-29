@@ -88,7 +88,6 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
             expect(emails[i].value).to eq("abc123@psu.edu")
             next
           end
-          # expect(page).to have_content role.name
           name = "Professor Buck Murphy #{i}"
           email = "buck@hotmail.com"
           expect(find("#submission_committee_members_attributes_#{i}_name").value).to eq(name)
@@ -252,7 +251,6 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
       expect(submission.status).to eq 'collecting format review files'
       expect(submission.committee_provided_at).not_to be_nil
       expect(submission.committee_members.last.is_voting).to eq(true)
-      # expect(page).to have_content('successfully')
     end
 
     it 'sets is_voting to false for special signatory' do
@@ -311,7 +309,6 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
         page.execute_script("document.getElementById('submission_committee_members_attributes_#{i}_email').value = 'buck@hotmail.com'")
       end
       # Send individual characters one at a time to trigger autocomplete
-      # Ref: https://github.com/teampoltergeist/poltergeist/issues/439#issuecomment-66871147
       find("#submission_committee_members_attributes_1_name").native.send_keys(*"alex".chars)
     end
 

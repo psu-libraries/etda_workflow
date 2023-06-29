@@ -72,7 +72,6 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
       fill_in "Name", with: "Bob Tester"
       fill_in "Email", with: "bob@email.com"
     end
-    # page.find('div[data-target="#format-review-files"]').click
     within('#format-review-files') do
       click_link "Additional File"
       all('input[type="file"]').first.set(fixture('format_review_file_01.pdf'))
@@ -114,7 +113,6 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
     end
     expect(page).to have_content("Marked for deletion [undo]")
     click_button 'Update Metadata'
-    # expect(page).to have_content('success')
     visit admin_edit_submission_path(submission)
     expect(page).to have_link "format_review_file_02.pdf"
     expect(page).not_to have_link "format_review_file_01.pdf"

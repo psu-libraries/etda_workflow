@@ -31,9 +31,6 @@ RSpec.describe "Editing approval configuration", type: :integration, js: true, h
   end
 
   it 'updates changes applied by admin' do
-    # select Date.today.year, from: 'approval_configuration_approval_deadline_on_1i'
-    # select Date.today.strftime("%B"), from: 'approval_configuration_approval_deadline_on_2i'
-    # select Date.today.day, from: 'approval_configuration_approval_deadline_on_3i'
     find('#approval_configuration_use_percentage_true').click
     fill_in 'Percentage for approval*', with: 80
     find('#approval_configuration_head_of_program_is_approving_false').click if current_partner.graduate?
@@ -41,7 +38,6 @@ RSpec.describe "Editing approval configuration", type: :integration, js: true, h
     find('#approval_configuration_email_authors_true').click
     click_on 'Update Approval Configuration'
     expect(page).to have_content('Manage Approval Configurations')
-    # expect(ApprovalConfiguration.find(approval_configuration.id).approval_deadline_on).to eq Date.today # Determining use case for approval configuration
     expect(ApprovalConfiguration.find(approval_configuration_1.id).use_percentage).to eq true
     expect(ApprovalConfiguration.find(approval_configuration_1.id).configuration_threshold).to eq 80
     expect(ApprovalConfiguration.find(approval_configuration_1.id).head_of_program_is_approving).to eq false if current_partner.graduate?

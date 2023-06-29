@@ -64,7 +64,6 @@ RSpec.describe "Manage Submissions", type: :integration, js: true do
           expect(page).to have_content('Restricted to Penn State')
           expect(page).to have_content('Showing')
           expect(page).not_to have_selector('div#approved-final-submission-submissions-index_processing', visible: false)
-          # expect(page).not_to have_content("Loading Data...")
           find_button('Select Visible').click
           expect(page).to have_content('Bulk Actions')
           expect(page).to have_xpath("//input[@type='checkbox']")

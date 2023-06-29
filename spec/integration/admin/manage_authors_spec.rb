@@ -61,7 +61,6 @@ RSpec.describe "Manage Authors", type: :integration, js: true do
     expect(page).to have_link('Cancel')
     fill_in('First name', with: 'correctname')
     click_button('Update Author')
-    # expect(page).to have_content('Author successfully updated')
     author1.reload
     expect(author1.admin_edited_at).to be_truthy
     expect(submission1.updated_at.year).to eq DateTime.now.year
@@ -74,7 +73,6 @@ RSpec.describe "Manage Authors", type: :integration, js: true do
     expect(page).to have_content('PSU Email')
     expect(page).to have_current_path(admin_authors_path)
     expect(page).to have_content('correctname')
-    # expect(page).to have_link('Contact Support')
     expect(page).to have_link('Accessibility')
   end
 end
