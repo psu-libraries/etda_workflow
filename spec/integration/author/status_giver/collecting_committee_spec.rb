@@ -10,7 +10,7 @@ RSpec.describe 'When Collecting Committee status', type: :integration, js: true 
       oidc_authorize_author
     end
 
-    it "deletes the submission" do
+    it "deletes the submission", honors: true, sset: true, milsch: true do
       FactoryBot.create(:submission, :collecting_format_review_files, author:)
       start_count = author.submissions.count
       expect(start_count > 0).to be_truthy

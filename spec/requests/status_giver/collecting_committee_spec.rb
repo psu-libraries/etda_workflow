@@ -27,7 +27,7 @@ RSpec.describe 'Step 2: Collecting Committee status', type: :request do
       end
 
       before do
-        stub_request(:get, %r{https://secure.gradsch.psu.edu/services/etd})
+        stub_request(:get, %r{https://secure.gradsch.psu.edu/services/etd/etdThDsAppr})
         .with(
           headers: {
             'Accept' => '*/*',
@@ -96,7 +96,7 @@ RSpec.describe 'Step 2: Collecting Committee status', type: :request do
 
     context "visiting the 'Upload Final Submission Files' page" do
       before do
-        stub_request(:get, %r{https://secure.gradsch.psu.edu/services/etd})
+        stub_request(:get, %r{https://secure.gradsch.psu.edu/services/etd/etdPayment})
         .with(
           headers: {
             'Accept' => '*/*',

@@ -1,4 +1,4 @@
-RSpec.describe 'Step 1: Collecting Program Information status', type: :integration, js: true do
+RSpec.describe 'When Collecting Program Information status', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'collecting program information'" do
@@ -13,63 +13,6 @@ RSpec.describe 'Step 1: Collecting Program Information status', type: :integrati
                         :collecting_program_information,
                         author:,
                         semester: 'Fall'
-    end
-
-    context "visiting the 'Author Submissions Index Page' page" do
-      it 'loads the page' do
-        visit author_submissions_path
-        expect(page).to have_current_path(author_submissions_path)
-        expect(page).to have_content(author.last_name)
-      end
-    end
-
-    context "visiting the 'Update Committee' page" do
-      it "raises a forbidden access error" do
-        visit edit_author_submission_committee_members_path(submission)
-        expect(page).to have_current_path(author_root_path)
-      end
-    end
-
-    context "visiting the 'Committee Members' page" do
-      it "raises a forbidden access error" do
-        visit "/author/submissions/#{submission.id}/committee_members"
-        expect(page).to have_current_path(author_root_path)
-      end
-    end
-
-    context "visiting the 'Review Program Information' page" do
-      it 'raises a forbidden access error' do
-        visit author_submission_program_information_path(submission)
-        expect(page).to have_current_path(author_root_path)
-      end
-    end
-
-    context "visiting the 'Review Committee' page" do
-      it "raises a forbidden access error" do
-        visit author_submission_committee_members_path(submission)
-        expect(page).to have_current_path(author_root_path)
-      end
-    end
-
-    context "visiting the 'Review Format Review Files' page" do
-      it "raises a forbidden access error" do
-        visit author_submission_format_review_path(submission)
-        expect(page).to have_current_path(author_root_path)
-      end
-    end
-
-    context "visiting the 'Upload Final Submission Files' page" do
-      it "raises a forbidden access error" do
-        visit author_submission_edit_final_submission_path(submission)
-        expect(page).to have_current_path(author_root_path)
-      end
-    end
-
-    context "visiting the 'Review Final Submission Files' page" do
-      it "raises a forbidden access error" do
-        visit author_submission_final_submission_path(submission)
-        expect(page).to have_current_path(author_root_path)
-      end
     end
 
     describe "editing program information with imported lionpath data" do

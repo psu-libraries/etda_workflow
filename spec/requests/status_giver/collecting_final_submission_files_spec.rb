@@ -82,7 +82,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', type: :request do
       context 'when current_partner is graduate' do
         before do
           skip 'Graduate Only' unless current_partner.graduate?
-          stub_request(:get, "https://secure.gradsch.psu.edu/services/etd/etdPayment.cfm?degree=name%201015&psuid=900000007").
+          stub_request(:get, %r{https://secure.gradsch.psu.edu/services/etd/etdPayment}).
          with(
            headers: {
        	  'Accept'=>'*/*',
