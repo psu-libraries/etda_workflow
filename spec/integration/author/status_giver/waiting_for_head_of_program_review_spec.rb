@@ -2,7 +2,6 @@ RSpec.describe "When Waiting for Head of Program Review'", type: :integration, j
   require 'integration/integration_spec_helper'
 
   describe "When status is 'waiting for head of program review'" do
-
     context "when committee reviews" do
       before do
         allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
