@@ -2,6 +2,22 @@ RSpec.describe "When Waiting for Head of Program Review'", type: :integration, j
   require 'integration/integration_spec_helper'
 
   describe "When status is 'waiting for head of program review'" do
+    before do
+      submission.final_submission_files << final_submission_file
+      submission.degree.degree_type.approval_configuration = approval_configuration
+    end
+
+    let(:author) { current_author }
+    let(:approver) { current_approver }
+    let(:degree) { FactoryBot.create :degree }
+    let(:submission) { FactoryBot.create :submission, :waiting_for_head_of_program_review, author:, degree: }
+    let(:committee_member) { FactoryBot.create :committee_member, submission:, access_id: 'approverflow' }
+    let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: }
+    let(:approval_configuration) { FactoryBot.create :approval_configuration, configuration_threshold: 0, email_authors: true, email_admins: true }
+    let(:head_role) { CommitteeRole.find_by(name: 'Program Head/Chair', is_program_head: true, degree_type: submission.degree.degree_type) }
+
+    let(:head_of_program) { FactoryBot.create :committee_member, :required, submission: submission, committee_role: head_role, access_id: 'approverflow' } if current_partner.graduate?
+
     context "when committee reviews" do
       before do
         allow_any_instance_of(ApplicationController).to receive(:current_remote_user).and_return('approverflow')
