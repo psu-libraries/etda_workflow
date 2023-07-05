@@ -82,24 +82,24 @@ jobs:
           name: "Unit Test Graduate"
           command: |
             PARTNER=graduate docker-compose run --name=unit_test_grad --service-ports -d test
-            docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
+            docker exec -e RAILS_ENV=test unit_test_grad /etda_workflow/bin/ci-rspec
             docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
             /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o unit_coverage.json -p /etda_workflow/ .resultset.json
       - run:
           name: "Test Honors"
           command: |
             PARTNER=honors docker-compose run --name=test_honors --service-ports -d test
-            docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
+            docker exec -e RAILS_ENV=test test_honors /etda_workflow/bin/ci-rspec
       - run:
           name: "Test Milsch"
           command: |
             PARTNER=milsch docker-compose run --name=test_milsch --service-ports -d test
-            docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
+            docker exec -e RAILS_ENV=test test_milsch /etda_workflow/bin/ci-rspec
       - run:
           name: "Test SSET"
           command: |
             PARTNER=sset docker-compose run --name=test_sset --service-ports -d test
-            docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
+            docker exec -e RAILS_ENV=test test_sset /etda_workflow/bin/ci-rspec
       - persist_to_workspace:
             root: .
             paths:
