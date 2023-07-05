@@ -1,4 +1,4 @@
-RSpec.describe "Unrelease a submission", type: :integration, js: true, honors: true, milsch: true do
+RSpec.describe "Unrelease a submission", type: :integration, js: true, honors: true do
   require 'integration/integration_spec_helper'
 
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
@@ -55,7 +55,7 @@ RSpec.describe "Unrelease a submission", type: :integration, js: true, honors: t
   end
 end
 
-RSpec.describe 'Unrelease a submission with Solr error', js: true, honors: true, milsch: true do
+RSpec.describe 'Unrelease a submission with Solr error', js: true, honors: true do
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true) }
   let!(:role) { CommitteeRole.first.name }
@@ -78,7 +78,7 @@ RSpec.describe 'Unrelease a submission with Solr error', js: true, honors: true,
   end
 end
 
-RSpec.describe 'Unrelease a legacy submission without missing data', js: true, honors: true, milsch: true do
+RSpec.describe 'Unrelease a legacy submission without missing data', js: true, honors: true do
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true) }
   let!(:role) { CommitteeRole.first.name }

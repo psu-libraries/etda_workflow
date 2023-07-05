@@ -23,7 +23,7 @@ RSpec.describe "when admin responds to final submission", type: :integration, js
   end
 
   describe "when an admin accepts the final submission files" do
-    it "updates status to 'waiting for committee review' and emails committee members", honors: true, milsch: true do
+    it "updates status to 'waiting for committee review' and emails committee members", honors: true do
       submission.committee_members << committee_members
       submission.save!
       submission.reload
@@ -74,7 +74,7 @@ RSpec.describe "when admin responds to final submission", type: :integration, js
     end
   end
 
-  describe "when an admin clicks 'Send to committee'", honors: true, sset: true, milsch: true do
+  describe "when an admin clicks 'Send to committee'", honors: true do
     it "updates status to 'waiting for advisor review' for graduate and 'waiting for committee review' for other partners" do
       create_committee submission
       submission.reload

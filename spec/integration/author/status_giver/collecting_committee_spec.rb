@@ -11,7 +11,7 @@ RSpec.describe 'When Collecting Committee status', type: :integration, js: true 
       oidc_authorize_author
     end
 
-    it "deletes the submission", honors: true, sset: true, milsch: true do
+    it "deletes the submission", honors: true, sset: true do
       start_count = author.submissions.count
       expect(start_count > 0).to be_truthy
       visit author_root_path

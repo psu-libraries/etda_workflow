@@ -53,7 +53,7 @@ RSpec.describe 'When Collecting Program Information status', type: :integration,
                           degree_id: Degree.first.id, status: 'collecting format review files'
       end
 
-      it "doesn't change status of submission", milsch: true, honors: true, sset: true do
+      it "doesn't change status of submission", honors: true do
         visit "author/submissions/#{submission.id}/edit"
         click_on "Update #{submission.degree_type} Title" if current_partner.graduate?
         click_on "Update Program Information" unless current_partner.graduate?
@@ -69,7 +69,7 @@ RSpec.describe 'When Collecting Program Information status', type: :integration,
 
     let(:author) { current_author }
 
-    it "submission status updates to 'collecting committee'", milsch: true, honors: true, sset: true do
+    it "submission status updates to 'collecting committee'", honors: true do
       program = FactoryBot.create :program, name: 'Information Sciences and Technology'
       second_program = FactoryBot.create :program, name: 'A different program'
       degree = Degree.create(name: 'Degree Name', degree_type_id: DegreeType.default.id, description: 'My Degree')
@@ -95,7 +95,7 @@ RSpec.describe 'When Collecting Program Information status', type: :integration,
     end
   end
 
-  describe "author can delete a submission", milsch: true, honors: true do
+  describe "author can delete a submission", honors: true do
     before do
       oidc_authorize_author
     end

@@ -60,7 +60,7 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
 
   describe "save and continue submission" do
     context 'when submission is a master_thesis' do
-      it "allows editing and submission of committee", honors: true, milsch: true do
+      it "allows editing and submission of committee", honors: true do
         expect(page).to have_link('Add Committee Member')
         # visit new_author_submission_committee_members_path(submission)
         submission.required_committee_roles.count.times do |i|
@@ -216,7 +216,7 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
     end
   end
 
-  describe "filling in committee members", js: true, honors: true, milsch: true do
+  describe "filling in committee members", js: true, honors: true do
     before do
       @email_list = []
       submission.required_committee_roles.count.times do |i|
@@ -321,7 +321,7 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
     end
   end
 
-  describe 'tooltips', honors: true, milsch: true do
+  describe 'tooltips' do
     let!(:committee) { create_committee(submission) }
 
     it 'has tooltip for required committee members' do

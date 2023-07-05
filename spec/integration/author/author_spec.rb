@@ -1,4 +1,4 @@
-RSpec.describe 'Author submission page', type: :integration, milsch: true, honors: true, js: true do
+RSpec.describe 'Author submission page', type: :integration, honors: true, js: true do
   require 'integration/integration_spec_helper'
 
   before do
@@ -66,7 +66,7 @@ RSpec.describe 'Author submission page', type: :integration, milsch: true, honor
     end
   end
 
-  context 'Author submission display when author is an admin', milsch: true, honors: true, sset: true do
+  context 'Author submission display when author is an admin', honors: true, sset: true do
     let!(:committee_role2) { FactoryBot.create :committee_role, is_program_head: true, degree_type: DegreeType.default }
     let!(:program1) { FactoryBot.create :program, name: 'Program (PHD)' }
     let!(:program2) { FactoryBot.create :program, name: 'Program (MS)' }
