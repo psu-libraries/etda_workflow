@@ -83,7 +83,7 @@ jobs:
           command: |
             PARTNER=graduate docker-compose run --name=unit_test_grad --service-ports -d test
             docker exec -e RAILS_ENV=test unit_test_grad /etda_workflow/bin/ci-rspec
-            docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
+            docker cp unit_test_grad:/etda_workflow/coverage/.resultset.json .resultset.json
             /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o unit_coverage.json -p /etda_workflow/ .resultset.json
       - run:
           name: "Test Honors"
