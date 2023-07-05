@@ -17,7 +17,7 @@ RSpec.describe 'When Collecting Committee status', type: :integration, js: true 
       visit author_root_path
       if !current_partner.graduate?
         click_link("delete")
-        expect(author.submissions.count).to eq(start_count - 1)
+        expect(author.reload.submissions.count).to eq(start_count - 1)
       else
         expect(page).not_to have_link('delete')
       end
