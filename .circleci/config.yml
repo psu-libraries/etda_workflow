@@ -200,29 +200,15 @@ workflows:
                 - /.*/
       - build:
           context: org-global
-      - rubocop:
-          context: org-global
-          requires:
-            - build
-      - integration_test_grad:
-          context: org-global
-          requires:
-            - build
-      - unit_test_grad:
-          context: org-global
-          requires:
-            - build
-      - test_partners:
+      - rubocop_unit_partner_tests:
           context: org-global
           requires:
             - build
       - publish:
           context: org-global
           requires:
-            - unit_test_grad
             - integration_test_grad
-            - test_partners
-            - rubocop
+            - rubocop_unit_partner_tests
       - deploy:
           context: org-global
           requires:
