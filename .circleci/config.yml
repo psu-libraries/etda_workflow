@@ -90,19 +90,20 @@ jobs:
         command: |
           PARTNER=honors docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
-          docker-compose down
     - run:
         name: "Test Milsch"
         command: |
           PARTNER=milsch docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
-          docker-compose down
     - run:
         name: "Test SSET"
         command: |
           PARTNER=sset docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
-          docker-compose down
+    - persist_to_workspace:
+          root: .
+          paths:
+            - unit_coverage.json
   integration_test_grad:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -207,8 +208,8 @@ workflows:
       - publish:
           context: org-global
           requires:
-            - integration_test_grad
             - rubocop_unit_partner_tests
+            - integration_test_grad
       - deploy:
           context: org-global
           requires:
