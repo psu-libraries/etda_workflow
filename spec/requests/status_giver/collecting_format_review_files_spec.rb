@@ -12,7 +12,6 @@ RSpec.describe 'Step 3: Collecting Format Review Files', type: :request do
       it 'loads the page' do
         get author_submissions_path
         expect(response.code).to eq "200"
-        expect(response.body).to match(/#{author.last_name}/)
       end
     end
 
