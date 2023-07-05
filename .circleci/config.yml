@@ -19,7 +19,7 @@ jobs:
             git clone $CONFIG_REPO
             cd etda-config
             ./bin/pr-release clusters/prod/manifests/prod.yaml
-  build:
+  build_test:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
@@ -54,6 +54,27 @@ jobs:
           paths:
             - etda-workflow.tar
             - cc-test-reporter
+  build_prod:
+    docker:
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+    environment:
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+    steps:
+      - setup_remote_docker:
+          version: 20.10.6
+          docker_layer_caching: true
+      - checkout
+      - run:
+          name: "Build Container"
+          command: |
+            if [ -f etda-workflow-prod.tar ]; then docker load -i etda-workflow-prod.tar; fi
+            docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
+            docker save -o etda-workflow-prod.tar etda_workflow_web:latest
+      - persist_to_workspace:
+          root: .
+          paths:
+            - etda-workflow-prod.tar
   rubocop_unit_partner_tests:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -124,7 +145,6 @@ jobs:
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           docker-compose up -d db selenium redis
-          sleep 20
           PARTNER=graduate docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
           docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
@@ -155,8 +175,8 @@ jobs:
       - run:
           name: "Publish The Image"
           command: |
-            docker load -i /tmp/workspace/etda-workflow.tar
-            docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
+            docker load -i /tmp/workspace/etda-workflow-prod.tar
+            docker tag etda_workflow_web:latest $REGISTRY_URL:$CIRCLE_SHA1
             docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
             docker push $REGISTRY_URL:$CIRCLE_SHA1
       - when:
@@ -167,8 +187,8 @@ jobs:
             - run:
                 name: "Push Latest"
                 command: |
-                  docker load -i /tmp/workspace/etda-workflow.tar
-                  docker build -t $REGISTRY_URL:latest .
+                  docker load -i /tmp/workspace/etda-workflow-prod.tar
+                  docker tag etda_workflow_web:latest $REGISTRY_URL:latest
                   docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
                   docker push $REGISTRY_URL:latest
   deploy:
@@ -199,19 +219,22 @@ workflows:
             branches:
               ignore:
                 - /.*/
-      - build:
+      - build_test:
+          context: org-global
+      - build_prod:
           context: org-global
       - rubocop_unit_partner_tests:
           context: org-global
           requires:
-            - build
+            - build_test
       - integration_test_grad:
           context: org-global
           requires:
-            - build
+            - build_test
       - publish:
           context: org-global
           requires:
+            - build_prod
             - rubocop_unit_partner_tests
             - integration_test_grad
       - deploy:
