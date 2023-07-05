@@ -205,6 +205,10 @@ workflows:
           context: org-global
           requires:
             - build
+      - integration_test_grad:
+          context: org-global
+          requires:
+            - build
       - publish:
           context: org-global
           requires:
