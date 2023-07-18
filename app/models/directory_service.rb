@@ -1,7 +1,7 @@
 class DirectoryService
   class << self
     def get_accessid_by_email(email_address)
-      parsed_response = JSON.parse(HTTParty.get(url(email_address), headers: headers)).first
+      parsed_response = JSON.parse(HTTParty.get(url(email_address), headers:)).first
 
       return parsed_response.first if parsed_response.present?
 
