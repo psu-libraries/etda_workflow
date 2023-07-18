@@ -49,6 +49,7 @@ gem 'carrierwave', '~> 1.3.0'
 gem 'clamby'
 # For image resizing
 gem "mini_magick", ">= 4.9.4"
+gem "oauth2"
 # Easily handle nested forms
 gem 'cocoon', '~> 1.2.0'
 # User authorization
