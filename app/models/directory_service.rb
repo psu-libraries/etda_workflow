@@ -50,7 +50,5 @@ class DirectoryService
       def endpoint
         @endpoint ||= ENV.fetch('DIRECTORY_SERVICE_ENDPOINT', 'https://acceptance-directory-service.qa.k8s.psu.edu')
       end
-
   end
 end
-
