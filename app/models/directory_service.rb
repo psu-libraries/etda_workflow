@@ -8,6 +8,8 @@ class DirectoryService
       nil
     end
 
+    private
+
       def endpoint_url
         "#{endpoint}/directory-service-web/resources/people"
       end
