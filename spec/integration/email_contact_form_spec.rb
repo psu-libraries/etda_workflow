@@ -19,7 +19,7 @@ RSpec.describe "Email Contact Form", type: :integration, js: true do
       visit email_contact_form_new_path
     end
 
-    it "does not contain help link in the footer, displays a service header, 
+    it "does not contain help link in the footer, displays a service header,
         has issue type tooltip, displays the contact email form initialiazed with author information" do
       expect(page).not_to have_link('Please direct questions to Ask!')
       expect(page).to have_selector('h1', text: 'Contact Us')
