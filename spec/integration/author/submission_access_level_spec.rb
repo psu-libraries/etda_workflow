@@ -10,7 +10,6 @@ RSpec.describe 'Author submission access_level', type: :integration, js: true do
   before do
     oidc_authorize_author
     FactoryBot.create(:format_review_file, submission:)
-    # create :final_submission_file, submission: submission
     submission.committee_members << committee_member1
     submission.committee_members << committee_member2
     visit author_submission_edit_final_submission_path(submission)
@@ -32,13 +31,13 @@ RSpec.describe 'Author submission access_level', type: :integration, js: true do
         expect(page).not_to have_field('submission_invention_disclosures_attributes_0_id_number')
       end
 
-      xit 'has a restricted radio button' do
+      it 'has a restricted radio button' do
         page.find("input#submission_access_level_restricted").click
         expect(page.find("input#submission_access_level_restricted")).to be_checked
         expect(page).not_to have_content('Enter justification')
         expect(page).to have_field('submission_invention_disclosures_attributes_0_id_number')
         click_button('Submit final files for review')
-        expect(page).to have_content('Invention disclosure number is required for Restricted submissions.')
+        expect(page).to have_content('Invention Disclosure Number is required for Restricted submissions.')
         inventions = page.find(:css, 'div.form-group.string.optional.submission_invention_disclosures_id_number')
         within inventions do
           fill_in 'Invention Disclosure Number (Required for Restricted Access)', with: '1234'

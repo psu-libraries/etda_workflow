@@ -17,7 +17,6 @@ RSpec.describe "Printing a graduate signatory page as an admin", type: :integrat
       expect(page).to have_content('No')
     end
 
-    # TODO: This test randomly stopped working adn breaks selenium
     it "updates 'Printed' to 'Yes' after printing" do
       click_link "Print Page"
       expect(page).to have_content("Yes")

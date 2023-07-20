@@ -5,8 +5,6 @@ RSpec.describe 'actions that send an email notifying users of an access level up
   end
 
   describe 'updating the access level for an approved final submission' do
-    # admin = FactoryBot.create :admin, site_administrator: true, administrator: true
-
     before do
       oidc_authorize_admin
     end

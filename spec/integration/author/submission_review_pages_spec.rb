@@ -131,18 +131,16 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
       end
 
       context 'when committee member does not have a token' do
-        it 'sends email reminder', honors: true, milsch: true do
+        it 'sends email reminder' do
           visit "/author/submissions/#{submission2.id}/committee_review"
           expect { find('table#committee_member_table').first(:button, "Send Email Reminder").click }.to(change { CommitteeMember.find(committee_member3.id).last_reminder_at })
           expect(page).to have_current_path(author_submission_committee_review_path(submission2.id))
-          # expect(page).to have_content("Email successfully sent.")
           expect(WorkflowMailer.deliveries.first.to).to eq [committee_member3.email]
           expect(WorkflowMailer.deliveries.first.from).to eq [current_partner.email_address]
           expect(WorkflowMailer.deliveries.first.subject).to match(/Review Reminder/)
           expect(WorkflowMailer.deliveries.first.body).to match(/Reminder:/)
           expect { find('table#committee_member_table').first(:button, "Send Email Reminder").click }.not_to(change { CommitteeMember.find(committee_member3.id).last_reminder_at })
           expect(page).to have_current_path(author_submission_committee_review_path(submission2.id))
-          # expect(page).to have_content("Email was not sent.")
           expect(WorkflowMailer.deliveries.count).to eq 1
         end
       end
