@@ -1,4 +1,4 @@
-RSpec.describe "Printing a graduate signatory page as an admin", type: :integration, js: true, honors: true, milsch: true do
+RSpec.describe "Printing a graduate signatory page as an admin", type: :integration, js: true, honors: true do
   require 'integration/integration_spec_helper'
 
   let(:submission_author) { FactoryBot.create :author }
@@ -17,8 +17,7 @@ RSpec.describe "Printing a graduate signatory page as an admin", type: :integrat
       expect(page).to have_content('No')
     end
 
-    # TODO: This test randomly stopped working adn breaks selenium
-    xit "updates 'Printed' to 'Yes' after printing" do
+    it "updates 'Printed' to 'Yes' after printing" do
       click_link "Print Page"
       expect(page).to have_content("Yes")
     end

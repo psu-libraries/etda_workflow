@@ -342,7 +342,7 @@ RSpec.describe CommitteeMember, type: :model do
     it 'updates last_reminder_at with current DateTime' do
       time_now = DateTime.now
       cm.update_last_reminder_at(time_now)
-      expect(cm.last_reminder_at.strftime("%F;%H:%M")).to eq(time_now.to_time.round.strftime("%F;%H:%M"))
+      expect(cm.last_reminder_at).to be_within(1.second).of time_now
     end
   end
 

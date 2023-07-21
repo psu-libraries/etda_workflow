@@ -4,9 +4,8 @@ RSpec.describe "Email Contact Form", type: :integration, js: true do
   let(:author) { current_author }
   let(:approver) { current_approver }
 
-  # change in main page
   describe 'contact form hidden when user is not authenticated' do
-    xit 'does not display the contact form link on main page' do
+    it 'does not display the contact form link on main page' do
       visit root_path
       expect(page).not_to have_link('Contact Us')
       expect(page).to have_link('Please direct questions to Ask!')
@@ -20,22 +19,14 @@ RSpec.describe "Email Contact Form", type: :integration, js: true do
       visit email_contact_form_new_path
     end
 
-    it "does not contain help link in the footer" do
+    it "does not contain help link in the footer, displays a service header,
+        has issue type tooltip, displays the contact email form initialiazed with author information" do
       expect(page).not_to have_link('Please direct questions to Ask!')
-    end
-
-    it "displays a service header" do
       expect(page).to have_selector('h1', text: 'Contact Us')
-    end
-
-    it "has issue type tooltip" do
       tooltip = find('span[data-toggle="tooltip"]')
       tooltip.hover
       expect(page).to have_content(/IT\/administrative support staff | directed to The Libraries engineering team/)
       expect(page).to have_css('div.tooltip')
-    end
-
-    it "displays the contact email form initialized with author information" do
       expect(page).to have_xpath("//input[@value='Send']")
       expect(page).to have_link('Cancel')
       expect(page).to have_button('Send')
@@ -63,7 +54,6 @@ RSpec.describe "Email Contact Form", type: :integration, js: true do
         expect(ActionMailer::Base.deliveries.count).to eq(1)
         expect(ActionMailer::Base.deliveries.first.to).to eq([current_partner.email_address.to_s])
         expect(page).to have_current_path(main_page_path)
-        # expect(page).to have_content('Thank you for your message')
       end
     end
 
@@ -78,7 +68,6 @@ RSpec.describe "Email Contact Form", type: :integration, js: true do
         expect(ActionMailer::Base.deliveries.count).to eq(1)
         expect(ActionMailer::Base.deliveries.first.to).to eq([I18n.t('ul_etda_support_email_address')])
         expect(page).to have_current_path(main_page_path)
-        # expect(page).to have_content('Thank you for your message')
       end
     end
 

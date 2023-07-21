@@ -35,7 +35,6 @@ RSpec.describe "Manage Contact Information", type: :integration, js: true do
       expect(page).to have_link('Cancel')
       click_button('Save')
       expect(page).to have_current_path(author_root_path)
-      # expect(page).to have_content('Contact information updated successfully')
       visit edit_author_author_path(author)
       expect(page).to have_field('Alternate email address', with: 'myalternate@gmail.com')
       expect(page).to have_link('Accessibility')
@@ -65,7 +64,6 @@ RSpec.describe "Manage Contact Information", type: :integration, js: true do
       expect(page).to have_current_path(author_root_path)
       author.reload
       expect(author.psu_idn).not_to be_blank
-      # expect(page).to have_content('Contact information updated successfully')
       visit edit_author_author_path(author)
       expect(page).to have_field('Alternate email address', with: 'mydifferentalternate@gmail.com')
       expect(page).to have_link('Accessibility')

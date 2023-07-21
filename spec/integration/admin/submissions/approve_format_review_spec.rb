@@ -17,11 +17,9 @@ RSpec.describe "when an admin approves a format review", type: :integration, js:
       visit admin_edit_submission_path(submission)
       fill_in 'Format Review Notes to Student', with: 'Note on format review'
       click_button 'Format Review Completed'
-      # expect(page).to have_content('successfully')
       sleep 1
       submission.reload
       expect(submission.status).to eq 'collecting final submission files'
-      submission.reload
       expect(submission.format_review_approved_at).not_to be_nil
     end
   end
@@ -33,10 +31,8 @@ RSpec.describe "when an admin approves a format review", type: :integration, js:
       fill_in 'Format Review Notes to Student', with: 'Note on need for revisions'
       click_button 'Reject & request revisions'
       sleep 1
-      # expect(page).to have_content('successfully')
       submission.reload
       expect(submission.status).to eq 'collecting format review files rejected'
-      submission.reload
       expect(submission.format_review_rejected_at).not_to be_nil
     end
   end

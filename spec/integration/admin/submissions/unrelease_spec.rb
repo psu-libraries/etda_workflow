@@ -1,4 +1,4 @@
-RSpec.describe "Unrelease a submission", type: :integration, js: true, honors: true, milsch: true do
+RSpec.describe "Unrelease a submission", type: :integration, js: true, honors: true do
   require 'integration/integration_spec_helper'
 
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
@@ -7,7 +7,6 @@ RSpec.describe "Unrelease a submission", type: :integration, js: true, honors: t
   let(:submission) { FactoryBot.create(:submission, :released_for_publication, public_id: 'publicid') }
   let(:final_submission_file) { FactoryBot.create :final_submission_file, submission: }
 
-  # let(:admin) { FactoryBot.create :admin }
   let(:degree_type) { current_partner.graduate? ? 'dissertation' : 'thesis' }
 
   before do
@@ -50,17 +49,13 @@ RSpec.describe "Unrelease a submission", type: :integration, js: true, honors: t
     expect(page).not_to have_content "A Better Title"
     unreleased_location = Rails.root.join(final_submission_file.current_location)
     expect(FileUtilityHelper.new).to be_file_was_moved(released_location, unreleased_location)
-    # expect(File.exist? unreleased_location).to be_truthy
-    # expect(released_location).not_to eql(unreleased_location)
-    # expect(File.exist? released_location).to be_falsey
     FileUtilityHelper.new.remove_test_file(unreleased_location)
-    # FileUtils.remove_file(unreleased_location, true)
     visit admin_submissions_index_path(degree_type: DegreeType.default, scope: 'final_submission_approved')
     expect(page).to have_content submission.title.to_s
   end
 end
 
-RSpec.describe 'Unrelease a submission with Solr error', js: true, honors: true, milsch: true do
+RSpec.describe 'Unrelease a submission with Solr error', js: true, honors: true do
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true) }
   let!(:role) { CommitteeRole.first.name }
@@ -83,7 +78,7 @@ RSpec.describe 'Unrelease a submission with Solr error', js: true, honors: true,
   end
 end
 
-RSpec.describe 'Unrelease a legacy submission without missing data', js: true, honors: true, milsch: true do
+RSpec.describe 'Unrelease a legacy submission without missing data', js: true, honors: true do
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
   let!(:degree) { FactoryBot.create(:degree, name: "Thesis of Sisyphus", is_active: true) }
   let!(:role) { CommitteeRole.first.name }
@@ -125,7 +120,6 @@ RSpec.describe 'Unrelease a legacy submission without missing data', js: true, h
 
   it 'withdraws the publication successfully' do
     click_button "Withdraw Publication"
-    # expect(page).to have_content("Submission for #{author_first_name} #{author_last_name} was successfully un-published")
 
     legacy_submission.reload
     expect(legacy_submission.legacy_id).not_to be_blank

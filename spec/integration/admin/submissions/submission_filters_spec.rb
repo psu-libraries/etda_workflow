@@ -2,11 +2,9 @@ RSpec.describe "Submission filter with semester dropdown", type: :integration, j
   require 'integration/integration_spec_helper'
 
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }
-  # let!(:degree) { create (:degree) }
   let!(:role) { CommitteeRole.first.name }
   let(:submission1) { FactoryBot.create(:submission, :waiting_for_final_submission_response, semester: Semester.current.split(" ")[1], year: Semester.current.split(" ")[0]) }
   let(:submission2) { FactoryBot.create(:submission, :waiting_for_final_submission_response, semester: Semester.current.split(" ")[1], year: Semester.current.split(" ")[0]) }
-  # let(:admin) { FactoryBot.create :admin }
   let(:degree_type) { DegreeType.default }
 
   before do
@@ -14,7 +12,6 @@ RSpec.describe "Submission filter with semester dropdown", type: :integration, j
     submission1.invention_disclosures = [InventionDisclosure.new(id_number: "#{submission1.year}-1234")]
     submission1.save!
     oidc_authorize_admin
-    # visit admin_edit_submission_path(submission)
     visit admin_submissions_dashboard_path(DegreeType.default.name)
   end
 

@@ -30,7 +30,7 @@ RSpec.describe "when an admin views the final submission is pending bucket", typ
       click_link submission.title
       click_button 'Reject & return to author'
       page.driver.browser.switch_to.alert.accept
-      sleep 5
+      sleep 1
       submission.reload
       expect(submission.status).to eq 'waiting for committee review rejected'
     end

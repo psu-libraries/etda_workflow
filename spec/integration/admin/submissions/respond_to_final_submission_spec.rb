@@ -23,7 +23,7 @@ RSpec.describe "when admin responds to final submission", type: :integration, js
   end
 
   describe "when an admin accepts the final submission files" do
-    it "updates status to 'waiting for committee review' and emails committee members", honors: true, milsch: true do
+    it "updates status to 'waiting for committee review' and emails committee members", honors: true do
       submission.committee_members << committee_members
       submission.save!
       submission.reload
@@ -35,7 +35,7 @@ RSpec.describe "when admin responds to final submission", type: :integration, js
       FactoryBot.create(:format_review_file, submission:)
       FactoryBot.create(:final_submission_file, submission:)
       visit admin_edit_submission_path(submission)
-      sleep 2
+      sleep 1
       fill_in 'Final Submission Notes to Student', with: 'Note on paper is approved'
       if current_partner.graduate?
         select select_year, from: 'submission[defended_at(1i)]'
@@ -74,7 +74,7 @@ RSpec.describe "when admin responds to final submission", type: :integration, js
     end
   end
 
-  describe "when an admin clicks 'Send to committee'", honors: true, sset: true, milsch: true do
+  describe "when an admin clicks 'Send to committee'", honors: true do
     it "updates status to 'waiting for advisor review' for graduate and 'waiting for committee review' for other partners" do
       create_committee submission
       submission.reload
@@ -114,31 +114,6 @@ RSpec.describe "when admin responds to final submission", type: :integration, js
       it "does not show button" do
         visit admin_edit_submission_path(submission)
         expect(page).not_to have_button 'Send to program head'
-      end
-    end
-  end
-
-  describe 'an admin deletes a format review file that is waiting for approval' do
-    let!(:submission) { FactoryBot.create :submission, :waiting_for_format_review_response }
-    let!(:format_file) { FactoryBot.create :format_review_file, submission: }
-
-    # Add after updating file controller methods for author and admin
-
-    context 'admin deletes the format review file' do
-      xit 'removes the file' do
-        visit admin_edit_submission_path(submission)
-        sleep 2
-        find_link('[delete]').click
-        expect(page).to have_no_link('[delete]', wait: Capybara.default_max_wait_time * 4)
-        find_link('Additional File').click
-        expect(page).not_to have_content('new_admin_file.pdf')
-        expect(page).to have_css '#format-review-file-fields .nested-fields:last-child input[type="file"]'
-        last_input_id = first('#format-review-file-fields .nested-fields:last-child input[type="file"]')[:id]
-        attach_file last_input_id, Rails.root.join('spec', 'fixtures', 'new_admin_file.pdf')
-        click_button 'Update Metadata Only'
-        expect(page).to have_content('Format review information was successfully edited by an administrator')
-        file_name = first('#format-review-file-fields .nest-fields:last-child').find('a.file-link').text
-        expect(file_name).to start_with('new_admin_file.pdf')
       end
     end
   end

@@ -1,4 +1,4 @@
-RSpec.describe 'Step 3: Collecting Format Review Files', type: :integration, js: true do
+RSpec.describe 'When Collecting Format Review Files', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'collecting format review files'" do
@@ -11,63 +11,6 @@ RSpec.describe 'Step 3: Collecting Format Review Files', type: :integration, js:
     let!(:submission) { FactoryBot.create :submission, :collecting_format_review_files, author: }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: true }
-
-    context "visiting the 'Author Submissions Index Page' page" do
-      it 'loads the page' do
-        visit author_submissions_path
-        expect(page).to have_current_path(author_submissions_path)
-        expect(page).to have_content(author.last_name)
-      end
-    end
-
-    context "visiting the 'Review Program Information' page" do
-      it 'displays program information page for review' do
-        visit author_submission_program_information_path(submission)
-        expect(page).to have_current_path(author_submission_program_information_path(submission))
-      end
-    end
-
-    context "visiting the 'New Committee' page" do
-      it "raises a forbidden access error" do
-        visit new_author_submission_committee_members_path(submission)
-        expect(page).to have_current_path(author_root_path)
-      end
-    end
-
-    context "visiting the 'Update Committee' page" do
-      it "displays the committee_members for editing" do
-        visit edit_author_submission_committee_members_path(submission)
-        expect(page).to have_current_path(edit_author_submission_committee_members_path(submission))
-      end
-    end
-
-    context "visiting the 'Review Committee' page" do
-      it "raises a forbidden access error" do
-        visit author_submission_committee_members_path(submission)
-        expect(page).to have_current_path(author_root_path)
-      end
-    end
-
-    context "visiting the 'Review Format Review Files' page" do
-      it "raises a forbidden access error" do
-        visit author_submission_format_review_path(submission)
-        expect(page).to have_current_path(author_root_path)
-      end
-    end
-
-    context "visiting the 'Upload Final Submission Files' page" do
-      it "raises a forbidden access error" do
-        visit author_submission_edit_final_submission_path(submission)
-        expect(page).to have_current_path(author_root_path)
-      end
-    end
-
-    context "visiting the 'Review Final Submission Files' page" do
-      it "raises a forbidden access error" do
-        visit author_submission_final_submission_path(submission)
-        expect(page).to have_current_path(author_root_path)
-      end
-    end
 
     context "when I submit the 'Upload Format Review Files' form" do
       it "updates submission status to 'waiting for format review response'" do

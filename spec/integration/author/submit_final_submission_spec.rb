@@ -1,7 +1,7 @@
 RSpec.describe 'Submitting a final submission as an author', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
-  describe "When collecting final submission files", honors: true, milsch: true, sset: true do
+  describe "When collecting final submission files", honors: true, milsch: true do
     before do
       oidc_authorize_author
     end
@@ -36,7 +36,6 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         check 'I agree to copyright statement'
         check 'I agree to ProQuest statement' if current_partner.graduate?
         click_button 'Submit final files for review'
-        # expect(page).to have_content('successfully')
         submission.reload
         expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?
         expect(submission.status).to eq 'waiting for committee review' unless current_partner.graduate?
@@ -72,7 +71,6 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         check 'I agree to copyright statement'
         check 'I agree to ProQuest statement' if current_partner.graduate?
         click_button 'Submit final files for review'
-        # expect(page).to have_content('successfully')
         submission.reload
         expect(page).to have_current_path(author_root_path)
         expect(submission.committee_members.first.status).to eq ''
@@ -108,7 +106,6 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         check 'I agree to copyright statement'
         check 'I agree to ProQuest statement' if current_partner.graduate?
         click_button 'Submit final files for review'
-        # expect(page).to have_content('successfully')
         submission.reload
         expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?
         expect(submission.status).to eq 'waiting for committee review' unless current_partner.graduate?
@@ -145,7 +142,6 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         check 'I agree to copyright statement'
         check 'I agree to ProQuest statement' if current_partner.graduate?
         click_button 'Submit final files for review'
-        # expect(page).to have_content('successfully')
         submission.reload
         expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?
         expect(submission.status).to eq 'waiting for committee review' unless current_partner.graduate?

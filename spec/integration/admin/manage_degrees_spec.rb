@@ -39,7 +39,6 @@ RSpec.describe "Manage Degrees", type: :integration, js: true do
     select 'Thesis', from: 'Degree type'
     click_button 'Update Degree'
     expect(page).to have_content(degree.name)
-    # expect(page).to have_content('Degree successfully updated')
     within('tr', text: 'NEWDESC') do
       expect(page).to have_content('Thesis')
       expect(page).to have_content('No')

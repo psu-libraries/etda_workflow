@@ -19,61 +19,112 @@ jobs:
             git clone $CONFIG_REPO
             cd etda-config
             ./bin/pr-release clusters/prod/manifests/prod.yaml
-  build:
+  build_test:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
-    - setup_remote_docker:
-        version: 20.10.6
-        docker_layer_caching: true
-    - checkout
-    # - restore_cache:
-    #     keys:
-    #       - docker-image
-    - run:
-        name: "Build Container"
-        command: |
-          if [ -f etda-workflow.tar ]; then docker load -i etda-workflow.tar; fi
-          docker build -t $REGISTRY_URL:$CIRCLE_SHA1 -t etda_workflow_web:latest --target base .
-          docker save -o etda-workflow.tar etda_workflow_web:latest
-    - run:
-        name: "Setup Code Climate test-reporter"
-        command: |
-          # download test reporter as a static binary
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
-          chmod +x cc-test-reporter
-    # - save_cache:
-    #     paths:
-    #       - etda-workflow.tar
-    #     key: docker-image
-    - persist_to_workspace:
-        root: .
-        paths:
-          - etda-workflow.tar
-          - cc-test-reporter
-  rubocop:
+      - setup_remote_docker:
+          version: 20.10.6
+          docker_layer_caching: true
+      - checkout
+      # - restore_cache:
+      #     keys:
+      #       - docker-image
+      - run:
+          name: "Build Container"
+          command: |
+            if [ -f etda-workflow.tar ]; then docker load -i etda-workflow.tar; fi
+            docker build -t $REGISTRY_URL:$CIRCLE_SHA1 -t etda_workflow_web:latest --target base .
+            docker save -o etda-workflow.tar etda_workflow_web:latest
+      - run:
+          name: "Setup Code Climate test-reporter"
+          command: |
+            # download test reporter as a static binary
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
+            chmod +x cc-test-reporter
+      # - save_cache:
+      #     paths:
+      #       - etda-workflow.tar
+      #     key: docker-image
+      - persist_to_workspace:
+          root: .
+          paths:
+            - etda-workflow.tar
+            - cc-test-reporter
+  build_prod:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
-    - attach_workspace:
-        at: /tmp/workspace
-    - setup_remote_docker:
-        version: 20.10.6
-        docker_layer_caching: true
-    - checkout
-    - run:
-        name: "Rubocop"
-        command: |
-          docker load -i /tmp/workspace/etda-workflow.tar
-          export TAG=${CIRCLE_SHA1}
-          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
+      - setup_remote_docker:
+          version: 20.10.6
+          docker_layer_caching: true
+      - checkout
+      - run:
+          name: "Build Container"
+          command: |
+            if [ -f etda-workflow-prod.tar ]; then docker load -i etda-workflow-prod.tar; fi
+            docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
+            docker save -o etda-workflow-prod.tar etda_workflow_web:latest
+      - persist_to_workspace:
+          root: .
+          paths:
+            - etda-workflow-prod.tar
+  rubocop_unit_partner_tests:
+    docker:
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+    environment:
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker:
+          version: 20.10.6
+          docker_layer_caching: true
+      - checkout
+      - run:
+          name: "Setup Workspace"
+          command: |
+            docker load -i /tmp/workspace/etda-workflow.tar
+            export TAG=${CIRCLE_SHA1}
+            export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+            docker-compose up -d db selenium redis
+      - run:
+          name: "Rubocop"
+          command: |
+            RAILS_ENV=test docker-compose run --name=rubocop test bundle exec rubocop
+      - run:
+          name: "Unit Test Graduate"
+          command: |
+            PARTNER=graduate docker-compose run --name=unit_test_grad --service-ports -d test
+            docker exec -e RAILS_ENV=test unit_test_grad /etda_workflow/bin/ci-rspec
+            docker cp unit_test_grad:/etda_workflow/coverage/.resultset.json .resultset.json
+            /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o unit_coverage.json -p /etda_workflow/ .resultset.json
+      - run:
+          name: "Test Honors"
+          command: |
+            PARTNER=honors docker-compose run --name=test_honors --service-ports -d test
+            docker exec -e RAILS_ENV=test test_honors /etda_workflow/bin/ci-rspec
+      - run:
+          name: "Test Milsch"
+          command: |
+            PARTNER=milsch docker-compose run --name=test_milsch --service-ports -d test
+            docker exec -e RAILS_ENV=test test_milsch /etda_workflow/bin/ci-rspec
+      - run:
+          name: "Test SSET"
+          command: |
+            PARTNER=sset docker-compose run --name=test_sset --service-ports -d test
+            docker exec -e RAILS_ENV=test test_sset /etda_workflow/bin/ci-rspec
+      - persist_to_workspace:
+            root: .
+            paths:
+              - unit_coverage.json
   integration_test_grad:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -94,7 +145,7 @@ jobs:
           export TAG=${CIRCLE_SHA1}
           export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
           docker-compose up -d db selenium redis
-          sleep 50
+          sleep 10
           PARTNER=graduate docker-compose run --name=test --service-ports -d test
           docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
           docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
@@ -104,36 +155,6 @@ jobs:
         root: .
         paths:
           - integration_coverage.json
-  unit_test_grad:
-    docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
-    environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
-      - setup_remote_docker:
-          version: 20.10.6
-          docker_layer_caching: true
-      - checkout
-      - run:
-          name: "Unit Test Graduate"
-          command: |
-            docker load -i /tmp/workspace/etda-workflow.tar
-            export TAG=${CIRCLE_SHA1}
-            export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-            docker-compose up -d db selenium redis
-            sleep 10
-            PARTNER=graduate docker-compose run --name=test --service-ports -d test
-            docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
-            docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
-            /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o unit_coverage.json -p /etda_workflow/ .resultset.json
-            # docker cp test:/app/vendor .
-      - persist_to_workspace:
-          root: .
-          paths:
-            - unit_coverage.json
   publish:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -155,8 +176,8 @@ jobs:
       - run:
           name: "Publish The Image"
           command: |
-            docker load -i /tmp/workspace/etda-workflow.tar
-            docker build -t $REGISTRY_URL:$CIRCLE_SHA1 .
+            docker load -i /tmp/workspace/etda-workflow-prod.tar
+            docker tag etda_workflow_web:latest $REGISTRY_URL:$CIRCLE_SHA1
             docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
             docker push $REGISTRY_URL:$CIRCLE_SHA1
       - when:
@@ -167,65 +188,24 @@ jobs:
             - run:
                 name: "Push Latest"
                 command: |
-                  docker load -i /tmp/workspace/etda-workflow.tar
-                  docker build -t $REGISTRY_URL:latest .
+                  docker load -i /tmp/workspace/etda-workflow-prod.tar
+                  docker tag etda_workflow_web:latest $REGISTRY_URL:latest
                   docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
                   docker push $REGISTRY_URL:latest
-  test_partners:
-    docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
-    environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
-    steps:
-    - attach_workspace:
-        at: /tmp/workspace
-    - setup_remote_docker:
-        version: 20.10.6
-        docker_layer_caching: true
-    - checkout
-    - run:
-        name: "Setup Workspace"
-        command: |
-          docker load -i /tmp/workspace/etda-workflow.tar
-          export TAG=${CIRCLE_SHA1}
-          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-    - run:
-        name: "Test Honors"
-        command: |
-          docker-compose up -d db selenium redis
-          sleep 30
-          PARTNER=honors docker-compose run --name=test --service-ports -d test
-          docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
-          docker-compose down
-    - run:
-        name: "Test Milsch"
-        command: |
-          docker-compose up -d db selenium redis
-          PARTNER=milsch docker-compose run --name=test --service-ports -d test
-          docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
-          docker-compose down
-    - run:
-        name: "Test SSET"
-        command: |
-          docker-compose up -d db selenium redis
-          PARTNER=sset docker-compose run --name=test --service-ports -d test
-          docker exec -e RAILS_ENV=test test /etda_workflow/bin/ci-rspec
-          docker-compose down
   deploy:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
       CONFIG_REPO: git@github.com:psu-libraries/etda-config.git
     steps:
-    - add_ssh_keys
-    - run:
-        name: "Updating Config Repo"
-        command: |
-            ssh-keyscan github.com > ~/.ssh/known_hosts
-            git clone $CONFIG_REPO
-            cd etda-config
-            ./bin/generate_app
+      - add_ssh_keys
+      - run:
+          name: "Updating Config Repo"
+          command: |
+              ssh-keyscan github.com > ~/.ssh/known_hosts
+              git clone $CONFIG_REPO
+              cd etda-config
+              ./bin/generate_app
 workflows:
   version: 2
   etda-workflow:
@@ -240,31 +220,24 @@ workflows:
             branches:
               ignore:
                 - /.*/
-      - build:
+      - build_test:
           context: org-global
-      - rubocop:
+      - build_prod:
+          context: org-global
+      - rubocop_unit_partner_tests:
           context: org-global
           requires:
-            - build
+            - build_test
       - integration_test_grad:
           context: org-global
           requires:
-            - build
-      - unit_test_grad:
-          context: org-global
-          requires:
-            - build
-      - test_partners:
-          context: org-global
-          requires:
-            - build
+            - build_test
       - publish:
           context: org-global
           requires:
-            - unit_test_grad
+            - build_prod
+            - rubocop_unit_partner_tests
             - integration_test_grad
-            - test_partners
-            - rubocop
       - deploy:
           context: org-global
           requires:
