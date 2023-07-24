@@ -14,15 +14,8 @@ gem 'puma', ">= 4.3.0"
 gem 'shakapacker', '~> 6.6.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
-# Use Redis adapter to run Action Cable in production
-gem 'redis', '~> 4.5.0'
-# Resque pool
-gem 'resque-pool', '~> 0.7.0'
 # SideKiq for queueing jobs
-gem 'sidekiq', '~> 5.2.10'
-# When downgrading Sidekiq, rack needed to be downgraded as well.
-# This can be removed for Sidekiq 6 or greater.
-gem 'rack', '~> 2.2.6.3'
+gem 'sidekiq', '~> 7.1.2'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1.0'
 # Jquery for rails

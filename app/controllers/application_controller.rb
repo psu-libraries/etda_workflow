@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     rescue_from ActiveRecord::StatementInvalid, with: :render_500
     rescue_from Mysql2::Error, with: :render_500
     rescue_from Net::LDAP::LdapError, with: :render_500
-    rescue_from Redis::CannotConnectError, with: :render_500
+    rescue_from RedisClient::CannotConnectError, with: :render_500
     rescue_from Errno::ECONNREFUSED, with: :render_500
     rescue_from ActionDispatch::Cookies::CookieOverflow, with: :render_500
     rescue_from RuntimeError, with: :render_500
