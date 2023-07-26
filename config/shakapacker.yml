@@ -5,10 +5,10 @@ default: &default
   source_entry_path: packs
   public_root_path: public
   public_output_path: packs
-  cache_path: tmp/cache/webpacker
+  cache_path: tmp/cache/shakapacker
   check_yarn_integrity: false
   webpack_compile_output: false
-  webpacker_precompile: true
+  shakapacker_precompile: true
 
   # Location for manifest.json, defaults to {public_output_path}/manifest.json if unset
   # manifest_path: public/packs/manifest.json
@@ -84,7 +84,7 @@ development:
     compress: true
     # Note that apps that do not check the host are vulnerable to DNS rebinding attacks
     allowed_hosts: 'all'
-    # Shows progress and colorizes output of bin/webpacker[-dev-server]
+    # Shows progress and colorizes output of bin/shakapacker[-dev-server]
     pretty: true
     headers:
       'Access-Control-Allow-Origin': '*'
