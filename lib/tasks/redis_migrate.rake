@@ -39,6 +39,10 @@ namespace :redis_migrate do
 
   desc 'Migrate redis db to remove namespaces'
   task 'remove_namespaces' => :environment do
+    # This script migrates data from a single namespaced redis 
+    # instance to multiple distinct redis instances for each partner 
+
+    # Setup redis connection
     redis_config = RedisClient.config(**Rails.application.config_for(:redis))
     redis = redis_config.new_pool(timeout: 0.5, size: 5)
 
