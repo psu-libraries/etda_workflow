@@ -15,7 +15,7 @@ services:
     ports:
       - "4444:4444"
   redis:
-    image: redis:6.2
+    image: redis:7.0.12
     volumes:
     - redis-data:/data
     ports:
