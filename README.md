@@ -7,7 +7,8 @@
 * Ruby version: 3.1
 * Node version 16 (using yarn as npm)
 * Rails 6.1
-* Sidekiq 5
+* Sidekiq 7
+* Redis 6.2+
 
 ## Setup
 
