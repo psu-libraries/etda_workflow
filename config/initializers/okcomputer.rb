@@ -28,9 +28,3 @@ sidekiq_config['queues'].each do |q|
     threshold = sidekiq_config['size_threshold'] || 100
     OkComputer::Registry.register "sidekiq_size_#{q}", SidekiqQueueCheck.new(q, threshold=threshold)
 end
-
-## Redis Checks 
-
-redis_config = Rails.application.config_for(:redis)
-
-OkComputer::Registry.register "redis", OkComputer::RedisCheck.new(redis_config)
