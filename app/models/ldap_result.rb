@@ -21,6 +21,7 @@ class LdapResult
           entry_attributes.store(key, val)
         end
       end
+      mapped_attributes << entry_attributes
     end
     mapped_attributes || []
   end
