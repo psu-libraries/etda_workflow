@@ -21,9 +21,6 @@ class LdapResult
           entry_attributes.store(key, val)
         end
       end
-      # trying to figure out why dept will not display
-      # it works on first required committee member and all add-on members
-      mapped_attributes << entry_attributes.except(:dept_admin)
     end
     mapped_attributes || []
   end

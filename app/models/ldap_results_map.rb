@@ -3,7 +3,6 @@
 class LdapResultsMap
   AUTOCOMPLETE_LDAP_MAP = { map: { displayname: %i[label value],
                                    mail: [:id],
-                                   psadminarea: [:dept_admin],
                                    psbusinessarea: [:dept] }, defaults: { dept: 'Department not available', id: 'Email not available' } }.freeze
 
   AUTHOR_LDAP_MAP = { uid: [:access_id],
@@ -25,7 +24,6 @@ class LdapResultsMap
   COMMITTEE_LDAP_MAP = { uid: [:access_id],
                          displayname: %i[label value],
                          mail: [:id],
-                         psadminarea: [:dept_admin],
                          psbusinessarea: [:dept] }.freeze
 
   LDAP_RESULTS_MAP = {
@@ -33,7 +31,6 @@ class LdapResultsMap
     name: { method: :format_upcase, options: {} },
     value: { method: :format_upcase, options: {} },
     label: { method: :format_upcase, options: {} },
-    dept_admin: { method: :format_department_admin, options: {} },
     dept: { method: :format_department, options: {} },
     first_name: { method: :format_name, options: { idx: 0 } },
     middle_name: { method: :format_name, options: { idx: 1 } },
