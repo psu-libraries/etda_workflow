@@ -17,7 +17,7 @@ class LdapUniversityDirectory
       autocomplete_search_filter = LdapSearchFilter.new(term, true).create_filter
       ldap_records = connection.search(base: ldap_configuration['base'],
                                        filter: autocomplete_search_filter,
-                                       attributes: %w[cn displayname mail psadminarea psdepartment],
+                                       attributes: %w[cn displayname mail psbusinessarea],
                                        return_result: true) # was size: 200
 
       return [] if connection.get_operation_result.message == "Size Limit Exceeded"

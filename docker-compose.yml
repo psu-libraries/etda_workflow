@@ -78,6 +78,7 @@ services:
       LIONPATH_SSH_KEY: ${LIONPATH_SSH_KEY}
       LDAP_PASSWORD: ${LDAP_PASSWORD}
       LDAP_USER: ${LDAP_USER}
+      LDAP_HOST: ${LDAP_HOST}
     command: >
       sh -c "/etda_workflow/bin/startup"
     ports:

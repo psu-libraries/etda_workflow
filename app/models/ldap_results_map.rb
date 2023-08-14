@@ -4,7 +4,7 @@ class LdapResultsMap
   AUTOCOMPLETE_LDAP_MAP = { map: { displayname: %i[label value],
                                    mail: [:id],
                                    psadminarea: [:dept_admin],
-                                   psdepartment: [:dept] }, defaults: { dept: 'Department not available', id: 'Email not available' } }.freeze
+                                   psbusinessarea: [:dept] }, defaults: { dept: 'Department not available', id: 'Email not available' } }.freeze
 
   AUTHOR_LDAP_MAP = { uid: [:access_id],
                       givenname: %i[first_name middle_name],
