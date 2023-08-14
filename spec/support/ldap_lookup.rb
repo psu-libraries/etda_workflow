@@ -20,7 +20,7 @@ def mock_ldap_entry
                   homedirectory: ["/pass/users/j/x/xxb13"], edupersonaffiliation: ["member", "staff"],
                   postaladdress: ["003E PATERNO LIBRARY$UNIVERSITY PARK$UNIVERSITY PARK, PA 16802 US"],
                   pscampus: ["UNIVERSITY PARK"], psofficeaddress: ["E-4 Paterno Library"],
-                  psdepartment: ["ITS SERVICES & SOLUTIONS"], psmailbox: ["xxb13@ucs.psu.edu"],
+                  psbusinessarea: ["ITS SERVICES & SOLUTIONS"], psmailbox: ["xxb13@ucs.psu.edu"],
                   psmailhost: ["ucs.psu.edu"] }]
   ldap_entry
 end
@@ -43,7 +43,7 @@ def mock_ldap_list
                            edupersonaffiliation: ["member", "staff"],
                            postaladdress: ["003E PATERNO LIBRARY$UNIVERSITY PARK$UNIVERSITY PARK, PA 16802"],
                            pscampus: ["UNIVERSITY PARK"], psofficeaddress: ["E-4 Paterno Library"],
-                           psdepartment: ["ITS SERVICES & SOLUTIONS"], psmailbox: ["xxb13@ucs.psu.edu"],
+                           psbusinessarea: ["ITS SERVICES & SOLUTIONS"], psmailbox: ["xxb13@ucs.psu.edu"],
                            psmailhost: ["ucs.psu.edu"] },
                @myhash = { dn: ["uid=meb133,dc=psu,dc=edu"],
                            objectclass: ["top", "PSUperson", "eduPerson", "inetOrgPerson", "organizationalPerson",
@@ -53,7 +53,7 @@ def mock_ldap_list
                            displayname: ["ALFRED B CUNNINGHAM"], sn: ["CUNNINGHAM"], cn: ["ALFRED B CUNNINGHAM"],
                            psmaclabgid: ["5000"], psmaclabhomedir: ["/Users/guest"],
                            telephonenumber: ["+1 814 555 5555"], psdiridn: ["1111111"], psuidnumber: ["77777"],
-                           edupersonprimaryaffiliation: ["STAFF"], psdepartment: ["TECHNOLOGY"], gidnumber: ["1000"],
+                           edupersonprimaryaffiliation: ["STAFF"], psbusinessarea: ["TECHNOLOGY"], gidnumber: ["1000"],
                            uidnumber: ["7777"], loginshell: ["/bin/bash"], psmailhost: ["email.psu.edu"],
                            psmemberof: ["cn=umg/up.ecs,dc=psu,dc=edu", "cn=psu.facstaff,dc=psu,dc=edu",
                                         "cn=umg/psu.drsd.etda_milsch_admin_users,dc=psu,dc=edu",

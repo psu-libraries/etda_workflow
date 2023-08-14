@@ -26,7 +26,7 @@ class LdapResultsMap
                          displayname: %i[label value],
                          mail: [:id],
                          psadminarea: [:dept_admin],
-                         psdepartment: [:dept] }.freeze
+                         psbusinessarea: [:dept] }.freeze
 
   LDAP_RESULTS_MAP = {
     last_name: { method: :format_upcase, options: {} },
@@ -52,6 +52,6 @@ class LdapResultsMap
                        givenname: [:first_name],
                        cn: [:full_name],
                        sn: [:last_name],
-                       psdepartment: [:dept],
+                       psbusinessarea: [:dept],
                        edupersonprimaryaffiliation: [:primary_affiliation] }.freeze
 end
