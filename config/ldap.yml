@@ -1,5 +1,5 @@
 default: &default
-  host: <%= ENV.fetch("LDAP_HOST", "ldap12.iam.psu.edu") %>
+  host: <%= ENV.fetch("LDAP_HOST", "dirapps.aset.psu.edu") %>
   port: <%= ENV.fetch("LDAP_PORT", "636") %>
   group_base: <%= ENV.fetch("LDAP_GROUP_BASE", "dc=psu,dc=edu") %>
   base: <%= ENV.fetch("LDAP_BASE", "dc=psu,dc=edu") %>
