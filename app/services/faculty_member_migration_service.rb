@@ -6,8 +6,8 @@ class FacultyMemberMigrationService
         faculty_member = FacultyMember.find_by(webaccess_id: member_id)
         unless faculty_member
           results = retrieve(connection, member_id, 'uid')
-          results ||= search_by_cn(member, connection)
-          faculty_member = FacultyMember.create(faculty_member_attrs(results)) if results.present? && results[:primary_affiliation] != 'MEMBER'
+          results = search_by_cn(member, connection) unless results.present?
+          faculty_member = FacultyMember.find_or_create_by(faculty_member_attrs(results)) if results.present? && results[:primary_affiliation] != 'MEMBER'
         end
         member.update(faculty_member_id: faculty_member.id) if faculty_member.present?
       rescue StandardError => e
@@ -49,10 +49,10 @@ class FacultyMemberMigrationService
       regex = Regexp.new(common_suffixes_prefixes.join('|'))
       clean_name = name.gsub(regex, '')
       result = retrieve(connection, clean_name, 'cn')
-      unless result
+      unless result.present?
         split_name = clean_name.split(' ')
         if split_name.length == 3
-          split_name = split_name.delete_at(1)
+          split_name.delete_at(1)
           nomiddle_name = split_name.join(' ')
           result = retrieve(connection, nomiddle_name, 'cn')
         end
