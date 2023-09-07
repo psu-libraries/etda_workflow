@@ -141,7 +141,7 @@ class MockUniversityDirectory
   end
 
   class FakeConnection
-    def search
+    def search(*)
       "Hello!"
     end
   end
