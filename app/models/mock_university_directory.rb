@@ -137,6 +137,12 @@ class MockUniversityDirectory
   end
 
   def with_connection
-    yield
+    yield FakeConnection.new
+  end
+
+  class FakeConnection
+    def search(*)
+      "Hello!"
+    end
   end
 end
