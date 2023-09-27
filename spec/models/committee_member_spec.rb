@@ -30,6 +30,7 @@ RSpec.describe CommitteeMember, type: :model do
   it { is_expected.to have_db_index(:approver_id) }
   it { is_expected.to belong_to(:submission).class_name('Submission') }
   it { is_expected.to belong_to(:committee_role).class_name('CommitteeRole') }
+  it { is_expected.to belong_to(:faculty_member).class_name('FacultyMember').optional }
   it { is_expected.to belong_to(:approver).class_name('Approver').optional }
   it { is_expected.to have_one(:committee_member_token).class_name('CommitteeMemberToken') }
 

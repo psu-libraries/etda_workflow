@@ -12,6 +12,7 @@ class CommitteeMember < ApplicationRecord
 
   belongs_to :submission
   belongs_to :committee_role
+  belongs_to :faculty_member, optional: true
   belongs_to :approver, optional: true
   has_one :committee_member_token, dependent: :destroy
 
