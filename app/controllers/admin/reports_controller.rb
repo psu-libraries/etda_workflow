@@ -61,10 +61,6 @@ class Admin::ReportsController < AdminController
     end
   end
 
-  def committee_member_report_index
-
-  end
-
   def committee_member_report_export
     result = CommitteeMember
       .joins(:faculty_member)
