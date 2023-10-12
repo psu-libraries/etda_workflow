@@ -32,6 +32,8 @@ Rails.application.routes.draw do
   post 'email_contact_form', to: 'email_contact_form#create', as: :email_contact_form_index
   get 'email_contact_form', to: 'email_contact_form#new', as: :email_contact_form_new
 
+  get '/committee_member_dashboard', to: 'committee_member#index', as: :committee_member_dashboard
+
   namespace :admin do
     resources :admins, except: [:index, :show]
     resources :degrees, except: [:show, :destroy]

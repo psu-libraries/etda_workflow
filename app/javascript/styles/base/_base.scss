@@ -886,3 +886,30 @@ a.contact-support-link {
 .special-committee {
   margin-left: 25%
 }
+
+// network graph styles
+.link {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.node circle {
+  fill: blue;
+}
+
+.node rect {
+  fill: green;
+  width: 80px;
+  height: 40px;
+  position: middle;
+}
+
+.network-graph {
+  width: 100vw;
+  height: 100vh;
+}
