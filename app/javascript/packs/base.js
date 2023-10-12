@@ -3,13 +3,14 @@
 //
 //= require bootstrap-sprockets   */
 
-var $ = require('jquery');
+import $ from 'jquery';
 window.jQuery = $;
 
 require('../styles/base/_base.scss');
 require('bootstrap');
 require('jquery-ui');
 require('jquery-ujs');
+require('d3');
 
 require('jquery-ui/ui/widgets/spinner');
 require('jquery-ui/ui/widgets/button');
@@ -32,3 +33,4 @@ require('../base/initialize_tooltips.js');
 require('../base/aria_defended_date.js');
 require('../base/collapse_indicators.js');
 require('../base/fee_payment_dialog.js');
+require('../base/committee_member_graph.js');
