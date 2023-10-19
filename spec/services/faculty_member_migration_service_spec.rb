@@ -21,12 +21,16 @@ RSpec.describe FacultyMemberMigrationService do
   let!(:params5) { { base: ldap_base, filter: Net::LDAP::Filter.eq('cn', 'John Smith'), attributes: [] } }
   let!(:params6) { { base: ldap_base, filter: Net::LDAP::Filter.eq('cn', 'Our Test '), attributes: [] } }
   let!(:params7) { { base: ldap_base, filter: Net::LDAP::Filter.eq('uid', committee_member6.access_id), attributes: [] } }
+  # remove params8 after backfill is completed
+  let!(:params8) { { base: ldap_base, filter: Net::LDAP::Filter.eq('uid', committee_member5.access_id), attributes: [] } }
 
   let!(:empty_result) { [] }
-  let!(:result1) { [{ givenname: ["Jane"], cn: ["Jane Doe"], sn: ["Doe"], psdepartment: ["Library Strategic Technologies"], edupersonprimaryaffiliation: ["STAFF"], uid: ["abc123"] }] }
-  let!(:result2) { [{ givenname: ["John"], cn: ["John A. Smith"], sn: ["Smith"], psdepartment: ["Library Strategic Technologies"], edupersonprimaryaffiliation: ["STAFF"], uid: ["xyz123"] }] }
-  let!(:result3) { [{ givenname: ["Our"], cn: ["Our Test Jr"], sn: ["Test"], psdepartment: ["Library Strategic Technologies"], edupersonprimaryaffiliation: ["STAFF"], uid: ["psu123"] }] }
-  let!(:result4) { [{ givenname: ["Member"], cn: ["Member Test"], sn: ["Test"], psdepartment: ["Library Strategic Technologies"], edupersonprimaryaffiliation: ["MEMBER"], uid: ["psu789"] }] }
+  let!(:result1) { [{ givenname: ["Jane"], cn: ["Jane Doe"], sn: ["Doe"], psdepartment: ["Library Strategic Technologies"], edupersonprimaryaffiliation: ["STAFF"], uid: ["abc123"], psbusinessarea: ["IST"] }] }
+  let!(:result2) { [{ givenname: ["John"], cn: ["John A. Smith"], sn: ["Smith"], psdepartment: ["Library Strategic Technologies"], edupersonprimaryaffiliation: ["STAFF"], uid: ["xyz123"], psbusinessarea: ["IST"] }] }
+  let!(:result3) { [{ givenname: ["Our"], cn: ["Our Test Jr"], sn: ["Test"], psdepartment: ["Library Strategic Technologies"], edupersonprimaryaffiliation: ["STAFF"], uid: ["psu123"], psbusinessarea: ["IST"] }] }
+  let!(:result4) { [{ givenname: ["Member"], cn: ["Member Test"], sn: ["Test"], psdepartment: ["Library Strategic Technologies"], edupersonprimaryaffiliation: ["MEMBER"], uid: ["psu789"], psbusinessarea: ["IST"] }] }
+  # remove result 5 after backfill is completed
+  let!(:result5) { [{ givenname: ["Jane"], cn: ["Jane Doe"], sn: ["Doe"], psdepartment: ["Library Strategic Technologies"], edupersonprimaryaffiliation: ["STAFF"], uid: ["abc123"], psbusinessarea: ["IST"] }] }
 
   describe '#migrate_faculty_members' do
     before do
@@ -38,6 +42,8 @@ RSpec.describe FacultyMemberMigrationService do
       allow_any_instance_of(MockUniversityDirectory::FakeConnection).to receive(:search).with(**params5).and_return(result2)
       allow_any_instance_of(MockUniversityDirectory::FakeConnection).to receive(:search).with(**params6).and_return(result3)
       allow_any_instance_of(MockUniversityDirectory::FakeConnection).to receive(:search).with(**params7).and_return(result4)
+      # remove bottom allow statement after backfill is completed
+      allow_any_instance_of(MockUniversityDirectory::FakeConnection).to receive(:search).with(**params8).and_return(result5)
     end
 
     it 'Creates Faculty Members' do
@@ -50,6 +56,7 @@ RSpec.describe FacultyMemberMigrationService do
       expect(FacultyMember.find_by(webaccess_id: "abc123").last_name).to eq "Doe"
       expect(FacultyMember.find_by(webaccess_id: "abc123").department).to eq "Library Strategic Technologies"
       expect(FacultyMember.find_by(webaccess_id: "xyz123").middle_name).to eq "A"
+      expect(FacultyMember.find_by(webaccess_id: "abc123").college).to eq "IST"
     end
   end
 end

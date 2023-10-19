@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_13_194645) do
+ActiveRecord::Schema.define(version: 2023_10_18_192450) do
 
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -182,6 +182,7 @@ ActiveRecord::Schema.define(version: 2023_04_13_194645) do
     t.string "last_name", null: false
     t.string "department"
     t.string "webaccess_id", null: false
+    t.string "college"
     t.index ["webaccess_id"], name: "index_faculty_members_on_webaccess_id", unique: true
   end
 
