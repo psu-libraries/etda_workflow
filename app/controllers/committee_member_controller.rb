@@ -1,13 +1,10 @@
 class CommitteeMemberController < ApplicationController
   layout 'home'
+
   def index
-    @committee_member_data = CommitteeMember
-                .joins(:faculty_member)
-                .joins(submission: :program)
-                .select('faculty_members.department, programs.name AS program, COUNT(committee_members.submission_id) AS submissions')
-                .where.not('faculty_members.department' => '')
-                .group('faculty_members.department, programs.name')
-                .order('faculty_members.department, COUNT(committee_members.submission_id) DESC')
-                .to_json
+    @committee_member_data = CommitteeMemberDataService.new.fetch_committee_member_data()
+
+    # Extract unique college names from the data
+    @colleges = @committee_member_data.map { |data| data['college'] }.uniq.sort
   end
 end

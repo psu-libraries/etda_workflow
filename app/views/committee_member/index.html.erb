@@ -1,1 +1,18 @@
-<div id="network-graph" data="<%=@committee_member_data %>" class="col-12" ></div>
+<body>
+  <div id="college-dropdown-container" class="col-12">
+    <label for="college-select">Select College:</label>
+    <select id="college-select">
+      <option value="">All Colleges</option>
+      <% @colleges.each do |college| %>
+        <option value="<%= college %>"><%= college %></option>
+      <% end %>
+    </select>
+  </div>
+  <div id="department-header" class="col-6 p-5">
+    <h2>Faculty Department:</h2>
+  </div>
+  <div id="program-header" class="col-6 p-5" padding=200px>
+    <h2>Student Program:</h2>
+  </div>
+  <div id="network-graph" data='<%= raw @committee_member_data.to_json %>'></div>
+</body>

@@ -1,112 +1,194 @@
 import $ from 'jquery';
+window.jQuery = $;
 import * as d3 from 'd3';
 
-const chart = {
-
-  initializeNetworkGraph: function () {
-    const rawData = JSON.parse(document.getElementById("network-graph").getAttribute("data"));
-
-    const nodes = {};
-    const links = rawData.map(d => {
-      const department = { id: d.department, type: 'department', name: d.department };
-      const program = { id: d.program, type: 'program', name: d.program };
-
-      nodes[d.department] = department;
-      nodes[d.program] = program;
-
-      return { source: d.department, target: d.program, count: d.submissions };
-    });
-
-    const svg = d3.select('#network-graph').append('svg')
-      .attr('width', "100%")
-      .attr('height', "100%")
-      .attr("viewBox", [0, 0, 1000, 1000])
-      .attr("style", "max-width: 100%; height: 100%;")
-      .style("background-color", "black")
-      .call(d3.zoom()
-        .scaleExtent([1 / 5, 10])
-        .on("zoom", zoomed))
-      .append("g");
-
-    const colorScale = d3.scaleOrdinal()
-      .domain(['department', 'program'])
-      .range(['blue', 'green']);
-
-    function zoomed(event) {
-      svg.attr("transform", event.transform);
-    }
-
-    const simulation = d3.forceSimulation()
-      .nodes(Object.values(nodes))
-      .force('link', d3.forceLink(links).id(d => d.id).distance(100))
-      .force('charge', d3.forceManyBody().strength(d => (d.type === 'department' ? -2000 : -500)))
-      .on('tick', () => {
-        link
-          .attr("x1", d => d.source.x)
-          .attr("y1", d => d.source.y)
-          .attr("x2", d => d.target.x)
-          .attr("y2", d => d.target.y);
-
-        node
-          .attr("transform", d => `translate(${d.x},${d.y})`);
-      });
-
-    const link = svg.selectAll("line")
-      .data(links)
-      .enter().append("line")
-      .attr("stroke", "#999")
-      .attr("stroke-opacity", 0.6)
-      .attr("stroke-width", 1);
-
-    const node = svg.selectAll(".node")
-      .data(Object.values(nodes))
-      .enter().append("g")
-      .attr("class", "node")
-      .each(function(d) {
-        if (d.type === 'department') {
-          d3.select(this)
-            .append("rect")
-            .attr("rx", 10)
-            .attr("ry", 10)
-            .attr("position", "middle");
-        } else {
-          d3.select(this)
-            .append("circle")
-            .attr("r", 40);
-        }
-      });
-
-
-    node.append("text")
-      .attr("dy", ".35em")
-      .attr("text-anchor", "middle")
-      .attr("style", "color:#FFFFFF;")
-      .text(d => d.name);
-
-    function dragstarted(event) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      event.subject.fx = event.subject.x;
-      event.subject.fy = event.subject.y;
-    }
-
-    function dragged(event) {
-      event.subject.fx = event.x;
-      event.subject.fy = event.y;
-    }
-
-    function dragended(event) {
-      if (!event.active) simulation.alphaTarget(0);
-      event.subject.fx = null;
-      event.subject.fy = null;
-    }
-
-    node.call(d3.drag()
-      .on("start", dragstarted)
-      .on("drag", dragged)
-      .on("end", dragended));
-  }
-};
 
 $(document).ready(() => {
-  chart.initializeNetworkGraph();
+    chart.initializeNetworkGraph();
 });
+
+const chart = {
+  initializeNetworkGraph: function () {
+    console.log('Initializing network graph...');
+    // Ensure the 'network-graph' element exists in the DOM
+    const networkGraphElement = document.getElementById("network-graph");
+    console.log('networkGraphElement:');
+    console.log(networkGraphElement);
+
+    if (!networkGraphElement) {
+      console.error('Element with ID "network-graph" not found.');
+      return;
+    }
+    const committeeData = JSON.parse(networkGraphElement.getAttribute('data'));
+    console.log(committeeData);
+
+
+    const width = window.innerWidth;
+    const svgHeight = Math.max(window.innerHeight, committeeData.length * 50 + 100);
+    const left_indent = 20 + width / 4
+    const right_indent = -20 + 2 * width / 3
+
+    const svg = d3.select('#network-graph')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', svgHeight)
+      .attr('display', 'inline-block')
+      .append('g')
+      .attr('transform', `translate(${left_indent}, ${50})`); // Adjust translation for the left section
+
+    const svg2 = d3.select('#network-graph')
+      .select('svg')
+      .append('g')
+      .attr('transform', `translate(${right_indent}, ${50})`); // Adjust translation for the right section
+
+    const uniqueDepartments = Array.from(new Set(committeeData.map(d => d.department))).sort();
+    const uniquePrograms = Array.from(new Set(committeeData.map(d => d.program))).sort();
+    const departmentColorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(uniqueDepartments);
+
+    const departmentVertical = 150 // Adjust for department vertical spacing
+    const departmentNodes = svg.selectAll('.department-node')
+      .data(uniqueDepartments)
+      .enter()
+      .append('g')
+      .attr('class', 'department-node')
+      .attr('font-size', '20px')
+      .attr('transform', (d, i) => `translate(0, ${i * departmentVertical})`);
+
+    departmentNodes.append('text')
+      .attr('class', 'department-text')
+      .attr('x', 5)
+      .attr('y', 5)
+      .attr('text-anchor', 'end')
+      .attr('alignment-baseline', 'middle')
+      .attr('fill', 'black')
+      .text(d => d);
+
+    departmentNodes.append('circle')
+      .attr('class', 'department-circle')
+      .attr('cx', 30) // Adjust position of the circle
+      .attr('r', 12)
+      .attr('fill', d => departmentColorScale(d));
+
+    const programVertical = 100 // Adjust for program vertical spacing
+    const programNodes = svg2.selectAll('.program-node')
+      .data(uniquePrograms)
+      .enter()
+      .append('g')
+      .attr('class', 'program-node')
+      .attr('font-size', '20px')
+      .attr('transform', (d, i) => `translate(0, ${i * programVertical})`);
+
+    programNodes.append('text')
+      .attr('class', 'program-text')
+      .attr('x', 20)
+      .attr('y', 5)
+      .attr('alignment-baseline', 'middle')
+      .attr('fill', 'black')
+      .text(d => d);
+
+    programNodes.append('circle')
+      .attr('class', 'program-circle')
+      .attr('cx', -10) // Adjust position of the circle
+      .attr('r', 12)
+      .attr('fill', 'black');
+
+    const links = svg.selectAll('.link')
+      .data(committeeData)
+      .enter()
+      .append('line')
+      .attr('class', 'link')
+      .attr('x1', 30) // Adjust positions
+      .attr('y1', d => uniqueDepartments.indexOf(d.department) * departmentVertical)
+      .attr('x2', right_indent - left_indent - 10) // Adjust positions for the space between columns
+      .attr('y2', d => uniquePrograms.indexOf(d.program) * programVertical)
+      .style('stroke', d => departmentColorScale(d.department))
+      .style('stroke-width', d => d.submissions/10)
+      .style('stroke-opacity', 0.2);
+
+    // Function to update the graph with filtered data
+    function updateGraph(filteredData) {
+      // Remove all department nodes, program nodes, and links
+      svg.selectAll('.department-node, .program-node, .link').remove();
+      svg2.selectAll('.department-node, .program-node, .link').remove();
+
+      const uniqueFilteredDepartments = Array.from(new Set(filteredData.map(d => d.department))).sort();
+      const uniqueFilteredPrograms = Array.from(new Set(filteredData.map(d => d.program))).sort();
+      const departmentVertical = (uniqueFilteredPrograms.length / uniqueFilteredDepartments.length) * 100
+      // Append new department nodes
+      const departmentNodes = svg.selectAll('.department-node')
+        .data(uniqueFilteredDepartments)
+        .enter()
+        .append('g')
+        .attr('class', 'department-node')
+        .attr('font-size', '20px')
+        .attr('transform', (d, i) => `translate(0, ${i * departmentVertical})`);
+
+      departmentNodes.append('text')
+        .attr('class', 'department-text')
+        .attr('x', 5)
+        .attr('y', 5)
+        .attr('text-anchor', 'end')
+        .attr('alignment-baseline', 'middle')
+        .attr('fill', 'black')
+        .text(d => d);
+
+      departmentNodes.append('circle')
+        .attr('class', 'department-circle')
+        .attr('cx', 30) // Adjust position of the circle
+        .attr('r', 12)
+        .attr('fill', d => departmentColorScale(d));
+
+      // Append new program nodes
+      const programNodes = svg2.selectAll('.program-node')
+        .data(uniqueFilteredPrograms)
+        .enter()
+        .append('g')
+        .attr('class', 'program-node')
+        .attr('font-size', '20px')
+        .attr('transform', (d, i) => `translate(0, ${i * programVertical})`);
+
+      programNodes.append('text')
+        .attr('class', 'program-text')
+        .attr('x', 20)
+        .attr('y', 5)
+        .attr('alignment-baseline', 'middle')
+        .attr('fill', 'black')
+        .text(d => d);
+
+      programNodes.append('circle')
+        .attr('class', 'program-circle')
+        .attr('cx', -10) // Adjust position of the circle
+        .attr('r', 12)
+        .attr('fill', 'black');
+
+      const links = svg.selectAll('.link')
+        .data(filteredData);
+
+      // Append new links and update existing ones
+      links.enter()
+        .append('line')
+        .attr('class', 'link')
+        //.merge(links)
+        .attr('x1', 30)
+        .attr('y1', d => uniqueFilteredDepartments.indexOf(d.department) * departmentVertical)
+        .attr('x2', right_indent - left_indent - 10)
+        .attr('y2', d => uniqueFilteredPrograms.indexOf(d.program) * programVertical)
+        .style('stroke', d => departmentColorScale(d.department))
+        .style('stroke-width', d => d.submissions)
+        .style('stroke-opacity', 0.3);
+    }
+
+
+    // Handle college selection event
+    const collegeSelect = document.getElementById('college-select');
+
+    collegeSelect.addEventListener('change', function () {
+      const selectedCollege = collegeSelect.value;
+
+      // Filter the data based on the selected college
+      const filteredData = committeeData.filter(d => selectedCollege === '' || d.college === selectedCollege);
+      // Update the graph with the filtered data
+      updateGraph(filteredData);
+    });
+  }
+};
