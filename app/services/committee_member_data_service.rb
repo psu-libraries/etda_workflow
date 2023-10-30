@@ -1,6 +1,6 @@
 class CommitteeMemberDataService
   def fetch_committee_member_data
-    CommitteeMember
+    subquery = CommitteeMember
       .joins(:faculty_member)
       .joins(submission: :program)
       .select("
@@ -16,6 +16,13 @@ class CommitteeMemberDataService
       .where.not('faculty_members.college' => [nil, ''])
       .where.not('programs.name' => [nil, ''])
       .group('faculty_members.college, programs.name, faculty_members.department')
-      .order('department, COUNT(committee_members.submission_id) DESC')
+
+    original_committee_member_data = subquery.to_sql
+
+    CommitteeMember
+      .from(Arel.sql("(#{original_committee_member_data}) AS subquery"))
+      .select('department, college, program, SUM(submissions) AS submissions')
+      .group('department, college, program')
+      .order('department, SUM(submissions) DESC')
   end
 end
