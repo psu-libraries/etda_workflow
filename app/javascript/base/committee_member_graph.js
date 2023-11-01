@@ -10,6 +10,8 @@ class NetworkGraph {
     this.uniqueDepartments = [];
     this.uniquePrograms = [];
     this.departmentColorScale = null;
+    this.selectedNode = null;
+    this.selectedLinks = [];
   }
 
   // Load committee data from the DOM
@@ -44,7 +46,7 @@ class NetworkGraph {
     .append('g')
     .attr('transform', `translate(${rightIndent}, ${50})`); // Adjust translation for the right section
 
-    // Call these functions here
+    // Call add nodes and links to svg
     this.createDepartmentNodes();
     this.createProgramNodes();
     this.createLinks();
@@ -54,19 +56,19 @@ class NetworkGraph {
   createUniqueDepartmentsAndPrograms(data = this.committeeData) {
     this.uniqueDepartments = Array.from(new Set(data.map(d => d.department))).sort();
     this.uniquePrograms = Array.from(new Set(data.map(d => d.program))).sort();
-    console.log(this.uniquePrograms)
     this.departmentColorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(this.uniqueDepartments);
   }
 
   // Create department nodes
-  createDepartmentNodes(data = this.uniqueDepartments, departmentVertical = 150) {
+  createDepartmentNodes(data = this.uniqueDepartments, departmentVertical = 150, graphData = this.committeeData) {
     const departmentNodes = this.departmentSVG.selectAll('.department-node')
       .data(data)
       .enter()
       .append('g')
       .attr('class', 'department-node')
       .attr('font-size', '20px')
-      .attr('transform', (d, i) => `translate(0, ${i * departmentVertical})`);
+      .attr('transform', (d, i) => `translate(0, ${i * departmentVertical})`)
+      .on('click', d => this.handleNodeClick(d, graphData));
 
     departmentNodes.append('text')
       .attr('class', 'department-text')
@@ -85,7 +87,7 @@ class NetworkGraph {
   }
 
   // Create program nodes
-  createProgramNodes(data = this.uniquePrograms) {
+  createProgramNodes(data = this.uniquePrograms, graphData = this.committeeData) {
     const programVertical = 100;
 
     const programNodes = this.programSVG.selectAll('.program-node')
@@ -94,7 +96,8 @@ class NetworkGraph {
         .append('g')
         .attr('class', 'program-node')
         .attr('font-size', '20px')
-        .attr('transform', (d, i) => `translate(0, ${i * programVertical})`);
+        .attr('transform', (d, i) => `translate(0, ${i * programVertical})`)
+        .on('click', d => this.handleNodeClick(d, graphData));
 
     programNodes.append('text')
         .attr('class', 'program-text')
@@ -109,7 +112,6 @@ class NetworkGraph {
         .attr('cx', -10)
         .attr('r', 12)
         .attr('fill', 'black');
-    console.log(programNodes)
   }
 
 
@@ -131,12 +133,13 @@ class NetworkGraph {
       .attr('x2', rightIndent - leftIndent - 10)
       .attr('y2', d => this.uniquePrograms.indexOf(d.program) * programVertical)
       .style('stroke', d => this.departmentColorScale(d.department))
-      .style('stroke-width', d => Math.max(d.submissions / 25, 1))
-      .style('stroke-opacity', 0.2);
+      .style('stroke-width', d => Math.max(d.submissions / 15, 1))
+      .style('stroke-opacity', 0.3);
   }
 
   // Update the graph with filtered data
   updateGraph(filteredData) {
+    console.log('updateGraph')
     // Recalculate unique departments and programs based on filtered data
     this.createUniqueDepartmentsAndPrograms(filteredData);
 
@@ -148,8 +151,8 @@ class NetworkGraph {
     this.programSVG.selectAll('.program-node').remove();
 
     // Recreate department and program nodes with filtered data
-    this.createDepartmentNodes(this.uniqueDepartments, departmentVertical);
-    this.createProgramNodes(this.uniquePrograms);
+    this.createDepartmentNodes(this.uniqueDepartments, departmentVertical, filteredData);
+    this.createProgramNodes(this.uniquePrograms, filteredData);
 
     // Remove existing links
     this.departmentSVG.selectAll('.link').remove();
@@ -172,7 +175,7 @@ class NetworkGraph {
       .attr('x2', rightIndent - leftIndent - 10)
       .attr('y2', d => this.uniquePrograms.indexOf(d.program) * programVertical)
       .style('stroke', d => this.departmentColorScale(d.department))
-      .style('stroke-width', d => Math.max(d.submissions / 25, 1))
+      .style('stroke-width', d => Math.max(d.submissions / 15, 1))
       .style('stroke-opacity', 0.3);
 
     links.exit().remove();
@@ -192,7 +195,53 @@ class NetworkGraph {
     });
   }
 
-  // Initialize the network graph
+  // Update function to handle node click event
+  handleNodeClick(selectedNodeData, graphData) {
+    console.log('Clicked node:', selectedNodeData);
+    const selectedClass = selectedNodeData.originalTarget.attributes.class;
+    const selectedName = selectedNodeData.originalTarget.__data__ ;
+
+    // Binary indicator to show if the clicked node represents departments or programs
+    const departmentBoolean = selectedClass.nodeValue.split('-')[0] == 'department';
+
+    // Reset previously selected node and links if any
+    this.updateGraph(graphData);
+
+    // Update the selected node and its associated links
+    this.selectedNode = selectedNodeData;
+    this.selectedLinks = graphData.filter(d => departmentBoolean ? d.department === selectedName : d.program === selectedName);
+    console.log('Associated links:', this.selectedLinks);
+
+    // Update opacity and color for the selected and non-selected links
+    this.departmentSVG.selectAll('.link')
+      .style('stroke', d => { return (departmentBoolean && d.department === selectedName) || (departmentBoolean== false && d.program === selectedName) ? this.departmentColorScale(d.department) : 'black'})
+      .style('stroke-opacity', d => {
+        return (departmentBoolean && d.department === selectedName) || (departmentBoolean== false && d.program === selectedName) ? 1 : 0.05;
+      });
+
+    const self = this;
+
+    // Display submissions value on the connected nodes
+    if (departmentBoolean) {
+      this.programSVG.selectAll('.program-node')
+        .each(function(d) {
+          const submissionValue = self.selectedLinks.find(link => link.program === d)?.submissions;
+          const text = d3.select(this).select('.program-text');
+
+          text.text(submissionValue ? `${d} (${submissionValue})` : d);
+        });
+    } else {
+      this.departmentSVG.selectAll('.department-node')
+        .each(function(d) {
+          const submissionValue = self.selectedLinks.find(link => link.department === d)?.submissions;
+          const text = d3.select(this).select('.department-text');
+
+          text.text(submissionValue ? `${d} (${submissionValue})` : d);
+        });
+    }
+  }
+
+  // Initialize Graph
   initializeNetworkGraph() {
     console.log('Initializing network graph');
 
