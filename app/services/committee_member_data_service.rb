@@ -10,19 +10,20 @@ class CommitteeMemberDataService
         END AS department,
         faculty_members.college AS college,
         SUBSTRING_INDEX(programs.name, ' (', 1) AS program,
-        COUNT(committee_members.submission_id) AS submissions
+        COUNT(committee_members.submission_id) AS submissions,
+        submissions.year AS year
       ")
       .where.not('faculty_members.department' => '')
       .where.not('faculty_members.college' => [nil, ''])
       .where.not('programs.name' => [nil, ''])
-      .group('faculty_members.college, programs.name, faculty_members.department')
+      .group('faculty_members.college, programs.name, faculty_members.department, submissions.year')
 
     original_committee_member_data = subquery.to_sql
 
     CommitteeMember
       .from(Arel.sql("(#{original_committee_member_data}) AS subquery"))
-      .select('department, college, program, SUM(submissions) AS submissions')
-      .group('department, college, program')
+      .select('department, college, program, SUM(submissions) AS submissions, year')
+      .group('department, college, program, year')
       .order('department, SUM(submissions) DESC')
   end
 end

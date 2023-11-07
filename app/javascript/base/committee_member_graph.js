@@ -14,6 +14,13 @@ class NetworkGraph {
     this.selectedLinks = [];
   }
 
+  // Extract unique departments and programs, and set up color scale
+  createUniqueDepartmentsAndPrograms(data = this.committeeData) {
+    this.uniqueDepartments = Array.from(new Set(data.map(d => d.department))).sort();
+    this.uniquePrograms = Array.from(new Set(data.map(d => d.program))).sort();
+    this.departmentColorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(this.uniqueDepartments);
+  }
+
   // Load committee data from the DOM
   loadCommitteeData() {
     const networkGraphElement = document.getElementById('network-graph');
@@ -24,7 +31,25 @@ class NetworkGraph {
     }
 
     this.committeeData = JSON.parse(networkGraphElement.getAttribute('data'));
+
+    // Aggregating data by department, college, and program, summing submissions
+    const aggregatedData = this.committeeData.reduce((accumulator, current) => {
+      const { department, college, program, submissions } = current;
+      const key = `${department}|${college}|${program}`;
+
+      if (!accumulator[key]) {
+        accumulator[key] = { department, college, program, submissions: 0 };
+      }
+      accumulator[key].submissions += submissions;
+
+      return accumulator;
+    }, {});
+
+    this.committeeDataFull = this.committeeData;
+    this.committeeData = Object.values(aggregatedData);
+    this.createUniqueDepartmentsAndPrograms(this.committeeData);
   }
+
 
   // Create the main SVG elements
   createSVG() {
@@ -50,13 +75,6 @@ class NetworkGraph {
     this.createDepartmentNodes();
     this.createProgramNodes();
     this.createLinks();
-  }
-
-  // Extract unique departments and programs, and set up color scale
-  createUniqueDepartmentsAndPrograms(data = this.committeeData) {
-    this.uniqueDepartments = Array.from(new Set(data.map(d => d.department))).sort();
-    this.uniquePrograms = Array.from(new Set(data.map(d => d.program))).sort();
-    this.departmentColorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(this.uniqueDepartments);
   }
 
   // Create department nodes
@@ -113,7 +131,6 @@ class NetworkGraph {
         .attr('r', 12)
         .attr('fill', 'black');
   }
-
 
   // Create links between department and program nodes
   createLinks() {
@@ -246,7 +263,6 @@ class NetworkGraph {
     console.log('Initializing network graph');
 
     this.loadCommitteeData();
-    this.createUniqueDepartmentsAndPrograms();
     this.createSVG();
     this.setupCollegeSelectionListener();
   }
