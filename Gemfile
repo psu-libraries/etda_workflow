@@ -102,7 +102,7 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.38'
+  gem 'capybara', '~> 3.39'
   gem 'capybara-email'
   gem 'webrick'
   # Fakes and factories for testing
@@ -115,7 +115,7 @@ group :test do
   # Open webpage in browser
   gem 'launchy', '~> 2.5.0'
   # Web driver
-  gem 'selenium-webdriver', '~> 4.0'
+  gem 'selenium-webdriver', '~> 4.14'
   # Database cleaning
   gem "database_cleaner", '~> 1.8.0'
   # Extra matchers for rspec
