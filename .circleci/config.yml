@@ -76,6 +76,7 @@ jobs:
           paths:
             - etda-workflow-prod.tar
   rubocop_unit_partner_tests:
+    resource_class: large
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
@@ -126,6 +127,7 @@ jobs:
             paths:
               - unit_coverage.json
   integration_test_grad:
+    resource_class: large
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
