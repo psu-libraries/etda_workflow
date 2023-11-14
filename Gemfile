@@ -20,8 +20,6 @@ gem 'sidekiq', '~> 7.1.3'
 gem 'sassc-rails', '~> 2.1.0'
 # Jquery for rails
 gem 'jquery-rails', '~> 4.4.0'
-# jQuery user interface widgets
-gem 'jquery-ui-rails', '~> 6.0.0'
 # FontAwesome sass integration
 gem 'font-awesome-rails', '~> 4.7.0.0'
 # Authentication gem
