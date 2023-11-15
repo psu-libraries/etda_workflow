@@ -9,6 +9,8 @@ services:
       - "4444:4444"
     container_name: selenium
   selenium:
+    # Pinned at the same version as the selenium-webdriver gem
+    # v4.15 has some bugs so waiting to update
     image: selenium/standalone-chrome:4.14
     volumes:
       - /dev/shm:/dev/shm

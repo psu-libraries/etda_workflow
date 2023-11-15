@@ -113,7 +113,8 @@ group :test do
   # Open webpage in browser
   gem 'launchy', '~> 2.5.0'
   # Web driver
-  gem 'selenium-webdriver', '~> 4.0'
+  # Pinned at same version as the selenium container in docker-compose.yml
+  gem 'selenium-webdriver', '~> 4.14'
   # Database cleaning
   gem "database_cleaner", '~> 1.8.0'
   # Extra matchers for rspec
