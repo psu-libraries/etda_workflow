@@ -32,15 +32,15 @@ class NetworkGraph {
 
     this.committeeData = JSON.parse(networkGraphElement.getAttribute('data'));
 
-    // Aggregating data by department, college, and program, summing submissions
+    // Aggregating data by department, college, and program, summing publications
     const aggregatedData = this.committeeData.reduce((accumulator, current) => {
-      const { department, college, program, submissions } = current;
+      const { department, college, program, publications } = current;
       const key = `${department}|${college}|${program}`;
 
       if (!accumulator[key]) {
-        accumulator[key] = { department, college, program, submissions: 0 };
+        accumulator[key] = { department, college, program, publications: 0 };
       }
-      accumulator[key].submissions += submissions;
+      accumulator[key].publications += publications;
 
       return accumulator;
     }, {});
@@ -209,7 +209,7 @@ class NetworkGraph {
       .attr('x2', rightIndent - leftIndent - 10)
       .attr('y2', d => this.uniquePrograms.indexOf(d.program) * programVertical)
       .style('stroke', d => this.departmentColorScale(d.department))
-      .style('stroke-width', d => Math.max(d.submissions / 15, 1))
+      .style('stroke-width', d => Math.max(d.publications / 15, 1))
       .style('stroke-opacity', 0.3);
   }
 
@@ -251,7 +251,7 @@ class NetworkGraph {
       .attr('x2', rightIndent - leftIndent - 10)
       .attr('y2', d => this.uniquePrograms.indexOf(d.program) * programVertical)
       .style('stroke', d => this.departmentColorScale(d.department))
-      .style('stroke-width', d => Math.max(d.submissions / 15, 1))
+      .style('stroke-width', d => Math.max(d.publications / 15, 1))
       .style('stroke-opacity', 0.3);
 
     links.exit().remove();
@@ -293,9 +293,9 @@ class NetworkGraph {
     // Clean data
     const data = this.selectedLinks.map(link => ({
       name: isDepartmentNode ? link.program : link.department,
-      submissions: link.submissions
+      publications: link.publications
     }));
-    data.sort((a, b) => b.submissions - a.submissions);
+    data.sort((a, b) => b.publications - a.publications);
     console.log('selected links: ', this.selectedLinks);
     console.log('data sorted: ', data);
 
@@ -315,9 +315,9 @@ class NetworkGraph {
     const height = Math.max(window.innerHeight, numBars * 100 + 200);
 
     // number of ticks
-    const maxSubmissions = d3.max(this.selectedLinks, d => d.submissions);
-    console.log(maxSubmissions)
-    const numTicks = Math.min(maxSubmissions, numBars, 10);
+    const maxPublications = d3.max(this.selectedLinks, d => d.publications);
+    console.log(maxPublications)
+    const numTicks = Math.min(maxPublications, numBars, 10);
 
     // Define the SVG element
     const svg = d3.select('#bar-chart')
@@ -328,7 +328,7 @@ class NetworkGraph {
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     const xScale = d3.scaleLinear()
-      .domain([0, maxSubmissions])
+      .domain([0, maxPublications])
       .range([0, width - margin.left - margin.right]);
 
     const yScale = d3.scaleBand()
@@ -375,7 +375,7 @@ class NetworkGraph {
       .attr('class', 'bar')
       .attr('x', 0)
       .attr('y', d => yScale(d.name))
-      .attr('width', d => xScale(d.submissions))
+      .attr('width', d => xScale(d.publications))
       .attr('height', yScale.bandwidth())
       .attr('fill', 'steelblue')
       .style('stroke-opacity', 0.2);
@@ -385,9 +385,9 @@ class NetworkGraph {
       .enter()
       .append('text')
       .attr('class', 'bar-label')
-      .attr('x', d => xScale(d.submissions) + 5)
+      .attr('x', d => xScale(d.publications) + 5)
       .attr('y', d => yScale(d.name) + yScale.bandwidth() / 2 + 5)
-      .text(d => d.submissions)
+      .text(d => d.publications)
       .attr('alignment-baseline', 'middle')
       .attr('font-size', '16px');
 
