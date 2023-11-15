@@ -50,7 +50,6 @@ class NetworkGraph {
     this.createUniqueDepartmentsAndPrograms(this.committeeData);
   }
 
-
   // Create the main SVG elements
   createSVG() {
     const width = window.innerWidth;
@@ -102,6 +101,36 @@ class NetworkGraph {
       .attr('cx', 30)
       .attr('r', 12)
       .attr('fill', d => this.departmentColorScale(d));
+
+    // add mouse over action
+    departmentNodes.on('mouseover', function () {
+      d3.select(this)
+          .select('.department-circle')
+          .attr('r', 18); // Enlarge the circle on mouseover
+
+      d3.select(this)
+          .select('.department-text')
+          .append('title')
+          .text("Click for more information"); // Tooltip message
+
+      d3.select(this)
+          .select('.department-text')
+          .attr('font-weight', 'bold');
+    })
+    .on('mouseout', function () {
+        d3.select(this)
+            .select('.department-circle')
+            .attr('r', 12); // Revert the circle size on mouseout
+
+        d3.select(this)
+            .select('.department-text')
+            .select('title')
+            .remove(); // Remove the tooltip on mouseout
+
+      d3.select(this)
+            .select('.department-text')
+            .attr('font-weight', 'normal');
+    });
   }
 
   // Create program nodes
@@ -130,6 +159,36 @@ class NetworkGraph {
         .attr('cx', -10)
         .attr('r', 12)
         .attr('fill', 'black');
+
+    // add mouse over action
+    programNodes.on('mouseover', function () {
+      d3.select(this)
+          .select('.program-circle')
+          .attr('r', 18); // Enlarge the circle on mouseover
+
+      d3.select(this)
+          .select('.program-text')
+          .append('title')
+          .text("Click for more information"); // Tooltip message
+
+      d3.select(this)
+          .select('.program-text')
+          .attr('font-weight', 'bold');
+    })
+    .on('mouseout', function () {
+        d3.select(this)
+            .select('.program-circle')
+            .attr('r', 12); // Revert the circle size on mouseout
+
+        d3.select(this)
+            .select('.program-text')
+            .select('title')
+            .remove(); // Remove the tooltip on mouseout
+
+        d3.select(this)
+            .select('.program-text')
+            .attr('font-weight', 'normal');
+    });
   }
 
   // Create links between department and program nodes
@@ -201,61 +260,177 @@ class NetworkGraph {
   // Handle college selection event
   setupCollegeSelectionListener() {
     const collegeSelect = document.getElementById('college-select');
+    const collegeTitle = document.getElementById('college-title');
 
     collegeSelect.addEventListener('change', () => {
       const selectedCollege = collegeSelect.value;
 
       // Filter the data based on the selected college
       const filteredData = this.committeeData.filter(d => selectedCollege === '' || d.college === selectedCollege);
+      // The title is blank for "All Colleges", but changes for other colleges
+      collegeTitle.textContent = selectedCollege === '' ? '' : `The chart reflects ${selectedCollege} faculty data.`;
       // Update the graph with the filtered data
       this.updateGraph(filteredData);
     });
+  }
+
+  createBarChart() {
+    console.log('enter create bar chart');
+    // Clear display
+    const networkGraph = d3.select('#network-graph');
+    networkGraph.style('display', 'none'); // Hide the network graph
+    const departmentHeader = d3.select('#department-header');
+    departmentHeader.style('display', 'none'); // Hide department header
+    const programHeader = d3.select('#program-header');
+    programHeader.style('display', 'none'); // Hide program header
+    const collegeDropdown = d3.select('#college-dropdown-container');
+    collegeDropdown.style('display', 'none'); // Hide program header
+    const description = d3.select('#chart-description');
+    description.style('display', 'none'); // Hide description
+
+    const isDepartmentNode = this.selectedNodeIsDepartment;
+
+    // Clean data
+    const data = this.selectedLinks.map(link => ({
+      name: isDepartmentNode ? link.program : link.department,
+      submissions: link.submissions
+    }));
+    data.sort((a, b) => b.submissions - a.submissions);
+    console.log('selected links: ', this.selectedLinks);
+    console.log('data sorted: ', data);
+
+    // Get selected college
+    const selectedCollege = document.getElementById('college-select').value;
+
+    // Create titles
+    const title = isDepartmentNode ? `Publications for Faculty Department: ${this.selectedNode}` : `Publications for Student Program: ${this.selectedNode}`;
+    const subtitle = selectedCollege ? `Selected Faculty College: ${selectedCollege}` : '';
+    const yAxisLabel = isDepartmentNode ? 'Student Programs' : 'Faculty Department';
+
+    // Find the number of bars
+    const numBars = this.selectedLinks.length;
+
+    const margin = { top: 150, right: 50, bottom: 20, left: 300 };
+    const width = window.innerWidth - margin.left - margin.right;
+    const height = Math.max(window.innerHeight, numBars * 100 + 200);
+
+    // number of ticks
+    const maxSubmissions = d3.max(this.selectedLinks, d => d.submissions);
+    console.log(maxSubmissions)
+    const numTicks = Math.min(maxSubmissions, numBars, 10);
+
+    // Define the SVG element
+    const svg = d3.select('#bar-chart')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+      .append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    const xScale = d3.scaleLinear()
+      .domain([0, maxSubmissions])
+      .range([0, width - margin.left - margin.right]);
+
+    const yScale = d3.scaleBand()
+      .domain(data.map(d => d.name))
+      .range([0, height - margin.top - margin.bottom])
+      .padding(0.1);
+
+    // Position 'Back' button to return to the network graph
+    const backButton = d3.select('#bar-chart')
+      .append('span')
+      .attr('class', 'back-button')
+      .text('← Back')
+      .attr('title', 'Return to Network Graph')
+      .on('click', function () {
+        // Remove the chart
+        d3.select(this.parentNode).select('svg').remove();
+        // Reset display
+        networkGraph.style('display', 'block');
+        departmentHeader.style('display', 'block'); // Show department header
+        programHeader.style('display', 'block'); // Show program header
+        collegeDropdown.style('display', 'block'); // Show college drop down
+        description.style('display', 'block');
+        // Remove the back button
+        d3.select(this).remove();
+      });
+
+    backButton.style("float", "right").style("cursor", "pointer").style("position", "relative").style("top", "-20px");
+
+    // Render bars and labels
+    svg.append("g")
+      .call(d3.axisTop(xScale).ticks(10).tickSize(-height).tickFormat(d3.format(".0f")))
+      .attr("transform", `translate(0,0)`)
+      .attr('font-size', '16px')
+      .call(g => g.select(".domain").remove());
+
+    svg.append("g")
+      .call(d3.axisLeft(yScale).ticks(numTicks))
+      .call(g => g.select(".domain").remove());
+
+    svg.selectAll('.bar')
+      .data(data)
+      .enter()
+      .append('rect')
+      .attr('class', 'bar')
+      .attr('x', 0)
+      .attr('y', d => yScale(d.name))
+      .attr('width', d => xScale(d.submissions))
+      .attr('height', yScale.bandwidth())
+      .attr('fill', 'steelblue')
+      .style('stroke-opacity', 0.2);
+
+    svg.selectAll('.bar-label')
+      .data(data)
+      .enter()
+      .append('text')
+      .attr('class', 'bar-label')
+      .attr('x', d => xScale(d.submissions) + 5)
+      .attr('y', d => yScale(d.name) + yScale.bandwidth() / 2 + 5)
+      .text(d => d.submissions)
+      .attr('alignment-baseline', 'middle')
+      .attr('font-size', '16px');
+
+    // Append titles after bars and axes to display them on top
+    svg.append('text')
+      .text(title)
+      .attr('x', 0)
+      .attr('y', -80)
+      .attr('font-size', '25px')
+      .attr('font-weight', 'bold');
+
+    svg.append('text')
+      .text(subtitle)
+      .attr('x', 0)
+      .attr('y', -40)
+      .attr('font-size', '16px');
+
+    // Append Y-axis label
+    svg.append('text')
+      .text(yAxisLabel)
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -height / 2)
+      .attr('y', -270)
+      .attr('font-size', '16px');
   }
 
   // Update function to handle node click event
   handleNodeClick(selectedNodeData, graphData) {
     console.log('Clicked node:', selectedNodeData);
     const selectedClass = selectedNodeData.originalTarget.attributes.class;
-    const selectedName = selectedNodeData.originalTarget.__data__ ;
+    const selectedName = selectedNodeData.originalTarget.__data__;
 
     // Binary indicator to show if the clicked node represents departments or programs
     const departmentBoolean = selectedClass.nodeValue.split('-')[0] == 'department';
-
-    // Reset previously selected node and links if any
-    this.updateGraph(graphData);
+    this.selectedNodeIsDepartment = departmentBoolean;
 
     // Update the selected node and its associated links
-    this.selectedNode = selectedNodeData;
+    this.selectedNode = selectedName;
     this.selectedLinks = graphData.filter(d => departmentBoolean ? d.department === selectedName : d.program === selectedName);
     console.log('Associated links:', this.selectedLinks);
 
-    // Update opacity and color for the selected and non-selected links
-    this.departmentSVG.selectAll('.link')
-      .style('stroke', d => { return (departmentBoolean && d.department === selectedName) || (departmentBoolean== false && d.program === selectedName) ? this.departmentColorScale(d.department) : 'black'})
-      .style('stroke-opacity', d => {
-        return (departmentBoolean && d.department === selectedName) || (departmentBoolean== false && d.program === selectedName) ? 1 : 0.05;
-      });
-
-    const self = this;
-
-    // Display submissions value on the connected nodes
-    if (departmentBoolean) {
-      this.programSVG.selectAll('.program-node')
-        .each(function(d) {
-          const submissionValue = self.selectedLinks.find(link => link.program === d)?.submissions;
-          const text = d3.select(this).select('.program-text');
-
-          text.text(submissionValue ? `${d} (${submissionValue})` : d);
-        });
-    } else {
-      this.departmentSVG.selectAll('.department-node')
-        .each(function(d) {
-          const submissionValue = self.selectedLinks.find(link => link.department === d)?.submissions;
-          const text = d3.select(this).select('.department-text');
-
-          text.text(submissionValue ? `${d} (${submissionValue})` : d);
-        });
-    }
+    // Create bar chart with relevant filtered data
+    this.createBarChart();
   }
 
   // Initialize Graph

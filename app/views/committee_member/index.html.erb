@@ -1,4 +1,14 @@
+<div id="page-header">
+  <h1>Committee Member Dashboard</h1>
+</div>
 <body>
+  <div id="chart-description">
+    <h4>The Committee Member Dashboard endeavors to offer an interactive and informative visualization, presenting the relationships among faculty member departments and student programs</h4>
+    <h4>The data for this visual is based on student(PhD and Masters) dissertation publication and the faculty member committees for the publications.</h4>
+    <h4><strong>Click a department </strong>to view the associated number of student programs.</h4>
+    <h4><strong>Click a program </strong>to view the associated number of faculty departments.</h4>
+    <h3><strong>Upon selecting a college</strong>, faculty information is filtered based on the chosen college.</h3>
+  </div>
   <div id="college-dropdown-container" class="col-12">
     <label for="college-select">Select Faculty College:</label>
     <select id="college-select">
@@ -7,6 +17,7 @@
         <option value="<%= college %>"><%= college %></option>
       <% end %>
     </select>
+    <div id="college-title" class="text-center"></div>
   </div>
   <div class="col-6">
     <div id="department-header" class="p-5 text-center">
@@ -19,4 +30,5 @@
     </div>
   </div>
   <div id="network-graph" data='<%= raw @committee_member_data.to_json %>'></div>
+  <div id="bar-chart"></div>
 </body>
