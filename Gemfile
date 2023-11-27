@@ -20,8 +20,6 @@ gem 'sidekiq', '~> 7.1.3'
 gem 'sassc-rails', '~> 2.1.0'
 # Jquery for rails
 gem 'jquery-rails', '~> 4.4.0'
-# jQuery user interface widgets
-gem 'jquery-ui-rails', '~> 6.0.0'
 # FontAwesome sass integration
 gem 'font-awesome-rails', '~> 4.7.0.0'
 # Authentication gem
@@ -115,7 +113,8 @@ group :test do
   # Open webpage in browser
   gem 'launchy', '~> 2.5.0'
   # Web driver
-  gem 'selenium-webdriver', '~> 4.0'
+  # Pinned at same version as the selenium container in docker-compose.yml
+  gem 'selenium-webdriver', '~> 4.14'
   # Database cleaning
   gem "database_cleaner", '~> 1.8.0'
   # Extra matchers for rspec
