@@ -1,9 +1,9 @@
 class CommitteeMemberDataService
   def fetch_committee_member_data
     subquery = CommitteeMember
-      .joins(:faculty_member)
-      .joins(submission: :program)
-      .select("
+               .joins(:faculty_member)
+               .joins(submission: :program)
+               .select("
         CASE
           WHEN LOWER(faculty_members.department) LIKE '%dean%' THEN 'Office Of The Dean'
           ELSE faculty_members.department
@@ -13,10 +13,11 @@ class CommitteeMemberDataService
         COUNT(committee_members.submission_id) AS publications,
         submissions.year AS year
       ")
-      .where.not('faculty_members.department' => '')
-      .where.not('faculty_members.college' => [nil, ''])
-      .where.not('programs.name' => [nil, ''])
-      .group('faculty_members.college, programs.name, faculty_members.department, submissions.year')
+               .where.not('faculty_members.department' => '')
+               .where.not('faculty_members.department' => 'Academic Programs')
+               .where.not('faculty_members.college' => [nil, ''])
+               .where.not('programs.name' => [nil, ''])
+               .group('faculty_members.college, programs.name, faculty_members.department, submissions.year')
 
     original_committee_member_data = subquery.to_sql
 
