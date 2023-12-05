@@ -3,25 +3,27 @@
 </div>
 <body>
   <div id="chart-description">
-    <h4>The Committee Member Dashboard endeavors to offer an interactive and informative visualization, presenting the relationships among faculty member departments and student programs</h4>
-    <h4>The data for this visual is based on student(PhD and Masters) dissertation publication and the faculty member committees for the publications.</h4>
-    <h4><strong>Click a department </strong>to view the associated number of student programs.</h4>
-    <h4><strong>Click a program </strong>to view the associated number of faculty departments.</h4>
-    <h3><strong>Upon selecting a college</strong>, faculty information is filtered based on the chosen college.</h3>
+    <h4>This graph displays the relationships between faculty departments of graduate student committees and graduate
+    student programs at Penn State. You are able to filter this information by the college or campus of your selection
+    in the dropdown below. You can then see the departments of various committee members and which graduate students'
+    programs they served on a committee. For example, filtering by College of Engineering will display the faculty
+    departments in that college, and all of the graduate students’ departments for the committees they have served on.</h4>
+    <h4><strong>Click on a the committee member department </strong>to view the number of students associated with that department or</h4>
+    <h4><strong>Click on the program </strong>to view the number of committee member departments associated with that program.</h4>
+    <h4>This information is gathered from <a href="https://submit-etda.libraries.psu.edu/main">Penn State University Libraries ETDA system</a> from 1999 to present day.</h4>
   </div>
-  <div id="college-dropdown-container" class="col-12">
-    <label for="college-select">Select Faculty College:</label>
+    <div id="college-dropdown-container" class="col-12">
+    <label for="college-select">Select Committee Member College:</label>
     <select id="college-select">
-      <option value="">All Colleges</option>
-      <% @colleges.each do |college| %>
-        <option value="<%= college %>"><%= college %></option>
+      <% @colleges.each_with_index do |college, index| %>
+        <option value="<%= college %>" <%= 'selected="selected"' if index.zero? %>><%= college %></option>
       <% end %>
     </select>
-    <div id="college-title" class="text-center"></div>
+    <h2><div id="college-title" class="text-center"></div></h2>
   </div>
   <div class="col-6">
     <div id="department-header" class="p-5 text-center">
-      <h2>Faculty Department:</h2>
+      <h2>Committee Member Department:</h2>
     </div>
   </div>
   <div class="col-6">

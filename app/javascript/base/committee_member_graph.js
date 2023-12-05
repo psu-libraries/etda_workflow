@@ -262,16 +262,19 @@ class NetworkGraph {
     const collegeSelect = document.getElementById('college-select');
     const collegeTitle = document.getElementById('college-title');
 
-    collegeSelect.addEventListener('change', () => {
+    const handleSelection = () => {
       const selectedCollege = collegeSelect.value;
 
       // Filter the data based on the selected college
-      const filteredData = this.committeeData.filter(d => selectedCollege === '' || d.college === selectedCollege);
-      // The title is blank for "All Colleges", but changes for other colleges
-      collegeTitle.textContent = selectedCollege === '' ? '' : `The chart reflects ${selectedCollege} faculty data.`;
-      // Update the graph with the filtered data
+      const filteredData = this.committeeData.filter(d => d.college === selectedCollege);
       this.updateGraph(filteredData);
-    });
+
+      // Update the title based on the selected college
+      collegeTitle.textContent = `The chart reflects ${selectedCollege} faculty data.`;
+    };
+
+    collegeSelect.addEventListener('change', handleSelection);
+    handleSelection();
   }
 
   createBarChart() {
@@ -303,9 +306,8 @@ class NetworkGraph {
     const selectedCollege = document.getElementById('college-select').value;
 
     // Create titles
-    const title = isDepartmentNode ? `Publications for Faculty Department: ${this.selectedNode}` : `Publications for Student Program: ${this.selectedNode}`;
-    const subtitle = selectedCollege ? `Selected Faculty College: ${selectedCollege}` : '';
-    const yAxisLabel = isDepartmentNode ? 'Student Programs' : 'Faculty Department';
+    const title = isDepartmentNode ? `${selectedCollege}: Department of ${this.selectedNode}'s  Committee Programs` : `${selectedCollege}: Committee Member Departments for the ${this.selectedNode} Program `;
+    const yAxisLabel = isDepartmentNode ? 'Student Programs' : 'Committee Member Department';
 
     // Find the number of bars
     const numBars = this.selectedLinks.length;
@@ -355,17 +357,17 @@ class NetworkGraph {
         d3.select(this).remove();
       });
 
-    backButton.style("float", "right").style("cursor", "pointer").style("position", "relative").style("top", "-20px");
+    backButton.style("float", "left").style("cursor", "pointer").style("position", "relative").style("top", "20px").style("left", "50px");
 
     // Render bars and labels
     svg.append("g")
-      .call(d3.axisTop(xScale).ticks(10).tickSize(-height).tickFormat(d3.format(".0f")))
+      .call(d3.axisTop(xScale).ticks(numTicks).tickSize(-height).tickFormat(d3.format(".0f")))
       .attr("transform", `translate(0,0)`)
       .attr('font-size', '16px')
       .call(g => g.select(".domain").remove());
 
     svg.append("g")
-      .call(d3.axisLeft(yScale).ticks(numTicks))
+      .call(d3.axisLeft(yScale).ticks(numBars))
       .call(g => g.select(".domain").remove());
 
     svg.selectAll('.bar')
@@ -394,16 +396,10 @@ class NetworkGraph {
     // Append titles after bars and axes to display them on top
     svg.append('text')
       .text(title)
-      .attr('x', 0)
+      .attr('x', -150)
       .attr('y', -80)
-      .attr('font-size', '25px')
+      .attr('font-size', '16px')
       .attr('font-weight', 'bold');
-
-    svg.append('text')
-      .text(subtitle)
-      .attr('x', 0)
-      .attr('y', -40)
-      .attr('font-size', '16px');
 
     // Append Y-axis label
     svg.append('text')
