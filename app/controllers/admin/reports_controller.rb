@@ -63,14 +63,14 @@ class Admin::ReportsController < AdminController
 
   def committee_member_report_export
     result = CommitteeMember
-      .joins(:faculty_member)
-      .joins(:submission)
-      .joins('INNER JOIN programs p ON submissions.program_id = p.id')
-      .joins('INNER JOIN degrees d ON submissions.degree_id = d.id')
-      .select('faculty_members.first_name, faculty_members.middle_name, faculty_members.last_name, faculty_members.webaccess_id, faculty_members.department, p.name as program, d.name as degree, COUNT(committee_members.submission_id) as submissions')
-      .where.not('faculty_members.department' => '')
-      .group('faculty_members.webaccess_id, faculty_members.department, p.name, d.name')
-      .order('faculty_members.webaccess_id, COUNT(committee_members.submission_id) DESC, faculty_members.department')
+             .joins(:faculty_member)
+             .joins(:submission)
+             .joins('INNER JOIN programs p ON submissions.program_id = p.id')
+             .joins('INNER JOIN degrees d ON submissions.degree_id = d.id')
+             .select('faculty_members.first_name, faculty_members.middle_name, faculty_members.last_name, faculty_members.webaccess_id, faculty_members.department, p.name as program, d.name as degree, COUNT(committee_members.submission_id) as submissions')
+             .where.not('faculty_members.department' => '')
+             .group('faculty_members.webaccess_id, faculty_members.department, p.name, d.name')
+             .order('faculty_members.webaccess_id, COUNT(committee_members.submission_id) DESC, faculty_members.department')
 
     @csv_report_export = ExportCsv.new('committee_member_report', result)
     respond_to do |format|

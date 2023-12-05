@@ -8,9 +8,7 @@ class FacultyMemberMigrationService
         results = retrieve(connection, member_id, 'uid')
         results = search_by_cn(member, connection) if results.blank?
         faculty_member.update(college: results[:college]) if faculty_member.present? && results.present? && results[:primary_affiliation] != 'MEMBER'
-        unless faculty_member
-          faculty_member = FacultyMember.find_or_create_by(faculty_member_attrs(results)) if results.present? && results[:primary_affiliation] != 'MEMBER'
-        end
+        faculty_member = FacultyMember.find_or_create_by(faculty_member_attrs(results)) if !faculty_member && (results.present? && results[:primary_affiliation] != 'MEMBER')
         member.update(faculty_member_id: faculty_member.id) if faculty_member.present?
       rescue StandardError => e
         Rails.logger.error e.message
