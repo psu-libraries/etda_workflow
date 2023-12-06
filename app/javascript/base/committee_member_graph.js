@@ -261,16 +261,24 @@ class NetworkGraph {
   setupCollegeSelectionListener() {
     const collegeSelect = document.getElementById('college-select');
     const collegeTitle = document.getElementById('college-title');
+    const collegeCount = document.getElementById('college-count');
 
     const handleSelection = () => {
       const selectedCollege = collegeSelect.value;
 
       // Filter the data based on the selected college
       const filteredData = this.committeeData.filter(d => d.college === selectedCollege);
+
+      // Calculate total publications for the selected college
+      const totalPublications = filteredData.reduce((total, item) => total + item.publications, 0);
+
       this.updateGraph(filteredData);
 
       // Update the title based on the selected college
       collegeTitle.textContent = `The chart reflects ${selectedCollege} faculty data.`;
+
+      // Update college count
+      collegeCount.textContent = `Total Committee Members: ${totalPublications}`;
     };
 
     collegeSelect.addEventListener('change', handleSelection);
