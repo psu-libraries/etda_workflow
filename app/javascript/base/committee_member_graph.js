@@ -307,8 +307,6 @@ class NetworkGraph {
       publications: link.publications
     }));
     data.sort((a, b) => b.publications - a.publications);
-    console.log('selected links: ', this.selectedLinks);
-    console.log('data sorted: ', data);
 
     // Get selected college
     const selectedCollege = document.getElementById('college-select').value;
@@ -326,7 +324,6 @@ class NetworkGraph {
 
     // number of ticks
     const maxPublications = d3.max(this.selectedLinks, d => d.publications);
-    console.log(maxPublications)
     const numTicks = Math.min(maxPublications, numBars, 10);
 
     // Define the SVG element
@@ -420,7 +417,6 @@ class NetworkGraph {
 
   // Update function to handle node click event
   handleNodeClick(selectedNodeData, graphData) {
-    console.log('Clicked node:', selectedNodeData);
     const selectedClass = selectedNodeData.originalTarget.attributes.class;
     const selectedName = selectedNodeData.originalTarget.__data__;
 
@@ -431,7 +427,6 @@ class NetworkGraph {
     // Update the selected node and its associated links
     this.selectedNode = selectedName;
     this.selectedLinks = graphData.filter(d => departmentBoolean ? d.department === selectedName : d.program === selectedName);
-    console.log('Associated links:', this.selectedLinks);
 
     // Create bar chart with relevant filtered data
     this.createBarChart();
