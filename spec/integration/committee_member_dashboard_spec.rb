@@ -34,8 +34,8 @@ RSpec.describe "Committee Member Dashboard", type: :integration, js: true do
   let!(:program6) { FactoryBot.create :program, name: "Statistics" }
 
   before do
-    visit root_path
-    click_on "Committee Member Dashboard"
+    path = root_path + "committee_member_dashboard"
+    visit path
   end
 
   describe "Visit committee member dashboard" do
