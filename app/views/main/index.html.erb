@@ -9,11 +9,14 @@
   </div>
 </div>
 
-<% unless admin? == false || admin? == nil %>
-  <div>
-    <div class="admin-col admin-box">
-      <div id="content-container" class="h2"><h2>Administrators:</h2></div>
-      <li><%= link_to "Admin Dashboard", admin_root_path, class: "btn btn-gold"%></li>
+<div>
+  <% unless admin? == false || admin? == nil %>
+    <div>
+      <div class="admin-col admin-box">
+        <div id="content-container" class="h2"><h2>Administrators:</h2></div>
+        <li><%= link_to "Admin Dashboard", admin_root_path, class: "btn btn-gold"%></li>
+      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
+
+</div>

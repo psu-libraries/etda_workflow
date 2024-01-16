@@ -35,6 +35,8 @@ class ExportCsv
       column_list.insert(12, 'Thesis Supervisor Name') if current_partner.honors?
     when 'confidential_hold_report'
       column_list = ['ID', 'Access ID', 'Last Name', 'First Name', 'PSU Email Address', 'Alternate Email Address', 'PSU ID', 'Confidential Hold Set At']
+    when 'committee_member_report'
+      column_list = ['First Name', 'Middle Name', 'Last Name', 'Access ID', 'Department', 'Program', 'Degree', 'Submissions']
     else
       column_list = nil
     end
@@ -73,6 +75,8 @@ class ExportCsv
       field_list.insert(12, CommitteeMember.thesis_supervisor_name(r)) if current_partner.honors?
     when 'confidential_hold_report'
       field_list = [r.id, r.access_id, r.last_name, r.first_name, r.psu_email_address, r.alternate_email_address, r.psu_idn, r.confidential_hold_set_at]
+    when 'committee_member_report'
+      field_list = [r.first_name, r.middle_name, r.last_name, r.webaccess_id, r.department, r.program, r.degree, r.submissions]
     else
       field_list = nil
     end

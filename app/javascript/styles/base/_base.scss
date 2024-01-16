@@ -775,6 +775,7 @@ a.cancel-link{
 
 .admin-box > li {
   padding-left: 22px;
+  padding-right: 35px;
   list-style-type: none;
 }
 
@@ -885,4 +886,31 @@ a.contact-support-link {
 
 .special-committee {
   margin-left: 25%
+}
+
+// network graph styles
+.link {
+  stroke: #999;
+  stroke-opacity: 0.2;
+}
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.node circle {
+  fill: blue;
+}
+
+.node rect {
+  fill: green;
+  width: 80px;
+  height: 40px;
+  position: middle;
+}
+
+.network-graph {
+  width: 100vw;
+  height: 100vh;
 }

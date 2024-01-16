@@ -18,6 +18,7 @@
     "coffeescript": "1.12.7",
     "compression-webpack-plugin": "9",
     "css-loader": "^6.8.1",
+    "d3": "^7.8.5",
     "datatables.net-bs4": "^1.11.3",
     "datatables.net-buttons-bs4": "^1.7",
     "datatables.net-fixedheader-bs4": "^3.2",

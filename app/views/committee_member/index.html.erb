@@ -1,0 +1,37 @@
+<div id="page-header">
+  <h1>Committee Member Dashboard</h1>
+</div>
+<body>
+  <div id="chart-description">
+    <h4>This graph displays the relationships between faculty departments of graduate student committees and graduate
+    student programs at Penn State. You are able to filter this information by the college or campus of your selection
+    in the dropdown below. You can then see the departments of various committee members and which graduate students'
+    programs they served on a committee. For example, filtering by College of Engineering will display the faculty
+    departments in that college, and all of the graduate students’ departments for the committees they have served on.</h4>
+    <h4><strong>Click on a the committee member department </strong>to view the number of students associated with that department or</h4>
+    <h4><strong>Click on the program </strong>to view the number of committee member departments associated with that program.</h4>
+    <h4>This information is gathered from <a href="https://submit-etda.libraries.psu.edu/main">Penn State University Libraries ETDA system</a> from 1999 to present day.</h4>
+  </div>
+    <div id="college-dropdown-container" class="col-12">
+    <label for="college-select">Select Committee Member College:</label>
+    <select id="college-select">
+      <% @colleges.each_with_index do |college, index| %>
+        <option value="<%= college %>" <%= 'selected="selected"' if index.zero? %>><%= college %></option>
+      <% end %>
+    </select>
+    <h2><div id="college-title" class="text-center"></div></h2>
+    <h3><div id="college-count" class="text-center"></div></h3>
+  </div>
+  <div class="col-6">
+    <div id="department-header" class="p-5 text-center">
+      <h2>Committee Member Department:</h2>
+    </div>
+  </div>
+  <div class="col-6">
+    <div id="program-header" class="p-5 text-center">
+      <h2>Student Program:</h2>
+    </div>
+  </div>
+  <div id="network-graph" data='<%= raw @committee_member_data.to_json %>'></div>
+  <div id="bar-chart"></div>
+</body>

@@ -4,11 +4,11 @@ class FacultyMemberMigrationService
       CommitteeMember.find_each do |member|
         member_id = member.access_id
         faculty_member = FacultyMember.find_by(webaccess_id: member_id)
-        unless faculty_member
-          results = retrieve(connection, member_id, 'uid')
-          results = search_by_cn(member, connection) if results.blank?
-          faculty_member = FacultyMember.find_or_create_by(faculty_member_attrs(results)) if results.present? && results[:primary_affiliation] != 'MEMBER'
-        end
+        # Temporarily backfill after running. move results back into unless block. Remove faculty_member.update
+        results = retrieve(connection, member_id, 'uid')
+        results = search_by_cn(member, connection) if results.blank?
+        faculty_member.update(college: results[:college]) if faculty_member.present? && results.present? && results[:primary_affiliation] != 'MEMBER'
+        faculty_member = FacultyMember.find_or_create_by(faculty_member_attrs(results)) if !faculty_member && (results.present? && results[:primary_affiliation] != 'MEMBER')
         member.update(faculty_member_id: faculty_member.id) if faculty_member.present?
       rescue StandardError => e
         Rails.logger.error e.message
@@ -23,7 +23,8 @@ class FacultyMemberMigrationService
         middle_name: ldap_result[:full_name].split(' ').length == 3 ? ldap_result[:full_name].split(' ')[1].gsub(/[[:punct:]]/, '') : '',
         last_name: ldap_result[:last_name],
         department: ldap_result[:dept],
-        webaccess_id: ldap_result[:access_id] }
+        webaccess_id: ldap_result[:access_id],
+        college: ldap_result[:college] }
     end
 
     def search_by_cn(member, connection)

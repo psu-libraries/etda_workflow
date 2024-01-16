@@ -53,5 +53,6 @@ class LdapResultsMap
                        cn: [:full_name],
                        sn: [:last_name],
                        psdepartment: [:dept],
-                       edupersonprimaryaffiliation: [:primary_affiliation] }.freeze
+                       edupersonprimaryaffiliation: [:primary_affiliation],
+                       psbusinessarea: [:college] }.freeze
 end

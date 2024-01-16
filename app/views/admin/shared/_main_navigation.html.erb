@@ -26,6 +26,9 @@
             <li class="dropdown-item">
               <%= link_to 'Confidential Hold Report', admin_confidential_hold_report_index_path, id: 'confidential_hold_report' %>
             </li>
+            <li class="dropdown-item">
+              <%= link_to 'Committee Member Report',  admin_committee_member_report_export_path, id: 'committee_member_report', method: :patch %>
+            </li>
           </ul>
         </div>
       </li>
