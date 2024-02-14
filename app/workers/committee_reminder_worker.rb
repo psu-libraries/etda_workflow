@@ -9,7 +9,7 @@ class CommitteeReminderWorker
 
     return unless committee_member.reminder_email_authorized?
 
-    return if committee_member.status.present? || submission.status_behavior.waiting_for_committee_review_rejected?
+    return if committee_member.status.present? || submission.status_behavior.beyond_waiting_for_head_of_program_review?
 
     WorkflowMailer.send_committee_review_reminders(submission, committee_member)
   end

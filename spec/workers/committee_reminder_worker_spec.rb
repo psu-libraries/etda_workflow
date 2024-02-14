@@ -43,9 +43,13 @@ RSpec.describe CommitteeReminderWorker do
     end
   end
 
-  context "when submission is in the 'waiting for committee review rejected' stage" do
+  context "when submission is beyond_waiting_for_head_of_program_review?" do
     it 'does not deliver an email' do
       submission.update status: 'waiting for committee review rejected'
+      Sidekiq::Testing.inline! do
+        expect { described_class.perform_async(submission.id, committee_member.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
+      end
+      submission.update status: 'waiting for final submission response'
       Sidekiq::Testing.inline! do
         expect { described_class.perform_async(submission.id, committee_member.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
       end
