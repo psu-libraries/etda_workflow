@@ -58,17 +58,17 @@ class NetworkGraph {
     const rightIndent = -20 + 2 * width / 3;
 
     this.departmentSVG = d3.select(`#network-graph`)
-    .append('svg')
-    .attr('width', width)
-    .attr('height', svgHeight)
-    .attr('display', 'inline-block')
-    .append('g')
-    .attr('transform', `translate(${leftIndent}, ${50})`); // Adjust translation for the left section
+      .append('svg')
+      .attr('width', width)
+      .attr('height', svgHeight)
+      .attr('display', 'inline-block')
+      .append('g')
+      .attr('transform', `translate(${leftIndent}, ${50})`); // Adjust translation for the left section
 
     this.programSVG = d3.select('#network-graph')
-    .select('svg')
-    .append('g')
-    .attr('transform', `translate(${rightIndent}, ${50})`); // Adjust translation for the right section
+      .select('svg')
+      .append('g')
+      .attr('transform', `translate(${rightIndent}, ${50})`); // Adjust translation for the right section
 
     // Call add nodes and links to svg
     this.createDepartmentNodes();
@@ -105,32 +105,32 @@ class NetworkGraph {
     // add mouse over action
     departmentNodes.on('mouseover', function () {
       d3.select(this)
-          .select('.department-circle')
-          .attr('r', 18); // Enlarge the circle on mouseover
+        .select('.department-circle')
+        .attr('r', 18); // Enlarge the circle on mouseover
 
       d3.select(this)
-          .select('.department-text')
-          .append('title')
-          .text("Click for more information"); // Tooltip message
+        .select('.department-text')
+        .append('title')
+        .text("Click for more information"); // Tooltip message
 
       d3.select(this)
-          .select('.department-text')
-          .attr('font-weight', 'bold');
+        .select('.department-text')
+        .attr('font-weight', 'bold');
     })
-    .on('mouseout', function () {
+      .on('mouseout', function () {
         d3.select(this)
-            .select('.department-circle')
-            .attr('r', 12); // Revert the circle size on mouseout
+          .select('.department-circle')
+          .attr('r', 12); // Revert the circle size on mouseout
 
         d3.select(this)
-            .select('.department-text')
-            .select('title')
-            .remove(); // Remove the tooltip on mouseout
+          .select('.department-text')
+          .select('title')
+          .remove(); // Remove the tooltip on mouseout
 
-      d3.select(this)
-            .select('.department-text')
-            .attr('font-weight', 'normal');
-    });
+        d3.select(this)
+          .select('.department-text')
+          .attr('font-weight', 'normal');
+      });
   }
 
   // Create program nodes
@@ -138,57 +138,57 @@ class NetworkGraph {
     const programVertical = 100;
 
     const programNodes = this.programSVG.selectAll('.program-node')
-        .data(data)
-        .enter()
-        .append('g')
-        .attr('class', 'program-node')
-        .attr('font-size', '20px')
-        .attr('transform', (d, i) => `translate(0, ${i * programVertical})`)
-        .on('click', d => this.handleNodeClick(d, graphData));
+      .data(data)
+      .enter()
+      .append('g')
+      .attr('class', 'program-node')
+      .attr('font-size', '20px')
+      .attr('transform', (d, i) => `translate(0, ${i * programVertical})`)
+      .on('click', d => this.handleNodeClick(d, graphData));
 
     programNodes.append('text')
-        .attr('class', 'program-text')
-        .attr('x', 20)
-        .attr('y', 5)
-        .attr('alignment-baseline', 'middle')
-        .attr('fill', 'black')
-        .text(d => d);
+      .attr('class', 'program-text')
+      .attr('x', 20)
+      .attr('y', 5)
+      .attr('alignment-baseline', 'middle')
+      .attr('fill', 'black')
+      .text(d => d);
 
     programNodes.append('circle')
-        .attr('class', 'program-circle')
-        .attr('cx', -10)
-        .attr('r', 12)
-        .attr('fill', 'black');
+      .attr('class', 'program-circle')
+      .attr('cx', -10)
+      .attr('r', 12)
+      .attr('fill', 'black');
 
     // add mouse over action
     programNodes.on('mouseover', function () {
       d3.select(this)
-          .select('.program-circle')
-          .attr('r', 18); // Enlarge the circle on mouseover
+        .select('.program-circle')
+        .attr('r', 18); // Enlarge the circle on mouseover
 
       d3.select(this)
-          .select('.program-text')
-          .append('title')
-          .text("Click for more information"); // Tooltip message
+        .select('.program-text')
+        .append('title')
+        .text("Click for more information"); // Tooltip message
 
       d3.select(this)
-          .select('.program-text')
-          .attr('font-weight', 'bold');
+        .select('.program-text')
+        .attr('font-weight', 'bold');
     })
-    .on('mouseout', function () {
+      .on('mouseout', function () {
         d3.select(this)
-            .select('.program-circle')
-            .attr('r', 12); // Revert the circle size on mouseout
+          .select('.program-circle')
+          .attr('r', 12); // Revert the circle size on mouseout
 
         d3.select(this)
-            .select('.program-text')
-            .select('title')
-            .remove(); // Remove the tooltip on mouseout
+          .select('.program-text')
+          .select('title')
+          .remove(); // Remove the tooltip on mouseout
 
         d3.select(this)
-            .select('.program-text')
-            .attr('font-weight', 'normal');
-    });
+          .select('.program-text')
+          .attr('font-weight', 'normal');
+      });
   }
 
   // Create links between department and program nodes
@@ -443,6 +443,9 @@ class NetworkGraph {
 }
 
 $(document).ready(() => {
-  const networkGraph = new NetworkGraph();
-  networkGraph.initializeNetworkGraph();
+  const graphElement = $("#network-graph");
+  if (graphElement.length !== 0) {
+    const networkGraph = new NetworkGraph();
+    networkGraph.initializeNetworkGraph();
+  };
 });
