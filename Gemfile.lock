@@ -213,10 +213,10 @@ GEM
       net-protocol
     net-ssh (6.1.0)
     nio4r (2.7.0)
-    nokogiri (1.15.4)
+    nokogiri (1.16.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.15.4-x86_64-linux)
+    nokogiri (1.16.3-x86_64-linux)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
