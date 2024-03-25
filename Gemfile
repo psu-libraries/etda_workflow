@@ -35,7 +35,7 @@ gem 'country_select', git: 'https://github.com/stefanpenner/country_select.git',
 # Form builder
 gem 'simple_form', '>= 5.0.0'
 # File uploads
-gem 'carrierwave', '~> 2.2.5'
+gem 'carrierwave', '~> 2.2.6'
 # Virus scanning for file uploads
 gem 'clamby'
 # For image resizing
