@@ -410,17 +410,15 @@ class Submission < ApplicationRecord
       return true unless author_edit
 
       if status_behavior.collecting_format_review_files?
-        if format_review_files.nil? || format_review_files.blank?
-          errors.add(:format_review_file, "You must upload a Format Review file.")
-        else
-          return true
-        end
+        return true unless format_review_files.nil? || format_review_files.blank?
+
+        errors.add(:format_review_file, "You must upload a Format Review file.")
+
       elsif status_behavior.collecting_final_submission_files?
-        if final_submission_files.nil? || final_submission_files.blank?
-          errors.add(:final_submission_file, "You must upload a Final Submission file.")
-        else
-          return true
-        end
+        return true unless final_submission_files.nil? || final_submission_files.blank?
+
+        errors.add(:final_submission_file, "You must upload a Final Submission file.")
+
       end
 
       true

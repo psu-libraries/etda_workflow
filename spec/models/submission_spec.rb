@@ -333,10 +333,12 @@ RSpec.describe Submission, type: :model do
       end
 
       context "when collecting_final_submission_files" do
-        let!(:test_submission) { FactoryBot.create(:submission, :collecting_final_submission_files, 
-                                                                abstract: 'Abstract', 
-                                                                has_agreed_to_terms: true, 
-                                                                proquest_agreement: true) }
+        let!(:test_submission) do
+          FactoryBot.create(:submission, :collecting_final_submission_files,
+                            abstract: 'Abstract',
+                            has_agreed_to_terms: true,
+                            proquest_agreement: true)
+        end
 
         context "when author is editing" do
           before do
@@ -384,7 +386,7 @@ RSpec.describe Submission, type: :model do
             end
           end
         end
-      end 
+      end
     end
   end
 
