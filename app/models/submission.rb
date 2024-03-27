@@ -103,7 +103,7 @@ class Submission < ApplicationRecord
 
   validates :has_agreed_to_publication_release, presence: true, if: proc { |s| s.status_behavior.beyond_waiting_for_format_review_response? && s.author_edit && author.confidential? }
 
-  validate :format_review_file_check
+  validate :file_check
 
   attr_reader :previous_access_level
 
@@ -405,17 +405,24 @@ class Submission < ApplicationRecord
 
   private
 
-    def format_review_file_check
+    def file_check
       # no validation for admin users
       return true unless author_edit
-      # only require file when author submitting format review
-      return true unless status_behavior.collecting_format_review_files?
 
-      if format_review_files.nil? || format_review_files.blank?
-        # errors[] << 'You must upload a format review file.'
-        false
-      else
-        true
+      if status_behavior.collecting_format_review_files?
+        if format_review_files.nil? || format_review_files.blank?
+          errors.add(:format_review_file, "You must upload a Format Review file.")
+        else
+          return true
+        end
+      elsif status_behavior.collecting_final_submission_files?
+        if final_submission_files.nil? || final_submission_files.blank?
+          errors.add(:final_submission_file, "You must upload a Final Submission file.")
+        else
+          return true
+        end
       end
+
+      true
     end
 end
