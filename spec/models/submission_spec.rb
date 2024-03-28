@@ -332,9 +332,116 @@ RSpec.describe Submission, type: :model do
         end
       end
 
+      context "when collecting_format_review_files_rejected" do
+        let!(:test_submission) { FactoryBot.create(:submission, :collecting_format_review_files_rejected) }
+
+        context "when author is editing" do
+          before do
+            test_submission.author_edit = true
+          end
+
+          context "when format review file is uploaded" do
+            before do
+              test_submission.format_review_files << create(:format_review_file)
+              test_submission.save!
+            end
+
+            it 'is valid' do
+              expect(test_submission.valid?).to be true
+            end
+          end
+
+          context "when format review file is not uploaded" do
+            it 'is invalid' do
+              expect(test_submission.valid?).to be false
+              expect(test_submission.errors.full_messages).to eq ['Format review file You must upload a Format Review file.']
+            end
+          end
+        end
+
+        context "when author is not editing" do
+          before do
+            test_submission.author_edit = false
+          end
+
+          context "when format review file is uploaded" do
+            before do
+              test_submission.format_review_files << create(:format_review_file)
+              test_submission.save!
+            end
+
+            it 'is valid' do
+              expect(test_submission.valid?).to be true
+            end
+          end
+
+          context "when format review file is not uploaded" do
+            it 'is valid' do
+              expect(test_submission.valid?).to be true
+            end
+          end
+        end
+      end
+
       context "when collecting_final_submission_files" do
         let!(:test_submission) do
           FactoryBot.create(:submission, :collecting_final_submission_files,
+                            abstract: 'Abstract',
+                            has_agreed_to_terms: true,
+                            proquest_agreement: true)
+        end
+
+        context "when author is editing" do
+          before do
+            test_submission.author_edit = true
+          end
+
+          context "when final submission file is uploaded" do
+            before do
+              test_submission.final_submission_files << create(:final_submission_file)
+              test_submission.save!
+            end
+
+            it 'is valid' do
+              expect(test_submission.valid?).to be true
+            end
+          end
+
+          context "when final submission file is not uploaded" do
+            it 'is invalid' do
+              expect(test_submission.valid?).to be false
+              expect(test_submission.errors.full_messages).to eq ['Final submission file You must upload a Final Submission file.']
+            end
+          end
+        end
+
+        context "when author is not editing" do
+          before do
+            test_submission.author_edit = false
+          end
+
+          context "when final submission file is uploaded" do
+            before do
+              test_submission.final_submission_files << create(:final_submission_file)
+              test_submission.save!
+            end
+
+            it 'is valid' do
+              expect(test_submission.valid?).to be true
+            end
+          end
+
+          context "when final submission file is not uploaded" do
+            it 'is valid' do
+              expect(test_submission.valid?).to be true
+            end
+          end
+        end
+      end
+
+      context "when collecting_final_submission_files_rejected" do
+        let!(:test_submission) do
+          FactoryBot.create(:submission, :collecting_final_submission_files_rejected,
                             abstract: 'Abstract',
                             has_agreed_to_terms: true,
                             proquest_agreement: true)

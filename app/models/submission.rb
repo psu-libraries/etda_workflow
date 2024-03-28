@@ -409,12 +409,12 @@ class Submission < ApplicationRecord
       # no validation for admin users
       return true unless author_edit
 
-      if status_behavior.collecting_format_review_files?
+      if status_behavior.collecting_format_review_files? || status_behavior.collecting_format_review_files_rejected?
         return true if format_review_files.present?
 
         errors.add(:format_review_file, "You must upload a Format Review file.")
 
-      elsif status_behavior.collecting_final_submission_files?
+      elsif status_behavior.collecting_final_submission_files? || status_behavior.collecting_final_submission_files_rejected?
         return true if final_submission_files.present?
 
         errors.add(:final_submission_file, "You must upload a Final Submission file.")
