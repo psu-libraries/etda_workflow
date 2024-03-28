@@ -414,7 +414,9 @@ class Submission < ApplicationRecord
 
         errors.add(:format_review_file, "You must upload a Format Review file.")
 
-      elsif status_behavior.collecting_final_submission_files? || status_behavior.collecting_final_submission_files_rejected?
+      elsif status_behavior.collecting_final_submission_files? ||
+            status_behavior.collecting_final_submission_files_rejected? ||
+            status_behavior.waiting_for_committee_review_rejected?
         return true if final_submission_files.present?
 
         errors.add(:final_submission_file, "You must upload a Final Submission file.")
