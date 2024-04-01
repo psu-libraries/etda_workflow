@@ -494,6 +494,62 @@ RSpec.describe Submission, type: :model do
           end
         end
       end
+
+      context "when waiting_for_committee_review_rejected" do
+        let!(:test_submission) do
+          FactoryBot.create(:submission, :waiting_for_committee_review_rejected,
+                            abstract: 'Abstract',
+                            has_agreed_to_terms: true,
+                            proquest_agreement: true)
+        end
+
+        context "when author is editing" do
+          before do
+            test_submission.author_edit = true
+          end
+
+          context "when final submission file is uploaded" do
+            before do
+              test_submission.final_submission_files << create(:final_submission_file)
+              test_submission.save!
+            end
+
+            it 'is valid' do
+              expect(test_submission.valid?).to be true
+            end
+          end
+
+          context "when final submission file is not uploaded" do
+            it 'is invalid' do
+              expect(test_submission.valid?).to be false
+              expect(test_submission.errors.full_messages).to eq ['Final submission file You must upload a Final Submission file.']
+            end
+          end
+        end
+
+        context "when author is not editing" do
+          before do
+            test_submission.author_edit = false
+          end
+
+          context "when final submission file is uploaded" do
+            before do
+              test_submission.final_submission_files << create(:final_submission_file)
+              test_submission.save!
+            end
+
+            it 'is valid' do
+              expect(test_submission.valid?).to be true
+            end
+          end
+
+          context "when final submission file is not uploaded" do
+            it 'is valid' do
+              expect(test_submission.valid?).to be true
+            end
+          end
+        end
+      end
     end
   end
 
