@@ -41,7 +41,7 @@ honors:
    is_active: true
    degree_type_id: 1
  - id: 2
-   name: "Honors Advisor"
+   name: "Thesis Honors Advisor"
    num_required: 1
    is_active: true
    degree_type_id: 1
