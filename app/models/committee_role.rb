@@ -29,8 +29,7 @@ class CommitteeRole < ApplicationRecord
 
   HONORS_ROLES = { 'thesis' => [
     { name: 'Thesis Supervisor',       num_required: 1, is_active: true, is_program_head: false },
-    { name: 'Honors Advisor',          num_required: 1, is_active: true, is_program_head: false },
-    { name: 'Thesis Honors Advisor',   num_required: 0, is_active: true, is_program_head: false },
+    { name: 'Thesis Honors Advisor',   num_required: 1, is_active: true, is_program_head: false },
     { name: 'Faculty Reader',          num_required: 0, is_active: true, is_program_head: false }
   ] }.freeze
 
