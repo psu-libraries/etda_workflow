@@ -55,9 +55,8 @@ en:
                     SHCAcademics@psu.edu 
         format_review_received:
           message: |
-                    Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with
-                    you when the review has been completed.
-                    You will receive the results of the review by email within two weeks.
+                    Thank you for submitting your thesis format review. You will receive the results of the review by 
+                    email within two weeks.
 
                     Sincerely,
                     The Schreyer Honors College
