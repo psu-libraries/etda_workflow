@@ -10,7 +10,7 @@ RSpec.describe 'Author submission page', type: :integration, honors: true, js: t
 
   context 'Author Submissions Page' do
     it 'displays a paragraph of thesis instructions' do
-      expect(page).to have_content('You will need to input your committee, upload your format ')
+      expect(page).to have_content('Upload your thesis/dissertation to the eTD website for format review, including your front matter, back matter and at least 3 chapters. ')
       expect(page).to have_link('Accessibility')
     end
 
