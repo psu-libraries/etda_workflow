@@ -32,7 +32,8 @@
     </div>
   <% end %>
 
-  <%= f.label :email_admins, '<strong>Email admins</strong>'.html_safe %>
+  <%= f.label :email_admins, '<strong>Email admins when committee rejects</strong>'.html_safe %>
+  <p class="hint">*Allow an email to be sent to admins when a committee rejects a submission.</p>
   <div class="row">
     <div class="col-sm-3">
       <%= f.input :email_admins, as: :radio_buttons,
