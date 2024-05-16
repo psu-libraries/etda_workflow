@@ -39,7 +39,7 @@
       <br/>
 
       <%= f.input :abstract, as: :text, required: true, label: '<strong>Abstract</strong>'.html_safe, input_html: {rows: 6} %>
-      <%= render partial: 'admin/submissions/abstract_help_text' %>
+      <%= render partial: 'admin/submissions/abstract_help_text'  if current_partner.graduate? %>
 
       <%= f.input :delimited_keywords, as: :string, label: '<strong>Keywords</strong>'.html_safe, wrapper: :hint_top, hint: Keyword.hint, required: true, input_html: { class: 'tagit' } %>
       <br/>
