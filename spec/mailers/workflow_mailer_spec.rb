@@ -77,9 +77,32 @@ RSpec.describe WorkflowMailer do
       end
     end
 
-    context "when the current partner is not 'sset'" do
+    context "when the current partner is 'honors'", honors: true do
+      before do
+        skip 'honors only' unless current_partner.honors?
+      end
+
+      it "sets an appropriate subject" do
+        expect(email.subject).to match(/format review has been accepted/i)
+      end
+
+      it "is sent from the partner support email address" do
+        expect(email.from).to eq([partner_email])
+      end
+
+      it "is sent to the student's PSU email address" do
+        expect(author.psu_email_address).not_to be_blank
+        expect(email.to).to eq([author.psu_email_address])
+      end
+
+      it "tells them that their format review has been accepted" do
+        expect(email.body).to match(/Your format review has been approved!/i)
+      end
+    end
+
+    context "when the current partner is neither 'sset' or 'honors'" do
       it "raises an exception" do
-        skip 'non sset only' if current_partner.sset?
+        skip 'not sset nor honors' if current_partner.sset? || current_partner.honors?
 
         expect { email.deliver_now }.to raise_error WorkflowMailer::InvalidPartner
       end
@@ -113,9 +136,32 @@ RSpec.describe WorkflowMailer do
       end
     end
 
-    context "when the current partner is not 'sset'" do
+    context "when the current partner is 'honors'", honors: true do
+      before do
+        skip 'honors only' unless current_partner.honors?
+      end
+
+      it "sets an appropriate subject" do
+        expect(email.subject).to match(/format review has been rejected/i)
+      end
+
+      it "is sent from the partner support email address" do
+        expect(email.from).to eq([partner_email])
+      end
+
+      it "is sent to the student's PSU email address" do
+        expect(author.psu_email_address).not_to be_blank
+        expect(email.to).to eq([author.psu_email_address])
+      end
+
+      it "tells them that their format review has been rejected" do
+        expect(email.body).to match(/Your format review has been rejected./i)
+      end
+    end
+
+    context "when the current partner is neither 'sset' nor 'honors'" do
       it "raises an exception" do
-        skip 'non sset only' if current_partner.sset?
+        skip 'not sset nor honors' if current_partner.sset? || current_partner.honors?
 
         expect { email.deliver_now }.to raise_error WorkflowMailer::InvalidPartner
       end

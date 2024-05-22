@@ -63,6 +63,20 @@ en:
                     If you have any further questions please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu 
+        format_review_accepted:
+          message: |
+                    Your format review has been approved! There are no formatting changes you need to make for your final submission.
+
+                    If you have any further questions please contact:  
+                    Sarah Richards, Coordinator of Student Records & Advising Services
+                    SHCAcademics@psu.edu
+        format_review_rejected:
+          message: |
+                    Your format review has been rejected. Please go back onto the website to look at the notes and resubmit with those necessary revisions.
+
+                    If you have any further questions please contact:  
+                    Sarah Richards, Coordinator of Student Records & Advising Services
+                    SHCAcademics@psu.edu
         final_submission_received:
           message: |
                     Thank you for submitting your final %{degree_type}. It will now be automatically sent to your committee for review and approval.
