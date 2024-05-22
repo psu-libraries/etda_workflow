@@ -16,6 +16,7 @@ vendor/bundle
 .config
 .local
 .gem
+.DS_Store
 
 # Ignore all logfiles and tempfiles.
 /.idea/*
