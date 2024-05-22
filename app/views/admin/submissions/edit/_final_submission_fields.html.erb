@@ -7,7 +7,8 @@
 
   <%= render partial: '/admin/submissions/edit/standard_defended_at_date', locals: {f: f} if current_partner.graduate? %>
   <%= f.input :abstract, as: :text, label: 'Abstract<span class="required-asterisk">*</span>'.html_safe, input_html: { class: 'can-toggle-editability', rows: 10 } %>
-
+  <%= render partial: 'admin/submissions/abstract_help_text'  if current_partner.graduate? %>
+  
   <div class="links cocoon-links">
     <label><strong>Keywords<span class="required">*</span></strong></label>
     <%= link_to_add_association f, :keywords,
