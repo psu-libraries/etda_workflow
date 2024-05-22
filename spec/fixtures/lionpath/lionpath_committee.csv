@@ -1,6 +1,6 @@
-Access ID,Last Name,First Name,Role,Committee,Committee Long Descr,Student ID,Student Campus ID,Suprvsr Nbr
+Access ID,Last Name,First Name,Role,Committee,Committee Long Descr,Student ID,Student Campus ID,Suprvsr Nbr,Special Member First Name,Special Member Last Name
 ABC123,Tester1,Test1,CHMJ,DOCCM,Chair & Major Field Represnt,999999999,ABC123,93452345
 ABC456,Tester2,Test2,CMMJ,DOCCM,Committee Member & Major Field Represnt,999999999,ABC123,95423666
 ABC789,Tester3,Test3,CMMJ,DOCCM,Committee Member & Major Field Represnt,999999999,ABC123,94362553
 DEF123,Tester4,Test4,UF,DOCCM,Outside Unit & Field Member,999999999,ABC123,95423565
-DEF456,Tester5,Test5,MD,DOCCM,Major Field Member & Dissertation Advisor,999999999,ABC123,97635463
+DEF456,Tester5,Test5,MD,DOCCM,Major Field Member & Dissertation Advisor,999999999,ABC123,97635463,Vin,Diesel
