@@ -360,19 +360,23 @@ en:
         description: Draft submissions without format review files or were rejected and need formatting corrections
       format_review_submitted:
         title: Format Review is Submitted
-        description: Thesis drafts to be reviewed
+        thesis_description: Thesis drafts to be reviewed
+        description: Dissertation drafts to be reviewed
       format_review_completed:
         title: Format Review is Completed
         description: Completed and approved drafts
       final_submission_pending:
         title: Final Submission is Pending
-        description: Theses waiting to be reviewed by committee members
+        thesis_description: Theses waiting to be reviewed by committee members
+        description: Dissertations waiting to be reviewed by committee members
       committee_review_rejected:
         title: Committee Review Rejected
-        description: Theses rejected by committee
+        thesis_description: Theses rejected by committee
+        description: Dissertations rejected by committee
       final_submission_submitted:
         title: Final Submission is Submitted
-        description: Theses waiting to be reviewed for final formatting approval by the Graduate School
+        thesis_description: Theses waiting to be reviewed for final formatting approval by the Graduate School
+        description: Dissertations waiting to be reviewed for final formatting approval by the Graduate School
       final_submission_incomplete:
         title: Final Submission is Incomplete
         description: Submissions that were rejected and need formatting corrections
@@ -386,13 +390,17 @@ en:
         title: Final Submission is On Hold
         description: Submissions that have been approved but are now being held from release
       released_for_publication:
-        title: Released Theses
-        description: Manage theses which have already been released
+        thesis_title: Released Theses
+        thesis_description: Manage theses which have already been released
+        title: Released Dissertations
+        description: Manage dissertations which have already been released
       final_restricted_institution:
         title: Final Submission is Restricted to Penn State
         description: Submissions restricted to the Penn State community
       final_withheld:
-        title: Restricted Theses
+        thesis_title: Restricted Theses
+        thesis_description: Availability restricted for 2 years.
+        title: Restricted Dissertations
         description: Availability restricted for 2 years.
     access_level:
       open_access: Open Access
