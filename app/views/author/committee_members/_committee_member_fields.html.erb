@@ -46,11 +46,8 @@
       </div>
     <% else %>
       <div class="col-sm-6">
-        <% if is_external_member && Lionpath::LionpathCommittee.external_ids.include?(f.object.access_id)%>
-          <%= f.input :name, label: local_presenter.name_label,
-                      aria: { label: "Use arrow keys to navigate your committee member search results to confirm the proper person" },
-                      disabled: disabled_bool, input_html: { class: 'ldap-lookup', value: '' }, required: true %>
-        <% elsif current_partner.graduate? && local_presenter.head_of_program? %>
+        <% if current_partner.graduate? && local_presenter.head_of_program? %>
+          <% # Program chair/head %>
           <%= f.input :name, label: local_presenter.name_label, collection: local_presenter.program_chair_collection,
                       aria: { label: "Use arrow keys to navigate your committee member search results to confirm the proper person" },
                       input_html: { class: 'ldap-lookup', id: 'program-head-name' }, required: true %>

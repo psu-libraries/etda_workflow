@@ -44,8 +44,11 @@ class Lionpath::LionpathCommittee
       hash = {
         committee_role:,
         is_required: true,
-        name: special_member?(row) ? "#{row['Special Member First Name']} #{row['Special Member Last Name']}"
-          : "#{row['First Name']} #{row['Last Name']}",
+        name: if special_member?(row)
+                "#{row['Special Member First Name'].titleize} #{row['Special Member Last Name'].titleize}"
+              else
+                "#{row['First Name']} #{row['Last Name']}"
+              end,
         access_id: row['Access ID'].downcase.to_s,
         is_voting: true,
         lionpath_updated_at: DateTime.now
@@ -55,7 +58,7 @@ class Lionpath::LionpathCommittee
     end
 
     def special_member?(row)
-      return row['Special Member First Name'] != nil && row['Special Member Last Name'] != nil
+      !row['Special Member First Name'].nil? && !row['Special Member Last Name'].nil?
     end
 
     def submission(row)
