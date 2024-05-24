@@ -30,7 +30,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
 
   describe '#filters' do
     context 'when viewing masters theses submissions' do
-      #tests language change for thesis vs dissertation in grad school, dissertation is the default & covered by other tests
+      # tests language change for thesis vs dissertation in grad school, dissertation is the default & covered by other tests
       it 'returns a set of placeholders with thesis language' do
         skip "graduate only" unless current_partner.graduate?
 
@@ -125,6 +125,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
         ]
       end
     end
+
     context 'when no submissions exist for each filter' do
       it "returns a set of placeholders according to submission status" do
         expect(view.filters).to eq [
