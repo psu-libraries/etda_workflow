@@ -27,7 +27,7 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
       - setup_remote_docker:
-          version: 20.10.6
+          version: docker24
           docker_layer_caching: true
       - checkout
       # - restore_cache:
@@ -62,7 +62,7 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
       - setup_remote_docker:
-          version: 20.10.6
+          version: docker24
           docker_layer_caching: true
       - checkout
       - run:
@@ -85,7 +85,7 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - setup_remote_docker:
-          version: 20.10.6
+          version: docker24
           docker_layer_caching: true
       - checkout
       - run:
@@ -135,7 +135,7 @@ jobs:
     - attach_workspace:
         at: /tmp/workspace
     - setup_remote_docker:
-        version: 20.10.6
+        version: docker24
         docker_layer_caching: true
     - checkout
     - run:
@@ -163,7 +163,7 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
       - setup_remote_docker:
-          version: 20.10.6
+          version: docker24
           docker_layer_caching: true
       - checkout
       - attach_workspace:
