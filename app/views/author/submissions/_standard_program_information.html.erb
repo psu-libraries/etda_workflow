@@ -23,6 +23,13 @@
                 required: true, prompt: "Please Select a Degree", disabled: lionpath_import %>
   </div>
 </div>
+<% if current_partner.graduate? || current_partner.honors? %>
+<div class="row col-sm-12">
+  <strong class="hint">
+      <span class="text-info"><strong>Notice:</strong></span> Placeholder for semester hold help text.
+  </strong>
+</div>
+<% end %>
 <div class="row col-sm-12">
   <%= f.input :semester, label: 'Semester Intending to Graduate',
               collection: Semester::SEMESTERS, prompt: "Please Select",
