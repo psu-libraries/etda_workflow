@@ -33,8 +33,24 @@ class Author::SubmissionsController < AuthorController
     flash[:alert] = 'Oops! You may have submitted invalid program information data. Please check that your program information is correct.'
   end
 
+  def acknowledge
+    @submission = find_submission
+  end
+
+  def acknowledge_update
+    @submission = find_submission
+    if @submission.assign_attributes(:acknowledgment_page_viewed_at => DateTime.now)
+      redirect_to edit_author_submission_path(@submission)
+    else
+      redirect_to '/'
+    end
+  end
+
   def edit
     @submission = find_submission
+    if @submission.acknowledgment_page_viewed_at.nil?
+      redirect_to author_submission_acknowledge_path(@submission)
+    end
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_update_program_information?
   rescue SubmissionStatusGiver::AccessForbidden
@@ -158,6 +174,12 @@ class Author::SubmissionsController < AuthorController
     def find_author
       redirect_to '/login' if current_author.nil? || current_author.access_id.blank? && Rails.env.production?
       @author = current_author
+    end
+
+    def acknowledge_params
+      def standard_program_params
+        params.require(:submission).permit(:acknowledgment_page_viewed_at)
+      end
     end
 
     def standard_program_params

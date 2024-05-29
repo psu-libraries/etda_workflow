@@ -93,6 +93,8 @@ Rails.application.routes.draw do
     resources :submissions, except: [:show] do
       get '/program_information', to: 'submissions#program_information', as: :program_information
       get '/academic_plan_refresh', to: 'submissions#refresh', as: :refresh
+      get '/acknowledge', to: 'submissions#acknowledge', as: :acknowledge
+      patch '/acknowledge', to: 'submissions#acknowledge_update', as: :acknowledge_update
 
       get '/format_review', to: 'submission_format_review#show', as: :format_review
       get '/format_review/edit', to: 'submission_format_review#edit', as: :edit_format_review
