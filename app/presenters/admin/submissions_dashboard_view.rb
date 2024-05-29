@@ -166,20 +166,12 @@ class Admin::SubmissionsDashboardView
     end
 
     def title_for(index_view_scope)
-      thesis_title = I18n.t("#{current_partner.id}.admin_filters.#{index_view_scope}.thesis_title")
-      if @degree_type.slug == 'master_thesis' && !thesis_title.match?(/Translation missing/)
-        thesis_title
-      else
-        I18n.t("#{current_partner.id}.admin_filters.#{index_view_scope}.title")
-      end
+      submission = @degree_type.slug == 'dissertation' ? 'Dissertations' : 'Theses'
+      I18n.t("#{current_partner.id}.admin_filters.#{index_view_scope}.title", submission:)
     end
 
     def description_for(index_view_scope)
-      thesis_description = I18n.t("#{current_partner.id}.admin_filters.#{index_view_scope}.thesis_description")
-      if @degree_type.slug == 'master_thesis' && !thesis_description.match?(/Translation missing/)
-        thesis_description
-      else
-        I18n.t("#{current_partner.id}.admin_filters.#{index_view_scope}.description")
-      end
+      submission = @degree_type.slug == 'dissertation' ? 'dissertations' : 'theses'
+      I18n.t("#{current_partner.id}.admin_filters.#{index_view_scope}.description", submission:).upcase_first
     end
 end

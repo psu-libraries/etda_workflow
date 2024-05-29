@@ -119,7 +119,7 @@ RSpec.describe Admin::SubmissionsIndexView do
       let(:scope) { 'released_for_publication' }
 
       it "returns 'Released eTDs'" do
-        expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title")
+        expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title", submission: 'Dissertations')
       end
     end
 
@@ -135,7 +135,7 @@ RSpec.describe Admin::SubmissionsIndexView do
       let(:scope) { 'final_withheld' }
 
       it "returns 'Final Submission is Restricted'" do
-        expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title")
+        expect(view.title).to eq I18n.t("#{current_partner.id}.admin_filters.#{scope}.title", submission: 'Dissertations')
       end
     end
   end

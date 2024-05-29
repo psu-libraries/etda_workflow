@@ -33,7 +33,7 @@ RSpec.describe "when an admin releases a restricted submission for publication a
       visit admin_submissions_index_path(DegreeType.default, 'final_withheld')
       sleep 1
       click_button 'Select Visible'
-      expect(page).to have_content(I18n.t("#{current_partner.id}.admin_filters.final_withheld.title"), wait: 5)
+      expect(page).to have_content(I18n.t("#{current_partner.id}.admin_filters.final_withheld.title", submission: 'Dissertations'), wait: 5)
       msg = page.accept_confirm do
         click_button 'Release as Open Access'
       end

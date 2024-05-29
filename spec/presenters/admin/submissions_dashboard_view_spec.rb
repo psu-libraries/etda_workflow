@@ -46,7 +46,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
           {
             id: 'format-review-submitted',
             title: I18n.t("#{current_partner.id}.admin_filters.format_review_submitted.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.format_review_submitted.thesis_description"),
+            description: I18n.t("#{current_partner.id}.admin_filters.format_review_submitted.description", submission: 'theses'),
             path: nil,
             count: nil
           },
@@ -60,21 +60,21 @@ RSpec.describe Admin::SubmissionsDashboardView do
           {
             id: 'final-submission-pending',
             title: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.thesis_description"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.description", submission: 'Theses'),
             path: nil,
             count: nil
           },
           {
             id: 'committee-review-rejected',
             title: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.thesis_description"),
+            description: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.description", submission: 'Theses'),
             path: nil,
             count: nil
           },
           {
             id: 'final-submission-submitted',
             title: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.thesis_description"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.description", submission: 'Theses'),
             path: nil,
             count: nil
           },
@@ -101,8 +101,8 @@ RSpec.describe Admin::SubmissionsDashboardView do
           },
           {
             id: 'released-for-publication',
-            title: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.thesis_title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.thesis_description"),
+            title: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.title", submission: 'Theses'),
+            description: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.description", submission: 'theses'),
             path: nil,
             count: nil
           },
@@ -116,8 +116,8 @@ RSpec.describe Admin::SubmissionsDashboardView do
           },
           {
             id: 'final-withheld',
-            title: I18n.t("#{current_partner.id}.admin_filters.final_withheld.thesis_title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.final_withheld.thesis_description"),
+            title: I18n.t("#{current_partner.id}.admin_filters.final_withheld.title", submission: 'Theses'),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_withheld.description"),
             path: nil,
             count: nil,
             sub_count: nil
@@ -139,7 +139,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
           {
             id: 'format-review-submitted',
             title: I18n.t("#{current_partner.id}.admin_filters.format_review_submitted.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.format_review_submitted.description"),
+            description: I18n.t("#{current_partner.id}.admin_filters.format_review_submitted.description", submission: 'dissertations'),
             path: nil,
             count: nil
           },
@@ -153,21 +153,21 @@ RSpec.describe Admin::SubmissionsDashboardView do
           {
             id: 'final-submission-pending',
             title: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.description"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.description", submission: 'Dissertations'),
             path: nil,
             count: nil
           },
           {
             id: 'committee-review-rejected',
             title: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.description"),
+            description: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.description", submission: 'Dissertations'),
             path: nil,
             count: nil
           },
           {
             id: 'final-submission-submitted',
-            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.description"),
+            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.title", submission: 'Dissertations'),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.description", submission: 'Dissertations'),
             path: nil,
             count: nil
           },
@@ -194,8 +194,8 @@ RSpec.describe Admin::SubmissionsDashboardView do
           },
           {
             id: 'released-for-publication',
-            title: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.description"),
+            title: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.title", submission: 'Dissertations'),
+            description: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.description", submission: 'dissertations'),
             path: nil,
             count: nil
           },
@@ -209,7 +209,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
           },
           {
             id: 'final-withheld',
-            title: I18n.t("#{current_partner.id}.admin_filters.final_withheld.title"),
+            title: I18n.t("#{current_partner.id}.admin_filters.final_withheld.title", submission: 'Dissertations'),
             description: I18n.t("#{current_partner.id}.admin_filters.final_withheld.description"),
             path: nil,
             count: nil,
