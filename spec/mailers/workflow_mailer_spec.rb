@@ -459,52 +459,6 @@ RSpec.describe WorkflowMailer do
     end
   end
 
-  describe '#lionpath_deletion_alert', milsch: true, honors: true, sset: true do
-    let(:email) { described_class.lionpath_deletion_alert('Submissions') }
-
-    context 'when current_partner is graduate' do
-      before do
-        skip 'graduate only' unless current_partner.graduate?
-      end
-
-      context "when 'resource' parameter is 'Submissions'" do
-        it "is sent from partner email" do
-          expect(email.from).to eq([partner_email])
-        end
-
-        it "is sent to dev lead email" do
-          expect(email.to).to eq([I18n.t('devs.lead.primary_email_address')])
-        end
-
-        it "has subject" do
-          expect(email.subject).to eq("Alert: LionPATH Deletion Exceeded 10%")
-        end
-
-        it "has body" do
-          expect(email.body.raw_source).to match(/More than 10% of LionPATH Submissions were tagged/)
-        end
-      end
-
-      context "when 'resource' parameter is 'Committee Members'" do
-        let(:email) { described_class.lionpath_deletion_alert('Committee Members') }
-
-        it "has body" do
-          expect(email.body.raw_source).to match(/More than 10% of LionPATH Committee Members were tagged/)
-        end
-      end
-    end
-
-    context 'when current_partner is not graduate' do
-      before do
-        skip 'non graduate only' if current_partner.graduate?
-      end
-
-      it 'raises an error' do
-        expect { email.deliver }.to raise_error WorkflowMailer::InvalidPartner
-      end
-    end
-  end
-
   describe '#pending_returned_author' do
     let(:email) { described_class.pending_returned_author(submission) }
 
