@@ -45,6 +45,10 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
   end
   let!(:submission) { FactoryBot.create :submission, :waiting_for_publication_release }
 
+  before do
+    allow(Bugsnag).to receive(:notify)
+  end
+
   context "when less than 10% of the total number of records are expired" do
     it "deletes expired lionpath submissions that are less than 5 years old and collecting program information" do
       FactoryBot.create_list :submission, 100, lionpath_updated_at: DateTime.now
@@ -54,7 +58,7 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
       expect { exp_lp_sub2.reload }.to raise_error ActiveRecord::RecordNotFound
       expect(exp_lp_sub3.reload).to eq exp_lp_sub3
       expect(exp_lp_sub4.reload).to eq exp_lp_sub4
-      expect(WorkflowMailer.deliveries.count).to eq 0
+      expect(Bugsnag).not_to have_received(:notify)
     end
 
     it "deletes expired lionpath committee_members that are less than 5 years old, not external to PSU, not program chairs, and not beyond waiting for final submission response rejected" do
@@ -67,7 +71,7 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
       expect(exp_lp_cm4.reload).to eq exp_lp_cm4
       expect(exp_lp_cm5.reload).to eq exp_lp_cm5
       expect(dept_head_lp_cm.reload).to eq dept_head_lp_cm
-      expect(WorkflowMailer.deliveries.count).to eq 0
+      expect(Bugsnag).not_to have_received(:notify)
     end
   end
 
@@ -76,14 +80,18 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
       FactoryBot.create_list :committee_member, 100, lionpath_updated_at: DateTime.now
       FactoryBot.create_list :submission, 10, lionpath_updated_at: DateTime.now
       expect { described_class.delete }.not_to change(Submission, :count)
-      expect(WorkflowMailer.deliveries.count).to eq 1
+      expect(Bugsnag).to have_received(:notify).with(I18n.t('graduate.partner.lionpath_alert',
+                                                            resource: 'Submissions',
+                                                            datetime_now: DateTime.now))
     end
 
     it "does not delete expired lionpath committee_members" do
       FactoryBot.create_list :submission, 100, lionpath_updated_at: DateTime.now
       FactoryBot.create_list :committee_member, 10, lionpath_updated_at: DateTime.now
       expect { described_class.delete }.not_to change(CommitteeMember, :count)
-      expect(WorkflowMailer.deliveries.count).to eq 1
+      expect(Bugsnag).to have_received(:notify).with(I18n.t('graduate.partner.lionpath_alert',
+                                                            resource: 'Committee Members',
+                                                            datetime_now: DateTime.now))
     end
   end
 end

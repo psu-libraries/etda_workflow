@@ -4,12 +4,16 @@ class Lionpath::LionpathDeleteExpiredRecords
       if safe_to_delete?(total_lp_sub_count, lp_subs_to_delete.count)
         lp_subs_to_delete.each(&:destroy)
       else
-        send_email('Submissions')
+        Bugsnag.notify(I18n.t('graduate.partner.lionpath_alert',
+                              resource: 'Submissions',
+                              datetime_now: DateTime.now))
       end
       if safe_to_delete?(total_lp_cmtee_mmbr_count, lp_cmtee_mmbrs_to_delete.count)
         lp_cmtee_mmbrs_to_delete.each(&:destroy)
       else
-        send_email('Committee Members')
+        Bugsnag.notify(I18n.t('graduate.partner.lionpath_alert',
+                              resource: 'Committee Members',
+                              datetime_now: DateTime.now))
       end
     end
 
@@ -55,10 +59,6 @@ class Lionpath::LionpathDeleteExpiredRecords
 
       def safe_to_delete?(total_num, num_to_delete)
         (num_to_delete / total_num.to_f) < (10 / 100.to_f)
-      end
-
-      def send_email(resource)
-        WorkflowMailer.lionpath_deletion_alert(resource).deliver
       end
   end
 end
