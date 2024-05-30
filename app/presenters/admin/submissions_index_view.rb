@@ -23,7 +23,8 @@ class Admin::SubmissionsIndexView
   end
 
   def title
-    I18n.t("#{translation_key}.title")
+    submission = @degree_type.slug == 'dissertation' ? 'Dissertations' : 'Theses'
+    I18n.t("#{translation_key}.title", submission:)
   end
 
   def id

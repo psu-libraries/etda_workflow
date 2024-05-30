@@ -79,7 +79,7 @@ RSpec.describe "Manage Submissions", type: :integration, js: true do
       end
 
       it 'does not have a delete button but has other bulk actions' do
-        expect(page).to have_content('Restricted Theses')
+        expect(page).to have_content('Restricted Dissertations')
         expect(page).to have_content('Showing')
         expect(page).not_to have_selector('div#approved-final-submission-submissions-index_processing', visible: false)
         find_button('Select Visible').click
@@ -96,7 +96,7 @@ RSpec.describe "Manage Submissions", type: :integration, js: true do
       end
 
       it 'does not have bulk buttons when nothing is selected' do
-        expect(page).to have_content('Released Theses')
+        expect(page).to have_content('Released Dissertations')
         expect(page).to have_content('Showing')
         expect(page).not_to have_content('Bulk Actions')
         expect(page).not_to have_button('Select Visible')

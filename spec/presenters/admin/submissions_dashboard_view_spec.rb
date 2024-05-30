@@ -29,8 +29,12 @@ RSpec.describe Admin::SubmissionsDashboardView do
   end
 
   describe '#filters' do
-    context 'when no submissions exist for each filter' do
-      it "returns a set of placeholders according to submission status" do
+    context 'when viewing masters theses submissions' do
+      # tests language change for thesis vs dissertation in grad school, dissertation is the default & covered by other tests
+      it 'returns a set of placeholders with thesis language' do
+        skip "graduate only" unless current_partner.graduate?
+
+        view = described_class.new('master_thesis')
         expect(view.filters).to eq [
           {
             id: 'format-review-incomplete',
@@ -42,7 +46,7 @@ RSpec.describe Admin::SubmissionsDashboardView do
           {
             id: 'format-review-submitted',
             title: I18n.t("#{current_partner.id}.admin_filters.format_review_submitted.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.format_review_submitted.description"),
+            description: I18n.t("#{current_partner.id}.admin_filters.format_review_submitted.description", submission: 'theses'),
             path: nil,
             count: nil
           },
@@ -56,21 +60,21 @@ RSpec.describe Admin::SubmissionsDashboardView do
           {
             id: 'final-submission-pending',
             title: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.description"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.description", submission: 'Theses'),
             path: nil,
             count: nil
           },
           {
             id: 'committee-review-rejected',
             title: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.description"),
+            description: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.description", submission: 'Theses'),
             path: nil,
             count: nil
           },
           {
             id: 'final-submission-submitted',
             title: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.description"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.description", submission: 'Theses'),
             path: nil,
             count: nil
           },
@@ -97,8 +101,8 @@ RSpec.describe Admin::SubmissionsDashboardView do
           },
           {
             id: 'released-for-publication',
-            title: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.description"),
+            title: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.title", submission: 'Theses'),
+            description: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.description", submission: 'theses'),
             path: nil,
             count: nil
           },
@@ -112,7 +116,100 @@ RSpec.describe Admin::SubmissionsDashboardView do
           },
           {
             id: 'final-withheld',
-            title: I18n.t("#{current_partner.id}.admin_filters.final_withheld.title"),
+            title: I18n.t("#{current_partner.id}.admin_filters.final_withheld.title", submission: 'Theses'),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_withheld.description"),
+            path: nil,
+            count: nil,
+            sub_count: nil
+          }
+        ]
+      end
+    end
+
+    context 'when no submissions exist for each filter' do
+      it "returns a set of placeholders according to submission status" do
+        expect(view.filters).to eq [
+          {
+            id: 'format-review-incomplete',
+            title: I18n.t("#{current_partner.id}.admin_filters.format_review_incomplete.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.format_review_incomplete.description"),
+            path: nil,
+            count: nil
+          },
+          {
+            id: 'format-review-submitted',
+            title: I18n.t("#{current_partner.id}.admin_filters.format_review_submitted.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.format_review_submitted.description", submission: 'dissertations'),
+            path: nil,
+            count: nil
+          },
+          {
+            id: 'format-review-completed',
+            title: I18n.t("#{current_partner.id}.admin_filters.format_review_completed.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.format_review_completed.description"),
+            path: nil,
+            count: nil
+          },
+          {
+            id: 'final-submission-pending',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_pending.description", submission: 'Dissertations'),
+            path: nil,
+            count: nil
+          },
+          {
+            id: 'committee-review-rejected',
+            title: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.committee_review_rejected.description", submission: 'Dissertations'),
+            path: nil,
+            count: nil
+          },
+          {
+            id: 'final-submission-submitted',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.title", submission: 'Dissertations'),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_submitted.description", submission: 'Dissertations'),
+            path: nil,
+            count: nil
+          },
+          {
+            id: 'final-submission-incomplete',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_incomplete.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_incomplete.description"),
+            path: nil,
+            count: nil
+          },
+          {
+            id: 'final-submission-approved',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_approved.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_approved.description"),
+            path: nil,
+            count: nil
+          },
+          {
+            id: 'final-submission-on-hold',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_on_hold.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_on_hold.description"),
+            path: nil,
+            count: nil
+          },
+          {
+            id: 'released-for-publication',
+            title: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.title", submission: 'Dissertations'),
+            description: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.description", submission: 'dissertations'),
+            path: nil,
+            count: nil
+          },
+          {
+            id: 'final-restricted-institution',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.title"),
+            description: I18n.t("#{current_partner.id}.admin_filters.final_restricted_institution.description"),
+            path: nil,
+            count: nil,
+            sub_count: nil
+          },
+          {
+            id: 'final-withheld',
+            title: I18n.t("#{current_partner.id}.admin_filters.final_withheld.title", submission: 'Dissertations'),
             description: I18n.t("#{current_partner.id}.admin_filters.final_withheld.description"),
             path: nil,
             count: nil,

@@ -166,10 +166,12 @@ class Admin::SubmissionsDashboardView
     end
 
     def title_for(index_view_scope)
-      I18n.t("#{current_partner.id}.admin_filters.#{index_view_scope}.title")
+      submission = @degree_type.slug == 'dissertation' ? 'Dissertations' : 'Theses'
+      I18n.t("#{current_partner.id}.admin_filters.#{index_view_scope}.title", submission:)
     end
 
     def description_for(index_view_scope)
-      I18n.t("#{current_partner.id}.admin_filters.#{index_view_scope}.description")
+      submission = @degree_type.slug == 'dissertation' ? 'dissertations' : 'theses'
+      I18n.t("#{current_partner.id}.admin_filters.#{index_view_scope}.description", submission:).upcase_first
     end
 end
