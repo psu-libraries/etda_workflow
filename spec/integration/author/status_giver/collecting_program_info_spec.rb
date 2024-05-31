@@ -15,6 +15,13 @@ RSpec.describe 'When Collecting Program Information status', type: :integration,
                         semester: 'Fall'
     end
 
+    it 'provides semester selection help text in graduate and honors' do
+      visit "author/submissions/#{submission.id}/edit"
+
+      expect(page).to have_content(I18n.t("#{current_partner.id}.partner.semester_hint")) if current_partner.graduate? || current_partner.honors?
+      expect(page).not_to have_content(I18n.t("#{current_partner.id}.partner.semester_hint")) if current_partner.milsch? || current_partner.sset?
+    end
+
     describe "editing program information with imported lionpath data" do
       let!(:program) { FactoryBot.create :program }
 

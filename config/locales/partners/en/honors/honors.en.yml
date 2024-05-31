@@ -21,6 +21,7 @@ en:
         title: Schreyer Honors College Theses
         text: <p>Electronic submission of the final Honors Thesis became a requirement beginning spring semester 2010. Honors theses submitted prior to spring semester 2010 will not be found on this database. Both the mandatory draft submission and the final thesis must be submitted electronically through this site.</p><p>All final theses are open to the public. If there is a reason (usually for patent or proprietary purposes) your thesis should not be released to the public, you must contact the Schreyer Honors College and request restricted access. Restricted access may be granted for a period up to two years. The thesis will be automatically released for public access at end of the approved restricted period.</p>
       alternate_email_hint: 'The Alternate email address will be used after your psu.edu email address expires.'
+      semester_hint: Only upload your thesis if you intend to graduate this semester or the following semester.
       thesis_guide: 'https://www.shc.psu.edu/academic/thesis/submission.cfm'
       document_title_label: 'Title'
       url_slug: 'honors'
