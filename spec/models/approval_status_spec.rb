@@ -529,6 +529,90 @@ RSpec.describe ApprovalStatus, type: :model do
     end
   end
 
+  describe "#approved_with_non_voters?" do
+    before do
+      submission.degree.degree_type.approval_configuration = approval_configuration4
+    end
+
+    context 'when not approved' do
+      it "returns false" do
+        submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                          submission:,
+                                                          status: 'approved',
+                                                          is_voting: true,
+                                                          approval_started_at: (DateTime.now - (7.days + 1.hour)))
+        submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                          submission:,
+                                                          status: 'rejected',
+                                                          is_voting: true,
+                                                          approval_started_at: (DateTime.now - (7.days + 1.hour)))
+        submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                          submission:,
+                                                          status: 'rejected',
+                                                          is_voting: true,
+                                                          approval_started_at: (DateTime.now - (7.days + 1.hour)))
+
+        expect(described_class.new(submission).approved_with_non_voters?).to eq(false)
+      end
+    end
+
+    context 'when approved' do
+      context 'when there are members who have not voted' do
+        it "returns true" do
+          submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                            submission:,
+                                                            status: 'approved',
+                                                            is_voting: true,
+                                                            approval_started_at: (DateTime.now - (7.days + 1.hour)))
+          submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                            submission:,
+                                                            status: 'approved',
+                                                            is_voting: true,
+                                                            approval_started_at: (DateTime.now - (7.days + 1.hour)))
+          submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                            submission:,
+                                                            status: 'approved',
+                                                            is_voting: true,
+                                                            approval_started_at: (DateTime.now - (7.days + 1.hour)))
+          submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                            submission:,
+                                                            status: '',
+                                                            is_voting: true,
+                                                            approval_started_at: (DateTime.now - (7.days + 1.hour)))
+
+          expect(described_class.new(submission).approved_with_non_voters?).to eq(true)
+        end
+      end
+
+      context 'when all members have voted' do
+        it "returns false" do
+          submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                            submission:,
+                                                            status: 'approved',
+                                                            is_voting: true,
+                                                            approval_started_at: (DateTime.now - (7.days + 1.hour)))
+          submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                            submission:,
+                                                            status: 'approved',
+                                                            is_voting: true,
+                                                            approval_started_at: (DateTime.now - (7.days + 1.hour)))
+          submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                            submission:,
+                                                            status: 'approved',
+                                                            is_voting: true,
+                                                            approval_started_at: (DateTime.now - (7.days + 1.hour)))
+          submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                            submission:,
+                                                            status: 'approved',
+                                                            is_voting: true,
+                                                            approval_started_at: (DateTime.now - (7.days + 1.hour)))
+
+          expect(described_class.new(submission).approved_with_non_voters?).to eq(false)
+        end
+      end
+    end
+  end
+
   describe "#head_of_program_status" do
     before do
       head_role = CommitteeRole.find_by(is_program_head: true, degree_type_id: submission.degree.degree_type_id)

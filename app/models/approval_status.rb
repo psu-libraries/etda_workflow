@@ -35,6 +35,12 @@ class ApprovalStatus
     none || approved || rejected || pending
   end
 
+  def approved_with_non_voters?
+    return false unless approved
+
+    non_voting_members_present?
+  end
+
   private
 
     def none
@@ -75,6 +81,14 @@ class ApprovalStatus
       end
 
       true
+    end
+
+    def non_voting_members_present?
+      non_voting_member = false
+      committee_members.each do |member|
+        non_voting_member = true unless member_voted?(member)
+      end
+      non_voting_member
     end
 
     def beyond_seven_days?(committee_member)
