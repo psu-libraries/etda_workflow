@@ -180,6 +180,17 @@ class WorkflowMailer < ActionMailer::Base
          subject: "#{current_partner.name} #{submission.degree_type} Review Reminder"
   end
 
+  def nonvoting_approval_reminder(submission, committee_member)
+    @submission = submission
+    @committee_member = committee_member
+    @author = submission.author
+    @review_url = "#{EtdUrls.new.workflow}/approver"
+
+    mail to: @committee_member.email,
+         from: current_partner.email_address,
+         subject: "#{current_partner.name} #{submission.degree_type} Final Review Reminder"
+  end
+
   def seventh_day_to_chairs(submission)
     @submission = submission
     @author = submission.author

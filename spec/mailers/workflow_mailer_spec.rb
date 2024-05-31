@@ -587,6 +587,27 @@ RSpec.describe WorkflowMailer do
     end
   end
 
+  describe '#nonvoting_approval_reminder' do
+    let(:email) { described_class.nonvoting_approval_reminder(submission, committee_member) }
+
+    it "is sent to the proper recipient" do
+      expect(email.to).to eq([committee_member.email])
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to eq("#{current_partner.name} #{submission.degree_type} Final Review Reminder")
+    end
+
+    it "has desired content" do
+      expect(email.body).to match(/\/approver/)
+      expect(email.body).to match(/final opportunity to vote/)
+    end
+  end
+
   describe '#advisor_rejected' do
     let(:email) { described_class.advisor_rejected(submission) }
 
