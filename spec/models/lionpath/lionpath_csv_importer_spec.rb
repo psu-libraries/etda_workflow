@@ -93,6 +93,12 @@ RSpec.describe Lionpath::LionpathCsvImporter do
         expect(author.submissions.first.committee_members.count).to eq 5
         expect(author.submissions.first.committee_members.first.name).to eq 'Test1 Tester1'
       end
+
+      # The last member in the included CSV file has values for 'Special Member {First/Last} Name'
+      it 'uses the Special Member fields, when present, to create the name' do
+        lionpath_csv_importer.send(:parse_csv, Lionpath::LionpathCommittee.new)
+        expect(author.submissions.first.committee_members.last.name).to eq 'Vin Diesel'
+      end
     end
   end
 end

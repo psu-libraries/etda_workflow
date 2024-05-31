@@ -44,13 +44,21 @@ class Lionpath::LionpathCommittee
       hash = {
         committee_role:,
         is_required: true,
-        name: "#{row['First Name']} #{row['Last Name']}",
+        name: if special_member?(row)
+                "#{row['Special Member First Name'].titleize} #{row['Special Member Last Name'].titleize}"
+              else
+                "#{row['First Name']} #{row['Last Name']}"
+              end,
         access_id: row['Access ID'].downcase.to_s,
         is_voting: true,
         lionpath_updated_at: DateTime.now
       }
       hash[:external_to_psu_id] = row['Access ID'].downcase if self.class.external_ids.include?(row['Access ID'].downcase)
       hash
+    end
+
+    def special_member?(row)
+      !row['Special Member First Name'].nil? && !row['Special Member Last Name'].nil?
     end
 
     def submission(row)

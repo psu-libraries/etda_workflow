@@ -62,7 +62,6 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
     context 'when submission is a master_thesis' do
       it "allows editing and submission of committee", honors: true do
         expect(page).to have_link('Add Committee Member')
-        # visit new_author_submission_committee_members_path(submission)
         submission.required_committee_roles.count.times do |i|
           if i == 0 && current_partner.graduate?
             expect(find("#member-email").readonly?).to eq true
@@ -147,13 +146,13 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
                                                    access_id: 'mgc25', name: 'Member Committee', email: 'mgc25@psu.edu'
             end
 
-            it 'has an open and blank form for this committee member' do
+            it 'uses the name value for this committee member but keeps it editable' do
               skip 'graduate only' unless current_partner.graduate?
 
               visit edit_author_submission_committee_members_path(submission_2)
               num = submission_2.committee_members.count - 1
               expect(find("#submission_committee_members_attributes_#{num}_name").disabled?).to eq false
-              expect(find("#submission_committee_members_attributes_#{num}_name").value).to eq ''
+              expect(find("#submission_committee_members_attributes_#{num}_name").value).to eq 'Member Committee'
               expect(find("#submission_committee_members_attributes_#{num}_email").readonly?).to eq false
               expect(find("#submission_committee_members_attributes_#{num}_email").value).to eq ''
             end
@@ -233,7 +232,6 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
     end
 
     it 'allows an additional committee member to be added', js: true do
-      # expect(page).to have_content('successfully')
       expect(page).to have_link('Add Committee Member')
       assert_equal submission.committee_email_list, @email_list.uniq unless current_partner.graduate?
       click_link 'Add Committee Member'
