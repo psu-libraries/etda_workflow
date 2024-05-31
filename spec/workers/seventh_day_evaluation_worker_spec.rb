@@ -81,7 +81,7 @@ RSpec.describe SeventhDayEvaluationWorker do
       context "when submission approval status is 'approved'" do
         before do
           allow_any_instance_of(Submission).to receive(:head_of_program_is_approving?).and_return false
-          allow(described_class).to receive(:perform_in).with(7.days, submission.id, final_reminder_sent: true)
+          allow(described_class).to receive(:perform_in).with(7.days, submission.id, true)
         end
 
         context "when graduate and there are nonvoting members" do
@@ -113,7 +113,7 @@ RSpec.describe SeventhDayEvaluationWorker do
 
             Sidekiq::Testing.inline! do
               expect { described_class.perform_async(submission.id) }.to change { WorkflowMailer.deliveries.size }.by(1)
-              expect(described_class).to have_received(:perform_in).with(7.days, submission.id, final_reminder_sent: true)
+              expect(described_class).to have_received(:perform_in).with(7.days, submission.id, true)
             end
             expect(WorkflowMailer.deliveries.first.subject).to match(/Final Review Reminder/)
           end
@@ -142,6 +142,33 @@ RSpec.describe SeventhDayEvaluationWorker do
             expect_any_instance_of(SubmissionStatusUpdaterService).to receive(:update_status_from_committee)
             Sidekiq::Testing.inline! do
               described_class.perform_async(submission.id)
+            end
+          end
+        end
+
+        context "when final reminder has already been sent" do
+          before do
+            submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                              submission:,
+                                                              status: 'approved',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
+            submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                              submission:,
+                                                              status: 'approved',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
+            submission.committee_members << FactoryBot.create(:committee_member, :review_started,
+                                                              submission:,
+                                                              status: '',
+                                                              is_voting: true,
+                                                              approval_started_at: (DateTime.now - (7.days + 1.hour)))
+          end
+
+          it 'runs submission status update from committee' do
+            expect_any_instance_of(SubmissionStatusUpdaterService).to receive(:update_status_from_committee)
+            Sidekiq::Testing.inline! do
+              described_class.perform_async(submission.id, true)
             end
           end
         end
