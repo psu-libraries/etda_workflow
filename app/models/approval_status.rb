@@ -84,7 +84,7 @@ class ApprovalStatus
     end
 
     def non_voting_members_present?
-      committee_members.any? {|m| !member_voted?(m) }
+      committee_members.any? { |m| !member_voted?(m) }
     end
 
     def beyond_seven_days?(committee_member)
