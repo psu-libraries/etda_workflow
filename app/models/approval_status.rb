@@ -84,11 +84,7 @@ class ApprovalStatus
     end
 
     def non_voting_members_present?
-      non_voting_member = false
-      committee_members.each do |member|
-        non_voting_member = true unless member_voted?(member)
-      end
-      non_voting_member
+      committee_members.any? {|m| !member_voted?(m) }
     end
 
     def beyond_seven_days?(committee_member)
