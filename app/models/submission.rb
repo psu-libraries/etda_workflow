@@ -108,8 +108,6 @@ class Submission < ApplicationRecord
 
   attr_reader :previous_access_level
 
-  attr_reader :acknowledgment_page_viewed_at
-
   after_update :cache_access_level
 
   def cache_access_level
