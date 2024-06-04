@@ -39,10 +39,12 @@ class Author::SubmissionsController < AuthorController
 
   def acknowledge_update
     @submission = find_submission
-    if @submission.assign_attributes(:acknowledgment_page_viewed_at => DateTime.now)
+    #todo: validate they are filled
+    if @submission.update(:author_edit => false, :acknowledgment_page_viewed_at => DateTime.now)
       redirect_to edit_author_submission_path(@submission)
     else
-      redirect_to '/'
+      # todo show error
+      puts 'something is wrong'
     end
   end
 
