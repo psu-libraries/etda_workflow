@@ -36,19 +36,22 @@ RSpec.describe AutoReleaseService do
     let!(:sub1) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_month,
-                        released_metadata_at: Time.zone.today.years_ago(1)
+                        released_metadata_at: Time.zone.today.years_ago(1),
+                        author_release_warning_sent_at: nil
     end
     let!(:sub2) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_month,
                         released_metadata_at: Time.zone.today.years_ago(1),
-                        author_release_warning_sent_at: Time.zone.today.last_week
+                        author_release_warning_sent_at: one_week_ago
     end
     let!(:sub3) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_week,
-                        released_metadata_at: Time.zone.today.years_ago(1)
+                        released_metadata_at: Time.zone.today.years_ago(1),
+                        author_release_warning_sent_at: nil
     end
+    let(:one_week_ago) { Time.zone.today.end_of_day.last_week }
 
     before { allow(WorkflowMailer).to receive(:send_author_release_warning) }
 
@@ -57,6 +60,14 @@ RSpec.describe AutoReleaseService do
       expect(WorkflowMailer).to have_received(:send_author_release_warning).with(sub1)
       expect(WorkflowMailer).not_to have_received(:send_author_release_warning).with(sub2)
       expect(WorkflowMailer).to have_received(:send_author_release_warning).with(sub3)
+
+      sub1.reload
+      sub2.reload
+      sub3.reload
+      
+      expect(sub1.author_release_warning_sent_at).to be_within(1.minute).of(Time.zone.now)
+      expect(sub2.author_release_warning_sent_at).to eq(one_week_ago)
+      expect(sub3.author_release_warning_sent_at).to be_within(1.minute).of(Time.zone.now)
     end
   end
 end
