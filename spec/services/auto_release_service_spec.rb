@@ -64,7 +64,7 @@ RSpec.describe AutoReleaseService do
       sub1.reload
       sub2.reload
       sub3.reload
-      
+
       expect(sub1.author_release_warning_sent_at).to be_within(1.minute).of(Time.zone.now)
       expect(sub2.author_release_warning_sent_at).to eq(one_week_ago)
       expect(sub3.author_release_warning_sent_at).to be_within(1.minute).of(Time.zone.now)
