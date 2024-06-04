@@ -100,6 +100,37 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to delegate_method(:author_full_name).to(:author).as(:full_name) }
   it { is_expected.to delegate_method(:author_psu_email_address).to(:author).as(:psu_email_address) }
 
+  describe '.ok_to_autorelease' do
+    let!(:sub1) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.days_ago(1),
+                        released_metadata_at: Time.zone.today.years_ago(2),
+                        access_level: 'restricted'
+    end
+    let!(:sub2) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.days_ago(1),
+                        released_metadata_at: Time.zone.today.years_ago(1),
+                        access_level: 'restricted'
+    end
+    let!(:sub3) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.next_week,
+                        released_metadata_at: Time.zone.today.years_ago(2),
+                        access_level: 'restricted'
+    end
+    let!(:sub4) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.days_ago(1),
+                        released_metadata_at: Time.zone.today.years_ago(2),
+                        access_level: 'open_access'
+    end
+
+    it 'returns submissions that are ready for autorelease' do
+      expect(described_class.ok_to_autorelease).to contain_exactly(sub1)
+    end
+  end
+
   describe '#advisor' do
     it 'returns the advisor committee member for the submission' do
       submission = FactoryBot.create :submission
