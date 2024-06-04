@@ -31,4 +31,32 @@ RSpec.describe AutoReleaseService do
       expect(Submission).to have_received(:release_for_publication).with([sub1.id, sub3.id], DateTime.now.end_of_day, 'Release as Open Access')
     end
   end
+
+  describe '#notify_author' do
+    let!(:sub1) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.next_month,
+                        released_metadata_at: Time.zone.today.years_ago(1)
+      end
+    let!(:sub2) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.next_month,
+                        released_metadata_at: Time.zone.today.years_ago(1),
+                        author_release_warning_sent_at: Time.zone.today.last_week
+    end
+    let!(:sub3) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.next_week,
+                        released_metadata_at: Time.zone.today.years_ago(1)
+    end
+
+    before { allow(WorkflowMailer).to receive(:author_release_warning)}
+
+    it 'calls the release warning mailer on eligible submissions' do
+      described_class.new.notify_author
+      expect(WorkflowMailer).to have_received(:author_release_warning).with(sub1)
+      expect(WorkflowMailer).not_to have_received(:author_release_warning).with(sub2)
+      expect(WorkflowMailer).to have_received(:author_release_warning).with(sub3)
+    end
+  end
 end

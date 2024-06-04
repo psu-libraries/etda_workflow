@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_18_192450) do
+ActiveRecord::Schema.define(version: 2024_06_04_152657) do
 
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -293,6 +293,7 @@ ActiveRecord::Schema.define(version: 2023_10_18_192450) do
     t.string "lionpath_semester"
     t.string "academic_program"
     t.string "degree_checkout_status"
+    t.datetime "author_release_warning_sent_at"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"

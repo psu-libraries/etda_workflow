@@ -131,6 +131,33 @@ RSpec.describe Submission, type: :model do
     end
   end
 
+  describe '.notify_author_of_upcoming_release' do
+    let!(:sub1) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.next_month,
+                        released_metadata_at: Time.zone.today.years_ago(1)
+    end
+    let!(:sub2) do
+      FactoryBot.create :submission,
+                        released_metadata_at: Time.zone.today.years_ago(1),
+                        author_release_warning_sent_at: Time.zone.today.last_week
+    end
+    let!(:sub3) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.next_month,
+                        released_metadata_at: Time.zone.today.years_ago(3)
+    end
+    let!(:sub4) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today + 6.weeks,
+                        released_metadata_at: Time.zone.today.years_ago(1)
+    end
+
+    it 'returns submissions that are ready for autorelease' do
+      expect(described_class.notify_author_of_upcoming_release).to contain_exactly(sub1)
+    end
+  end
+
   describe '#advisor' do
     it 'returns the advisor committee member for the submission' do
       submission = FactoryBot.create :submission
