@@ -37,7 +37,7 @@ RSpec.describe AutoReleaseService do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_month,
                         released_metadata_at: Time.zone.today.years_ago(1)
-      end
+    end
     let!(:sub2) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_month,
@@ -50,13 +50,13 @@ RSpec.describe AutoReleaseService do
                         released_metadata_at: Time.zone.today.years_ago(1)
     end
 
-    before { allow(WorkflowMailer).to receive(:author_release_warning)}
+    before { allow(WorkflowMailer).to receive(:send_author_release_warning) }
 
     it 'calls the release warning mailer on eligible submissions' do
       described_class.new.notify_author
-      expect(WorkflowMailer).to have_received(:author_release_warning).with(sub1)
-      expect(WorkflowMailer).not_to have_received(:author_release_warning).with(sub2)
-      expect(WorkflowMailer).to have_received(:author_release_warning).with(sub3)
+      expect(WorkflowMailer).to have_received(:send_author_release_warning).with(sub1)
+      expect(WorkflowMailer).not_to have_received(:send_author_release_warning).with(sub2)
+      expect(WorkflowMailer).to have_received(:send_author_release_warning).with(sub3)
     end
   end
 end

@@ -198,6 +198,20 @@ en:
                     If you have any further questions please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
+        author_release_warning:
+          message: |
+                    We are writing to inform you that the two-year restriction on your %{degree_type} titled "%{title}" is about to expire. 
+                    Please click the link below if you would like to extend your restriction. 
+                    If we do not hear from you, your work will automatically be released to open access.
+
+                    Request extension: %{url}
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
         release_for_publication:
           message: |
                     Your %{degree_type} titled "%{title}" has been released with the access level of Open Access.

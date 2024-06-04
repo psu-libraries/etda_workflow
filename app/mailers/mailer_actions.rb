@@ -15,6 +15,10 @@ module MailerActions
     end
   end
 
+  def send_author_release_warning(submission)
+    author_release_warning(submission).deliver
+  end
+
   def send_publication_release_messages(submission)
     release_for_publication(submission).deliver if submission.open_access?
     release_for_publication_metadata_only(submission).deliver unless submission.open_access?

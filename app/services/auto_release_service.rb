@@ -7,7 +7,7 @@ class AutoReleaseService
   def notify_author
     submissions = Submission.notify_author_of_upcoming_release
     submissions.each do |submission|
-      WorkflowMailer.author_release_warning(submission)
+      WorkflowMailer.send_author_release_warning(submission)
     end
   end
 end

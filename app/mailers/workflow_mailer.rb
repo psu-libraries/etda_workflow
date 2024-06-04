@@ -62,6 +62,16 @@ class WorkflowMailer < ActionMailer::Base
          subject: "Your #{@submission.degree_type} has been rejected by the #{current_partner.name}"
   end
 
+  def author_release_warning(submission)
+    @submission = submission
+    @author = submission.author
+    @extension_url = "#{EtdUrls.new.explore}/author/submissions/#{submission.id}/extension"
+
+    mail to: [@author.psu_email_address, @author.alternate_email_address],
+         from: current_partner.email_address,
+         subject: "Your #{@submission.degree_type} will be released soon"
+  end
+
   def release_for_publication(submission)
     @submission = submission
     @author = submission.author

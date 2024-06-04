@@ -225,6 +225,26 @@ RSpec.describe WorkflowMailer do
     end
   end
 
+  describe '#author_release_warning' do
+    let(:email) { described_class.author_release_warning(submission) }
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to match(/will be released soon/i)
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "is sent to the student's PSU email address" do
+      expect(email.to).to eq([author.psu_email_address, author.alternate_email_address])
+    end
+
+    it "tells the author that the submission has been released" do
+      expect(email.body).to match(/if you would like to extend your restriction/i)
+    end
+  end
+
   describe '#release_for_publication' do
     let(:email) { described_class.release_for_publication(submission) }
 
