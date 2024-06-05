@@ -1,5 +1,5 @@
 class Author::SubmissionsController < AuthorController
-  before_action :find_submission, except: [:index, :new, :create, :published_submissions_index]
+  before_action :find_submission, except: [:index, :new, :create, :acknowledge, :acknowledge_update, :published_submissions_index]
 
   def index
     @view = Author::SubmissionsIndexView.new(@author)
@@ -34,25 +34,27 @@ class Author::SubmissionsController < AuthorController
   end
 
   def acknowledge
-    @submission = find_submission
+    @ack = AcknowledgmentSignatures.new
   end
 
   def acknowledge_update
+    @ack = AcknowledgmentSignatures.new(acknowledge_params)
+    @ack.validate!
     @submission = find_submission
-    #todo: validate they are filled
-    if @submission.update(:author_edit => false, :acknowledgment_page_viewed_at => DateTime.now)
-      redirect_to edit_author_submission_path(@submission)
-    else
-      # todo show error
-      puts 'something is wrong'
-    end
+    @submission.update!(author_edit: false, acknowledgment_page_viewed_at: DateTime.now)
+    redirect_to edit_author_submission_path(@submission)
+    Rails.logger.debug 'Oops! You may have submitted invalid program information data. Please check that your program information is correct.'
+  rescue ActiveModel::ValidationError
+    flash.now[:alert] = 'Please initial for every statement.'
+    render :acknowledge
+  rescue ActiveRecord::RecordInvalid
+    flash[:alert] = 'Oops! You may have submitted invalid program information data. Please check that your program information is correct.'
+    render :acknowledge
   end
 
   def edit
     @submission = find_submission
-    if @submission.acknowledgment_page_viewed_at.nil?
-      redirect_to author_submission_acknowledge_path(@submission)
-    end
+    redirect_to author_submission_acknowledge_path(@submission) if @submission.acknowledgment_page_viewed_at.nil? && current_partner.graduate?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_update_program_information?
   rescue SubmissionStatusGiver::AccessForbidden
@@ -179,9 +181,7 @@ class Author::SubmissionsController < AuthorController
     end
 
     def acknowledge_params
-      def standard_program_params
-        params.require(:submission).permit(:acknowledgment_page_viewed_at)
-      end
+      params.require(:acknowledgment_signatures).permit(:sig_1, :sig_2, :sig_3, :sig_4, :sig_5, :sig_6, :sig_7)
     end
 
     def standard_program_params
