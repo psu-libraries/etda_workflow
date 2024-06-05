@@ -1,9 +1,7 @@
-<h1> Acknowledgement Page</h1>
-
 <div class="row">
     <div class="col-xs-12">
 
-      <%= simple_form_for :form, url: author_submission_acknowledge_update_path, method: :patch do |form| %>  
+      <%= simple_form_for @ack, url: author_submission_acknowledge_update_path, method: :patch do |form| %>  
         <div class="form-group actions col-xs-6">          
           <%= form.label :sig_1, 'I have read the thesis/dissertation handbook and understand how to format my thesis/dissertation to align with Graduate School Policy' %>
           <%= form.input :sig_1, label: 'Initial here' %>
@@ -19,7 +17,7 @@
           <%= form.input :sig_6, label: 'Initial here' %>
           <%= form.label :sig_7, label: 'I acknowledge that I cannot make committee changes after the final is submitted.' %>
           <%= form.input :sig_7, label: 'Initial here' %>
-          <%= form.button :submit, class: "btn-primary", value: "Submit" %>
+          <%= form.button :submit, class: "btn-primary", value: "Submit", disabled: @is_good %>
           <%= link_to "Cancel", author_root_path, class: 'btn btn-light' %>
         </div>
       <% end %>
