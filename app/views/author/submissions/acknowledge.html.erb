@@ -1,22 +1,21 @@
 <div class="row">
     <div class="col-xs-12">
-
       <%= simple_form_for @ack, url: author_submission_acknowledge_update_path, method: :patch do |form| %>  
         <div class="form-group actions col-xs-6">          
-          <%= form.label :sig_1, 'I have read the thesis/dissertation handbook and understand how to format my thesis/dissertation to align with Graduate School Policy' %>
-          <%= form.input :sig_1, label: 'Initial here' %>
-          <%= form.label :sig_2, label: 'I will reference the Graduate School\'s Thesis/Dissertation Template' %>
-          <%= form.input :sig_2, label: 'Initial here' %>
-          <%= form.label :sig_3, label: 'I will ensure that the faculty titles of my committee members are listed correctly on the committee page of my thesis/dissertation' %>
-          <%= form.input :sig_3, label: 'Initial here' %>
-          <%= form.label :sig_4, label: 'I consulted with my advisor and we both have agreed that I did/did not utilize federal funding' %>
-          <%= form.input :sig_4, label: 'Initial here' %>
-          <%= form.label :sig_5, label: 'I know if it is the Program Head or Director of Graduate Studies of my program who needs to approve my thesis/dissertation. If I am not sure, I will consult with my program' %>
-          <%= form.input :sig_5, label: 'Initial here' %>
-          <%= form.label :sig_5, label: 'I acknowledge that I cannot fix typos or make additional corrections after I submit my final submission' %>
-          <%= form.input :sig_6, label: 'Initial here' %>
-          <%= form.label :sig_7, label: 'I acknowledge that I cannot make committee changes after the final is submitted.' %>
-          <%= form.input :sig_7, label: 'Initial here' %>
+          <%= form.label :sig_1, I18n.t("graduate.submission.acknowledge.point1", degree_type: @degree_type) %>
+          <%= form.input :sig_1, label: false, placeholder: I18n.t("graduate.submission.acknowledge.initial") %>
+          <%= form.label :sig_2, I18n.t("graduate.submission.acknowledge.point2", degree_type: @degree_type.capitalize)  %>
+          <%= form.input :sig_2, label: false, placeholder: I18n.t("graduate.submission.acknowledge.initial") %>
+          <%= form.label :sig_3, I18n.t("graduate.submission.acknowledge.point3", degree_type: @degree_type) %>
+          <%= form.input :sig_3, label: false, placeholder: I18n.t("graduate.submission.acknowledge.initial") %>
+          <%= form.label :sig_4, I18n.t("graduate.submission.acknowledge.point4")  %>
+          <%= form.input :sig_4, label: false, placeholder: I18n.t("graduate.submission.acknowledge.initial") %>
+          <%= form.label :sig_5, I18n.t("graduate.submission.acknowledge.point5", degree_type: @degree_type)  %>
+          <%= form.input :sig_5, label: false, placeholder: I18n.t("graduate.submission.acknowledge.initial") %>
+          <%= form.label :sig_5, I18n.t("graduate.submission.acknowledge.point6")  %>
+          <%= form.input :sig_6, label: false, placeholder: I18n.t("graduate.submission.acknowledge.initial") %>
+          <%= form.label :sig_7, I18n.t("graduate.submission.acknowledge.point7") %>
+          <%= form.input :sig_7, label: false, placeholder: I18n.t("graduate.submission.acknowledge.initial") %>
           <%= form.button :submit, class: "btn-primary", value: "Submit", disabled: @is_good %>
           <%= link_to "Cancel", author_root_path, class: 'btn btn-light' %>
         </div>

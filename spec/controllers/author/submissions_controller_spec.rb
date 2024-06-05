@@ -30,6 +30,11 @@ RSpec.describe Author::SubmissionsController, type: :controller do
       submission = FactoryBot.create :submission
       expect(get: edit_author_submission_path(submission.id)).to route_to(controller: 'author/submissions', action: 'edit', id: submission.id.to_s)
     end
+
+    it 'redirects to the acknowledge page if the user has not yet viewed it' do
+      submission = FactoryBot.create :submission
+      expect(get: edit_author_submission_path(submission.id)).to route_to(controller: 'author/submissions', action: 'acknolwedge', id: submission.id.to_s)
+    end
   end
 
   describe '#update' do
