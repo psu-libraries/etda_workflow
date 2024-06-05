@@ -1993,6 +1993,136 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     end
   end
 
+  describe '#can_request_extension?' do
+    context "when status is 'collecting program information'" do
+      before { submission.status = 'collecting program information' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'collecting committee'" do
+      before { submission.status = 'collecting committee' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'collecting format review files'" do
+      before { submission.status = 'collecting format review files' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for format review response'" do
+      before { submission.status = 'waiting for format review response' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'collecting final submission files'" do
+      before { submission.status = 'collecting final submission files' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for advisor review'" do
+      before { submission.status = 'waiting for advisor review' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for committee review'" do
+      before { submission.status = 'waiting for committee review' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for head of program review'" do
+      before { submission.status = 'waiting for head of program review' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for final submission response'" do
+      before { submission.status = 'waiting for final submission response' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting for publication release'" do
+      before { submission.status = 'waiting for publication release' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'waiting in final submission on hold'" do
+      before { submission.status = 'waiting in final submission on hold' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'released for publication'" do
+      before { submission.status = 'released for publication', submission.access_level = 'open_access' }
+
+      it "raises an exception" do
+        giver = described_class.new(submission)
+        expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+      end
+    end
+
+    context "when status is 'released for publication metadata only'" do
+      before { submission.status = 'released for publication metadata only', submission.access_level = 'restricted' }
+
+      context 'when metadata was released 3 or more years before release date (meaning it has already had an extension)' do
+        before { submission.released_metadata_at = Time.zone.now.years_ago(3), submission.released_for_publication_at = Time.zone.now }
+        it "raises an exception" do
+          giver = described_class.new(submission)
+          expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        end
+      end
+
+      context 'when metadata was released less than 3 years before release date' do
+        before { submission.released_metadata_at = Time.zone.now.years_ago(1), submission.released_for_publication_at = Time.zone.now }
+        it "does not raise an exception" do
+          giver = described_class.new(submission)
+          expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        end
+      end
+    end
+  end
+
   describe '#can_unrelease_for_publication?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }

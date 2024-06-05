@@ -74,6 +74,13 @@ RSpec.describe Author::SubmissionsController, type: :controller do
     end
   end
 
+  describe '#autorelease_extension' do
+    it 'routes to author/submissions/[:submission_id]/extension' do
+      submission = FactoryBot.create :submission
+      expect(get: author_submission_autorelease_extension_path(submission.id)).to route_to(controller: 'author/submissions', action: 'autorelease_extension', submission_id: submission.id.to_s)
+    end
+  end
+
   describe '#send_email_reminder' do
     it 'routes to author/submissions/[:submission_id]/send_email_reminder' do
       submission = FactoryBot.create :submission
