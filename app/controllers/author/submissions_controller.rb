@@ -1,5 +1,5 @@
 class Author::SubmissionsController < AuthorController
-  before_action :find_submission, except: [:index, :new, :create, :acknowledge, :acknowledge_update, :published_submissions_index]
+  before_action :find_submission, except: [:index, :new, :create, :acknowledge_update, :published_submissions_index]
 
   def index
     @view = Author::SubmissionsIndexView.new(@author)
@@ -35,6 +35,8 @@ class Author::SubmissionsController < AuthorController
 
   def acknowledge
     @ack = AcknowledgmentSignatures.new
+    deg = DegreeType.find_by(id: @submission.degree_type.id).name
+    @degree_type = deg == 'Dissertation' ? 'dissertation' : 'thesis'
   end
 
   def acknowledge_update
@@ -45,11 +47,11 @@ class Author::SubmissionsController < AuthorController
     redirect_to edit_author_submission_path(@submission)
     Rails.logger.debug 'Oops! You may have submitted invalid program information data. Please check that your program information is correct.'
   rescue ActiveModel::ValidationError
-    flash.now[:alert] = 'Please initial for every statement.'
-    render :acknowledge
+    flash[:alert] = 'Please initial for every statement.'
+    redirect_to author_submission_acknowledge_path
   rescue ActiveRecord::RecordInvalid
     flash[:alert] = 'Oops! You may have submitted invalid program information data. Please check that your program information is correct.'
-    render :acknowledge
+    redirect_to author_submission_acknowledge_path
   end
 
   def edit

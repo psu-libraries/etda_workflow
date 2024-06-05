@@ -12,6 +12,15 @@ en:
         failure: There was a problem submitting your Graduate School eTD.
       new: If you would like to start a new thesis or dissertation, you may do so by clicking the following link.
       descriptor: 'thesis or dissertation'
+      acknowledge:
+        point1: 'I have read the %{degree_type} handbook and understand how to format my %{degree_type} to align with Graduate School Policy.'
+        point2:  I will reference the Graduate School's %{degree_type} Template.
+        point3: 'I will ensure that the faculty titles of my committee members are listed correctly on the committee page of my %{degree_type}.'
+        point4: 'I consulted with my advisor and we both have agreed that I did/did not utilize federal funding.'
+        point5: 'I know if it is the Program Head or Director of Graduate Studies of my program who needs to approve my %{degree_type}. If I am not sure, I will consult with my program.'
+        point6: 'I acknowledge that I cannot fix typos or make additional corrections after I submit my final submission.'
+        point7: 'I acknowledge that I cannot make committee changes after the final is submitted.'
+        initial: 'Initial here'
     partner:
       abbrev: graduate
       name: Graduate School
