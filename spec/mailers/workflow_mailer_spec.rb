@@ -240,7 +240,7 @@ RSpec.describe WorkflowMailer do
       expect(email.to).to eq([author.psu_email_address, author.alternate_email_address])
     end
 
-    it "tells the author that the submission has been released" do
+    it "asks the author if they want to extend their restriction" do
       expect(email.body).to match(/if you would like to extend your restriction/i)
     end
   end
