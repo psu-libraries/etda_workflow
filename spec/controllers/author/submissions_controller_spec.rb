@@ -12,28 +12,74 @@ RSpec.describe Author::SubmissionsController, type: :controller do
   describe '#new' do
     it 'initializes a new submission for an author' do
       expect(get: new_author_submission_path).to route_to(controller: 'author/submissions', action: 'new')
-      # get :new
-      # expect(response).to redirect_to('')
     end
   end
 
   describe '#create' do
     it 'creates a new submission for an author' do
-      # submission = FactoryBot.create :submission, :collecting_committee
       expect(post: author_submissions_path).to route_to(controller: 'author/submissions', action: 'create')
-      # get :post, params: { submission:  submission.attributes }
     end
   end
 
   describe '#edit' do
-    it 'creates a new submission for an author' do
-      submission = FactoryBot.create :submission
+    it 'routes to the edit page' do
+      submission = FactoryBot.create(:submission, acknowledgment_page_viewed_at: nil)
       expect(get: edit_author_submission_path(submission.id)).to route_to(controller: 'author/submissions', action: 'edit', id: submission.id.to_s)
     end
 
-    it 'redirects to the acknowledge page if the user has not yet viewed it' do
-      submission = FactoryBot.create :submission
-      expect(get: edit_author_submission_path(submission.id)).to route_to(controller: 'author/submissions', action: 'acknolwedge', id: submission.id.to_s)
+    if current_partner.graduate?
+      it 'redirects to the acknowledge page if acknowledgement page has not been viewed' do
+        oidc_authorize_author
+        submission = FactoryBot.create(:submission, acknowledgment_page_viewed_at: nil)
+        params = { id: submission.id.to_s }
+        allow(controller).to receive(:find_submission).and_return(submission)
+        expect(get(:edit, params:)).to redirect_to author_submission_acknowledge_path(submission.id)
+      end
+    end
+  end
+
+  describe '#acknowledge' do
+    if current_partner.graduate?
+      it 'follows correct route' do
+        submission = FactoryBot.create(:submission, acknowledgment_page_viewed_at: nil)
+        expect(get: author_submission_acknowledge_path(submission.id)).to route_to(controller: 'author/submissions', action: 'acknowledge', submission_id: submission.id.to_s)
+      end
+    end
+  end
+
+  describe '#acknowledge_update' do
+    if current_partner.graduate?
+      it 'follows correct route' do
+        submission = FactoryBot.create(:submission, acknowledgment_page_viewed_at: nil)
+        expect(patch: author_submission_acknowledge_update_path(submission.id)).to route_to(controller: 'author/submissions', action: 'acknowledge_update', submission_id: submission.id.to_s)
+      end
+
+      it 'redirects back to acknowledge page with an alert if the user does not initial for every statement' do
+        oidc_authorize_author
+        submission = FactoryBot.create(:submission, acknowledgment_page_viewed_at: nil)
+        params = { acknowledgment_signatures: { sig_1: '', sig_2: '', sig_3: '3', sig_4: '4', sig_5: '5', sig_6: '6', sig_7: '7' }, submission_id: submission.id.to_s }
+        expect(patch(:acknowledge_update, params:)).to redirect_to author_submission_acknowledge_path(submission.id)
+        expect(flash[:alert]).to be_present
+      end
+
+      it 'redirects back to edit page if the user submits valid program information data' do
+        oidc_authorize_author
+        submission = FactoryBot.create(:submission, acknowledgment_page_viewed_at: nil)
+        params = { acknowledgment_signatures: { sig_1: '1', sig_2: '2', sig_3: '3', sig_4: '4', sig_5: '5', sig_6: '6', sig_7: '7' }, submission_id: submission.id.to_s }
+        allow(controller).to receive(:find_submission).and_return(submission)
+        expect(patch(:acknowledge_update, params:)).to redirect_to edit_author_submission_path(submission.id)
+        expect(flash[:alert]).not_to be_present
+      end
+
+      it 'save the updated submission if the user submits valid program information data' do
+        oidc_authorize_author
+        submission = FactoryBot.create(:submission, acknowledgment_page_viewed_at: nil)
+        params = { acknowledgment_signatures: { sig_1: '1', sig_2: '2', sig_3: '3', sig_4: '4', sig_5: '5', sig_6: '6', sig_7: '7' }, submission_id: submission.id.to_s }
+        allow(controller).to receive(:find_submission).and_return(submission)
+        patch(:acknowledge_update, params:)
+        expect(submission.reload.acknowledgment_page_viewed_at).not_to be_nil
+        expect(submission).to be_persisted
+      end
     end
   end
 

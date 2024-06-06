@@ -45,7 +45,6 @@ class Author::SubmissionsController < AuthorController
     @submission = find_submission
     @submission.update!(author_edit: false, acknowledgment_page_viewed_at: DateTime.now)
     redirect_to edit_author_submission_path(@submission)
-    Rails.logger.debug 'Oops! You may have submitted invalid program information data. Please check that your program information is correct.'
   rescue ActiveModel::ValidationError
     flash[:alert] = 'Please initial for every statement.'
     redirect_to author_submission_acknowledge_path
