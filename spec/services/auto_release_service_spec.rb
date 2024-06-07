@@ -9,15 +9,21 @@ RSpec.describe AutoReleaseService do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.days_ago(1),
                         released_metadata_at: Time.zone.today.years_ago(2),
-                        access_level: 'restricted'
+                        access_level: 'restricted_to_institution'
     end
     let!(:sub2) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.days_ago(1),
                         released_metadata_at: Time.zone.today.years_ago(1),
-                        access_level: 'restricted'
+                        access_level: 'restricted_to_institution'
     end
     let!(:sub3) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.days_ago(1),
+                        released_metadata_at: Time.zone.today.years_ago(2),
+                        access_level: 'restricted_to_institution'
+    end
+    let!(:sub4) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.days_ago(1),
                         released_metadata_at: Time.zone.today.years_ago(2),
@@ -37,19 +43,29 @@ RSpec.describe AutoReleaseService do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_month,
                         released_metadata_at: Time.zone.today.years_ago(1),
-                        author_release_warning_sent_at: nil
+                        author_release_warning_sent_at: nil,
+                        access_level: 'restricted_to_institution'
     end
     let!(:sub2) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_month,
                         released_metadata_at: Time.zone.today.years_ago(1),
-                        author_release_warning_sent_at: one_week_ago
+                        author_release_warning_sent_at: one_week_ago,
+                        access_level: 'restricted_to_institution'
     end
     let!(:sub3) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_week,
                         released_metadata_at: Time.zone.today.years_ago(1),
-                        author_release_warning_sent_at: nil
+                        author_release_warning_sent_at: nil,
+                        access_level: 'restricted_to_institution'
+    end
+    let!(:sub4) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.next_month,
+                        released_metadata_at: Time.zone.today.years_ago(1),
+                        author_release_warning_sent_at: nil,
+                        access_level: 'restricted'
     end
     let(:one_week_ago) { Time.zone.today.end_of_day.last_week }
 

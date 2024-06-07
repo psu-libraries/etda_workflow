@@ -105,19 +105,19 @@ RSpec.describe Submission, type: :model do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.days_ago(1),
                         released_metadata_at: Time.zone.today.years_ago(2),
-                        access_level: 'restricted'
+                        access_level: 'restricted_to_institution'
     end
     let!(:sub2) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.days_ago(1),
                         released_metadata_at: Time.zone.today.years_ago(1),
-                        access_level: 'restricted'
+                        access_level: 'restricted_to_institution'
     end
     let!(:sub3) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_week,
                         released_metadata_at: Time.zone.today.years_ago(2),
-                        access_level: 'restricted'
+                        access_level: 'restricted_to_institution'
     end
     let!(:sub4) do
       FactoryBot.create :submission,
@@ -135,17 +135,20 @@ RSpec.describe Submission, type: :model do
     let!(:sub1) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_month,
-                        released_metadata_at: Time.zone.today.years_ago(1)
+                        released_metadata_at: Time.zone.today.years_ago(1),
+                        access_level: 'restricted_to_institution'
     end
     let!(:sub2) do
       FactoryBot.create :submission,
                         released_metadata_at: Time.zone.today.years_ago(1),
-                        author_release_warning_sent_at: Time.zone.today.last_week
+                        author_release_warning_sent_at: Time.zone.today.last_week,
+                        access_level: 'restricted_to_institution'
     end
     let!(:sub3) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_month,
-                        released_metadata_at: Time.zone.today.years_ago(3)
+                        released_metadata_at: Time.zone.today.years_ago(3),
+                        access_level: 'restricted_to_institution'
     end
     let!(:sub4) do
       FactoryBot.create :submission,
