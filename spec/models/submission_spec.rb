@@ -131,7 +131,7 @@ RSpec.describe Submission, type: :model do
     end
   end
 
-  describe '.notify_author_of_upcoming_release' do
+  describe '.release_warning_needed?' do
     let!(:sub1) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_month,
@@ -157,7 +157,7 @@ RSpec.describe Submission, type: :model do
     end
 
     it 'returns submissions that are ready for autorelease' do
-      expect(described_class.notify_author_of_upcoming_release).to contain_exactly(sub1)
+      expect(described_class.release_warning_needed?).to contain_exactly(sub1)
     end
   end
 
