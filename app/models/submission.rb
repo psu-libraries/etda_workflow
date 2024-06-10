@@ -147,11 +147,11 @@ class Submission < ApplicationRecord
                                            .where(access_level: 'restricted_to_institution')
                             }
   scope :release_warning_needed?, -> {
-                                              where('released_metadata_at >= ?', Time.zone.today.years_ago(2).end_of_day)
-                                                .where('released_for_publication_at <= ?', Time.zone.today.next_month)
-                                                .where(author_release_warning_sent_at: nil)
-                                                .where(access_level: 'restricted_to_institution')
-                                            }
+                                    where('released_metadata_at >= ?', Time.zone.today.years_ago(2).end_of_day)
+                                      .where('released_for_publication_at <= ?', Time.zone.today.next_month)
+                                      .where(author_release_warning_sent_at: nil)
+                                      .where(access_level: 'restricted_to_institution')
+                                  }
 
   def advisor
     CommitteeMember.advisors(self).first
