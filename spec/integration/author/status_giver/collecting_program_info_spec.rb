@@ -89,10 +89,39 @@ RSpec.describe 'When Collecting Program Information status', type: :integration,
       select degree.description, from: 'Degree'
       find_button("Save Thesis or Dissertation Title").click if current_partner.graduate?
       find_button('Save Program Information').click unless current_partner.graduate?
-      new_submission = Submission.where(title: 'A unique test title').first
+      new_submission = author.submissions.first
       expect(new_submission.status).to eq 'collecting committee'
       expect(new_submission.program.id).to eq(Program.where(name: 'Information Sciences and Technology').first.id)
+      if current_partner.honors?
+        visit "/author/submissions/#{new_submission.id}/edit"
+        select second_program.name, from: current_partner.program_label.to_s
+        second_program_id = Program.where(name: second_program.name).first.id
+        click_on "Update Program Information"
+        submission = author.submissions.first.reload
+        expect(submission.program.id).to eq(second_program_id)
+      end
+    end
+  end
+
+  describe "when I sign the acknowledgment page" do
+    before do
+      oidc_authorize_author
+    end
+
+    let(:author) { current_author }
+
+    it "page progresses to edit page" do
+      skip 'graduate only' unless current_partner.graduate?
+      second_program = FactoryBot.create :program, name: 'A different program'
+      new_submission = FactoryBot.create(:submission, :collecting_committee, author:, acknowledgment_page_viewed_at: nil)
       visit "/author/submissions/#{new_submission.id}/edit"
+      expect(page).to have_content('I acknowledge that')
+      fields = all('input[type="text"]')
+      fields.each do |field|
+        field.set('JLE')
+      end
+      find_button('Submit').click
+      expect(page).to have_content("Update #{new_submission.degree_type} Title")
       select second_program.name, from: current_partner.program_label.to_s
       second_program_id = Program.where(name: second_program.name).first.id
       click_on "Update #{new_submission.degree_type} Title" if current_partner.graduate?

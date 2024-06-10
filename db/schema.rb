@@ -303,6 +303,7 @@ ActiveRecord::Schema.define(version: 2024_07_02_191344) do
     t.string "degree_checkout_status"
     t.integer "candidate_number"
     t.datetime "acknowledgment_page_viewed_at"
+    t.datetime "author_release_warning_sent_at"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"
