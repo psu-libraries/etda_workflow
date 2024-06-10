@@ -158,6 +158,16 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
+        nonvoting_approval_reminder:
+          message: |
+                    Dear %{committee_member_name},              
+                    This will be your final opportunity to vote on %{full_name}'s final work. If you do not vote 
+                    within seven days, your name will be removed from the student’s work.
+
+                    %{review_url}
+        
+                    Thank You,
+                    Office of Theses and Dissertations
         seventh_day_to_chairs:
           message: |
                     The committee for %{author_name}'s %{degree_type} has not completed its review after 7 days.
