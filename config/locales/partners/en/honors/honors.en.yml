@@ -25,6 +25,7 @@ en:
       thesis_guide: 'https://www.shc.psu.edu/academic/thesis/submission.cfm'
       document_title_label: 'Title'
       url_slug: 'honors'
+      not_allowed_alert: You are not allowed to visit that page at this time, please contact your administrator at SHCAcademics@psu.edu
       email:
         url:  'https://honors-explore.libraries.psu.edu'
         address: SHCAcademics@psu.edu

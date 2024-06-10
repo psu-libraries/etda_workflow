@@ -24,6 +24,7 @@ en:
       thesis_guide: 'https://harrisburg.psu.edu/science-engineering-technology/ee-eet/master-electrical-engineering-msee'
       document_title_label: 'Please enter your Final Paper Title'
       url_slug: 'sset'
+      not_allowed_alert: You are not allowed to visit that page at this time, please contact your administrator
       email:
         url: 'https://sset-explore.libraries.psu.edu'
         address: sset@psu.edu

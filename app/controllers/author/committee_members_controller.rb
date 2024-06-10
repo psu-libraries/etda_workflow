@@ -7,7 +7,7 @@ class Author::CommitteeMembersController < AuthorController
     render :form
   rescue SubmissionStatusGiver::AccessForbidden => e
     redirect_to author_root_path
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator' unless e
+    flash[:alert] = t("#{current_partner.id}.partner.not_allowed_alert") unless e
     flash[:alert] = e if e
   end
 
@@ -22,7 +22,7 @@ class Author::CommitteeMembersController < AuthorController
     flash[:alert] = e.record.errors.collect(&:message).join(" ")
     render :new
   rescue SubmissionStatusGiver::AccessForbidden
-    flash.now[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    flash.now[:alert] = t("#{current_partner.id}.partner.not_allowed_alert")
     redirect_to author_root_path
   end
 
@@ -30,7 +30,7 @@ class Author::CommitteeMembersController < AuthorController
     status_giver.can_update_committee?
     render :form
   rescue SubmissionStatusGiver::AccessForbidden
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    flash[:alert] = t("#{current_partner.id}.partner.not_allowed_alert")
     redirect_to author_root_path
   end
 
@@ -49,7 +49,7 @@ class Author::CommitteeMembersController < AuthorController
     flash[:alert] = e.record.errors.collect(&:message).join(" ")
     render :form
   rescue SubmissionStatusGiver::AccessForbidden
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    flash[:alert] = t("#{current_partner.id}.partner.not_allowed_alert")
     redirect_to author_root_path
   rescue LionpathCommitteeCheckService::IncompleteLionpathCommittee => e
     flash[:alert] = e.to_s.html_safe

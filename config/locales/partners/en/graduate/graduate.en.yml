@@ -26,6 +26,7 @@ en:
       document_title_label: 'Please enter your Thesis or Dissertation Title'
       url_slug: 'etda'
       lionpath_alert: More than 10% of LionPATH %{resource} were tagged for deletion at %{datetime_now}.  The deletion process was not completed because of this.  This could indicate that there was an issue with the LionPATH import or one of the CSVs used during the import.
+      not_allowed_alert: You are not allowed to visit that page at this time, please contact your administrator at gradthesis@psu.edu
       email:
         url: 'https://etda-explore.libraries.psu.edu'
         address: gradthesis@psu.edu
