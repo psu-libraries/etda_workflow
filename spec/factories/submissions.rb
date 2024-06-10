@@ -144,10 +144,6 @@ FactoryBot.define do
       final_submission_traits
     end
 
-    trait :acknowledge_page_not_viewed do
-      acknowledgment_page_viewed_at { nil }
-    end
-
     after(:create) do |submission|
       create_list(:keyword, 2, submission:)
     end
