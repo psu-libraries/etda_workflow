@@ -1,0 +1,6 @@
+Dear <%= @author.full_name %>,
+
+<%= t( "#{current_partner.id}.partner.email.author_release_warning.message",
+       title: @submission.title,
+       degree_type: @submission.degree_type,
+       url: @extension_url ) %>
