@@ -53,6 +53,6 @@ class Author::SubmissionFormatReviewController < AuthorController
                                          :semester,
                                          :year,
                                          :federal_funding,
-                                         format_review_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy])
+                                         format_review_files_attributes: [:asset, :asset_cache, :submission_id, :is_admin, :id, :_destroy])
     end
 end
