@@ -403,6 +403,10 @@ class Submission < ApplicationRecord
     self[:proquest_agreement_at] = DateTime.now
   end
 
+  def admin_notes?
+    format_review_files.any?(&:is_admin?)
+  end
+
   private
 
     def file_check

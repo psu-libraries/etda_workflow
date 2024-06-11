@@ -3,7 +3,9 @@
 <div class="nested-fields col-sm-8">
   <% if file_fields.object.asset_identifier %>
     <div id="<%= file_fields.object.class_name %>-<%= file_fields.object.id %>" class="form-group uploaded-file-link <%= can_delete ? 'can-delete' : 'cannot-delete' %> ">
-        <%= link_to_remove_association "[delete]", file_fields, id: 'file_delete_link', class: 'text-danger can-toggle-clickability' %>
+        <% unless local_assigns[:no_delete] == true %>
+          <%= link_to_remove_association "[delete]", file_fields, id: 'file_delete_link', class: 'text-danger can-toggle-clickability' %>
+        <% end %>
             <%= link_to "/#{session['user_role']}/files/#{file_fields.object.link_identifier}/#{file_fields.object.id}", class: 'file-link', target: '_blank' do %>
                 <%= file_fields.object.asset_identifier %>
             <% end %>
@@ -11,10 +13,10 @@
     </div>
   <% else %>
     <span class='sr-only'>Select the file you wish to upload using the file browser.</span>
-    <h1> <%= file_fields.object.is_admin.to_s %> </h1>
       <%= file_fields.input :asset, as: :file, label: false %>
       <%= link_to_remove_association "[remove]", file_fields, class: 'text-danger can-toggle-clickability', html: {tabindex: '0'} %>
       <%= file_fields.input :asset_cache, :as => :hidden %>
       <%= file_fields.object.asset_identifier %>
+      <%= file_fields.input :is_admin, as: :hidden %>
   <% end %>
 </div>

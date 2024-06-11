@@ -1,8 +1,8 @@
-<div id="format-review-files" <%= @view.form_section_body('format-review-files') %>>
+<div id="admin-format-review-files" <%= @view.form_section_body('format-review-files') %>>
   <div class="links cocoon-links">
-  <label>Correction Files<span class="required-asterisk">*</span></label>
+  <label> <strong> Format Review Notes – Files </strong> </label>
     <div id="admin-format-review-file-fields">
-      <p> Authors will see these files containing corrections, but they will not be included with the final submission.</p>
+      <p> Any files containing corrections may be uploaded here. They will not be included with the final submission.</p>
       <%= f.simple_fields_for :format_review_files do |format_review_file| %>
         <% if format_review_file.object.is_admin? %>
           <%= render 'admin/submissions/file_fields', file_fields: format_review_file %>
