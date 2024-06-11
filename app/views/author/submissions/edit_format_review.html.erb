@@ -18,6 +18,21 @@
             </div>
           </div>
       <% end %>
+      
+      <% if @submission.admin_notes? %>
+      <div id="format-review-notes" class="col-sm-12">
+        <div class="col-xs-12">
+          <label> Please see the attached document(s) for corrections. </label>
+        <%= f.simple_fields_for :format_review_files do |format_review_file| %>
+          <% if format_review_file.object.is_admin? %>
+            <%= render '/author/submissions/file_fields', file_fields: format_review_file, no_delete: true %>
+          <% end %>
+        <% end %>
+        </div>
+      </div>
+      <% end %>
+
+
       <%= render partial: '/author/submissions/title_and_checkbox', locals: {f: f} %>
       <%= render partial: '/author/submissions/semester_year', locals: {f: f} %>
       <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} %>
@@ -26,7 +41,9 @@
       <div id="format-review-file-fields" class="form-group" aria-labelled-by="h1">
         <%= render partial: 'author/submissions/format_review_file_label' %>
         <%= f.simple_fields_for :format_review_files do |format_review_file| %>
-          <%= render '/author/submissions/file_fields', file_fields: format_review_file %>
+          <% unless format_review_file.object.is_admin? %>
+            <%= render '/author/submissions/file_fields', file_fields: format_review_file %>
+          <% end %>
         <% end %>
       </div>
       <div class="links cocoon-links">

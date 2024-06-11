@@ -15,6 +15,13 @@ class FinalSubmissionFile < ApplicationRecord
   # delete the file from the correct path
   before_destroy :delete_file
 
+  # rubocop:disable Naming/PredicateName
+  # This method name matches the field of the Format Review File, which allows file_fields to be used for both
+  def is_admin
+    false
+  end
+  # rubocop:enable Naming/PredicateName
+
   def class_name
     self.class.to_s.underscore.dasherize
   end

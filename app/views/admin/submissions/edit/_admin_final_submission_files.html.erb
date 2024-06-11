@@ -1,0 +1,23 @@
+<div id="admin-format-review-files" <%= @view.form_section_body('final-submission-files') %>>
+    <div class="links cocoon-links">
+    <label> <strong> Final Submission Notes – Files </strong> </label>
+      <div id="admin-final-submission-file-fields">
+        <p> Any files containing corrections may be uploaded here. They will not be visible on Explore.</p>
+        <%= f.simple_fields_for :final_submission_files do |final_submission_file| %>
+          <% if final_submission_file.object.is_admin? %>
+            <%= render 'admin/submissions/file_fields', file_fields: format_review_file %>
+          <% end %>
+    <% end %>
+      </div>
+      <%= link_to_add_association f, :final_submission_files,
+                                  class: 'btn btn-info btn-sm can-toggle-clickability',
+                                        data: { association_insertion_node: '#admin-final-submission-file-fields', association_insertion_method: 'append' },
+                                        #wrap_object: Proc.new { |f| f.is_admin = true; f },
+                                        form_name: 'file_fields',
+                                        partial: 'file_fields' do %>
+        <span class="fa fa-plus"></span> Additional File
+      <% end %>
+    </div>
+  </div>
+  
+  
