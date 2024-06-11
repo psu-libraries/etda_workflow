@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_03_141826) do
+ActiveRecord::Schema.define(version: 2024_06_11_142421) do
 
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -202,6 +202,7 @@ ActiveRecord::Schema.define(version: 2024_06_03_141826) do
     t.integer "legacy_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_admin"
     t.index ["legacy_id"], name: "index_format_review_files_on_legacy_id"
     t.index ["submission_id"], name: "format_review_files_submission_id_fk"
   end
@@ -294,6 +295,8 @@ ActiveRecord::Schema.define(version: 2024_06_03_141826) do
     t.string "academic_program"
     t.string "degree_checkout_status"
     t.integer "candidate_number"
+    t.datetime "acknowledgment_page_viewed_at"
+    t.datetime "author_release_warning_sent_at"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"
