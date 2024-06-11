@@ -1,0 +1,22 @@
+<div id="format-review-files" <%= @view.form_section_body('format-review-files') %>>
+  <div class="links cocoon-links">
+  <label>Correction Files<span class="required-asterisk">*</span></label>
+    <div id="admin-format-review-file-fields">
+      <p> Authors will see these files containing corrections, but they will not be included with the final submission.</p>
+      <%= f.simple_fields_for :format_review_files do |format_review_file| %>
+        <% if format_review_file.object.is_admin? %>
+          <%= render 'admin/submissions/file_fields', file_fields: format_review_file %>
+        <% end %>
+  <% end %>
+    </div>
+    <%= link_to_add_association f, :format_review_files,
+                                class: 'btn btn-info btn-sm can-toggle-clickability',
+                                      data: { association_insertion_node: '#admin-format-review-file-fields', association_insertion_method: 'append' },
+                                      wrap_object: Proc.new { |f| f.is_admin = true; f },
+                                      form_name: 'file_fields',
+                                      partial: 'file_fields' do %>
+      <span class="fa fa-plus"></span> Additional File
+    <% end %>
+  </div>
+</div>
+
