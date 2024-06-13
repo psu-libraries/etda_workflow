@@ -24,6 +24,7 @@ module FinalSubmissionParams
                                      :is_voting, :federal_funding_used, :_destroy],
       format_review_files_attributes: [:asset, :asset_cache, :id, :_destroy],
       final_submission_files_attributes: [:asset, :asset_cache, :id, :_destroy],
+      admin_feedback_files_attributes: [:asset, :asset_cache, :submission_id, :feedback_type, :id, :_destroy]
       keywords_attributes: [:word, :id, :_destroy],
       invention_disclosures_attributes: [:id, :submission_id, :id_number, :_destroy]
     )

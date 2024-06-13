@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_11_142421) do
+ActiveRecord::Schema.define(version: 2024_06_13_195728) do
+
+  create_table "admin_feedback_files", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "submission_id"
+    t.text "asset"
+    t.string "feedback_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
@@ -202,7 +210,6 @@ ActiveRecord::Schema.define(version: 2024_06_11_142421) do
     t.integer "legacy_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "is_admin"
     t.index ["legacy_id"], name: "index_format_review_files_on_legacy_id"
     t.index ["submission_id"], name: "format_review_files_submission_id_fk"
   end
