@@ -9,7 +9,7 @@
     <h2>My Submissions</h2>
     <% if admin? && current_partner.graduate? %>
       <p class="row">
-        <%= render partial: 'admin_submission_buttons'  %>
+        <%= render partial: 'admin_submission_buttons' %>
       </p>
     <% end %>
     <div class="alert alert-info col-sm-10">
@@ -20,6 +20,6 @@
 
 <div id="submissions" class="row">
   <div class="col-sm-8 submission">
-    <%= render 'progress_indicator_preview'%>
+    <%= render 'progress_indicator_preview' %>
   </div>
 </div>

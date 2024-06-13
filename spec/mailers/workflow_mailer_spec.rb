@@ -455,7 +455,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "has body" do
-      expect(email.body.raw_source).to eq("Verify Files\r\n\r\nMisplaced files found.")
+      expect(email.body.raw_source).to eq("Verify Files\r\n\r\nMisplaced files found.\r\n")
     end
   end
 

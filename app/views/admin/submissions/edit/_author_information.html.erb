@@ -4,17 +4,17 @@
     <div class="col-xs-12 col-sm-6">
       <p>
         <%= render partial: 'admin/shared/confidential_hold_information' if @view.author.confidential_hold? %>
-        <%= @view.author_full_name.html_safe %><br />
+        <%= @view.author_full_name.html_safe %><br>
         <%= @view.address.html_safe %>
       </p>
     </div>
     <div class="col-xs-12 col-sm-6">
       <p>
         <div class="float-right"><strong>PSU Id: </strong><%= @view.author.psu_idn || 'N/A' %></div>
-        <strong>Access Id: </strong><%= @view.author.access_id %><br />
-        <strong>Phone:</strong> <%= @view.author_phone_number %> <br />
-        <strong>Alternate email:</strong> <%= @view.author_alternate_email_address %><br />
-        <strong>Penn State email:</strong> <%= @view.author_psu_email_address %><br />
+        <strong>Access Id: </strong><%= @view.author.access_id %><br>
+        <strong>Phone:</strong> <%= @view.author_phone_number %> <br>
+        <strong>Alternate email:</strong> <%= @view.author_alternate_email_address %><br>
+        <strong>Penn State email:</strong> <%= @view.author_psu_email_address %><br>
       </p>
     </div>
     <div class="col-sm-12">

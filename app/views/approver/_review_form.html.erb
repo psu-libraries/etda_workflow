@@ -1,10 +1,10 @@
 <div>
   <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
-    <fieldset <%= @review_complete ? 'disabled' : ''%> >
+    <fieldset <%= @review_complete ? 'disabled' : '' %>>
       <strong>Files I need to review:</strong>
       <div id="file_links">
-        <%=raw @most_relevant_file_links %></div>
-      <br/>
+        <%= raw @most_relevant_file_links %></div>
+      <br>
       <p>I accept and approve <%= @author.full_name %>'s <%= @submission.degree.degree_type.name.to_s.downcase %> and agree to distribution as indicated by the access level.</p>
       <div class="col-sm-8">
       <%= f.input :status, as: :radio_buttons,

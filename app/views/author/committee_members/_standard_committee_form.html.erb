@@ -4,7 +4,7 @@
 <% if current_partner.graduate? %>
   <p><span class="text-info"><strong>Notice:</strong></span> <%= t("#{current_partner.id}.committee.list.#{@submission.degree_type.slug}.notice").html_safe %></p>
 <% end %>
-<br/>
+<br>
 <div class="col-sm-11 content-main">
   <%= simple_form_for @submission,
                         url:  author_submission_committee_members_path(@submission) do |submission_form| %>
@@ -27,8 +27,7 @@
       <div class="col-xs-12 col-xs-10 col-sm-9">
         <%= submission_form.button :submit, class: "btn-primary", value: "Save and Continue Editing" %>
         <%= submission_form.button :submit, class: "btn-primary btn-success", value: "Save and Continue Submission" %>
-        <%= link_to "Cancel", author_root_path, class: 'btn btn-light'%>
+        <%= link_to "Cancel", author_root_path, class: 'btn btn-light' %>
       </div>
   <% end %>
   </div>
-

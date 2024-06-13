@@ -6,10 +6,9 @@
                         when :alert   then "alert-danger"
                         when :error   then "alert-danger"
                         else "alert-#{type}"
-                      end
-    -%>
+                      end -%>
     <% if flash[type] %>
-      <div id='alert-message' class="alert <%=alert_class %>"><%= flash[type] %>
+      <div id='alert-message' class="alert <%= alert_class %>"><%= flash[type] %>
         <button type="button" class="close" data-dismiss="alert" aria-label="close message">
           <span aria-hidden="true">&times;</span>
         </button>

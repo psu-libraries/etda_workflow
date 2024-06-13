@@ -4,7 +4,7 @@
 
     <div class="submission_info">
       <p>
-        <div><strong>Title: </strong><%=@submission.title%></div>
+        <div><strong>Title: </strong><%= @submission.title %></div>
         <div><strong>Author: </strong><%= @author.full_name || 'N/A' %></div>
         <div><strong>PSU Id: </strong><%= @author.psu_idn || 'N/A' %></div>
         <div><strong>Access Id: </strong><%= @author.access_id %></div>
@@ -14,14 +14,14 @@
       </p>
     </div>
     <strong>Associated Files:</strong>
-    <div id="file_links"><%=raw @most_relevant_file_links %></div>
-    </br>
+    <div id="file_links"><%= raw @most_relevant_file_links %></div>
+    <br>
     <% if @submission.current_access_level.current_access_level.include?('open') %>
-      <div class="access-level-open"><strong>Access Level - </strong> <%=@submission.current_access_level.label %></div>
+      <div class="access-level-open"><strong>Access Level - </strong> <%= @submission.current_access_level.label %></div>
     <% else %>
-      <div class="access-level-warning"><strong>Access Level - </strong> <%=@submission.current_access_level.label %></div>
+      <div class="access-level-warning"><strong>Access Level - </strong> <%= @submission.current_access_level.label %></div>
     <% end %>
-    </br>
+    <br>
     <div class="submission_info">
       <div><strong>Federal Funding Used: </strong><%= @submission.federal_funding ? 'Yes' : 'No' %></div>
       <% approval_status = ApprovalStatus.new(@submission) %>
@@ -38,7 +38,7 @@
       <div class="col-xs-12 col-sm-12">
         <h3>Committee Member Reviews</h3>
       </div>
-      <br />
+      <br>
       <table id="committee_member_table_audit" class="table">
         <thead>
         <tr>
