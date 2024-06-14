@@ -83,6 +83,7 @@ Rails.application.routes.draw do
 
     get '/files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
     get '/files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
+    get '/files/admin_feedbacks/:id',    to: 'files#download_admin_feedback',    as: :admin_feedback_file
 
     root to: 'submissions#redirect_to_default_dashboard'
   end
@@ -113,6 +114,8 @@ Rails.application.routes.draw do
 
     get '/files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
     get '/files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
+    get '/files/admin_feedbacks/:id', to: 'files#download_admin_feedback',    as: :admin_feedback_file
+
 
     root to: 'submissions#index'
     get '/tips', to: 'authors#technical_tips', as: :technical_tips
