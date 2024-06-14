@@ -49,7 +49,7 @@ RSpec.describe DegreeType, type: :model do
 
     it "returns the proper type and number of committee roles for this degree type" do
       @role_list = []
-      CommitteeRole.all.where(degree_type_id: degree_type_current).each do |r|
+      CommitteeRole.all.where(degree_type_id: degree_type_current).find_each do |r|
         r.num_required.times do |_rr|
           @role_list << r
         end

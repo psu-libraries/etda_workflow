@@ -20,7 +20,7 @@ RSpec.describe "Editing committee member information", type: :integration, js: t
     sleep 1
     within('#committee') do
       within("select#submission_committee_members_attributes_0_committee_role_id") do
-        CommitteeRole.where(degree_type: degree.degree_type).each do |option|
+        CommitteeRole.where(degree_type: degree.degree_type).find_each do |option|
           expect(find("option[value='#{option[:id]}']").text).to eq(option[:name])
         end
       end

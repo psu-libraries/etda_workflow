@@ -1,7 +1,7 @@
 class Admin::AuthorOptOutView
   def author_email_list
     @authors = []
-    Author.all.each do |a|
+    Author.all.find_each do |a|
       next unless a.submissions.count.positive?
 
       author_info = email_contact_info(a)

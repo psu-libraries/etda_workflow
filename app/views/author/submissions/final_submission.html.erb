@@ -58,7 +58,7 @@
     </div>
 
     <% if @submission.restricted_notes.present? %>
-      <div id="restricted-notes" class="review-group"<%= even_odd(@row_count) %>">
+      <div id="restricted-notes" class="review-group"<%= even_odd(@row_count) %> ">
         <h2 class=" h4 ">Justification to Restrict paper to Penn State</h2>
         <p><%= @submission.restricted_notes %></p>
       </div>
