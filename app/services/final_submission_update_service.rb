@@ -17,6 +17,7 @@ class FinalSubmissionUpdateService
   end
 
   def respond_final_submission
+    print '   2 yooo YES this was called TOO'
     msg = ''
     status_giver = SubmissionStatusGiver.new(submission)
     status_giver.can_respond_to_final_submission?
@@ -27,6 +28,7 @@ class FinalSubmissionUpdateService
     elsif update_actions.rejected?
       msg = action_service.final_submission_rejected
     elsif update_actions.record_updated?
+      print ' 4 yooo was this was called '
       msg += action_service.final_submission_updated
     elsif update_actions.rejected_committee?
       msg += action_service.final_rejected_send_committee

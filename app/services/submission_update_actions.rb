@@ -18,6 +18,7 @@ class SubmissionUpdateActions
   end
 
   def record_updated?
+    print  '  3 damm dood this TOO'
     return true if params[:update_format_review] || params[:update_final] || params[:update]
 
     false

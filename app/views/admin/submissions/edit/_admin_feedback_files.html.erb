@@ -1,7 +1,7 @@
 <div id="admin-feedback-files">
   <div class="links cocoon-links">
-  <label> <strong> Format Review Notes – Files </strong> </label>
-  <div id="admin-feedback-file-fields">
+  <label> <strong> <%= feedback_type.gsub('_', ' ').titleize %> Notes – Files </strong> </label>
+  <div id="admin-feedback-file-fields-<%= feedback_type %>">
     <p> Any files containing corrections may be uploaded here. They will not be included with the final submission.</p>
     <%= f.simple_fields_for :admin_feedback_files do |file| %>
         <%= render 'admin/submissions/file_fields', file_fields: file %>
@@ -9,7 +9,7 @@
   </div>
   <%= link_to_add_association f, :admin_feedback_files,
                               class: 'btn btn-info btn-sm can-toggle-clickability',
-                                    data: { association_insertion_node: '#admin-feedback-file-fields', association_insertion_method: 'append' },
+                                    data: { association_insertion_node: '#admin-feedback-file-fields-' + feedback_type, association_insertion_method: 'append' },
                                     form_name: 'file_fields',
                                     wrap_object: Proc.new{|file| file.feedback_type = feedback_type; file },
                                     partial: '/admin/submissions/file_fields' do %>

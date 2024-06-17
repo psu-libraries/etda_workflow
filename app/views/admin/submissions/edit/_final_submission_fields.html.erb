@@ -58,4 +58,5 @@
   <%= render partial: 'shared/final_submission_confidential_hold_checkbox', locals: {f: f} if @submission.author.confidential? %>
 
   <%= f.input :final_submission_notes, as: :text, label: "Final Submission Notes to Student", input_html: { class: 'can-toggle-editability' } %>
+  <%= render partial: 'admin/submissions/edit/admin_feedback_files', locals: {f: f, feedback_type: 'final-submission'} %>
 </div>
