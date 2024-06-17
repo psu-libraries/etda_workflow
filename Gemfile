@@ -126,8 +126,3 @@ group :test do
   # Stub http requests
   gem 'webmock', '~> 3.14.0'
 end
-
-group :production do
-  # Datadog APM
-  gem 'ddtrace', '~> 0.33'
-end
