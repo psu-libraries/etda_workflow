@@ -405,6 +405,14 @@ class Submission < ApplicationRecord
     self[:proquest_agreement_at] = DateTime.now
   end
 
+  def final_submission_notes?
+    admin_feedback_files.any? { |file| file.feedback_type == 'final-submission' }
+  end
+
+  def format_review_notes?
+    admin_feedback_files.any? { |file| file.feedback_type == 'format-review' }
+  end
+
   private
 
     def file_check

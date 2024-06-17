@@ -19,7 +19,7 @@
           </div>
       <% end %>
       
-      <% if @submission.admin_feedback_files.present? %>
+      <% if @submission.format_review_notes? %>
           <div id="admin-feedback-files" class="col-sm-12">
             <div class="col-xs-12">
               <label>Format Review Notes – Files</label>
