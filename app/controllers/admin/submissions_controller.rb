@@ -138,7 +138,9 @@ class Admin::SubmissionsController < AdminController
   end
 
   def record_final_submission_response
+    print 'yoo YES this was called'
     @submission = Submission.find(params[:id])
+    print 'yoooo check this out' + params.inspect
     update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     response = update_service.respond_final_submission
     redirect_to response[:redirect_path]
