@@ -19,7 +19,6 @@
       <%= render "admin/submissions/edit/standard_committee_form", {f: f } %>
 
       <%= render 'admin/submissions/edit/format_review_files', f: f %>
-
     </div>
     <div class="final">
       <%= render 'admin/submissions/edit/final_submission_fields', f: f if @submission.status_behavior.beyond_waiting_for_format_review_response? %>
