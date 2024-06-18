@@ -45,7 +45,7 @@
       <div id="format-review-file-fields" class="form-group" aria-labelled-by="h1">
         <%= render partial: 'author/submissions/format_review_file_label' %>
         <%= f.simple_fields_for :format_review_files do |format_review_file| %>
-            <%= render '/author/submissions/file_fields', file_fields: format_review_file %>
+          <%= render '/author/submissions/file_fields', file_fields: format_review_file %>
         <% end %>
       </div>
       <div class="links cocoon-links">
