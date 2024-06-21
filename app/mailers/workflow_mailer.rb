@@ -12,7 +12,7 @@ class WorkflowMailer < ActionMailer::Base
   end
 
   def format_review_accepted(submission)
-    raise InvalidPartner unless current_partner.sset? || current_partner.honors?
+    raise InvalidPartner unless current_partner.sset? || current_partner.honors? || current_partner.graduate?
 
     @submission = submission
     @author = submission.author
@@ -23,7 +23,7 @@ class WorkflowMailer < ActionMailer::Base
   end
 
   def format_review_rejected(submission)
-    raise InvalidPartner unless current_partner.sset? || current_partner.honors?
+    raise InvalidPartner unless current_partner.sset? || current_partner.honors? || current_partner.graduate?
 
     @submission = submission
     @author = submission.author

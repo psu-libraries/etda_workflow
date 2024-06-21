@@ -72,6 +72,38 @@ en:
                     115 Kern Building
                     Graduate School
                     University Park, PA  16802
+        final_submission_received:
+          message: |
+                    Thank you for submitting your final %{degree_type}.  It will now be automatically sent to your committee for review and approval.
+                    No action is required of you at this time.
+                    You will be notified once your committee has reviewed and made a decision regarding your document.
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+        format_review_rejected:
+          message: |
+                    To be determined.
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+        format_review_accepted:
+          message: |
+                    To be determined.
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802       
         format_review_received:
           message: |
                     Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with
@@ -89,18 +121,6 @@ en:
                     approved by The Office of Theses and Dissertations.
 
                     Please refer to the deadline calendar on the graduate school website under “Thesis and Dissertation Information”, for all deadlines.
-
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
-                    You may also call (814)865-5448, or send mail to:
-                    Office of Theses and Dissertations
-                    115 Kern Building
-                    Graduate School
-                    University Park, PA  16802
-        final_submission_received:
-          message: |
-                    Thank you for submitting your final %{degree_type}.  It will now be automatically sent to your committee for review and approval.
-                    No action is required of you at this time.
-                    You will be notified once your committee has reviewed and made a decision regarding your document.
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
                     You may also call (814)865-5448, or send mail to:

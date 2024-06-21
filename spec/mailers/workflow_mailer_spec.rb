@@ -86,7 +86,7 @@ RSpec.describe WorkflowMailer do
 
     context "when the current partner does not send format_review emails" do
       it "raises an InvalidPartner Error" do
-        skip 'partner DOES send format_review_accepted emails' unless current_partner.milsch?
+        skip 'current partner SHOULD send format_review_accepted emails' unless current_partner.milsch?
 
         expect { email.deliver_now }.to raise_error WorkflowMailer::InvalidPartner
       end
