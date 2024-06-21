@@ -96,7 +96,7 @@ RSpec.describe WorkflowMailer do
       end
 
       it "tells them that their format review has been accepted" do
-        expect(email.body).to match(/Your format review has been approved!/i)
+        expect(email.body).to match(/Your thesis format review has been approved!/i)
       end
     end
 
@@ -155,7 +155,7 @@ RSpec.describe WorkflowMailer do
       end
 
       it "tells them that their format review has been rejected" do
-        expect(email.body).to match(/Your format review has been rejected./i)
+        expect(email.body).to match(/Your thesis format review has been rejected./i)
       end
     end
 
@@ -222,6 +222,26 @@ RSpec.describe WorkflowMailer do
 
     it "tells the author that the final submission has been approved" do
       expect(email.body).to match(/Congratulations!|has been approved/i)
+    end
+  end
+
+  describe '#final_submission_rejected' do
+    let(:email) { described_class.final_submission_rejected(submission) }
+
+    it "sets an appropriate subject" do
+      expect(email.subject).to match(/has been rejected/i)
+    end
+
+    it "is sent from the partner support email address" do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "is sent to the student's PSU email address" do
+      expect(email.to).to eq([author.psu_email_address])
+    end
+
+    it "tells the author that the final submission has been rejected" do
+      expect(email.body).to match(/has been rejected/i)
     end
   end
 
@@ -362,7 +382,7 @@ RSpec.describe WorkflowMailer do
       expect(email.to).to eq([current_partner.email_list])
     end
 
-    it "tells the author that the final submission has been approved" do
+    it "tells the recipient that the submission has been rejected" do
       expect(email.body).to match(/has rejected their submission/i)
     end
   end
@@ -387,8 +407,12 @@ RSpec.describe WorkflowMailer do
       expect(email.to).to eq(submission.committee_members.pluck(:email)) unless current_partner.graduate?
     end
 
-    it "tells the author that the final submission has been approved" do
-      expect(email.body).to match(/has been rejected by its committee/i)
+    it "tells the author that the submission has been rejected" do
+      if current_partner.honors?
+        expect(email.body).to match(/has been rejected by a member of their committee/i)
+      else
+        expect(email.body).to match(/has been rejected by its committee/i)
+      end
     end
   end
 
