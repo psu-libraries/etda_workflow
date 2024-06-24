@@ -24,6 +24,7 @@ en:
       thesis_guide: 'http://millennium.psu.edu/thesis-information/'
       document_title_label: 'Please enter your Thesis Title'
       url_slug: 'millennium-scholars'
+      not_allowed_alert: You are not allowed to visit that page at this time, please contact your administrator
       email:
         url: 'https://millennium-scholars-explore.libraries.psu.edu'
         address: millennium@psu.edu
