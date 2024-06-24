@@ -113,7 +113,7 @@ RSpec.describe 'When Collecting Program Information status', type: :integration,
     it "page progresses to edit page" do
       skip 'graduate only' unless current_partner.graduate?
       second_program = FactoryBot.create :program, name: 'A different program'
-      new_submission = FactoryBot.create(:submission, :collecting_committee, author:, acknowledgment_page_viewed_at: nil)
+      new_submission = FactoryBot.create(:submission, :collecting_committee, author:, acknowledgment_page_submitted_at: nil)
       visit "/author/submissions/#{new_submission.id}/edit"
       expect(page).to have_content('I acknowledge that')
       fields = all('input[type="text"]')

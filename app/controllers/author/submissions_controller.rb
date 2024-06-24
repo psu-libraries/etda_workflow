@@ -43,7 +43,7 @@ class Author::SubmissionsController < AuthorController
     @ack = AcknowledgmentSignatures.new(acknowledge_params)
     @ack.validate!
     @submission = find_submission
-    @submission.update!(author_edit: false, acknowledgment_page_viewed_at: DateTime.now)
+    @submission.update!(author_edit: false, acknowledgment_page_submitted_at: DateTime.now)
     redirect_to edit_author_submission_path(@submission)
   rescue ActiveModel::ValidationError
     flash[:alert] = 'Please initial for every statement.'
@@ -55,7 +55,7 @@ class Author::SubmissionsController < AuthorController
 
   def edit
     @submission = find_submission
-    redirect_to author_submission_acknowledge_path(@submission) if @submission.acknowledgment_page_viewed_at.nil? && current_partner.graduate?
+    redirect_to author_submission_acknowledge_path(@submission) if @submission.acknowledgment_page_submitted_at.nil? && current_partner.graduate?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_update_program_information?
   rescue SubmissionStatusGiver::AccessForbidden
