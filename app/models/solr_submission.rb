@@ -32,7 +32,7 @@ class SolrSubmission < SimpleDelegator
         degree_type_slug: ['degree_type_slug_ssi'],
         degree_type_name: ['degree_type_ssi'],
         legacy_id: 'db_legacy_id',
-        program_name: ['program_name_tesi', 'program_name_ssi'],
+        program_name_condensed: ['program_name_tesi', 'program_name_ssi'],
         committee_member_names: ['committee_member_name_ssim', 'committee_member_name_tesim'],
         committee_member_emails: ['committee_member_email_ssim'],
         committee_member_and_role: ['committee_member_and_role_tesim', 'committee_member_role_ssim'],
@@ -110,5 +110,9 @@ class SolrSubmission < SimpleDelegator
         files.append(file[:id])
       end
       files
+    end
+
+    def program_name_condensed
+      program_name.gsub(/ \(MS\)| \(PHD\)/, '')
     end
 end
