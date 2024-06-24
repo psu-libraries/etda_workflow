@@ -1,6 +1,6 @@
 <% lionpath_import = f.object.lionpath_updated_at.present? %>
 <% if lionpath_import %>
-<br />
+<br>
 <div class="col-sm-12">
   <div class="alert alert-info">
     <strong class="hint">
@@ -30,7 +30,7 @@
                 collection: Semester::SEMESTERS, prompt: "Please Select",
                 required: true %>
   </div>
-<% else%>
+<% else %>
   <div class="row col-sm-12">
     <%= f.input :semester, label: 'Semester Intending to Graduate',
                 collection: Semester::SEMESTERS, prompt: "Please Select",

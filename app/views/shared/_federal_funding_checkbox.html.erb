@@ -1,5 +1,5 @@
 <div tabindex="0">
-<br />
+<br>
 <strong>Federal Funding Statement</strong>
 <p><%= f.input :federal_funding, as: :radio_buttons,
                label: false, wrapper: :vertical_radio_and_checkboxes,
@@ -11,5 +11,5 @@
                               view of the funding agency. [Please see the Research Terms Clarification to
                               2CFR § 200.328 (pp. 20-21) for the precise language to be used.]", true],
                               ["I confirm that no federal funds were used for the work described in this
-                              #{@submission.degree.degree_type.name.to_s.downcase}.",false]]%>
+                              #{@submission.degree.degree_type.name.to_s.downcase}.",false]] %>
 </div>

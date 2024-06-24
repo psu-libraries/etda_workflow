@@ -10,7 +10,7 @@
       <div id="final-submission-notes" class="row <%= even_odd(@row_count) %>">
         <div class="col-sm-12">
           <h2 class="h4">Final Submission notes from the administrator</h2>
-          <div class="alert alert-<%= @submission.status_behavior.beyond_waiting_for_final_submission_response? ? 'info' : 'warning'  %>">
+          <div class="alert alert-<%= @submission.status_behavior.beyond_waiting_for_final_submission_response? ? 'info' : 'warning' %>">
             <p><%= @submission.final_submission_notes %></p>
           </div>
         </div>
@@ -22,7 +22,7 @@
       <p><%= @submission.title %></p>
     </div>
 
-    <% if @submission.defended_at.present? && current_partner.graduate?  %>
+    <% if @submission.defended_at.present? && current_partner.graduate? %>
     <div id="defended-at" class="review-group <%= even_odd(@row_count) %>">
       <h2 class="h4">Date defended</h2>
       <p><%= @submission.defended_at.strftime('%B %-e, %Y') if @submission.defended_at.present? %></p>
@@ -37,7 +37,7 @@
     <div id="keywords" class="review-group <%= even_odd(@row_count) %>">
       <h2 class="h4">Keywords</h2>
       <% @submission.keywords.each do |keyword| %>
-        <div id="keyword-<%=keyword.id %>">
+        <div id="keyword-<%= keyword.id %>">
           <%= keyword.word %>
         </div>
         <% end %>
@@ -51,29 +51,29 @@
     <div id="final-submission-files" class="review-group <%= even_odd(@row_count) %>">
       <h2 class="h4">Files</h2>
       <% @submission.final_submission_files.each do |file| %>
-        <div id="final-submission-file-<%=file.id%>">
+        <div id="final-submission-file-<%= file.id %>">
           <%= link_to file.asset_identifier, "/author/files/#{file.link_identifier}/#{file.id}",  class: 'file-link', target: '_blank' %>
         </div>
       <% end %>
     </div>
 
     <% if @submission.restricted_notes.present? %>
-      <div id="restricted-notes" class="review-group"<%= even_odd(@row_count) %>">
-        <h2 class="h4">Justification to Restrict paper to Penn State</h2>
+      <div id="restricted-notes" class="review-group"<%= even_odd(@row_count) %> ">
+        <h2 class=" h4 ">Justification to Restrict paper to Penn State</h2>
         <p><%= @submission.restricted_notes %></p>
       </div>
     <% end %>
 
     <% if @submission.access_level.restricted? %>
-        <div id="invention-disclosure" class="review-group <%= even_odd(@row_count) %>">
-          <h2 class="h4">Invention Disclosure Number</h2>
+        <div id=" invention-disclosure " class=" review-group <%= even_odd(@row_count) %> ">
+          <h2 class=" h4 ">Invention Disclosure Number</h2>
           <p><%= invention_disclosure_number(@submission) %></p>
         </div>
     <% end %>
   </div>
 
-  <div class="row" >
-    <div class="col-sm-12 review-group">
+  <div class=" row " >
+    <div class=" col-sm-12 review-group ">
       <p><strong>
         <%= link_to 'Return to dashboard', author_root_path %>
         </strong></p>

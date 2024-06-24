@@ -14,7 +14,7 @@
 
       <%= render 'admin/submissions/edit/author_information' %>
 
-      <%= render "admin/submissions/edit/standard_program_information", {f: f}  %>
+      <%= render "admin/submissions/edit/standard_program_information", {f: f} %>
 
       <%= render "admin/submissions/edit/standard_committee_form", {f: f } %>
 
@@ -32,7 +32,6 @@
     <div>
       <%= link_to "View Printable Audit", admin_submission_audit_path(@submission.id), class: 'link' %>
     </div>
-
 
   <% end %>
 </div>

@@ -10,7 +10,7 @@
 
   <%= f.input :degree_id, label: 'Degree',
               collection: Degree.all, prompt: "Please Select",
-              disabled: disabled_bool, input_html: { class: 'can-toggle-selectability' }  %>
+              disabled: disabled_bool, input_html: { class: 'can-toggle-selectability' } %>
 
   <%= render partial: 'admin/submissions/edit/semester_year_form', locals: {f: f, disabled_bool: disabled_bool} %>
 </div>

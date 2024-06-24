@@ -10,7 +10,7 @@
         <div id="format-review-notes" class="row <%= even_odd(@row_count) %>">
           <div class="col-sm-12">
             <h2 class="h4">Format Review notes from the administrator</h2>
-            <div class="alert alert-<%= @submission.status_behavior.beyond_waiting_for_format_review_response? ? 'info' : 'warning'  %>">
+            <div class="alert alert-<%= @submission.status_behavior.beyond_waiting_for_format_review_response? ? 'info' : 'warning' %>">
               <p><%= @submission.format_review_notes %></p>
             </div>
           </div>
@@ -25,7 +25,7 @@
     <div id="format-review-files" class="review-group <%= even_odd(@row_count) %>">
       <h2 class="h4">Files</h2>
       <% @submission.format_review_files.each do |file| %>
-        <div id="format-review-file-<%=file.id%>">
+        <div id="format-review-file-<%= file.id %>">
           <%= link_to file.asset_identifier, "/author/files/#{file.link_identifier}/#{file.id}",  class: 'file-link', target: '_blank' %>
         </div>
       <% end %>
