@@ -89,9 +89,8 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Submission.first.author).to eq author
     end
 
-
     context 'when Degree in LP data is "M_ED"' do
-      before do 
+      before do
         lionpath_program.import(row_4)
       end
 
