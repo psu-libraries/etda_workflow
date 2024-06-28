@@ -14,7 +14,8 @@ RSpec.describe Lionpath::LionpathCommittee do
   let(:row) do
     { 'Access ID' => 'abc123', 'Last Name' => 'Tester', 'First Name' => 'Test', 'Role' => 'C',
       'Committee' => 'DOCCM', 'Committee Long Descr' => 'Chair of Committee', 'Student ID' => '999999999',
-      'Student Campus ID' => 'def123', 'Suprvsr Nbr' => '932352541' }
+      'Student Campus ID' => 'def123', 'Suprvsr Nbr' => '932352541', 'Special Member First Name' => '',
+      'Special Member Last Name' => '' }
   end
 
   context "when author's submission's year is before 2021" do
@@ -110,7 +111,8 @@ RSpec.describe Lionpath::LionpathCommittee do
     let(:row2) do
       { 'Access ID' => 'mgc25', 'Last Name' => 'Committee', 'First Name' => 'Member', 'Role' => 'S',
         'Committee' => 'DOCCM', 'Committee Long Descr' => 'Special Member', 'Student ID' => '999999999',
-        'Student Campus ID' => 'def123', 'Suprvsr Nbr' => '932352541' }
+        'Student Campus ID' => 'def123', 'Suprvsr Nbr' => '932352541', 'Special Member First Name' => 'Special',
+        'Special Member Last Name' => 'Person' }
     end
 
     context 'when the committee member does not yet exist in the db' do
@@ -118,6 +120,7 @@ RSpec.describe Lionpath::LionpathCommittee do
         expect { lionpath_committee.import(row2) }.to change { submission.committee_members.count }.by 1
         expect(submission.committee_members.last.access_id).to eq 'mgc25'
         expect(submission.committee_members.last.external_to_psu_id).to eq 'mgc25'
+        expect(submission.committee_members.last.name).to eq 'Special Person'
       end
     end
 
