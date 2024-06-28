@@ -16,6 +16,12 @@ class Admin::SubmissionsController < AdminController
   def edit
     @submission = Submission.find(params[:id])
     @view = Admin::SubmissionFormView.new(@submission, session)
+    if @submission.format_review_notes.blank? && !@submission.status_behavior.beyond_waiting_for_format_review_response?
+      @submission.format_review_notes = current_partner.graduate? ? I18n.t('graduate.default_format_review_note') : ''
+    end
+    return unless @submission.final_submission_notes.blank? && !@submission.status_behavior.beyond_collecting_final_submission_files?
+
+    @submission.final_submission_notes = current_partner.graduate? ? I18n.t('graduate.default_final_submission_note') : ''
   end
 
   def update
