@@ -27,6 +27,17 @@ RSpec.describe Approver::ApproversController, type: :controller do
       get :index
       expect(CommitteeMember.find(committee_member1.id).approver_id).to eq approver.id
       expect(CommitteeMember.find(committee_member2.id).approver_id).to eq approver.id
+      byebug
+    end
+
+    context 'when format is something other than html' do
+      it 'does not link committee member records' do
+        committee_member1 = FactoryBot.create :committee_member, access_id: 'approverflow'
+        get :index, params: { format: :json }
+        expect(committee_member1.approver_id).to eq nil
+        expect(CommitteeMember.find(committee_member1.id).approver_id).to eq nil
+        expect(Approver.find_by(access_id: 'approverflow').committee_members).to be_empty
+      end
     end
   end
 
