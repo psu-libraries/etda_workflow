@@ -27,7 +27,6 @@ RSpec.describe Approver::ApproversController, type: :controller do
       get :index
       expect(CommitteeMember.find(committee_member1.id).approver_id).to eq approver.id
       expect(CommitteeMember.find(committee_member2.id).approver_id).to eq approver.id
-      byebug
     end
 
     context 'when format is something other than html' do

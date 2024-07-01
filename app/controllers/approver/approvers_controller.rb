@@ -6,9 +6,7 @@ class Approver::ApproversController < ApproverController
 
   def index
     @approver = current_approver
-    if request.format.html?
-      ApproversService.new(@approver).update_committee_w_access_id
-    end
+    ApproversService.new(@approver).update_committee_w_access_id if request.format.html?
     @committee_members = @approver.committee_members.select do |n|
       n if n.approval_started_at.present? && n.submission.status_behavior.beyond_collecting_final_submission_files?
     end

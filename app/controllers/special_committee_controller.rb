@@ -7,6 +7,7 @@ class SpecialCommitteeController < ApplicationController
   end
 
   def advance_to_reviews
+    byebug
     redirect_to approver_special_committee_link_path(params[:authentication_token])
   end
 
