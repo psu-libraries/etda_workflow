@@ -57,7 +57,7 @@ You're good to go from here!  Any changes made in the project files on your loca
 
    To run the tests:
    1.  `RAILS_ENV=test bundle exec rspec` tests Graduate School instance   
-   2.  `RAILS_ENV=test bundle exec PARTNER=honors rspec` tests Honors College instance
+   2.  `RAILS_ENV=test PARTNER=honors bundle exec rspec` tests Honors College instance
    3.  `RAILS_ENV=test PARTNER=milsch bundle exec rspec` tests Millennium Scholars instance
 
    Running the entire test suite for each partner can take a while.  To run tests for non-graduate instances that are unique to that instance, use tags like this:
