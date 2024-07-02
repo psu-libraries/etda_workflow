@@ -25,4 +25,7 @@
       <br>
       <img class="docs-image" src="/docs_images/sd-3.png" alt="submission approval image" height="500" width="1350">
     </ol>
+    <% if current_partner.graduate? %>
+    <p><%= I18n.t("graduate.approval_help.message").html_safe %></p>
+  <% end %>
 </div>

@@ -4,6 +4,9 @@
       <h1>My Reviews</h1>
       <p>The following table contains a list of your reviews.  To begin reviewing a submission, click the title of the submission below.  If you are serving on a committee as multiple roles, you will only need to submit your review once for that submission. To see your completed reviews, select "Finished Reviews" from the dropdown filter below.</p>
       <p>If you are not sure what to do, click the following link for a <a href='/docs'>walkthrough</a>.</p>
+      <% if current_partner.graduate? %>
+        <p><%= I18n.t("graduate.approval_help.message").html_safe %></p>
+      <% end %>
     </div>
   </div>
   <br>
