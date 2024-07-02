@@ -10,7 +10,11 @@ class ApproverController < ApplicationController
 
     def set_session
       if current_remote_user.nil?
-        session[:return_to] = request.url
+        if request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
+          session[:return_to] = request.url
+        else
+          session[:return_to] = approver_root_path
+        end
         redirect_to '/login'
       end
       session[:user_role] = 'approver'
