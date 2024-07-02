@@ -89,7 +89,7 @@ module Devise
         this_uri = uri.split('/')
         return 'Author' unless this_uri.length > 1
 
-        this_uri = uri.split('/')[1].camelcase
+        this_uri = uri.split('/')[1].gsub(/\.\w+$/, '').camelcase
         this_uri = 'Author' unless ['Author', 'Admin', 'Approver'].include? this_uri
         this_uri
       end
