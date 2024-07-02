@@ -10,11 +10,15 @@ class AuthorController < ApplicationController
 
     def set_session
       if current_remote_user.nil?
-        if request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
-          session[:return_to] = request.url
-        else
-          session[:return_to] = author_root_path
-        end
+        # Its important that the return_to is NOT stored if:
+        # - The request method is not GET (non idempotent)
+        # - The request is handled by a Devise controller such as Devise::SessionsController as that could cause an infinite redirect loop
+        # - The request is an Ajax request as this can lead to very unexpected behaviour
+        session[:return_to] = if request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
+                                request.url
+                              else
+                                author_root_path
+                              end
         redirect_to '/login'
       end
       session[:user_role] = 'author'
