@@ -5,13 +5,13 @@ class AdminFeedbackFile < ApplicationRecord
 
   belongs_to :submission
 
-  def self.FEEDBACK_TYPES
+  def self.feedback_types
     ['format-review', 'final-submission'].freeze
   end
 
   validates :submission_id, :asset, presence: true
   validates :asset, virus_free: true
-  validates :feedback_type, inclusion: { in: self.FEEDBACK_TYPES }, presence: true
+  validates :feedback_type, inclusion: { in: feedback_types }, presence: true
 
   def class_name
     self.class.to_s.underscore.dasherize

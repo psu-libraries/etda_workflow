@@ -80,7 +80,7 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
       all('input[type="file"]')[1].set(fixture('format_review_file_02.pdf'))
     end
     within('#admin-feedback-files') do
-      all('input[type="file"]')[0].set(fixture('format_review_file_01.pdf'))
+      all('input[type="file"]')[0].set(fixture('admin_feedback_01.pdf'))
     end
 
     find('#submission_federal_funding_true').click
@@ -110,11 +110,29 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
     end
 
     within('#admin-feedback-files') do
-      expect(page).to have_link "format_review_file_01.pdf"
+      expect(page).to have_link "admin_feedback_01.pdf"
     end
 
     expect(page.find_field("Format Review Notes to Student").value).to eq "New review notes"
     expect(page.find_field("Admin notes").value).to eq "Some admin notes"
+
+    within('#format-review-file-fields') do
+      delete_link = find_all('a#file_delete_link').first
+      delete_link.click
+    end
+    expect(page).to have_content("Marked for deletion [undo]")
+    click_button 'Update Metadata'
+    visit admin_edit_submission_path(submission)
+    expect(page).to have_link "format_review_file_02.pdf"
+    expect(page).not_to have_link "format_review_file_01.pdf"
+
+    within('#admin-feedback-files') do
+      delete_link = find_all('a#file_delete_link').first
+      delete_link.click
+    end
+    click_button 'Update Metadata'
+    visit admin_edit_submission_path(submission)
+    expect(page).not_to have_link "admin_feedback_01.pdf"
   end
 
   it 'Allows admin to upload and delete final submission files' do
@@ -123,18 +141,25 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
     within('#final-submission-information') do
       click_link "Additional File"
       all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
+      click_link "Add File"
+      all('input[type="file"]').last.set(fixture('admin_feedback_01.pdf'))
     end
     click_button 'Update Metadata'
     visit admin_edit_submission_path(final_submission)
     expect(page).to have_link('final_submission_file_01.pdf')
+    expect(page).to have_link('admin_feedback_01.pdf')
     within('#final-submission-information') do
-      delete_link = find_all('a#file_delete_link').first
+      delete_links = find_all('a#file_delete_link')
+      delete_link = delete_links.first
+      delete_link2 = delete_links.last
       delete_link.click
+      delete_link2.click
     end
     expect(page).to have_content("Marked for deletion [undo]")
     click_button 'Update Metadata'
     visit admin_edit_submission_path(final_submission)
     expect(page).not_to have_link('final_submission_file_01.pdf')
+    expect(page).not_to have_link('admin_feedback_01.pdf')
   end
 
   it 'Allows admin to upload multiple final submission files' do
