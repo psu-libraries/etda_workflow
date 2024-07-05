@@ -5,13 +5,13 @@ class AdminFeedbackFile < ApplicationRecord
 
   belongs_to :submission
 
-  def self.feedback_types
+  def self.FEEDBACK_TYPES
     ['format-review', 'final-submission'].freeze
   end
 
   validates :submission_id, :asset, presence: true
   validates :asset, virus_free: true
-  validates :feedback_type, inclusion: { in: AdminFeedbackFile.feedback_types }, presence: true
+  validates :feedback_type, inclusion: { in: self.FEEDBACK_TYPES }, presence: true
 
   def class_name
     self.class.to_s.underscore.dasherize
@@ -23,12 +23,11 @@ class AdminFeedbackFile < ApplicationRecord
 
   def full_file_path
     # file path only
-    "#{WORKFLOW_BASE_PATH}format_review_files/#{EtdaFilePaths.new.detailed_file_path(id)}"
+    "#{WORKFLOW_BASE_PATH}admin_feedback_files/#{EtdaFilePaths.new.detailed_file_path(id)}"
   end
 
   def current_location
     # full file path including file name
-    # WORKFLOW_BASE_PATH + 'format_review_files/' + EtdaFilePaths.new.detailed_file_path(id) + asset_identifier
     full_file_path + asset_identifier
   end
 end

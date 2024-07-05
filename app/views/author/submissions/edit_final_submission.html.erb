@@ -33,7 +33,7 @@
         </div>
       <% end %>
 
-      <% if @submission.final_submission_notes? %>
+      <% if @submission.final_submission_feedback_files? %>
       <div id="admin-feedback-files" class="col-sm-12">
         <% @submission.admin_feedback_files.each do |file| %>
         <% if file.feedback_type == 'final-submission' %>

@@ -19,7 +19,7 @@
           </div>
       <% end %>
       
-      <% if @submission.format_review_notes? %>
+      <% if @submission.format_review_feedback_files? %>
           <div id="admin-feedback-files" class="col-sm-12">
             <% @submission.admin_feedback_files.each do |file| %>
             <% if file.feedback_type == 'format-review' %>
