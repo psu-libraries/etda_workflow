@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_03_141826) do
+ActiveRecord::Schema.define(version: 2024_07_02_191344) do
+
+  create_table "admin_feedback_files", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "submission_id"
+    t.text "asset"
+    t.string "feedback_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false

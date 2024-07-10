@@ -18,6 +18,19 @@
             </div>
           </div>
       <% end %>
+      
+      <% if @submission.format_review_feedback_files? %>
+          <div id="admin-feedback-files" class="col-sm-12">
+            <% @submission.admin_feedback_files.each do |file| %>
+            <% if file.feedback_type == 'format-review' %>
+              <div id="admin-feedback-file-<%=file.id%>" class = "pl-2 pb-2">
+                <%= link_to file.asset_identifier, "/author/files/#{file.link_identifier}/#{file.id}",  class: 'file-link', target: '_blank' %>
+              </div>
+            <% end %>
+          <% end %>
+          </div>  
+      <% end  %>
+
       <%= render partial: '/author/submissions/title_and_checkbox', locals: {f: f} %>
       <%= render partial: '/author/submissions/semester_year', locals: {f: f} %>
       <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} %>

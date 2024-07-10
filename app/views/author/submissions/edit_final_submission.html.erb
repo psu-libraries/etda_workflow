@@ -33,6 +33,17 @@
         </div>
       <% end %>
 
+      <% if @submission.final_submission_feedback_files? %>
+      <div id="admin-feedback-files" class="col-sm-12">
+        <% @submission.admin_feedback_files.each do |file| %>
+        <% if file.feedback_type == 'final-submission' %>
+          <div id="admin-feedback-file-<%=file.id%>" class = "pl-2 pb-2">
+            <%= link_to file.asset_identifier, "/author/files/#{file.link_identifier}/#{file.id}",  class: 'file-link', target: '_blank' %>
+          </div>
+        <% end %>
+      <% end %>
+  <% end  %>
+
       <%= render partial: 'title_and_checkbox', locals: {f: f} %>
       <%= render partial: 'semester_year', locals: {f: f} %>
       <%= render partial: 'defended_at_date', locals: {f: f} if current_partner.graduate? %>

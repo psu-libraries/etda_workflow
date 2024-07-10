@@ -3,6 +3,9 @@ RSpec.describe 'Author submission review pages', type: :integration, js: true do
 
   let!(:submission1) { FactoryBot.create :submission, :waiting_for_publication_release, author: current_author }
   let!(:submission2) { FactoryBot.create :submission, :waiting_for_committee_review, author: current_author }
+  let!(:submission3) { FactoryBot.create :submission, :collecting_format_review_files_rejected, author: current_author }
+  let!(:submission3_1) { FactoryBot.create :submission, :collecting_format_review_files_rejected, author: current_author }
+  let!(:submission4) { FactoryBot.create :submission, :collecting_final_submission_files_rejected, author: current_author }
   let!(:approval_configuration1) { FactoryBot.create :approval_configuration, degree_type: submission1.degree_type }
   let!(:approval_configuration2) { FactoryBot.create :approval_configuration, degree_type: submission2.degree_type }
   let(:invention_disclosures) { FactoryBot.create(:invention_disclosure, submission) }
@@ -14,6 +17,8 @@ RSpec.describe 'Author submission review pages', type: :integration, js: true do
   let(:final_submission_file) do
     FactoryBot.create :final_submission_file, submission: submission1
   end
+  let(:admin_feedback_format) { FactoryBot.create :admin_feedback_file, submission: submission1, feedback_type: 'format-review' }
+  let(:admin_feedback_final) { FactoryBot.create :admin_feedback_file, submission: submission1, feedback_type: 'final-submission' }
   let(:long_note) do
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Amicitiam autem adhibendam esse censent, quia sit ex eo genere, quae prosunt. An vero, inquit, quisquam potest probare, quod perceptfum, quod. Hinc ceteri particulas arripere conati suam quisque videro voluit afferre sententiam. Illum mallem levares, quo optimum atque humanissimum virum, Cn. Ne amores quidem sanctos a sapiente alienos esse arbitrantur. Duo Reges: constructio interrete. Id enim volumus, id contendimus, ut officii fructus sit ipsum officium. Hoc ille tuus non vult omnibusque ex rebus voluptatem quasi mercedem exigit.
 Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusne, postea; Verum tamen cum de rebus grandioribus dicas, ipsae res verba rapiunt; Non quaeritur autem quid naturae tuae consentaneum sit, sed quid disciplinae. Eorum enim est haec querela, qui sibi cari sunt seseque diligunt. Paulum, cum regem Persem captum adduceret, eodem flumine invectio? Quantum Aristoxeni ingenium consumptum videmus in musicis? Fortemne possumus dicere eundem illum Torquatum? At iste non dolendi status non vocatur voluptas. Atque hoc loco similitudines eas, quibus illi uti solent, dissimillimas proferebas. Quare attende, quaeso. Et nemo nimium beatus est; Quid enim est a Chrysippo praetermissum in Stoicis? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Amicitiam autem adhibendam esse censent, quia sit ex eo genere, quae prosunt. An vero, inquit, quisquam potest probare, quod perceptfum, quod. Hinc ceteri particulas arripere conati suam quisque videro voluit afferre sententiam. Illum mallem levares, quo optimum atque humanissimum virum, Cn. Ne amores quidem sanctos a sapiente alienos esse arbitrantur. Duo Reges: constructio interrete. Id enim volumus, id contendimus, ut officii fructus sit ipsum officium. Hoc ille tuus non vult omnibusque ex rebus voluptatem quasi mercedem exigit. Et nemo nimium beatus est; Quid enim est a Chrysippo praetermissum in Stoicis?'
@@ -30,6 +35,15 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
     submission1.save
     submission2.committee_members << committee_member3
     submission2.committee_members << committee_member4
+    submission3.admin_feedback_files << admin_feedback_format
+    submission3.format_review_notes = "not your best work"
+    submission3.save
+    submission3_1.format_review_notes = "no files, just notes"
+    submission3_1.save
+    submission4.admin_feedback_files << admin_feedback_final
+    submission4.status = "collecting final submission files rejected"
+    submission4.final_submission_notes = "not your best work"
+    submission4.save
     oidc_authorize_author
     visit author_submissions_path
   end
@@ -63,8 +77,40 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
     end
   end
 
+  context 'author can review admin feedback' do
+    it 'when format review is rejected' do
+      allow(admin_feedback_format).to receive(:current_location).and_return('spec/fixtures/admin_feedback_01.pdf')
+      visit "/author/submissions/#{submission3.id}/format_review/edit"
+      expect(page).to have_content('Format Review notes from the administrator')
+      expect(page).to have_content("not your best work")
+      expect(page).to have_link('admin_feedback_01.pdf')
+      # Makes sure that the file opens in a new tab
+      num_windows = page.driver.browser.window_handles.count
+      page.find_link('admin_feedback_01.pdf').click
+      expect(page.driver.browser.window_handles.count).to eql(num_windows + 1)
+    end
+
+    it 'even if no feedback file is attached' do
+      visit "/author/submissions/#{submission3_1.id}/format_review/edit"
+      expect(page).to have_content('Format Review notes from the administrator')
+      expect(page).to have_content("no files, just notes")
+    end
+
+    it 'when final submission is rejected' do
+      allow(admin_feedback_final).to receive(:current_location).and_return('spec/fixtures/admin_feedback_01.pdf')
+      visit "/author/submissions/#{submission4.id}/final_submission/edit"
+      expect(page).to have_content('Final Submission notes from the administrator')
+      expect(page).to have_content("not your best work")
+      expect(page).to have_link('admin_feedback_01.pdf')
+      # Makes sure that the file opens in a new tab
+      num_windows = page.driver.browser.window_handles.count
+      page.find_link('admin_feedback_01.pdf').click
+      expect(page.driver.browser.window_handles.count).to eql(num_windows + 1)
+    end
+  end
+
   context 'author can review format review information' do
-    it 'displays format review information for the submission in a new browser tab' do
+    it 'in a new browser tab' do
       allow(format_review_file).to receive(:current_location).and_return('spec/fixtures/format_review_file_01.pdf')
       visit "/author/submissions/#{submission1.id}/format_review"
       expect(page).to have_content('Format Review Files')
@@ -84,8 +130,8 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
     end
   end
 
-  context 'author can review final submission information in a new browser tab' do
-    it 'displays final submission information' do
+  context 'author can review final submission information ' do
+    it 'in a new browser tab' do
       allow(final_submission_file).to receive(:current_location).and_return('spec/fixtures/final_submission_file_01.pdf')
       visit "/author/submissions/#{submission1.id}/final_submission"
       expect(page).to have_content('Final Submission Files')

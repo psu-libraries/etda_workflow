@@ -23,5 +23,10 @@ RSpec.describe AuthorAbility, type: :model do
       expect(author_ability.can? :edit, different_person).to be_falsey
       expect(author_ability.can? :udpate, different_person).to be_falsey
     end
+
+    it "does not allow author to create or delete an admin feedback file" do
+      expect(author_ability.can? :create, AdminFeedbackFile).to be_falsey
+      expect(author_ability.can? :destroy, AdminFeedbackFile).to be_falsey
+    end
   end
 end

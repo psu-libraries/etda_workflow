@@ -7,6 +7,8 @@ class Author::FilesController < FilesController
       # file type
       @current_file = if params[:action] == 'download_final_submission'
                         FinalSubmissionFile.find(params[:id])
+                      elsif params[:action] == 'download_admin_feedback'
+                        AdminFeedbackFile.find(params[:id])
                       else
                         FormatReviewFile.find(params[:id])
                       end
