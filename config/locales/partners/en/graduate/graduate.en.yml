@@ -13,25 +13,27 @@ en:
       new: If you would like to start a new thesis or dissertation, you may do so by clicking the following link.
       descriptor: 'thesis or dissertation'
       acknowledge:
-        point1: 'I have read the %{degree_type} handbook and understand how to format my %{degree_type} to align with Graduate School Policy.'
-        point2:  I will reference the Graduate School's %{degree_type} Template.
+        title: 'Submission Acknowledgements'
+        description: 'Review each statement and add your initials as confirmation that you have read and understand the requirements.'
+        point1:  I have read the %{degree_type} <a href="%{thesis_guide}" target='_blank'>handbook</a> and understand how to format my %{degree_type} to align with Fox Graduate School policy.
+        point2:  I will reference the Fox Graduate School's %{degree_type} Template.
         point3: 'I will ensure that the faculty titles of my committee members are listed correctly on the committee page of my %{degree_type}.'
         point4: 'I consulted with my advisor and we both have agreed that I did/did not utilize federal funding.'
-        point5: 'I know if it is the Program Head or Director of Graduate Studies of my program who needs to approve my %{degree_type}. If I am not sure, I will consult with my program.'
+        point5: 'I know if it is the program head or director of graduate studies of my program who needs to approve my %{degree_type}. If I am not sure, I will consult with my program.'
         point6: 'I acknowledge that I cannot fix typos or make additional corrections after I submit my final submission.'
-        point7: 'I acknowledge that I cannot make committee changes after the final is submitted.'
+        point7: 'I acknowledge that I cannot make committee changes after the final is submitted. My committee page matches the committee listed in the ETD.'
         initial: 'Initial here'
     partner:
       abbrev: graduate
       name: Graduate School
-      url: http://www.gradschool.psu.edu/index.cfm/current-students/etd/
+      url: 'https://gradschool.psu.edu/academics/theses-and-dissertations#Handbook-138642'
       slug: eTD
       description:
         title: Graduate School Theses and Dissertations
         text: <p>The primary purpose of a thesis or dissertation is to train the student in the process of scholarly research and writing under the direction of members of the Graduate Faculty. After the student has graduated and the work is published, it serves as a contribution to human knowledge, is useful to other scholars and perhaps even to a more general audience. Electronic thesis and dissertations (eTDs) expand the creative possibilities open to students and empower students to convey a richer message by permitting video, sound, and color images to be integrated into their work. Submitting and archiving eTDs helps students to understand electronic publishing issues and provides greater acess to students' research. Through the Web, people from any place on the globe can link directly to eTD collections at Penn State and other universities.</p><p>The Graduate School, the University Libraries, and the Graduate Faculty of Penn State have established format standards that theses and dissertations must meet before receiving final approval as fulfillment of graduate requirements.  The Office of Theses and Dissertations staff is responsible for verifying that all eTDs have met these requirements <a href="%{thesis_guide_link}">(refer to the Thesis and Dissertation Guide)</a>.  The text of the eTD should be proofread and free of grammatical errors and typos.  It is extremely important that the author carefully review and proofread the thesis or dissertation before submitting the final document.  After the official approval of the final eTD by the Office of Theses and Dissertations, changes will not be permitted.</p>
       alternate_email_hint: 'The Alternate email address will be used after your psu.edu email address expires.'
       semester_hint: Only upload your dissertation or thesis if you intend to graduate this semester or the following semester.
-      thesis_guide: 'http://www.gradschool.psu.edu/index.cfm/current-students/etd/'
+      thesis_guide: 'https://gradschool.psu.edu/academics/theses-and-dissertations#Handbook-138642'
       document_title_label: 'Please enter your Thesis or Dissertation Title'
       url_slug: 'etda'
       lionpath_alert: More than 10% of LionPATH %{resource} were tagged for deletion at %{datetime_now}.  The deletion process was not completed because of this.  This could indicate that there was an issue with the LionPATH import or one of the CSVs used during the import.
