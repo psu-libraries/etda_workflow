@@ -1,3 +1,4 @@
 Dear <%= @author.full_name %>,
 
-<%= t( "#{current_partner.id}.partner.email.format_review_rejected.message", degree_type: @submission.degree_type, url: @url,) %>
+<%= t( "#{current_partner.id}.partner.email.format_review_rejected.message",
+deadline_url: @deadline_url, etd_site: @etd_site, thesis_guide: @thesis_guide,) %>
