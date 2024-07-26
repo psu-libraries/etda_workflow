@@ -124,8 +124,7 @@ RSpec.describe 'When Collecting Program Information status', type: :integration,
       expect(page).to have_content("Update #{new_submission.degree_type} Title")
       select second_program.name, from: current_partner.program_label.to_s
       second_program_id = Program.where(name: second_program.name).first.id
-      click_on "Update #{new_submission.degree_type} Title" if current_partner.graduate?
-      click_on "Update Program Information" unless current_partner.graduate?
+      click_on "Update #{new_submission.degree_type} Title"
       submission = author.submissions.first.reload
       expect(submission.program.id).to eq(second_program_id)
     end
