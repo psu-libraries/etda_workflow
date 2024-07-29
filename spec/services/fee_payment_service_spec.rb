@@ -59,6 +59,23 @@ RSpec.describe FeePaymentService do
         expect(service.fee_is_paid?).to eq true
       end
     end
+
+    context "when the submission degree is M Ed" do
+      it 'returns true' do
+        submission.degree.name = 'M Ed'
+        submission.save!
+        stub_request(:get, "https://secure.gradsch.psu.edu/services/etd/etdPayment.cfm?degree=M_ED&psuid=#{submission.author.psu_idn}")
+          .with(
+            headers: {
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'User-Agent' => 'Ruby'
+            }
+          )
+          .to_return(status: 200, body: "\r\n    {\"data\":[{\"ETDPAYMENTFOUND\":\"Y\"}],\"error\":\"\"}\r\n    ", headers: {})
+        expect(service.fee_is_paid?).to eq true
+      end
+    end
   end
 
   context "when the student's fee has not been paid" do
