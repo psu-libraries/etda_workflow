@@ -41,7 +41,8 @@ class FeePaymentService
     end
 
     def degree_name
-      submission.degree.name
+      # All caps and convert space to underscore to match GPMS pattern
+      submission.degree.name.upcase.gsub(' ', '_')
     end
 
     attr_accessor :submission
