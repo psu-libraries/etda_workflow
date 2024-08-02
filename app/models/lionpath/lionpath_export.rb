@@ -2,7 +2,7 @@ require 'httparty'
 
 class Lionpath::LionpathExport
   def initialize(submission)
-    @payload = Lionpath::LionpathExportPayload.new(submission).to_json
+    @payload = Lionpath::LionpathExportPayload.new(submission)
   end
 
   def call
