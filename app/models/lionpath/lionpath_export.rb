@@ -7,7 +7,7 @@ class Lionpath::LionpathExport
 
   def call
     options = {
-      body: payload.to_json,
+      body: payload.json_payload,
       headers: {
         'Content-Type' => 'application/json',
         'Content-Transfer-Encoding' => 'application/json'

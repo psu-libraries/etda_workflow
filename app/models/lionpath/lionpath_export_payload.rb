@@ -3,7 +3,7 @@ class Lionpath::LionpathExportPayload
     @submission = submission
   end
 
-  def to_json(*_args)
+  def json_payload
     {
       "PE_SR199_ETD_REQ": {
         "emplid": submission.author.psu_idn,
