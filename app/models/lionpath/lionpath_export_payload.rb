@@ -1,4 +1,4 @@
-class LionpathExportPayload
+class Lionpath::LionpathExportPayload
   def initialize(submission)
     @submission = submission
   end
@@ -6,13 +6,13 @@ class LionpathExportPayload
   def to_json(*_args)
     {
       "PE_SR199_ETD_REQ": {
-        "emplid": author.psu_idn,
-        "candNbr": author.candidate_number,
+        "emplid": submission.author.psu_idn,
+        "candNbr": submission.candidate_number,
         "thesisTitle": submission.title,
         "thesisStatus": thesis_status,
         "embargoType": embargo_type,
-        "embargoStartDt": submission.released_metadata_at,
-        "embargoEndDt": submission.released_fo_publication_at,
+        "embargoStartDt": submission.released_metadata_at || '',
+        "embargoEndDt": submission.released_for_publication_at || '',
         "candAdvFlg": committee_and_program_head_approved,
         "exPymtFlg": payment_received,
         "libDepFlg": federal_funding_used,
@@ -24,10 +24,6 @@ class LionpathExportPayload
   private
 
     attr_accessor :submission
-
-    def author
-      submission.author
-    end
 
     def status_behavior
       submission.status_behavior
@@ -51,20 +47,20 @@ class LionpathExportPayload
       when 'restricted'
         'RSTR'
       else
-        ""
+        ''
       end
     end
 
     def committee_and_program_head_approved
-      return "Y" if submission.beyond_waiting_for_committee_review_rejected?
+      return "Y" if status_behavior.beyond_waiting_for_committee_review_rejected?
 
-      ""
+      ''
     end
 
     def payment_received
       return "Y" if submission.final_submission_files_uploaded_at.present?
 
-      ""
+      ''
     end
 
     def federal_funding_used
@@ -74,6 +70,6 @@ class LionpathExportPayload
 
       return "N" if submission.federal_funding == false
 
-      ""
+      ''
     end
 end

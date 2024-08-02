@@ -1,8 +1,8 @@
 require 'httparty'
 
-class LionpathExport
+class Lionpath::LionpathExport
   def initialize(submission)
-    @payload = LpExportPayload.new(submission).to_json
+    @payload = Lionpath::LionpathExportPayload.new(submission).to_json
   end
 
   def call
@@ -15,7 +15,7 @@ class LionpathExport
       basic_auth: auth
     }
 
-    self.class.put(base_uri + endpoint_path, options)
+    HTTParty.put(host + endpoint_path, options)
   end
 
   private
@@ -23,12 +23,12 @@ class LionpathExport
     attr_accessor :payload
 
     def auth
-      { username: ENV['LP_SA_USERNAME'],
-        password: ENV['LP_SA_PASSWORD'] }
+      { username: ENV.fetch('LP_SA_USERNAME', 'test_user'),
+        password: ENV.fetch('LP_SA_PASSWORD', 'test_password') }
     end
 
-    def base_uri
-      ENV['LP_EXPORT_HOST']
+    def host
+      ENV.fetch('LP_EXPORT_HOST', 'abcdef')
     end
 
     def endpoint_path
