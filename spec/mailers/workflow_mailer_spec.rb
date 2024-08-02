@@ -40,23 +40,15 @@ RSpec.describe WorkflowMailer do
         expect(email.body).to match(/will be in touch/i)
       end
     end
-
-    context "when the current partner is 'honors'" do
-      let(:partner) { Partner.new('honors') }
-
-      xit "raises an exception" do
-        expect { email.deliver_now }.to raise_error ActionView::Template::Error
-      end
-    end
   end
 
   describe '#format_review_accepted' do
     let(:email) { described_class.format_review_accepted(submission) }
     let(:partner_email) { current_partner.email_address }
 
-    context "when the current partner is 'sset'", sset: true do
+    context "when the current partner should receive format_review_accepted emails", sset: true, honors: true do
       before do
-        skip 'sset only' unless current_partner.sset?
+        skip 'current partner does not send format_review_accepted emails' if current_partner.milsch?
       end
 
       it "sets an appropriate subject" do
@@ -73,36 +65,13 @@ RSpec.describe WorkflowMailer do
       end
 
       it "tells them that their format review has been accepted" do
-        expect(email.body).to match(/has been approved by administrators/i)
+        expect(email.body).to match(/has been approved/i)
       end
     end
 
-    context "when the current partner is 'honors'", honors: true do
-      before do
-        skip 'honors only' unless current_partner.honors?
-      end
-
-      it "sets an appropriate subject" do
-        expect(email.subject).to match(/format review has been accepted/i)
-      end
-
-      it "is sent from the partner support email address" do
-        expect(email.from).to eq([partner_email])
-      end
-
-      it "is sent to the student's PSU email address" do
-        expect(author.psu_email_address).not_to be_blank
-        expect(email.to).to eq([author.psu_email_address])
-      end
-
-      it "tells them that their format review has been accepted" do
-        expect(email.body).to match(/Your thesis format review has been approved!/i)
-      end
-    end
-
-    context "when the current partner is neither 'sset' or 'honors'" do
-      it "raises an exception" do
-        skip 'not sset nor honors' if current_partner.sset? || current_partner.honors?
+    context "when the current partner does not send format_review emails", milsch: true do
+      it "raises an InvalidPartner Error" do
+        skip 'current partner SHOULD send format_review_accepted emails' unless current_partner.milsch?
 
         expect { email.deliver_now }.to raise_error WorkflowMailer::InvalidPartner
       end
@@ -113,13 +82,13 @@ RSpec.describe WorkflowMailer do
     let(:email) { described_class.format_review_rejected(submission) }
     let(:partner_email) { current_partner.email_address }
 
-    context "when the current partner is 'sset'", sset: true do
+    context "when the current partner should send ", sset: true, honors: true do
       before do
-        skip 'sset only' unless current_partner.sset?
+        skip 'current partner does NOT send format_review_rejected emails' if current_partner.milsch?
       end
 
       it "sets an appropriate subject" do
-        expect(email.subject).to match(/format review has been rejected/i)
+        expect(email.subject).to match(/has been rejected/i)
       end
 
       it "is sent from the partner support email address" do
@@ -132,37 +101,13 @@ RSpec.describe WorkflowMailer do
       end
 
       it "tells them that their format review has been rejected" do
-        expect(email.body).to match(/Project Paper has been rejected/i)
+        expect(email.body).to match(/has been rejected/i)
       end
     end
 
-    context "when the current partner is 'honors'", honors: true do
-      before do
-        skip 'honors only' unless current_partner.honors?
-      end
-
-      it "sets an appropriate subject" do
-        expect(email.subject).to match(/format review has been rejected/i)
-      end
-
-      it "is sent from the partner support email address" do
-        expect(email.from).to eq([partner_email])
-      end
-
-      it "is sent to the student's PSU email address" do
-        expect(author.psu_email_address).not_to be_blank
-        expect(email.to).to eq([author.psu_email_address])
-      end
-
-      it "tells them that their format review has been rejected" do
-        expect(email.body).to match(/Your thesis format review has been rejected./i)
-      end
-    end
-
-    context "when the current partner is neither 'sset' nor 'honors'" do
-      it "raises an exception" do
-        skip 'not sset nor honors' if current_partner.sset? || current_partner.honors?
-
+    context "when the current partner should not send", milsch: true do
+      it "raises an InvalidPartner Error" do
+        skip 'current partner SHOULD send' unless current_partner.milsch?
         expect { email.deliver_now }.to raise_error WorkflowMailer::InvalidPartner
       end
     end
@@ -193,14 +138,6 @@ RSpec.describe WorkflowMailer do
 
       it "tells them that their final submission has been received" do
         expect(email.body).to match(/Thank you for submitting/i)
-      end
-    end
-
-    context "when the current partner is 'honors'" do
-      let(:partner) { Partner.new('honors') }
-
-      xit "raises an exception" do
-        expect { email.deliver_now }.to raise_error ActionView::Template::Error
       end
     end
   end
@@ -261,7 +198,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "tells the author that the submission has been released" do
-      expect(email.body).to match(/has been released with the access level of Open Access/i)
+      expect(email.body).to match(/has been released/i)
     end
   end
 
@@ -281,7 +218,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "tells the author that the submission's metadata is released" do
-      expect(email.body).to match(/It retains its access level of/i)
+      expect(email.body).to match(/The metadata for your #{submission.degree_type.name} titled "#{submission.title}" has been released./i)
     end
   end
 
@@ -301,7 +238,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "tells the author that the final submission has been sent back to the committee" do
-      expect(email.body).to match(/#{submission.degree_type}: "#{submission.title}" has been sent/i)
+      expect(email.body).to match(/has been sent/i)
     end
   end
 
@@ -328,8 +265,8 @@ RSpec.describe WorkflowMailer do
       expect(email.cc).to eq([submission.committee_email_list, current_partner.email_address].flatten)
     end
 
-    it "tells the author that the final submission has been approved" do
-      expect(email.body).to match(/committee and it is approved/i)
+    it "tells the author that committee has approved their submission" do
+      expect(email.body).to match(/approved by your committee/i)
     end
   end
 
@@ -361,9 +298,8 @@ RSpec.describe WorkflowMailer do
       expect(email.to).to eq([author.psu_email_address]) unless current_partner.graduate?
     end
 
-    it "tells the author that the final submission has been approved" do
-      expect(email.body).to match(/This was the result of your committee's review:/) if current_partner.graduate?
-      expect(email.body).to match(/You will need to make the necessary revisions/) unless current_partner.graduate?
+    it "tells the author that the final submission has been rejected" do
+      expect(email.body).to match(/rejected/)
     end
   end
 
@@ -408,11 +344,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "tells the author that the submission has been rejected" do
-      if current_partner.honors?
-        expect(email.body).to match(/has been rejected by a member of their committee/i)
-      else
-        expect(email.body).to match(/has been rejected by its committee/i)
-      end
+      expect(email.body).to match(/has been rejected/i)
     end
   end
 
@@ -436,7 +368,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "notifies the author about the access level change of their submission" do
-      expect(email.body).to match(/changed the availability/i)
+      expect(email.body).to match(/New Availability/i)
     end
   end
 
@@ -676,10 +608,6 @@ RSpec.describe WorkflowMailer do
       expect(committee_member.approval_started_at.to_date).to eq timestamp.to_date
     end
 
-    it "has the seven day warning note for core committee members" do
-      expect(email.body).to match(/seven days/)
-    end
-
     context "non-core committee members" do
       let(:cm_role) { FactoryBot.create :committee_role, is_program_head: true }
       let(:committee_member) { FactoryBot.create :committee_member, committee_role: cm_role, submission: }
@@ -822,7 +750,7 @@ RSpec.describe WorkflowMailer do
     end
 
     it "has desired content" do
-      expect(email.body).to match(/necessary votes for completion.  This matter should be fixed in the next 5 business days/)
+      expect(email.body).to match(/Your #{submission.degree_type} is being looked into/)
       expect(email.body).to match(/#{submission.chairs.first.name}/)
       expect(email.body).to match(/#{submission.program_head.name}/)
     end

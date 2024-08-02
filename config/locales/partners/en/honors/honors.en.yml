@@ -15,7 +15,8 @@ en:
     partner:
       abbrev: schreyer
       name: Schreyer Honors College
-      url: https://www.shc.psu.edu/academic/thesis/
+      etd_site: https://www.shc.psu.edu/academic/thesis/
+      explore_site: https://honors-explore.libraries.psu.edu
       slug: eHT
       description:
         title: Schreyer Honors College Theses
@@ -33,7 +34,7 @@ en:
         signature: 'Schreyer Honors College<br /> University Park, PA'
         final_submission_rejected:
           message: |
-                    "The final submission of your honors thesis has been rejected by the Schreyer Honors College. You will need to go back onto [the website](%{url}) to look at the feedback and resubmit with the necessary revisions.
+                    "The final submission of your honors thesis has been rejected by the Schreyer Honors College. You will need to go back onto <a href="%{etd_site}" target="_blank">the website</a> to look at the feedback and resubmit with the necessary revisions.
 
                     Sincerely,
                     Schreyer Honors College Academic Affairs
@@ -76,7 +77,7 @@ en:
                     SHCAcademics@psu.edu
         format_review_rejected:
           message: |
-                    Your thesis format review has been rejected. Please go back onto [the website](%{url}) to look at the feedback and resubmit with the necessary revisions.
+                    Your thesis format review has been rejected. Please go back onto <a href="%{etd_site}" target="_blank">the website</a> to look at the feedback and resubmit with the necessary revisions.
 
                     Sincerely,
                     Schreyer Honors College Academic Affairs
@@ -155,7 +156,7 @@ en:
                     SHCAcademics@psu.edu
         committee_rejected_author:
           message: |
-                    Your thesis has been rejected by a member of your committee. You will need to go back onto [the website](%{url}) to look at the feedback and resubmit with the necessary revisions.
+                    Your thesis has been rejected by a member of your committee. You will need to go back onto <a href="%{etd_site}" target="_blank">the website</a> to look at the feedback and resubmit with the necessary revisions.
 
                     Sincerely,
                     Schreyer Honors College Academic Affairs
@@ -177,7 +178,7 @@ en:
         pending_returned_author:
           message: |
                     Your %{degree_type} has been rejected by request of an administrator.
-                    You will need to go back onto [the website](%{url}) to look at the feedback and resubmit with the necessary revisions.
+                    You will need to go back onto <a href="%{etd_site}" target="_blank">the website</a> to look at the feedback and resubmit with the necessary revisions.
                     Sincerely,
                     Schreyer Honors College Academic Affairs
 
