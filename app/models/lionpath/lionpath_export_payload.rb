@@ -3,7 +3,7 @@ class LionpathExportPayload
     @submission = submission
   end
 
-  def to_json
+  def to_json(*_args)
     {
       "PE_SR199_ETD_REQ": {
         "emplid": author.psu_idn,
@@ -29,9 +29,12 @@ class LionpathExportPayload
       submission.author
     end
 
+    def status_behavior
+      submission.status_behavior
+    end
+
     def thesis_status
-      status_behavior = submission.status_behavior
-      return 'SUBMITTED' if status_behavior.beyond_collecting_format_review_files? && 
+      return 'SUBMITTED' if status_behavior.beyond_collecting_format_review_files? &&
                             !status_behavior.beyond_waiting_for_committee_review_rejected?
 
       return 'APPROVED' if status_behavior.beyond_waiting_for_committee_review_rejected?
@@ -48,7 +51,7 @@ class LionpathExportPayload
       when 'restricted'
         'RSTR'
       else
-      ""
+        ""
       end
     end
 
@@ -65,7 +68,7 @@ class LionpathExportPayload
     end
 
     def federal_funding_used
-      return "" if !status_behavior.beyond_waiting_for_committee_review_rejected?
+      return "" unless status_behavior.beyond_waiting_for_committee_review_rejected?
 
       return "Y" if submission.federal_funding == true
 
