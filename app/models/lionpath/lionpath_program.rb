@@ -41,7 +41,8 @@ class Lionpath::LionpathProgram
         campus: row['Campus'],
         lionpath_updated_at: DateTime.now,
         academic_program: row['Acad Prog'].gsub(/^GR/, ''),
-        degree_checkout_status: row['ChkoutStat']
+        degree_checkout_status: row['ChkoutStat'],
+        candidate_number: row['Can Nbr']
       }
     end
 
@@ -82,8 +83,8 @@ class Lionpath::LionpathProgram
     end
 
     def degree(row)
-      incoming_dg = row['Degree'].to_s.upcase
-      Degree.find_by(name: incoming_dg)
+      incoming_dg = row['Degree'].to_s.upcase.gsub('_', ' ')
+      Degree.where('upper(name) = ?', incoming_dg).first
     end
 
     def sp2021_subs(author)

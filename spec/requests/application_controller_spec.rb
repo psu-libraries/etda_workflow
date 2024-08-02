@@ -74,4 +74,22 @@ RSpec.describe 'Devise Login', type: :request do
       assert_response :redirect, "<302: Found> redirect to </>"
     end
   end
+
+  describe 'storing session[:return_to]' do
+    it 'stores request url if valid url to return to or else it stores user root path' do
+      # urls with .json appended to the end is a common occcurence (datatables) that we consider to be invalid
+      get '/approver'
+      expect(session[:return_to]).to eq 'http://www.example.com/approver'
+      get '/approver.json'
+      expect(session[:return_to]).to eq '/approver'
+      get '/author'
+      expect(session[:return_to]).to eq 'http://www.example.com/author'
+      get '/author.json'
+      expect(session[:return_to]).to eq '/author'
+      get '/admin'
+      expect(session[:return_to]).to eq 'http://www.example.com/admin'
+      get '/admin.json'
+      expect(session[:return_to]).to eq '/admin'
+    end
+  end
 end

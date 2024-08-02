@@ -6,7 +6,7 @@
           <%= link_to 'Submissions', author_root_path, {class: 'btn btn-nav'} %>
         </li>
         <li class="<%= author_nav_active?('author') %>">
-          <%= link_to 'Update My Contact Information', edit_author_author_path(@author), {class: 'btn btn-nav'}%>
+          <%= link_to 'Update My Contact Information', edit_author_author_path(@author), {class: 'btn btn-nav'} %>
         </li>
         <li class="<%= author_nav_active?('published') %>">
           <%= link_to 'My Published Submissions', author_published_submissions_index_path, {class: 'btn btn-nav'} %>

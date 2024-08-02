@@ -36,7 +36,7 @@ class Lionpath::LionpathCommittee
   private
 
     def committee_member_update(committee_member, row, committee_role)
-      committee_member.update committee_member_attrs(row, committee_role) unless
+      committee_member.update! committee_member_attrs(row, committee_role) unless
           committee_member.submission.status_behavior.beyond_waiting_for_final_submission_response_rejected?
     end
 
@@ -58,7 +58,7 @@ class Lionpath::LionpathCommittee
     end
 
     def special_member?(row)
-      !row['Special Member First Name'].nil? && !row['Special Member Last Name'].nil?
+      row['Special Member First Name'].present? && row['Special Member Last Name'].present?
     end
 
     def submission(row)

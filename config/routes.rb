@@ -85,6 +85,7 @@ Rails.application.routes.draw do
 
     get '/files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
     get '/files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
+    get '/files/admin_feedbacks/:id',    to: 'files#download_admin_feedback',    as: :admin_feedback_file
 
     root to: 'submissions#redirect_to_default_dashboard'
   end
@@ -94,6 +95,8 @@ Rails.application.routes.draw do
     resources :submissions, except: [:show] do
       get '/program_information', to: 'submissions#program_information', as: :program_information
       get '/academic_plan_refresh', to: 'submissions#refresh', as: :refresh
+      get '/acknowledge', to: 'submissions#acknowledge', as: :acknowledge
+      patch '/acknowledge', to: 'submissions#acknowledge_update', as: :acknowledge_update
 
       get '/format_review', to: 'submission_format_review#show', as: :format_review
       get '/format_review/edit', to: 'submission_format_review#edit', as: :edit_format_review
@@ -115,6 +118,7 @@ Rails.application.routes.draw do
 
     get '/files/format_reviews/:id',    to: 'files#download_format_review',    as: :format_review_file
     get '/files/final_submissions/:id', to: 'files#download_final_submission', as: :final_submission_file
+    get '/files/admin_feedbacks/:id', to: 'files#download_admin_feedback',    as: :admin_feedback_file
 
     root to: 'submissions#index'
     get '/tips', to: 'authors#technical_tips', as: :technical_tips

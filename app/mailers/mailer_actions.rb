@@ -19,6 +19,10 @@ module MailerActions
     author_release_warning(submission).deliver
   end
 
+  def send_nonvoting_approval_reminders(submission, committee_member)
+    nonvoting_approval_reminder(submission, committee_member).deliver
+  end
+
   def send_publication_release_messages(submission)
     release_for_publication(submission).deliver if submission.open_access?
     release_for_publication_metadata_only(submission).deliver unless submission.open_access?

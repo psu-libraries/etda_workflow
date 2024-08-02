@@ -16,6 +16,7 @@ FactoryBot.define do
     campus { 'UP' }
     academic_program { 'GREN' }
     degree_checkout_status { 'EG' }
+    acknowledgment_page_submitted_at { Time.zone.now if current_partner.graduate? }
 
     trait :collecting_program_information do
       committee_provided_at { nil }

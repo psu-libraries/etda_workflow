@@ -21,10 +21,12 @@ en:
         title: Schreyer Honors College Theses
         text: <p>Electronic submission of the final Honors Thesis became a requirement beginning spring semester 2010. Honors theses submitted prior to spring semester 2010 will not be found on this database. Both the mandatory draft submission and the final thesis must be submitted electronically through this site.</p><p>All final theses are open to the public. If there is a reason (usually for patent or proprietary purposes) your thesis should not be released to the public, you must contact the Schreyer Honors College and request restricted access. Restricted access may be granted for a period up to two years. The thesis will be automatically released for public access at end of the approved restricted period.</p>
       alternate_email_hint: 'The Alternate email address will be used after your psu.edu email address expires.'
+      semester_hint: Only upload your thesis if you intend to graduate this semester or the following semester.
       thesis_guide: 'https://www.shc.psu.edu/academic/thesis/submission.cfm'
       document_title_label: 'Title'
       extension_not_allowed: 'You are not able to request an extension at this time, please contact your administrator at SHCAcademics@psu.edu'
       url_slug: 'honors'
+      not_allowed_alert: You are not allowed to visit that page at this time, please contact your administrator at SHCAcademics@psu.edu
       email:
         url:  'https://honors-explore.libraries.psu.edu'
         address: SHCAcademics@psu.edu
@@ -32,109 +34,113 @@ en:
         signature: 'Schreyer Honors College<br /> University Park, PA'
         final_submission_rejected:
           message: |
-                    Your final %{degree_type} has been rejected by Schreyer Honors College.
-                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type}.
+                    "The final submission of your honors thesis has been rejected by the Schreyer Honors College. You will need to go back onto [the website](%{url}) to look at the feedback and resubmit with the necessary revisions.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
-                    SHCAcademics@psu.edu
+                    SHCAcademics@psu.edu"
+
         final_submission_approved:
           message: |
-                    Your honors %{degree_type} has been approved by Schreyer Honors College.    
-                    After graduation, the eHT will be available through Penn State’s eHT database %{url} unless you have chosen to restrict access to it.
-                    If it is restricted, it will automatically change to Open Access after two years.
-
-                    The access level for your %{degree_type} is: %{access_level}.
-                    Please accept our congratulations as you complete your degree (commencement information can be found online as http://commencement.psu.edu/).
+                    Congratulations! Your honors thesis has received its final approval by the Schreyer Honors College.
+                    A few weeks after graduation, the eHT will be available through Penn State's eHT database, unless you have chosen to restrict access to it. If it is restricted, it will automatically change to Open Access after two years.
+                    The access level for your %{degree_type} that you selected is: %{access_level}.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
-                    SHCAcademics@psu.edu 
+                    SHCAcademics@psu.edu
         format_review_received:
           message: |
-                    Thank you for submitting your thesis format review. You will receive the results of the review by 
-                    email within two weeks.
+                    Thank you for submitting your thesis format review. You will receive a notification within the next few weeks informing you of its status.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
-                    SHCAcademics@psu.edu 
+                    SHCAcademics@psu.edu
         format_review_accepted:
           message: |
-                    Your format review has been approved! There are no formatting changes you need to make for your final submission.
+                    Your thesis format review has been approved! There are no formatting changes you need to make for your final submission.
 
-                    If you have any further questions please contact:  
+                    Sincerely,
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         format_review_rejected:
           message: |
-                    Your format review has been rejected. Please go back onto the website to look at the notes and resubmit with those necessary revisions.
+                    Your thesis format review has been rejected. Please go back onto [the website](%{url}) to look at the feedback and resubmit with the necessary revisions.
 
-                    If you have any further questions please contact:  
+                    Sincerely,
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         final_submission_received:
           message: |
-                    Thank you for submitting your final %{degree_type}. It will now be automatically sent to your committee for review and approval.
-                    You will be notified once your committee has reviewed and made a decision regarding your document.
+                    Thank you for submitting your final thesis submission. It has been automatically sent to your committee for review.
+                    You will be notified once your committee has made a decision.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         sent_to_committee:
           message: |
-                    Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee.
-                    No action is required of you at this time.
-                    You will be notified once your committee has reviewed and made a decision regarding your document.
+                    Your thesis has been sent back to the committee review stage to be approved by your committee. No action is required of you at this time. You will be notified once your committee has made a decision.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
-                    The Schreyer Honors College and %{full_name} need your prompt attention to review and digitally sign
-                    a proposed work that you have been a part of.  Please login to %{review_url} and complete this request
-                    within five business days.
+                    The Schreyer Honors College and %{full_name} are requesting your prompt attention to review and approve their honors thesis. Please login to %{review_url} and complete this task as soon as you are able.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         special_committee_review_request:
           message: |
                     Hello %{committee_member_name},
-
-                    The Schreyer Honors College of The Pennsylvania State University and %{full_name} require you to review and
-                    digitally sign a proposed work for which you have been listed as a committee member.
-                    In order to proceed and provide input on their work, please follow this link:
+                    The Schreyer Honors College of The Pennsylvania State University and %{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member.
+                    To proceed and provide input on their work, please follow this link:
                     %{review_url}
                     or you can copy and paste this into your browser. %{seven_day_note}
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         committee_member_review_reminder:
           message: |
-                    Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
+                    Reminder: %{full_name} has submitted their %{degree_type} titled %{title} for your review.
                     Please visit this URL to conduct your final review:
                     %{review_url}
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         committee_rejected_admin:
@@ -143,60 +149,62 @@ en:
                     The submission will automatically be available for the student to edit and resubmit for committee approval.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         committee_rejected_author:
           message: |
-                    The committee reviewing your %{degree_type} has rejected your submission.
-                    You will need to make the necessary revisions or corrections to your document and resubmit
-                    your %{degree_type} for your committee to review.
-                    For additional information regarding the rejection please consult your %{degree_type} adviser.
+                    Your thesis has been rejected by a member of your committee. You will need to go back onto [the website](%{url}) to look at the feedback and resubmit with the necessary revisions.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         committee_rejected_committee:
           message: |
-                    %{author_name}'s %{degree_type} titled "%{title}" has been rejected by its committee.
-                    The student has been asked to resubmit their work.  Once they have done this, you will be notified via email to review.
+                    %{author_name}'s %{degree_type} titled "%{title}" has been rejected by a member of their committee.
+                    The student has been asked to resubmit their work. Once they have done this, you will be notified via email to review.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         pending_returned_author:
           message: |
                     Your %{degree_type} has been rejected by request of an administrator.
-                    You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review again.
-
+                    You will need to go back onto [the website](%{url}) to look at the feedback and resubmit with the necessary revisions.
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         pending_returned_committee:
           message: |
                     %{author_name}'s eTD submission titled "%{title}" has been rejected at the request of an administrator.
-                    The student has been asked to resubmit their work.  Once they have done this, you will be notified via email to review.
+                    The student is required to resubmit their work with the necessary revisions. Once they have done this, you will be notified via email to review.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         committee_approved:
           message: |
-                    Congratulations! Your honors %{degree_type} has been reviewed by your committee and it is approved.
-                    The next step is to have your final submission reviewed by the Schreyer Honors College.  You will receive an email once it is approved.
+                    Congratulations! Your honors thesis has been approved by your committee.
+                    The Schreyer Honors College is now reviewing it. You will receive a notification within the next few weeks letting you know if it has been approved or rejected. If it is rejected, you will have the opportunity to resubmit until approval.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         author_release_warning:
@@ -215,28 +223,27 @@ en:
                     University Park, PA  16802
         release_for_publication:
           message: |
-                    Your %{degree_type} titled "%{title}" has been released with the access level of Open Access.
-                    You can view your published submission at: %{url}.
+                    Congratulations! Your honors thesis titled "%{title}" has been released for publication with the access level of Open Access. You can view it at: %{url}.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         release_for_publication_metadata_only:
           message: |
-                    The metadata for your %{degree_type} titled "%{title}" has been released.
-                    You can view this information at: %{url}.
-                    It retains its access level of %{access_level}.  The full publication will be released in two years.
+                    The metadata for your %{degree_type} titled "%{title}" has been released. You can view this information at: %{url}. It retains its access level of %{access_level}. The full publication will be released in two years.
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
         access_level_updated:
           message: |
-                    The Schreyer Honors College has changed the availability of the following honor thesis as shown below:
+                    The Schreyer Honors College has updated the access level of the following honors thesis as shown below:
                     Author - %{full_name}
                     Title - %{title}
                     New Availability - %{new_access_level}
@@ -244,8 +251,9 @@ en:
                     Graduation Year - %{graduation_year}
 
                     Sincerely,
-                    The Schreyer Honors College
-                    If you have any further questions please contact:  
+                    Schreyer Honors College Academic Affairs
+                    
+                    If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
     program:

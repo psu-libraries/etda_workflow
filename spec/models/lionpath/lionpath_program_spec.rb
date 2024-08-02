@@ -5,13 +5,15 @@ RSpec.describe Lionpath::LionpathProgram do
 
   let!(:degree) { FactoryBot.create :degree, name: 'PHD' }
   let!(:degree_ms) { FactoryBot.create :degree, name: 'MS' }
+  let!(:degree_m_ed) { FactoryBot.create :degree, name: 'M Ed' }
 
   let(:row_1) do
     {
       'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Campus ID' => 'xxb13', 'Exp Grad' => 2215,
       'Acadademic Plan' => 'BIOE_PHD', 'Degree' => 'PHD', 'Transcript Descr' => 'Bioengineering (PHD)',
       'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
-      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG'
+      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG',
+      'Can Nbr' => 111
     }
   end
 
@@ -20,7 +22,8 @@ RSpec.describe Lionpath::LionpathProgram do
       'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Campus ID' => 'xxb13', 'Exp Grad' => 2205,
       'Acadademic Plan' => 'BIOE_PHD', 'Degree' => 'PHD', 'Transcript Descr' => 'Bioengineering (PHD)',
       'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
-      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG'
+      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG',
+      'Can Nbr' => 112
     }
   end
 
@@ -29,7 +32,18 @@ RSpec.describe Lionpath::LionpathProgram do
       'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Campus ID' => 'xxb13', 'Exp Grad' => 2211,
       'Acadademic Plan' => 'BIOE_MS', 'Degree' => 'MS', 'Transcript Descr' => 'Bioengineering (PHD)',
       'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
-      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG'
+      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG',
+      'Can Nbr' => 113
+    }
+  end
+
+  let(:row_4) do
+    {
+      'ID' => 999999999, 'Last Name' => 'Tester', 'First Name' => 'Test', 'Campus ID' => 'xxb13', 'Exp Grad' => 2215,
+      'Acadademic Plan' => 'CNED_M_ED', 'Degree' => 'M_ED', 'Transcript Descr' => 'Master of Education',
+      'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
+      'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG',
+      'Can Nbr' => 114
     }
   end
 
@@ -54,13 +68,14 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.program.is_active).to eq(true)
       expect(Author.first.submissions.first.program.lionpath_updated_at).to be_truthy
       expect(Author.first.submissions.first.lionpath_updated_at).to be_truthy
-      expect(Author.first.submissions.first.degree.name).to eq(row_1['Acadademic Plan'].split('_')[1].to_s)
+      expect(Author.first.submissions.first.degree.name).to eq('PHD')
       expect(Author.first.submissions.first.lionpath_year).to eq(2021)
       expect(Author.first.submissions.first.lionpath_semester).to eq('Summer')
       expect(Author.first.submissions.first.campus).to eq('UP')
       expect(Author.first.submissions.first.status).to eq('collecting program information')
       expect(Author.first.submissions.first.academic_program).to eq('EN')
       expect(Author.first.submissions.first.degree_checkout_status).to eq('EG')
+      expect(Author.first.submissions.first.candidate_number).to eq(111)
     end
   end
 
@@ -72,6 +87,16 @@ RSpec.describe Lionpath::LionpathProgram do
       expect { lionpath_program.import(row_1) }.to change(Author, :count).by 0
       expect(Submission.first.program).to eq program
       expect(Submission.first.author).to eq author
+    end
+
+    context 'when Degree in LP data is "M_ED"' do
+      before do
+        lionpath_program.import(row_4)
+      end
+
+      it 'matches "M Ed" in the database by stripping underscores and matching when uppercase' do
+        expect(Author.first.submissions.first.degree.name).to eq('M Ed')
+      end
     end
   end
 
@@ -89,6 +114,7 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.lionpath_year).to eq(2021)
       expect(Author.first.submissions.first.lionpath_semester).to eq('Summer')
       expect(Author.first.submissions.first.campus).to eq('UP')
+      expect(Author.first.submissions.first.candidate_number).to eq(111)
     end
 
     context 'when submission is beyond_waiting_for_final_submission_response_rejected?' do
@@ -114,6 +140,7 @@ RSpec.describe Lionpath::LionpathProgram do
           expect(Author.first.submissions.first.lionpath_semester).to eq submission.lionpath_semester
           expect(Author.first.submissions.first.campus).to eq submission.campus
           expect(Author.first.submissions.first.degree_checkout_status).to eq row_1['ChkoutStat']
+          expect(Author.first.submissions.first.candidate_number).to eq(nil)
         end
       end
     end

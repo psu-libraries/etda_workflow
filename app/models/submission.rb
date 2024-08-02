@@ -12,6 +12,7 @@ class Submission < ApplicationRecord
   has_many :committee_members, dependent: :destroy
   has_many :format_review_files, inverse_of: :submission, dependent: :destroy
   has_many :final_submission_files, inverse_of: :submission, dependent: :destroy
+  has_many :admin_feedback_files, inverse_of: :submission, dependent: :destroy
   has_many :keywords, dependent: :destroy, validate: true
   has_many :invention_disclosures, dependent: :destroy, validate: true
 
@@ -121,6 +122,7 @@ class Submission < ApplicationRecord
                                 allow_destroy: true
   accepts_nested_attributes_for :format_review_files, allow_destroy: true
   accepts_nested_attributes_for :final_submission_files, allow_destroy: true
+  accepts_nested_attributes_for :admin_feedback_files, allow_destroy: true
   accepts_nested_attributes_for :keywords, allow_destroy: true
   accepts_nested_attributes_for :invention_disclosures,
                                 allow_destroy: true,
@@ -418,6 +420,14 @@ class Submission < ApplicationRecord
     new_token = SecureRandom.hex(10) while Submission.exists?(extension_token: new_token)
     self.extension_token = new_token
     save
+  end
+
+  def final_submission_feedback_files?
+    admin_feedback_files.any? { |file| file.feedback_type == 'final-submission' }
+  end
+
+  def format_review_feedback_files?
+    admin_feedback_files.any? { |file| file.feedback_type == 'format-review' }
   end
 
   private

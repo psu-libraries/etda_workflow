@@ -1,9 +1,9 @@
 <div id='print-button' class="noprint"><a id="print_it" href="#">Print</a>
-  <span class='status'>status-<%= submission.id%></span>
+  <span class='status'>status-<%= submission.id %></span>
   <%= simple_form_for submission, url: admin_submissions_print_signatory_page_update_path(submission), html: { class: 'hidden', id: 'print-form-page', } do |f| %>
       <%= f.input :id, readonly: true %>
-      <%= f.input :is_printed, html: {class: 'update_printed' }%>
-      <%= f.submit html: { class: 'update-printed' }%>
+      <%= f.input :is_printed, html: {class: 'update_printed' } %>
+      <%= f.submit html: { class: 'update-printed' } %>
   <% end %>
 </div>
 <div class='print-it'>
@@ -12,9 +12,9 @@
   <div class='double-under'>&nbsp;</div>
   <%= render partial: 'admin/submissions/print/signatory_page_bottom', locals: { submission: submission, author: author } %>
   <div>
-     <br />
+     <br>
     <% 6.times do %>
-        <div class="print-notes"><hr /></div>
+        <div class="print-notes"><hr></div>
     <% end %>
   </div>
 </div>

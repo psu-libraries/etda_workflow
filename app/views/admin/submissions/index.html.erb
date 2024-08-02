@@ -12,7 +12,7 @@
       </h5>
       <div class="actions">
         <div class="row">
-          <%= render(partial: @view.delete_button_partial) if @view.render_delete_button?  %>
+          <%= render(partial: @view.delete_button_partial) if @view.render_delete_button? %>
 
           <%= render(partial: @view.additional_bulk_actions_path) if @view.render_additional_bulk_actions? %>
         </div>

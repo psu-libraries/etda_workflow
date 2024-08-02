@@ -1,5 +1,5 @@
 class Author::SubmissionsController < AuthorController
-  before_action :find_submission, except: [:index, :new, :create, :published_submissions_index]
+  before_action :find_submission, except: [:index, :new, :create, :acknowledge_update, :published_submissions_index]
 
   def index
     @view = Author::SubmissionsIndexView.new(@author)
@@ -33,12 +33,33 @@ class Author::SubmissionsController < AuthorController
     flash[:alert] = 'Oops! You may have submitted invalid program information data. Please check that your program information is correct.'
   end
 
+  def acknowledge
+    @ack = AcknowledgmentSignatures.new
+    deg = DegreeType.find_by(id: @submission.degree_type.id).name
+    @degree_type = deg == 'Dissertation' ? 'dissertation' : 'thesis'
+  end
+
+  def acknowledge_update
+    @ack = AcknowledgmentSignatures.new(acknowledge_params)
+    @ack.validate!
+    @submission = find_submission
+    @submission.update!(author_edit: false, acknowledgment_page_submitted_at: DateTime.now)
+    redirect_to edit_author_submission_path(@submission)
+  rescue ActiveModel::ValidationError
+    flash[:alert] = 'Please initial for every statement.'
+    redirect_to author_submission_acknowledge_path
+  rescue ActiveRecord::RecordInvalid
+    flash[:alert] = 'Oops! You may have submitted invalid program information data. Please check that your program information is correct.'
+    redirect_to author_submission_acknowledge_path
+  end
+
   def edit
     @submission = find_submission
+    redirect_to author_submission_acknowledge_path(@submission) if @submission.acknowledgment_page_submitted_at.nil? && current_partner.graduate?
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_update_program_information?
   rescue SubmissionStatusGiver::AccessForbidden
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    flash[:alert] = t("#{current_partner.id}.partner.not_allowed_alert")
     redirect_to author_root_path
   end
 
@@ -55,7 +76,7 @@ class Author::SubmissionsController < AuthorController
     render :edit
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    flash[:alert] = t("#{current_partner.id}.partner.not_allowed_alert")
   end
 
   def destroy
@@ -74,7 +95,7 @@ class Author::SubmissionsController < AuthorController
     status_giver.can_review_program_information?
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    flash[:alert] = t("#{current_partner.id}.partner.not_allowed_alert")
   end
 
   def edit_final_submission
@@ -87,7 +108,7 @@ class Author::SubmissionsController < AuthorController
     status_giver.can_upload_final_submission_files?
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    flash[:alert] = t("#{current_partner.id}.partner.not_allowed_alert")
   rescue FeePaymentService::FeeNotPaid
     redirect_to author_root_path
     flash[:fee_dialog] = I18n.t("graduate.fee_message.#{@submission.degree.degree_type.slug}.message").html_safe
@@ -108,7 +129,7 @@ class Author::SubmissionsController < AuthorController
     render :edit_final_submission
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    flash[:alert] = t("#{current_partner.id}.partner.not_allowed_alert")
   rescue SubmissionStatusGiver::InvalidTransition
     redirect_to author_root_path
     flash[:alert] = 'Oops! You may have submitted invalid format review data. Please check that your format review information is correct.'
@@ -120,7 +141,7 @@ class Author::SubmissionsController < AuthorController
     status_giver.can_review_final_submission_files?
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    flash[:alert] = t("#{current_partner.id}.partner.not_allowed_alert")
   end
 
   def published_submissions_index
@@ -158,6 +179,10 @@ class Author::SubmissionsController < AuthorController
     def find_author
       redirect_to '/login' if current_author.nil? || current_author.access_id.blank? && Rails.env.production?
       @author = current_author
+    end
+
+    def acknowledge_params
+      params.require(:acknowledgment_signatures).permit(:sig_1, :sig_2, :sig_3, :sig_4, :sig_5, :sig_6, :sig_7)
     end
 
     def standard_program_params

@@ -25,6 +25,7 @@ en:
       document_title_label: 'Please enter your Final Paper Title'
       extension_not_allowed: 'You are not able to request an extension at this time, please contact your administrator'
       url_slug: 'sset'
+      not_allowed_alert: You are not allowed to visit that page at this time, please contact your administrator
       email:
         url: 'https://sset-explore.libraries.psu.edu'
         address: sset@psu.edu

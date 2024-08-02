@@ -1,6 +1,6 @@
 <% lionpath_import = f.object.lionpath_updated_at.present? %>
 <% if lionpath_import %>
-<br />
+<br>
 <div class="col-sm-12">
   <div class="alert alert-info">
     <strong class="hint">
@@ -23,11 +23,21 @@
                 required: true, prompt: "Please Select a Degree", disabled: lionpath_import %>
   </div>
 </div>
-<div class="row col-sm-12">
-  <%= f.input :semester, label: 'Semester Intending to Graduate',
-              collection: Semester::SEMESTERS, prompt: "Please Select",
-              required: true %>
-</div>
+<% if current_partner.graduate? || current_partner.honors? %>
+  <div class="row col-sm-12">
+    <%= f.input :semester, label: 'Semester Intending to Graduate',
+                hint: "#{I18n.t("#{current_partner.id}.partner.semester_hint")}",
+                collection: Semester::SEMESTERS, prompt: "Please Select",
+                required: true %>
+  </div>
+<% else %>
+  <div class="row col-sm-12">
+    <%= f.input :semester, label: 'Semester Intending to Graduate',
+                collection: Semester::SEMESTERS, prompt: "Please Select",
+                required: true %>
+  </div>
+<% end %>
+
 <div class="row col-sm-12">
   <%= f.input :year, label: 'Graduation Year',
               collection: Semester.graduation_years, prompt: "Please Select",

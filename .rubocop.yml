@@ -283,6 +283,10 @@ Style/Lambda:
   Exclude:
   - 'app/models/submission.rb'
 
+Style/OptionalBooleanParameter:
+  Exclude:
+  - 'app/workers/seventh_day_evaluation_worker.rb'
+
 Style/BlockDelimiters:
   Exclude:
    - 'config/deploy.rb'

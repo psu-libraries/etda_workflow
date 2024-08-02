@@ -12,6 +12,14 @@
 
 ActiveRecord::Schema.define(version: 2024_08_01_132208) do
 
+  create_table "admin_feedback_files", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "submission_id"
+    t.text "asset"
+    t.string "feedback_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
     t.datetime "remember_created_at"
@@ -176,7 +184,7 @@ ActiveRecord::Schema.define(version: 2024_08_01_132208) do
     t.index ["name"], name: "index_degrees_on_name", unique: true
   end
 
-  create_table "faculty_members", charset: "utf8mb4", force: :cascade do |t|
+  create_table "faculty_members", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "middle_name"
     t.string "last_name", null: false
@@ -295,6 +303,8 @@ ActiveRecord::Schema.define(version: 2024_08_01_132208) do
     t.string "degree_checkout_status"
     t.datetime "author_release_warning_sent_at"
     t.string "extension_token"
+    t.datetime "acknowledgment_page_submitted_at"
+    t.integer "candidate_number"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"

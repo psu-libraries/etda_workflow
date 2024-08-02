@@ -16,13 +16,16 @@ RSpec.describe SolrSubmission, type: :model do
              # Test that datetime converts to UTC
              final_submission_files_uploaded_at: DateTime.now,
              # Test that nil stays nil
-             defended_at: nil
+             defended_at: nil,
+             program_id: program.id
     end
     let(:final_submission_file_1) { create :final_submission_file }
     let(:final_submission_file_2) { create :final_submission_file }
     let(:format_review_file) { create :format_review_file }
     let(:committee_member_1) { create :committee_member }
     let(:committee_member_2) { create :committee_member }
+    let(:program) { create :program, name: 'Mechanical Engineering (MS)' }
+    let(:program_name_condensed) { 'Mechanical Engineering' }
 
     it 'generates solr doc from submission attributes' do
       submission.committee_members << committee_member_1
@@ -62,8 +65,8 @@ RSpec.describe SolrSubmission, type: :model do
                                               "last_name_ssi" => submission.author_last_name,
                                               "last_name_tesi" => submission.author_last_name,
                                               "middle_name_ssi" => submission.author_middle_name,
-                                              "program_name_ssi" => submission.program_name,
-                                              "program_name_tesi" => submission.program_name,
+                                              "program_name_ssi" => program_name_condensed,
+                                              "program_name_tesi" => program_name_condensed,
                                               "released_metadata_at_dtsi" => submission.released_metadata_at.to_datetime.getutc,
                                               "semester_ssi" => submission.semester,
                                               "title_ssi" => submission.title,

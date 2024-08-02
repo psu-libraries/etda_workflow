@@ -7,7 +7,7 @@ class Author::SubmissionFormatReviewController < AuthorController
     render 'author/submissions/edit_format_review'
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    flash[:alert] = t("#{current_partner.id}.partner.not_allowed_alert")
   end
 
   def update
@@ -23,8 +23,8 @@ class Author::SubmissionFormatReviewController < AuthorController
     flash[:alert] = @submission.errors.messages.values.join(" ")
     redirect_to author_submission_edit_format_review_path(@submission)
   rescue SubmissionStatusGiver::AccessForbidden
-    redirect_to author_root_path # , alert: 'You are not allowed to visit that page at this time, please contact your administrator'
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    redirect_to author_root_path # , alert: t("#{current_partner.id}.partner.not_allowed_alert")
+    flash[:alert] = t("#{current_partner.id}.partner.not_allowed_alert")
   rescue SubmissionStatusGiver::InvalidTransition
     redirect_to author_root_path
     flash[:alert] = 'Oops! You may have submitted invalid format review data. Please check that your format review information is correct.'
@@ -36,7 +36,7 @@ class Author::SubmissionFormatReviewController < AuthorController
     render 'author/submissions/format_review'
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
-    flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
+    flash[:alert] = t("#{current_partner.id}.partner.not_allowed_alert")
   end
 
   private
@@ -53,6 +53,7 @@ class Author::SubmissionFormatReviewController < AuthorController
                                          :semester,
                                          :year,
                                          :federal_funding,
-                                         format_review_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy])
+                                         format_review_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy],
+                                         admin_feedback_files_attributes: [:asset, :asset_cache, :submission_id, :feedback_type, :id, :_destroy])
     end
 end

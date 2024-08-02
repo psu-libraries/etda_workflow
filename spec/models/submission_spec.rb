@@ -83,6 +83,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_many :committee_members }
   it { is_expected.to have_many :format_review_files }
   it { is_expected.to have_many :final_submission_files }
+  it { is_expected.to have_many :admin_feedback_files }
   it { is_expected.to have_many :keywords }
   it { is_expected.to have_many :invention_disclosures }
 
@@ -956,6 +957,34 @@ RSpec.describe Submission, type: :model do
         expect(submission.preferred_semester_and_year)
           .to eq "#{submission.semester} #{submission.year}"
       end
+    end
+  end
+
+  describe "#final_submission_feedback_files?" do
+    it 'returns true if at least one admin feedback file with type final-submission' do
+      sub1 = described_class.new
+      sub1.admin_feedback_files.build(feedback_type: 'final-submission')
+      expect(sub1).to be_final_submission_feedback_files
+    end
+
+    it 'returns false if no admin feedback file has the type of final-submission' do
+      sub2 = described_class.new
+      sub2.admin_feedback_files.build(feedback_type: 'format-review')
+      expect(sub2).not_to be_final_submission_feedback_files
+    end
+  end
+
+  describe "#format_review_feedback_files?" do
+    it 'returns true if at least one admin feedback file with type format-review' do
+      sub3 = described_class.new
+      sub3.admin_feedback_files.build(feedback_type: 'format-review')
+      expect(sub3).to be_format_review_feedback_files
+    end
+
+    it 'returns false if no admin feedback file has the type of format-review' do
+      sub4 = described_class.new
+      sub4.admin_feedback_files.build(feedback_type: 'final-submission')
+      expect(sub4).not_to be_format_review_feedback_files
     end
   end
 end

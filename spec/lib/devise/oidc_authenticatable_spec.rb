@@ -7,6 +7,7 @@ RSpec.describe Devise::Strategies::OidcAuthenticatable do
   subject { described_class.new(nil) }
 
   before { allow(subject).to receive(:request).and_return(request) }
+  let(:request) {}
 
   describe 'authenticate!' do
     context 'when author' do
@@ -141,6 +142,13 @@ RSpec.describe Devise::Strategies::OidcAuthenticatable do
       it 'returns nil' do
         expect(subject.authenticate!).to eq(:success)
       end
+    end
+  end
+
+  context 'when format is appended to the end of the url' do
+    it 'strips format to determine_login_type' do
+      request_uri = '/approver.json'
+      expect(subject.send(:determine_login_type, request_uri)).to eq('Approver')
     end
   end
 end
