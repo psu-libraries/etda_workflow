@@ -2,7 +2,6 @@
 
 class ExtensionController < ApplicationController
   def autorelease_extension
-    byebug
     @submission = find_submission
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_request_extension?
