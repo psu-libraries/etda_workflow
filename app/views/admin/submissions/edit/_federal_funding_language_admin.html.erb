@@ -1,0 +1,22 @@
+<div tabindex="0">
+    <br>
+    <strong>Federal Funding Statement</strong>
+    <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.intro_1").html_safe %></p>
+    <%= simple_fields_for :federal_funding do |g| %>
+        <%= g.label :test_1, I18n.t("#{current_partner.id}.federal_funding_admin.question_1").html_safe %><br>
+        <%= g.label :test_1, 'Yes'%>
+        <%= g.radio_button :test_1, true %><br>
+        <div class="ml-3 collapse show" id="luke_sky">
+            <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.confirmation").html_safe%></p>
+            <%= g.label :test_1_1, 'Yes'%>
+            <%= g.radio_button :test_1_1, true %><br>
+            <%= g.label :test_1, 'No'%>
+            <%= g.radio_button :test_1_1, false %>
+            <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.error_message_1").html_safe%></p>
+        </div>
+        <%= g.label :test_1, 'No'%>
+        <%= g.radio_button :test_1, false %>
+        <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.error_message_2").html_safe%></p>
+    <% end %>
+    </div>
+    
