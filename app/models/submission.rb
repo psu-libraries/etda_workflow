@@ -413,6 +413,13 @@ class Submission < ApplicationRecord
     self[:proquest_agreement_at] = DateTime.now
   end
 
+  def create_extension_token
+    new_token = SecureRandom.hex(10)
+    new_token = SecureRandom.hex(10) while Submission.exists?(extension_token: new_token)
+    self.extension_token = new_token
+    save
+  end
+
   private
 
     def file_check

@@ -72,6 +72,8 @@ RSpec.describe AutoReleaseService do
     before { allow(WorkflowMailer).to receive(:send_author_release_warning) }
 
     it 'calls the release warning mailer on eligible submissions' do
+      expect(sub1.extension_token).to be_nil
+      expect(sub3.extension_token).to be_nil
       described_class.new.notify_author
       expect(WorkflowMailer).to have_received(:send_author_release_warning).with(sub1)
       expect(WorkflowMailer).not_to have_received(:send_author_release_warning).with(sub2)
@@ -82,8 +84,10 @@ RSpec.describe AutoReleaseService do
       sub3.reload
 
       expect(sub1.author_release_warning_sent_at).to be_within(1.minute).of(Time.zone.now)
+      expect(sub1.extension_token).not_to be_nil
       expect(sub2.author_release_warning_sent_at).to eq(one_week_ago)
       expect(sub3.author_release_warning_sent_at).to be_within(1.minute).of(Time.zone.now)
+      expect(sub3.extension_token).not_to be_nil
     end
   end
 end

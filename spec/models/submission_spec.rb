@@ -55,6 +55,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:campus).of_type(:string) }
   it { is_expected.to have_db_column(:lionpath_semester).of_type(:string) }
   it { is_expected.to have_db_column(:lionpath_year).of_type(:integer) }
+  it { is_expected.to have_db_column(:extension_token).of_type(:string) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
@@ -843,6 +844,16 @@ RSpec.describe Submission, type: :model do
       submission.update proquest_agreement: true
       submission.reload
       expect(submission.proquest_agreement_at).to be_truthy
+    end
+  end
+
+  describe "#create_extension_token" do
+    it 'generates a unique token string for extension_token' do
+      submission = FactoryBot.create :submission, extension_token: nil
+      submission.create_extension_token
+      submission.reload
+      expect(submission.extension_token).not_to be_nil
+      expect(described_class.where(extension_token: submission.extension_token).count).to eq 1
     end
   end
 

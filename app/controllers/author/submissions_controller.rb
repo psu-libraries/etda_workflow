@@ -123,22 +123,6 @@ class Author::SubmissionsController < AuthorController
     flash[:alert] = 'You are not allowed to visit that page at this time, please contact your administrator'
   end
 
-  def autorelease_extension
-    @submission = find_submission
-    status_giver = SubmissionStatusGiver.new(@submission)
-    status_giver.can_request_extension?
-
-    new_release_date = @submission.released_for_publication_at + 1.year
-    @submission.update!(released_for_publication_at: new_release_date)
-
-    redirect_to author_root_path
-    formatted_release_date = @submission.reload.released_for_publication_at.strftime("%B %d, %Y")
-    flash[:notice] = "Your extension was successful. The updated release date is #{formatted_release_date}"
-  rescue SubmissionStatusGiver::AccessForbidden
-    redirect_to author_root_path
-    flash[:alert] = t("#{current_partner.id}.partner.extension_not_allowed")
-  end
-
   def published_submissions_index
     @view = Author::PublishedSubmissionsIndexView.new(@author)
     render 'published_submissions_index'

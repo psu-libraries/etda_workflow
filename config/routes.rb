@@ -34,6 +34,8 @@ Rails.application.routes.draw do
 
   get '/committee_member_dashboard', to: 'committee_member#index', as: :committee_member_dashboard
 
+  get '/extension/:extension_token', to: 'extension#autorelease_extension', as: :autorelease_extension
+
   namespace :admin do
     resources :admins, except: [:index, :show]
     resources :degrees, except: [:show, :destroy]
@@ -100,7 +102,6 @@ Rails.application.routes.draw do
       get '/final_submission', to: 'submissions#final_submission', as: :final_submission
       get '/final_submission/edit', to: 'submissions#edit_final_submission', as: :edit_final_submission
       patch '/final_submission', to: 'submissions#update_final_submission', as: :update_final_submission
-      get '/extension', to: 'submissions#autorelease_extension', as: :autorelease_extension
       get '/date_defended_refresh', to: 'submissions#refresh_date_defended', as: :refresh_date_defended
 
       resource :committee_members, shallow: true # We only modify the set of committee members en masse

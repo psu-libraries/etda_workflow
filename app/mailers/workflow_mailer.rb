@@ -65,7 +65,7 @@ class WorkflowMailer < ActionMailer::Base
   def author_release_warning(submission)
     @submission = submission
     @author = submission.author
-    @extension_url = "#{EtdUrls.new.workflow}/author/submissions/#{submission.id}/extension"
+    @extension_url = "#{EtdUrls.new.workflow}/extension/#{submission.extension_token}"
 
     mail to: [@author.psu_email_address, @author.alternate_email_address],
          from: current_partner.email_address,
