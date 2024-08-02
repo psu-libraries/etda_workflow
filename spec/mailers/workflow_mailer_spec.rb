@@ -69,7 +69,7 @@ RSpec.describe WorkflowMailer do
       end
     end
 
-    context "when the current partner does not send format_review emails" do
+    context "when the current partner does not send format_review emails", milsch: true do
       it "raises an InvalidPartner Error" do
         skip 'current partner SHOULD send format_review_accepted emails' unless current_partner.milsch?
 
@@ -105,8 +105,8 @@ RSpec.describe WorkflowMailer do
       end
     end
 
-    context "when the current partner should not send" do
-      it "raises an exception" do
+    context "when the current partner should not send", milsch: true do
+      it "raises an InvalidPartner Error" do
         skip 'current partner SHOULD send' unless current_partner.milsch?
         expect { email.deliver_now }.to raise_error WorkflowMailer::InvalidPartner
       end
