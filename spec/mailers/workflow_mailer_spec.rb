@@ -639,7 +639,7 @@ RSpec.describe WorkflowMailer do
         skip 'Graduate Only' unless current_partner.graduate?
 
         expect(email.body).to match(/\/special_committee\/#{commmittee_member_token.authentication_token}/)
-        expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
+        expect(email.body).to match(/The Fox Graduate School of The Pennsylvania State University/)
       end
 
       it "updates submission's approval_started_at if blank" do
@@ -678,7 +678,7 @@ RSpec.describe WorkflowMailer do
         skip 'Graduate Only' unless current_partner.graduate?
 
         expect(email.body).to match(/\/special_committee\/X/)
-        expect(email.body).to match(/The Graduate School of The Pennsylvania State University/)
+        expect(email.body).to match(/The Fox Graduate School of The Pennsylvania State University/)
       end
     end
   end
