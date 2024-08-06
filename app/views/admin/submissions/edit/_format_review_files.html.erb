@@ -15,8 +15,9 @@
       <span class="fa fa-plus"></span> Additional File
     <% end %>
   </div>
-
-  <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} unless @submission.status_behavior.beyond_waiting_for_format_review_response? ||  true%>
+  <% if false %>
+    <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} unless @submission.status_behavior.beyond_waiting_for_format_review_response? %>
+  <% end %>
   <%= render partial: 'admin/submissions/edit/federal_funding_language_admin', locals: {f: f} unless @submission.status_behavior.beyond_waiting_for_format_review_response? %>
   <%= f.input :format_review_notes, as: :text, label: "Format Review Notes to Student".html_safe, input_html: { class: 'can-toggle-editability' } %>
   <%= render partial: 'admin/submissions/edit/admin_feedback_files', locals: {f: f, feedback_type: 'format-review'} %>

@@ -16,33 +16,34 @@
     </ol>
     <p><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_5").html_safe %></p>
     <p><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_6").html_safe %></p>
-    <%= simple_fields_for :federal_funding do |g| %>
-        <%= g.label :test_1, I18n.t("#{current_partner.id}.federal_funding_author.question_1").html_safe %>
-        <%= g.label :test_1, 'Yes'%>
-        <%= g.radio_button :test_1, true %><br>
-        <div class="ml-3">
+    <%= simple_fields_for :federal_funding_author do |g| %>
+        <%= g.label :training_support_used, I18n.t("#{current_partner.id}.federal_funding_author.question_1").html_safe %>
+        <%= g.label :training_support_used, 'Yes'%>
+        <%= g.radio_button :training_support_used, true %><br>
+        <div id="fed_funding_confirmation_author_1" class="ml-3 collapse hide">
             <p><%= I18n.t("#{current_partner.id}.federal_funding_author.confirmation").html_safe%></p>
-            <%= g.label :test_1_1, 'Yes'%>
-            <%= g.radio_button :test_1_1, true %><br>
-            <%= g.label :test_1, 'No'%>
-            <%= g.radio_button :test_1_1, false %>
-            <p><%= I18n.t("#{current_partner.id}.federal_funding_author.error_message").html_safe%></p>
+            <%= g.label :training_confirmation, 'Yes'%>
+            <%= g.radio_button :training_confirmation, true %><br>
+            <%= g.label :training_confirmation, 'No'%>
+            <%= g.radio_button :training_confirmation, false %>
+            <p id="fed_funding_error_message_author_1" class="collapse hide"><%= I18n.t("#{current_partner.id}.federal_funding_author.error_message").html_safe%></p>
         </div>
-        <%= g.label :test_1, 'No'%>
-        <%= g.radio_button :test_1, false %>
-
-        <%= g.label :test_2, I18n.t("#{current_partner.id}.federal_funding_author.question_2").html_safe %>
-        <%= g.label :test_2, 'Yes'%>
-        <%= g.radio_button :test_2, true %><br>
-        <div class="ml-3">
+        <%= g.label :training_support_used, 'No'%>
+        <%= g.radio_button :training_support_used, false %>
+        <br>
+        <%= g.label :other_funds_used, I18n.t("#{current_partner.id}.federal_funding_author.question_2").html_safe %><br>
+        <%= g.label :other_funds_used, 'Yes'%>
+        <%= g.radio_button :other_funds_used, true %><br>
+        <div id="fed_funding_confirmation_author_2" class="ml-3 collapse hide">
             <p><%= I18n.t("#{current_partner.id}.federal_funding_author.confirmation").html_safe %></p>
-            <%= g.label :test_2_1, 'Yes'%>
-            <%= g.radio_button :test_2_1, true %><br>
-            <%= g.label :test_2_1, 'No'%>
-            <%= g.radio_button :test_2_1, false %>
+            <%= g.label :other_funds_confirmation, 'Yes'%>
+            <%= g.radio_button :other_funds_confirmation, true %><br>
+            <%= g.label :other_funds_confirmation, 'No'%>
+            <%= g.radio_button :other_funds_confirmation, false %>
         </div>
-        <%= g.label :test_1, 'No'%>
-        <%= g.radio_button :test_2, false %>
+        <%= g.label :other_funds_used, 'No'%>
+        <%= g.radio_button :other_funds_used, false %>
+        <p id="fed_funding_error_message_author_2" class="collapse hide"><%= I18n.t("#{current_partner.id}.federal_funding_author.error_message").html_safe%></p>
     <% end %>
     </div>
     
