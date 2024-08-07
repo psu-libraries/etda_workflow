@@ -145,8 +145,7 @@ class Submission < ApplicationRecord
   scope :final_is_withheld, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted') }
   scope :ok_to_release, -> { where('released_for_publication_at <= ?', Time.zone.today.end_of_day) }
   scope :ok_to_autorelease, -> {
-                              ok_to_release.where('released_metadata_at <= ?', Time.zone.today.years_ago(2).end_of_day)
-                                           .where(access_level: 'restricted_to_institution')
+                              ok_to_release.where(access_level: 'restricted_to_institution')
                             }
   scope :release_warning_needed?, -> {
                                     where('released_metadata_at >= ?', Time.zone.today.years_ago(2).end_of_day)

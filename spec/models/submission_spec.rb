@@ -106,30 +106,26 @@ RSpec.describe Submission, type: :model do
     let!(:sub1) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.days_ago(1),
-                        released_metadata_at: Time.zone.today.years_ago(2),
                         access_level: 'restricted_to_institution'
     end
     let!(:sub2) do
       FactoryBot.create :submission,
-                        released_for_publication_at: Time.zone.today.days_ago(1),
-                        released_metadata_at: Time.zone.today.years_ago(1),
+                        released_for_publication_at: Time.zone.today,
                         access_level: 'restricted_to_institution'
     end
     let!(:sub3) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_week,
-                        released_metadata_at: Time.zone.today.years_ago(2),
                         access_level: 'restricted_to_institution'
     end
     let!(:sub4) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.days_ago(1),
-                        released_metadata_at: Time.zone.today.years_ago(2),
                         access_level: 'open_access'
     end
 
     it 'returns submissions that are ready for autorelease' do
-      expect(described_class.ok_to_autorelease).to contain_exactly(sub1)
+      expect(described_class.ok_to_autorelease).to contain_exactly(sub1, sub2)
     end
   end
 

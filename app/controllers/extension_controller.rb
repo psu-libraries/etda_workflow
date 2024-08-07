@@ -7,7 +7,7 @@ class ExtensionController < ApplicationController
     status_giver.can_request_extension?
 
     new_release_date = @submission.released_for_publication_at + 1.year
-    @submission.update!(released_for_publication_at: new_release_date)
+    @submission.update!(released_for_publication_at: new_release_date, extension_token: nil)
 
     redirect_to root_path
     formatted_release_date = @submission.reload.released_for_publication_at.strftime("%B %d, %Y")
