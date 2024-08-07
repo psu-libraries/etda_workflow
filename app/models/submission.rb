@@ -196,6 +196,14 @@ class Submission < ApplicationRecord
     federal_funding ? 'Yes' : 'No'
   end
 
+  def update_with_federal_funding(parameters)
+    self.assign_attributes(parameters)
+    unless parameters[:training_support_funding].nil? && parameters[:other_funding].nil?
+      self.federal_funding = training_support_funding || other_funding
+    end
+    self.save!
+  end
+
   def check_title_capitalization
     return if allow_all_caps_in_title
 

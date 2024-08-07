@@ -13,7 +13,7 @@ class Author::SubmissionFormatReviewController < AuthorController
   def update
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_format_review_files?
-    @submission.update!(format_review_params)
+    @submission.update_with_federal_funding(format_review_params)
     status_giver.waiting_for_format_review_response!
     @submission.update_format_review_timestamps!(Time.zone.now)
     redirect_to author_root_path
@@ -53,6 +53,8 @@ class Author::SubmissionFormatReviewController < AuthorController
                                          :semester,
                                          :year,
                                          :federal_funding,
+                                         :training_support_funding,
+                                         :other_funding,
                                          format_review_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy],
                                          admin_feedback_files_attributes: [:asset, :asset_cache, :submission_id, :feedback_type, :id, :_destroy])
     end

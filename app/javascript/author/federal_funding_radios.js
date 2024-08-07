@@ -2,50 +2,50 @@ var $ = require('jquery');
 window.jQuery = $;
 
 initialize_federal_funding_radios = function() {
-    $("input[name='federal_funding_author[training_support_used]']").on("change",
+    $("input[name='submission[training_support_funding]']").on("change",
         function() {
             var conf = $("#fed_funding_confirmation_author_1")
-            if ($("#federal_funding_author_training_support_used_true").is(":checked")) {
+            if ($("#submission_training_support_funding_true").is(":checked")) {
                 conf.collapse('show')
            }
-            if ($("#federal_funding_author_training_support_used_false").is(":checked")) {
+            if ($("#submission_training_support_funding_false").is(":checked")) {
                 conf.collapse('hide')
             }
         }
     )
 
-    $("input[name='federal_funding_author[other_funds_used]']").on("change",
+    $("input[name='submission[other_funding]']").on("change",
         function() {
             var conf = $("#fed_funding_confirmation_author_2")
-            if ($("#federal_funding_author_other_funds_used_true").is(":checked")) {
+            if ($("#submission_other_funding_true").is(":checked")) {
                 conf.collapse('show')
            }
-            if ($("#federal_funding_author_other_funds_used_false").is(":checked")) {
+            if ($("#submission_other_funding_false").is(":checked")) {
                 conf.collapse('hide')
             }
         }
     )
 
-    $("input[name='federal_funding_author[training_confirmation]']").on("change",
+    $("input[name='federal_funding_author[training_funding_confirmation]']").on("change",
         function() {
-            var conf = $("#fed_funding_error_message_author_1")
-            if ($("#federal_funding_author_training_confirmation_true").is(":checked")) {
-                conf.collapse('hide')
+            var error = $("#fed_funding_error_message_author_1")
+            if ($("#federal_funding_author_training_funding_confirmation_true").is(":checked")) {
+                error.collapse('hide')
            }
-            if ($("#federal_funding_author_training_confirmation_false").is(":checked")) {
-                conf.collapse('show')
+            if ($("#federal_funding_author_training_funding_confirmation_false").is(":checked")) {
+                error.collapse('show')
             }
         }
     )
 
-    $("input[name='federal_funding_author[other_funds_confirmation]']").on("change",
+    $("input[name='federal_funding_author[other_funding_confirmation]']").on("change",
         function() {
-            var conf = $("#fed_funding_error_message_author_2")
-            if ($("#federal_funding_author_other_funds_confirmation_true").is(":checked")) {
-                conf.collapse('hide')
+            var error = $("#fed_funding_error_message_author_2")
+            if ($("#federal_funding_author_other_funding_confirmation_true").is(":checked")) {
+                error.collapse('hide')
            }
-            if ($("#federal_funding_author_other_funds_confirmation_false").is(":checked")) {
-                conf.collapse('show')
+            if ($("#federal_funding_author_other_funding_confirmation_false").is(":checked")) {
+                error.collapse('show')
             }
         }
     )

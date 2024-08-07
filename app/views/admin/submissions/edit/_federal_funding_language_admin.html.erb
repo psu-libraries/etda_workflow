@@ -11,17 +11,15 @@
                 <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.error_message_1").html_safe%></p>
             <% elsif %>
                 <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.confirmation").html_safe%></p>
-                <%= g.label :test_1_1, 'Yes'%>
-                <%= g.radio_button :test_1_1, true %><br>
-                <%= g.label :test_1_1, 'No'%>
-                <%= g.radio_button :test_1_1, false %>
+                <%= g.label :admin_funding_confirmation, 'Yes'%>
+                <%= g.radio_button :admin_funding_confirmation, true %><br>
+                <%= g.label :admin_funding_confirmation, 'No'%>
+                <%= g.radio_button :admin_funding_confirmation, false %>
             <% end %>
+            <p id="fed_funding_error_admin" class="ml-3 collapse hide"><%= I18n.t("#{current_partner.id}.federal_funding_admin.error_message_2").html_safe%></p>
         </div>
         <%= g.label :funds_used, 'No'%>
         <%= g.radio_button :funds_used, false %>
-        <% if "confirmation (confirm whose confirmation exactly)" == false %>
-            <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.error_message_2").html_safe%></p>
-        <% end %>
     <% end %>
     </div>
     
