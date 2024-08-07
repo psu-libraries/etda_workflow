@@ -18,9 +18,7 @@ class Lionpath::LionpathExport
     response = HTTParty.put(host + endpoint_path, options)
     raise response.message unless response.code == 200
 
-    if response.parsed_response["PE_SR199_ETD_FAULT"]["errorNbr"] == 400
-      raise response.parsed_response["PE_SR199_ETD_FAULT"]["errorMsg"]
-    end
+    raise response.parsed_response["PE_SR199_ETD_FAULT"]["errorMsg"] if response.parsed_response["PE_SR199_ETD_FAULT"]["errorNbr"] == 400
 
     nil
   end
