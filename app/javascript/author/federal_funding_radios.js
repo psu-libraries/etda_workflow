@@ -2,6 +2,20 @@ var $ = require('jquery');
 window.jQuery = $;
 
 initialize_federal_funding_radios = function() {
+    toggles_and_hidden_areas = { 
+        "#submission_training_support_funding_true" : "#fed_funding_confirmation_author_1",
+        "#submission_other_funding_true" : "#fed_funding_confirmation_author_2",
+        "#funding_confirmation_training_funding_confirmation_false" : "#fed_funding_error_message_author_1",
+        "#funding_confirmation_other_funding_confirmation_false" : "#fed_funding_error_message_author_2"
+    };
+    $.each( toggles_and_hidden_areas, function(toggle, field){
+        if ($(toggle).is(":checked")) {
+            $(field).collapse('show')
+        };
+    })
+
+
+
     $("input[name='submission[training_support_funding]']").on("change",
         function() {
             var conf = $("#fed_funding_confirmation_author_1")
@@ -26,25 +40,25 @@ initialize_federal_funding_radios = function() {
         }
     )
 
-    $("input[name='federal_funding_author[training_funding_confirmation]']").on("change",
+    $("input[name='funding_confirmation[training_funding_confirmation]']").on("change",
         function() {
             var error = $("#fed_funding_error_message_author_1")
-            if ($("#federal_funding_author_training_funding_confirmation_true").is(":checked")) {
+            if ($("#funding_confirmation_training_funding_confirmation_true").is(":checked")) {
                 error.collapse('hide')
            }
-            if ($("#federal_funding_author_training_funding_confirmation_false").is(":checked")) {
+            if ($("#funding_confirmation_training_funding_confirmation_false").is(":checked")) {
                 error.collapse('show')
             }
         }
     )
 
-    $("input[name='federal_funding_author[other_funding_confirmation]']").on("change",
+    $("input[name='funding_confirmation[other_funding_confirmation]']").on("change",
         function() {
             var error = $("#fed_funding_error_message_author_2")
-            if ($("#federal_funding_author_other_funding_confirmation_true").is(":checked")) {
+            if ($("#funding_confirmation_other_funding_confirmation_true").is(":checked")) {
                 error.collapse('hide')
            }
-            if ($("#federal_funding_author_other_funding_confirmation_false").is(":checked")) {
+            if ($("#funding_confirmation_other_funding_confirmation_false").is(":checked")) {
                 error.collapse('show')
             }
         }
