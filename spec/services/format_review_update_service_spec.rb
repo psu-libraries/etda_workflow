@@ -6,7 +6,7 @@ require 'shoulda-matchers'
 RSpec.describe FormatReviewUpdateService, type: :model do
   let(:committee_member) { FactoryBot.create :committee_member, created_at: DateTime.yesterday }
 
-  context 'it processes approved format review submissions' do
+  context 'it processes approved format review submissions', sset: true, honors: true, milsch: true do
     it 'approves a format review' do
       submission = FactoryBot.create :submission, :waiting_for_format_review_response, committee_members: [committee_member]
       params = ActionController::Parameters.new
@@ -27,12 +27,12 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       expect(submission.committee_members.first.status).to eq('approved')
       expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Review Status to 'Approved' at: .*\n\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
       expect(submission.federal_funding).to eq false
-      expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.sset?
-      expect(WorkflowMailer.deliveries.count).to eq 0 unless current_partner.sset?
+      expect(WorkflowMailer.deliveries.count).to eq 1 unless current_partner.milsch?
+      expect(WorkflowMailer.deliveries.count).to eq 0 if current_partner.milsch?
     end
   end
 
-  context 'it processes rejected format review submissions' do
+  context 'it processes rejected format review submissions', sset: true, honors: true, milsch: true do
     it 'rejects a format review' do
       submission = FactoryBot.create :submission, :waiting_for_format_review_response, committee_members: [committee_member]
       params = ActionController::Parameters.new
@@ -49,8 +49,8 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       expect(submission.semester).to eq(semester)
       expect(submission.committee_members.first.is_voting).to eq(false)
       expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
-      expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.sset?
-      expect(WorkflowMailer.deliveries.count).to eq 0 unless current_partner.sset?
+      expect(WorkflowMailer.deliveries.count).to eq 1 unless current_partner.milsch?
+      expect(WorkflowMailer.deliveries.count).to eq 0 if current_partner.milsch?
     end
   end
 

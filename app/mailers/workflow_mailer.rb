@@ -1,10 +1,21 @@
+# frozen_string_literal: true
+
 class WorkflowMailer < ActionMailer::Base
   class InvalidPartner < StandardError; end
   extend MailerActions
 
+  APPROVER_WORKFLOW = "#{EtdUrls.new.workflow}/approver".freeze
+  AUTHOR_WORKFLOW = "#{EtdUrls.new.workflow}/author".freeze
+  COMMENCEMENT_URL = I18n.t("#{current_partner.id}.partner.commencement_url")
+  DEADLINE_URL = I18n.t("#{current_partner.id}.partner.deadline_url")
+  EXPLORE_SITE = EtdUrls.new.explore.to_s
+  PAYMENT_PORTAL_URL = I18n.t("#{current_partner.id}.partner.payment_portal_url")
+  THESIS_GUIDE = I18n.t("#{current_partner.id}.partner.thesis_guide_pdf")
+
   def format_review_received(submission)
     @submission = submission
     @author = submission.author
+    @payment_portal_url = PAYMENT_PORTAL_URL
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
@@ -12,10 +23,13 @@ class WorkflowMailer < ActionMailer::Base
   end
 
   def format_review_accepted(submission)
-    raise InvalidPartner unless current_partner.sset? || current_partner.honors?
+    raise InvalidPartner unless current_partner.sset? || current_partner.honors? || current_partner.graduate?
 
     @submission = submission
     @author = submission.author
+    @deadline_url = DEADLINE_URL
+    @etd_site = AUTHOR_WORKFLOW
+    @thesis_guide = THESIS_GUIDE
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
@@ -23,10 +37,13 @@ class WorkflowMailer < ActionMailer::Base
   end
 
   def format_review_rejected(submission)
-    raise InvalidPartner unless current_partner.sset? || current_partner.honors?
+    raise InvalidPartner unless current_partner.sset? || current_partner.honors? || current_partner.graduate?
 
     @submission = submission
     @author = submission.author
+    @deadline_link = DEADLINE_URL
+    @etd_site = AUTHOR_WORKFLOW
+    @thesis_guide = THESIS_GUIDE
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
@@ -45,7 +62,9 @@ class WorkflowMailer < ActionMailer::Base
   def final_submission_approved(submission)
     @submission = submission
     @author = submission.author
-    @url = EtdUrls.new.explore.to_s
+    @commencement_url = COMMENCEMENT_URL
+    @etd_site = AUTHOR_WORKFLOW
+    @explore_site = EXPLORE_SITE
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
@@ -55,7 +74,9 @@ class WorkflowMailer < ActionMailer::Base
   def final_submission_rejected(submission)
     @submission = submission
     @author = submission.author
-    @url = "#{EtdUrls.new.workflow}/author"
+    @etd_site = AUTHOR_WORKFLOW
+    @thesis_guide = THESIS_GUIDE
+    @deadline_url = DEADLINE_URL
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
@@ -75,7 +96,7 @@ class WorkflowMailer < ActionMailer::Base
   def release_for_publication(submission)
     @submission = submission
     @author = submission.author
-    @explore_url = "#{EtdUrls.new.explore}/catalog/#{submission.public_id}"
+    @explore_url = EXPLORE_SITE
 
     mail to: [@author.psu_email_address, @author.alternate_email_address],
          from: current_partner.email_address,
@@ -85,7 +106,7 @@ class WorkflowMailer < ActionMailer::Base
   def release_for_publication_metadata_only(submission)
     @submission = submission
     @author = submission.author
-    @explore_url = "#{EtdUrls.new.explore}/catalog/#{submission.public_id}"
+    @explore_url = EXPLORE_SITE
 
     mail to: [@author.psu_email_address, @author.alternate_email_address],
          from: current_partner.email_address,
@@ -136,7 +157,7 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @committee_member = committee_member
     @author = submission.author
-    @review_url = "#{EtdUrls.new.workflow}/approver"
+    @review_url = APPROVER_WORKFLOW
 
     @committee_member.update approval_started_at: DateTime.now if @committee_member.approval_started_at.blank?
     @committee_member.update_last_reminder_at DateTime.now
@@ -169,7 +190,7 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @committee_member = committee_member
     @author = submission.author
-    @review_url = "#{EtdUrls.new.workflow}/approver"
+    @review_url = APPROVER_WORKFLOW
 
     @committee_member.update approval_started_at: DateTime.now if @committee_member.approval_started_at.blank?
     @committee_member.update_last_reminder_at DateTime.now
@@ -180,10 +201,12 @@ class WorkflowMailer < ActionMailer::Base
   end
 
   def nonvoting_approval_reminder(submission, committee_member)
+    raise InvalidPartner unless current_partner.graduate?
+
     @submission = submission
     @committee_member = committee_member
     @author = submission.author
-    @review_url = "#{EtdUrls.new.workflow}/approver"
+    @review_url = APPROVER_WORKFLOW
 
     mail to: @committee_member.email,
          from: current_partner.email_address,
@@ -240,6 +263,7 @@ class WorkflowMailer < ActionMailer::Base
   def pending_returned_author(submission)
     @submission = submission
     @author = submission.author
+    @etd_site = AUTHOR_WORKFLOW
 
     mail to: @author.psu_email_address,
          from: current_partner.email_address,
@@ -264,6 +288,7 @@ class WorkflowMailer < ActionMailer::Base
     @submission = submission
     @author = submission.author
     @review_results = ReviewResultsEmail.new(submission).generate
+    @etd_site = AUTHOR_WORKFLOW
     to = if current_partner.graduate?
            [@author.psu_email_address, submission.advisor&.email, submission.chairs&.pluck(:email)].flatten.uniq.compact
          else
@@ -306,7 +331,7 @@ class WorkflowMailer < ActionMailer::Base
   def committee_approved(submission)
     @submission = submission
     @author = submission.author
-    @explore_url = EtdUrls.new.explore.to_s
+    @explore_url = EXPLORE_SITE
 
     mail to: @author.psu_email_address,
          cc: [@submission.committee_email_list.uniq, current_partner.email_address].flatten,
