@@ -15,7 +15,10 @@ class Lionpath::LionpathExport
       basic_auth: auth
     }
 
-    HTTParty.put(host + endpoint_path, options)
+    response = HTTParty.put(host + endpoint_path, options)
+    raise response.message unless response.code == 200
+
+    nil
   end
 
   private
