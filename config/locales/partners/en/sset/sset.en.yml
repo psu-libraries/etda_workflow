@@ -7,9 +7,6 @@ en:
       title: Final Papers for the School of Science, Engineering, and Technology
       image: ETD-Sset.png
     submission:
-      create:
-        success: Your SSET submission was created successfully.
-        failure: There was a problem submitting your SSET Final Paper.
       new: If you would like to start a new final paper submission, you may do so by clicking the following link.
       descriptor: 'final paper'
     partner:

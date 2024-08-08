@@ -7,9 +7,6 @@ en:
       title: Electronic Theses for Schreyer Honors College
       image: ETD-Honors.png
     submission:
-      create:
-        success: Your Graduate School submission was created successfully.
-        failure: There was a problem submitting your Schreyer Honors Thesis (eHT).
       new: If you would like to start a new thesis submission, you may do so by clicking the following link.  Your final submission will not be complete until you have added your committee members.
       descriptor: 'thesis'
     partner:
