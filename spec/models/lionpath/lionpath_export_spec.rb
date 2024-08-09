@@ -40,7 +40,7 @@ RSpec.describe Lionpath::LionpathExport do
         stub_request(:put, full_url)
           .with(options)
           .to_return(status: [401, "Unauthorized"],
-                     body: 'Unauthorized',
+                     body: '',
                      headers:)
       end
 

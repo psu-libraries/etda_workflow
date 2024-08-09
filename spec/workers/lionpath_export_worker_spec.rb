@@ -11,7 +11,7 @@ RSpec.describe LionpathExportWorker do
       allow(Lionpath::LionpathExport).to receive(:new).with(submission).and_return(export_instance)
       allow(export_instance).to receive(:call)
 
-      described_class.perform(submission.id)
+      described_class.new.perform(submission.id)
 
       expect(Submission).to have_received(:find).with(submission.id)
       expect(Lionpath::LionpathExport).to have_received(:new).with(submission)
