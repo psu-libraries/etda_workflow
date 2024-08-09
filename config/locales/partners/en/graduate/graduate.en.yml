@@ -35,6 +35,7 @@ en:
       payment_portal_url: 'https://secure.gradsch.psu.edu/paymentportal/'
       commencement_url: 'https://gradschool.psu.edu/academics/commencement'
       document_title_label: 'Please enter your Thesis or Dissertation Title'
+      extension_not_allowed: 'You are not able to request an extension at this time, please contact your administrator at gradthesis@psu.edu'
       deadline_url: 'https://gradschool.psu.edu/academics/academic-dates-and-deadlines'
       url_slug: 'etda'
       lionpath_alert: More than 10% of LionPATH %{resource} were tagged for deletion at %{datetime_now}.  The deletion process was not completed because of this.  This could indicate that there was an issue with the LionPATH import or one of the CSVs used during the import.
@@ -251,6 +252,24 @@ en:
                     Best,
 
                     Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
+                    cc:%{committee_email_list}
+        author_release_warning:
+          message: |
+                    We are writing to inform you that the two-year restriction on your %{degree_type} titled "%{title}" is about to expire. 
+                    Please click the link below if you would like to extend your restriction. 
+                    If we do not hear from you, your work will automatically be released to open access.
+
+                    Request extension: %{url}
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
         release_for_publication:
           message: |
                     Your %{degree_type} titled "%{title}" has been released with the access level of Open Access. You can view your published submission at: %{url}.

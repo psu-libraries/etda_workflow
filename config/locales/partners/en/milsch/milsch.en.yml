@@ -20,6 +20,7 @@ en:
       alternate_email_hint: 'The Alternate email address will be used after your psu.edu email address expires.'
       thesis_guide: 'http://millennium.psu.edu/thesis-information/'
       document_title_label: 'Please enter your Thesis Title'
+      extension_not_allowed: 'You are not able to request an extension at this time, please contact your administrator'
       url_slug: 'millennium-scholars'
       not_allowed_alert: You are not allowed to visit that page at this time, please contact your administrator
       email:

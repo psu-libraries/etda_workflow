@@ -144,6 +144,15 @@ class Submission < ApplicationRecord
   scope :final_is_restricted_institution, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted_to_institution') }
   scope :final_is_withheld, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted') }
   scope :ok_to_release, -> { where('released_for_publication_at <= ?', Time.zone.today.end_of_day) }
+  scope :ok_to_autorelease, -> {
+                              ok_to_release.where(access_level: 'restricted_to_institution')
+                            }
+  scope :release_warning_needed?, -> {
+                                    where('released_metadata_at >= ?', Time.zone.today.years_ago(2).end_of_day)
+                                      .where('released_for_publication_at <= ?', Time.zone.today.next_month)
+                                      .where(author_release_warning_sent_at: nil)
+                                      .where(access_level: 'restricted_to_institution')
+                                  }
 
   def advisor
     CommitteeMember.advisors(self).first
@@ -403,6 +412,13 @@ class Submission < ApplicationRecord
     return unless proquest_agreement_changed? && ActiveModel::Type::Boolean.new.cast(input)
 
     self[:proquest_agreement_at] = DateTime.now
+  end
+
+  def create_extension_token
+    new_token = SecureRandom.hex(10)
+    new_token = SecureRandom.hex(10) while Submission.exists?(extension_token: new_token)
+    self.extension_token = new_token
+    save
   end
 
   def final_submission_feedback_files?

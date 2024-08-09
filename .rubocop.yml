@@ -279,6 +279,10 @@ Style/NestedParenthesizedCalls:
    - 'spec/models/admin_ability_spec.rb'
    - 'spec/models/author_ability_spec.rb'
 
+Style/Lambda:
+  Exclude:
+  - 'app/models/submission.rb'
+
 Style/OptionalBooleanParameter:
   Exclude:
   - 'app/workers/seventh_day_evaluation_worker.rb'

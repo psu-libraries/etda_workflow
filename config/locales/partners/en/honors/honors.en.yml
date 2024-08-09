@@ -22,6 +22,7 @@ en:
       semester_hint: Only upload your thesis if you intend to graduate this semester or the following semester.
       thesis_guide: 'https://www.shc.psu.edu/academic/thesis/submission.cfm'
       document_title_label: 'Title'
+      extension_not_allowed: 'You are not able to request an extension at this time, please contact your administrator at SHCAcademics@psu.edu'
       url_slug: 'honors'
       not_allowed_alert: You are not allowed to visit that page at this time, please contact your administrator at SHCAcademics@psu.edu
       email:
@@ -204,6 +205,20 @@ en:
                     If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
+        author_release_warning:
+          message: |
+                    We are writing to inform you that the two-year restriction on your %{degree_type} titled "%{title}" is about to expire. 
+                    Please click the link below if you would like to extend your restriction. 
+                    If we do not hear from you, your work will automatically be released to open access.
+
+                    Request extension: %{url}
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
         release_for_publication:
           message: |
                     Congratulations! Your honors thesis titled "%{title}" has been released for publication with the access level of Open Access. You can view it at: %{url}.
