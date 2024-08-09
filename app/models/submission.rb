@@ -15,6 +15,7 @@ class Submission < ApplicationRecord
   has_many :admin_feedback_files, inverse_of: :submission, dependent: :destroy
   has_many :keywords, dependent: :destroy, validate: true
   has_many :invention_disclosures, dependent: :destroy, validate: true
+  has_one  :federal_funding_detail, dependent: :destroy
 
   delegate :name, to: :program, prefix: :program
   delegate :name, to: :degree, prefix: :degree

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_06_154706) do
+ActiveRecord::Schema.define(version: 2024_08_09_190441) do
 
   create_table "admin_feedback_files", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "submission_id"
@@ -194,6 +194,17 @@ ActiveRecord::Schema.define(version: 2024_08_06_154706) do
     t.index ["webaccess_id"], name: "index_faculty_members_on_webaccess_id", unique: true
   end
 
+  create_table "federal_funding_details", charset: "utf8mb4", force: :cascade do |t|
+    t.boolean "training_support_funding"
+    t.boolean "other_funding"
+    t.boolean "training_support_acknowledged"
+    t.boolean "other_funding_acknowledged"
+    t.bigint "submission_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["submission_id"], name: "index_federal_funding_details_on_submission_id"
+  end
+
   create_table "final_submission_files", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
     t.text "asset", size: :medium
@@ -305,8 +316,6 @@ ActiveRecord::Schema.define(version: 2024_08_06_154706) do
     t.string "extension_token"
     t.datetime "acknowledgment_page_submitted_at"
     t.integer "candidate_number"
-    t.boolean "training_support_funding"
-    t.boolean "other_funding"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"
@@ -326,6 +335,7 @@ ActiveRecord::Schema.define(version: 2024_08_06_154706) do
   add_foreign_key "committee_members", "submissions", name: "committee_members_submission_id_fk"
   add_foreign_key "committee_roles", "degree_types", name: "committee_roles_degree_type_id_fk"
   add_foreign_key "confidential_hold_histories", "authors", name: "confidential_hold_histories_author_id_fk"
+  add_foreign_key "federal_funding_details", "submissions"
   add_foreign_key "final_submission_files", "submissions", name: "final_submission_files_submission_id_fk"
   add_foreign_key "format_review_files", "submissions", name: "format_review_files_submission_id_fk"
   add_foreign_key "invention_disclosures", "submissions", name: "invention_disclosures_submission_id_fk"
