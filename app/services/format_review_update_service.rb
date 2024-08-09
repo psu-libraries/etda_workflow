@@ -12,7 +12,8 @@ class FormatReviewUpdateService
   end
 
   def update_record
-    UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params)
+    all_params = format_review_params.merge(funding_confirmation_params)
+    UpdateSubmissionService.admin_update_submission(submission, current_remote_user, all_params)
     msg = "The submission was successfully updated."
     { msg:, redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
   end
@@ -63,5 +64,9 @@ class FormatReviewUpdateService
         format_review_files_attributes: [:asset, :asset_cache, :id, :_destroy],
         admin_feedback_files_attributes: [:asset, :asset_cache, :feedback_type, :id, :_destroy]
       )
+    end
+
+    def funding_confirmation_params
+      params.fetch(:funding_confirmation, {}).permit(:training_funding_confirmation, :other_funding_confirmation)
     end
 end

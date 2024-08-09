@@ -1,55 +1,7 @@
 <div tabindex="0">
-    <br>
     <strong>Federal Funding Statement</strong>
-    <p><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_1").html_safe %></p>
-    <p><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_2").html_safe %></p>
-    <ol>
-        <li><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_2_1").html_safe %></li>
-        <li><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_2_2").html_safe %></li>
-    </ol>
-    <p><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_3").html_safe %></p>
-    <p><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_4").html_safe %></p>
-    <ol>
-        <li><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_4_1").html_safe %></li>
-        <li><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_4_2").html_safe %></li>
-        <li><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_4_3").html_safe %></li>
-    </ol>
-    <p><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_5").html_safe %></p>
-    <p><%= I18n.t("#{current_partner.id}.federal_funding_author.intro_6").html_safe %></p>
-    <%= f.label :training_support_funding, I18n.t("#{current_partner.id}.federal_funding_author.question_1").html_safe %>
-    <%= f.label :training_support_funding, 'Yes'%>
-    <%= f.radio_button :training_support_funding, true %><br>
-
-        <%= simple_fields_for @funding_confirmation do |g| %>
-            <div id="fed_funding_confirmation_author_1" class="ml-3 collapse hide">
-                <p><%= I18n.t("#{current_partner.id}.federal_funding_author.confirmation").html_safe%></p>
-                <%= g.label :training_funding_confirmation, 'Yes'%>
-                <%= g.radio_button :training_funding_confirmation, true %><br>
-                <%= g.label :training_funding_confirmation, 'No'%>
-                <%= g.radio_button :training_funding_confirmation, false %>
-                <p id="fed_funding_error_message_author_1" class="collapse hide"><%= I18n.t("#{current_partner.id}.federal_funding_author.error_message").html_safe%></p>
-         </div>
-        <% end %>
-
-        <%= f.label :training_support_funding, 'No'%>
-        <%= f.radio_button :training_support_funding, false %>
-        <br>
-        <%= f.label :other_funding, I18n.t("#{current_partner.id}.federal_funding_author.question_2").html_safe %><br>
-        <%= f.label :other_funding, 'Yes'%>
-        <%= f.radio_button :other_funding, true %><br>
-
-        <%= simple_fields_for @funding_confirmation do |g| %>
-            <div id="fed_funding_confirmation_author_2" class="ml-3 collapse hide">
-                <p><%= I18n.t("#{current_partner.id}.federal_funding_author.confirmation").html_safe %></p>
-                <%= g.label :other_funding_confirmation, 'Yes'%>
-                <%= g.radio_button :other_funding_confirmation, true %><br>
-                <%= g.label :other_funding_confirmation, 'No'%>
-                <%= g.radio_button :other_funding_confirmation, false %>
-                <p id="fed_funding_error_message_author_2" class="collapse hide"><%= I18n.t("#{current_partner.id}.federal_funding_author.error_message").html_safe%></p>
-            </div>
-        <% end %>
-
-        <%= f.label :other_funding, 'No'%>
-        <%= f.radio_button :other_funding, false %>
-    </div>
+    <br>
+    <%= render partial: 'author/submissions/federal_funding_introduction' %>
+    <%= render partial: 'shared/federal_funding_form', locals: {f: f} %>
+</div>
     

@@ -1,25 +1,5 @@
 <div tabindex="0">
-    <br>
     <strong>Federal Funding Statement</strong>
-    <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.intro_1").html_safe %></p>
-    <%= simple_fields_for :federal_funding_admin do |g| %>
-        <%= g.label :funds_used, I18n.t("#{current_partner.id}.federal_funding_admin.question_1").html_safe %><br>
-        <%= g.label :funds_used, 'Yes'%>
-        <%= g.radio_button :funds_used, true %><br>
-        <div class="ml-3 collapse hide" id="fed_funding_confirmation_admin">
-            <% if @submission.federal_funding == false %>
-                <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.error_message_1").html_safe%></p>
-            <% elsif %>
-                <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.confirmation").html_safe%></p>
-                <%= g.label :admin_funding_confirmation, 'Yes'%>
-                <%= g.radio_button :admin_funding_confirmation, true %><br>
-                <%= g.label :admin_funding_confirmation, 'No'%>
-                <%= g.radio_button :admin_funding_confirmation, false %>
-            <% end %>
-            <p id="fed_funding_error_admin" class="ml-3 collapse hide"><%= I18n.t("#{current_partner.id}.federal_funding_admin.error_message_2").html_safe%></p>
-        </div>
-        <%= g.label :funds_used, 'No'%>
-        <%= g.radio_button :funds_used, false %>
-    <% end %>
-    </div>
-    
+    <br>
+    <%= render partial: 'shared/federal_funding_form', locals: {f: f} %>
+</div>

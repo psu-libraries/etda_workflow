@@ -1,6 +1,6 @@
 <div>
   <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
-    <fieldset <%= @review_complete ? 'disabled' : '' %>>
+    <fieldset <%= @review_complete ? '' : '' %>>
       <strong>Files I need to review:</strong>
       <div id="file_links">
         <%= raw @most_relevant_file_links %></div>
@@ -18,6 +18,8 @@
         <div class="alert alert-info">
           <strong class="hint"><strong>Notice:</strong> The author of this submission has indicated that federal funding <u><strong>was<%= @submission.federal_funding ? nil : ' not' %></strong></u> used.</strong>
         </div>
+        <%= render partial: 'federal_funding_language_approver', locals: {f:f} %>
+        <% if false %>
         <%= f.input :federal_funding_used, as: :radio_buttons,
                     :required => true,
                     collection: [["I confirm that, as required by federal guidelines, all federal funds used for the work
@@ -27,6 +29,7 @@
                                  ["I confirm that no federal funds were used for the work described in this #{@submission.degree.degree_type.name.to_s.downcase}. ", false]],
                     wrapper: :vertical_radio_and_checkboxes,
                     label: false %>
+        <% end %>
       <% end %>
       <div class="form-group actions col-xs-4">
         <%= f.button :submit, "Submit Review", class: 'btn-success' %>
