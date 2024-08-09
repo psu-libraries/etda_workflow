@@ -24,6 +24,13 @@ module SubmissionStates
       state = SubmissionStates::StateGenerator.state_for_name(submission.status)
       if state.valid_state_change? self
         submission.update! status: name
+        # When state changes, update Lionpath for graduate only if candidate number is present
+        # We don't want this constantly running during tests or during development, so it should
+        # only run in production or if the LP_EXPORT_TEST variable is set
+        if (Rails.env.production? || ENV['LP_EXPORT_TEST']) &&
+           current_partner.graduate? && submission.candidate_number
+          Lionpath::LionpathExport.perform_async(submission.id)
+        end
       else
         false # no transition made
       end
