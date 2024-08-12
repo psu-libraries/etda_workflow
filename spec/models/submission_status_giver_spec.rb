@@ -5,6 +5,54 @@ require 'model_spec_helper'
 RSpec.describe SubmissionStatusGiver, type: :model do
   let(:submission) { FactoryBot.create :submission }
 
+  describe 'queueing LionpathExport' do
+    let!(:giver) { described_class.new(submission) }
+
+    before do
+      Sidekiq::Worker.clear_all
+      ENV['LP_EXPORT_TEST'] = 'true'
+      submission.status = 'waiting for format review response'
+      submission.candidate_number = 12345
+      submission.save!
+    end
+
+    after do
+      ENV['LP_EXPORT_TEST'] = nil
+    end
+    
+    context 'when transitioning states and partner is graduate' do
+      context 'when candidate_number is present' do
+        it 'queues LionpathExport' do
+          expect { giver.collecting_final_submission_files! }.to change { Sidekiq::Worker.jobs.size }.by(1)
+        end
+      end
+      
+      context 'when candidate_number is not present' do
+        before do
+          submission.candidate_number = nil
+          submission.save!
+        end
+
+        it 'does not queue LionpathExport' do
+          expect { giver.collecting_final_submission_files! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+        end
+      end
+    end
+
+    context 'when transitioning states and partner is not graduate', honors: true do
+      # Note that candidate_number should never be present for non-graduate
+      # partners.  However, to be totally logically correct we have
+      # logic to check that the partner is in fact graduate
+      context 'when candidate_number is present' do
+        it 'does not queue LionpathExport' do
+          skip 'Graduate Only' if current_partner.graduate?
+
+          expect { giver.collecting_final_submission_files! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+        end
+      end
+    end    
+  end
+
   describe '#can_respond_to_format_review?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }

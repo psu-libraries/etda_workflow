@@ -259,7 +259,7 @@ class SubmissionStatusGiver
     # only run in production or if the LP_EXPORT_TEST variable is set
     if (Rails.env.production? || ENV['LP_EXPORT_TEST'].present?) && 
       current_partner.graduate? && submission.candidate_number
-      Lionpath::LionpathExport.perform_async(submission.id)
+      LionpathExportWorker.perform_async(submission.id)
     end
   end
 
