@@ -49,7 +49,7 @@ RSpec.describe Lionpath::LionpathExport do
       end
     end
 
-    context 'when the response is successful but the API contains an error number 400' do
+    context 'when the response is successful but the API contains an error number that is not 200' do
       before do
         stub_request(:put, full_url)
           .with(options)
