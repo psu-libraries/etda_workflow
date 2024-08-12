@@ -15,7 +15,7 @@ class Submission < ApplicationRecord
   has_many :admin_feedback_files, inverse_of: :submission, dependent: :destroy
   has_many :keywords, dependent: :destroy, validate: true
   has_many :invention_disclosures, dependent: :destroy, validate: true
-  has_one  :federal_funding_detail, dependent: :destroy
+  has_one  :federal_funding_details, dependent: :destroy
 
   delegate :name, to: :program, prefix: :program
   delegate :name, to: :degree, prefix: :degree
@@ -195,6 +195,12 @@ class Submission < ApplicationRecord
     return if federal_funding.nil?
 
     federal_funding ? 'Yes' : 'No'
+  end
+
+  def update_federal_funding
+    unless self.federal_funding_details.nil?
+      self.federal_funding = federal_funding_details.training_support_funding || federal_funding_details.other_funding
+    end
   end
 
   def update_with_federal_funding(parameters)
@@ -386,6 +392,10 @@ class Submission < ApplicationRecord
     end
     voting_no_dups << program_head unless head_of_program_is_approving?
     voting_no_dups.compact
+  end
+
+  def federal_funding_details
+    super || build_federal_funding_details
   end
 
   # Initialize our committee members with empty records for each of the required roles.

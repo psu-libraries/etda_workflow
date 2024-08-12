@@ -2,7 +2,7 @@ class Author::SubmissionFormatReviewController < AuthorController
   before_action :find_submission
 
   def edit
-    @funding_confirmation = FundingConfirmation.new
+    @federal_funding_details = @submission.federal_funding_details
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_format_review_files?
     render 'author/submissions/edit_format_review'
@@ -13,20 +13,20 @@ class Author::SubmissionFormatReviewController < AuthorController
 
   def update
     if current_partner.graduate?
-      @funding_confirmation = FundingConfirmation.new(funding_confirmation_params)
-      @funding_confirmation.is_admin = false
-      @funding_confirmation.validate!
+      @federal_funding_details = @submission.federal_funding_details
+      @federal_funding_details.update!(federal_funding_params)
+      @submission.update_federal_funding
     end
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_format_review_files?
-    @submission.update_with_federal_funding(format_review_params)
+    @submission.update(format_review_params)
     status_giver.waiting_for_format_review_response!
     @submission.update_format_review_timestamps!(Time.zone.now)
     redirect_to author_root_path
     WorkflowMailer.send_format_review_received_email(@submission)
     flash[:notice] = 'Format review files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid
-    flash[:alert] = @submission.errors.messages.values.join(" ")
+    flash[:alert] = @submission.errors.messages.values.join(" ") + @federal_funding_details&.errors&.messages&.values&.first&.join(" ").to_s
     redirect_to author_submission_edit_format_review_path(@submission)
   rescue ActiveModel::ValidationError
     flash[:alert] = @funding_confirmation.errors.messages.values.first.join("")
@@ -68,7 +68,7 @@ class Author::SubmissionFormatReviewController < AuthorController
                                          admin_feedback_files_attributes: [:asset, :asset_cache, :submission_id, :feedback_type, :id, :_destroy])
     end
 
-    def funding_confirmation_params
-      params.fetch(:funding_confirmation, {}).permit(:training_funding_confirmation, :other_funding_confirmation)
+    def federal_funding_params
+      params.require(:federal_funding_details).permit(:training_support_funding, :training_support_acknowledged, :other_funding, :other_funding_acknowledged)
     end
 end

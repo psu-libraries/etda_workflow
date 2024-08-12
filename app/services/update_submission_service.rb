@@ -1,7 +1,9 @@
 class UpdateSubmissionService
-  def self.admin_update_submission(submission, current_remote_user, params)
+  def self.admin_update_submission(submission, current_remote_user, params, funding_params)
     if current_partner.graduate?
-      submission.update_with_federal_funding(params)
+      @funding_details = submission.federal_funding_details
+      @funding_details.update! funding_params
+      submission.update_federal_funding
     end
     submission.update! params
     submission.committee_members.each do |committee_member|

@@ -18,6 +18,8 @@ class CommitteeMember < ApplicationRecord
 
   delegate :is_program_head, to: :committee_role
 
+  attr_accessor :federal_funding_confirmation
+
   STATUS = [
     '',
     'pending',
@@ -168,6 +170,10 @@ class CommitteeMember < ApplicationRecord
 
     def validate_federal_funding_used
       return true if approver_controller.blank? || !current_partner.graduate?
+
+      if federal_funding_used && federal_funding_confirmation != true
+        errors.add(:federal_funding_confirmation, I18n.t('graduate.federal_funding_admin.error_message_2').html_safe)
+      end
 
       return true unless federal_funding_used.nil? && (self == submission.advisor)
 

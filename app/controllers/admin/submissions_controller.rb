@@ -15,6 +15,7 @@ class Admin::SubmissionsController < AdminController
 
   def edit
     @submission = Submission.find(params[:id])
+    @federal_funding_details = @submission.federal_funding_details
     @view = Admin::SubmissionFormView.new(@submission, session)
     if @submission.format_review_notes.blank? && !@submission.status_behavior.beyond_waiting_for_format_review_response?
       @submission.format_review_notes = current_partner.graduate? ? I18n.t('graduate.default_format_review_note') : ''
@@ -26,6 +27,7 @@ class Admin::SubmissionsController < AdminController
 
   def update
     @submission = Submission.find(params[:id])
+    @federal_funding_details = @submission.federal_funding_details
     if @submission.status_behavior.beyond_collecting_format_review_files? && @submission.status != 'format review completed'
       submission_update_service = FinalSubmissionUpdateService.new(params, @submission, current_remote_user)
     else
@@ -99,8 +101,10 @@ class Admin::SubmissionsController < AdminController
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
+    @federal_funding_details = @submission.federal_funding_details
+    flash[:alert] = @submission.errors.messages.values.join(" ") + @federal_funding_details&.errors&.messages&.values&.first&.join(" ").to_s
     @view = Admin::SubmissionFormView.new(@submission, session)
-    render :edit
+    redirect_to admin_edit_submission_path(@submission)
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to session.delete(:return_to)
     flash[:alert] = 'This submission\'s format review information has already been evaluated.'
