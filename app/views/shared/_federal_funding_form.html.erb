@@ -4,7 +4,7 @@
         <%= f.label :training_support_funding, 'Yes'%>
         <%= f.radio_button :training_support_funding, true %><br>
 
-        <div id="fed_funding_confirmation_author_1" class="ml-5 collapse show">
+        <div id="fed_funding_confirmation_author_1" class="ml-5 collapse hide">
             <p><%= I18n.t("#{current_partner.id}.federal_funding_author.confirmation").html_safe%></p>
             <%= f.label :training_support_acknowledged, 'Yes'%>
             <%= f.radio_button :training_support_acknowledged, true %><br>
@@ -19,7 +19,7 @@
         <%= f.label :other_funding, I18n.t("#{current_partner.id}.federal_funding_author.question_2").html_safe %><br>
         <%= f.label :other_funding, 'Yes'%>
         <%= f.radio_button :other_funding, true %><br>
-        <div id="fed_funding_confirmation_author_2" class="ml-5 collapse show">
+        <div id="fed_funding_confirmation_author_2" class="ml-5 collapse hide">
             <p><%= I18n.t("#{current_partner.id}.federal_funding_author.confirmation").html_safe %></p>
             <%= f.label :other_funding_acknowledged, 'Yes'%>
             <%= f.radio_button :other_funding_acknowledged, true %><br>

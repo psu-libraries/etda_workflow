@@ -16,4 +16,3 @@ require('../admin/print_format_review.js');
 require('../admin/send_email_reminder.js');
 require('../admin/approval_configuration_radios.js');
 require('../admin/initialize_datatables.js');
-require('../admin/federal_funding_radios.js');

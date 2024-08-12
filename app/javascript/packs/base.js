@@ -34,3 +34,5 @@ require('../base/aria_defended_date.js');
 require('../base/collapse_indicators.js');
 require('../base/fee_payment_dialog.js');
 require('../base/committee_member_graph.js');
+require('../base/federal_funding_radios.js');
+

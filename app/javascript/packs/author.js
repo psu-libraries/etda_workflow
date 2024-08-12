@@ -15,4 +15,3 @@ require('../styles/author/screen.scss');
 // Must be included last in order for close icon to appear on keyword tag
 require('../styles/author/tag-it.scss');
 require('../author/populate_program_head.js');
-require('../author/federal_funding_radios.js');

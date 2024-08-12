@@ -3,10 +3,9 @@
 class FederalFundingDetails < ApplicationRecord
   belongs_to :submission
 
-  attr_accessor :is_admin
   ERROR_MESSAGE =I18n.t("#{current_partner.id}.federal_funding_author.error_message").html_safe
 
-  validates :training_support_funding, :other_funding, inclusion: { in: [true, false] }
+  validates :training_support_funding, :other_funding, inclusion: { in: [true, false], :message => ERROR_MESSAGE }
 
   validates :training_support_acknowledged,
     acceptance: {:accept => true, :message => ERROR_MESSAGE },

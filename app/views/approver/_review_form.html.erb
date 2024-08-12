@@ -20,6 +20,7 @@
         </div>
         <%= render partial: 'federal_funding_language_approver', locals: {f:f} %>
         <% if false %>
+        <% # TODO: remove this block %>
         <%= f.input :federal_funding_used, as: :radio_buttons,
                     :required => true,
                     collection: [["I confirm that, as required by federal guidelines, all federal funds used for the work
@@ -29,7 +30,7 @@
                                  ["I confirm that no federal funds were used for the work described in this #{@submission.degree.degree_type.name.to_s.downcase}. ", false]],
                     wrapper: :vertical_radio_and_checkboxes,
                     label: false %>
-        <% end %>
+        <<% end %>
       <% end %>
       <div class="form-group actions col-xs-4">
         <%= f.button :submit, "Submit Review", class: 'btn-success' %>

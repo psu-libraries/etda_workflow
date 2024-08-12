@@ -14,7 +14,7 @@ class Author::SubmissionFormatReviewController < AuthorController
   def update
     if current_partner.graduate?
       @federal_funding_details = @submission.federal_funding_details
-      @federal_funding_details.update!(federal_funding_params)
+      @federal_funding_details.update!(federal_funding_details_params)
       @submission.update_federal_funding
     end
     status_giver = SubmissionStatusGiver.new(@submission)
@@ -26,10 +26,7 @@ class Author::SubmissionFormatReviewController < AuthorController
     WorkflowMailer.send_format_review_received_email(@submission)
     flash[:notice] = 'Format review files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid
-    flash[:alert] = @submission.errors.messages.values.join(" ") + @federal_funding_details&.errors&.messages&.values&.first&.join(" ").to_s
-    redirect_to author_submission_edit_format_review_path(@submission)
-  rescue ActiveModel::ValidationError
-    flash[:alert] = @funding_confirmation.errors.messages.values.first.join("")
+    flash[:alert] = @submission.errors.messages.values.join(" ") + @federal_funding_details&.errors&.messages&.values&.first&.join("").to_s.html_safe
     redirect_to author_submission_edit_format_review_path(@submission)
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
@@ -68,7 +65,13 @@ class Author::SubmissionFormatReviewController < AuthorController
                                          admin_feedback_files_attributes: [:asset, :asset_cache, :submission_id, :feedback_type, :id, :_destroy])
     end
 
-    def federal_funding_params
-      params.require(:federal_funding_details).permit(:training_support_funding, :training_support_acknowledged, :other_funding, :other_funding_acknowledged)
+    def federal_funding_details_params
+      funding_params = params.fetch(:federal_funding_details, {}).permit(
+        :training_support_funding,
+        :training_support_acknowledged,
+        :other_funding,
+        :other_funding_acknowledged
+      )
+      current_partner.graduate? ? funding_params : {}
     end
 end
