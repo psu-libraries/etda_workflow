@@ -104,7 +104,8 @@ RSpec.describe Lionpath::LionpathProgram do
     let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'xxb13' }
     let!(:program) { FactoryBot.create :program, code: row_1['Acadademic Plan'] }
     let!(:submission) do
-      FactoryBot.create :submission, author:, degree:, program:, degree_checkout_status: nil
+      FactoryBot.create :submission, author:, degree:, program:,
+                                     degree_checkout_status: nil, candidate_number: nil
     end
 
     it 'updates the submission' do
