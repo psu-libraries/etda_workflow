@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_02_191344) do
+ActiveRecord::Schema.define(version: 2024_08_12_191112) do
 
   create_table "admin_feedback_files", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "submission_id"
@@ -301,8 +301,8 @@ ActiveRecord::Schema.define(version: 2024_07_02_191344) do
     t.string "lionpath_semester"
     t.string "academic_program"
     t.string "degree_checkout_status"
+    t.string "candidate_number"
     t.datetime "acknowledgment_page_submitted_at"
-    t.integer "candidate_number"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
     t.index ["final_submission_legacy_id"], name: "index_submissions_on_final_submission_legacy_id"

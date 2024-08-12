@@ -55,6 +55,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:campus).of_type(:string) }
   it { is_expected.to have_db_column(:lionpath_semester).of_type(:string) }
   it { is_expected.to have_db_column(:lionpath_year).of_type(:integer) }
+  it { is_expected.to have_db_column(:candidate_number).of_type(:string) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
