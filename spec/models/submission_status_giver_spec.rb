@@ -12,7 +12,7 @@ RSpec.describe SubmissionStatusGiver, type: :model do
       Sidekiq::Worker.clear_all
       ENV['LP_EXPORT_TEST'] = 'true'
       submission.status = 'waiting for format review response'
-      submission.candidate_number = 12345
+      submission.candidate_number = '000000012345'
       submission.save!
     end
 
