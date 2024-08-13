@@ -170,8 +170,8 @@ class CommitteeMember < ApplicationRecord
 
     def validate_federal_funding_used
       return true if approver_controller.blank? || !current_partner.graduate?
-
-      if federal_funding_used && federal_funding_confirmation != true
+      byebug
+      if federal_funding_used && federal_funding_confirmation != 'true' && status == 'approved'
         errors.add(:federal_funding_confirmation, I18n.t('graduate.federal_funding_admin.error_message_2').html_safe)
       end
 

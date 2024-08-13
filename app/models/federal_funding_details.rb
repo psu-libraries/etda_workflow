@@ -9,9 +9,11 @@ class FederalFundingDetails < ApplicationRecord
 
   validates :training_support_acknowledged,
     acceptance: {:accept => true, :message => ERROR_MESSAGE },
+    presence: {:accept => true, :message => ERROR_MESSAGE },
     if: Proc.new { |f| f.training_support_funding }
 
   validates :other_funding_acknowledged,
     acceptance: {:accept => true, :message => ERROR_MESSAGE},
+    presence: {:accept => true, :message => ERROR_MESSAGE },
     if: Proc.new { |f| f.other_funding }
 end

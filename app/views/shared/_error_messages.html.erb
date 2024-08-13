@@ -11,3 +11,17 @@
     </div>
   </div>
 <% end %>
+
+<% if defined?(other_messages) && !other_messages.nil? %>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="alert alert-danger" role="alert" aria-labelledby="alert-message">
+        <ul>
+          <% other_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+<% end %>

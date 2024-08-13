@@ -12,8 +12,8 @@ class Author::SubmissionFormatReviewController < AuthorController
   end
 
   def update
+    @federal_funding_details = @submission.federal_funding_details
     if current_partner.graduate?
-      @federal_funding_details = @submission.federal_funding_details
       @federal_funding_details.update!(federal_funding_details_params)
       @submission.update_federal_funding
     end

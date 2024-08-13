@@ -33,10 +33,10 @@
 
       <%= render partial: '/author/submissions/title_and_checkbox', locals: {f: f} %>
       <%= render partial: '/author/submissions/semester_year', locals: {f: f} %>
-      <% if false %>
-        <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} %>
-      <% else %>
+      <% if current_partner.graduate? %>
         <%= render partial: '/author/submissions/federal_funding_language_author', locals: {f: f} %>
+      <% else %>
+        <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} %>
       <% end %>
       <br>
 

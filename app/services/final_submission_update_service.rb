@@ -77,4 +77,14 @@ class FinalSubmissionUpdateService
     def final_submission_params
       FinalSubmissionParams.call(params)
     end
+
+    def federal_funding_details_params
+      funding_params = params.fetch(:federal_funding_details, {}).permit(
+        :training_support_funding,
+        :training_support_acknowledged,
+        :other_funding,
+        :other_funding_acknowledged
+      )
+      current_partner.graduate? ? funding_params : {}
+    end
 end
