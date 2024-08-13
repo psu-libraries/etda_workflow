@@ -301,12 +301,9 @@ ActiveRecord::Schema.define(version: 2024_08_12_191112) do
     t.string "lionpath_semester"
     t.string "academic_program"
     t.string "degree_checkout_status"
-<<<<<<< HEAD
     t.string "candidate_number"
-=======
     t.datetime "author_release_warning_sent_at"
     t.string "extension_token"
->>>>>>> main
     t.datetime "acknowledgment_page_submitted_at"
     t.index ["author_id"], name: "submissions_author_id_fk"
     t.index ["degree_id"], name: "submissions_degree_id_fk"
