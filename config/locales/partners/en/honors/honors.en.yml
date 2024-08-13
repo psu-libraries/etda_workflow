@@ -7,15 +7,13 @@ en:
       title: Electronic Theses for Schreyer Honors College
       image: ETD-Honors.png
     submission:
-      create:
-        success: Your Graduate School submission was created successfully.
-        failure: There was a problem submitting your Schreyer Honors Thesis (eHT).
       new: If you would like to start a new thesis submission, you may do so by clicking the following link.  Your final submission will not be complete until you have added your committee members.
       descriptor: 'thesis'
     partner:
       abbrev: schreyer
       name: Schreyer Honors College
-      url: https://www.shc.psu.edu/academic/thesis/
+      etd_site: https://www.shc.psu.edu/academic/thesis/
+      explore_site: https://honors-explore.libraries.psu.edu
       slug: eHT
       description:
         title: Schreyer Honors College Theses
@@ -24,6 +22,7 @@ en:
       semester_hint: Only upload your thesis if you intend to graduate this semester or the following semester.
       thesis_guide: 'https://www.shc.psu.edu/academic/thesis/submission.cfm'
       document_title_label: 'Title'
+      extension_not_allowed: 'You are not able to request an extension at this time, please contact your administrator at SHCAcademics@psu.edu'
       url_slug: 'honors'
       not_allowed_alert: You are not allowed to visit that page at this time, please contact your administrator at SHCAcademics@psu.edu
       email:
@@ -33,7 +32,7 @@ en:
         signature: 'Schreyer Honors College<br /> University Park, PA'
         final_submission_rejected:
           message: |
-                    "The final submission of your honors thesis has been rejected by the Schreyer Honors College. You will need to go back onto [the website](%{url}) to look at the feedback and resubmit with the necessary revisions.
+                    "The final submission of your honors thesis has been rejected by the Schreyer Honors College. You will need to go back onto <a href="%{etd_site}" target="_blank">the website</a> to look at the feedback and resubmit with the necessary revisions.
 
                     Sincerely,
                     Schreyer Honors College Academic Affairs
@@ -76,7 +75,7 @@ en:
                     SHCAcademics@psu.edu
         format_review_rejected:
           message: |
-                    Your thesis format review has been rejected. Please go back onto [the website](%{url}) to look at the feedback and resubmit with the necessary revisions.
+                    Your thesis format review has been rejected. Please go back onto <a href="%{etd_site}" target="_blank">the website</a> to look at the feedback and resubmit with the necessary revisions.
 
                     Sincerely,
                     Schreyer Honors College Academic Affairs
@@ -155,7 +154,7 @@ en:
                     SHCAcademics@psu.edu
         committee_rejected_author:
           message: |
-                    Your thesis has been rejected by a member of your committee. You will need to go back onto [the website](%{url}) to look at the feedback and resubmit with the necessary revisions.
+                    Your thesis has been rejected by a member of your committee. You will need to go back onto <a href="%{etd_site}" target="_blank">the website</a> to look at the feedback and resubmit with the necessary revisions.
 
                     Sincerely,
                     Schreyer Honors College Academic Affairs
@@ -177,7 +176,7 @@ en:
         pending_returned_author:
           message: |
                     Your %{degree_type} has been rejected by request of an administrator.
-                    You will need to go back onto [the website](%{url}) to look at the feedback and resubmit with the necessary revisions.
+                    You will need to go back onto <a href="%{etd_site}" target="_blank">the website</a> to look at the feedback and resubmit with the necessary revisions.
                     Sincerely,
                     Schreyer Honors College Academic Affairs
 
@@ -206,6 +205,20 @@ en:
                     If you have any further questions, please contact:  
                     Sarah Richards, Coordinator of Student Records & Advising Services
                     SHCAcademics@psu.edu
+        author_release_warning:
+          message: |
+                    We are writing to inform you that the two-year restriction on your %{degree_type} titled "%{title}" is about to expire. 
+                    Please click the link below if you would like to extend your restriction. 
+                    If we do not hear from you, your work will automatically be released to open access.
+
+                    Request extension: %{url}
+
+                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    You may also call (814)865-5448, or send mail to:
+                    Office of Theses and Dissertations
+                    115 Kern Building
+                    Graduate School
+                    University Park, PA  16802
         release_for_publication:
           message: |
                     Congratulations! Your honors thesis titled "%{title}" has been released for publication with the access level of Open Access. You can view it at: %{url}.

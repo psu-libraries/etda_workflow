@@ -5,5 +5,7 @@ Dear <%= @author.full_name %>,
        degree_type: @submission.degree_type,
        partner_name: current_partner.name,
        author_email: @author.psu_email_address,
-       url: @url,
+       etd_site: @etd_site,
+       explore_site: @explore_site,
+       commencement_url: @commencement_url,
        committee_email_list: @submission.committee_email_list.join(", ") ) %>

@@ -2041,6 +2041,53 @@ RSpec.describe SubmissionStatusGiver, type: :model do
     end
   end
 
+  describe '#can_request_extension?' do
+    let(:ineligible_statuses) { }
+
+    context 'when the status is not eligible for an extension' do
+      [
+        'collecting program information',
+        'collecting committee',
+        'collecting format review files',
+        'waiting for format review response',
+        'collecting final submission files',
+        'waiting for advisor review',
+        'waiting for committee review',
+        'waiting for head of program review',
+        'waiting for final submission response',
+        'waiting for publication release',
+        'waiting in final submission on hold',
+        'released for publication'
+        ].each do |status|
+        it "raises an exception" do
+          submission.status = status
+          giver = described_class.new(submission)
+          expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        end
+      end
+    end
+
+    context "when status is 'released for publication metadata only'" do
+      before { submission.status = 'released for publication metadata only', submission.access_level = 'restricted' }
+
+      context 'when metadata was released 3 or more years before release date (meaning it has already had an extension)' do
+        before { submission.released_metadata_at = Time.zone.now.years_ago(3), submission.released_for_publication_at = Time.zone.now }
+        it "raises an exception" do
+          giver = described_class.new(submission)
+          expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        end
+      end
+
+      context 'when metadata was released less than 3 years before release date' do
+        before { submission.released_metadata_at = Time.zone.now.years_ago(1), submission.released_for_publication_at = Time.zone.now }
+        it "does not raise an exception" do
+          giver = described_class.new(submission)
+          expect { giver.can_request_extension? }.to raise_error(SubmissionStatusGiver::AccessForbidden)
+        end
+      end
+    end
+  end
+
   describe '#can_unrelease_for_publication?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }

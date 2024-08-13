@@ -15,6 +15,10 @@ module MailerActions
     end
   end
 
+  def send_author_release_warning(submission)
+    author_release_warning(submission).deliver
+  end
+
   def send_nonvoting_approval_reminders(submission, committee_member)
     nonvoting_approval_reminder(submission, committee_member).deliver
   end

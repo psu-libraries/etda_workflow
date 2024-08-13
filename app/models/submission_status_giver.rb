@@ -176,6 +176,11 @@ class SubmissionStatusGiver
     validate_current_state! [SubmissionStates::WaitingForPublicationRelease]
   end
 
+  def can_request_extension?
+    validate_current_state! [SubmissionStates::ReleasedForPublicationMetadataOnly]
+    raise SubmissionStatusGiver::AccessForbidden if (submission.released_for_publication_at - submission.released_metadata_at) >= 3.years
+  end
+
   def can_unrelease_for_publication?
     validate_current_state! [SubmissionStates::ReleasedForPublication,
                              SubmissionStates::ReleasedForPublicationMetadataOnly]

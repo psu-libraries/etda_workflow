@@ -34,6 +34,8 @@ Rails.application.routes.draw do
 
   get '/committee_member_dashboard', to: 'committee_member#index', as: :committee_member_dashboard
 
+  get '/extension/:extension_token', to: 'extension#autorelease_extension', as: :autorelease_extension
+
   namespace :admin do
     resources :admins, except: [:index, :show]
     resources :degrees, except: [:show, :destroy]

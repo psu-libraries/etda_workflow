@@ -56,6 +56,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:lionpath_semester).of_type(:string) }
   it { is_expected.to have_db_column(:lionpath_year).of_type(:integer) }
   it { is_expected.to have_db_column(:candidate_number).of_type(:string) }
+  it { is_expected.to have_db_column(:extension_token).of_type(:string) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
@@ -101,6 +102,63 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to delegate_method(:author_last_name).to(:author).as(:last_name) }
   it { is_expected.to delegate_method(:author_full_name).to(:author).as(:full_name) }
   it { is_expected.to delegate_method(:author_psu_email_address).to(:author).as(:psu_email_address) }
+
+  describe '.ok_to_autorelease' do
+    let!(:sub1) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.days_ago(1),
+                        access_level: 'restricted_to_institution'
+    end
+    let!(:sub2) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today,
+                        access_level: 'restricted_to_institution'
+    end
+    let!(:sub3) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.next_week,
+                        access_level: 'restricted_to_institution'
+    end
+    let!(:sub4) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.days_ago(1),
+                        access_level: 'open_access'
+    end
+
+    it 'returns submissions that are ready for autorelease' do
+      expect(described_class.ok_to_autorelease).to contain_exactly(sub1, sub2)
+    end
+  end
+
+  describe '.release_warning_needed?' do
+    let!(:sub1) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.next_month,
+                        released_metadata_at: Time.zone.today.years_ago(1),
+                        access_level: 'restricted_to_institution'
+    end
+    let!(:sub2) do
+      FactoryBot.create :submission,
+                        released_metadata_at: Time.zone.today.years_ago(1),
+                        author_release_warning_sent_at: Time.zone.today.last_week,
+                        access_level: 'restricted_to_institution'
+    end
+    let!(:sub3) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.next_month,
+                        released_metadata_at: Time.zone.today.years_ago(3),
+                        access_level: 'restricted_to_institution'
+    end
+    let!(:sub4) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today + 6.weeks,
+                        released_metadata_at: Time.zone.today.years_ago(1)
+    end
+
+    it 'returns submissions that are ready for autorelease' do
+      expect(described_class.release_warning_needed?).to contain_exactly(sub1)
+    end
+  end
 
   describe '#advisor' do
     it 'returns the advisor committee member for the submission' do
@@ -784,6 +842,16 @@ RSpec.describe Submission, type: :model do
       submission.update proquest_agreement: true
       submission.reload
       expect(submission.proquest_agreement_at).to be_truthy
+    end
+  end
+
+  describe "#create_extension_token" do
+    it 'generates a unique token string for extension_token' do
+      submission = FactoryBot.create :submission, extension_token: nil
+      submission.create_extension_token
+      submission.reload
+      expect(submission.extension_token).not_to be_nil
+      expect(described_class.where(extension_token: submission.extension_token).count).to eq 1
     end
   end
 
