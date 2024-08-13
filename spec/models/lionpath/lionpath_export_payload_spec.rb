@@ -7,7 +7,7 @@ RSpec.describe Lionpath::LionpathExportPayload do
   let(:submission) do
     instance_double('Submission',
                     author: instance_double('Author', psu_idn: '123456789'),
-                    candidate_number: '123456',
+                    candidate_number: '000000123456',
                     title: 'My Thesis Title',
                     released_metadata_at: DateTime.new(2024, 8, 7),
                     released_for_publication_at: DateTime.new(2024, 12, 25),
@@ -27,7 +27,7 @@ RSpec.describe Lionpath::LionpathExportPayload do
       expected_payload = {
         "PE_SR199_ETD_REQ" => {
           "emplid" => "123456789",
-          "candNbr" => "123456",
+          "candNbr" => "000000123456",
           "thesisTitle" => "My Thesis Title",
           "thesisStatus" => "SUBMITTED",
           "embargoType" => "OPEN",
