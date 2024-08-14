@@ -198,17 +198,15 @@ class Submission < ApplicationRecord
   end
 
   def update_federal_funding
-    unless self.federal_funding_details.nil?
-      self.federal_funding = federal_funding_details.training_support_funding || federal_funding_details.other_funding
-    end
+    return false if federal_funding_details.nil? || federal_funding_details.uses_federal_funding?.nil?
+
+    self.federal_funding = federal_funding_details.uses_federal_funding?
   end
 
   def update_with_federal_funding(parameters)
-    self.assign_attributes(parameters)
-    unless parameters[:training_support_funding].nil? && parameters[:other_funding].nil?
-      self.federal_funding = training_support_funding || other_funding
-    end
-    self.save!
+    assign_attributes(parameters)
+    self.federal_funding = training_support_funding || other_funding unless parameters[:training_support_funding].nil? && parameters[:other_funding].nil?
+    save!
   end
 
   def check_title_capitalization

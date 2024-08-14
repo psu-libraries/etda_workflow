@@ -6,7 +6,7 @@ RSpec.describe 'Author submission access_level', type: :integration, js: true do
   let(:committee_member2) { FactoryBot.create :committee_member, submission: }
   let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
   let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
-  let!(:federal_funding_details) { FactoryBot.create :federal_funding_details, submission: submission }
+  let!(:federal_funding_details) { FactoryBot.create :federal_funding_details, submission: }
 
   before do
     oidc_authorize_author

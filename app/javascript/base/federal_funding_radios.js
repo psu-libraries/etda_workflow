@@ -10,6 +10,7 @@ initialize_federal_funding_radios = function() {
         "#committee_member_federal_funding_used_true" : "#fed_funding_confirmation_approver",
         "#committee_member_federal_funding_confirmation_false": "#fed_funding_error_approver"
     };
+    // Start the page with the hidden fields shown if the relevant radio button is checked
     $.each( toggles_and_hidden_areas, function(toggle, field){
         if ($(toggle).is(":checked")) {
             $(field).collapse('show')
@@ -17,7 +18,7 @@ initialize_federal_funding_radios = function() {
     })
 
 
-
+    // Author/Admin - Training Support Funding, Acknowledgment
     $("input[name='federal_funding_details[training_support_funding]']").on("change",
         function() {
             var conf = $("#fed_funding_confirmation_author_1")
@@ -30,6 +31,7 @@ initialize_federal_funding_radios = function() {
         }
     )
 
+    // Author/Admin - Other Funding, Acknowledgment
     $("input[name='federal_funding_details[other_funding]']").on("change",
         function() {
             var conf = $("#fed_funding_confirmation_author_2")
@@ -42,6 +44,7 @@ initialize_federal_funding_radios = function() {
         }
     )
 
+    // Author/Admin - Training Support Error Message
     $("input[name='federal_funding_details[training_support_acknowledged]']").on("change",
         function() {
             var error = $("#fed_funding_error_message_author_1")
@@ -54,6 +57,7 @@ initialize_federal_funding_radios = function() {
         }
     )
 
+    // Author/Admin - Other Funding Error Message
     $("input[name='federal_funding_details[other_funding_acknowledged]']").on("change",
         function() {
             var error = $("#fed_funding_error_message_author_2")
@@ -66,8 +70,7 @@ initialize_federal_funding_radios = function() {
         }
     )
 
-
-    // Approver page
+    // Approver – Federal Funding Used Acknowledgment
     $("input[name='committee_member[federal_funding_used]']").on("change",
         function() {
             var conf = $("#fed_funding_confirmation_approver")
@@ -80,6 +83,7 @@ initialize_federal_funding_radios = function() {
         }
     )
 
+    // Approver – Federal Funding Error message
     $("input[name='committee_member[federal_funding_confirmation]']").on("change",
         function() {
             var conf = $("#fed_funding_error_approver")
@@ -91,9 +95,6 @@ initialize_federal_funding_radios = function() {
             }
         }
     )
-
-    
-
 };
 
 $(document).ready(initialize_federal_funding_radios);

@@ -101,7 +101,7 @@ class Author::SubmissionsController < AuthorController
   def edit_final_submission
     @submission = find_submission
     @federal_funding_details = @submission.federal_funding_details
-    @funding_errors = @federal_funding_details.errors.messages.empty? ? nil : [@federal_funding_details.errors.first.message]
+    @funding_errors = @federal_funding_details&.errors&.messages&.any? ? [@federal_funding_details.errors.first.message] : nil
 
     FeePaymentService.new(@submission).fee_is_paid? if current_partner.graduate? && !development_instance?
 
@@ -134,7 +134,7 @@ class Author::SubmissionsController < AuthorController
     flash[:notice] = 'Final submission files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid
     @view = Author::FinalSubmissionFilesView.new(@submission)
-    @funding_errors = @federal_funding_details.errors.messages.empty? ? nil : [@federal_funding_details.errors.first.message]
+    @funding_errors = @federal_funding_details&.errors&.messages&.any? ? [@federal_funding_details.errors&.first&.message] : nil
     render :edit_final_submission
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path

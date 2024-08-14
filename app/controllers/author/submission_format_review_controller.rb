@@ -19,14 +19,14 @@ class Author::SubmissionFormatReviewController < AuthorController
     end
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_format_review_files?
-    @submission.update(format_review_params)
+    @submission.update!(format_review_params)
     status_giver.waiting_for_format_review_response!
     @submission.update_format_review_timestamps!(Time.zone.now)
     redirect_to author_root_path
     WorkflowMailer.send_format_review_received_email(@submission)
     flash[:notice] = 'Format review files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid
-    flash[:alert] = @submission.errors.messages.values.join(" ") + @federal_funding_details&.errors&.messages&.values&.first&.join("").to_s.html_safe
+    flash[:alert] = @submission.errors.messages.values.join(" ") + @federal_funding_details&.errors&.messages&.values&.first&.join("").to_s
     redirect_to author_submission_edit_format_review_path(@submission)
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path

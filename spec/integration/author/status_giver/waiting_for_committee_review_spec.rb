@@ -41,8 +41,12 @@ RSpec.describe "When Waiting for Committee Review", type: :integration, js: true
           select "Fall", from: "Semester Intending to Graduate"
           select 1.year.from_now.year, from: "Graduation Year"
           fill_in 'Abstract', with: 'Abstract'
-          find("#federal_funding_details_training_support_funding_false").click
-          find("#federal_funding_details_other_funding_false").click
+          if current_partner.graduate?
+            find("#federal_funding_details_training_support_funding_false").click
+            find("#federal_funding_details_other_funding_false").click
+          else
+            find('#submission_federal_funding_false').click
+          end
           find('#submission_access_level_open_access').click if current_partner.graduate?
           click_link "Additional File"
           within('#final-submission-file-fields') do
@@ -50,6 +54,17 @@ RSpec.describe "When Waiting for Committee Review", type: :integration, js: true
           end
           click_button 'Submit final files for review'
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review'
+        end
+
+        it 'displays error message if trying to make invalid changes' do
+          visit author_submission_edit_final_submission_path(submission)
+          find("#federal_funding_details_training_support_funding_true").click
+          find("#federal_funding_details_training_support_acknowledged_false").click
+          click_button 'Submit final files for review'
+          within('.alert-danger') do
+            expect(page).to have_content 'It is a federal requirement that all funding used to support research be acknowledged.'
+          end
+          expect(submission.status).to eq 'waiting for committee review rejected'
         end
       end
     end

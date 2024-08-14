@@ -36,6 +36,8 @@ class Admin::SubmissionsController < AdminController
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
   rescue ActiveRecord::RecordInvalid
+    @federal_funding_details = @submission.federal_funding_details
+    @funding_errors = @federal_funding_details&.errors&.messages&.any? ? [@federal_funding_details.errors.first.message] : nil
     @view = Admin::SubmissionFormView.new(@submission, session)
     render :edit
   rescue SubmissionStatusGiver::InvalidTransition
@@ -101,9 +103,9 @@ class Admin::SubmissionsController < AdminController
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
     @federal_funding_details = @submission.federal_funding_details
-    flash[:alert] = @submission.errors.messages.values.join(" ") + @federal_funding_details&.errors&.messages&.values&.first&.join(" ").to_s
+    @funding_errors = @federal_funding_details&.errors&.messages&.any? ? [@federal_funding_details.errors.first.message] : nil
     @view = Admin::SubmissionFormView.new(@submission, session)
-    redirect_to admin_edit_submission_path(@submission)
+    render :edit
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to session.delete(:return_to)
     flash[:alert] = 'This submission\'s format review information has already been evaluated.'
@@ -119,6 +121,8 @@ class Admin::SubmissionsController < AdminController
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
+    @federal_funding_details = @submission.federal_funding_details
+    @funding_errors = @federal_funding_details&.errors&.messages&.any? ? [@federal_funding_details.errors.first.message] : nil
     @view = Admin::SubmissionFormView.new(@submission, session)
     render :edit
   rescue SubmissionStatusGiver::AccessForbidden
@@ -153,6 +157,8 @@ class Admin::SubmissionsController < AdminController
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
+    @federal_funding_details = @submission.federal_funding_details
+    @funding_errors = @federal_funding_details&.errors&.messages&.any? ? [@federal_funding_details.errors.first.message] : nil
     @view = Admin::SubmissionFormView.new(@submission, session)
     render :edit
   rescue SubmissionStatusGiver::AccessForbidden

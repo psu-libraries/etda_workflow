@@ -100,8 +100,8 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
     expect(page.find_field("Semester Intending to Graduate").value).to eq "Fall"
     expect(page.find_field("Graduation Year").value).to eq 1.year.from_now.year.to_s
     expect(page.find_field("federal_funding_details_training_support_funding_true")).to be_checked
-    # expect(page.find_field("federal_funding_details_other_funding_false")).to be_checked
-    # expect(page.find_field("federal_funding_details_training_support_acknowledged_true")).to be_checked
+    expect(page.find_field("federal_funding_details_other_funding_false")).to be_checked
+    expect(page.find_field("federal_funding_details_training_support_acknowledged_true")).to be_checked
 
     within('#committee') do
       expect(page.find_field("Committee role").value).to eq role.id.to_s
@@ -138,6 +138,14 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
     click_button 'Update Metadata'
     visit admin_edit_submission_path(submission)
     expect(page).not_to have_link "admin_feedback_01.pdf"
+  end
+
+  it 'Displays an error if the federal funding is not acknowledged on editing submission' do
+    visit admin_edit_submission_path(submission)
+    find("#federal_funding_details_training_support_funding_true").click
+    find("#federal_funding_details_training_support_acknowledged_false").click
+    click_button 'Update Metadata'
+    expect(page).to have_content "It is a federal requirement that all funding used to support research be acknowledged."
   end
 
   it 'Allows admin to upload and delete final submission files' do
@@ -213,6 +221,14 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
     expect(final_submission.federal_funding).to eq false
     expect(final_submission.restricted?).to eq true
     expect(final_submission.proquest_agreement).to eq false if current_partner.graduate?
+  end
+
+  it 'Displays an error if the federal funding is not acknowledged for final submission' do
+    visit admin_edit_submission_path(final_submission)
+    find("#federal_funding_details_training_support_funding_true").click
+    find("#federal_funding_details_training_support_acknowledged_false").click
+    click_button 'Update Metadata Only'
+    expect(page).to have_content "It is a federal requirement that all funding used to support research be acknowledged."
   end
 
   context "when master's thesis" do

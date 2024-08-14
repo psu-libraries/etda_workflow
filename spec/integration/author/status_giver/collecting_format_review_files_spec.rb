@@ -30,6 +30,17 @@ RSpec.describe 'When Collecting Format Review Files', type: :integration, js: tr
         expect(submission.status).to eq 'waiting for format review response'
         expect(submission.format_review_files_uploaded_at).not_to be_nil
       end
+
+      it "displays error message if federal funding is not acknowledged" do
+        visit author_submission_edit_format_review_path(submission)
+        find("#federal_funding_details_training_support_funding_true").click
+        find("#federal_funding_details_training_support_acknowledged_false").click
+        click_button 'Submit files for review'
+        within('.alert-danger') do
+          expect(page).to have_content 'It is a federal requirement that all funding used to support research be acknowledged.'
+        end
+        expect(submission.status).to eq 'collecting format review files'
+      end
     end
   end
 end

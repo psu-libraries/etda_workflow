@@ -1,5 +1,5 @@
 class UpdateSubmissionService
-  def self.admin_update_submission(submission, current_remote_user, params, funding_params=nil)
+  def self.admin_update_submission(submission, current_remote_user, params, funding_params = nil)
     if current_partner.graduate? && funding_params.present?
       @funding_details = submission.federal_funding_details
       @funding_details.update! funding_params
