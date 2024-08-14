@@ -112,6 +112,7 @@ RSpec.describe CommitteeMember, type: :model do
 
       it 'is valid' do
         cm.federal_funding_used = true
+        cm.federal_funding_confirmation = 'true'
         expect(cm).to be_valid
         cm.federal_funding_used = false
         expect(cm).to be_valid

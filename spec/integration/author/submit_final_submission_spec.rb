@@ -11,6 +11,8 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
     let!(:committee_members) { create_committee(submission) }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
+    let!(:federal_funding_details) { FactoryBot.create :federal_funding_details, submission: submission }
+
 
     context "when I submit the 'Upload Final Submission Files' form" do
       it 'loads the page' do
@@ -31,7 +33,8 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         expect(page).to have_css('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
-        find("#submission_federal_funding_false").click
+        find("#federal_funding_details_training_support_funding_false").click
+        find("#federal_funding_details_other_funding_false").click
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
         check 'I agree to ProQuest statement' if current_partner.graduate?

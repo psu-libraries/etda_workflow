@@ -1,7 +1,7 @@
 RSpec.describe 'Approver approval page', type: :integration, js: true do
   require 'integration/integration_spec_helper'
 
-  let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, created_at: Time.zone.now }
+  let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, created_at: Time.zone.now, federal_funding: true}
   let(:submission1) { FactoryBot.create :submission, :waiting_for_final_submission_response, created_at: Time.zone.now }
   let(:submission2) { FactoryBot.create :submission, :waiting_for_publication_release, committee_review_accepted_at: DateTime.now, created_at: Time.zone.now }
   let(:submission3) { FactoryBot.create :submission, :waiting_for_publication_release, committee_review_rejected_at: DateTime.now, created_at: Time.zone.now }
@@ -47,7 +47,7 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       within("form#edit_committee_member_#{committee_member.id}") do
         find(:css, "#committee_member_status_approved").set true
         fill_in "committee_member_notes", with: 'Some notes.'
-        find(:css, "#committee_member_federal_funding_used_true").set true if current_partner.graduate?
+        find(:css, "#committee_member_federal_funding_used_false").set true if current_partner.graduate?
       end
       click_button 'Submit Review'
       expect(page).to have_current_path(approver_root_path)
@@ -70,12 +70,13 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       end
 
       context 'when advisor accepts and federal funding matches author' do
+        before do
+        end
         it 'proceeds to the rest of the committee review and emails committee members' do
-          expect(page).to have_content('Were Federal Funds utilized for this submission?') if current_partner.graduate?
-          submission.update federal_funding: true
-          submission.reload
+          expect(page).to have_content('Were Federal Funds utilized for this submission?')
           find(:css, "#committee_member_status_approved").set true
           find(:css, "#committee_member_federal_funding_used_true").set true
+          find(:css, "#committee_member_federal_funding_confirmation_true").set true
           click_button 'Submit Review'
           submission.reload
           expect(submission.status).to eq 'waiting for committee review'
@@ -84,11 +85,9 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
       end
 
       context 'when advisor accepts and federal funding does not match author' do
-        it 'sent to "committee review rejected" and email is sent to author' do
-          submission.update federal_funding: false
-          submission.reload
+        it 'review cannot be submitted' do
           find(:css, "#committee_member_status_approved").set true
-          find(:css, "#committee_member_federal_funding_used_true").set true
+          find(:css, "#committee_member_federal_funding_used_false").set true
           click_button 'Submit Review'
           submission.reload
           expect(submission.status).to eq 'waiting for committee review rejected'
@@ -98,11 +97,9 @@ RSpec.describe 'Approver approval page', type: :integration, js: true do
 
       context 'when advisor rejects' do
         it 'sent to "committee review rejected" and email is sent to author' do
-          submission.update federal_funding: true
-          submission.reload
           find(:css, "#committee_member_status_rejected").set true
           fill_in "committee_member_notes", with: 'Some notes.'
-          find(:css, "#committee_member_federal_funding_used_true").set true
+          find(:css, "#committee_member_federal_funding_used_false").set true
           click_button 'Submit Review'
           submission.reload
           expect(submission.status).to eq 'waiting for committee review rejected'

@@ -12,7 +12,7 @@ class FormatReviewUpdateService
   end
 
   def update_record
-    UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params)
+    UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params, federal_funding_details_params)
     msg = "The submission was successfully updated."
     { msg:, redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
   end

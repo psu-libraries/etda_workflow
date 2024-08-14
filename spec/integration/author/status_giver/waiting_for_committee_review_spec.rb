@@ -41,6 +41,8 @@ RSpec.describe "When Waiting for Committee Review", type: :integration, js: true
           select "Fall", from: "Semester Intending to Graduate"
           select 1.year.from_now.year, from: "Graduation Year"
           fill_in 'Abstract', with: 'Abstract'
+          find("#federal_funding_details_training_support_funding_false").click
+          find("#federal_funding_details_other_funding_false").click
           find('#submission_access_level_open_access').click if current_partner.graduate?
           click_link "Additional File"
           within('#final-submission-file-fields') do
