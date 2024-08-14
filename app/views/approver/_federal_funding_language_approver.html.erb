@@ -5,7 +5,7 @@
     <%= f.label :federal_funding_used, I18n.t("#{current_partner.id}.federal_funding_admin.question_1").html_safe %><br>
     <%= f.label :federal_funding_used, 'Yes'%>
     <%= f.radio_button :federal_funding_used, true %><br>
-    <div class="ml-3 collapse hide" id="fed_funding_confirmation_approver">
+    <div class="ml-5 collapse hide" id="fed_funding_confirmation_approver" aria-live="polite">
         <% if @submission.federal_funding == false %>
         <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.error_message_1").html_safe%></p>
         <% else %>
@@ -19,7 +19,22 @@
         </div>
         <% end %>
     </div>
-        <%= f.label :federal_funding_used, 'No'%>
-        <%= f.radio_button :federal_funding_used, false %>
+    <noscript>
+        <div class="ml-5">
+            <% if @submission.federal_funding == false %>
+            <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.error_message_1").html_safe%></p>
+            <% else %>
+            <div>
+            <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.confirmation").html_safe%></p>
+                    <%= f.label :federal_funding_confirmation, 'Yes'%>
+                    <%= f.radio_button :federal_funding_confirmation, true %><br>
+                    <%= f.label :federal_funding_confirmation, 'No'%>
+                    <%= f.radio_button :federal_funding_confirmation, false %>
+            </div>
+            <% end %>
+        </div>
+    </noscript>
+    <%= f.label :federal_funding_used, 'No'%>
+    <%= f.radio_button :federal_funding_used, false %>
 </div>
     
