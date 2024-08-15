@@ -26,7 +26,7 @@ RSpec.describe Lionpath::LionpathExport do
         stub_request(:put, full_url)
           .with(options)
           .to_return(status: 200,
-                     body: '{"PE_SR199_ETD_FAULT":{"errorNbr":200}}',
+                     body: '{"PE_SR199_ETD_RESP":{"RespNbr":200}}',
                      headers:)
       end
 
@@ -49,7 +49,7 @@ RSpec.describe Lionpath::LionpathExport do
       end
     end
 
-    context 'when the response is successful but the API contains an error number that is not 200' do
+    context 'when the response is successful but the API contains an error response' do
       before do
         stub_request(:put, full_url)
           .with(options)
