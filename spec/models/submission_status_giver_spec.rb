@@ -37,6 +37,19 @@ RSpec.describe SubmissionStatusGiver, type: :model do
           expect { giver.collecting_final_submission_files! }.to change { Sidekiq::Worker.jobs.size }.by(0)
         end
       end
+
+      context 'when transition is invalid' do
+        it 'does not queue LionpathExport' do
+          # This is kind of funky, but this invalid transition raises an
+          # error (SubmissionStatusGiver::InvalidTransition), so the expect
+          # block below rescues it to test that no worker is created
+          expect {
+            begin 
+              giver.waiting_for_final_submission_response!
+            rescue SubmissionStatusGiver::InvalidTransition
+            end }.to change { Sidekiq::Worker.jobs.size }.by(0)
+        end        
+      end
     end
 
     context 'when transitioning states and partner is not graduate', honors: true do
