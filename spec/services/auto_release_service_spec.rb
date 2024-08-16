@@ -8,22 +8,32 @@ RSpec.describe AutoReleaseService do
     let!(:sub1) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.days_ago(1),
-                        access_level: 'restricted_to_institution'
+                        access_level: 'restricted_to_institution',
+                        status: 'released for publication metadata only'
     end
     let!(:sub2) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.next_week,
-                        access_level: 'restricted_to_institution'
+                        access_level: 'restricted_to_institution',
+                        status: 'released for publication metadata only'
     end
     let!(:sub3) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.days_ago(1),
-                        access_level: 'restricted_to_institution'
+                        access_level: 'restricted_to_institution',
+                        status: 'released for publication metadata only'
     end
     let!(:sub4) do
       FactoryBot.create :submission,
                         released_for_publication_at: Time.zone.today.days_ago(1),
-                        access_level: 'restricted'
+                        access_level: 'restricted',
+                        status: 'released for publication metadata only'
+    end
+    let!(:sub5) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.days_ago(1),
+                        access_level: 'restricted_to_institution',
+                        status: 'waiting for publication release'
     end
 
     before { allow(Submission).to receive(:release_for_publication).with([sub1.id, sub3.id], DateTime.now.end_of_day, 'Release as Open Access') }

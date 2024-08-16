@@ -146,6 +146,7 @@ class Submission < ApplicationRecord
   scope :ok_to_release, -> { where('released_for_publication_at <= ?', Time.zone.today.end_of_day) }
   scope :ok_to_autorelease, -> {
                               ok_to_release.where(access_level: 'restricted_to_institution')
+                                           .where(status: 'released for publication metadata only')
                             }
   scope :release_warning_needed?, -> {
                                     where('released_metadata_at >= ?', Time.zone.today.years_ago(2).end_of_day)
