@@ -16,9 +16,11 @@
 
 <div id="body-container" class="container-fluid">
   <main>
+    <div id="content-row" class="row d-flex justify-content-center">
+        <%= render partial: 'shared/flash_messages' unless flash.empty? %>
+    </div>
     <div id="content-container" class="container-fluid">
       <div id="content-row" class="row">
-        <%= render partial: 'shared/flash_messages' unless flash.empty? %>
 
         <%= yield %>
 
