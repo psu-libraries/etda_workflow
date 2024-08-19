@@ -70,6 +70,7 @@ Metrics/ClassLength:
   - app/controllers/approver/approvers_controller.rb
   - app/controllers/author/submissions_controller.rb
   - app/models/committee_member.rb
+  - app/models/export_csv.rb
 
 Metrics/CyclomaticComplexity:
   Exclude:

@@ -80,4 +80,28 @@ class Admin::ReportsController < AdminController
       headers['Content-Type'] ||= 'text/xls'
     end
   end
+
+  def graduate_data_report_export
+    @report_export = ExportCsv.new('graduate_data_report', graduate_data_result)
+
+    respond_to do |format|
+      format.json do
+        render json: @report_export.as_json, content_type: 'application/json'
+        headers['Content-Disposition'] = 'attachment; filename="graduate_data_report.json"'
+      end
+    end
+  end
+
+  private
+
+    def graduate_data_result
+      Submission
+        .joins('LEFT JOIN invention_disclosures id ON submissions.id = id.submission_id')
+        .joins('LEFT JOIN authors a ON submissions.author_id = a.id')
+        .joins('LEFT JOIN programs p ON submissions.program_id = p.id')
+        .joins('LEFT JOIN degrees d ON submissions.degree_id = d.id')
+        .joins('LEFT JOIN committee_members cm ON submissions.id = cm.submission_id')
+        .joins('LEFT JOIN committee_roles cr ON cm.committee_role_id = cr.id')
+        .group('submissions.id', 'id.id_number')
+    end
 end

@@ -117,4 +117,36 @@ RSpec.describe ExportCsv, type: :model do
       end
     end
   end
+
+  describe 'graduate_data_report' do
+    let(:author) { FactoryBot.create :author }
+    let(:submission) { FactoryBot.create :submission, :released_for_publication, author: }
+    let(:export_csv) { described_class.new('graduate_data_report', submission) }
+    let(:cm1) { FactoryBot.create :committee_member, committee_role: com_role1 }
+    let(:com_role1) { CommitteeRole.where(name: "Program Head/Chair").sample }
+    let(:cm2) { FactoryBot.create :committee_member, committee_role: com_role2 }
+    let(:com_role2) { CommitteeRole.where(name: "Thesis Advisor/Co-Advisor").sample }
+    let(:expected_formatted_committee) { [{ email: cm1.email.to_s, name: cm1.name.to_s, role: cm1.committee_role.name.to_s }, { email: cm2.email.to_s, name: cm2.name.to_s, role: cm2.committee_role.name.to_s }] }
+
+    before do
+      submission.committee_members << [cm1, cm2]
+    end
+
+    context 'columns' do
+      it 'has initialized columns' do
+        expect(export_csv.columns).to include('committee_members')
+      end
+    end
+
+    context 'fields when initialized with one submission' do
+      it 'has one submission' do
+        fields = export_csv.fields(submission)
+        expect(fields).not_to be(nil)
+        expect(fields[:access_id]).to eq(author.access_id)
+        expect(fields[:alternate_email_address]).to eq(author.alternate_email_address)
+
+        expect(fields[:committee_members]).to eq(expected_formatted_committee)
+      end
+    end
+  end
 end
