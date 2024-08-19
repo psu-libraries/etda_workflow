@@ -80,7 +80,7 @@ RSpec.describe Author::SubmissionsController, type: :controller do
       it 'redirects back to acknowledge page with an alert if the user does not initial for every statement' do
         oidc_authorize_author
         submission = FactoryBot.create(:submission, acknowledgment_page_submitted_at: nil)
-        params = { acknowledgment_signatures: { sig_1: '', sig_2: '', sig_3: '3', sig_4: '4', sig_5: '5', sig_6: '6', sig_7: '7' }, submission_id: submission.id.to_s }
+        params = { acknowledgment_signatures: { sig_1: '', sig_2: '', sig_3: '3', sig_4: '4', sig_5: '5', sig_6: '6', sig_7: '7', sig_8: '8' }, submission_id: submission.id.to_s }
         expect(patch(:acknowledge_update, params:)).to redirect_to author_submission_acknowledge_path(submission.id)
         expect(flash[:alert]).to be_present
       end
@@ -88,7 +88,7 @@ RSpec.describe Author::SubmissionsController, type: :controller do
       it 'redirects back to edit page if the user submits valid program information data' do
         oidc_authorize_author
         submission = FactoryBot.create(:submission, acknowledgment_page_submitted_at: nil)
-        params = { acknowledgment_signatures: { sig_1: '1', sig_2: '2', sig_3: '3', sig_4: '4', sig_5: '5', sig_6: '6', sig_7: '7' }, submission_id: submission.id.to_s }
+        params = { acknowledgment_signatures: { sig_1: '1', sig_2: '2', sig_3: '3', sig_4: '4', sig_5: '5', sig_6: '6', sig_7: '7', sig_8: '8' }, submission_id: submission.id.to_s }
         allow(controller).to receive(:find_submission).and_return(submission)
         expect(patch(:acknowledge_update, params:)).to redirect_to edit_author_submission_path(submission.id)
         expect(flash[:alert]).not_to be_present
@@ -97,7 +97,7 @@ RSpec.describe Author::SubmissionsController, type: :controller do
       it 'save the updated submission if the user submits valid program information data' do
         oidc_authorize_author
         submission = FactoryBot.create(:submission, acknowledgment_page_submitted_at: nil)
-        params = { acknowledgment_signatures: { sig_1: '1', sig_2: '2', sig_3: '3', sig_4: '4', sig_5: '5', sig_6: '6', sig_7: '7' }, submission_id: submission.id.to_s }
+        params = { acknowledgment_signatures: { sig_1: '1', sig_2: '2', sig_3: '3', sig_4: '4', sig_5: '5', sig_6: '6', sig_7: '7', sig_8: '8' }, submission_id: submission.id.to_s }
         allow(controller).to receive(:find_submission).and_return(submission)
         patch(:acknowledge_update, params:)
         expect(submission.reload.acknowledgment_page_submitted_at).not_to be_nil

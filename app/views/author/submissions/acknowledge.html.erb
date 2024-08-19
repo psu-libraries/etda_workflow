@@ -18,6 +18,15 @@
           <%= form.input :sig_6, label: false, placeholder: I18n.t("graduate.submission.acknowledge.initial") %>
           <%= form.label :sig_7, I18n.t("graduate.submission.acknowledge.point7") %>
           <%= form.input :sig_7, label: false, placeholder: I18n.t("graduate.submission.acknowledge.initial") %>
+          <% if @submission.degree_type.slug == 'master_thesis' %>
+            <%= form.label :sig_8, I18n.t("graduate.submission.acknowledge.point8_masters") %>
+            <%= I18n.t("graduate.submission.acknowledge.confidential_hold", degree_type: @degree_type)  if @submission.author.confidential_hold?%>
+            <%= form.input :sig_8, label: false, placeholder: I18n.t("graduate.submission.acknowledge.initial") %>
+          <% else %>
+            <%= form.label :sig_8, I18n.t("graduate.submission.acknowledge.point8_dissertation") %>
+            <%= I18n.t("graduate.submission.acknowledge.confidential_hold", degree_type: @degree_type)  if @submission.author.confidential_hold?%>
+            <%= form.input :sig_8, label: false, placeholder: I18n.t("graduate.submission.acknowledge.initial") %>
+          <% end %>
           <%= form.button :submit, class: "btn-primary", value: "Submit" %>
           <%= link_to "Cancel", author_root_path, class: 'btn btn-light' %>
         </div>

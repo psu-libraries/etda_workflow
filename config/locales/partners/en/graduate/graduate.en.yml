@@ -19,6 +19,9 @@ en:
         point5: 'I know if it is the program head or director of graduate studies of my program who needs to approve my %{degree_type}. If I am not sure, I will consult with my program.'
         point6: 'I acknowledge that I cannot fix typos or make additional corrections after I submit my final submission.'
         point7: 'I acknowledge that I cannot make committee changes after the final is submitted. My committee page matches the committee listed in the ETD.'
+        point8_masters: "I acknowledge that my approved thesis will be publicly released through the University Libraries as part of the Penn State Graduate Council's master's degree requirements."
+        point8_dissertation: "I acknowledge that my approved dissertation will be publicly released through the University Libraries as part of the Penn State Graduate Council's Ph.D. degree requirements."
+        confidential_hold: "Notice: Public release of a %{degree_type} will still occur even with a Confidentiality Hold. If you have any questions or concerns, please contact the Office of Theses and Dissertations in the Graduate School at gradthesis@psu.edu."
         initial: 'Initial here'
     partner:
       abbrev: graduate
