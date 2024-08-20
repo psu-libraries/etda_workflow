@@ -8,62 +8,29 @@ RSpec.describe SubmissionStatusGiver, type: :model do
   describe 'queueing LionpathExport' do
     let!(:giver) { described_class.new(submission) }
 
-    before do
-      Sidekiq::Worker.clear_all
-      ENV['LP_EXPORT_TEST'] = 'true'
-      submission.status = 'waiting for format review response'
-      submission.candidate_number = '000000012345'
-      submission.save!
-    end
-
-    after do
-      ENV['LP_EXPORT_TEST'] = nil
-    end
-    
-    context 'when transitioning states and partner is graduate' do
-      context 'when candidate_number is present' do
-        it 'queues LionpathExport' do
-          expect { giver.collecting_final_submission_files! }.to change { Sidekiq::Worker.jobs.size }.by(1)
-        end
-      end
-      
-      context 'when candidate_number is not present' do
-        before do
-          submission.candidate_number = nil
-          submission.save!
-        end
-
-        it 'does not queue LionpathExport' do
-          expect { giver.collecting_final_submission_files! }.to change { Sidekiq::Worker.jobs.size }.by(0)
-        end
-      end
-
-      context 'when transition is invalid' do
-        it 'does not queue LionpathExport' do
-          # This is kind of funky, but this invalid transition raises an
-          # error (SubmissionStatusGiver::InvalidTransition), so the expect
-          # block below rescues it to test that no worker is created
-          expect {
-            begin 
-              giver.waiting_for_final_submission_response!
-            rescue SubmissionStatusGiver::InvalidTransition
-            end }.to change { Sidekiq::Worker.jobs.size }.by(0)
-        end        
+    context 'when transition is valid' do
+      it 'invokes #export_to_lionpath!' do
+        submission.update status: 'waiting for format review response'
+        allow(submission).to receive(:export_to_lionpath!)
+        giver.collecting_final_submission_files!
+        expect(submission).to have_received(:export_to_lionpath!)
       end
     end
-
-    context 'when transitioning states and partner is not graduate', honors: true do
-      # Note that candidate_number should never be present for non-graduate
-      # partners.  However, to be totally logically correct we have
-      # logic to check that the partner is in fact graduate
-      context 'when candidate_number is present' do
-        it 'does not queue LionpathExport' do
-          skip 'Graduate Only' if current_partner.graduate?
-
-          expect { giver.collecting_final_submission_files! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+ 
+    context 'when transition is invalid' do
+      it 'does not queue LionpathExport' do
+        submission.update status: 'collecting format review files'
+        allow(submission).to receive(:export_to_lionpath!)
+        # This is kind of funky, but this invalid transition raises an
+        # error (SubmissionStatusGiver::InvalidTransition), so 
+        # we rescue it to test the final expect statement
+        begin 
+          giver.waiting_for_final_submission_response!
+        rescue SubmissionStatusGiver::InvalidTransition
         end
-      end
-    end    
+        expect(submission).not_to have_received(:export_to_lionpath!)
+      end        
+    end
   end
 
   describe '#can_respond_to_format_review?' do

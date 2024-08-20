@@ -984,4 +984,67 @@ RSpec.describe Submission, type: :model do
       expect(sub4).not_to be_format_review_feedback_files
     end
   end
+
+  describe "#export_to_lionpath!" do
+    let!(:submission_lp) do
+      create :submission, degree: (create :degree),
+                          program: (create :program),
+                          author: (create :author)
+    end
+
+    before do
+      Sidekiq::Worker.clear_all
+      ENV['LP_EXPORT_TEST'] = 'true'
+      submission_lp.status = 'waiting for format review response'
+      submission_lp.candidate_number = '000000012345'
+      submission_lp.save!
+    end
+
+    after do
+      ENV['LP_EXPORT_TEST'] = nil
+    end
+
+    context 'when partner is graduate' do
+      context 'when candidate_number is present' do
+        it 'queues LionpathExport' do
+          expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(1)
+        end
+      end
+
+      context 'when candidate_number is not present' do
+        before do
+          submission_lp.candidate_number = nil
+          submission_lp.save!
+        end
+
+        it 'does not queue LionpathExport' do
+          expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+        end
+      end
+
+      context 'when submission is not beyond_collecting_format_review_files' do
+        before do
+          submission_lp.status = 'collecting format review files'
+          submission_lp.save!
+        end
+
+        it 'does not queue LionpathExport' do
+          expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+        end
+      end
+    end
+
+    context 'when partner is not graduate', honors: true do
+      # Note that candidate_number should never be present for non-graduate
+      # partners.  However, to be totally logically correct we have
+      # logic to check that the partner is in fact graduate
+      context 'when candidate_number is present' do
+        it 'does not queue LionpathExport' do
+          skip 'Non Graduate Test' if current_partner.graduate?
+
+          expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+        end
+      end
+    end
+  end
 end

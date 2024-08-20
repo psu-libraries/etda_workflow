@@ -8,6 +8,8 @@ class UpdateSubmissionService
       committee_member.notes << "\nThe admin user #{current_remote_user} changed Voting Attribute to '#{committee_member.is_voting.to_s.capitalize}' at: #{DateTime.now.to_formatted_s(:long)}\n" if committee_member.saved_change_to_is_voting?
     end
     submission.save!
+
+    submission.export_to_lionpath!
   end
 
   def send_email(submission)

@@ -259,13 +259,7 @@ class SubmissionStatusGiver
   def transition_to(new_state)
     raise InvalidTransition unless new_state.transition submission
 
-    # When state changes, update Lionpath for graduate only if candidate number is present
-    # We don't want this constantly running during tests or during development, so it should
-    # only run in production or if the LP_EXPORT_TEST variable is set
-    if (Rails.env.production? || ENV['LP_EXPORT_TEST'].present?) && 
-      current_partner.graduate? && submission.candidate_number
-      LionpathExportWorker.perform_async(submission.id)
-    end
+    submission.export_to_lionpath!
   end
 
   def validate_current_state!(expected_states)

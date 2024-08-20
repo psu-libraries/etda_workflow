@@ -429,6 +429,17 @@ class Submission < ApplicationRecord
     admin_feedback_files.any? { |file| file.feedback_type == 'format-review' }
   end
 
+  def export_to_lionpath!
+    # Update Lionpath for graduate only if candidate number is present
+    # We don't want this constantly running during tests or during development, so it should
+    # only run in production or if the LP_EXPORT_TEST variable is set
+    if (Rails.env.production? || ENV['LP_EXPORT_TEST'].present?) &&
+       current_partner.graduate? && candidate_number &&
+       status_behavior.beyond_collecting_format_review_files?
+      LionpathExportWorker.perform_async(id)
+    end
+  end
+
   private
 
     def file_check
