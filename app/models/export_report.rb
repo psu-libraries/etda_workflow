@@ -1,4 +1,4 @@
-class ExportCsv
+class ExportReport
   attr_accessor :query_type
   attr_reader :records
 
