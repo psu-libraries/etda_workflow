@@ -422,13 +422,24 @@ class Submission < ApplicationRecord
   end
 
   def export_to_lionpath!
-    # Update Lionpath for graduate only if candidate number is present
+    # Update Lionpath for graduate only if candidate number is present.
+    # Also, LP does not want to know about the submission until a format review is submitted,
+    # so do not export until then.
     # We don't want this constantly running during tests or during development, so it should
     # only run in production or if the LP_EXPORT_TEST variable is set
-    if (Rails.env.production? || ENV['LP_EXPORT_TEST'].present?) &&
-       current_partner.graduate? && candidate_number &&
+    # if (Rails.env.production? || ENV['LP_EXPORT_TEST'].present?) &&
+    if current_partner.graduate? && candidate_number &&
        status_behavior.beyond_collecting_format_review_files?
-      LionpathExportWorker.perform_async(id)
+      
+      # Traverse the queue to make sure an identical job does not exist
+      scheduled = Sidekiq::ScheduledSet.new.collect{|s| s if s.queue == LionpathExportWorker::QUEUE}
+      scheduled.each do |job|
+        return if job.item["class"] == LionpathExportWorker.to_s &&
+          job.item["args"] == [id]
+      end
+
+      # Delay the job by 1 minute to make sure all updates are ready
+      LionpathExportWorker.perform_in(1.minute, id)
     end
   end
 

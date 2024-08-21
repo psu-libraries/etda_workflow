@@ -9,7 +9,7 @@ class UpdateSubmissionService
     end
     submission.save!
 
-    submission.export_to_lionpath!
+    submission.export_to_lionpath! 
   end
 
   def send_email(submission, previous_access_level)
