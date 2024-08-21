@@ -1,6 +1,6 @@
 # Release submissions for publication
 class SubmissionReleaseService
-  attr_accessor :new_access_level, :previous_access_level
+  attr_accessor :new_access_level
 
   def initialize
     @error_message = []
@@ -93,6 +93,7 @@ class SubmissionReleaseService
       update_service = UpdateSubmissionService.new
       new_publication_release_date = date_to_release
       new_metadata_release_date = submission.released_metadata_at.nil? ? date_to_release : submission.released_metadata_at
+      original_access_level = submission.access_level
       new_access_level = submission.publication_release_access_level
       new_public_id = submission.public_id.presence || PublicIdMinter.new(submission).id
       return unless public_id_ok(new_public_id)
@@ -106,7 +107,7 @@ class SubmissionReleaseService
       status_giver.released_for_publication!
       return unless release_files(original_final_files)
 
-      update_service.send_email(submission)
+      update_service.send_email(submission, original_access_level)
       @released_submissions += 1
       # Archiver.new(s).create!
     rescue StandardError => e

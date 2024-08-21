@@ -106,14 +106,6 @@ class Submission < ApplicationRecord
 
   validate :file_check
 
-  attr_reader :previous_access_level
-
-  after_update :cache_access_level
-
-  def cache_access_level
-    @previous_access_level = access_level_before_last_save || ''
-  end
-
   validates :status, inclusion: { in: SubmissionStatus::WORKFLOW_STATUS }
 
   accepts_nested_attributes_for :committee_members,
