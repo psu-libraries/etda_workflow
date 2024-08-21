@@ -73,13 +73,12 @@ class SubmissionReleaseService
 
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_release_for_publication?
-      # Timestamp update should happen before state transition so LP can be updated
-      submission.update!(released_for_publication_at: publication_release_date, released_metadata_at: metadata_release_date, public_id:)
       if submission.restricted? || submission.restricted_to_institution?
         status_giver.released_for_publication_metadata_only!
       else
         status_giver.released_for_publication!
       end
+      submission.update!(released_for_publication_at: publication_release_date, released_metadata_at: metadata_release_date, public_id:)
       WorkflowMailer.send_publication_release_messages(submission)
       return unless release_files(original_final_files)
 
@@ -102,9 +101,8 @@ class SubmissionReleaseService
 
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_release_for_publication?
-      # Timestamp update should happen before state transition so LP can be updated
-      submission.update!(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
       status_giver.released_for_publication!
+      submission.update!(released_for_publication_at: new_publication_release_date, released_metadata_at: new_metadata_release_date, access_level: new_access_level, public_id: new_public_id)
       return unless release_files(original_final_files)
 
       update_service.send_email(submission, original_access_level)

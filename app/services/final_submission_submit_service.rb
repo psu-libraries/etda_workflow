@@ -26,24 +26,21 @@ class FinalSubmissionSubmitService
 
     def committee_reject_submit
       submission.reset_committee_reviews
-      # Timestamp update should happen before state transition so LP can be updated
-      submission.update_final_submission_timestamps!(Time.zone.now)
       collect_final
+      submission.update_final_submission_timestamps!(Time.zone.now)
       WorkflowMailer.send_final_submission_received_email(submission)
     end
 
     def final_sub_reject_submit
       status_giver.can_waiting_for_final_submission_response?
-      # Timestamp update should happen before state transition so LP can be updated
-      submission.update_final_submission_timestamps!(Time.zone.now)
       status_giver.waiting_for_final_submission_response!
+      submission.update_final_submission_timestamps!(Time.zone.now)
       WorkflowMailer.send_final_submission_received_email(submission)
     end
 
     def collect_final_sub_submit
-      # Timestamp update should happen before state transition so LP can be updated
-      submission.update_final_submission_timestamps!(Time.zone.now)
       collect_final
+      submission.update_final_submission_timestamps!(Time.zone.now)
       WorkflowMailer.send_final_submission_received_email(submission)
     end
 
