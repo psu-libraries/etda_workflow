@@ -430,12 +430,16 @@ class Submission < ApplicationRecord
     # if (Rails.env.production? || ENV['LP_EXPORT_TEST'].present?) &&
     if current_partner.graduate? && candidate_number &&
        status_behavior.beyond_collecting_format_review_files?
-      
+
       # Traverse the queue to make sure an identical job does not exist
-      scheduled = Sidekiq::ScheduledSet.new.collect{|s| s if s.queue == LionpathExportWorker::QUEUE}
+      scheduled = Sidekiq::ScheduledSet.new
       scheduled.each do |job|
-        return if job.item["class"] == LionpathExportWorker.to_s &&
-          job.item["args"] == [id]
+        # Rubocop Lint/NonLocalExitFromIterator false positive
+        # rubocop:disable Lint/NonLocalExitFromIterator
+        return if job.queue == LionpathExportWorker::QUEUE &&
+                  job.item["class"] == LionpathExportWorker.to_s &&
+                  job.item["args"] == [id]
+        # rubocop:enable Lint/NonLocalExitFromIterator
       end
 
       # Delay the job by 1 minute to make sure all updates are ready
