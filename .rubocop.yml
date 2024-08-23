@@ -70,6 +70,7 @@ Metrics/ClassLength:
   - app/controllers/approver/approvers_controller.rb
   - app/controllers/author/submissions_controller.rb
   - app/models/committee_member.rb
+  - app/models/export_report.rb
 
 Metrics/CyclomaticComplexity:
   Exclude:
@@ -78,7 +79,7 @@ Metrics/CyclomaticComplexity:
   - app/presenters/admin/submissions_index_view.rb
   - app/presenters/admin/submission_form_view.rb
   - app/services/submission_release_service.rb
-  - app/models/export_csv.rb
+  - app/models/export_report.rb
   - app/models/mock_university_directory.rb
   - app/helpers/application_helper.rb
   - app/models/submission.rb
@@ -93,7 +94,7 @@ Metrics/PerceivedComplexity:
   - app/presenters/admin/submissions_dashboard_view.rb
   - app/presenters/admin/submissions_index_view.rb
   - app/presenters/admin/submission_form_view.rb
-  - app/models/export_csv.rb
+  - app/models/export_report.rb
   - app/helpers/application_helper.rb
   - app/services/submission_release_service.rb
   - app/models/submission.rb

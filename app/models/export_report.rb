@@ -1,4 +1,4 @@
-class ExportCsv
+class ExportReport
   attr_accessor :query_type
   attr_reader :records
 
@@ -37,6 +37,8 @@ class ExportCsv
       column_list = ['ID', 'Access ID', 'Last Name', 'First Name', 'PSU Email Address', 'Alternate Email Address', 'PSU ID', 'Confidential Hold Set At']
     when 'committee_member_report'
       column_list = ['First Name', 'Middle Name', 'Last Name', 'Access ID', 'Department', 'Program', 'Degree', 'Submissions']
+    when 'graduate_data_report'
+      column_list = ['access_id', 'alternate_email_address', 'committee_members']
     else
       column_list = nil
     end
@@ -77,9 +79,33 @@ class ExportCsv
       field_list = [r.id, r.access_id, r.last_name, r.first_name, r.psu_email_address, r.alternate_email_address, r.psu_idn, r.confidential_hold_set_at]
     when 'committee_member_report'
       field_list = [r.first_name, r.middle_name, r.last_name, r.webaccess_id, r.department, r.program, r.degree, r.submissions]
+    when 'graduate_data_report'
+      field_list = {
+        access_id: r.access_id,
+        alternate_email_address: r.alternate_email_address,
+        committee_members: formatted_committee_members(r)
+      }
     else
       field_list = nil
     end
     field_list
   end
+
+  def as_json
+    @records.map { |record| fields(record) }
+  end
+
+  private
+
+    def formatted_committee_members(row)
+      formatted_cm = []
+      row.committee_members.each do |member|
+        formatted_cm << {
+          name: member.name,
+          email: member.email,
+          role: member.committee_role.name
+        }
+      end
+      formatted_cm
+    end
 end

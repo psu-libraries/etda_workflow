@@ -20,7 +20,7 @@ class Admin::ReportsController < AdminController
 
   def custom_report_export
     ids = params[:submission_ids].split(',').map(&:to_i)
-    @csv_report_export = ExportCsv.new('custom_report', Submission.where(id: ids))
+    @csv_report_export = ExportReport.new('custom_report', Submission.where(id: ids))
     respond_to do |format|
       format.csv { render template: 'admin/reports/csv_export_report.csv.erb' }
       headers['Content-Disposition'] = 'attachment; filename="custom_report.csv"'
@@ -33,7 +33,7 @@ class Admin::ReportsController < AdminController
     return if params[:submission_ids].nil?
 
     ids = params[:submission_ids].split(',').map(&:to_i)
-    @csv_report_export = ExportCsv.new('final_submission_approved', Submission.where(id: ids))
+    @csv_report_export = ExportReport.new('final_submission_approved', Submission.where(id: ids))
     respond_to do |format|
       format.csv { render template: 'admin/reports/csv_export_report.csv.erb' }
       headers['Content-Disposition'] = 'attachment; filename="final_submission_report.csv"'
@@ -52,7 +52,7 @@ class Admin::ReportsController < AdminController
 
   def confidential_hold_report_export
     ids = params[:author_ids].split(',').map(&:to_i)
-    @csv_report_export = ExportCsv.new('confidential_hold_report', Author.where(id: ids))
+    @csv_report_export = ExportReport.new('confidential_hold_report', Author.where(id: ids))
     respond_to do |format|
       format.csv { render template: 'admin/reports/csv_export_report.csv.erb' }
       headers['Content-Disposition'] = 'attachment; filename="confidential_hold_report.csv"'
@@ -72,7 +72,7 @@ class Admin::ReportsController < AdminController
              .group('faculty_members.webaccess_id, faculty_members.department, p.name, d.name')
              .order('faculty_members.webaccess_id, COUNT(committee_members.submission_id) DESC, faculty_members.department')
 
-    @csv_report_export = ExportCsv.new('committee_member_report', result)
+    @csv_report_export = ExportReport.new('committee_member_report', result)
     respond_to do |format|
       format.csv { render template: 'admin/reports/csv_export_report.csv.erb' }
       headers['Content-Disposition'] = 'attachment; filename="committee_member_report.csv"'
@@ -80,4 +80,28 @@ class Admin::ReportsController < AdminController
       headers['Content-Type'] ||= 'text/xls'
     end
   end
+
+  def graduate_data_report_export
+    @report_export = ExportReport.new('graduate_data_report', graduate_data_result)
+
+    respond_to do |format|
+      format.json do
+        render json: @report_export.as_json, content_type: 'application/json'
+        headers['Content-Disposition'] = 'attachment; filename="graduate_data_report.json"'
+      end
+    end
+  end
+
+  private
+
+    def graduate_data_result
+      Submission
+        .joins('LEFT JOIN invention_disclosures i ON submissions.id = i.submission_id')
+        .joins('LEFT JOIN authors a ON submissions.author_id = a.id')
+        .joins('LEFT JOIN programs p ON submissions.program_id = p.id')
+        .joins('LEFT JOIN degrees d ON submissions.degree_id = d.id')
+        .joins('LEFT JOIN committee_members cm ON submissions.id = cm.submission_id')
+        .joins('LEFT JOIN committee_roles cr ON cm.committee_role_id = cr.id')
+        .group('submissions.id', 'i.id_number')
+    end
 end
