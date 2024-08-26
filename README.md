@@ -99,7 +99,7 @@ After each run of this import, `Submission` and `CommitteeMember` records import
 
 ### Exports
 
-LionPath has a REST API for ingesting data for submissions (student plans in LionPath).  We export data to the Lionpath API throughout the submission process to keep LionPath up-to-date on the student's progression.
+LionPath has a REST API for ingesting data for submissions (student plans in LionPath).  We export data to LionPath throughout the submission process to keep LionPath up-to-date on the student's progress.
 
 The exports are triggered in three places:
 
