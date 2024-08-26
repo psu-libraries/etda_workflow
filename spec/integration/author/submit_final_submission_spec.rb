@@ -33,8 +33,8 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('final_submission_file_01.pdf')
         if current_partner.graduate?
-          find("#federal_funding_details_training_support_funding_false").click
-          find("#federal_funding_details_other_funding_false").click
+          find("#submission_federal_funding_details_attributes_training_support_funding_false").click
+          find("#submission_federal_funding_details_attributes_other_funding_false").click
         else
           find('#submission_federal_funding_false').click
         end
@@ -170,8 +170,8 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
       it 'displays error messages for funding acknowledgment' do
         skip('Graduate partner only') unless current_partner.graduate?
         visit author_submission_edit_final_submission_path(submission)
-        find("#federal_funding_details_training_support_funding_true").click
-        find("#federal_funding_details_training_support_acknowledged_false").click
+        find("#submission_federal_funding_details_attributes_training_support_funding_true").click
+        find("#submission_federal_funding_details_attributes_training_support_acknowledged_false").click
         click_button 'Submit final files for review'
         within('.alert-danger') do
           expect(page).to have_content 'It is a federal requirement that all funding used to support research be acknowledged.'

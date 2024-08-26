@@ -2,22 +2,31 @@
 
 class FederalFundingDetails < ApplicationRecord
   belongs_to :submission
+  after_save :update_federal_funding
+
+  attr_accessor :author_edit
 
   ERROR_MESSAGE = I18n.t("#{current_partner.id}.federal_funding_author.error_message").html_safe
 
-  validates :training_support_funding, :other_funding, inclusion: { in: [true, false], message: ERROR_MESSAGE }
+  validates :training_support_funding, :other_funding,
+            inclusion: { in: [true, false], message: ERROR_MESSAGE },
+            if: proc { |f| f.author_edit && submission.status_behavior.beyond_collecting_committee? && current_partner.graduate? }
 
   validates :training_support_acknowledged,
-            acceptance: { accept: true, message: ERROR_MESSAGE },
-            presence: { accept: true, message: ERROR_MESSAGE },
-            if: proc { |f| f.training_support_funding }
+            presence: { presence: true, message: ERROR_MESSAGE },
+            if: proc { |f| f.training_support_funding && f.author_edit && submission.status_behavior.beyond_collecting_committee? && current_partner.graduate? }
 
   validates :other_funding_acknowledged,
-            acceptance: { accept: true, message: ERROR_MESSAGE },
-            presence: { accept: true, message: ERROR_MESSAGE },
-            if: proc { |f| f.other_funding }
+            presence: { presence: true, message: ERROR_MESSAGE },
+            if: proc { |f| f.other_funding && f.author_edit && submission.status_behavior.beyond_collecting_committee? && current_partner.graduate? }
 
   def uses_federal_funding?
     training_support_funding || other_funding
   end
+
+  private
+
+    def update_federal_funding
+      submission.update_federal_funding
+    end
 end

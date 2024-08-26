@@ -128,6 +128,7 @@ class Submission < ApplicationRecord
   accepts_nested_attributes_for :invention_disclosures,
                                 allow_destroy: true,
                                 limit: 1
+  accepts_nested_attributes_for :federal_funding_details, allow_destroy: true
 
   scope :format_review_is_incomplete, lambda {
     where(status: ['collecting program information', 'collecting committee', 'collecting format review files', 'collecting format review files rejected'])
@@ -201,12 +202,6 @@ class Submission < ApplicationRecord
     return false if federal_funding_details.nil? || federal_funding_details.uses_federal_funding?.nil?
 
     self.federal_funding = federal_funding_details.uses_federal_funding?
-  end
-
-  def update_with_federal_funding(parameters)
-    assign_attributes(parameters)
-    self.federal_funding = training_support_funding || other_funding unless parameters[:training_support_funding].nil? && parameters[:other_funding].nil?
-    save!
   end
 
   def check_title_capitalization

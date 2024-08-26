@@ -2,7 +2,6 @@ class Author::SubmissionFormatReviewController < AuthorController
   before_action :find_submission
 
   def edit
-    @federal_funding_details = @submission.federal_funding_details
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_format_review_files?
     render 'author/submissions/edit_format_review'
@@ -12,11 +11,6 @@ class Author::SubmissionFormatReviewController < AuthorController
   end
 
   def update
-    @federal_funding_details = @submission.federal_funding_details
-    if current_partner.graduate?
-      @federal_funding_details.update!(federal_funding_details_params)
-      @submission.update_federal_funding
-    end
     status_giver = SubmissionStatusGiver.new(@submission)
     status_giver.can_upload_format_review_files?
     @submission.update!(format_review_params)
@@ -26,7 +20,7 @@ class Author::SubmissionFormatReviewController < AuthorController
     WorkflowMailer.send_format_review_received_email(@submission)
     flash[:notice] = 'Format review files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid
-    flash[:alert] = @submission.errors.messages.values.join(" ") + @federal_funding_details&.errors&.messages&.values&.first&.join("").to_s
+    flash[:alert] = @submission.errors.messages.values.join(" ")
     redirect_to author_submission_edit_format_review_path(@submission)
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
@@ -50,6 +44,7 @@ class Author::SubmissionFormatReviewController < AuthorController
     def find_submission
       @submission = @author.submissions.find(params[:submission_id])
       @submission.author_edit = true unless @submission.nil?
+      @submission.federal_funding_details.author_edit = true if @submission.federal_funding_details.present?
       @submission
     end
 
@@ -59,19 +54,8 @@ class Author::SubmissionFormatReviewController < AuthorController
                                          :semester,
                                          :year,
                                          :federal_funding,
-                                         :training_support_funding,
-                                         :other_funding,
                                          format_review_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy],
-                                         admin_feedback_files_attributes: [:asset, :asset_cache, :submission_id, :feedback_type, :id, :_destroy])
-    end
-
-    def federal_funding_details_params
-      funding_params = params.fetch(:federal_funding_details, {}).permit(
-        :training_support_funding,
-        :training_support_acknowledged,
-        :other_funding,
-        :other_funding_acknowledged
-      )
-      current_partner.graduate? ? funding_params : {}
+                                         admin_feedback_files_attributes: [:asset, :asset_cache, :submission_id, :feedback_type, :id, :_destroy],
+                                         federal_funding_details_attributes: [:id, :submission_id, :training_support_funding, :training_support_acknowledged, :other_funding, :other_funding_acknowledged])
     end
 end

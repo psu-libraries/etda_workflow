@@ -3,7 +3,7 @@
   <%= render partial: 'email_template_link', locals: { submission: @submission } %>
 
   <strong><%= "#{@view.withdraw_message}".html_safe %></strong>
-  <%= render partial: 'shared/error_messages', locals: { object: @submission, other_messages: @funding_errors } %>
+  <%= render partial: 'shared/error_messages', locals: { object: @submission } %>
 
   <%= simple_form_for @submission, url: @view.form_for_url, html: { class: "admin-edit-submission #{@submission.status_class}" } do |f| %>
     <div class="format">

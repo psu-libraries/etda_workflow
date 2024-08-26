@@ -15,7 +15,6 @@ class Admin::SubmissionsController < AdminController
 
   def edit
     @submission = Submission.find(params[:id])
-    @federal_funding_details = @submission.federal_funding_details
     @view = Admin::SubmissionFormView.new(@submission, session)
     if @submission.format_review_notes.blank? && !@submission.status_behavior.beyond_waiting_for_format_review_response?
       @submission.format_review_notes = current_partner.graduate? ? I18n.t('graduate.default_format_review_note') : ''
@@ -36,8 +35,6 @@ class Admin::SubmissionsController < AdminController
     flash[:notice] = response[:msg]
     redirect_to response[:redirect_path]
   rescue ActiveRecord::RecordInvalid
-    @federal_funding_details = @submission.federal_funding_details
-    @funding_errors = @federal_funding_details&.errors&.messages&.any? ? [@federal_funding_details.errors.first.message] : nil
     @view = Admin::SubmissionFormView.new(@submission, session)
     render :edit
   rescue SubmissionStatusGiver::InvalidTransition
@@ -102,8 +99,6 @@ class Admin::SubmissionsController < AdminController
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
-    @federal_funding_details = @submission.federal_funding_details
-    @funding_errors = @federal_funding_details&.errors&.messages&.any? ? [@federal_funding_details.errors.first.message] : nil
     @view = Admin::SubmissionFormView.new(@submission, session)
     render :edit
   rescue SubmissionStatusGiver::AccessForbidden
@@ -121,8 +116,6 @@ class Admin::SubmissionsController < AdminController
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
-    @federal_funding_details = @submission.federal_funding_details
-    @funding_errors = @federal_funding_details&.errors&.messages&.any? ? [@federal_funding_details.errors.first.message] : nil
     @view = Admin::SubmissionFormView.new(@submission, session)
     render :edit
   rescue SubmissionStatusGiver::AccessForbidden
@@ -157,8 +150,6 @@ class Admin::SubmissionsController < AdminController
     redirect_to response[:redirect_path]
     flash[:notice] = response[:msg]
   rescue ActiveRecord::RecordInvalid
-    @federal_funding_details = @submission.federal_funding_details
-    @funding_errors = @federal_funding_details&.errors&.messages&.any? ? [@federal_funding_details.errors.first.message] : nil
     @view = Admin::SubmissionFormView.new(@submission, session)
     render :edit
   rescue SubmissionStatusGiver::AccessForbidden

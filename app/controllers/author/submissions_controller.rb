@@ -100,9 +100,6 @@ class Author::SubmissionsController < AuthorController
 
   def edit_final_submission
     @submission = find_submission
-    @federal_funding_details = @submission.federal_funding_details
-    @funding_errors = @federal_funding_details&.errors&.messages&.any? ? [@federal_funding_details.errors.first.message] : nil
-
     FeePaymentService.new(@submission).fee_is_paid? if current_partner.graduate? && !development_instance?
 
     @view = Author::FinalSubmissionFilesView.new(@submission)
@@ -122,11 +119,6 @@ class Author::SubmissionsController < AuthorController
 
   def update_final_submission
     @submission = find_submission
-    if current_partner.graduate?
-      @federal_funding_details = @submission.federal_funding_details
-      @federal_funding_details.update!(federal_funding_details_params)
-      @submission.update_federal_funding
-    end
     status_giver = SubmissionStatusGiver.new(@submission)
     submit_service = FinalSubmissionSubmitService.new(@submission, status_giver, final_submission_params)
     submit_service.submit_final_submission
@@ -134,7 +126,6 @@ class Author::SubmissionsController < AuthorController
     flash[:notice] = 'Final submission files uploaded successfully.'
   rescue ActiveRecord::RecordInvalid
     @view = Author::FinalSubmissionFilesView.new(@submission)
-    @funding_errors = @federal_funding_details&.errors&.messages&.any? ? [@federal_funding_details.errors&.first&.message] : nil
     render :edit_final_submission
   rescue SubmissionStatusGiver::AccessForbidden
     redirect_to author_root_path
@@ -182,6 +173,7 @@ class Author::SubmissionsController < AuthorController
 
       redirect_to '/401' unless @submission.author_id == current_author.id
       @submission.author_edit = true
+      @submission.federal_funding_details.author_edit = true if @submission.federal_funding_details.present?
       @submission
     end
 
@@ -220,16 +212,7 @@ class Author::SubmissionsController < AuthorController
                                          :federal_funding,
                                          :proquest_agreement,
                                          invention_disclosures_attributes: [:id, :submission_id, :id_number, :_destroy],
-                                         final_submission_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy])
-    end
-
-    def federal_funding_details_params
-      funding_params = params.fetch(:federal_funding_details, {}).permit(
-        :training_support_funding,
-        :training_support_acknowledged,
-        :other_funding,
-        :other_funding_acknowledged
-      )
-      current_partner.graduate? ? funding_params : {}
+                                         final_submission_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy],
+                                         federal_funding_details_attributes: [:id, :submission_id, :training_support_funding, :training_support_acknowledged, :other_funding, :other_funding_acknowledged])
     end
 end

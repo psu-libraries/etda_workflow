@@ -9,14 +9,14 @@
         <% if @submission.federal_funding == false %>
         <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.error_message_1").html_safe%></p>
         <% else %>
-        <div>
+        <div class='alert alert-info'>
         <p><%= I18n.t("#{current_partner.id}.federal_funding_admin.confirmation").html_safe%></p>
                 <%= f.label :federal_funding_confirmation, 'Yes'%>
                 <%= f.radio_button :federal_funding_confirmation, true %><br>
                 <%= f.label :federal_funding_confirmation, 'No'%>
                 <%= f.radio_button :federal_funding_confirmation, false %>
-            <p id="fed_funding_error_approver" class="ml-3 collapse hide"><%= I18n.t("#{current_partner.id}.federal_funding_admin.error_message_2").html_safe%></p>
-        </div>
+            </div>
+        <p id="fed_funding_error_approver" class="collapse hide alert alert-danger"><%= I18n.t("#{current_partner.id}.federal_funding_admin.error_message_2").html_safe%></p>
         <% end %>
     </div>
     <noscript>

@@ -17,9 +17,9 @@ RSpec.describe 'When Collecting Format Review Files', type: :integration, js: tr
         expect(submission.format_review_files_uploaded_at).to be_nil
         visit author_submission_edit_format_review_path(submission)
         fill_in 'Title', with: 'Test Title'
-        find("#federal_funding_details_training_support_funding_true").click
-        find("#federal_funding_details_other_funding_false").click
-        find("#federal_funding_details_training_support_acknowledged_true").click
+        find("#submission_federal_funding_details_attributes_training_support_funding_true").click
+        find("#submission_federal_funding_details_attributes_other_funding_false").click
+        find("#submission_federal_funding_details_attributes_training_support_acknowledged_true").click
         expect(page).to have_content('Select one or more files to upload')
         expect(page).to have_css '#format-review-file-fields .nested-fields div.form-group div:first-child input[type="file"]'
         first_input_id = first('#format-review-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
@@ -33,8 +33,8 @@ RSpec.describe 'When Collecting Format Review Files', type: :integration, js: tr
 
       it "displays error message if federal funding is not acknowledged" do
         visit author_submission_edit_format_review_path(submission)
-        find("#federal_funding_details_training_support_funding_true").click
-        find("#federal_funding_details_training_support_acknowledged_false").click
+        find("#submission_federal_funding_details_attributes_training_support_funding_true").click
+        find("#submission_federal_funding_details_attributes_training_support_acknowledged_false").click
         click_button 'Submit files for review'
         within('.alert-danger') do
           expect(page).to have_content 'It is a federal requirement that all funding used to support research be acknowledged.'
