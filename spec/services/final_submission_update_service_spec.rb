@@ -116,6 +116,7 @@ RSpec.describe FinalSubmissionUpdateService do
       submission = FactoryBot.create :submission,
                                      :waiting_for_final_submission_response,
                                      committee_members: [committee_member]
+      allow(submission).to receive(:export_to_lionpath!)
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
       params[:submission][:committee_members_attributes] = { "0" => submission.committee_members.first.attributes }
@@ -125,6 +126,7 @@ RSpec.describe FinalSubmissionUpdateService do
       params[:submission][:committee_members_attributes]["0"]['is_voting'] = false
       update_service = described_class.new(params, submission, 'testuser123')
       result = update_service.respond_final_submission
+      expect(submission).to have_received(:export_to_lionpath!).once
       expect(result[:msg]).to eql(" Final submission information was successfully edited by an administrator")
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/final_submission_submitted")
       expect(submission.status).to eq('waiting for final submission response')

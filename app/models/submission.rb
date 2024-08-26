@@ -430,8 +430,8 @@ class Submission < ApplicationRecord
     # so do not export until then.
     # We don't want this constantly running during tests or during development, so it should
     # only run in production or if the LP_EXPORT_TEST variable is set
-    # if (Rails.env.production? || ENV['LP_EXPORT_TEST'].present?) &&
-    if current_partner.graduate? && candidate_number &&
+    if (Rails.env.production? || ENV['LP_EXPORT_TEST'].present?) &&
+       current_partner.graduate? && candidate_number &&
        status_behavior.beyond_collecting_format_review_files?
 
       # Traverse the queue to make sure an identical job does not exist

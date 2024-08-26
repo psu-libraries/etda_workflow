@@ -1006,8 +1006,23 @@ RSpec.describe Submission, type: :model do
 
     context 'when partner is graduate' do
       context 'when candidate_number is present' do
-        it 'queues LionpathExport' do
+        it 'creates LionpathExport job' do
           expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(1)
+          # Test that the delay is 60 seconds
+          expect((Sidekiq::Worker.jobs.first["at"].to_f - Sidekiq::Worker.jobs.first["created_at"].to_f).round).to eq 60
+        end
+
+        context 'when a LionpathExportWorker has already been queued for this submission' do
+          let(:schedule_set_item) do
+            instance_double('Sidekiq::ScheduleSet', queue: 'lionpath_exports', 
+                                                    item: {"class" => 'LionpathExportWorker', 
+                                                           "args" => [submission_lp.id]})
+          end
+
+          it 'does not create a LionpathExport job' do
+            allow(Sidekiq::ScheduledSet).to receive(:new).and_return [schedule_set_item]
+            expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+          end
         end
       end
 
@@ -1017,7 +1032,7 @@ RSpec.describe Submission, type: :model do
           submission_lp.save!
         end
 
-        it 'does not queue LionpathExport' do
+        it 'does not create LionpathExport job' do
           expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
         end
       end
@@ -1028,7 +1043,7 @@ RSpec.describe Submission, type: :model do
           submission_lp.save!
         end
 
-        it 'does not queue LionpathExport' do
+        it 'does not create LionpathExport jobs' do
           expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
         end
       end
@@ -1039,12 +1054,34 @@ RSpec.describe Submission, type: :model do
       # partners.  However, to be totally logically correct we have
       # logic to check that the partner is in fact graduate
       context 'when candidate_number is present' do
-        it 'does not queue LionpathExport' do
+        it 'does not create LionpathExport job' do
           skip 'Non Graduate Test' if current_partner.graduate?
 
           expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
         end
       end
+    end
+  end
+
+  describe ".extend_publication_date" do
+    let(:sub_release) { create :submission, :waiting_for_publication_release, 
+                                            released_for_publication_at: DateTime.now - 1.year }
+
+    before do
+      Sidekiq::Worker.clear_all
+      ENV['LP_EXPORT_TEST'] = 'true'
+    end
+
+    after do
+      ENV['LP_EXPORT_TEST'] = nil
+    end
+
+    it 'changes released_for_publication date of submissions and triggers export to lionpath' do
+
+      expect do
+        described_class.extend_publication_date([sub_release.id], DateTime.now)
+      end.to change { Sidekiq::Worker.jobs.size }.by(1)
+      expect(sub_release.reload.released_for_publication_at.to_date).to eq Date.today
     end
   end
 end
