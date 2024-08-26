@@ -3,7 +3,8 @@ require 'model_spec_helper'
 RSpec.describe Lionpath::LionpathExportPayload do
   subject(:export_payload) { described_class.new(submission) }
 
-  let(:status_behavior) { instance_double('StatusBehavior') }
+  let(:status_behavior) { instance_double('StatusGiver') }
+  let(:approval_status_behavior) { instance_double('ApprovalStatus') }
   let(:submission) do
     instance_double('Submission',
                     author: instance_double('Author', psu_idn: '123456789'),
@@ -13,6 +14,7 @@ RSpec.describe Lionpath::LionpathExportPayload do
                     released_for_publication_at: DateTime.new(2024, 12, 25),
                     access_level: 'open_access',
                     status_behavior:,
+                    approval_status_behavior:,
                     final_submission_files_uploaded_at: DateTime.new(2024, 8, 7),
                     federal_funding: true)
   end
@@ -20,6 +22,7 @@ RSpec.describe Lionpath::LionpathExportPayload do
   describe '#json_payload' do
     before do
       allow(status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(true)
+      allow(status_behavior).to receive(:beyond_waiting_for_committee_review?).and_return(false)
       allow(status_behavior).to receive(:beyond_waiting_for_committee_review_rejected?).and_return(false)
     end
 
@@ -52,20 +55,14 @@ RSpec.describe Lionpath::LionpathExportPayload do
       end
     end
 
-    context 'when thesis is beyond_collecting_format_review_files and beyond_waiting_for_committee_review_rejected' do
+    context 'when thesis is beyond_waiting_for_committee_review_rejected' do
       before do
-        allow(status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(true)
         allow(status_behavior).to receive(:beyond_waiting_for_committee_review_rejected?).and_return(true)
       end
 
       it 'sets thesisStatus to APPROVED' do
         payload = JSON.parse(export_payload.json_payload)
         expect(payload["PE_SR199_ETD_REQ"]["thesisStatus"]).to eq("APPROVED")
-      end
-
-      it 'sets candAdvFlg to Y' do
-        payload = JSON.parse(export_payload.json_payload)
-        expect(payload["PE_SR199_ETD_REQ"]["candAdvFlg"]).to eq("Y")
       end
 
       it 'sets grdtnFlg to Y' do
@@ -93,6 +90,34 @@ RSpec.describe Lionpath::LionpathExportPayload do
           allow(submission).to receive(:federal_funding).and_return(nil)
           payload = JSON.parse(export_payload.json_payload)
           expect(payload["PE_SR199_ETD_REQ"]["libDepFlg"]).to be_nil
+        end
+      end
+    end
+
+    context 'when thesis is beyond_waiting_for_committee_review ' do
+      before do
+        allow(status_behavior).to receive(:beyond_waiting_for_committee_review?).and_return(true)
+      end
+
+      context "when the committee approval status is '#{ApprovalStatus::APPROVED_STATUS}'" do
+        before do
+          allow(approval_status_behavior).to receive(:status).and_return ApprovalStatus::APPROVED_STATUS
+        end
+
+        it 'sets candAdvFlg to Y' do
+          payload = JSON.parse(export_payload.json_payload)
+          expect(payload["PE_SR199_ETD_REQ"]["candAdvFlg"]).to eq("Y")
+        end
+      end
+
+      context "when the committee approval status is not '#{ApprovalStatus::APPROVED_STATUS}'" do
+        before do
+          allow(approval_status_behavior).to receive(:status).and_return ApprovalStatus::REJECTED_STATUS
+        end
+
+        it 'does not set candAdvFlg' do
+          payload = JSON.parse(export_payload.json_payload)
+          expect(payload["PE_SR199_ETD_REQ"]["candAdvFlg"]).to eq(nil)
         end
       end
     end
