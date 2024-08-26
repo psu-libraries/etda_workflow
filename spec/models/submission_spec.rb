@@ -57,6 +57,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:lionpath_year).of_type(:integer) }
   it { is_expected.to have_db_column(:candidate_number).of_type(:string) }
   it { is_expected.to have_db_column(:extension_token).of_type(:string) }
+  it { is_expected.to have_db_column(:last_lionpath_export_at).of_type(:datetime) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
@@ -1014,9 +1015,9 @@ RSpec.describe Submission, type: :model do
 
         context 'when a LionpathExportWorker has already been queued for this submission' do
           let(:schedule_set_item) do
-            instance_double('Sidekiq::ScheduleSet', queue: 'lionpath_exports', 
-                                                    item: {"class" => 'LionpathExportWorker', 
-                                                           "args" => [submission_lp.id]})
+            instance_double('Sidekiq::ScheduleSet', queue: 'lionpath_exports',
+                                                    item: { "class" => 'LionpathExportWorker',
+                                                            "args" => [submission_lp.id] })
           end
 
           it 'does not create a LionpathExport job' do
@@ -1064,8 +1065,10 @@ RSpec.describe Submission, type: :model do
   end
 
   describe ".extend_publication_date" do
-    let(:sub_release) { create :submission, :waiting_for_publication_release, 
-                                            released_for_publication_at: DateTime.now - 1.year }
+    let(:sub_release) do
+      create :submission, :waiting_for_publication_release,
+             released_for_publication_at: DateTime.now - 1.year
+    end
 
     before do
       Sidekiq::Worker.clear_all
@@ -1077,7 +1080,6 @@ RSpec.describe Submission, type: :model do
     end
 
     it 'changes released_for_publication date of submissions and triggers export to lionpath' do
-
       expect do
         described_class.extend_publication_date([sub_release.id], DateTime.now)
       end.to change { Sidekiq::Worker.jobs.size }.by(1)

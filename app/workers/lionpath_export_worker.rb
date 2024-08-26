@@ -6,5 +6,7 @@ class LionpathExportWorker
   def perform(submission_id)
     submission = Submission.find(submission_id)
     Lionpath::LionpathExport.new(submission).call
+
+    submission.update last_lionpath_export_at: DateTime.now
   end
 end

@@ -16,6 +16,7 @@ RSpec.describe LionpathExportWorker do
       expect(Submission).to have_received(:find).with(submission.id)
       expect(Lionpath::LionpathExport).to have_received(:new).with(submission)
       expect(export_instance).to have_received(:call)
+      expect(submission.last_lionpath_export_at.to_date).to eq Time.zone.today
     end
   end
 
