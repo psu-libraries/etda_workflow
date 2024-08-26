@@ -7,13 +7,10 @@ class ApprovalStatus
   # Note that 'pending' status and 'none' status are different
   # 'Pending' means that the submission is past the evaluation_threshold? and is not 'approved' or 'rejected'
   # 'None' means that the submission is not past the evaluation_threshold? and is not 'rejected'
-  WORKFLOW_STATUS =
-    [
-      'none',
-      'pending',
-      'approved',
-      'rejected'
-    ].freeze
+  APPROVED_STATUS = 'approved'
+  REJECTED_STATUS = 'rejected'
+  PENDING_STATUS = 'pending'
+  NONE_STATUS = 'none'
 
   def initialize(submission)
     @current_submission = submission
@@ -24,13 +21,13 @@ class ApprovalStatus
   end
 
   def head_of_program_status
-    return 'approved' if !@current_submission.head_of_program_is_approving? || head_of_program.blank?
+    return APPROVED_STATUS if !@current_submission.head_of_program_is_approving? || head_of_program.blank?
 
     head_of_program.status
   end
 
   def status
-    return 'none' unless evaluation_threshold? || rejected
+    return NONE_STATUS unless evaluation_threshold? || rejected
 
     none || approved || rejected || pending
   end
@@ -44,19 +41,19 @@ class ApprovalStatus
   private
 
     def none
-      'none' if voting_committee_members.count.zero?
+      NONE_STATUS if voting_committee_members.count.zero?
     end
 
     def approved
-      'approved' unless (voting_committee_members.collect { |m| m.status == 'approved' }).count(false) > rejections_permitted
+      APPROVED_STATUS unless (voting_committee_members.collect { |m| m.status == APPROVED_STATUS }).count(false) > rejections_permitted
     end
 
     def rejected
-      'rejected' if (voting_committee_members.collect { |m| m.status == 'rejected' }).count(true) > rejections_permitted
+      REJECTED_STATUS if (voting_committee_members.collect { |m| m.status == REJECTED_STATUS }).count(true) > rejections_permitted
     end
 
     def pending
-      'pending'
+      PENDING_STATUS
     end
 
     def rejections_permitted
@@ -100,6 +97,6 @@ class ApprovalStatus
     end
 
     def member_voted?(committee_member)
-      committee_member.status == 'approved' || committee_member.status == 'rejected'
+      committee_member.status == APPROVED_STATUS || committee_member.status == REJECTED_STATUS
     end
 end

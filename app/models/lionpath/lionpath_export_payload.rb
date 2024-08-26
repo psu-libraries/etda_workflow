@@ -13,10 +13,10 @@ class Lionpath::LionpathExportPayload
       "embargoType" => embargo_type,
       "embargoStartDt" => submission.released_metadata_at&.strftime("%Y%m%d"),
       "embargoEndDt" => submission.released_for_publication_at&.strftime("%Y%m%d"),
-      "candAdvFlg" => committee_and_program_head_approved,
+      "candAdvFlg" => core_committee_approved,
       "exPymtFlg" => payment_received,
       "libDepFlg" => federal_funding_used,
-      "grdtnFlg" => committee_and_program_head_approved
+      "grdtnFlg" => program_head_approved
     }.each do |key, value|
       internal_data[key] = value if value
     end
@@ -29,6 +29,10 @@ class Lionpath::LionpathExportPayload
 
     def status_behavior
       submission.status_behavior
+    end
+
+    def committee_approved_status?
+      submission.approval_status_behavior.status == ApprovalStatus::APPROVED_STATUS
     end
 
     def thesis_status
@@ -49,8 +53,14 @@ class Lionpath::LionpathExportPayload
       access_level_map[submission.access_level]
     end
 
-    def committee_and_program_head_approved
+    def program_head_approved
       return "Y" if status_behavior.beyond_waiting_for_committee_review_rejected?
+
+      nil
+    end
+
+    def core_committee_approved
+      return "Y" if status_behavior.beyond_waiting_for_committee_review? && committee_approved_status?
 
       nil
     end

@@ -355,7 +355,10 @@ class Submission < ApplicationRecord
   end
 
   def self.extend_publication_date(submission_ids, date_to_release)
-    where(id: submission_ids).find_each { |s| s.update!(released_for_publication_at: date_to_release) }
+    where(id: submission_ids).find_each do |s|
+      s.update!(released_for_publication_at: date_to_release)
+      s.export_to_lionpath!
+    end
   end
 
   def voting_committee_members
