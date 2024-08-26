@@ -23,6 +23,7 @@ RSpec.describe Lionpath::LionpathExportPayload do
     before do
       allow(status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(true)
       allow(status_behavior).to receive(:beyond_waiting_for_committee_review?).and_return(false)
+      allow(status_behavior).to receive(:beyond_waiting_for_final_submission_response?).and_return(false)
       allow(status_behavior).to receive(:beyond_waiting_for_committee_review_rejected?).and_return(false)
     end
 
@@ -43,7 +44,7 @@ RSpec.describe Lionpath::LionpathExportPayload do
       expect(export_payload.json_payload).to eq(expected_payload)
     end
 
-    context 'when thesis is beyond_collecting_format_review_files but not beyond_waiting_for_committee_review_rejected' do
+    context 'when thesis is beyond_collecting_format_review_files but not beyond_waiting_for_final_submission_response' do
       it 'sets thesisStatus to SUBMITTED' do
         payload = JSON.parse(export_payload.json_payload)
         expect(payload["PE_SR199_ETD_REQ"]["thesisStatus"]).to eq("SUBMITTED")
@@ -55,14 +56,20 @@ RSpec.describe Lionpath::LionpathExportPayload do
       end
     end
 
-    context 'when thesis is beyond_waiting_for_committee_review_rejected' do
+    context 'when thesis is beyond_waiting_for_final_submission_response' do
       before do
-        allow(status_behavior).to receive(:beyond_waiting_for_committee_review_rejected?).and_return(true)
+        allow(status_behavior).to receive(:beyond_waiting_for_final_submission_response?).and_return(true)
       end
 
       it 'sets thesisStatus to APPROVED' do
         payload = JSON.parse(export_payload.json_payload)
         expect(payload["PE_SR199_ETD_REQ"]["thesisStatus"]).to eq("APPROVED")
+      end
+    end
+
+    context 'when thesis is beyond_waiting_for_committee_review_rejected' do
+      before do
+        allow(status_behavior).to receive(:beyond_waiting_for_committee_review_rejected?).and_return(true)
       end
 
       it 'sets grdtnFlg to Y' do

@@ -37,9 +37,9 @@ class Lionpath::LionpathExportPayload
 
     def thesis_status
       return 'SUBMITTED' if status_behavior.beyond_collecting_format_review_files? &&
-                            !status_behavior.beyond_waiting_for_committee_review_rejected?
+                            !status_behavior.beyond_waiting_for_final_submission_response?
 
-      return 'APPROVED' if status_behavior.beyond_waiting_for_committee_review_rejected?
+      return 'APPROVED' if status_behavior.beyond_waiting_for_final_submission_response?
 
       nil
     end
