@@ -103,9 +103,9 @@ LionPath has a REST API for ingesting data for submissions (student plans in Lio
 
 The exports are triggered in three places:
 
-   1. When a Submission transitions state in the workflow progression. For instance, when an author submits the format review form transitioning that submission from 'collecting format review files' to 'waiting for format review response'.
-   2. When and admin makes edits
-   3. When a submission's publication date is extended
+1. When a Submission transitions state in the workflow progression. For instance, when an author submits the format review form transitioning that submission from 'collecting format review files' to 'waiting for format review response'.
+2. When an admin makes edits
+3. When a submission's publication date is extended
 
 The exports are ran as async jobs with sidekiq. This prevents the exports from affecting the user experience and allows us to rerun them if they fail. They are delayed by 1 minute to ensure updates to the database are complete before sending the data. Only one job per submission can be queued at a time. Multiple exports at once with the same submission causes issues with Lionpath.
 
