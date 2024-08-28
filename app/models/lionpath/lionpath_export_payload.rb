@@ -25,7 +25,7 @@ class Lionpath::LionpathExportPayload
 
   private
 
-    attr_accessor :submission
+    attr_reader :submission
 
     def status_behavior
       submission.status_behavior

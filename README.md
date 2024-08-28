@@ -87,7 +87,7 @@ Student program and committee information is imported daily from LionPath.  The 
 
 3. Committees are imported for The Graduate School's Dissertation submissions.  This adds or updates CommitteeMembers for the student's submission.  These committees use the Committee Roles imported previously from LionPath.
 
-Committees and Committee Roles are not currently being imported from LionPATH for The Graduate School's Master's Thesis submissions.
+Committees and Committee Roles are not currently being imported from LionPath for The Graduate School's Master's Thesis submissions.
 
 The LionPath integration uses sftp to pull CSV dumps of the Committee Roles, Student Program info, and Committees (in that order) from LionPath.  The files follow these file naming conventions:
 
@@ -95,7 +95,7 @@ The LionPath integration uses sftp to pull CSV dumps of the Committee Roles, Stu
 	Student Program Information: PE_SR_G_ETD_STDNT_PLAN_PRC
 	Committees: PE_SR_G_ETD_COMMITTEE_PRC
 	
-After each run of this import, `Submission` and `CommitteeMember` records imported from LionPATH are checked to see if they should be deleted.  Any `Submission` still at the collecting program information stage that has not been updated by LionPATH in the last two days will be deleted.  Any `CommitteeMember` that is not external to PSU, not a program head, not associated with a `Submission` beyond the final submission review stage, and hasn't been updated by LionPATH in two days will also be deleted. There is a failsafe that stops the deletion if more than 10% of records are being deleted.
+After each run of this import, `Submission` and `CommitteeMember` records imported from LionPath are checked to see if they should be deleted.  Any `Submission` still at the collecting program information stage that has not been updated by LionPath in the last two days will be deleted.  Any `CommitteeMember` that is not external to PSU, not a program head, not associated with a `Submission` beyond the final submission review stage, and hasn't been updated by LionPath in two days will also be deleted. There is a failsafe that stops the deletion if more than 10% of records are being deleted.
 
 ### Exports
 
