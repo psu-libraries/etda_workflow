@@ -82,11 +82,9 @@ class Admin::ReportsController < AdminController
   end
 
   def graduate_data_report_export
-    @report_export = ExportReport.new('graduate_data_report', graduate_data_result)
-
     respond_to do |format|
       format.json do
-        render json: @report_export.as_json, content_type: 'application/json'
+        render json: graduate_data_result.to_json, content_type: 'application/json'
         headers['Content-Disposition'] = 'attachment; filename="graduate_data_report.json"'
       end
     end
@@ -96,12 +94,13 @@ class Admin::ReportsController < AdminController
 
     def graduate_data_result
       Submission
-        .joins('LEFT JOIN invention_disclosures i ON submissions.id = i.submission_id')
-        .joins('LEFT JOIN authors a ON submissions.author_id = a.id')
-        .joins('LEFT JOIN programs p ON submissions.program_id = p.id')
-        .joins('LEFT JOIN degrees d ON submissions.degree_id = d.id')
-        .joins('LEFT JOIN committee_members cm ON submissions.id = cm.submission_id')
-        .joins('LEFT JOIN committee_roles cr ON cm.committee_role_id = cr.id')
-        .group('submissions.id', 'i.id_number')
+        .joins('INNER JOIN invention_disclosures i ON submissions.id = i.submission_id')
+        .joins('INNER JOIN authors a ON submissions.author_id = a.id')
+        .joins('INNER JOIN programs p ON submissions.program_id = p.id')
+        .joins('INNER JOIN degrees d ON submissions.degree_id = d.id')
+        .joins('INNER JOIN committee_members cm ON submissions.id = cm.submission_id')
+        .joins('INNER JOIN committee_roles cr ON cm.committee_role_id = cr.id')
+        .group('submissions.id', 'i.id_number').collect {|s| {"access_id" => s.author.access_id, "alternate_email_address" => s.author.alternate_email_address, "committee_members" => s.committee_members.collect{|cm| {
+          "name" => cm.name, "email" => cm.email, "role" => cm.committee_role.name}}}}
     end
 end
