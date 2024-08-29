@@ -111,6 +111,8 @@ The exports are ran as async jobs with sidekiq. This prevents the exports from a
 
 The submission's `candidate_number` (imported from LionPath) and the author's PSU ID (9 digit number) are used to identify the record in LionPath to update.
 
+By default the exports don't run in development and test environments.  If you want to toggle the exports on, set the `LP_EXPORT_TEST` environment variable to true.
+
 ## Graduate School Fee
 
 Master's Thesis and Dissertation submissions require a fee to be paid in the Graduate School's systems before students can proceed with submission of their final submission.  The eTD system checks this via a webservice endpoint in the Graduate School's systems and blocks users from proceeding if the fee is not paid.  This functionality is turned off in development and QA environments.  The logic to determine if the code is running in one of these environments can be found in `config/environment.rb`.
