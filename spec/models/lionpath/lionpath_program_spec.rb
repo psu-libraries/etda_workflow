@@ -13,7 +13,7 @@ RSpec.describe Lionpath::LionpathProgram do
       'Acadademic Plan' => 'BIOE_PHD', 'Degree' => 'PHD', 'Transcript Descr' => 'Bioengineering (PHD)',
       'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
       'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG',
-      'Can Nbr' => 111
+      'Can Nbr' => '000000000111'
     }
   end
 
@@ -23,7 +23,7 @@ RSpec.describe Lionpath::LionpathProgram do
       'Acadademic Plan' => 'BIOE_PHD', 'Degree' => 'PHD', 'Transcript Descr' => 'Bioengineering (PHD)',
       'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
       'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG',
-      'Can Nbr' => 112
+      'Can Nbr' => '000000000112'
     }
   end
 
@@ -33,7 +33,7 @@ RSpec.describe Lionpath::LionpathProgram do
       'Acadademic Plan' => 'BIOE_MS', 'Degree' => 'MS', 'Transcript Descr' => 'Bioengineering (PHD)',
       'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
       'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG',
-      'Can Nbr' => 113
+      'Can Nbr' => '000000000113'
     }
   end
 
@@ -43,7 +43,7 @@ RSpec.describe Lionpath::LionpathProgram do
       'Acadademic Plan' => 'CNED_M_ED', 'Degree' => 'M_ED', 'Transcript Descr' => 'Master of Education',
       'Milestone Code' => nil, 'Milestone Desc' => nil, 'Date Attempted' => nil, 'Exam Status' => nil,
       'Alternate Email' => 'test@psu.edu', 'Campus' => 'UP', 'Acad Prog' => 'GREN', 'ChkoutStat' => 'EG',
-      'Can Nbr' => 114
+      'Can Nbr' => '000000000114'
     }
   end
 
@@ -75,7 +75,7 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.status).to eq('collecting program information')
       expect(Author.first.submissions.first.academic_program).to eq('EN')
       expect(Author.first.submissions.first.degree_checkout_status).to eq('EG')
-      expect(Author.first.submissions.first.candidate_number).to eq(111)
+      expect(Author.first.submissions.first.candidate_number).to eq('000000000111')
     end
   end
 
@@ -104,7 +104,8 @@ RSpec.describe Lionpath::LionpathProgram do
     let!(:author) { FactoryBot.create :author, psu_idn: '999999999', access_id: 'xxb13' }
     let!(:program) { FactoryBot.create :program, code: row_1['Acadademic Plan'] }
     let!(:submission) do
-      FactoryBot.create :submission, author:, degree:, program:, degree_checkout_status: nil
+      FactoryBot.create :submission, author:, degree:, program:,
+                                     degree_checkout_status: nil, candidate_number: nil
     end
 
     it 'updates the submission' do
@@ -114,7 +115,7 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.submissions.first.lionpath_year).to eq(2021)
       expect(Author.first.submissions.first.lionpath_semester).to eq('Summer')
       expect(Author.first.submissions.first.campus).to eq('UP')
-      expect(Author.first.submissions.first.candidate_number).to eq(111)
+      expect(Author.first.submissions.first.candidate_number).to eq('000000000111')
     end
 
     context 'when submission is beyond_waiting_for_final_submission_response_rejected?' do

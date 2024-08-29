@@ -106,14 +106,6 @@ class Submission < ApplicationRecord
 
   validate :file_check
 
-  attr_reader :previous_access_level
-
-  after_update :cache_access_level
-
-  def cache_access_level
-    @previous_access_level = access_level_before_last_save || ''
-  end
-
   validates :status, inclusion: { in: SubmissionStatus::WORKFLOW_STATUS }
 
   accepts_nested_attributes_for :committee_members,
@@ -364,7 +356,10 @@ class Submission < ApplicationRecord
   end
 
   def self.extend_publication_date(submission_ids, date_to_release)
-    where(id: submission_ids).find_each { |s| s.update!(released_for_publication_at: date_to_release) }
+    where(id: submission_ids).find_each do |s|
+      s.update!(released_for_publication_at: date_to_release)
+      s.export_to_lionpath!
+    end
   end
 
   def voting_committee_members
@@ -428,6 +423,32 @@ class Submission < ApplicationRecord
 
   def format_review_feedback_files?
     admin_feedback_files.any? { |file| file.feedback_type == 'format-review' }
+  end
+
+  def export_to_lionpath!
+    # Update Lionpath for graduate only if candidate number is present.
+    # Also, LP does not want to know about the submission until a format review is submitted,
+    # so do not export until then.
+    # We don't want this constantly running during tests or during development, so it should
+    # only run in production or if the LP_EXPORT_TEST variable is set
+    if (Rails.env.production? || ENV['LP_EXPORT_TEST'].present?) &&
+       current_partner.graduate? && candidate_number.present? &&
+       status_behavior.beyond_collecting_format_review_files?
+
+      # Traverse the queue to make sure an identical job does not exist
+      scheduled = Sidekiq::ScheduledSet.new
+      scheduled.each do |job|
+        # Rubocop Lint/NonLocalExitFromIterator false positive
+        # rubocop:disable Lint/NonLocalExitFromIterator
+        return if job.queue == LionpathExportWorker::QUEUE &&
+                  job.item["class"] == LionpathExportWorker.to_s &&
+                  job.item["args"] == [id]
+        # rubocop:enable Lint/NonLocalExitFromIterator
+      end
+
+      # Delay the job by 1 minute to make sure all updates are ready
+      LionpathExportWorker.perform_in(1.minute, id)
+    end
   end
 
   private

@@ -75,25 +75,43 @@ Any PRs merged to main will automatically be deployed to QA.
 
 To initiate a production deploy, create a new release. Then, merge the automatically created PR in the config repo: https://github.com/psu-libraries/etda-config
 
-## LionPATH Integration
+## LionPath Integration
 
-Student program and committee information is imported daily from LionPATH.  The integration runs on a cron job that kicks off at 3am.  There are 4 tables/resources updated in ETDA by this daily import: Submission, Program, CommitteeMember, CommitteeRole.  The import works in the following order:
+### Imports
 
-1. Committee Roles for The Graduate School's Dissertation submissions are imported.  This updates the CommitteeRole table with changes and/or new committee roles.  These roles exactly reflect the roles in LionPATH and are different from Master's Thesis roles.
+Student program and committee information is imported daily from LionPath.  The integration runs on a cron job that kicks off at 3am.  There are 4 tables/resources updated in ETDA by this daily import: Submission, Program, CommitteeMember, CommitteeRole.  The import works in the following order:
+
+1. Committee Roles for The Graduate School's Dissertation submissions are imported.  This updates the CommitteeRole table with changes and/or new committee roles.  These roles exactly reflect the roles in LionPath and are different from Master's Thesis roles.
 
 2. Student program information is imported for The Graduate School's Master's Thesis and Dissertation submissions.  New programs are added to the Program table during this import and linked to the student's Submission.
 
-3. Committees are imported for The Graduate School's Dissertation submissions.  This adds or updates CommitteeMembers for the student's submission.  These committees use the Committee Roles imported previously from LionPATH.
+3. Committees are imported for The Graduate School's Dissertation submissions.  This adds or updates CommitteeMembers for the student's submission.  These committees use the Committee Roles imported previously from LionPath.
 
-Committees and Committee Roles are not currently being imported from LionPATH for The Graduate School's Master's Thesis submissions.
+Committees and Committee Roles are not currently being imported from LionPath for The Graduate School's Master's Thesis submissions.
 
-The LionPATH integration uses sftp to pull CSV dumps of the Committee Roles, Student Program info, and Committees (in that order) from LionPATH.  The files follow these file naming conventions:
+The LionPath integration uses sftp to pull CSV dumps of the Committee Roles, Student Program info, and Committees (in that order) from LionPath.  The files follow these file naming conventions:
 
 	Committee Roles: PE_SR_G_ETD_ACT_COMROLES
 	Student Program Information: PE_SR_G_ETD_STDNT_PLAN_PRC
 	Committees: PE_SR_G_ETD_COMMITTEE_PRC
 	
-After each run of this import, `Submission` and `CommitteeMember` records imported from LionPATH are checked to see if they should be deleted.  Any `Submission` still at the collecting program information stage that has not been updated by LionPATH in the last two days will be deleted.  Any `CommitteeMember` that is not external to PSU, not a program head, not associated with a `Submission` beyond the final submission review stage, and hasn't been updated by LionPATH in two days will also be deleted. There is a failsafe that stops the deletion if more than 10% of records are being deleted.
+After each run of this import, `Submission` and `CommitteeMember` records imported from LionPath are checked to see if they should be deleted.  Any `Submission` still at the collecting program information stage that has not been updated by LionPath in the last two days will be deleted.  Any `CommitteeMember` that is not external to PSU, not a program head, not associated with a `Submission` beyond the final submission review stage, and hasn't been updated by LionPath in two days will also be deleted. There is a failsafe that stops the deletion if more than 10% of records are being deleted.
+
+### Exports
+
+LionPath has a REST API for ingesting data for submissions (student plans in LionPath).  We export data to LionPath throughout the submission process to keep LionPath up-to-date on the student's progress.
+
+The exports are triggered in three places:
+
+1. When a Submission transitions state in the workflow progression. For instance, when an author submits the format review form transitioning that submission from 'collecting format review files' to 'waiting for format review response'.
+2. When an admin makes edits
+3. When a submission's publication date is extended
+
+The exports are ran as async jobs with sidekiq. This prevents the exports from affecting the user experience and allows us to rerun them if they fail. They are delayed by 1 minute to ensure updates to the database are complete before sending the data. Only one job per submission can be queued at a time. Multiple exports at once with the same submission causes issues with Lionpath.
+
+The submission's `candidate_number` (imported from LionPath) and the author's PSU ID (9 digit number) are used to identify the record in LionPath to update.
+
+By default the exports don't run in development and test environments.  If you want to toggle the exports on, set the `LP_EXPORT_TEST` environment variable to true.
 
 ## Graduate School Fee
 

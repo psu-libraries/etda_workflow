@@ -8,12 +8,14 @@ class UpdateSubmissionService
       committee_member.notes << "\nThe admin user #{current_remote_user} changed Voting Attribute to '#{committee_member.is_voting.to_s.capitalize}' at: #{DateTime.now.to_formatted_s(:long)}\n" if committee_member.saved_change_to_is_voting?
     end
     submission.save!
+
+    submission.export_to_lionpath!
   end
 
-  def send_email(submission)
-    return { error: false, msg: 'No updates required; access level did not change' } unless submission.access_level != submission.previous_access_level
+  def send_email(submission, previous_access_level)
+    return { error: false, msg: 'No updates required; access level did not change' } unless submission.access_level != previous_access_level
 
-    email = AccessLevelUpdatedEmail.new(Admin::SubmissionView.new(submission, nil))
+    email = AccessLevelUpdatedEmail.new(Admin::SubmissionView.new(submission, nil), previous_access_level)
     email.deliver
   end
 end
