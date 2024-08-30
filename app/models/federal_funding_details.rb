@@ -2,7 +2,7 @@
 
 class FederalFundingDetails < ApplicationRecord
   belongs_to :submission
-  after_save :update_federal_funding
+  before_save :update_federal_funding
 
   attr_accessor :author_edit
 

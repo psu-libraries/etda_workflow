@@ -5,8 +5,7 @@ RSpec.describe 'When Collecting Format Review Files', type: :integration, js: tr
     before do
       oidc_authorize_author
     end
-
-    let!(:author) { current_author }
+    let(:author) { current_author }
     let!(:admin)  { current_admin }
     let!(:submission) { FactoryBot.create :submission, :collecting_format_review_files, author: }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
@@ -17,16 +16,15 @@ RSpec.describe 'When Collecting Format Review Files', type: :integration, js: tr
         expect(submission.format_review_files_uploaded_at).to be_nil
         visit author_submission_edit_format_review_path(submission)
         fill_in 'Title', with: 'Test Title'
-        find("#submission_federal_funding_details_attributes_training_support_funding_true").click
+        find("#submission_federal_funding_details_attributes_training_support_funding_false").click
         find("#submission_federal_funding_details_attributes_other_funding_false").click
-        find("#submission_federal_funding_details_attributes_training_support_acknowledged_true").click
         expect(page).to have_content('Select one or more files to upload')
         expect(page).to have_css '#format-review-file-fields .nested-fields div.form-group div:first-child input[type="file"]'
         first_input_id = first('#format-review-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
         attach_file first_input_id, fixture('format_review_file_01.pdf')
         click_button 'Submit files for review'
         submission.reload
-        expect(submission.federal_funding).to eq true
+        expect(submission.federal_funding).to eq(false)
         expect(submission.status).to eq 'waiting for format review response'
         expect(submission.format_review_files_uploaded_at).not_to be_nil
       end
