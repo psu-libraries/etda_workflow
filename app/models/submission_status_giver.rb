@@ -258,6 +258,8 @@ class SubmissionStatusGiver
 
   def transition_to(new_state)
     raise InvalidTransition unless new_state.transition submission
+
+    submission.export_to_lionpath!
   end
 
   def validate_current_state!(expected_states)

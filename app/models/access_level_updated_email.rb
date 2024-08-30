@@ -1,8 +1,9 @@
 class AccessLevelUpdatedEmail
-  def initialize(submission, partner = current_partner, mail_sender = WorkflowMailer)
+  def initialize(submission, previous_access_level, partner = current_partner, mail_sender = WorkflowMailer)
     @partner = partner
     @submission = submission
     @mail_sender = mail_sender
+    @previous_access_level = previous_access_level
   end
 
   def deliver
@@ -35,7 +36,7 @@ class AccessLevelUpdatedEmail
     end
 
     def previous_level
-      submission.previous_access_level
+      @previous_access_level
     end
 
     def previous_level_label

@@ -5,6 +5,34 @@ require 'model_spec_helper'
 RSpec.describe SubmissionStatusGiver, type: :model do
   let(:submission) { FactoryBot.create :submission }
 
+  describe 'queueing LionpathExport' do
+    let!(:giver) { described_class.new(submission) }
+
+    context 'when transition is valid' do
+      it 'invokes #export_to_lionpath!' do
+        submission.update status: 'waiting for format review response'
+        allow(submission).to receive(:export_to_lionpath!)
+        giver.collecting_final_submission_files!
+        expect(submission).to have_received(:export_to_lionpath!)
+      end
+    end
+ 
+    context 'when transition is invalid' do
+      it 'does not queue LionpathExport' do
+        submission.update status: 'collecting format review files'
+        allow(submission).to receive(:export_to_lionpath!)
+        # This is kind of funky, but this invalid transition raises an
+        # error (SubmissionStatusGiver::InvalidTransition), so 
+        # we rescue it to test the final expect statement
+        begin 
+          giver.waiting_for_final_submission_response!
+        rescue SubmissionStatusGiver::InvalidTransition
+        end
+        expect(submission).not_to have_received(:export_to_lionpath!)
+      end        
+    end
+  end
+
   describe '#can_respond_to_format_review?' do
     context "when status is 'collecting program information'" do
       before { submission.status = 'collecting program information' }

@@ -5,8 +5,9 @@ RSpec.describe 'When Collecting Format Review Files', type: :integration, js: tr
     before do
       oidc_authorize_author
     end
+
     let(:author) { current_author }
-    let!(:admin)  { current_admin }
+    let!(:admin) { current_admin }
     let!(:submission) { FactoryBot.create :submission, :collecting_format_review_files, author: }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: true }

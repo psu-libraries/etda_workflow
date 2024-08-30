@@ -9,11 +9,11 @@ class FinalSubmissionReleaseService
     release_service = SubmissionReleaseService.new
     original_final_files = release_service.final_files_for_submission(submission)
     file_verification_results = release_service.file_verification(original_final_files)
-    # return unless file_verification_results
-    # status_giver.unreleased_for_publication!
+    status_giver = SubmissionStatusGiver.new(submission)
+
+    status_giver.unreleased_for_publication!
     submission.update(released_for_publication_at: nil,
-                      released_metadata_at: nil,
-                      status: 'waiting for publication release')
+                      released_metadata_at: nil)
     release_service.unpublish(original_final_files) if file_verification_results[:valid]
     # update the index after the paper has been unreleased
     solr_result = SolrDataImportService.new.remove_submission(submission)

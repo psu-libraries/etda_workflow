@@ -55,7 +55,9 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:campus).of_type(:string) }
   it { is_expected.to have_db_column(:lionpath_semester).of_type(:string) }
   it { is_expected.to have_db_column(:lionpath_year).of_type(:integer) }
+  it { is_expected.to have_db_column(:candidate_number).of_type(:string) }
   it { is_expected.to have_db_column(:extension_token).of_type(:string) }
+  it { is_expected.to have_db_column(:last_lionpath_export_at).of_type(:datetime) }
 
   it { is_expected.to belong_to(:author).class_name('Author') }
   it { is_expected.to belong_to(:degree).class_name('Degree') }
@@ -991,6 +993,107 @@ RSpec.describe Submission, type: :model do
       sub4 = described_class.new
       sub4.admin_feedback_files.build(feedback_type: 'final-submission')
       expect(sub4).not_to be_format_review_feedback_files
+    end
+  end
+
+  describe "#export_to_lionpath!" do
+    let!(:submission_lp) do
+      create :submission, degree: (create :degree),
+                          program: (create :program),
+                          author: (create :author)
+    end
+
+    before do
+      Sidekiq::Worker.clear_all
+      ENV['LP_EXPORT_TEST'] = 'true'
+      submission_lp.status = 'waiting for format review response'
+      submission_lp.candidate_number = '000000012345'
+      submission_lp.save!
+    end
+
+    after do
+      ENV['LP_EXPORT_TEST'] = nil
+    end
+
+    context 'when partner is graduate' do
+      context 'when candidate_number is present' do
+        it 'creates LionpathExport job' do
+          expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(1)
+          # Test that the delay is 60 seconds
+          expect((Sidekiq::Worker.jobs.first["at"].to_f - Sidekiq::Worker.jobs.first["created_at"].to_f).round).to eq 60
+        end
+
+        context 'when a LionpathExportWorker has already been queued for this submission' do
+          let(:schedule_set_item) do
+            instance_double('Sidekiq::ScheduleSet', queue: 'lionpath_exports',
+                                                    item: { "class" => 'LionpathExportWorker',
+                                                            "args" => [submission_lp.id] })
+          end
+
+          it 'does not create a LionpathExport job' do
+            allow(Sidekiq::ScheduledSet).to receive(:new).and_return [schedule_set_item]
+            expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+          end
+        end
+      end
+
+      context 'when candidate_number is not present' do
+        before do
+          submission_lp.candidate_number = nil
+          submission_lp.save!
+        end
+
+        it 'does not create LionpathExport job' do
+          expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+        end
+      end
+
+      context 'when submission is not beyond_collecting_format_review_files' do
+        before do
+          submission_lp.status = 'collecting format review files'
+          submission_lp.save!
+        end
+
+        it 'does not create LionpathExport jobs' do
+          expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+        end
+      end
+    end
+
+    context 'when partner is not graduate', honors: true do
+      # Note that candidate_number should never be present for non-graduate
+      # partners.  However, to be totally logically correct we have
+      # logic to check that the partner is in fact graduate
+      context 'when candidate_number is present' do
+        it 'does not create LionpathExport job' do
+          skip 'Non Graduate Test' if current_partner.graduate?
+
+          expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+        end
+      end
+    end
+  end
+
+  describe ".extend_publication_date" do
+    let(:sub_release) do
+      create :submission, :waiting_for_publication_release,
+             released_for_publication_at: DateTime.now - 1.year
+    end
+
+    before do
+      Sidekiq::Worker.clear_all
+      ENV['LP_EXPORT_TEST'] = 'true'
+    end
+
+    after do
+      ENV['LP_EXPORT_TEST'] = nil
+    end
+
+    it 'changes released_for_publication date of submissions and triggers export to lionpath' do
+      expect do
+        described_class.extend_publication_date([sub_release.id], DateTime.now)
+      end.to change { Sidekiq::Worker.jobs.size }.by(1)
+      expect(sub_release.reload.released_for_publication_at.to_date).to eq Date.today
     end
   end
 
