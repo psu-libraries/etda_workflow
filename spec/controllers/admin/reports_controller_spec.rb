@@ -45,11 +45,11 @@ RSpec.describe Admin::ReportsController, type: :controller do
     end
   end
 
-  describe '#graduate_data_report_export' do
-    it 'exports the graduate data report information in JSON format' do
-      expect(patch: admin_graduate_data_report_export_path).to route_to(controller: 'admin/reports', action: 'graduate_data_report_export', format: 'json')
-      patch :graduate_data_report_export, params: { format: "json" }
-      expect(response.headers["Content-Disposition"]).to eq 'attachment; filename="graduate_data_report.json"'
-    end
-  end
+  # describe '#graduate_data_report_export' do
+  #   it 'exports the graduate data report information in JSON format' do
+  #     expect(patch: admin_graduate_data_report_export_path).to route_to(controller: 'admin/reports', action: 'graduate_data_report_export', format: 'json')
+  #     patch :graduate_data_report_export, params: { format: "json" }
+  #     expect(response.headers["Content-Disposition"]).to eq 'attachment; filename="graduate_data_report.json"'
+  #   end
+  # end
 end

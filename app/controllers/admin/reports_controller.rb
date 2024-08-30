@@ -100,7 +100,12 @@ class Admin::ReportsController < AdminController
         .joins('INNER JOIN degrees d ON submissions.degree_id = d.id')
         .joins('INNER JOIN committee_members cm ON submissions.id = cm.submission_id')
         .joins('INNER JOIN committee_roles cr ON cm.committee_role_id = cr.id')
-        .group('submissions.id', 'i.id_number').collect {|s| {"access_id" => s.author.access_id, "alternate_email_address" => s.author.alternate_email_address, "committee_members" => s.committee_members.collect{|cm| {
-          "name" => cm.name, "email" => cm.email, "role" => cm.committee_role.name}}}}
+        .group('submissions.id', 'i.id_number').collect do |s|
+        { "access_id" => s.author.access_id, "alternate_email_address" => s.author.alternate_email_address, "committee_members" => s.committee_members.collect do |cm|
+                                                                                                                                     {
+                                                                                                                                       "name" => cm.name, "email" => cm.email, "role" => cm.committee_role.name
+                                                                                                                                     }
+                                                                                                                                   end }
+      end
     end
 end
