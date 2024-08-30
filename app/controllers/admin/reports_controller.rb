@@ -94,18 +94,23 @@ class Admin::ReportsController < AdminController
 
     def graduate_data_result
       Submission
-        .joins('INNER JOIN invention_disclosures i ON submissions.id = i.submission_id')
-        .joins('INNER JOIN authors a ON submissions.author_id = a.id')
-        .joins('INNER JOIN programs p ON submissions.program_id = p.id')
-        .joins('INNER JOIN degrees d ON submissions.degree_id = d.id')
-        .joins('INNER JOIN committee_members cm ON submissions.id = cm.submission_id')
-        .joins('INNER JOIN committee_roles cr ON cm.committee_role_id = cr.id')
-        .group('submissions.id', 'i.id_number').collect do |s|
-        { "access_id" => s.author.access_id, "alternate_email_address" => s.author.alternate_email_address, "committee_members" => s.committee_members.collect do |cm|
-                                                                                                                                     {
-                                                                                                                                       "name" => cm.name, "email" => cm.email, "role" => cm.committee_role.name
-                                                                                                                                     }
-                                                                                                                                   end }
+        .joins('LEFT JOIN invention_disclosures i ON submissions.id = i.submission_id')
+        .joins('LEFT JOIN authors a ON submissions.author_id = a.id')
+        .joins('LEFT JOIN programs p ON submissions.program_id = p.id')
+        .joins('LEFT JOIN degrees d ON submissions.degree_id = d.id')
+        .joins('LEFT JOIN committee_members cm ON submissions.id = cm.submission_id')
+        .joins('LEFT JOIN committee_roles cr ON cm.committee_role_id = cr.id')
+        .group('submissions.id', 'i.id_number')
+        .collect do |s|
+        { "access_id" => s.author.access_id,
+          "alternate_email_address" => s.author.alternate_email_address,
+          "committee_members" => s.committee_members.collect do |cm|
+                                   {
+                                     "name" => cm.name,
+                                     "email" => cm.email,
+                                     "role" => cm.committee_role.name
+                                   }
+                                 end }
       end
     end
 end
