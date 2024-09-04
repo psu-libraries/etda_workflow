@@ -314,6 +314,7 @@ ActiveRecord::Schema.define(version: 2024_08_26_183515) do
     t.string "degree_checkout_status"
     t.string "candidate_number"
     t.datetime "author_release_warning_sent_at"
+    t.string "extension_token"
     t.datetime "acknowledgment_page_submitted_at"
     t.datetime "last_lionpath_export_at"
     t.index ["author_id"], name: "submissions_author_id_fk"
