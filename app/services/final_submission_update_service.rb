@@ -6,6 +6,7 @@ class FinalSubmissionUpdateService
   def initialize(params, submission, current_remote_user)
     @submission = submission
     @submission.author_edit = false
+    @submission.federal_funding_details.author_edit = false if @submission.federal_funding_details.present?
     @params = params
     @update_actions = SubmissionUpdateActions.new(params)
     @current_remote_user = current_remote_user
@@ -20,8 +21,7 @@ class FinalSubmissionUpdateService
     msg = ''
     status_giver = SubmissionStatusGiver.new(submission)
     status_giver.can_respond_to_final_submission?
-    action_service = FinalSubmissionSubmittedService.new(submission, current_remote_user,
-                                                         status_giver, final_submission_params)
+    action_service = FinalSubmissionSubmittedService.new(submission, current_remote_user, status_giver, final_submission_params)
     if update_actions.approved?
       msg = action_service.final_submission_approved
     elsif update_actions.rejected?

@@ -61,7 +61,8 @@ class FormatReviewUpdateService
         :federal_funding,
         committee_members_attributes: [:id, :committee_role_id, :name, :email, :status, :notes, :is_required, :is_voting, :federal_funding_used, :_destroy],
         format_review_files_attributes: [:asset, :asset_cache, :id, :_destroy],
-        admin_feedback_files_attributes: [:asset, :asset_cache, :feedback_type, :id, :_destroy]
+        admin_feedback_files_attributes: [:asset, :asset_cache, :feedback_type, :id, :_destroy],
+        federal_funding_details_attributes: [:id, :submission_id, :training_support_funding, :training_support_acknowledged, :other_funding, :other_funding_acknowledged]
       )
     end
 end

@@ -2,7 +2,7 @@
 
 class CommitteeMember < ApplicationRecord
   class ProgramHeadMissing < StandardError; end
-  attr_accessor :approver_controller
+  attr_accessor :approver_controller, :federal_funding_confirmation
 
   validate :validate_email, :one_head_of_program_check, :validate_status,
            :validate_notes, :validate_federal_funding_used
@@ -169,6 +169,7 @@ class CommitteeMember < ApplicationRecord
     def validate_federal_funding_used
       return true if approver_controller.blank? || !current_partner.graduate?
 
+      errors.add(:federal_funding_confirmation, I18n.t('graduate.federal_funding_admin.error_message_2').html_safe) if federal_funding_used && federal_funding_confirmation != 'true' && status == 'approved'
       return true unless federal_funding_used.nil? && (self == submission.advisor)
 
       errors.add(:federal_funding_used, 'You must indicate if federal funding was utilized for this submission.')

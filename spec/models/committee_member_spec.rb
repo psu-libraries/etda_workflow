@@ -110,8 +110,17 @@ RSpec.describe CommitteeMember, type: :model do
         expect(cm).not_to be_valid if current_partner.graduate?
       end
 
+      it 'cannot approve if federal_funding_used is true and federal_funding_confirmation is not true' do
+        cm.federal_funding_used = true
+        cm.federal_funding_confirmation = 'false'
+        expect(cm).not_to be_valid
+        cm.status = 'rejected'
+        expect(cm).to be_valid
+      end
+
       it 'is valid' do
         cm.federal_funding_used = true
+        cm.federal_funding_confirmation = 'true'
         expect(cm).to be_valid
         cm.federal_funding_used = false
         expect(cm).to be_valid

@@ -173,6 +173,7 @@ class Author::SubmissionsController < AuthorController
 
       redirect_to '/401' unless @submission.author_id == current_author.id
       @submission.author_edit = true
+      @submission.federal_funding_details.author_edit = true if @submission.federal_funding_details.present?
       @submission
     end
 
@@ -211,6 +212,7 @@ class Author::SubmissionsController < AuthorController
                                          :federal_funding,
                                          :proquest_agreement,
                                          invention_disclosures_attributes: [:id, :submission_id, :id_number, :_destroy],
-                                         final_submission_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy])
+                                         final_submission_files_attributes: [:asset, :asset_cache, :submission_id, :id, :_destroy],
+                                         federal_funding_details_attributes: [:id, :submission_id, :training_support_funding, :training_support_acknowledged, :other_funding, :other_funding_acknowledged])
     end
 end

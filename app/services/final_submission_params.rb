@@ -26,7 +26,8 @@ module FinalSubmissionParams
       final_submission_files_attributes: [:asset, :asset_cache, :id, :_destroy],
       admin_feedback_files_attributes: [:asset, :asset_cache, :submission_id, :feedback_type, :id, :_destroy],
       keywords_attributes: [:word, :id, :_destroy],
-      invention_disclosures_attributes: [:id, :submission_id, :id_number, :_destroy]
+      invention_disclosures_attributes: [:id, :submission_id, :id_number, :_destroy],
+      federal_funding_details_attributes: [:id, :submission_id, :training_support_funding, :training_support_acknowledged, :other_funding, :other_funding_acknowledged]
     )
   end
 end

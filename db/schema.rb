@@ -194,6 +194,17 @@ ActiveRecord::Schema.define(version: 2024_08_26_183515) do
     t.index ["webaccess_id"], name: "index_faculty_members_on_webaccess_id", unique: true
   end
 
+  create_table "federal_funding_details", charset: "utf8mb4", force: :cascade do |t|
+    t.boolean "training_support_funding"
+    t.boolean "other_funding"
+    t.boolean "training_support_acknowledged"
+    t.boolean "other_funding_acknowledged"
+    t.bigint "submission_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["submission_id"], name: "index_federal_funding_details_on_submission_id"
+  end
+
   create_table "final_submission_files", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
     t.text "asset", size: :medium
@@ -325,6 +336,7 @@ ActiveRecord::Schema.define(version: 2024_08_26_183515) do
   add_foreign_key "committee_members", "submissions", name: "committee_members_submission_id_fk"
   add_foreign_key "committee_roles", "degree_types", name: "committee_roles_degree_type_id_fk"
   add_foreign_key "confidential_hold_histories", "authors", name: "confidential_hold_histories_author_id_fk"
+  add_foreign_key "federal_funding_details", "submissions"
   add_foreign_key "final_submission_files", "submissions", name: "final_submission_files_submission_id_fk"
   add_foreign_key "format_review_files", "submissions", name: "format_review_files_submission_id_fk"
   add_foreign_key "invention_disclosures", "submissions", name: "invention_disclosures_submission_id_fk"

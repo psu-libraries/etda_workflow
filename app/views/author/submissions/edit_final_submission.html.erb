@@ -76,7 +76,11 @@
         <% end %>
       </div>
 
-      <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} %>
+      <% if current_partner.graduate? %>
+        <%= render partial: '/author/submissions/federal_funding_language_author', locals: {f: f} %>
+        <% else %>
+        <%= render partial: '/shared/federal_funding_checkbox', locals: {f: f} %>
+      <% end %>
 
       <%= render 'shared/copyright_statement' %>
       <%= f.input :has_agreed_to_terms, label: 'I agree to copyright statement', as: :boolean, wrapper: :vertical_boolean, required: true %>

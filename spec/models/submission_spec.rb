@@ -1096,4 +1096,36 @@ RSpec.describe Submission, type: :model do
       expect(sub_release.reload.released_for_publication_at.to_date).to eq Date.today
     end
   end
+
+  describe "#update_federal_funding" do
+    it 'updates federal funding to true if either type of funding in funding details is true' do
+      submission = described_class.new
+      submission.build_federal_funding_details(training_support_funding: true, other_funding: false)
+      submission_2 = described_class.new
+      submission_2.build_federal_funding_details(training_support_funding: false, other_funding: true)
+      submission_3 = described_class.new
+      submission_3.build_federal_funding_details(training_support_funding: true, other_funding: true)
+      [submission, submission_2, submission_3].each do |sub|
+        sub.update_federal_funding
+        expect(sub.federal_funding).to eq true
+      end
+    end
+
+    it 'updates federal funding to false if both types of funding in funding details are false' do
+      submission = described_class.new
+      submission.build_federal_funding_details(training_support_funding: false, other_funding: false)
+      submission.update_federal_funding
+      expect(submission.federal_funding).to eq false
+    end
+
+    it 'does not update federal funding if the details are nil' do
+      submission = described_class.new(federal_funding: true)
+      submission2 = described_class.new(federal_funding: true)
+      submission2.build_federal_funding_details
+      [submission, submission2].each do |sub|
+        expect(sub.update_federal_funding).to eq false
+        expect(sub.federal_funding).to eq true
+      end
+    end
+  end
 end
