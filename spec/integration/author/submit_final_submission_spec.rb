@@ -63,7 +63,6 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
 
     context "when I submit the 'Upload Final Submission Files' form after committee rejection" do
       it 'proceeds to committee review stage and resets committee reviews' do
-        byebug
         submission.committee_members.first.update_attribute :status, 'rejected'
         submission.status = 'waiting for committee review rejected'
         submission.defended_at = Time.zone.yesterday
