@@ -7,7 +7,7 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
       submission.federal_funding_details.update(training_support_funding: false,
                                                 other_funding: false,
                                                 training_support_acknowledged: false,
-                                                other_funding_acknowledged: false)
+                                                other_funding_acknowledged: false) if current_partner.graduate?
     end
 
     let!(:author) { current_author }
