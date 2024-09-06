@@ -311,7 +311,7 @@ RSpec.describe Submission, type: :model do
     end
 
     it 'validates federal_funding_details if current_partner graduate' do
-      skip 'graduate only' if current_partner.graduate?
+      skip 'graduate only' unless current_partner.graduate?
 
       submission = create :submission, :waiting_for_final_submission_response
       submission.build_federal_funding_details
