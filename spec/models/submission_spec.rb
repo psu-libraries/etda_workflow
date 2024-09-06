@@ -266,8 +266,9 @@ RSpec.describe Submission, type: :model do
       expect(submission).to be_valid
     end
 
-    it 'validates federal funding only when authors are editing beyond collecting committee' do
+    it 'validates federal funding only when authors are editing beyond collecting committee and not graduate', honors: true do
       skip 'non-graduate only' if current_partner.graduate?
+
       submission = FactoryBot.create :submission, :waiting_for_final_submission_response
       submission2 = FactoryBot.create :submission, :collecting_program_information
       submission.author_edit = true
@@ -1126,6 +1127,26 @@ RSpec.describe Submission, type: :model do
       [submission, submission2].each do |sub|
         expect(sub.update_federal_funding).to eq false
         expect(sub.federal_funding).to eq true
+      end
+    end
+  end
+
+  describe '#federal_funding_details' do
+    context 'when current_partner is graduate' do
+      it 'builds an empty federal_funding_details record' do
+        skip 'graduate only' if !current_partner.graduate?
+
+        submission = described_class.new
+        expect(submission.federal_funding_details.class).to eq FederalFundingDetails
+      end
+    end
+
+    context 'when current_partner is not graduate', honors: true do
+      it "doesn't build a federal_funding_details record" do
+        skip 'non-graduate only' if current_partner.graduate?
+
+        submission = described_class.new
+        expect(submission.federal_funding_details.class).to eq NilClass
       end
     end
   end

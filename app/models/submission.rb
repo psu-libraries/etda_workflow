@@ -383,7 +383,7 @@ class Submission < ApplicationRecord
   end
 
   def federal_funding_details
-    super || build_federal_funding_details
+    super || (build_federal_funding_details if current_partner.graduate?)
   end
 
   # Initialize our committee members with empty records for each of the required roles.
