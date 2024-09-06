@@ -290,7 +290,7 @@ RSpec.describe Submission, type: :model do
 
       context 'when current_partner is graduate' do
         it "does not validate so it's always valid" do
-          skip 'graduate only' if !current_partner.graduate?
+          skip 'graduate only' unless current_partner.graduate?
 
           submission = FactoryBot.create :submission, :waiting_for_final_submission_response
           submission2 = FactoryBot.create :submission, :collecting_program_information
@@ -308,6 +308,24 @@ RSpec.describe Submission, type: :model do
           expect(submission).to be_valid
         end
       end
+    end
+
+    it 'validates federal_funding_details if current_partner graduate' do
+      skip 'graduate only' if current_partner.graduate?
+
+      submission = create :submission, :waiting_for_final_submission_response
+      submission.build_federal_funding_details
+      submission.federal_funding_details.author_edit = true
+      expect(submission).not_to be_valid
+    end
+
+    it 'does not validate federal_funding_details if current_partner is not graduate', honors: true do
+      skip 'non-graduate only' if current_partner.graduate?
+
+      submission = create :submission, :waiting_for_final_submission_response
+      submission.build_federal_funding_details
+      submission.federal_funding_details.author_edit = true
+      expect(submission).to be_valid
     end
 
     it 'validates publication release if author is submitting beyond format review' do
@@ -1159,7 +1177,7 @@ RSpec.describe Submission, type: :model do
   describe '#federal_funding_details' do
     context 'when current_partner is graduate' do
       it 'builds an empty federal_funding_details record' do
-        skip 'graduate only' if !current_partner.graduate?
+        skip 'graduate only' unless current_partner.graduate?
 
         submission = described_class.new
         expect(submission.federal_funding_details.class).to eq FederalFundingDetails
