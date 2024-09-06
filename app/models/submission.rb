@@ -79,7 +79,7 @@ class Submission < ApplicationRecord
             length: { maximum: 400 },
             presence: true, if: proc { |s| s.author_edit }
 
-  validates :federal_funding, inclusion: { in: [true, false] }, if: proc { |s| s.status_behavior.beyond_collecting_committee? && s.author_edit }
+  validates :federal_funding, inclusion: { in: [true, false] }, if: proc { |s| s.status_behavior.beyond_collecting_committee? && s.author_edit && !current_partner.graduate? }
 
   validates :abstract,
             :keywords,

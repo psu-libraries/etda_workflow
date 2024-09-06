@@ -267,6 +267,7 @@ RSpec.describe Submission, type: :model do
     end
 
     it 'validates federal funding only when authors are editing beyond collecting committee' do
+      skip 'non-graduate only' if current_partner.graduate?
       submission = FactoryBot.create :submission, :waiting_for_final_submission_response
       submission2 = FactoryBot.create :submission, :collecting_program_information
       submission.author_edit = true
