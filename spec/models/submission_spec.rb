@@ -266,23 +266,48 @@ RSpec.describe Submission, type: :model do
       expect(submission).to be_valid
     end
 
-    it 'validates federal funding only when authors are editing beyond collecting committee and not graduate', honors: true do
-      skip 'non-graduate only' if current_partner.graduate?
+    describe 'validating federal funding only when authors are editing beyond collecting committee', honors: true do
+      context 'when current_partner is not graduate' do
+        it 'validates depending on certain criteria' do
+          skip 'non-graduate only' if current_partner.graduate?
 
-      submission = FactoryBot.create :submission, :waiting_for_final_submission_response
-      submission2 = FactoryBot.create :submission, :collecting_program_information
-      submission.author_edit = true
-      submission.federal_funding = true
-      expect(submission).to be_valid
-      submission.federal_funding = false
-      expect(submission).to be_valid
-      submission.federal_funding = nil
-      expect(submission).not_to be_valid
-      submission2.federal_funding = nil
-      expect(submission2).to be_valid
-      submission.author_edit = false
-      submission.federal_funding = nil
-      expect(submission).to be_valid
+          submission = FactoryBot.create :submission, :waiting_for_final_submission_response
+          submission2 = FactoryBot.create :submission, :collecting_program_information
+          submission.author_edit = true
+          submission.federal_funding = true
+          expect(submission).to be_valid
+          submission.federal_funding = false
+          expect(submission).to be_valid
+          submission.federal_funding = nil
+          expect(submission).not_to be_valid
+          submission2.federal_funding = nil
+          expect(submission2).to be_valid
+          submission.author_edit = false
+          submission.federal_funding = nil
+          expect(submission).to be_valid
+        end
+      end
+
+      context 'when current_partner is graduate' do
+        it "does not validate so it's always valid" do
+          skip 'graduate only' if !current_partner.graduate?
+
+          submission = FactoryBot.create :submission, :waiting_for_final_submission_response
+          submission2 = FactoryBot.create :submission, :collecting_program_information
+          submission.author_edit = true
+          submission.federal_funding = true
+          expect(submission).to be_valid
+          submission.federal_funding = false
+          expect(submission).to be_valid
+          submission.federal_funding = nil
+          expect(submission).to be_valid
+          submission2.federal_funding = nil
+          expect(submission2).to be_valid
+          submission.author_edit = false
+          submission.federal_funding = nil
+          expect(submission).to be_valid
+        end
+      end
     end
 
     it 'validates publication release if author is submitting beyond format review' do
