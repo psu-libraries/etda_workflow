@@ -4,10 +4,12 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
   describe "When collecting final submission files", honors: true, milsch: true do
     before do
       oidc_authorize_author
-      submission.federal_funding_details.update(training_support_funding: false,
-                                                other_funding: false,
-                                                training_support_acknowledged: false,
-                                                other_funding_acknowledged: false) if current_partner.graduate?
+      if current_partner.graduate?
+        submission.federal_funding_details.update(training_support_funding: false,
+                                                  other_funding: false,
+                                                  training_support_acknowledged: false,
+                                                  other_funding_acknowledged: false)
+      end
     end
 
     let!(:author) { current_author }
