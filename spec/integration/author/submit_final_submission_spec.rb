@@ -4,6 +4,12 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
   describe "When collecting final submission files", honors: true, milsch: true do
     before do
       oidc_authorize_author
+      if current_partner.graduate?
+        submission.federal_funding_details.update(training_support_funding: false,
+                                                  other_funding: false,
+                                                  training_support_acknowledged: false,
+                                                  other_funding_acknowledged: false)
+      end
     end
 
     let!(:author) { current_author }
@@ -11,7 +17,6 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
     let!(:committee_members) { create_committee(submission) }
     let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
     let!(:approval_configuration) { FactoryBot.create :approval_configuration, degree_type: degree.degree_type, head_of_program_is_approving: false }
-    let!(:federal_funding_details) { FactoryBot.create :federal_funding_details, submission: }
 
     context "when I submit the 'Upload Final Submission Files' form" do
       it 'loads the page' do

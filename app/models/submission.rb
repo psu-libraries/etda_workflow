@@ -79,7 +79,8 @@ class Submission < ApplicationRecord
             length: { maximum: 400 },
             presence: true, if: proc { |s| s.author_edit }
 
-  validates :federal_funding, inclusion: { in: [true, false] }, if: proc { |s| s.status_behavior.beyond_collecting_committee? && s.author_edit }
+  validates :federal_funding, inclusion: { in: [true, false] }, if: proc { |s| s.status_behavior.beyond_collecting_committee? && s.author_edit && !current_partner.graduate? }
+  validates_associated :federal_funding_details, message: 'Federal funding is invalid.', if: -> { current_partner.graduate? }
 
   validates :abstract,
             :keywords,
@@ -383,7 +384,7 @@ class Submission < ApplicationRecord
   end
 
   def federal_funding_details
-    super || build_federal_funding_details
+    super || (build_federal_funding_details if current_partner.graduate?)
   end
 
   # Initialize our committee members with empty records for each of the required roles.
