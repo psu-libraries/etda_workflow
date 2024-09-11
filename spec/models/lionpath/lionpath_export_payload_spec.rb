@@ -73,7 +73,7 @@ RSpec.describe Lionpath::LionpathExportPayload do
         allow(status_behavior).to receive(:beyond_waiting_for_committee_review_rejected?).and_return(true)
       end
 
-      it 'sets grdtnFlg to Y' do
+      it 'sets grdtnFlg to nil' do
         payload = JSON.parse(export_payload.json_payload)
         expect(payload["PE_SR199_ETD_REQ"]["grdtnFlg"]).to eq(nil)
       end
