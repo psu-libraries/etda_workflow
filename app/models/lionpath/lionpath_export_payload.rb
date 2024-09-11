@@ -16,7 +16,7 @@ class Lionpath::LionpathExportPayload
       "candAdvFlg" => core_committee_approved,
       "exPymtFlg" => payment_received,
       "libDepFlg" => federal_funding_used,
-      "grdtnFlg" => program_head_approved
+      "grdtnFlg" => final_submission_approved
     }.each do |key, value|
       internal_data[key] = value if value
     end
