@@ -53,8 +53,8 @@ class Lionpath::LionpathExportPayload
       access_level_map[submission.access_level]
     end
 
-    def program_head_approved
-      return "Y" if status_behavior.beyond_waiting_for_committee_review_rejected?
+    def final_submission_approved
+      return "Y" if status_behavior.beyond_waiting_for_final_submission_response_rejected?
 
       nil
     end

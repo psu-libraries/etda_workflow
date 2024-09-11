@@ -74,7 +74,7 @@ RSpec.describe Lionpath::LionpathExportPayload do
 
       it 'sets grdtnFlg to Y' do
         payload = JSON.parse(export_payload.json_payload)
-        expect(payload["PE_SR199_ETD_REQ"]["grdtnFlg"]).to eq("Y")
+        expect(payload["PE_SR199_ETD_REQ"]["grdtnFlg"]).to eq(nil)
       end
 
       context 'when federal funding is true' do
@@ -126,6 +126,17 @@ RSpec.describe Lionpath::LionpathExportPayload do
           payload = JSON.parse(export_payload.json_payload)
           expect(payload["PE_SR199_ETD_REQ"]["candAdvFlg"]).to eq(nil)
         end
+      end
+    end
+
+    context 'when thesis is beyond_waiting_for_final_submission_response_rejected' do
+      before do
+        allow(status_behavior).to receive(:beyond_waiting_for_final_submission_response_rejected).and_return(true)
+      end
+
+      it 'sets grdtnFlg to Y' do
+        payload = JSON.parse(export_payload.json_payload)
+        expect(payload["PE_SR199_ETD_REQ"]["grdtnFlg"]).to eq(nil)
       end
     end
 
