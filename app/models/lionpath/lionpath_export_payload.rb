@@ -61,7 +61,7 @@ class Lionpath::LionpathExportPayload
 
     def core_committee_approved
       return "Y" if status_behavior.beyond_waiting_for_committee_review? &&
-       !status_behavior.waiting_for_committee_review_rejected?
+                    !status_behavior.waiting_for_committee_review_rejected?
 
       nil
     end
