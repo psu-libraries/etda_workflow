@@ -129,6 +129,7 @@ class SubmissionReleaseService
 
     def record_error(message)
       Rails.logger.error("#{Time.zone.now}Final Submission release-unrelease error:#{message}")
+      Bugsnag.notify("#{Time.zone.now}Final Submission release-unrelease error:#{message}")
       @error_message << message
       @error_count += 1
     end

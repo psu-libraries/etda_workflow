@@ -3,17 +3,10 @@
     <fieldset <%= @review_complete ? 'disabled' : '' %>>
       <strong>Files I need to review:</strong>
       <div id="file_links">
-        <%= raw @most_relevant_file_links %></div>
-      <br>
-      <p>I accept and approve <%= @author.full_name %>'s <%= @submission.degree.degree_type.name.to_s.downcase %> and agree to distribution as indicated by the access level.</p>
-      <div class="col-sm-8">
-      <%= f.input :status, as: :radio_buttons,
-                  collection: [['Yes, I accept and approve.', 'approved'], ['No, I do not accept and approve.', 'rejected']],
-                  wrapper: :vertical_radio_and_checkboxes,
-                  label: false %>
+        <%= raw @most_relevant_file_links %>
       </div>
-      <%= f.input :notes, :label => "Notes for Student (required only if rejecting)", :input_html => { :class => 'notes_select' } %>
-      <% if current_partner.graduate? && @committee_member == @submission.advisor %>
+      <br/>
+       <% if current_partner.graduate? && @committee_member == @submission.advisor %>
         <%= f.label :federal_funding_used, 'Were Federal Funds utilized for this submission?'.html_safe %>
         <div class="alert alert-info">
           <strong class="hint"><strong>Notice:</strong> The author of this submission has indicated that federal funding <u><strong>was<%= @submission.federal_funding ? nil : ' not' %></strong></u> used.</strong>
@@ -31,7 +24,18 @@
                       wrapper: :vertical_radio_and_checkboxes,
                       label: false %>
         <% end %>
+        <br/>
       <% end %>
+      <strong>Approval</strong>
+      <p>I accept and approve <%= @author.full_name %>'s <%= @submission.degree.degree_type.name.to_s.downcase %> and agree to distribution as indicated by the access level.</p>
+      <div class="col-sm-8">
+      <%= f.input :status, as: :radio_buttons,
+                  collection: [['Yes, I accept and approve.', 'approved'], ['No, I do not accept and approve.', 'rejected']],
+                  wrapper: :vertical_radio_and_checkboxes,
+                  label: false %>
+      </div>
+      <%= f.input :notes, :label => "Notes for Student (required only if rejecting)", :input_html => { :class => 'notes_select' } %>
+     
       <div class="form-group actions col-xs-4">
         <%= f.button :submit, "Submit Review", class: 'btn-success' %>
         <% if @review_complete %>
