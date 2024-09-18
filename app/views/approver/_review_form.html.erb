@@ -24,8 +24,8 @@
                       wrapper: :vertical_radio_and_checkboxes,
                       label: false %>
         <% end %>
+        <br/>
       <% end %>
-      <br/>
       <strong>Approval</strong>
       <p>I accept and approve <%= @author.full_name %>'s <%= @submission.degree.degree_type.name.to_s.downcase %> and agree to distribution as indicated by the access level.</p>
       <div class="col-sm-8">
