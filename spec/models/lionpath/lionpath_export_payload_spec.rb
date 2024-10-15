@@ -23,7 +23,6 @@ RSpec.describe Lionpath::LionpathExportPayload do
     before do
       allow(status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(true)
       allow(status_behavior).to receive(:beyond_waiting_for_committee_review?).and_return(false)
-      allow(status_behavior).to receive(:beyond_waiting_for_final_submission_response?).and_return(false)
       allow(status_behavior).to receive(:beyond_waiting_for_committee_review_rejected?).and_return(false)
       allow(status_behavior).to receive(:beyond_waiting_for_final_submission_response_rejected?).and_return(false)
       allow(status_behavior).to receive(:waiting_for_committee_review_rejected?).and_return(false)
@@ -46,7 +45,7 @@ RSpec.describe Lionpath::LionpathExportPayload do
       expect(export_payload.json_payload).to eq(expected_payload)
     end
 
-    context 'when the submission is beyond_collecting_format_review_files but not beyond_waiting_for_final_submission_response' do
+    context 'when the submission is beyond_collecting_format_review_files but not beyond_waiting_for_final_submission_response_rejected' do
       it 'sets thesisStatus to SUBMITTED' do
         payload = JSON.parse(export_payload.json_payload)
         expect(payload["PE_SR199_ETD_REQ"]["thesisStatus"]).to eq("SUBMITTED")
@@ -55,17 +54,6 @@ RSpec.describe Lionpath::LionpathExportPayload do
       it 'does not set libDepFlg"' do
         payload = JSON.parse(export_payload.json_payload)
         expect(payload["PE_SR199_ETD_REQ"]["libDepFlg"]).to be_nil
-      end
-    end
-
-    context 'when the submission is beyond_waiting_for_final_submission_response' do
-      before do
-        allow(status_behavior).to receive(:beyond_waiting_for_final_submission_response?).and_return(true)
-      end
-
-      it 'sets thesisStatus to APPROVED' do
-        payload = JSON.parse(export_payload.json_payload)
-        expect(payload["PE_SR199_ETD_REQ"]["thesisStatus"]).to eq("APPROVED")
       end
     end
 
@@ -135,6 +123,11 @@ RSpec.describe Lionpath::LionpathExportPayload do
       it 'sets grdtnFlg to Y' do
         payload = JSON.parse(export_payload.json_payload)
         expect(payload["PE_SR199_ETD_REQ"]["grdtnFlg"]).to eq('Y')
+      end
+
+      it 'sets thesisStatus to APPROVED' do
+        payload = JSON.parse(export_payload.json_payload)
+        expect(payload["PE_SR199_ETD_REQ"]["thesisStatus"]).to eq("APPROVED")
       end
     end
 
