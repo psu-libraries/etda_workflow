@@ -1,4 +1,4 @@
-require 'mysql2'
+require 'trilogy'
 
 namespace :legacy do
  # these tasks perform the importing of legacy database and files
@@ -171,8 +171,8 @@ namespace :legacy do
    end
 
    def legacy_database
-     @client ||= Mysql2::Client.new(Rails.configuration.database_configuration[Rails.env]['legacy_database']) unless Rails.env.test?
-     @client ||= Mysql2::Client.new(Rails.configuration.database_configuration['test_legacy_database'])
+     @client ||= Trilogy::Client.new(Rails.configuration.database_configuration[Rails.env]['legacy_database']) unless Rails.env.test?
+     @client ||= Trilogy::Client.new(Rails.configuration.database_configuration['test_legacy_database'])
    end
 
    def table_has_data?(this_model)

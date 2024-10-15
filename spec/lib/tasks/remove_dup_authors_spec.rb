@@ -6,7 +6,8 @@
 require 'rails_helper'
 require 'shoulda-matchers'
 require 'active_record/fixtures'
-require 'mysql2'
+require 'trilogy'
+
 
 RSpec.describe "Rake::Task['db_update:dups']", :import_test, type: :task do
   before do
