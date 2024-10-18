@@ -1,4 +1,3 @@
-version: '3.5'
 services:
   # Can be used locally with M1 Macs in place of the selenuim container
   seleniarm:
