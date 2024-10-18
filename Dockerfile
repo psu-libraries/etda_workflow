@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:experimental
-FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.2-node-16:20240701 as base
+FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.2-node-16:20241017 as base
 
 # hadolint ignore=DL3008
-RUN apt-get update && \
-  apt-get install --no-install-recommends libmariadb-dev mariadb-client clamav clamdscan wget libpng-dev make -y && \
+RUN apt-get update && apt --fix-broken install -y && \
+  apt-get install --no-install-recommends clamav clamdscan libpng-dev libmariadb-dev mariadb-client -y  && \
   rm -rf /var/lib/apt/lists/*
 
 ENV TZ=America/New_York
@@ -31,16 +31,19 @@ COPY --chown=etda . /etda_workflow
 COPY --chown=etda config/clamd.conf /etc/clamav
 
 RUN mkdir -p tmp/cache
-
+USER root
+RUN ln -s /usr/lib/x86_64-linux-gnu/libffi.so.7 /usr/lib/x86_64-linux-gnu/libffi.so.6
+USER etda
 CMD ["/etda_workflow/bin/startup"]
 
 FROM base as rspec
 CMD ["/etda_workflow/bin/ci-rspec"]
 
 FROM base as production
-
+RUN bundle config build.ffi --disable-system-libffi
 RUN bundle install --without development test
 
-RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
+RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY=$(buqndle exec rails secret) bundle exec rails assets:precompile
 
+USER etda
 CMD ["/etda_workflow/bin/startup"]
