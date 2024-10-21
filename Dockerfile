@@ -43,7 +43,7 @@ FROM base as production
 RUN bundle config build.ffi --disable-system-libffi
 RUN bundle install --without development test
 
-RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY=$(buqndle exec rails secret) bundle exec rails assets:precompile
+RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
 
 USER etda
 CMD ["/etda_workflow/bin/startup"]
