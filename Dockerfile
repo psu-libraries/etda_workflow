@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.2-node-16:20241017 as base
+FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.6-node-16:20241023 AS base
 
 # hadolint ignore=DL3008
 RUN apt-get update && apt --fix-broken install -y && \
@@ -12,7 +12,7 @@ WORKDIR /etda_workflow
 
 COPY Gemfile Gemfile.lock /etda_workflow/
 
-RUN useradd -u 10000 etda -d /etda_workflow && \
+RUN useradd -u 1000 etda -d /etda_workflow && \
   usermod -G clamav etda && \
   chown -R etda /etda_workflow && \
   chmod 777 /etc/clamav
@@ -44,6 +44,9 @@ RUN bundle config build.ffi --disable-system-libffi
 RUN bundle install --without development test
 
 RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY=$(bundle exec rails secret) bundle exec rails assets:precompile
+
+USER root
+RUN chown -R etda /etda_workflow
 
 USER etda
 CMD ["/etda_workflow/bin/startup"]
