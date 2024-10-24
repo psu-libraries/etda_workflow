@@ -2,14 +2,14 @@
 
 source 'https://rubygems.org'
 
-ruby '3.1.2'
+ruby '3.1.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.1'
 # Use mysql as the database for Active Record
 gem 'mysql2'
 # Use Puma as the app server
-gem 'puma', ">= 4.3.0"
+gem 'puma', ">= 5.6.5"
 # For bundling/importing assets
 gem 'shakapacker', '~> 7.0.2'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
