@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+git config --global --add safe.directory '*'
 
 if [ -f /vault/secrets/config ]; then
   . /vault/secrets/config
