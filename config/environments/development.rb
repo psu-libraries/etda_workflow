@@ -50,7 +50,7 @@ Rails.application.configure do
   config.action_mailer.default_options = { from: "no-reply@psu.edu" }
 
   # turn email on using value of :email_indicator in secrets file (:test or :smtp).
-  config.action_mailer.delivery_method = Rails.application.secrets[:email_indicator] || :test
+  config.action_mailer.delivery_method = ENV.fetch("EMAIL_INDICATOR") { ":test" }
 
   # Change default location for mailer previews
   config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"
