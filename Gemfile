@@ -31,8 +31,7 @@ gem 'net-ldap', '~> 0.16.1'
 # sftp for lionapth csv imports
 gem "net-sftp", "~> 3.0"
 # Country drop-downs
-gem 'country_select', git: 'https://github.com/stefanpenner/country_select.git', branch: 'master'
-# Form builder
+gem 'country_select', '~> 10.0.0'
 gem 'simple_form', "~> 5.3.1"
 # File uploads
 gem 'carrierwave', "~> 3.0.7"
