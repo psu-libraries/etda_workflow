@@ -2,7 +2,9 @@
   <h1>The Submission Process </h1>
   <div class="col-xs-12">
     <br>
-    <p class="thesis_info">Upload your thesis/dissertation to the eTD website for format review, including your front matter, back matter and at least 3 chapters. The Office of Theses and Dissertations will check the format review and email you a PDF with comments. When all corrections are made submit the final by the final submission deadline, no changes can be made after the final is submitted.  </p>
+    <% unless current_partner.honors? %>
+      <p class="thesis_info">Upload your thesis/dissertation to the eTD website for format review, including your front matter, back matter and at least 3 chapters. The Office of Theses and Dissertations will check the format review and email you a PDF with comments. When all corrections are made submit the final by the final submission deadline, no changes can be made after the final is submitted.  </p>
+    <% end %>
     <% if current_partner.graduate? %>
       <p class="thesis_info">There is a <strong>one-time</strong> fee for each thesis and/or dissertation submission required prior to the final submission of the thesis or dissertation.  The fee can be paid at the <a href='https://secure.gradsch.psu.edu/paymentportal/' target='_blank'>Payment Section</a> of the Fox Graduate School Thesis and Dissertation Information <a href='https://gradschool.psu.edu/completing-your-degree/thesis-and-dissertation-information/' target='_blank'>webpage</a>.  You will not be permitted to submit your final document unless the fee is paid.</p>
     <% end %>
