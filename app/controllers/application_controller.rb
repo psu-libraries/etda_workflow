@@ -32,15 +32,15 @@ class ApplicationController < ActionController::Base
 
   def main
     @current_remote_user = current_remote_user
-    render '/main/index.html', layout: 'home'
+    render '/main/index', layout: 'home'
   end
 
   def about
-    render '/about/index.html', layout: 'home'
+    render '/about/index', layout: 'home'
   end
 
   def docs
-    render '/docs/index.html', layout: 'home'
+    render '/docs/index', layout: 'home'
   end
 
   def login

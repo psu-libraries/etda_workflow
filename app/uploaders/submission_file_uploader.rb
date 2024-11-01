@@ -47,14 +47,16 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
     Pathname.new('.').join(asset_prefix, asset_hash)
   end
 
-  def content_type_blacklist
-    ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-     'application/vnd.ms-word.document.macroEnabled.12', 'application/vnd.ms-word.template.macroEnabled.12',
+  def content_type_allowlist
+    #TODO change
+    ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+     'application/txt', 'application/vnd.ms-word.template.macroEnabled.12',
      'application/vnd.openxmlformats-officedocument.wordprocessingml.template']
   end
 
-  def extension_blacklist
-    %w[dotx dotm docx doc docm dot]
+  def extension_allowlist
+    # TODO Change to full list
+    %w[pdf txt]
   end
 
   # private

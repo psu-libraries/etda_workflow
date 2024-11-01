@@ -7,7 +7,7 @@
         </li>
       <% end %>
       <li class="<%= admin_nav_active?('authors') %>">
-        <%= render partial: 'admin/shared/author_navigation.html' %>
+        <%= render partial: 'admin/shared/author_navigation' %>
       </li>
       <li class="<%= admin_nav_active?('programs') %>">
         <%= link_to 'Programs', admin_programs_path, {class: 'btn btn-nav'} %>
