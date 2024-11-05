@@ -23,21 +23,21 @@ down: ## turn this thing off
 	docker-compose down
 
 up: ## run this thing
-	docker-compose up redis db seleniarm web -d
+	docker-compose up redis db selenium web -d
 
 up_milsch: ## run this thing
-	PARTNER=milsch docker-compose up redis db seleniarm web -d
+	PARTNER=milsch docker-compose up redis db selenium web -d
 
 up_honors: ## run this thing
-	PARTNER=honors docker-compose up redis db seleniarm web -d
+	PARTNER=honors docker-compose up redis db selenium web -d
 
 up_sset: ## run this thing
-	PARTNER=sset docker-compose up redis db seleniarm web -d
+	PARTNER=sset docker-compose up redis db selenium web -d
 
 rebuild: build up ## run build and then up
 
 dev: ## build and run locally 
-	docker-compose up redis db seleniarm web --build
+	docker-compose up redis db selenium web --build
 
 build: ## run development environment
 	docker-compose build

@@ -22,6 +22,7 @@ require 'cancan/ability'
 require 'shoulda/matchers'
 require 'rspec/retry'
 require 'csv'
+Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
 
 # WebMock: Allow localhost and selenium:4444 so we do not block communication between test instance and webdriver.
 require 'webmock/rspec'

@@ -58,7 +58,6 @@
         <% end %>
       </div>
       <div class="col-sm-6">
-        <% byebug %>
         <% if is_external_member && Lionpath::LionpathCommittee.external_ids.include?(f.object.access_id) %>
           <%= f.input :email, label: local_presenter.email_label,
                       required: true, input_html: { value: '' } %>

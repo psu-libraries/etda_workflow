@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'devise/test/controller_helpers'
+require 'devise/test/integration_helpers'
 
 RSpec.describe 'Devise Login', type: :request do
+  include Devise::Test::IntegrationHelpers
   RSpec::Mocks.configuration.allow_message_expectations_on_nil = true
   let(:author) { FactoryBot.create(:author) }
 
@@ -13,6 +14,7 @@ RSpec.describe 'Devise Login', type: :request do
   end
 
   it 'signs author in and out' do
+    allow_any_instance_of(ActionDispatch::Request).to receive(:session).and_return({})
     headers = { 'HTTP_REMOTE_USER' => 'ajk5603', 'REQUEST_URI' => '/author/submissions' }
     expect(Author.find_by(access_id: 'ajk5603')).to be_nil
     request.headers.merge! headers
@@ -22,6 +24,7 @@ RSpec.describe 'Devise Login', type: :request do
   end
 
   it 'signs admin in and out' do
+    allow_any_instance_of(ActionDispatch::Request).to receive(:session).and_return({})
     headers = { 'HTTP_REMOTE_USER' => 'xxb13', 'REQUEST_URI' => '/admin/degrees' }
     expect(Admin.find_by(access_id: 'xxb13')).to be_nil
     request.headers.merge! headers
@@ -31,6 +34,7 @@ RSpec.describe 'Devise Login', type: :request do
   end
 
   it 'signs approver in and out' do
+    allow_any_instance_of(ActionDispatch::Request).to receive(:session).and_return({})
     headers = { 'HTTP_REMOTE_USER' => 'ajk5603', 'REQUEST_URI' => '/approver' }
     expect(Approver.find_by(access_id: 'ajk5603')).to be_nil
     request.headers.merge! headers

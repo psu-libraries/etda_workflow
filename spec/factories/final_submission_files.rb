@@ -3,14 +3,14 @@
 FactoryBot.define do
   factory :final_submission_file, class: 'FinalSubmissionFile' do |_f|
     submission
-    asset { File.open(fixture('final_submission_file_01.pdf')) }
+    asset { File.open(fixture('files/final_submission_file_01.pdf')) }
 
     trait :pdf do
-      asset { File.open(fixture('final_submission_file_01.pdf')) }
+      asset { File.open(fixture('files/final_submission_file_01.pdf')) }
     end
 
     trait :docx do
-      asset { File.open(fixture('final_submission_file_02.docx')) }
+      asset { File.open(fixture('files/final_submission_file_02.docx')) }
     end
 
     trait :released_open do

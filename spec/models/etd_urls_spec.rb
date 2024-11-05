@@ -15,17 +15,17 @@ RSpec.describe EtdUrls, type: :model, honors: true, milsch: true do
     end
   end
 
-  context 'explore urls' do
+  context 'workflow urls' do
     it 'returns graduate url' do
-      expect(described_class.new.workflow).to eql('https://submit-etda-.libraries.psu.edu.localhost:3000') if current_partner.graduate?
+      expect(described_class.new.workflow).to eql('https://submit-etda-test.libraries.psu.edu.localhost:3000') if current_partner.graduate?
     end
 
     it 'returns honors url' do
-      expect(described_class.new.workflow).to eql('https://submit-honors-.libraries.psu.edu.localhost:3000') if current_partner.honors?
+      expect(described_class.new.workflow).to eql('https://submit-honors-test.libraries.psu.edu.localhost:3000') if current_partner.honors?
     end
 
     it 'returns milsch url' do
-      expect(described_class.new.workflow).to eql('https://submit-millennium-scholars-.libraries.psu.edu.localhost:3000') if current_partner.milsch?
+      expect(described_class.new.workflow).to eql('https://submit-millennium-scholars-test.libraries.psu.edu.localhost:3000') if current_partner.milsch?
     end
   end
 end

@@ -12,7 +12,7 @@ RSpec.describe ReviewResultsEmail do
         cm.update status: 'rejected'
         cm.update notes: 'Notes'
       end
-      expect(review_results_email.generate).to eq(fixture("review_results_email.txt").read)
+      expect(review_results_email.generate).to eq(file_fixture("review_results_email.txt").read)
     end
   end
 end

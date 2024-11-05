@@ -62,7 +62,7 @@ RSpec.describe "Editing a released submission as an admin", type: :integration, 
       page.find('div[data-target="#format-review-files"]').click
       within('#format-review-files') do
         click_link "Additional File"
-        find('input[type="file"]', match: :first).set(fixture('format_review_file_01.pdf'))
+        find('input[type="file"]', match: :first).set(file_fixture('format_review_file_01.pdf'))
       end
 
       fill_in "Format Review Notes to Student", with: "New review notes"
@@ -88,7 +88,7 @@ RSpec.describe "Editing a released submission as an admin", type: :integration, 
 
       within('#final-submission-information') do
         click_link "Additional File"
-        find('input[type="file"]', match: :first).set(fixture('final_submission_file_01.pdf'))
+        find('input[type="file"]', match: :first).set(file_fixture('final_submission_file_01.pdf'))
       end
 
       fill_in "Final Submission Notes to Student", with: "New final notes"

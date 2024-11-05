@@ -9,7 +9,6 @@ class InventionDisclosureNumberValidator < ActiveModel::EachValidator
     return true if record.access_level != 'restricted'
     # return true if invention_disclosure_empty?(record, attribute, value.id_number)
     return true if valid_id_number?(record, attribute, value.id_number)
-
     # Removing validation per ETDA-772; to restore, uncomment and move the following line to the end of the line above ('return true if valid_id_number?...')
     # if valid_id_number?(record, attribute, value.id_number)
     false
@@ -18,7 +17,7 @@ class InventionDisclosureNumberValidator < ActiveModel::EachValidator
   private
 
     def valid_id_number?(record, attribute, number)
-      record.errors[attribute] << 'Invention Disclosure Number is required for Restricted submissions.' unless number_is_valid? number
+      record.errors.add(attribute, message: 'Invention Disclosure Number is required for Restricted submissions.') unless number_is_valid? number
     end
 
     def number_is_valid?(number)

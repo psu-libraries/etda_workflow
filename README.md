@@ -25,7 +25,7 @@ Run `vi .envrc` and add environment variables
 To build the image and run necessary containers:
 
  1. `docker-compose build`
- 2. `docker-compose up -d seleniarm db redis web` **_Note:_** Use `seleniarm` with ARM architecture and `selenium` with others
+ 2. `docker-compose up -d selenium db redis web`
  3. Check it out at `localhost:3000` in your browser
 
 To copy database data into container:
