@@ -318,7 +318,7 @@ en:
     access_level:
       open_access: Open Access
       open_access_attr:
-        description_html: Allows for open access to the body of the thesis. Note:"Withheld" status must be arranged by contacting the Honors College Records Department
+        description_html: Allows for open access to the body of the thesis.
         scope: released_for_publication
       restricted_to_institution: 'Restricted (Penn State Only)'
       restricted_to_institution_attr:
