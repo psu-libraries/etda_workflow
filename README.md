@@ -75,6 +75,17 @@ Any PRs merged to main will automatically be deployed to QA.
 
 To initiate a production deploy, create a new release. Then, merge the automatically created PR in the config repo: https://github.com/psu-libraries/etda-config
 
+### Config
+The [config](https://rubygems.org/gems/config) gem provides a means for adding ad-hoc config as needed.
+The file `config/settings.local.yml` is not tracked in git. 
+Currently this is used to add announcements quickly. By adding values such as:
+```rb
+# Strings
+show_annoucements: true
+announcement:
+  message: "Place your important message here"
+```
+
 ## LionPath Integration
 
 ### Imports
