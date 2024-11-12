@@ -1,0 +1,7 @@
+<div class="announcement container-fluid <%= Settings.announcement&.html_class || "yoo doggie" %>">
+    <div class="row align-items-center">
+      <div class="col align-content-center alert-warning">
+        <p class="text-center mt-2 mb-2 pb-1"><%= sanitize Settings.announcement&.message %></p>
+      </div>
+    </div>
+  </div>

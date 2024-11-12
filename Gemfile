@@ -80,6 +80,9 @@ gem 'ed25519', '~> 1.2.4'
 gem 'bcrypt_pbkdf', '~> 1.0.0'
 # Error tracking
 gem 'bugsnag', '~> 6.26'
+# Configure environment settings
+gem 'config', '~> 5.5.2'
+
 
 group :development, :test do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
