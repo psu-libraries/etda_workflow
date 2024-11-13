@@ -81,7 +81,7 @@ The file `config/settings.local.yml` is not tracked in git.
 Currently this is used to add announcements quickly. By adding values such as:
 ```rb
 # Strings
-show_annoucement: true
+show_announcement: true
 announcement:
   header: "Announcement header text goes here"
   message: "Place your important message here"
