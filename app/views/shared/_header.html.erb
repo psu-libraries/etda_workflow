@@ -1,4 +1,5 @@
 <header class="<%= page_classes %>">
+  <%= render partial: 'shared/announcements' if Settings.show_announcements %>
   <div class="container-fluid">
     <div id="shield-and-logo" class="row">
       <div class="col-sm-1">
@@ -15,4 +16,5 @@
   </div>
   <%= render partial: '/matomo_analytics' if ENV.fetch('HOSTNAME', 'dev').match(/^etda-wf-/).present? %>
   <%= render partial: 'shared/nav_bar' %>
+
 </header>
