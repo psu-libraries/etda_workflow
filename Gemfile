@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 ruby '3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.0'
 # Use mysql as the database for Active Record
 gem 'mysql2'
 # Use Puma as the app server
@@ -17,7 +17,7 @@ gem 'jbuilder', '~> 2.5'
 # SideKiq for queueing jobs
 gem 'sidekiq', '~> 7.1.3'
 # Use SCSS for stylesheets
-gem 'sassc-rails', '~> 2.1.0'
+gem 'sassc-rails', '~> 2.1.2'
 # Jquery for rails
 gem 'jquery-rails', '~> 4.4.0'
 # FontAwesome sass integration
@@ -33,9 +33,9 @@ gem "net-sftp", "~> 3.0"
 # Country drop-downs
 gem 'country_select', git: 'https://github.com/stefanpenner/country_select.git', branch: 'master'
 # Form builder
-gem 'simple_form', '>= 5.0.0'
+gem 'simple_form', "~> 5.3.1"
 # File uploads
-gem 'carrierwave', '~> 2.2.5'
+gem 'carrierwave', "~> 3.0.7"
 # Virus scanning for file uploads
 gem 'clamby'
 # For image resizing
@@ -46,12 +46,12 @@ gem 'cocoon', '~> 1.2.0'
 # User authorization
 gem 'cancancan', '~> 3.1.0'
 # Easy email forms
-gem 'mail_form', '~> 1.9.0'
+gem 'mail_form', '~> 1.10.1'
 # Logging & Health Checks!
 gem 'okcomputer', '~> 1.18.0'
 gem 'logstash-event', '~> 1.2.0'
-gem 'lograge', '~> 0.11.0'
-gem 'lograge-sql', '~> 1.1.0'
+gem 'lograge', '~> 0.12.0'
+gem 'lograge-sql', '~> 2.4.0'
 # Ruby client for Apache solr
 gem 'rsolr', '~> 2.5.0'
 # Enumerated attributes with I18n
@@ -98,7 +98,7 @@ group :development do
   gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring', '~> 2.1.0'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen', '~> 2.0.1'
 end
 
 group :test do
