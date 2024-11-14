@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Announcement', :js do
-  context 'when show_announcements is false' do
+  context 'when show_announcement is false' do
     before do
       Settings.add_source!(
         {
-          show_announcements: false,
+          show_announcement: false,
           announcement: nil
         }
       )
@@ -24,7 +24,7 @@ RSpec.describe 'Announcement', :js do
     before do
       Settings.add_source!(
         {
-          show_announcements: nil,
+          show_announcement: nil,
           announcement: nil
         }
       )
@@ -41,7 +41,7 @@ RSpec.describe 'Announcement', :js do
     before do
       Settings.add_source!(
         {
-          show_announcements: true,
+          show_announcement: true,
           announcement: {
             message: 'ETDA is for cool kids'
           }
