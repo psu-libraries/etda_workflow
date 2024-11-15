@@ -49,6 +49,7 @@ RSpec.describe FormatReviewFile, type: :model do
     let(:virus_scan_is_mocked?) { VirusScanner.name == MockVirusScanner.name }
 
     let(:good_file) { FactoryBot.create :format_review_file }
+
     infected_file = described_class.new(asset: File.open(fixture('files/format_review_file_01.pdf')))
 
     it 'validates that the asset is virus free' do

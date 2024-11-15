@@ -59,6 +59,7 @@ class EmailContactForm < MailForm::Base
 
     def from_address
       return email if issue_type.to_sym == :failures
+
       EtdaWorkflow::Application.config.action_mailer.default_options[:from]
     end
 end

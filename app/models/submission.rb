@@ -199,6 +199,7 @@ class Submission < ApplicationRecord
 
   def check_title_capitalization
     return if allow_all_caps_in_title
+
     word_in_all_caps = false
     title_words.each do |w|
       word_in_all_caps = true if w.scan(/[A-Z]/).length > 4

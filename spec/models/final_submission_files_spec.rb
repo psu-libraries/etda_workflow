@@ -61,9 +61,10 @@ RSpec.describe FinalSubmissionFile, type: :model do
   describe '#asset' do
     context "after a file has been saved" do
       let(:file1) { FactoryBot.create :final_submission_file, :pdf }
+
       describe '#read' do
         it "provides an open IO stream to the file contents" do
-          expect(file1.asset.read).to_not be_blank
+          expect(file1.asset.read).not_to be_blank
         end
       end
 

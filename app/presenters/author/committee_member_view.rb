@@ -47,8 +47,11 @@ class Author::CommitteeMemberView
 
   def committee_members_tooltip_text
     output = ''
-    I18n.t("#{current_partner.id}.committee.list.#{model.submission.degree_type.slug}.members").each do |_, val|
-      output << "<p><strong>#{val[:name]}</strong> - #{val[:description]}</p>"
+    members = I18n.t("#{current_partner.id}.committee.list.#{model.submission.degree_type.slug}.members")
+    if members.is_a? Hash
+      members.each_value do |val|
+        output << "<p><strong>#{val[:name]}</strong> - #{val[:description]}</p>"
+      end
     end
     output.html_safe
   end
