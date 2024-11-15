@@ -559,7 +559,7 @@ DEPENDENCIES
   prawn (~> 2.4.0)
   psych (< 4)
   puma (>= 4.3.0)
-  rails (~> 7.0)
+  rails (~> 7.2.2)
   rails-controller-testing (~> 1.0.0)
   rsolr (~> 2.5.0)
   rspec-rails (~> 7.0.0)
