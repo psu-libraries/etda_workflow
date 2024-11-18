@@ -41,6 +41,6 @@ FROM base as production
 
 RUN bundle install --without development test
 
-RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY="<%= ENV['DEVISE_SECRET_KEY'] %>" bundle exec rails assets:precompile
+RUN PARTNER=graduate RAILS_ENV=production DEVISE_SECRET_KEY=<%= Rails.application.credentials.dig(:secret_key_base) %> bundle exec rails assets:precompile
 
 CMD ["/etda_workflow/bin/startup"]
