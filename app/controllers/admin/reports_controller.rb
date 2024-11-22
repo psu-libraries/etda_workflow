@@ -82,11 +82,9 @@ class Admin::ReportsController < AdminController
   end
 
   def graduate_data_report_export
-    @report_export = ExportReport.new('graduate_data_report', graduate_data_result)
-
     respond_to do |format|
       format.json do
-        render json: @report_export.as_json, content_type: 'application/json'
+        render json: graduate_data_result.to_json, content_type: 'application/json'
         headers['Content-Disposition'] = 'attachment; filename="graduate_data_report.json"'
       end
     end
@@ -103,5 +101,16 @@ class Admin::ReportsController < AdminController
         .joins('LEFT JOIN committee_members cm ON submissions.id = cm.submission_id')
         .joins('LEFT JOIN committee_roles cr ON cm.committee_role_id = cr.id')
         .group('submissions.id', 'i.id_number')
+        .collect do |s|
+        { "access_id" => s.author.access_id,
+          "alternate_email_address" => s.author.alternate_email_address,
+          "committee_members" => s.committee_members.collect do |cm|
+                                   {
+                                     "name" => cm.name,
+                                     "email" => cm.email,
+                                     "role" => cm.committee_role.name
+                                   }
+                                 end }
+      end
     end
 end
