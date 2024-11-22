@@ -22,22 +22,22 @@ require_relative '../lib/log/formatter'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-# Logging
-# logging_config = Rails.application.config_for(:logging)
-# config.lograge.enabled = logging_config[:lograge][:enabled]
-
-# config.lograge.formatter = Lograge::Formatters::Logstash.new if logging_config[:format] == 'logstash'
-
-# config.logger = if logging_config[:stdout]
-#                     ActiveSupport::Logger.new(STDOUT)
-#                 else
-#                     ActiveSupport::Logger.new(Rails.root.join('log', "#{Rails.env}.log"))
-#                 end
-
 module EtdaWorkflow
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
+
+    # # Logging
+    logging_config = Rails.application.config_for(:logging)
+    config.lograge.enabled = logging_config[:lograge][:enabled]
+
+    config.lograge.formatter = Lograge::Formatters::Logstash.new if logging_config[:format] == 'logstash'
+
+    config.logger = if logging_config[:stdout]
+                        ActiveSupport::Logger.new(STDOUT)
+                    else
+                        ActiveSupport::Logger.new(Rails.root.join('log', "#{Rails.env}.log"))
+                    end
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
