@@ -76,11 +76,11 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
       click_link "Additional File"
     end
     within('#format-review-file-fields') do
-      all('input[type="file"]')[0].set(fixture('format_review_file_01.pdf'))
-      all('input[type="file"]')[1].set(fixture('format_review_file_02.pdf'))
+      all('input[type="file"]')[0].set(file_fixture('format_review_file_01.pdf'))
+      all('input[type="file"]')[1].set(file_fixture('format_review_file_02.pdf'))
     end
     within('#admin-feedback-files') do
-      all('input[type="file"]')[0].set(fixture('admin_feedback_01.pdf'))
+      all('input[type="file"]')[0].set(file_fixture('admin_feedback_01.pdf'))
     end
 
     find("#submission_federal_funding_details_attributes_training_support_funding_true").click
@@ -145,9 +145,9 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
     expect(page).not_to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
       click_link "Additional File"
-      all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
+      all('input[type="file"]').first.set(file_fixture('final_submission_file_01.pdf'))
       click_link "Add File"
-      all('input[type="file"]').last.set(fixture('admin_feedback_01.pdf'))
+      all('input[type="file"]').last.set(file_fixture('admin_feedback_01.pdf'))
     end
     click_button 'Update Metadata'
     visit admin_edit_submission_path(final_submission)
@@ -173,10 +173,10 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
     expect(page).not_to have_link('final_submission_file_01.pdf')
     within('#final-submission-information') do
       click_link "Additional File"
-      all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
+      all('input[type="file"]').first.set(file_fixture('final_submission_file_01.pdf'))
 
       click_link "Additional File"
-      all('input[type="file"]').last.set(fixture('final_submission_file_01.pdf'))
+      all('input[type="file"]').last.set(file_fixture('final_submission_file_01.pdf'))
     end
     click_button 'Update Metadata'
     visit admin_edit_submission_path(final_submission)
@@ -196,7 +196,7 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
     visit admin_edit_submission_path(final_submission)
     within('#final-submission-information') do
       click_link "Additional File"
-      all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
+      all('input[type="file"]').first.set(file_fixture('final_submission_file_01.pdf'))
     end
     find('#submission_access_level_restricted').click
     find('#submission_proquest_agreement').click if current_partner.graduate?

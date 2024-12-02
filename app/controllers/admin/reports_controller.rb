@@ -22,7 +22,7 @@ class Admin::ReportsController < AdminController
     ids = params[:submission_ids].split(',').map(&:to_i)
     @csv_report_export = ExportReport.new('custom_report', Submission.where(id: ids))
     respond_to do |format|
-      format.csv { render template: 'admin/reports/csv_export_report.csv.erb' }
+      format.csv { render template: 'admin/reports/csv_export_report' }
       headers['Content-Disposition'] = 'attachment; filename="custom_report.csv"'
       headers['Content-Type'] ||= 'text/csv'
       headers['Content-Type'] ||= 'text/xls'
@@ -35,7 +35,7 @@ class Admin::ReportsController < AdminController
     ids = params[:submission_ids].split(',').map(&:to_i)
     @csv_report_export = ExportReport.new('final_submission_approved', Submission.where(id: ids))
     respond_to do |format|
-      format.csv { render template: 'admin/reports/csv_export_report.csv.erb' }
+      format.csv { render template: 'admin/reports/csv_export_report' }
       headers['Content-Disposition'] = 'attachment; filename="final_submission_report.csv"'
       headers['Content-Type'] ||= 'text/csv'
       headers['Content-Type'] ||= 'text/xls'
@@ -54,7 +54,7 @@ class Admin::ReportsController < AdminController
     ids = params[:author_ids].split(',').map(&:to_i)
     @csv_report_export = ExportReport.new('confidential_hold_report', Author.where(id: ids))
     respond_to do |format|
-      format.csv { render template: 'admin/reports/csv_export_report.csv.erb' }
+      format.csv { render template: 'admin/reports/csv_export_report' }
       headers['Content-Disposition'] = 'attachment; filename="confidential_hold_report.csv"'
       headers['Content-Type'] ||= 'text/csv'
       headers['Content-Type'] ||= 'text/xls'
@@ -74,7 +74,7 @@ class Admin::ReportsController < AdminController
 
     @csv_report_export = ExportReport.new('committee_member_report', result)
     respond_to do |format|
-      format.csv { render template: 'admin/reports/csv_export_report.csv.erb' }
+      format.csv { render template: 'admin/reports/csv_export_report' }
       headers['Content-Disposition'] = 'attachment; filename="committee_member_report.csv"'
       headers['Content-Type'] ||= 'text/csv'
       headers['Content-Type'] ||= 'text/xls'

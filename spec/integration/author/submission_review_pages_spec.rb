@@ -79,7 +79,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
 
   context 'author can review admin feedback' do
     it 'when format review is rejected' do
-      allow(admin_feedback_format).to receive(:current_location).and_return('spec/fixtures/admin_feedback_01.pdf')
+      allow(admin_feedback_format).to receive(:current_location).and_return('spec/fixtures/files/admin_feedback_01.pdf')
       visit "/author/submissions/#{submission3.id}/format_review/edit"
       expect(page).to have_content('Format Review notes from the administrator')
       expect(page).to have_content("not your best work")
@@ -97,7 +97,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
     end
 
     it 'when final submission is rejected' do
-      allow(admin_feedback_final).to receive(:current_location).and_return('spec/fixtures/admin_feedback_01.pdf')
+      allow(admin_feedback_final).to receive(:current_location).and_return('spec/fixtures/files/admin_feedback_01.pdf')
       visit "/author/submissions/#{submission4.id}/final_submission/edit"
       expect(page).to have_content('Final Submission notes from the administrator')
       expect(page).to have_content("not your best work")
@@ -111,7 +111,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
 
   context 'author can review format review information' do
     it 'in a new browser tab' do
-      allow(format_review_file).to receive(:current_location).and_return('spec/fixtures/format_review_file_01.pdf')
+      allow(format_review_file).to receive(:current_location).and_return('spec/fixtures/files/format_review_file_01.pdf')
       visit "/author/submissions/#{submission1.id}/format_review"
       expect(page).to have_content('Format Review Files')
       expect(page).to have_content(submission1.title)
@@ -132,7 +132,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
 
   context 'author can review final submission information ' do
     it 'in a new browser tab' do
-      allow(final_submission_file).to receive(:current_location).and_return('spec/fixtures/final_submission_file_01.pdf')
+      allow(final_submission_file).to receive(:current_location).and_return('spec/fixtures/files/final_submission_file_01.pdf')
       visit "/author/submissions/#{submission1.id}/final_submission"
       expect(page).to have_content('Final Submission Files')
       expect(page).to have_content(submission1.title)

@@ -17,7 +17,7 @@ class EtdUrls
       if ENV['EXPLORE_HOST']
         "https://#{ENV['EXPLORE_HOST']}"
       else
-        "https://#{EtdaUtilities::Hosts.new.explore_host(current_partner.id, Rails.application.secrets.stage)}"
+        "https://#{EtdaUtilities::Hosts.new.explore_host(current_partner.id, ENV['RAILS_ENV'])}"
       end
     end
 
@@ -25,7 +25,7 @@ class EtdUrls
       if ENV['WORKFLOW_HOST']
         "https://#{ENV['WORKFLOW_HOST']}"
       else
-        "https://#{EtdaUtilities::Hosts.new.workflow_submit_host(current_partner.id, Rails.application.secrets.stage)}"
+        "https://#{EtdaUtilities::Hosts.new.workflow_submit_host(current_partner.id, ENV['RAILS_ENV'])}"
       end
     end
 end

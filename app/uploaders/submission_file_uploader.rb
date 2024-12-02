@@ -47,24 +47,14 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
     Pathname.new('.').join(asset_prefix, asset_hash)
   end
 
-  def content_type_blacklist
-    ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-     'application/vnd.ms-word.document.macroEnabled.12', 'application/vnd.ms-word.template.macroEnabled.12',
-     'application/vnd.openxmlformats-officedocument.wordprocessingml.template']
+  def content_type_allowlist
+    ['application/pdf',
+     'application/txt', 'text/plain',
+     'image/jpg', 'image/jpeg', 'image/png', 'image/gif',
+     'audio/mp3', 'audio/wav', 'video/mov', 'video/mp4', 'application/zip']
   end
 
-  def extension_blacklist
-    %w[dotx dotm docx doc docm dot]
+  def extension_allowlist
+    %w[pdf txt jpg jpeg png gif mp3 wav mov mp4 zip]
   end
-
-  # private
-  #
-  #   def move_file(_file)
-  #     # the file cannot be moved here when
-  #     # uploading released submissions
-  #     # ******** this doesn't work bc file.id is empty so extended file path cannot be calculated
-  #     return unless model.submission.status_behavior.released_for_publication?
-  #     original_file_location = Rails.root.join(identity_subdir, asset_identifier)
-  #     EtdaFilePaths.new.move_a_file(model.id, original_file_location)
-  #   end
 end
