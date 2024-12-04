@@ -9,7 +9,7 @@ FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.6-node-21:20241204 as base
 # RUN apt-get install -y gcc-12-base=12.2.0-14
 # Install GCC 12 and dependencies
 # Ensure necessary tools are installed
-RUN apt-get update && apt-get install -y wget dpkg
+# This fails -> RUN apt-get update && apt-get install -y wget dpkg
 
 # Download gcc-12-base and libgcc-s1
 RUN wget http://archive.ubuntu.com/ubuntu/pool/main/g/gcc-12/gcc-12-base_12.2.0-14_amd64.deb \
