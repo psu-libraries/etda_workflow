@@ -8,7 +8,7 @@ FROM ubuntu:22.04 as base
 # RUN apt --fix-broken install -y # Didnt work
 
 # Else add the correct gcc-12-base 
-RUN apt-get install -y gcc-12-base=12.2.0-14
+# RUN apt-get install -y gcc-12-base=12.2.0-14
 
 
 # hadolint ignore=DL3008
