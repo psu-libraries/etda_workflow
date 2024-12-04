@@ -1,10 +1,13 @@
 # syntax=docker/dockerfile:experimental
-FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.2-node-16:20240701 as base
+FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.6-node-21:20241204 as base
 
 # hadolint ignore=DL3008
+
 RUN apt-get update && \
+  apt-get --fix-broken install -y && \
   apt-get install --no-install-recommends libmariadb-dev mariadb-client clamav clamdscan wget libpng-dev make -y && \
-  rm -rf /var/lib/apt/lists/*
+  rm -rf /var/lib/apt/lists/* && \
+  apt-get clean
 
 ENV TZ=America/New_York
 
