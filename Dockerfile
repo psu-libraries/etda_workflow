@@ -1,6 +1,11 @@
 # syntax=docker/dockerfile:experimental
 FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.6-node-21:20241204 as base
 
+# Add these to see if it builds
+RUN apt --fix-broken install -y
+
+# Else add the correct gcc-12-base 
+
 # hadolint ignore=DL3008
 RUN apt-get update && \
   apt-get install --no-install-recommends libmariadb-dev mariadb-client clamav clamdscan wget libpng-dev make -y && \
