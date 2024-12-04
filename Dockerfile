@@ -8,19 +8,24 @@ FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.6-node-21:20241204 as base
 # Else add the correct gcc-12-base 
 # RUN apt-get install -y gcc-12-base=12.2.0-14
 # Install GCC 12 and dependencies
-RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/g/gcc-12/gcc-12-base_12.2.0-14_amd64.deb \
-    && dpkg -i gcc-12-base_12.2.0-14_amd64.deb
+# Ensure necessary tools are installed
+RUN apt-get update && apt-get install -y wget dpkg
 
-RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/g/gcc-12/libgcc-s1_12.2.0-14_amd64.deb \
-    && dpkg -i libgcc-s1_12.2.0-14_amd64.deb
+# Download gcc-12-base and libgcc-s1
+RUN wget http://archive.ubuntu.com/ubuntu/pool/main/g/gcc-12/gcc-12-base_12.2.0-14_amd64.deb \
+    && wget http://archive.ubuntu.com/ubuntu/pool/main/g/gcc-12/libgcc-s1_12.2.0-14_amd64.deb
 
-# Download and install GCC 12
-RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/g/gcc-12/gcc-12_12.2.0-14_amd64.deb \
-    && dpkg -i gcc-12_12.2.0-14_amd64.deb
+# Install the base packages
+RUN dpkg -i gcc-12-base_12.2.0-14_amd64.deb libgcc-s1_12.2.0-14_amd64.deb
 
-# Install G++ (if needed)
-RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/g/gcc-12/g++-12_12.2.0-14_amd64.deb \
-    && dpkg -i g++-12_12.2.0-14_amd64.deb
+# Download and install gcc-12 and g++-12
+RUN wget http://archive.ubuntu.com/ubuntu/pool/main/g/gcc-12/gcc-12_12.2.0-14_amd64.deb \
+    && wget http://archive.ubuntu.com/ubuntu/pool/main/g/gcc-12/g++-12_12.2.0-14_amd64.deb \
+    && dpkg -i gcc-12_12.2.0-14_amd64.deb g++-12_12.2.0-14_amd64.deb
+
+# Optionally, clean up downloaded files
+RUN rm -f gcc-12-base_12.2.0-14_amd64.deb libgcc-s1_12.2.0-14_amd64.deb gcc-12_12.2.0-14_amd64.deb g++-12_12.2.0-14_amd64.deb
+
 
 
 
