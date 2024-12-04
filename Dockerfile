@@ -1,5 +1,8 @@
 # syntax=docker/dockerfile:experimental
-FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.6-node-21:20241204 as base
+# FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.6-node-21:20241204 as base
+#trying generic random imga
+FROM ubuntu:22.04 as base 
+
 
 # Add these to see if it builds
 # RUN apt --fix-broken install -y # Didnt work
