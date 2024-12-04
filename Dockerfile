@@ -1,7 +1,5 @@
 # syntax=docker/dockerfile:experimental
-# FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.6-node-21:20241204 as base
-#trying generic random imga
-FROM ubuntu:22.04 as base 
+FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.6-node-21:20241204 as base
 
 
 # Add these to see if it builds
@@ -9,6 +7,21 @@ FROM ubuntu:22.04 as base
 
 # Else add the correct gcc-12-base 
 # RUN apt-get install -y gcc-12-base=12.2.0-14
+# Install GCC 12 and dependencies
+RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/g/gcc-12/gcc-12-base_12.2.0-14_amd64.deb \
+    && dpkg -i gcc-12-base_12.2.0-14_amd64.deb
+
+RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/g/gcc-12/libgcc-s1_12.2.0-14_amd64.deb \
+    && dpkg -i libgcc-s1_12.2.0-14_amd64.deb
+
+# Download and install GCC 12
+RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/g/gcc-12/gcc-12_12.2.0-14_amd64.deb \
+    && dpkg -i gcc-12_12.2.0-14_amd64.deb
+
+# Install G++ (if needed)
+RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/g/gcc-12/g++-12_12.2.0-14_amd64.deb \
+    && dpkg -i g++-12_12.2.0-14_amd64.deb
+
 
 
 # hadolint ignore=DL3008
