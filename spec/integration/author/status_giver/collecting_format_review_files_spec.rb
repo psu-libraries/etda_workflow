@@ -22,7 +22,7 @@ RSpec.describe 'When Collecting Format Review Files', type: :integration, js: tr
         expect(page).to have_content('Select one or more files to upload')
         expect(page).to have_css '#format-review-file-fields .nested-fields div.form-group div:first-child input[type="file"]'
         first_input_id = first('#format-review-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
-        attach_file first_input_id, fixture('format_review_file_01.pdf')
+        attach_file first_input_id, file_fixture('format_review_file_01.pdf')
         click_button 'Submit files for review'
         submission.reload
         expect(submission.federal_funding).to eq(false)

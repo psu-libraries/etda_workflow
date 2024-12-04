@@ -1,6 +1,6 @@
 class FileUtilityHelper
   def copy_test_file(to_path)
-    FileUtils.cp(Rails.root.join('spec', 'fixtures', 'final_submission_file_01.pdf'), to_path)
+    FileUtils.cp(Rails.root.join('spec', 'fixtures', 'files', 'final_submission_file_01.pdf'), to_path)
   end
 
   def remove_test_file(from_path)

@@ -38,51 +38,41 @@ RSpec.describe FinalSubmissionFile, type: :model do
     expect(final_submission_file.full_file_path).to eq("#{WORKFLOW_BASE_PATH}final_submission_files/#{EtdaFilePaths.new.detailed_file_path(final_submission_file.id)}")
   end
 
-  # describe 'virus scanning' do
-  #   # The .name below is required due to the way Rails reloads classes in
-  #   # development and test modes, can't compare the actual constants
-  #   let(:virus_scan_is_mocked?) { VirusScanner.name == MockVirusScanner.name }
-  #
-  #   let(:good_file) { build :final_submission_file }
-  #
-  #   let(:infected_file) do
-  #     build :final_submission_file,
-  #           asset: File.open(fixture 'eicar_standard_antivirus_test_file.txt')
-  #   end
-  #
-  #   it 'validates that the asset is virus free' do
-  #     if virus_scan_is_mocked?
-  #       allow(VirusScanner).to receive(:scan).and_return(double(safe?: true))
-  #     end
-  #     good_file.valid?
-  #     expect(good_file.errors[:asset]).to be_empty
-  #
-  #     if virus_scan_is_mocked?
-  #       allow(VirusScanner).to receive(:scan).and_return(double(safe?: false))
-  #     end
-  #     infected_file.valid?
-  #     expect(infected_file.errors[:asset]).to include I18n.t('errors.messages.virus_free')
-  #   end
-  # end
+  describe 'virus scanning' do
+    # The .name below is required due to the way Rails reloads classes in
+    # development and test modes, can't compare the actual constants
+    let(:virus_scan_is_mocked?) { VirusScanner.name == MockVirusScanner.name }
 
-  # describe '#asset' do
-  #   context "after a file has been saved" do
-  #     let(:file1) { FactoryBot.create :final_submission_file, :pdf }
-  #     let(:file2) { FactoryBot.create :final_submission_file, :docx }
-  #
-  #     describe '#read' do
-  #       it "provides an open IO stream to the file contents" do
-  #         expect(file1.asset.read).to_not be_blank
-  #         expect(file2.asset.read).to_not be_blank
-  #       end
-  #     end
-  #
-  #     describe '#content_type' do
-  #       it "returns the content type for the file" do
-  #         expect(file1.asset.content_type).to eq "application/pdf"
-  #         expect(file2.asset.content_type).to eq "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-  #       end
-  #     end
-  #   end
-  # end
+    let(:good_file) { build :final_submission_file }
+
+    let(:infected_file) { described_class.new(asset: File.open(file_fixture('final_submission_file_01.pdf'))) }
+
+    it 'validates that the asset is virus free' do
+      allow(VirusScanner).to receive(:safe?).and_return(true) if virus_scan_is_mocked?
+      good_file.valid?
+      expect(good_file.errors[:asset]).to be_empty
+
+      allow(VirusScanner).to receive(:safe?).and_return(false) if virus_scan_is_mocked?
+      infected_file.valid?
+      expect(infected_file.errors[:asset]).to include I18n.t('errors.messages.virus_free')
+    end
+  end
+
+  describe '#asset' do
+    context "after a file has been saved" do
+      let(:file1) { FactoryBot.create :final_submission_file, :pdf }
+
+      describe '#read' do
+        it "provides an open IO stream to the file contents" do
+          expect(file1.asset.read).not_to be_blank
+        end
+      end
+
+      describe '#content_type' do
+        it "returns the content type for the file" do
+          expect(file1.asset.content_type).to eq "application/pdf"
+        end
+      end
+    end
+  end
 end

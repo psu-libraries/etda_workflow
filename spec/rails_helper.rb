@@ -21,6 +21,8 @@ require 'devise'
 require 'cancan/ability'
 require 'shoulda/matchers'
 require 'rspec/retry'
+require 'csv'
+Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
 
 # WebMock: Allow localhost and selenium:4444 so we do not block communication between test instance and webdriver.
 require 'webmock/rspec'
@@ -91,7 +93,7 @@ RSpec.configure do |config|
   end
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_paths = ["#{::Rails.root}/spec/fixtures"]
 
   config.use_transactional_fixtures = false   # was true 8/27/18
 

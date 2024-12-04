@@ -50,7 +50,7 @@ RSpec.describe "When Waiting for Committee Review", type: :integration, js: true
           find('#submission_access_level_open_access').click if current_partner.graduate?
           click_link "Additional File"
           within('#final-submission-file-fields') do
-            all('input[type="file"]').first.set(fixture('final_submission_file_01.pdf'))
+            all('input[type="file"]').first.set(file_fixture('final_submission_file_01.pdf'))
           end
           click_button 'Submit final files for review'
           expect(Submission.find(submission.id).status).to eq 'waiting for committee review'

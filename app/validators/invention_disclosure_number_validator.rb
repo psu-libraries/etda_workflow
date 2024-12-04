@@ -18,7 +18,7 @@ class InventionDisclosureNumberValidator < ActiveModel::EachValidator
   private
 
     def valid_id_number?(record, attribute, number)
-      record.errors[attribute] << 'Invention Disclosure Number is required for Restricted submissions.' unless number_is_valid? number
+      record.errors.add(attribute, message: 'Invention Disclosure Number is required for Restricted submissions.') unless number_is_valid? number
     end
 
     def number_is_valid?(number)

@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 # Load the Rails application.
-require_relative 'application'
+require_relative "application"
 
 # This method returns true if the current instance is the development env
 # or is running in qa or dev (as opposed to stage, prod, or the test env).

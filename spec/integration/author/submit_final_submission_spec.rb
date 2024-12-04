@@ -36,7 +36,7 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         choose "submission_access_level_open_access" if current_partner.graduate?
         expect(page).to have_css('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
-        attach_file first_input_id, fixture('final_submission_file_01.pdf')
+        attach_file first_input_id, file_fixture('final_submission_file_01.pdf')
         if current_partner.graduate?
           find("#submission_federal_funding_details_attributes_training_support_funding_false").click
           find("#submission_federal_funding_details_attributes_other_funding_false").click
@@ -78,7 +78,7 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         choose "submission_access_level_open_access" if current_partner.graduate?
         expect(page).to have_css('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
-        attach_file first_input_id, fixture('final_submission_file_01.pdf')
+        attach_file first_input_id, file_fixture('final_submission_file_01.pdf')
         check 'I agree to copyright statement'
         check 'I agree to ProQuest statement' if current_partner.graduate?
         click_button 'Submit final files for review'
@@ -110,9 +110,9 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         choose "submission_access_level_open_access" if current_partner.graduate?
         expect(page).to have_css('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
-        attach_file first_input_id, fixture('final_submission_file_01.pdf')
+        attach_file first_input_id, file_fixture('final_submission_file_01.pdf')
         click_link "Additional File"
-        all('input[type="file"]').last.set(fixture('final_submission_file_01.pdf'))
+        all('input[type="file"]').last.set(file_fixture('final_submission_file_01.pdf'))
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
         check 'I agree to ProQuest statement' if current_partner.graduate?
@@ -149,7 +149,7 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         choose "submission_access_level_open_access" if current_partner.graduate?
         expect(page).to have_css('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')
         first_input_id = first('#final-submission-file-fields .nested-fields div.form-group div:first-child input[type="file"]')[:id]
-        attach_file first_input_id, fixture('final_submission_file_01.pdf')
+        attach_file first_input_id, file_fixture('final_submission_file_01.pdf')
         check 'I agree to copyright statement'
         check 'I agree to ProQuest statement' if current_partner.graduate?
         click_button 'Submit final files for review'

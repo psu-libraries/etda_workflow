@@ -1,25 +1,23 @@
-# frozen_string_literal: true
+require_relative "boot"
 
-require_relative 'boot'
-
-# require 'rails/all'
-#
 require "rails"
 # Pick the frameworks you want:
 require "active_model/railtie"
 require "active_job/railtie"
 require "active_record/railtie"
+# require "active_storage/engine"
 require "action_controller/railtie"
 require "action_mailer/railtie"
+# require "action_mailbox/engine"
+# require "action_text/engine"
 require "action_view/railtie"
-# require "action_cable/engine"
-# require "sprockets/railtie"
+require "action_cable/engine"
 # require "rails/test_unit/railtie"
 require 'action_cable'
 require 'csv'
 
 require_relative '../lib/log/formatter'
-#
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -27,10 +25,9 @@ Bundler.require(*Rails.groups)
 module EtdaWorkflow
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 6.0
 
-    config.load_defaults "6.0" # enables zeitwerk mode in CRuby
-
-    # Logging
+    # # Logging
     logging_config = Rails.application.config_for(:logging)
     config.lograge.enabled = logging_config[:lograge][:enabled]
 
@@ -42,34 +39,22 @@ module EtdaWorkflow
                         ActiveSupport::Logger.new(Rails.root.join('log', "#{Rails.env}.log"))
                     end
 
-    config.log_formatter = if logging_config[:format] == 'logstash'
-                                JSONFormatter.new
-                           else
-                              ActiveSupport::Logger::SimpleFormatter.new
-                           end
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks])
 
-    config.logger.formatter = config.log_formatter
-
-    # moved lib/devise to app/lib/devise to bypass eagerload/autoload issue rails 5
-    # config.eager_load_paths << "#{Rails.root}/lib/**/*"
+    # Configuration for the application, engines, and railties goes here.
     #
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
     #
-    config.time_zone = 'Eastern Time (US & Canada)'
-    config.active_record.default_timezone = :local
-    config.active_record.time_zone_aware_attributes = false
+    # config.time_zone = "Central Time (US & Canada)"
+    # config.eager_load_paths << Rails.root.join("extras")
 
-    config.autoload_paths += Dir[Rails.root.join('app/presenters')]
-    config.autoload_paths += Dir["#{config.root}/lib"]
-    config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
+    # Don't generate system test files.
+    config.generators.system_tests = nil
 
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'partners', I18n.default_locale.to_s, '*', '*.*{rb,yml}').to_s]
-
-    config.assets.enabled = false
-    config.generators do |g|
-      g.assets false
-    end
+    config.secret_key_base = ENV['SECRET_KEY_BASE']
   end
 end

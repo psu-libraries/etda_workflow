@@ -16,6 +16,6 @@ RSpec.describe SubmissionFileUploader do
   end
 
   it "does not allow word docs to be uploaded" do
-    expect { File.open('spec/fixtures/format_review_file_03.docx') { |f| uploader.store!(f) } }.to raise_error(CarrierWave::IntegrityError)
+    expect { File.open('spec/fixtures/files/format_review_file_03.docx') { |f| uploader.store!(f) } }.to raise_error(CarrierWave::IntegrityError)
   end
 end

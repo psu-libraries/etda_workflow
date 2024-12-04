@@ -2,22 +2,22 @@
 
 source 'https://rubygems.org'
 
-ruby '3.1.2'
+ruby '3.1.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.2.2'
 # Use mysql as the database for Active Record
 gem 'mysql2'
 # Use Puma as the app server
 gem 'puma', ">= 4.3.0"
 # For bundling/importing assets
-gem 'shakapacker', '~> 7.0.2'
+gem 'shakapacker', '~> 7.0.3'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # SideKiq for queueing jobs
 gem 'sidekiq', '~> 7.1.3'
 # Use SCSS for stylesheets
-gem 'sassc-rails', '~> 2.1.0'
+gem 'sassc-rails', '~> 2.1.2'
 # Jquery for rails
 gem 'jquery-rails', '~> 4.4.0'
 # FontAwesome sass integration
@@ -31,11 +31,10 @@ gem 'net-ldap', '~> 0.16.1'
 # sftp for lionapth csv imports
 gem "net-sftp", "~> 3.0"
 # Country drop-downs
-gem 'country_select', git: 'https://github.com/stefanpenner/country_select.git', branch: 'master'
-# Form builder
-gem 'simple_form', '>= 5.0.0'
+gem 'country_select', '~> 10.0.0'
+gem 'simple_form', "~> 5.3.1"
 # File uploads
-gem 'carrierwave', '~> 2.2.5'
+gem 'carrierwave', "~> 3.0.7"
 # Virus scanning for file uploads
 gem 'clamby'
 # For image resizing
@@ -46,12 +45,12 @@ gem 'cocoon', '~> 1.2.0'
 # User authorization
 gem 'cancancan', '~> 3.1.0'
 # Easy email forms
-gem 'mail_form', '~> 1.9.0'
+gem 'mail_form', '~> 1.10.1'
 # Logging & Health Checks!
 gem 'okcomputer', '~> 1.18.0'
 gem 'logstash-event', '~> 1.2.0'
-gem 'lograge', '~> 0.11.0'
-gem 'lograge-sql', '~> 1.1.0'
+gem 'lograge', '~> 0.12.0'
+gem 'lograge-sql', '~> 2.4.0'
 # Ruby client for Apache solr
 gem 'rsolr', '~> 2.5.0'
 # Enumerated attributes with I18n
@@ -97,33 +96,33 @@ group :development do
   # Debugging with byebug/pry with web-console
   gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring', '~> 2.1.0'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring', '~> 4.0.0'
+  gem 'spring-watcher-listen', '~> 2.1.0'
 end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.38'
+  gem 'capybara', '~> 3.40'
   gem 'capybara-email'
   gem 'webrick'
   # Fakes and factories for testing
-  gem 'factory_bot_rails', '~> 5.0'
+  gem 'factory_bot_rails', '~> 6.4.0'
   gem 'faker', '~> 2.11.0'
   # Rspec for rails
-  gem 'rspec-rails', '~> 4.0.0'
+  gem 'rspec-rails', '~> 7.0.0'
   # Use older controller testing methods
   gem 'rails-controller-testing', '~> 1.0.0'
   # Open webpage in browser
-  gem 'launchy', '~> 2.5.0'
+  gem 'launchy', '~> 3.0.1'
   # Web driver
   # Pinned at same version as the selenium container in docker-compose.yml
-  gem 'selenium-webdriver', '~> 4.14'
+  gem 'selenium-webdriver', '~> 4.26'
   # Database cleaning
-  gem "database_cleaner", '~> 1.8.0'
+  gem "database_cleaner", '~> 2.1.0'
   # Extra matchers for rspec
   gem 'shoulda-matchers', '~> 4.3.0'
   # Retry on failure for finicky spec
   gem 'rspec-retry', '~> 0.6.0'
   # Stub http requests
-  gem 'webmock', '~> 3.14.0'
+  gem 'webmock', '~> 3.24.0'
 end

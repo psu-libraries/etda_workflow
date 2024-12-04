@@ -16,7 +16,6 @@ RSpec.describe FormatReviewFile, type: :model do
   it { is_expected.to validate_presence_of :submission_id }
   it { is_expected.to belong_to :submission }
 
-  # it { is_expected.to validate_presence_of :asset }
   it 'validates the presence of asset when an author is editing' do
     submission = FactoryBot.create :submission, :collecting_committee
     submission.author_edit = true
@@ -51,7 +50,7 @@ RSpec.describe FormatReviewFile, type: :model do
 
     let(:good_file) { FactoryBot.create :format_review_file }
 
-    infected_file = described_class.new(asset: File.open(fixture('eicar_standard_antivirus_test_file.txt')))
+    infected_file = described_class.new(asset: File.open(fixture('files/format_review_file_01.pdf')))
 
     it 'validates that the asset is virus free' do
       allow(VirusScanner).to receive(:safe?).and_return(true) if virus_scan_is_mocked?
