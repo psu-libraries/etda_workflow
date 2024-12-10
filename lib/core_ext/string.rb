@@ -5,6 +5,7 @@ class String
     end
   end
 
+  # TODO: We don't use this, and probably shouldn't. It would give results like "an unicorn" and 'a hour'
   def articleize
     %w[a e i o u].include?(self[0].downcase) ? "an #{self}" : "a #{self}"
   end

@@ -59,7 +59,8 @@ module EtdaWorkflow
 
     config.autoload_paths += Dir[Rails.root.join('app/presenters')]
     config.autoload_paths += Dir["#{config.root}/lib"]
-    config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
+    Rails.autoloaders.main.ignore(Rails.root.join('lib/core_ext/string.rb'))
+    Rails.autoloaders.main.ignore(Rails.root.join('lib/log/formatter.rb'))
 
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'partners', I18n.default_locale.to_s, '*', '*.*{rb,yml}').to_s]
   end
