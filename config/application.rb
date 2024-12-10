@@ -27,7 +27,7 @@ module EtdaWorkflow
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
-    # # Logging
+    # Logging
     logging_config = Rails.application.config_for(:logging)
     config.lograge.enabled = logging_config[:lograge][:enabled]
 
@@ -56,5 +56,12 @@ module EtdaWorkflow
     config.generators.system_tests = nil
 
     config.secret_key_base = ENV['SECRET_KEY_BASE']
+
+    config.autoload_paths += Dir[Rails.root.join('app/presenters')]
+    config.autoload_paths += Dir["#{config.root}/lib"]
+    Rails.autoloaders.main.ignore(Rails.root.join('lib/core_ext/string.rb'))
+    Rails.autoloaders.main.ignore(Rails.root.join('lib/log/formatter.rb'))
+
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'partners', I18n.default_locale.to_s, '*', '*.*{rb,yml}').to_s]
   end
 end
