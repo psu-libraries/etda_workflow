@@ -56,5 +56,10 @@ module EtdaWorkflow
     config.generators.system_tests = nil
 
     config.secret_key_base = ENV['SECRET_KEY_BASE']
+
+    config.autoload_paths += Dir[Rails.root.join('app/presenters')]
+    config.autoload_paths += Dir["#{config.root}/lib"]
+    Rails.autoloaders.main.ignore(Rails.root.join('lib/core_ext/string.rb'))
+    Rails.autoloaders.main.ignore(Rails.root.join('lib/log/formatter.rb'))
   end
 end
