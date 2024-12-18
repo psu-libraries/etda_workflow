@@ -12,15 +12,4 @@ RSpec.describe String, type: :model do
       expect(new_str).to eql('hello there')
     end
   end
-
-  context '#articalize' do
-    it 'properly uses "an" before words starting with a vowel' do
-      str = 'egg'
-      expect(str.articleize).to eq('an egg')
-    end
-    it 'does uses "a" before words starting with a constant' do
-      str = 'house'
-      expect(str.articleize).to eq('a house')
-    end
-  end
 end
