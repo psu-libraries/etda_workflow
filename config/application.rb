@@ -16,8 +16,6 @@ require "action_cable/engine"
 require 'action_cable'
 require 'csv'
 
-require_relative '../lib/log/formatter'
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -58,8 +56,5 @@ module EtdaWorkflow
     config.secret_key_base = ENV['SECRET_KEY_BASE']
 
     config.autoload_paths += Dir[Rails.root.join('app/presenters')]
-    config.autoload_paths += Dir["#{config.root}/lib"]
-    Rails.autoloaders.main.ignore(Rails.root.join('lib/core_ext/string.rb'))
-    Rails.autoloaders.main.ignore(Rails.root.join('lib/log/formatter.rb'))
   end
 end
