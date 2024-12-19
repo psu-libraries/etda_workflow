@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe String, type: :model do
-  context '#strip_control_and_extended_characters' do
+  describe '#strip_control_and_extended_characters' do
     it 'removes non-ascii characters' do
       str = "\u00BD"
       str += 'hello there'
