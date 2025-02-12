@@ -1,5 +1,4 @@
 version: 2.1
-
 jobs:
   release:
     docker:
@@ -122,9 +121,9 @@ jobs:
             PARTNER=sset docker-compose run --name=test_sset --service-ports -d test
             docker exec -e RAILS_ENV=test test_sset /etda_workflow/bin/ci-rspec
       - persist_to_workspace:
-            root: .
-            paths:
-              - unit_coverage.json
+          root: .
+          paths:
+            - unit_coverage.json
   integration_test_grad:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -132,29 +131,29 @@ jobs:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
-    - attach_workspace:
-        at: /tmp/workspace
-    - setup_remote_docker:
-        version: docker24
-        docker_layer_caching: true
-    - checkout
-    - run:
-        name: "Integration Test Graduate"
-        command: |
-          docker load -i /tmp/workspace/etda-workflow.tar
-          export TAG=${CIRCLE_SHA1}
-          export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
-          docker-compose up -d db selenium redis
-          sleep 10
-          PARTNER=graduate docker-compose run --name=test --service-ports -d test
-          docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
-          docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
-          /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o integration_coverage.json -p /etda_workflow/ .resultset.json
-          # docker cp test:/app/vendor .
-    - persist_to_workspace:
-        root: .
-        paths:
-          - integration_coverage.json
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker:
+          version: docker24
+          docker_layer_caching: true
+      - checkout
+      - run:
+          name: "Integration Test Graduate"
+          command: |
+            docker load -i /tmp/workspace/etda-workflow.tar
+            export TAG=${CIRCLE_SHA1}
+            export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
+            docker-compose up -d db selenium redis
+            sleep 10
+            PARTNER=graduate docker-compose run --name=test --service-ports -d test
+            docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
+            docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
+            /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o integration_coverage.json -p /etda_workflow/ .resultset.json
+            # docker cp test:/app/vendor .
+      - persist_to_workspace:
+          root: .
+          paths:
+            - integration_coverage.json
   publish:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -182,7 +181,7 @@ jobs:
       - when:
           condition:
             and:
-              - equal: [ main, << pipeline.git.branch >> ]
+              - equal: [main, << pipeline.git.branch >>]
           steps:
             - run:
                 name: "Push Latest"
@@ -201,10 +200,10 @@ jobs:
       - run:
           name: "Updating Config Repo"
           command: |
-              ssh-keyscan github.com > ~/.ssh/known_hosts
-              git clone $CONFIG_REPO
-              cd etda-config
-              ./bin/generate_app
+            ssh-keyscan github.com > ~/.ssh/known_hosts
+            git clone $CONFIG_REPO
+            cd etda-config
+            ./bin/generate_app
 workflows:
   version: 2
   etda-workflow:
@@ -243,6 +242,6 @@ workflows:
             - publish
           filters:
             branches:
-               only:
+              only:
                 - /preview\/.*/
                 - main
