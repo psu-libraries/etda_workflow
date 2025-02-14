@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '3.1.2'
+ruby '3.4.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.2.2'
@@ -90,6 +90,7 @@ group :development, :test do
   gem 'niftany'
   # Coverage report
   gem 'simplecov', '~> 0.17.0'
+  gem 'mutex_m'
 end
 
 group :development do
