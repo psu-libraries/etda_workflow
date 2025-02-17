@@ -17,7 +17,7 @@ RSpec.describe "Unrelease a submission", type: :integration, js: true, honors: t
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
-          'User-Agent' => 'Faraday v2.12.0'
+          'User-Agent' => 'Faraday v2.12.2'
         }
       )
       .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -28,7 +28,7 @@ RSpec.describe "Unrelease a submission", type: :integration, js: true, honors: t
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
-          'User-Agent' => 'Faraday v2.12.0'
+          'User-Agent' => 'Faraday v2.12.2'
         }
       )
       .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -97,7 +97,7 @@ RSpec.describe 'Unrelease a legacy submission without missing data', js: true, h
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
-          'User-Agent' => 'Faraday v2.12.0'
+          'User-Agent' => 'Faraday v2.12.2'
         }
       )
       .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -108,7 +108,7 @@ RSpec.describe 'Unrelease a legacy submission without missing data', js: true, h
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
-          'User-Agent' => 'Faraday v2.12.0'
+          'User-Agent' => 'Faraday v2.12.2'
         }
       )
       .to_return(status: 200, body: { error: false }.to_json, headers: {})
