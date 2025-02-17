@@ -108,7 +108,7 @@ group :test do
   gem 'webrick'
   # Fakes and factories for testing
   gem 'factory_bot_rails', '~> 6.4.0'
-  gem 'faker', '~> 2.11.0'
+  gem 'faker', '~> 3.5.1'
   # Rspec for rails
   gem 'rspec-rails', '~> 7.0.0'
   # Use older controller testing methods
