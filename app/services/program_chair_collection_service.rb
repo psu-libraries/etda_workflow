@@ -7,7 +7,7 @@ class ProgramChairCollectionService
     collection = []
     gpms_response.each do |pc|
       collection << ["#{pc['NAME']} (#{committee_role_name(pc['ROLE'])})",
-                     (pc['NAME']).to_s,
+                     pc['NAME'].to_s,
                      { member_email: "#{pc['ACCESSID'].downcase}@psu.edu",
                        committee_role_id: committee_role_id(pc["ROLE"]) }]
     end

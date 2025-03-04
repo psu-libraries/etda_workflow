@@ -16,7 +16,7 @@ RSpec.describe SolrDataImportService, type: :model do
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v2.12.0'
+            'User-Agent' => 'Faraday v2.12.2'
           }
         )
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -27,7 +27,7 @@ RSpec.describe SolrDataImportService, type: :model do
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v2.12.0'
+            'User-Agent' => 'Faraday v2.12.2'
           }
         )
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -49,7 +49,7 @@ RSpec.describe SolrDataImportService, type: :model do
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v2.12.0'
+            'User-Agent' => 'Faraday v2.12.2'
           }
         ).to_return(status: 200, body: { error: false }.to_json, headers: {})
       stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
@@ -59,7 +59,7 @@ RSpec.describe SolrDataImportService, type: :model do
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v2.12.0'
+            'User-Agent' => 'Faraday v2.12.2'
           }
         )
         .to_return(status: 200, body: { error: false }.to_json, headers: {})

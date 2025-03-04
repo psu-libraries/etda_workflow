@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '3.1.2'
+ruby '3.4.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.2.2'
@@ -90,6 +90,7 @@ group :development, :test do
   gem 'niftany'
   # Coverage report
   gem 'simplecov', '~> 0.17.0'
+  gem 'mutex_m'
 end
 
 group :development do
@@ -107,7 +108,7 @@ group :test do
   gem 'webrick'
   # Fakes and factories for testing
   gem 'factory_bot_rails', '~> 6.4.0'
-  gem 'faker', '~> 2.11.0'
+  gem 'faker', '~> 3.5.1'
   # Rspec for rails
   gem 'rspec-rails', '~> 7.0.0'
   # Use older controller testing methods
