@@ -205,7 +205,6 @@ jobs:
             cd etda-config
             ./bin/generate_app
 workflows:
-  version: 2
   etda-workflow:
     jobs:
       - release:
