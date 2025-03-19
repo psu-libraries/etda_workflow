@@ -29,7 +29,7 @@ gem 'etda_utilities', '~> 0.0'
 # Ldap client
 gem 'net-ldap', '~> 0.16.1'
 # sftp for lionapth csv imports
-gem "net-sftp", "~> 3.0"
+gem "net-sftp", "~> 4.0"
 # Country drop-downs
 gem 'country_select', '~> 10.0.0'
 gem 'simple_form', "~> 5.3.1"

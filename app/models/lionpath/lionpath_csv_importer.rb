@@ -31,7 +31,7 @@ class Lionpath::LionpathCsvImporter
   end
 
   def sftp_download(pattern)
-    sftp = Net::SFTP.start(ENV['LIONPATH_SFTP_SERVER'], ENV['LIONPATH_SFTP_USER'], key_data: [ENV['LIONPATH_SSH_KEY']])
+    sftp = Net::SFTP.start(ENV['LIONPATH_SFTP_SERVER'], ENV['LIONPATH_SFTP_USER'], key_data: [ENV['LIONPATH_SSH_KEY']], non_interactive: true)
     file = sftp.dir
                .glob("out/", "#{pattern}*")
                .reject { |f| f.name.starts_with?('.') }
