@@ -69,7 +69,7 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "etda_workflow_#{Rails.env}"
   config.action_mailer.perform_caching = false
   config.action_mailer.default_options = { from: "no-reply@psu.edu" }
-  config.action_mailer.delivery_method = ENV.fetch("EMAIL_INDICATOR").to_sym { :test }
+  config.action_mailer.delivery_method = ENV.fetch("EMAIL_INDICATOR", "test").to_sym
 
   # SMTP Settings
   config.action_mailer.smtp_settings = {
