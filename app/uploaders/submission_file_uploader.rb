@@ -8,6 +8,11 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
 
   self.base_dir = Rails.root
 
+  def size_range
+    max_size = ENV.fetch('MAX_FILE_SIZE', 50).to_i
+    1..max_size.megabytes
+  end
+
   def move_to_cache
     return false if Rails.env.test?
 
