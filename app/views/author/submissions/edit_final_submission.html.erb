@@ -61,7 +61,9 @@
       <div id="final-submission-file-fields">
         <%= render partial: 'author/submissions/final_submission_file_label' %>
         <%= f.simple_fields_for :final_submission_files do |final_submission_file| %>
-            <%= render 'file_fields', file_fields: final_submission_file %>
+            <% if final_submission_file.object.created_at %>
+             <%= render 'file_fields', file_fields: final_submission_file %>
+            <% end %>
         <% end %>
       </div>
 
