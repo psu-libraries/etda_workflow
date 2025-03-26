@@ -7,7 +7,9 @@
           <%= link_to "/#{session['user_role']}/files/#{file_fields.object.link_identifier}/#{file_fields.object.id}", class: 'file-link', target: '_blank' do %>
             <%= file_fields.object.asset_identifier %>
           <% end %>
-      <div class="badge badge-secondary float-right upload-date"><div>Uploaded <%= l file_fields.object.created_at, format: t("#{current_partner.id}.time.formats.medium") %></div></div>
+      <% if file_fields.object.created_at %>
+        <div class="badge badge-secondary float-right upload-date"><div>Uploaded <%= l file_fields.object.created_at, format: t("#{current_partner.id}.time.formats.medium") %></div></div>
+      <% end %>
     </div>
   <% else %>
     <span class='sr-only'>Select the file you wish to upload using the file browser.</span>
