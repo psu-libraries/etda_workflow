@@ -98,7 +98,7 @@ en:
 
                     <em>The next step is to prepare your final submission and review this with each of your committee members. Once this review is completed and all final revisions have been made, upload your final submission to the ETD, where your committee members will electronically approve your final submission. Not uploading your final submission by the <a href="%{deadline_url}" target="_blank">deadline</a> will result in you being removed from the graduation list.</em>
 
-                    Please refer to the <a href="%{thesis_guide}" target="_blank">Thesis and Dissertation Handbook</a> when making corrections. Please keep in mind the <a href="%{deadline_url}" target="_blank">deadline</a> for the final submission of your dissertation. Please note that the final submission is mandatory, and submitting it late may affect your ability to graduate on time.
+                    Please refer to the <a href="%{thesis_guide}" target="_blank">Thesis and Dissertation Handbook</a> when making corrections. Please keep in mind the <a href="%{deadline_url}" target="_blank">deadline</a> for the final submission of your thesis/dissertation. Please note that the final submission is mandatory, and submitting it late may affect your ability to graduate on time.
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
 
@@ -107,7 +107,7 @@ en:
                     Office of Theses and Dissertations    
         format_review_received:
           message: |
-                    Thank you for submitting your %{degree_type} format review. Our staff will be in touch with you when the review has been completed. If you are graduating this semester, you will receive the results of the review by email within 2-3 weeks. If you have not already done so, you must pay your thesis fee at the <a href="%{payment_portal_url}" target="_blank">Fox Graduate School Payment Portal.</a> You only need to pay once. 
+                    Thank you for submitting your %{degree_type} format review. Our staff will be in touch with you when the review has been completed. If you have not already done so, you must pay your thesis fee at the <a href="%{payment_portal_url}" target="_blank">Fox Graduate School Payment Portal.</a> You only need to pay once. 
 
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call (814)865-1795.
 
@@ -175,7 +175,7 @@ en:
                     The committee for %{author_name}'s %{degree_type} has not completed its review after 7 days.
                     The committee members who must vote but have not are:
                     %{committee_list}
-                    Please secure the necessary votes within the next 5 business days.
+                    Please secure the necessary votes within the next 5 business days. If the <a href="${deadline_url}" target="_blank">submission deadline</a> has passed for the current semester, the student's submission will be moved to the next semester.
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
 
                     Best,
@@ -250,15 +250,25 @@ en:
                     Office of Theses and Dissertations
         committee_approved:
           message: |
-                    Your ETD has been reviewed and approved by your committee. The Fox Graduate School will now review your submission. <b>Until you receive notification that the Fox Graduate School has approved your submission, your work is not officially approved.</b> You will be notified by email of your ETD approval or if changes are required within 2-3 weeks.
+                    Your ETD has been reviewed and approved by your committee. The Fox Graduate School will now review your submission. <b>Until you receive notification that the Fox Graduate School has approved your submission, your work is not officially approved.</b> You should refer to the ETD site for any necessary corrections.
                     If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
                     Best,
 
                     Office of Theses and Dissertations
                     115 Kern Building
                     Graduate School
-                    University Park, PA  16802
+                    University Park, PA 16802
+
                     cc:%{committee_email_list}
+
+                    Fawn Hosterman | Director of Graduate Records
+                    J. Jeffrey and Ann Marie Fox Graduate School [https://gradschool.psu.edu/]
+
+                    Penn State
+                    114 Kern Graduate Building | University Park, PA 16802
+                    (814) 865-4002
+
+                    Find information and support at the Graduate School Resource Portal [https://gradschool.psu.edu/portal/home]
         author_release_warning:
           message: |
                     We are writing to inform you that the two-year restriction on your %{degree_type} titled "%{title}" is about to expire. 
@@ -347,7 +357,7 @@ en:
       intro_4_2: 'the dollar amount of Federal funds for the project or program, and'
       intro_4_3: 'percentage and dollar amount of the total costs of the project or program that will be financed by nongovernmental sources.'
       intro_5: 'Many other Federal awards and some non-Federal awards also require public acknowledgment of funding. As a general principle, it is always a good idea to acknowledge your source(s) of funds in any publication.'
-      intro_6: '<strong><em>If you are uncertain about the specific contractual obligations associated with your source(s) of funding, please consult with your Adviser and/or the faculty member/principal investigator providing your funding BEFORE uploading your document.  Answering this question incorrectly will delay acceptance of your dissertation that may result in your removal from the graduation list for the next Commencement ceremony.</em></strong>'
+      intro_6: '<strong><em>If you are uncertain about the specific contractual obligations associated with your source(s) of funding, please consult with your Adviser and/or the faculty member/principal investigator providing your funding BEFORE uploading your document.  Answering this question incorrectly will delay acceptance of your thesis/dissertation that may result in your removal from the graduation list for the next Commencement ceremony.</em></strong>'
       question_1: 1.	Did you receive an NSF Graduate Research Fellowship, an NIH Ruth L. Kirschstein Predoctoral Individual National Research Service Award or other <strong>individual</strong> federally-sponsored training support while a graduate student?
       question_2: 2.	Were any other federal funds used to support the work described in this thesis or dissertation (e.g., research grants to your advisor, etc.)?
       confirmation: I confirm that all individual federal training support funds used for the work described in this thesis or dissertation have been explicitly acknowledged in the document, including a disclaimer indicating that the findings and conclusions do not necessarily reflect the view of the funding agency, as specified above.
@@ -421,7 +431,7 @@ en:
     approval_help:
       message: "If you know you need to approve a student's work, but do not see it in your queue or the link is broken, your ability to vote has expired. To resolve this issue, please try clearing your cache and then trying the link again or try the link on a different browser. If that doesn't work, please call OTD at 814-865-5448 or email us at <a href='mailto:gradthesis@psu.edu' target='_blank'>gradthesis@psu.edu</a> so that we may proxy for you."
     default_format_review_note:
-      "The documents below contain your format review corrections, information on supporting materials, and the graduation checklist. Please refer to the Thesis and Dissertation Handbook when making corrections. \n \n The next step is to submit your final dissertation. The final dissertation must be reviewed and approved by all committee members and all changes made before it is uploaded to the eTD site for electronic approval. Formatting changes requested by the Office of Theses and Dissertations will be the only changes permitted after the final is uploaded."
+      "The documents below contain your format review corrections, information on supporting materials, and the graduation checklist. Please refer to the Thesis and Dissertation Handbook when making corrections. \n \n The next step is to submit your final thesis/dissertation. The final thesis/dissertation must be reviewed and approved by all committee members and all changes made before it is uploaded to the eTD site for electronic approval. Formatting changes requested by the Office of Theses and Dissertations will be the only changes permitted after the final is uploaded."
     default_final_submission_note:
       "Your final submission requires further revisions. To see these revisions, open the PDF below in Adobe Acrobat. Please note this DOES NOT require you to get committee approvals again. Rather, make the requested revisions and then upload the corrected file to the ETDA. The Office of Theses and Dissertations will review your submission again until it is error-free. Please resubmit by the deadline for your intended graduation semester requirements. Not doing so puts you at risk of being removed from the graduation list. \n \n Thank you and do reach out if you have any questions!"
     fee_message:
