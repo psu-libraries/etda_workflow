@@ -428,6 +428,14 @@ en:
         scope: final_withheld
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
+    approver:
+      review_form:
+        file_list_heading: "Files I need to review:"
+        acceptance_summary: "I accept and approve %{name}'s %{degree} and agree to distribution as indicated by the access level."
+        approved_option: "Yes, I accept and approve."
+        rejected_option: "No, I do not accept and approve."
+        notes_for_student_label: "Notes for Student (required only if rejecting)"
+        submit_button: "Submit Review"
     approval_help:
       message: "If you know you need to approve a student's work, but do not see it in your queue or the link is broken, your ability to vote has expired. To resolve this issue, please try clearing your cache and then trying the link again or try the link on a different browser. If that doesn't work, please call OTD at 814-865-5448 or email us at <a href='mailto:gradthesis@psu.edu' target='_blank'>gradthesis@psu.edu</a> so that we may proxy for you."
     default_format_review_note:

@@ -1,7 +1,7 @@
 <div>
   <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
     <fieldset <%= @review_complete ? 'disabled' : '' %>>
-      <strong>Files I need to review:</strong>
+      <strong><%= I18n.t("#{current_partner.id}.approver.review_form.file_list_heading")%></strong>
       <div id="file_links">
         <%= raw @most_relevant_file_links %>
       </div>
@@ -27,17 +27,17 @@
         <br>
       <% end %>
       <strong>Approval</strong>
-      <p>I accept and approve <%= @author.full_name %>'s <%= @submission.degree.degree_type.name.to_s.downcase %> and agree to distribution as indicated by the access level.</p>
+      <p> <%= I18n.t("#{current_partner.id}.approver.review_form.acceptance_summary", name: @author.full_name, degree: @submission.degree.degree_type.name.to_s.downcase) %> </p>
       <div class="col-sm-8">
       <%= f.input :status, as: :radio_buttons,
-                  collection: [['Yes, I accept and approve.', 'approved'], ['No, I do not accept and approve.', 'rejected']],
+                  collection: [[I18n.t("#{current_partner.id}.approver.review_form.approved_option"), 'approved'], [I18n.t("#{current_partner.id}.approver.review_form.rejected_option"), 'rejected']],
                   wrapper: :vertical_radio_and_checkboxes,
                   label: false %>
       </div>
-      <%= f.input :notes, :label => "Notes for Student (required only if rejecting)", :input_html => { :class => 'notes_select' } %>
+      <%= f.input :notes, :label => I18n.t("#{current_partner.id}.approver.review_form.notes_for_student_label"), :input_html => { :class => 'notes_select' } %>
 
       <div class="form-group actions col-xs-4">
-        <%= f.button :submit, "Submit Review", class: 'btn-success' %>
+        <%= f.button :submit, I18n.t("#{current_partner.id}.approver.review_form.submit_button"), class: 'btn-success' %>
         <% if @review_complete %>
           <%= render 'review_message' %>
         <% end %>

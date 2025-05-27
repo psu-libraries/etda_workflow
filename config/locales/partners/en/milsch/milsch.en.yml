@@ -304,7 +304,15 @@ en:
          scope: final_withheld
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
-    admin:
+    approver:
+      review_form:
+        file_list_heading: "Files I need to review:"
+        acceptance_summary: "I accept and approve %{name}'s %{degree} and agree to distribution as indicated by the access level."
+        approved_option: "Yes, I accept and approve."
+        rejected_option: "No, I do not accept and approve."
+        notes_for_student_label: "Notes for Student (required only if rejecting)"
+        submit_button: "Submit Review"
+      admin:
       umg: 'cn=umg/psu.dsrd.etda_milsch_admin_users,dc=psu,dc=edu'
       submission:
         edit:
