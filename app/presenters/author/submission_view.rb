@@ -83,7 +83,7 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_two_name
-    "#{I18n.t("#{current_partner_id}.submission.step_two_description")}"
+    I18n.t("#{current_partner_id}.submission.step_two_description").to_s
   end
 
   def step_three_class
@@ -111,7 +111,7 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_three_name
-    "#{I18n.t("#{current_partner_id}.submission.step_three_description")}"
+    I18n.t("#{current_partner_id}.submission.step_three_description").to_s
   end
 
   def step_three_status
@@ -162,7 +162,7 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_five_name
-    "#{I18n.t("#{current_partner_id}.submission.step_five_description")}"
+    I18n.t("#{current_partner_id}.submission.step_five_description").to_s
   end
 
   def step_five_class
@@ -211,7 +211,7 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_six_name
-    "#{I18n.t("#{current_partner_id}.submission.step_six_description")}"
+    I18n.t("#{current_partner_id}.submission.step_six_description").to_s
   end
 
   def step_six_status
@@ -236,9 +236,9 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_seven_link
-    if status_behavior.collecting_final_submission_files_rejected?
-      "<a href=\'/author/submissions/#{id}/final_submission/edit\' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}' </span>]</a>".html_safe
-    end
+    return unless status_behavior.collecting_final_submission_files_rejected?
+
+    "<a href=\'/author/submissions/#{id}/final_submission/edit\' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}' </span>]</a>".html_safe
   end
 
   def step_seven_class

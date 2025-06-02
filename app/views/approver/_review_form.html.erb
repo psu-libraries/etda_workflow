@@ -1,7 +1,7 @@
 <div>
   <%= simple_form_for @committee_member, url: approver_update_committee_member_path() do |f| %>
     <fieldset <%= @review_complete ? 'disabled' : '' %>>
-      <strong><%= I18n.t("#{current_partner.id}.approver.review_form.file_list_heading")%></strong>
+      <strong><%= I18n.t("#{current_partner.id}.approver.review_form.file_list_heading") %></strong>
       <div id="file_links">
         <%= raw @most_relevant_file_links %>
       </div>
