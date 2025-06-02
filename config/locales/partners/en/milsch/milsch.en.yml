@@ -9,6 +9,13 @@ en:
     submission:
       new: If you would like to start a new thesis submission, you may do so by clicking the following link.
       descriptor: 'thesis'
+      step_one_description: Provide program information
+      step_two_description: Provide Committee
+      step_three_description: Upload Format Review files
+      step_four_description: Millennium Scholars Program reviews Format Review files  
+      step_five_description: Upload Final Submission Files
+      step_six_description:  Waiting for Committee Review
+      step_seven_description: Millennium Scholars Program reviews Final Submission Files
     partner:
       abbrev: millennium
       name: Millennium Scholars Program

@@ -23,6 +23,13 @@ en:
         point8_dissertation: "I acknowledge that my approved dissertation will be publicly released through the University Libraries as part of the Penn State Graduate Council's Ph.D. degree requirements."
         confidential_hold: "Notice: Public release of a %{degree_type} will still occur even with a Confidentiality Hold. If you have any questions or concerns, please contact the Office of Theses and Dissertations in the Graduate School at gradthesis@psu.edu."
         initial: 'Initial here'
+      step_one_description: Provide program information
+      step_two_description: Provide Committee
+      step_three_description: Upload Format Review files
+      step_four_description: Fox Graduate School reviews Format Review files  
+      step_five_description: Upload Final Submission Files
+      step_six_description:  Waiting for Committee Review
+      step_seven_description: Fox Graduate School reviews Final Submission Files
     partner:
       abbrev: graduate
       name: Fox Graduate School

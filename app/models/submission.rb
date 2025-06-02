@@ -191,6 +191,11 @@ class Submission < ApplicationRecord
     federal_funding ? 'Yes' : 'No'
   end
 
+  # Our SimpleDelegator SubmissionView is not scoped to include current_partner, so we pass in what we need
+  def current_partner_id
+    return current_partner.id
+  end
+
   def update_federal_funding
     return false if federal_funding_details.nil? || federal_funding_details.uses_federal_funding?.nil?
 
