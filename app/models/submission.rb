@@ -28,7 +28,7 @@ class Submission < ApplicationRecord
   delegate :access_id, to: :author, prefix: false
   delegate :alternate_email_address, to: :author, prefix: false
   delegate :confidential?, to: :author
-    # Our SimpleDelegator SubmissionView is not scoped to include current_partner, so we pass in what we need
+  # Our SimpleDelegator SubmissionView is not scoped to include current_partner, so we pass in what we need
   delegate :id, to: :current_partner, prefix: true
 
   enumerize :access_level, in: AccessLevel.valid_levels, default: '' # , i18n_scope: "#{current_partner.id}.access_level"
@@ -192,7 +192,6 @@ class Submission < ApplicationRecord
 
     federal_funding ? 'Yes' : 'No'
   end
-
 
   def update_federal_funding
     return false if federal_funding_details.nil? || federal_funding_details.uses_federal_funding?.nil?
