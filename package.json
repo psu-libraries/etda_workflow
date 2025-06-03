@@ -23,7 +23,7 @@
     "datatables.net-buttons-bs4": "^2.0",
     "datatables.net-fixedheader-bs4": "^3.0",
     "datatables.net-select-bs4": "^1.0",
-    "elliptic": "^6.5.4",
+    "elliptic": "^6.6.1",
     "erb-loader": "^0.1.2",
     "file-loader": "^6.2.0",
     "font-awesome": "^4.7.0",
@@ -36,13 +36,14 @@
     "mini-css-extract-plugin": "^2.7.6",
     "mkdirp": "^1.0.0",
     "node-sass": "^8.0.0",
+    "path-to-regexp": "0.1.10",
     "popper.js": "^1.16.0",
     "sass-loader": "^13.3.2",
     "shakapacker": "7.0.3",
     "tag-it": "^2.0.0",
     "terser-webpack-plugin": "5",
     "url-loader": "^4.1.0",
-    "webpack": "5",
+    "webpack": "^5.94.0",
     "webpack-assets-manifest": "5",
     "webpack-cli": "4",
     "webpack-dev-server": "4",
@@ -57,5 +58,6 @@
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "version": "0.0.0"
 }
