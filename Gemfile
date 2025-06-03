@@ -67,7 +67,7 @@ gem 'sprockets', '~> 3.7.2'
 gem 'prawn', '~> 2.4.0'
 # Create docx documents
 gem 'caracal', '~> 1.4.0'
-gem 'net-imap', require: false          # For Ruby 3 and Rails 6 mail compatibility
+gem 'net-imap', '~> 0.5.7', require: false          # For Ruby 3 and Rails 6 mail compatibility
 gem 'net-pop', require: false           # For Ruby 3 and Rails 6 mail compatibility
 gem 'net-smtp', require: false          # For Ruby 3 and Rails 6 mail compatibility
 # Until the incompatibility issue with ruby 3 is fixed, limit psych to < 4
@@ -81,7 +81,6 @@ gem 'bcrypt_pbkdf', '~> 1.0.0'
 gem 'bugsnag', '~> 6.26'
 # Configure environment settings
 gem 'config', '~> 5.5.2'
-
 
 group :development, :test do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
