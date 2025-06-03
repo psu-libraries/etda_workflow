@@ -9,6 +9,13 @@ en:
     submission:
       new: If you would like to start a new final paper submission, you may do so by clicking the following link.
       descriptor: 'final paper'
+      step_one_description: Provide program information
+      step_two_description: Provide Committee
+      step_three_description: Upload Format Review files
+      step_four_description: School of Science, Engineering, and Technology reviews Format Review files  
+      step_five_description: Upload Final Submission Files
+      step_six_description:  Waiting for Committee Review
+      step_seven_description: School of Science, Engineering, and Technology reviews Final Submission Files
     partner:
       abbrev: sset
       name: School of Science, Engineering, and Technology
@@ -345,7 +352,15 @@ en:
         scope: final_withheld
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
-    admin:
+    approver:
+      review_form:
+        file_list_heading: "Files I need to review:"
+        acceptance_summary: "I accept and approve %{name}'s %{degree} and agree to distribution as indicated by the access level."
+        approved_option: "Yes, I accept and approve."
+        rejected_option: "No, I do not accept and approve."
+        notes_for_student_label: "Notes for Student (required only if rejecting)"
+        submit_button: "Submit Review"
+      admin:
       umg: 'cn=umg/psu.etda_sset_admin_users,dc=psu,dc=edu'
       submission:
         edit:

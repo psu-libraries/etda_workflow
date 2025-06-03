@@ -9,6 +9,13 @@ en:
     submission:
       new: If you would like to start a new thesis submission, you may do so by clicking the following link.  Your final submission will not be complete until you have added your committee members.
       descriptor: 'thesis'
+      step_one_description: Provide Program information
+      step_two_description: Provide Committee information
+      step_three_description: Upload Thesis Format Review
+      step_four_description: Schreyer Honors College reviews Thesis Format Review
+      step_five_description: Upload Completed Thesis
+      step_six_description: Committee reviews Completed Thesis
+      step_seven_description: Schreyer Honors College reviews Completed Thesis
     partner:
       abbrev: schreyer
       name: Schreyer Honors College
@@ -330,6 +337,14 @@ en:
         scope: final_withheld
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
+    approver:
+      review_form:
+        file_list_heading: "Files I need to review:"
+        acceptance_summary: "I accept and approve %{name}'s %{degree} and agree to distribution as indicated by the access level."
+        approved_option: "Yes, I accept and approve."
+        rejected_option: "No, please send it back to the student for revisions and resubmission."
+        notes_for_student_label: "Notes for student (Required only if returning)"
+        submit_button: "Submit Review"
     admin:
       umg: 'cn=umg/psu.sas.etda-honors-admins,dc=psu,dc=edu'
       submission:

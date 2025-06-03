@@ -32,9 +32,9 @@ class Author::SubmissionView < SimpleDelegator
 
   def step_one_description
     if status_behavior.beyond_collecting_committee?
-      "Provide program information <a href='/author/submissions/#{id}/program_information' class='medium'>[Review Program Information <span class='sr-only'>program information for submission '#{title}'</span>]</a>".html_safe
+      "#{I18n.t("#{current_partner_id}.submission.step_one_description")} <a href='/author/submissions/#{id}/program_information' class='medium'>[Review Program Information <span class='sr-only'>program information for submission '#{title}'</span>]</a>".html_safe
     else
-      "Provide program information <a href='/author/submissions/#{id}/edit' class='medium'>[Update Program Information <span class='sr-only'>program information for submission '#{title}'</span>]</a>".html_safe
+      "#{I18n.t("#{current_partner_id}.submission.step_one_description")} <a href='/author/submissions/#{id}/edit' class='medium'>[Update Program Information <span class='sr-only'>program information for submission '#{title}'</span>]</a>".html_safe
     end
   end
 
@@ -83,7 +83,7 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_two_name
-    'Provide Committee '
+    I18n.t("#{current_partner_id}.submission.step_two_description").to_s
   end
 
   def step_three_class
@@ -99,15 +99,19 @@ class Author::SubmissionView < SimpleDelegator
   def step_three_description
     if status_behavior.collecting_format_review_files?
       if status_behavior.collecting_format_review_files_rejected? || format_review_notes.present?
-        "Upload Format Review files <a href='/author/submissions/#{id}/format_review/edit' class='medium'>[Update Format Review <span class='sr-only'>format review files for submission '#{title}' </span>]</a>".html_safe
+        "#{step_three_name} <a href='/author/submissions/#{id}/format_review/edit' class='medium'>[Update Format Review <span class='sr-only'>format review files for submission '#{title}' </span>]</a>".html_safe
       else
-        "<a href='/author/submissions/#{id}/format_review/edit'>Upload Format Review files</a>".html_safe
+        "<a href='/author/submissions/#{id}/format_review/edit'>#{step_three_name}</a>".html_safe
       end
     elsif status_behavior.beyond_collecting_format_review_files?
-      "Upload Format Review files <a href='/author/submissions/#{id}/format_review' class='medium'>[Review Format Review <span class='sr-only'>format review files for submission '#{title}' </span>]</a>".html_safe
+      "#{step_three_name} <a href='/author/submissions/#{id}/format_review' class='medium'>[Review Format Review <span class='sr-only'>format review files for submission '#{title}' </span>]</a>".html_safe
     else
-      'Upload Format Review files'
+      step_three_name
     end
+  end
+
+  def step_three_name
+    I18n.t("#{current_partner_id}.submission.step_three_description").to_s
   end
 
   def step_three_status
@@ -132,6 +136,10 @@ class Author::SubmissionView < SimpleDelegator
     end
   end
 
+  def step_four_description
+    "#{I18n.t("#{current_partner_id}.partner.name")} reviews Format Review files"
+  end
+
   def step_four_status
     status = {}
     if status_behavior.beyond_waiting_for_format_review_response?
@@ -145,12 +153,16 @@ class Author::SubmissionView < SimpleDelegator
 
   def step_five_description
     if status_behavior.beyond_collecting_final_submission_files? && !status_behavior.collecting_final_submission_files_rejected?
-      "Upload Final Submission Files <a href='/author/submissions/#{id}/final_submission' class='medium'>[Review Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>".html_safe
+      "#{step_five_name} <a href='/author/submissions/#{id}/final_submission' class='medium'>[Review Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>".html_safe
     elsif status_behavior.collecting_final_submission_files? && !status_behavior.collecting_final_submission_files_rejected?
-      "<a href='#{"/author/submissions/#{id}/final_submission/edit"}'>Upload Final Submission Files</a>".html_safe
+      "<a href='#{"/author/submissions/#{id}/final_submission/edit"}'>#{step_five_name}</a>".html_safe
     else
-      "Upload Final Submission Files"
+      step_five_name
     end
+  end
+
+  def step_five_name
+    I18n.t("#{current_partner_id}.submission.step_five_description").to_s
   end
 
   def step_five_class
@@ -190,12 +202,16 @@ class Author::SubmissionView < SimpleDelegator
        status_behavior.waiting_for_committee_review? ||
        status_behavior.waiting_for_head_of_program_review? ||
        status_behavior.beyond_waiting_for_committee_review_rejected?
-      "Waiting for Committee Review <a href='/author/submissions/#{id}/committee_review' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>".html_safe
+      "#{step_six_name} <a href='/author/submissions/#{id}/committee_review' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>".html_safe
     elsif status_behavior.waiting_for_committee_review_rejected?
-      "Waiting for Committee Review <a href='/author/submissions/#{id}/committee_review' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a><a href='/author/submissions/#{id}/final_submission/edit' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>".html_safe
+      "#{step_six_name} <a href='/author/submissions/#{id}/committee_review' class='medium'>[My Committee Review <span class='sr-only'>final submission files for submission '#{title}'</span>]</a><a href='/author/submissions/#{id}/final_submission/edit' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}'</span>]</a>".html_safe
     else
-      'Waiting for Committee Review'
+      step_six_name
     end
+  end
+
+  def step_six_name
+    I18n.t("#{current_partner_id}.submission.step_six_description").to_s
   end
 
   def step_six_status
@@ -216,7 +232,13 @@ class Author::SubmissionView < SimpleDelegator
   end
 
   def step_seven_description
-    "<a href=\'/author/submissions/#{id}/final_submission/edit\' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}' </span>]</a>".html_safe if status_behavior.collecting_final_submission_files_rejected?
+    "#{I18n.t("#{current_partner_id}.partner.name")} approves Final Submission files".html_safe
+  end
+
+  def step_seven_link
+    return unless status_behavior.collecting_final_submission_files_rejected?
+
+    "<a href=\'/author/submissions/#{id}/final_submission/edit\' class='medium'>[Update Final Submission <span class='sr-only'>final submission files for submission '#{title}' </span>]</a>".html_safe
   end
 
   def step_seven_class
