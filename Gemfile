@@ -11,7 +11,7 @@ gem 'mysql2'
 # Use Puma as the app server
 gem 'puma', ">= 4.3.0"
 # For bundling/importing assets
-gem 'shakapacker', '~> 7.0.3'
+gem 'shakapacker', '~> 7.2.3'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # SideKiq for queueing jobs
