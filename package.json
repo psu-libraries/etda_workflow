@@ -36,7 +36,6 @@
     "mini-css-extract-plugin": "^2.7.6",
     "mkdirp": "^1.0.0",
     "node-sass": "^8.0.0",
-    "path-to-regexp": "0.1.12",
     "popper.js": "^1.16.0",
     "sass-loader": "^13.3.2",
     "shakapacker": "7.0.3",
