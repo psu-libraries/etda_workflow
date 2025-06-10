@@ -45,6 +45,7 @@
     "webpack": "^5.94.0",
     "webpack-assets-manifest": "5",
     "webpack-cli": "4",
+    "webpack-dev-server": "^5.2.2",
     "webpack-merge": "5",
     "websocket-extensions": "0.1.4",
     "yargs-parser": "^18.1.2"
