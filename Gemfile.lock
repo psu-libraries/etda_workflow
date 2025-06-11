@@ -165,7 +165,7 @@ GEM
       rubocop
       smart_properties
     erubi (1.13.1)
-    etda_utilities (0.20.2)
+    etda_utilities (0.21.0)
     factory_bot (6.5.1)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.4.4)
