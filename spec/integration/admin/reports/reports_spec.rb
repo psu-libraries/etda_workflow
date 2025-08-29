@@ -87,7 +87,7 @@ RSpec.describe "Admins can run reports", type: :integration, js: true do
   before do
     create_committee(submission1)
     create_committee(submission2)
-    submission1.committee_members.first.update(name: 'Professor Thesis Advisor Test') if current_partner.honors?
+    submission1.committee_members.first.update(name: 'Professor Thesis Advisor Test', email: 'professor@thesis.advisor') if current_partner.honors?
     submission2.access_level = 'restricted'
     oidc_authorize_admin
     visit admin_submissions_dashboard_path(Degree.first.degree_type)
@@ -133,13 +133,19 @@ RSpec.describe "Admins can run reports", type: :integration, js: true do
       expect(page).not_to have_content(author3.last_name)
       expect(page).to have_content(submission2.program.name)
       expect(page).to have_content(submission1.admin_notes)
-      expect(page).not_to have_content(submission3.program.name) if current_partner.graduate?
-      expect(page).not_to have_content("Professor Thesis Advisor Test") if current_partner.graduate?
-      if current_partner.honors?
-        expect(page).to have_content("Thesis Supervisor")
+      if current_partner.graduate?
+        expect(page).not_to have_content(submission3.program.name)
+        expect(page).not_to have_content('Professor Thesis Advisor Test')
+        expect(page).not_to have_content('professor@thesis.advisor')
+      elsif current_partner.honors?
+        expect(page).to have_content('Thesis Supervisor')
         supervisor_index = find_all('th').map(&:text).find_index("Thesis Supervisor")
         thesis_supervisor_name = find_all('td')[supervisor_index].text
         expect(thesis_supervisor_name).to eq('Professor Thesis Advisor Test')
+        expect(page).to have_content("Thesis Supervisor Email")
+        email_index = find_all('th').map(&:text).find_index("Thesis Supervisor Email")
+        thesis_supervisor_email = find_all('td')[email_index].text
+        expect(thesis_supervisor_email).to eq('professor@thesis.advisor')
       end
       click_button 'Select Visible'
       page.assert_selector('tbody .row-checkbox')
