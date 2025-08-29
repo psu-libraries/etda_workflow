@@ -75,6 +75,7 @@ class ExportReport
         r.admin_notes
       ]
       field_list.insert(12, CommitteeMember.thesis_supervisor_name(r)) if current_partner.honors?
+      field_list.insert(13, CommitteeMember.thesis_supervisor_email(r)) if current_partner.honors?
     when 'confidential_hold_report'
       field_list = [r.id, r.access_id, r.last_name, r.first_name, r.psu_email_address, r.alternate_email_address, r.psu_idn, r.confidential_hold_set_at]
     when 'committee_member_report'

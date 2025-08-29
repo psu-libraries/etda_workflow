@@ -18,5 +18,6 @@ array = [
 ]
 
 array.insert(11, CommitteeMember.thesis_supervisor_name(submission)) if current_partner.honors?
+array.insert(12, CommitteeMember.thesis_supervisor_email(submission)) if current_partner.honors?
 
 json.array!(array)
