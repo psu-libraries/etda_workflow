@@ -48,10 +48,10 @@ jobs:
       #     paths:
       #       - etda-workflow.tar
       #     key: docker-image
-      - persist_to_workspace:
-          root: .
-          paths:
-            - etda-workflow.tar
+      # - persist_to_workspace:
+      #     root: .
+      #     paths:
+      #       - etda-workflow.tar
   build_prod:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
