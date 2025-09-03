@@ -33,6 +33,7 @@ class ExportReport
         'Admin Notes'
       ]
       column_list.insert(12, 'Thesis Supervisor Name') if current_partner.honors?
+      column_list.insert(13, 'Thesis Supervisor Email') if current_partner.honors?
     when 'confidential_hold_report'
       column_list = ['ID', 'Access ID', 'Last Name', 'First Name', 'PSU Email Address', 'Alternate Email Address', 'PSU ID', 'Confidential Hold Set At']
     when 'committee_member_report'
