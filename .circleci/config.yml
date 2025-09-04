@@ -150,10 +150,10 @@ jobs:
             docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
             # /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o integration_coverage.json -p /etda_workflow/ .resultset.json
             # docker cp test:/app/vendor .
-      - persist_to_workspace:
-          root: .
-          paths:
-            - integration_coverage.json
+      # - persist_to_workspace:
+      #     root: .
+      #     paths:
+      #       - integration_coverage.json
   publish:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
