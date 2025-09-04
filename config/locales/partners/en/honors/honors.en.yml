@@ -39,7 +39,7 @@ en:
         signature: 'Schreyer Honors College<br /> University Park, PA'
         final_submission_rejected:
           message: |
-                    "The final submission of your honors thesis has been rejected by the Schreyer Honors College. You will need to go back onto <a href="%{etd_site}" target="_blank">the website</a> to look at the feedback and resubmit with the necessary revisions.
+                    "The final submission of your honors thesis has been rejected by the Schreyer Honors College. You will need to go back onto %{link} to look at the feedback and resubmit with the necessary revisions.
 
                     Sincerely,
                     Schreyer Honors College Academic Affairs

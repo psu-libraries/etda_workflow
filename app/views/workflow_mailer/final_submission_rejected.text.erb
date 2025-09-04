@@ -1,6 +1,7 @@
 Dear <%= @author.full_name %>,
 
 <%= t( "#{current_partner.id}.partner.email.final_submission_rejected.message",
+       link: link_to('testing jamboree', @etd_site),
        access_level: @submission.current_access_level.label,
        degree_type: @submission.degree_type,
        partner_name: current_partner.name,
@@ -8,4 +9,4 @@ Dear <%= @author.full_name %>,
        etd_site: @etd_site,
        thesis_guide: @thesis_guide,
        deadline_url: @deadline_url,
-       committee_email_list: @submission.committee_email_list.join(", ") ) %>
+       committee_email_list: @submission.committee_email_list.join(", ") ).html_safe %>
