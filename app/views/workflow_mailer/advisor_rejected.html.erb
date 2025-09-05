@@ -1,0 +1,5 @@
+Dear <%= @author.full_name %>,
+
+<%= simple_format t( "#{current_partner.id}.partner.email.advisor_rejected.message",
+       degree_type: @submission.degree_type ).html_safe %>
+<%= simple_format(t("#{current_partner.id}.partner.email.contact_information").html_safe) %>

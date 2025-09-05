@@ -1,0 +1,8 @@
+Dear <%= @author.full_name %>,
+
+<%= simple_format t( "#{current_partner.id}.partner.email.release_for_publication.message",
+       title: @submission.title,
+       access_level: @submission.current_access_level.label,
+       degree_type: @submission.degree_type,
+       url: link_to(@explore_url, @explore_url) ).html_safe %>
+<%= simple_format(t("#{current_partner.id}.partner.email.contact_information").html_safe) %>

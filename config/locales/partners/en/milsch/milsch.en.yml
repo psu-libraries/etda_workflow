@@ -35,59 +35,40 @@ en:
         address: millennium@psu.edu
         list: 'ul-etda-milsch-admin@pennstateoffice365.onmicrosoft.com'
         signature: 'Millennium Scholars Program <br />130 Ritenour Building<br /> University Park, PA 16802'
+        contact_information: |
+          If you have questions or comments, please email the Millennium Scholars Program Office, <a href="mailto:millennium@psu.edu">millennium@psu.edu</a>.
+          You may also call (814)867-5105, or send mail to:
+          Millennium Scholars Program
+          130 Ritenour Building
+          University Park, PA  16802
         final_submission_rejected:
           message: |
                     The electronic %{degree_type} submitted by you has been rejected by the %{partner_name}.
                     Please meet with your thesis advisor to discuss and make the necessary edits.
                     Resubmit your thesis when directed by the thesis administrator.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         final_submission_approved:
           message: |
                     Congratulations!  Your thesis has been approved by The Millennium Scholars Program.
                     Please accept our congratulations as you complete your degree.
                     (commencement information can be found online as http://commencement.psu.edu/).
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         format_review_received:
           message: |
                     Thank you for submitting your %{degree_type} for format review. Our staff will be in touch with you when the review has been completed.
                     You will receive the results of the review by email within two weeks.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         final_submission_received:
           message: |
                     Thank you for submitting your final %{degree_type}.  Your %{degree_type} has been accepted for committee review.
                     You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         sent_to_committee:
           message: |
                     Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee.
                     No action is required of you at this time.
                     You will be notified once your committee has reviewed and made a decision regarding your document.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
@@ -102,10 +83,6 @@ en:
                     Sincerely,
                     The Millennium Scholars Program
 
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         special_committee_review_request:
           message: |
                     Hello %{committee_member_name},
@@ -119,10 +96,6 @@ en:
                     Sincerely,
                     The Millennium Scholars Program
 
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         committee_member_review_reminder:
           message: |
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review.
@@ -130,21 +103,11 @@ en:
                     %{review_url}
                     If you are serving on this committee in multiple roles, you will only need to submit your review once.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         committee_rejected_admin:
           message: |
                     The committee for %{author_name}'s %{degree_type} has rejected their submission.
                     The submission will automatically be available for the student to edit and resubmit for committee approval.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         committee_rejected_author:
           message: |
                     The committee reviewing your %{degree_type} has rejected your submission.
@@ -152,73 +115,38 @@ en:
                     your committee to review.
                     For additional information regarding the rejection please consult your %{degree_type} adviser.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         committee_rejected_committee:
           message: |
                     %{author_name}'s %{degree_type} titled "%{title}" has been rejected by its committee.
                     The student has been asked to resubmit their work.  Once they have done this, you will be notified via email to review.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         pending_returned_author:
           message: |
                     Your %{degree_type} has been rejected by request of an administrator.
                     You will need to make the necessary revisions or corrections to your document and resubmit your %{degree_type} for your committee to review again.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         pending_returned_committee:
           message: |
                     %{author_name}'s eTD submission titled "%{title}" has been rejected at the request of an administrator.
                     The student has been asked to resubmit their work.  Once they have done this, you will be notified via email to review.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         committee_approved:
           message: |
                     Your submission has been reviewed by your committee and it is approved.
                     No further action is needed by you at this time.  The Millenium Scholars Program will now review your submission.
                     You will be notified by email of your thesis approval or if changes are required within 2-3 weeks.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         release_for_publication:
           message: |
                     Your %{degree_type} titled "%{title}" has been released with the access level of Open Access.
                     You can view your published submission at: %{url}.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         release_for_publication_metadata_only:
           message: |
                     The metadata for your %{degree_type} titled "%{title}" has been released.
                     You can view this information at: %{url}.
                     It retains its access level of %{access_level}.  The full publication will be released in two years.
 
-                    If you have questions or comments, please email the Millennium Scholars Program Office at millennium@psu.edu.
-                    You may also call (814)867-5105, or send mail to:
-                    Millennium Scholars Program
-                    130 Ritenour Building
-                    University Park, PA  16802
         access_level_updated:
           message: |
                     The Millennium Scholars Program has changed the availability of the following MSPT as shown below:
@@ -228,11 +156,7 @@ en:
                      New Availability - %{new_access_level}
                      Old Availability - %{old_access_level}
                      Graduation Year - %{graduation_year}
-                     If you have questions or comments, please email the Millennium Scholars Program Office millennium@psu.edu.
-                     You may also call (814)867-5105, or send mail to:
-                     Millennium Scholars Program
-                     130 Ritenour Building
-                     University Park, PA  16802
+
     program:
       label: Millennium Scholars Program Name
     committee:

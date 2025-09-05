@@ -1,5 +1,5 @@
 class WorkflowMailerPreview < ActionMailer::Preview
-  # Note: These email previews require there to be a Submission started in your dev environment.
+  # NOTE: These email previews require there to be a Submission started in your dev environment.
 
   SUBMISSION = Submission.last
 
