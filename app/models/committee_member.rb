@@ -56,6 +56,13 @@ class CommitteeMember < ApplicationRecord
     supervisors_array.first.name
   end
 
+  def self.thesis_supervisor_email(submission)
+    supervisors_array = CommitteeMember.thesis_supervisors(submission)
+    return '' if supervisors_array.empty?
+
+    supervisors_array.first.email
+  end
+
   def self.remove_committee_members(submission)
     submission.committee_members.each(&:destroy)
     submission.save
