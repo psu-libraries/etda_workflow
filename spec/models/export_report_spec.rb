@@ -69,6 +69,7 @@ RSpec.describe ExportReport, type: :model do
           'Admin Notes'
         ]
         array.insert(12, "Thesis Supervisor Name") if current_partner.honors?
+        array.insert(13, "Thesis Supervisor Email") if current_partner.honors?
         expect(export_report.columns).to eq(array)
       end
     end
@@ -97,6 +98,8 @@ RSpec.describe ExportReport, type: :model do
           submission.admin_notes
         ]
         array.insert(12, CommitteeMember.thesis_supervisor_name(submission)) if current_partner.honors?
+        array.insert(13, CommitteeMember.thesis_supervisor_email(submission)) if current_partner.honors?
+
         expect(fields).to eq(array)
       end
     end
