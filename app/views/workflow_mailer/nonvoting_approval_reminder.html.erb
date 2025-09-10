@@ -1,6 +1,6 @@
-<%= t( "#{current_partner.id}.partner.email.nonvoting_approval_reminder.message",
+<%= simple_format t( "#{current_partner.id}.partner.email.nonvoting_approval_reminder.message",
        full_name: @author.full_name,
        title: @submission.title,
        degree_type: @submission.degree_type,
        committee_member_name: @committee_member.name,
-       review_url: @review_url) %>
+       review_url: link_to(@review_url, @review_url)).html_safe %>

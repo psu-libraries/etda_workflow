@@ -1,0 +1,13 @@
+Dear <%= @author.full_name %>,
+
+<%= simple_format t( "#{current_partner.id}.partner.email.committee_approved.message",
+       access_level: @submission.current_access_level.label,
+       degree_type: @submission.degree_type,
+       partner_name: current_partner.name,
+       author_email: @author.psu_email_address,
+       url: @explore_url,
+       mail_link: mail_to(t("#{current_partner.id}.partner.email.address")),
+       portal_link: link_to(t( "#{current_partner.id}.partner.resource_portal"), t("#{current_partner.id}.partner.resource_portal")),
+       home_link: link_to(t( "#{current_partner.id}.partner.home_page"), t("#{current_partner.id}.partner.home_page")),
+       committee_email_list: @submission.committee_email_list.join(", ") ).html_safe %>
+<%= simple_format(t("#{current_partner.id}.partner.email.contact_information").html_safe) %>

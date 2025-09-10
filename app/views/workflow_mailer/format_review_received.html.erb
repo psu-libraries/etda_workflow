@@ -1,0 +1,6 @@
+Dear <%= @author.full_name %>,
+
+<%= simple_format t( "#{current_partner.id}.partner.email.format_review_received.message",
+       degree_type: @submission.degree_type,
+       payment_portal_url: @payment_portal_url).html_safe %>
+<%= simple_format(t("#{current_partner.id}.partner.email.contact_information").html_safe) %>

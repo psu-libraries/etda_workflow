@@ -1,0 +1,6 @@
+Dear <%= @author.full_name %>,
+
+<%= simple_format t( "#{current_partner.id}.partner.email.sent_to_committee.message",
+       title: @submission.title,
+       degree_type: @submission.degree_type).html_safe %>
+<%= simple_format(t("#{current_partner.id}.partner.email.contact_information").html_safe) %>

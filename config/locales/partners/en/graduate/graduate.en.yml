@@ -40,6 +40,8 @@ en:
         text: <p>The primary purpose of a thesis or dissertation is to train the student in the process of scholarly research and writing under the direction of members of the Graduate Faculty. After the student has graduated and the work is published, it serves as a contribution to human knowledge, is useful to other scholars and perhaps even to a more general audience. Electronic thesis and dissertations (eTDs) expand the creative possibilities open to students and empower students to convey a richer message by permitting video, sound, and color images to be integrated into their work. Submitting and archiving eTDs helps students to understand electronic publishing issues and provides greater acess to students' research. Through the Web, people from any place on the globe can link directly to eTD collections at Penn State and other universities.</p><p>The Fox Graduate School, the University Libraries, and the Graduate Faculty of Penn State have established format standards that theses and dissertations must meet before receiving final approval as fulfillment of graduate requirements.  The Office of Theses and Dissertations staff is responsible for verifying that all eTDs have met these requirements <a href="%{thesis_guide_link}">(refer to the Thesis and Dissertation Guide)</a>.  The text of the eTD should be proofread and free of grammatical errors and typos.  It is extremely important that the author carefully review and proofread the thesis or dissertation before submitting the final document.  After the official approval of the final eTD by the Office of Theses and Dissertations, changes will not be permitted.</p>
       alternate_email_hint: 'The Alternate email address will be used after your psu.edu email address expires.'
       semester_hint: Only upload your dissertation or thesis if you intend to graduate this semester or the following semester.
+      home_page: https://gradschool.psu.edu/
+      resource_portal: https://gradschool.psu.edu/portal/home
       thesis_guide: 'https://gradschool.psu.edu/academics/theses-and-dissertations#Handbook-138642'
       thesis_guide_pdf: 'https://gradschool.psu.edu/assets/uploads/documents/Thesis-and-Dissertation-Handbook.pdf'
       payment_portal_url: 'https://secure.gradsch.psu.edu/paymentportal/'
@@ -55,50 +57,36 @@ en:
         address: gradthesis@psu.edu
         list: 'ul-etda-graduate-admin@pennstateoffice365.onmicrosoft.com'
         signature: 'Fox Graduate School <br />Keller Building<br /> University Park, PA'
+        contact_information: |
+          If you have questions or comments, please email the Office of Theses and Dissertations at <a href="mailto:gradthesis@psu.edu">gradthesis@psu.edu</a> or call us at (814) 865-1795.
+
+          Best,
+
+          Office of Theses and Dissertations
         final_submission_rejected:
           message: |
                     Your final submission has been rejected by the Office of Theses and Dissertations. To see the necessary revisions, please review the notes on the <a href="%{etd_site}" target="_blank">ETD</a>. <em>The next step is to make the necessary revisions or corrections to your document and then, resubmit an updated final submission to the ETD.</em>
 
                     Please refer to the <a href="%{thesis_guide}" target="_blank">Thesis and Dissertation Handbook</a> while making corrections. <em>Not uploading your revised final submission by the <a href="%{deadline_url}" target="_blank">deadline</a> will result in you being removed from the graduation list.</em>
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-
-                    Best,
-
-                    Office of Theses and Dissertations
         final_submission_approved:
           message: |
                     Congratulations! Your final submission has been approved by the Office of Theses and Dissertations. After graduation, your work will be available through Penn State's <a href="%{explore_site}" target="_blank">ETD database</a> and will be sent to ProQuest/UMI Dissertation Services for processing <em>unless you have chosen to restrict access to it.</em>
 
                     If you have chosen “Penn State Restricted” or “Full Restricted” embargo statuses, it will automatically change to “Open Access” after two years. The access level for your %{degree_type} is: %{access_level}. Please accept our congratulations as you complete your degree. Commencement information can be found on the <a href="%{commencement_url}" target="_blank">Fox Graduate School Commencement Page.</a>
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-
-                    Best,
-
-                    Office of Theses and Dissertations
         final_submission_received:
           message: |
                     Thank you for submitting your final submission. Your final submission has been automatically sent through the ETD system to your committee members' emails for approval. 
 
                     <em>Students are required to ensure that each of their committee members approve.</em> You will be notified once your committee has reviewed and made a decision regarding your document. Please ensure that your embargo status is correct and remember that no changes can be made after this point.
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-
-                    Best,
-
-                    Office of Theses and Dissertations
         format_review_rejected:
           message: |
                     Your format review has been rejected by the Office of Theses and Dissertations. To see the necessary revisions, please review the notes on the <a href="%{etd_site}" target="_blank">ETD</a>. <em>The next step is to make the necessary revisions or corrections to your document and then, resubmit an updated format review to the ETD.</em>
 
                     Please refer to the <a href="%{thesis_guide}" target="_blank">Thesis and Dissertation Handbook</a> while making corrections. Not uploading your revised format review by the <a href="%{deadline_url}" target="_blank">deadline</a> will result in you being removed from the graduation list. 
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814)865-1795.
-
-                    Best,
-
-                    Office of Theses and Dissertations
         format_review_accepted:
           message: |
                     Your format review has been approved, but revisions might be needed before you submit the final version of your work. To see if you have any necessary revisions, please review the notes and files on the <a href="%{etd_site}" target="_blank">ETD.</a> There, you will find your format review with corrections listed in the comments. Comments can be viewed by opening the PDF in Adobe Acrobat. 
@@ -106,67 +94,37 @@ en:
                     <em>The next step is to prepare your final submission and review this with each of your committee members. Once this review is completed and all final revisions have been made, upload your final submission to the ETD, where your committee members will electronically approve your final submission. Not uploading your final submission by the <a href="%{deadline_url}" target="_blank">deadline</a> will result in you being removed from the graduation list.</em>
 
                     Please refer to the <a href="%{thesis_guide}" target="_blank">Thesis and Dissertation Handbook</a> when making corrections. Please keep in mind the <a href="%{deadline_url}" target="_blank">deadline</a> for the final submission of your thesis/dissertation. Please note that the final submission is mandatory, and submitting it late may affect your ability to graduate on time.
-
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-
-                    Best,
-
-                    Office of Theses and Dissertations    
+   
         format_review_received:
           message: |
                     Thank you for submitting your %{degree_type} format review. Our staff will be in touch with you when the review has been completed. If you have not already done so, you must pay your thesis fee at the <a href="%{payment_portal_url}" target="_blank">Fox Graduate School Payment Portal.</a> You only need to pay once. 
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call (814)865-1795.
-
-                    Best,
-
-                    Office of Theses and Dissertations
         sent_to_committee:
           message: |
                     Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee. <em>Students are required to ensure that each of their committee members approves.</em> You will be notified once your committee has reviewed and made a decision regarding your document.
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-
-                    Best,
-
-                    Office of Theses and Dissertations
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
 
                     The Fox Graduate School and %{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member. Please login to %{review_url} and complete this request. If you are serving on this committee as either the program head or the professor in charge/director of graduate studies, you might be requested to approve the work twice. 
 
-                    <em>If you know you need to approve a student's work, but do not see it in your queue or the link is broken, your ability to vote has expired. To resolve this issue, please try clearing your cache and then trying the link again or try the link on a different browser. If that doesn't work, please call OTD at 814-865-5448 or email us at gradthesis@psu.edu so that we may proxy for you.</em>
+                    <em>If you know you need to approve a student's work, but do not see it in your queue or the link is broken, your ability to vote has expired. To resolve this issue, please try clearing your cache and then trying the link again or try the link on a different browser. If that doesn't work, please call OTD at 814-865-5448 or email us at %{mail_link} so that we may proxy for you.</em>
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-
-                    Best,
-
-                    Office of Theses and Dissertations
         special_committee_review_request:
           message: |
                     Hello %{committee_member_name},
 
                     The Fox Graduate School of The Pennsylvania State University and %{full_name} require you to review and digitally sign a proposed work for which you have been listed as a committee member. To proceed and provide input on their work, please follow this link:  %{review_url} or you can copy and paste this into your browser. %{seven_day_note}
 
-                    <em>If you know you need to approve a student's work, but do not see it in your queue or the link is broken, your ability to vote has expired. To resolve this issue, please try clearing your cache and then trying the link again or try the link on a different browser. If that doesn't work, please call OTD at 814-865-1795 or email us at gradthesis@psu.edu so that we may proxy for you.</em>
+                    <em>If you know you need to approve a student's work, but do not see it in your queue or the link is broken, your ability to vote has expired. To resolve this issue, please try clearing your cache and then trying the link again or try the link on a different browser. If that doesn't work, please call OTD at 814-865-1795 or email us at %{mail_link} so that we may proxy for you.</em>
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-
-                    Best,
-
-                    Office of Theses and Dissertations
         committee_member_review_reminder:
           message: |
                     Reminder: %{full_name} has submitted their %{degree_type} entitled %{title} for final review. Please visit this URL to conduct your final review: %{review_url}. If you are serving on this committee as both the program head or the professor in charge/director of graduate studies, you might be requested to approve the work twice. 
 
-                    <em>If you know you need to approve a student's work, but do not see it in your queue or the link is broken, your ability to vote has expired. To resolve this issue, please try clearing your cache and then trying the link again or try the link on a different browser. If that doesn't work, please call OTD at 814-865-1795 or email us at gradthesis@psu.edu so that we may proxy for you.</em>
+                    <em>If you know you need to approve a student's work, but do not see it in your queue or the link is broken, your ability to vote has expired. To resolve this issue, please try clearing your cache and then trying the link again or try the link on a different browser. If that doesn't work, please call OTD at 814-865-1795 or email us at %{mail_link} so that we may proxy for you.</em>
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-
-                    Best,
-
-                    Office of Theses and Dissertations
         nonvoting_approval_reminder:
           message: |
                     Dear %{committee_member_name},              
@@ -183,40 +141,21 @@ en:
                     The committee members who must vote but have not are:
                     %{committee_list}
                     Please secure the necessary votes within the next 5 business days. If the <a href="${deadline_url}" target="_blank">submission deadline</a> has passed for the current semester, the student's submission will be moved to the next semester.
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
 
-                    Best,
-
-                    Office of Theses and Dissertations
         seventh_day_to_author:
           message: |
                     Your %{degree_type} is being looked into by your committee's%{committee_chair} program head/chair %{program_head} to secure the necessary votes for completion. <em>Students are required to ensure that each of their committee members approves.</em> Please secure the necessary votes. You will be notified once your committee has reviewed and made a decision regarding your document.
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
 
-                    Best,
-
-
-                    Office of Theses and Dissertations
         advisor_rejected:
           message: |
                     Your %{degree_type} has been rejected by your advisor.
                     Please consult with your %{degree_type} advisor about revising your submission. When you have completed your revisions, please resubmit your %{degree_type} to the ETD for committee review.
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-
-                    Best,
-
-
-                    Office of Theses and Dissertations
+ 
         advisor_funding_discrepancy:
           message: |
-                    Your advisor has indicated that federal funds were%{funding_wording} used for your %{degree_type}. You have indicated otherwise. Please consult with your %{degree_type} advisor about this discrepancy.
+                    Your advisor has indicated that federal funds were %{funding_wording}used for your %{degree_type}. You have indicated otherwise. Please consult with your %{degree_type} advisor about this discrepancy.
                     When you have completed your revisions, please resubmit your %{degree_type} to the ETD for committee review. 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
 
-                    Best,
-
-
-                    Office of Theses and Dissertations
         committee_rejected_admin:
           message: |
                     The committee for %{author_name}'s %{degree_type} has rejected their submission. The submission is now available for the student to edit and resubmit for committee approval.
@@ -226,39 +165,26 @@ en:
                     You will need to make the necessary revisions or corrections to your document and <a href="%{etd_site}" target="_blank">resubmit your %{degree_type} for your committee to review.</a>
                     This was the result of your committee's review:
                     %{review_results}
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
 
-                    Best,
-
-                    Office of Theses and Dissertations
         committee_rejected_committee:
           message: |
                     %{author_name}'s %{degree_type} titled "%{title}" has been rejected by its committee.
                     The student has been asked to resubmit their work. Once they have done this, you will be notified via email to review.
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-                    Best,
 
-                    Office of Theses and Dissertations
         pending_returned_author:
           message: |
                     Your %{degree_type} has been rejected by request of an administrator.
                     You will need to make the necessary revisions or corrections to your document and <a href="%{etd_site}" target="_blank">resubmit your %{degree_type} for your committee to review again.</a>
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-                    Best,
 
-                    Office of Theses and Dissertations
         pending_returned_committee:
           message: |
                     %{author_name}'s eTD submission titled "%{title}" has been rejected at the request of an administrator.
                     The student has been asked to resubmit their work. Once they have done this, you will be notified via email to review.
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-                    Best,
-
-                    Office of Theses and Dissertations
+ 
         committee_approved:
           message: |
                     Your ETD has been reviewed and approved by your committee. The Fox Graduate School will now review your submission. <b>Until you receive notification that the Fox Graduate School has approved your submission, your work is not officially approved.</b> You should refer to the ETD site for any necessary corrections.
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
+                    If you have questions or comments, please email the Office of Theses and Dissertations at %{mail_link} or call us at (814) 865-1795.
                     Best,
 
                     Office of Theses and Dissertations
@@ -266,16 +192,17 @@ en:
                     Graduate School
                     University Park, PA 16802
 
-                    cc:%{committee_email_list}
+                    cc: %{committee_email_list}
 
                     Fawn Hosterman | Director of Graduate Records
-                    J. Jeffrey and Ann Marie Fox Graduate School [https://gradschool.psu.edu/]
+                    J. Jeffrey and Ann Marie Fox Graduate School 
+                    %{home_link}
 
                     Penn State
                     114 Kern Graduate Building | University Park, PA 16802
                     (814) 865-4002
 
-                    Find information and support at the Graduate School Resource Portal [https://gradschool.psu.edu/portal/home]
+                    Find information and support at the Graduate School Resource Portal: %{portal_link}
         author_release_warning:
           message: |
                     We are writing to inform you that the two-year restriction on your %{degree_type} titled "%{title}" is about to expire. 
@@ -284,7 +211,7 @@ en:
 
                     Request extension: %{url}
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu.
+                    If you have questions or comments, please email the Office of Theses and Dissertations at %{mail_link}.
                     You may also call (814)865-5448, or send mail to:
                     Office of Theses and Dissertations
                     115 Kern Building
@@ -294,18 +221,11 @@ en:
           message: |
                     Your %{degree_type} titled "%{title}" has been released with the access level of Open Access. You can view your published submission at: %{url}.
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-                    Best,
-
-                    Office of Theses and Dissertations
         release_for_publication_metadata_only:
           message: |
                     The metadata for your %{degree_type} titled "%{title}" has been released. You can view this information at: %{url}.
                     Your work retains its access level of %{access_level}. <em>The full publication will be released in two years.</em>
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-                    Best,
 
-                    Office of Theses and Dissertations
         access_level_updated:
           message: |
                     The Fox Graduate School has changed the availability of the following eTD as shown below:
@@ -315,10 +235,7 @@ en:
                      New Availability - %{new_access_level}
                      Old Availability - %{old_access_level}
                      Graduation Year - %{graduation_year}
-                    If you have questions or comments, please email the Office of Theses and Dissertations at gradthesis@psu.edu or call us at (814) 865-1795.
-                    Best,
 
-                    Office of Theses and Dissertations
     program:
       label: Graduate Program
     committee:

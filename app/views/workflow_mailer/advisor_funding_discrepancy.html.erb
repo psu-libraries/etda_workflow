@@ -1,5 +1,6 @@
 Dear <%= @author.full_name %>,
 
-<%= t( "#{current_partner.id}.partner.email.advisor_funding_discrepancy.message",
+<%= simple_format t( "#{current_partner.id}.partner.email.advisor_funding_discrepancy.message",
        degree_type: @submission.degree_type,
-       funding_wording: @advisor.federal_funding_used ? '' : ' not') %>
+       funding_wording: @advisor.federal_funding_used ? '' : 'not ').html_safe %>
+<%= simple_format(t("#{current_partner.id}.partner.email.contact_information").html_safe) %>

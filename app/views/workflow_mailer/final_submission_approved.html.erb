@@ -1,6 +1,6 @@
 Dear <%= @author.full_name %>,
 
-<%= t( "#{current_partner.id}.partner.email.final_submission_approved.message",
+<%= simple_format t( "#{current_partner.id}.partner.email.final_submission_approved.message",
        access_level: @submission.current_access_level.label,
        degree_type: @submission.degree_type,
        partner_name: current_partner.name,
@@ -8,4 +8,5 @@ Dear <%= @author.full_name %>,
        etd_site: @etd_site,
        explore_site: @explore_site,
        commencement_url: @commencement_url,
-       committee_email_list: @submission.committee_email_list.join(", ") ) %>
+       committee_email_list: @submission.committee_email_list.join(", ") ).html_safe %>
+<%= simple_format(t("#{current_partner.id}.partner.email.contact_information").html_safe) %>

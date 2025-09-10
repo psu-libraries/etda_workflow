@@ -1,102 +1,120 @@
 class WorkflowMailerPreview < ActionMailer::Preview
-  if current_partner.graduate?
-    def format_review_received
-      WorkflowMailer.format_review_received(Submission.last)
+  # NOTE: These email previews require there to be a Submission started in your dev environment.
+
+  SUBMISSION = Submission.last
+
+  def final_submission_rejected
+    WorkflowMailer.final_submission_rejected(SUBMISSION)
+  end
+
+  def final_submission_approved
+    WorkflowMailer.final_submission_approved(SUBMISSION)
+  end
+
+  def final_submission_received
+    WorkflowMailer.final_submission_received(SUBMISSION)
+  end
+
+  unless current_partner.milsch?
+    def format_review_rejected
+      WorkflowMailer.format_review_rejected(SUBMISSION)
     end
 
-    def final_submission_received
-      WorkflowMailer.final_submission_received(@submission)
-    end
-
-    def final_submission_approved_dissertation
-      @submission.degree = Degree.where(degree_type_id: DegreeType.default).first
-      @submission.save
-      WorkflowMailer.final_submission_approved(@submission, 'http://search-url-grad')
-    end
-
-    def final_submission_approved_masters
-      @submission.degree = Degree.where(degree_type_id: DegreeType.last).first
-      WorkflowMailer.final_submission_approved(@submission, 'http://search-url-grad')
+    def format_review_accepted
+      WorkflowMailer.format_review_accepted(SUBMISSION)
     end
   end
 
-  if current_partner.honors?
-
-    def final_submission_approved
-      WorkflowMailer.final_submission_approved(@submission, 'http://search-url-honors')
-    end
+  def format_review_received
+    WorkflowMailer.format_review_received(SUBMISSION)
   end
 
-  if current_partner.milsch?
-    def format_review_received
-      WorkflowMailer.format_review_received(@submission)
-    end
-
-    def final_submission_received
-      WorkflowMailer.final_submission_received(@submission)
-    end
-
-    def final_submission_approved
-      @submission.degree = Degree.where(degree_type_id: DegreeType.default).first
-      WorkflowMailer.final_submission_approved(@submission, 'http://search-url-milsch')
-    end
+  def sent_to_committee
+    WorkflowMailer.sent_to_committee(SUBMISSION)
   end
 
-  def access_level_updated
-    @submission = Submission.first
-    WorkflowMailer.access_level_updated('author_full_name': @submission.author_full_name, 'title': @submission.title, 'degree_type': @submission.degree_type.name, 'new_access_level_label': 'Open Access', 'old_access_level_label': 'Restricted', 'graduation_year': @submission.preferred_year)
+  def committee_member_review_request
+    WorkflowMailer.committee_member_review_request(SUBMISSION, SUBMISSION.committee_members[0])
   end
 
-  def vulnerability_audit_email
-    audit_results = 'Vulnerable Gem Found\n A fake gem to test\n CVE-bogus1234'
-    WorkflowMailer.vulnerability_audit_email(audit_results)
+  def special_committee_review_request
+    WorkflowMailer.special_committee_review_request(SUBMISSION, SUBMISSION.committee_members[0])
   end
 
-  def open_access_report
-    @submissions = [Submission.first, Submission.second, Submission.third]
-    csv = CSV.generate { |c| c << ['HEADERS'] }
-    WorkflowMailer.open_access_report('1/1/01 - 1/1/02', csv)
+  def committee_member_review_reminder
+    WorkflowMailer.committee_member_review_reminder(SUBMISSION, SUBMISSION.committee_members[0])
+  end
+
+  def committee_rejected_admin
+    WorkflowMailer.committee_rejected_admin(SUBMISSION)
   end
 
   def committee_rejected_author
-    submission = Submission.where(status: 'waiting for final submission response').sample
-    WorkflowMailer.committee_rejected_author(submission)
+    WorkflowMailer.committee_rejected_author(SUBMISSION)
   end
 
-  def seventh_day_to_chairs
-    submission = Submission.where(status: 'waiting for committee review').sample
-    WorkflowMailer.seventh_day_to_chairs(submission)
+  def committee_rejected_committee
+    WorkflowMailer.committee_rejected_committee(SUBMISSION)
   end
 
-  def seventh_day_to_author
-    submission = Submission.where(status: 'waiting for committee review').sample
-    WorkflowMailer.seventh_day_to_author(submission)
+  def pending_returned_author
+    WorkflowMailer.pending_returned_author(SUBMISSION)
   end
 
-  def committee_member_review_request_to_core_members
-    submission = Submission.where(status: 'waiting for committee review').sample
-    committee_member = submission.committee_members.select(&:core_committee_member?).first
-    WorkflowMailer.send_committee_review_requests(submission, committee_member)
+  def pending_returned_committee
+    WorkflowMailer.pending_returned_committee(SUBMISSION)
   end
 
-  def committee_member_review_request_to_other_members
-    submission = Submission.where(status: 'waiting for committee review').sample
-    committee_member = submission.committee_members.reject(&:core_committee_member?).first
-    WorkflowMailer.send_committee_review_requests(submission, committee_member)
+  def committee_approved
+    WorkflowMailer.committee_approved(SUBMISSION)
   end
 
-  def special_committee_review_request_initial
-    submission = Submission.where(status: 'waiting for committee review').first
-    committee_member = submission.committee_members.first
-    committee_member.approval_started_at = nil
-    submission.save
-
-    WorkflowMailer.special_committee_review_request(submission, committee_member)
+  def release_for_publication
+    WorkflowMailer.release_for_publication(SUBMISSION)
   end
 
-  def special_committee_review_request_reminder
-    submission = Submission.where(status: 'waiting for committee review').first
-    committee_member = submission.committee_members.first
-    WorkflowMailer.special_committee_review_request(submission, committee_member)
+  def release_for_publication_metadata_only
+    WorkflowMailer.release_for_publication_metadata_only(SUBMISSION)
+  end
+
+  def access_level_updated
+    email = {
+      author_alternate_email_address: "author alt address",
+      cc_email_addresses: ["cc's"],
+      new_access_level_label: "Restricted",
+      old_access_level_label: "Open",
+      degree_type: "Thesis",
+      graduation_year: "2009"
+    }
+    WorkflowMailer.access_level_updated(email)
+  end
+
+  if current_partner.graduate?
+
+    def nonvoting_approval_reminder
+      WorkflowMailer.nonvoting_approval_reminder(SUBMISSION, SUBMISSION.committee_members[0])
+    end
+
+    def seventh_day_to_chairs
+      WorkflowMailer.seventh_day_to_chairs(SUBMISSION)
+    end
+
+    def seventh_day_to_author
+      WorkflowMailer.seventh_day_to_author(SUBMISSION)
+    end
+
+    def advisor_rejected
+      WorkflowMailer.advisor_rejected(SUBMISSION)
+    end
+
+    def advisor_funding_discrepancy
+      WorkflowMailer.advisor_funding_discrepancy(SUBMISSION)
+    end
+  end
+
+  if current_partner.graduate? || current_partner.honors?
+    def author_release_warning
+      WorkflowMailer.author_release_warning(SUBMISSION)
+    end
   end
 end

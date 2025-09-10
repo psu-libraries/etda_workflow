@@ -1,0 +1,8 @@
+Dear <%= @author.full_name %>,
+
+<%= simple_format(t( "#{current_partner.id}.partner.email.format_review_rejected.message",
+      link: link_to(t( "#{current_partner.id}.partner.email.format_review_rejected.link_text"), @etd_site),
+      deadline_url: @deadline_url,
+      etd_site: @etd_site,
+      thesis_guide: @thesis_guide,).html_safe) %>
+<%= simple_format(t("#{current_partner.id}.partner.email.contact_information").html_safe) %>

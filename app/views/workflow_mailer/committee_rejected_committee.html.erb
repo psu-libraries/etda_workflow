@@ -1,0 +1,7 @@
+Hello,
+
+<%= simple_format t( "#{current_partner.id}.partner.email.committee_rejected_committee.message",
+       degree_type: @submission.degree_type,
+       author_name: @author.full_name,
+       title: @title.to_s).html_safe %>
+<%= simple_format(t("#{current_partner.id}.partner.email.contact_information").html_safe) %>
