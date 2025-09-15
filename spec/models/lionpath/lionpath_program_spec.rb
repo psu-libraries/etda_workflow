@@ -119,9 +119,9 @@ RSpec.describe Lionpath::LionpathProgram do
     end
 
     context 'when submission is beyond_waiting_for_final_submission_response_rejected?' do
-      context 'when degree checkout status is unchanged' do
+      context 'when degree checkout status and candidate number are unchanged' do
         it 'does not update program info' do
-          submission.update status: 'waiting for publication release', degree_checkout_status: 'EG'
+          submission.update status: 'waiting for publication release', degree_checkout_status: 'EG', candidate_number: '000000000111'
           submission.reload
           expect { lionpath_program.import(row_1) }.not_to(change { Submission.find(submission.id).lionpath_updated_at })
           expect(Author.first.submissions.first.degree.name).to eq submission.degree.name
@@ -133,6 +133,34 @@ RSpec.describe Lionpath::LionpathProgram do
 
       context "when submission's #degree_checkout_status does not equal degree checkout status from LP" do
         it 'only updates #degree_checkout_status and #lionpath_updated_at' do
+          submission.update status: 'waiting for publication release', candidate_number: '000000000111'
+          submission.reload
+          expect { lionpath_program.import(row_1) }.to(change { Submission.find(submission.id).lionpath_updated_at })
+          expect(Author.first.submissions.first.degree.name).to eq submission.degree.name
+          expect(Author.first.submissions.first.lionpath_year).to eq submission.lionpath_year
+          expect(Author.first.submissions.first.lionpath_semester).to eq submission.lionpath_semester
+          expect(Author.first.submissions.first.campus).to eq submission.campus
+          expect(Author.first.submissions.first.degree_checkout_status).to eq row_1['ChkoutStat']
+          expect(Author.first.submissions.first.candidate_number).to eq('000000000111')
+        end
+      end
+
+      context "when submission's #candidate_number does not equal candidate number from LP" do
+        it 'only updates #candidate_number and #lionpath_updated_at' do
+          submission.update status: 'waiting for publication release', degree_checkout_status: 'EG'
+          submission.reload
+          expect { lionpath_program.import(row_1) }.to(change { Submission.find(submission.id).lionpath_updated_at })
+          expect(Author.first.submissions.first.degree.name).to eq submission.degree.name
+          expect(Author.first.submissions.first.lionpath_year).to eq submission.lionpath_year
+          expect(Author.first.submissions.first.lionpath_semester).to eq submission.lionpath_semester
+          expect(Author.first.submissions.first.campus).to eq submission.campus
+          expect(Author.first.submissions.first.degree_checkout_status).to eq 'EG'
+          expect(Author.first.submissions.first.candidate_number).to eq row_1['Can Nbr']
+        end
+      end
+
+      context 'when both #candidate_number and #degree_checkout_status do not match' do
+        it 'updates #candidate_number, #degree_checkout_status and #lionpath_updated' do
           submission.update status: 'waiting for publication release'
           submission.reload
           expect { lionpath_program.import(row_1) }.to(change { Submission.find(submission.id).lionpath_updated_at })
@@ -141,7 +169,7 @@ RSpec.describe Lionpath::LionpathProgram do
           expect(Author.first.submissions.first.lionpath_semester).to eq submission.lionpath_semester
           expect(Author.first.submissions.first.campus).to eq submission.campus
           expect(Author.first.submissions.first.degree_checkout_status).to eq row_1['ChkoutStat']
-          expect(Author.first.submissions.first.candidate_number).to eq(nil)
+          expect(Author.first.submissions.first.candidate_number).to eq row_1['Can Nbr']
         end
       end
     end
