@@ -28,8 +28,19 @@ class Lionpath::LionpathProgram
     def submission_update(submission, row)
       if !submission.status_behavior.beyond_waiting_for_final_submission_response_rejected?
         submission.update submission_attrs(row)
-      elsif row['ChkoutStat'] != submission.degree_checkout_status
-        submission.update(degree_checkout_status: row['ChkoutStat'], lionpath_updated_at: DateTime.now)
+      else
+        if row['ChkoutStat'] != submission.degree_checkout_status
+          submission.update(
+            degree_checkout_status: row['ChkoutStat'],
+            lionpath_updated_at: DateTime.now
+          )
+        end
+        if row['Can Nbr'] != submission.candidate_number
+          submission.update(
+            candidate_number: row['Can Nbr'],
+            lionpath_updated_at: DateTime.now
+          )
+        end
       end
     end
 
