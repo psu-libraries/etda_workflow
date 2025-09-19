@@ -20,7 +20,7 @@ jobs:
             ./bin/pr-release clusters/prod/manifests/prod.yaml
   build_test:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.3.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -41,7 +41,7 @@ jobs:
             - etda-workflow.tar
   build_prod:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.3.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -62,7 +62,7 @@ jobs:
             - etda-workflow-prod.tar
   rubocop_unit_partner_tests:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.3.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -107,7 +107,7 @@ jobs:
             docker exec -e RAILS_ENV=test test_sset /etda_workflow/bin/ci-rspec
   integration_test_grad:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.3.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -131,7 +131,7 @@ jobs:
             docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
   publish:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.3.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -162,7 +162,7 @@ jobs:
                   docker push $REGISTRY_URL:latest
   deploy:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.3.0
     environment:
       CONFIG_REPO: git@github.com:psu-libraries/etda-config.git
     steps:
