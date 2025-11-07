@@ -1,4 +1,4 @@
-RSpec.describe "when an admin views the final submission is pending bucket", type: :integration, js: true do
+RSpec.describe "when an admin views the final submission is pending bucket", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:author) { FactoryBot.create :author }

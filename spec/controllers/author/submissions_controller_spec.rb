@@ -46,7 +46,7 @@ RSpec.describe Author::SubmissionsController, type: :controller do
     end
 
     unless current_partner.graduate?
-      it 'renders the edit page regardless of the acknowledgment page status', honors: true, sset: true, milsch: true do
+      it 'renders the edit page regardless of the acknowledgment page status', :honors, :milsch, :sset do
         oidc_authorize_author
         submission = FactoryBot.create(:submission, acknowledgment_page_submitted_at: nil)
         params = { id: submission.id.to_s }

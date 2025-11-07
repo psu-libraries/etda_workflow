@@ -3,11 +3,11 @@ require 'model_spec_helper'
 RSpec.describe Lionpath::LionpathExportPayload do
   subject(:export_payload) { described_class.new(submission) }
 
-  let(:status_behavior) { instance_double('StatusGiver') }
-  let(:approval_status_behavior) { instance_double('ApprovalStatus') }
+  let(:status_behavior) { instance_double(StatusGiver) }
+  let(:approval_status_behavior) { instance_double(ApprovalStatus) }
   let(:submission) do
-    instance_double('Submission',
-                    author: instance_double('Author', psu_idn: '123456789'),
+    instance_double(Submission,
+                    author: instance_double(Author, psu_idn: '123456789'),
                     candidate_number: '000000123456',
                     title: 'My Thesis Title',
                     released_metadata_at: DateTime.new(2024, 8, 7),
@@ -21,11 +21,7 @@ RSpec.describe Lionpath::LionpathExportPayload do
 
   describe '#json_payload' do
     before do
-      allow(status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(true)
-      allow(status_behavior).to receive(:beyond_waiting_for_committee_review?).and_return(false)
-      allow(status_behavior).to receive(:beyond_waiting_for_committee_review_rejected?).and_return(false)
-      allow(status_behavior).to receive(:beyond_waiting_for_final_submission_response_rejected?).and_return(false)
-      allow(status_behavior).to receive(:waiting_for_committee_review_rejected?).and_return(false)
+      allow(status_behavior).to receive_messages(beyond_collecting_format_review_files?: true, beyond_waiting_for_committee_review?: false, beyond_waiting_for_committee_review_rejected?: false, beyond_waiting_for_final_submission_response_rejected?: false, waiting_for_committee_review_rejected?: false)
     end
 
     it 'returns JSON formatted object' do
@@ -64,7 +60,7 @@ RSpec.describe Lionpath::LionpathExportPayload do
 
       it 'sets grdtnFlg to nil' do
         payload = JSON.parse(export_payload.json_payload)
-        expect(payload["PE_SR199_ETD_REQ"]["grdtnFlg"]).to eq(nil)
+        expect(payload["PE_SR199_ETD_REQ"]["grdtnFlg"]).to be_nil
       end
 
       context 'when federal funding is true' do
@@ -110,7 +106,7 @@ RSpec.describe Lionpath::LionpathExportPayload do
 
         it 'does not set candAdvFlg' do
           payload = JSON.parse(export_payload.json_payload)
-          expect(payload["PE_SR199_ETD_REQ"]["candAdvFlg"]).to eq(nil)
+          expect(payload["PE_SR199_ETD_REQ"]["candAdvFlg"]).to be_nil
         end
       end
     end

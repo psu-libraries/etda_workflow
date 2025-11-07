@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Manage Degrees", type: :integration, js: true do
+RSpec.describe "Manage Degrees", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let!(:degree) { FactoryBot.create :degree }

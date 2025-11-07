@@ -1,4 +1,4 @@
-RSpec.describe "Submission filter with semester dropdown", type: :integration, js: true do
+RSpec.describe "Submission filter with semester dropdown", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let!(:program) { FactoryBot.create(:program, name: "Any Program", is_active: true) }

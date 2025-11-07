@@ -1,4 +1,4 @@
-RSpec.describe "Editing format review and final submissions as an admin", type: :integration, js: true do
+RSpec.describe "Editing format review and final submissions as an admin", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let!(:author) { FactoryBot.create(:author) }
@@ -31,12 +31,12 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
       it 'displays disabled program info' do
         submission.update lionpath_updated_at: DateTime.now
         visit admin_edit_submission_path(submission)
-        expect(find("select#submission_program_id").disabled?).to eq true
-        expect(find("select#submission_degree_id").disabled?).to eq true
-        expect(find("select#submission_lionpath_semester").disabled?).to eq true
-        expect(find("select#submission_semester").disabled?).to eq false
-        expect(find("select#submission_lionpath_year").disabled?).to eq true
-        expect(find("select#submission_year").disabled?).to eq false
+        expect(find("select#submission_program_id").disabled?).to be true
+        expect(find("select#submission_degree_id").disabled?).to be true
+        expect(find("select#submission_lionpath_semester").disabled?).to be true
+        expect(find("select#submission_semester").disabled?).to be false
+        expect(find("select#submission_lionpath_year").disabled?).to be true
+        expect(find("select#submission_year").disabled?).to be false
         expect(page).to have_content "LionPath Imported Semester Intending to Graduate"
         expect(page).to have_content "LionPath Imported Graduation Year"
         expect(page).to have_content "Author Submitted Semester Intending to Graduate"
@@ -47,8 +47,8 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
     context 'when submission is not imported from lionpath' do
       it 'does not disable program data and does not show any lionpath fields' do
         visit admin_edit_submission_path(submission)
-        expect(find("select#submission_program_id").disabled?).to eq false
-        expect(find("select#submission_degree_id").disabled?).to eq false
+        expect(find("select#submission_program_id").disabled?).to be false
+        expect(find("select#submission_degree_id").disabled?).to be false
         expect(page).not_to have_content "LionPath Imported Semester Intending to Graduate"
         expect(page).not_to have_content "LionPath Imported Graduation Year"
         expect(page).not_to have_content "Author Submitted Semester Intending to Graduate"
@@ -210,9 +210,9 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
     sleep 1
     final_submission.reload
     expect(final_submission.admin_notes).to eq 'Some Notes'
-    expect(final_submission.federal_funding).to eq false
-    expect(final_submission.restricted?).to eq true
-    expect(final_submission.proquest_agreement).to eq false if current_partner.graduate?
+    expect(final_submission.federal_funding).to be false
+    expect(final_submission.restricted?).to be true
+    expect(final_submission.proquest_agreement).to be false if current_partner.graduate?
   end
 
   context "when master's thesis" do

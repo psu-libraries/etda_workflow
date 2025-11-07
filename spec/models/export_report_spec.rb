@@ -16,7 +16,7 @@ RSpec.describe ExportReport, type: :model do
     context 'fields when initialized with one submission' do
       it 'has one submission' do
         fields = export_report.fields(submission)
-        expect(fields).not_to be(nil)
+        expect(fields).not_to be_nil
         expect(fields).to include(author.last_name)
         expect(fields).to include(author.first_name)
         expect(fields).to include(submission.title)
@@ -48,7 +48,7 @@ RSpec.describe ExportReport, type: :model do
     let(:export_report) { described_class.new('custom_report', submission) }
 
     context 'columns' do
-      it 'has initialized columns', honors: true, graduate: true do
+      it 'has initialized columns', :graduate, :honors do
         array = [
           'Submission ID',
           'Last Name',
@@ -75,9 +75,9 @@ RSpec.describe ExportReport, type: :model do
     end
 
     context 'fields when initialized with one submission' do
-      it 'has one submission', honors: true, graduate: true do
+      it 'has one submission', :graduate, :honors do
         fields = export_report.fields(submission)
-        expect(fields).not_to be(nil)
+        expect(fields).not_to be_nil
         array = [
           submission.id,
           submission.author.last_name,
@@ -146,7 +146,7 @@ RSpec.describe ExportReport, type: :model do
     context 'fields when initialized with one submission' do
       it 'has one submission' do
         fields = export_report.fields(submission)
-        expect(fields).not_to be(nil)
+        expect(fields).not_to be_nil
         expect(fields[:access_id]).to eq(author.access_id)
         expect(fields[:alternate_email_address]).to eq(author.alternate_email_address)
 

@@ -1,4 +1,4 @@
-RSpec.describe "Manage Submissions", type: :integration, js: true do
+RSpec.describe "Manage Submissions", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let!(:admin) { FactoryBot.create :author }
@@ -45,7 +45,7 @@ RSpec.describe "Manage Submissions", type: :integration, js: true do
     end
   end
 
-  describe 'Admins cannot bulk delete published submissions', js: true do
+  describe 'Admins cannot bulk delete published submissions', :js do
     let!(:submission3) { FactoryBot.create :submission, :final_is_restricted_to_institution, author: author1, access_level: 'restricted_to_institution' } if current_partner.graduate?
     let!(:submission4) { FactoryBot.create :submission, :final_is_restricted, author: author2 }
     let!(:submission5) { FactoryBot.create :submission, :released_for_publication, author: author1 }

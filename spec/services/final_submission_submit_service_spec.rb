@@ -27,7 +27,7 @@ RSpec.describe FinalSubmissionSubmitService do
 
   describe "#submit_final_submission" do
     context "when author submits final submission for the first time" do
-      context 'when current_partner is non-graduate', honors: true, milsch: true, sset: true do
+      context 'when current_partner is non-graduate', :honors, :milsch, :sset do
         it "proceeds submission to waiting for committee review" do
           skip 'Non-graduate only' if current_partner.graduate?
 
@@ -73,7 +73,7 @@ RSpec.describe FinalSubmissionSubmitService do
         submission.reload
       end
 
-      context 'when current_partner is non-graduate', honors: true, milsch: true, sset: true do
+      context 'when current_partner is non-graduate', :honors, :milsch, :sset do
         it "proceeds submission to waiting for committee review and resets committee statuses" do
           skip 'Non-graduate only' if current_partner.graduate?
 

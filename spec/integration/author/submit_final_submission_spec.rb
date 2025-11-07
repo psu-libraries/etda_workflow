@@ -1,7 +1,7 @@
-RSpec.describe 'Submitting a final submission as an author', type: :integration, js: true do
+RSpec.describe 'Submitting a final submission as an author', :js, type: :integration do
   require 'integration/integration_spec_helper'
 
-  describe "When collecting final submission files", honors: true, milsch: true do
+  describe "When collecting final submission files", :honors, :milsch do
     before do
       oidc_authorize_author
       if current_partner.graduate?
@@ -51,11 +51,11 @@ RSpec.describe 'Submitting a final submission as an author', type: :integration,
         expect(submission.status).to eq 'waiting for advisor review' if current_partner.graduate?
         expect(submission.status).to eq 'waiting for committee review' unless current_partner.graduate?
         submission.reload
-        expect(submission.federal_funding).to eq false
+        expect(submission.federal_funding).to be false
         expect(submission.final_submission_files_uploaded_at).not_to be_nil
         if current_partner.graduate?
           expect(WorkflowMailer.deliveries.count).to eq(2)
-          expect(submission.proquest_agreement).to eq true
+          expect(submission.proquest_agreement).to be true
           expect(submission.proquest_agreement_at).to be_truthy
         end
         expect(WorkflowMailer.deliveries.count).to eq(3) if current_partner.honors?

@@ -178,10 +178,10 @@ RSpec.describe Submission, type: :model do
       non_advisor_role = FactoryBot.create :committee_role, name: 'Committee Member'
       committee_member1 = FactoryBot.create :committee_member, committee_role: advisor_role
       committee_member2 = FactoryBot.create :committee_member, committee_role: non_advisor_role
-      expect(submission.advisor).to eq nil
+      expect(submission.advisor).to be_nil
       submission.committee_members << committee_member2
       submission.reload
-      expect(submission.advisor).to eq nil
+      expect(submission.advisor).to be_nil
       submission.committee_members << committee_member1
       submission.reload
       expect(submission.advisor).to eq committee_member1
@@ -266,7 +266,7 @@ RSpec.describe Submission, type: :model do
       expect(submission).to be_valid
     end
 
-    describe 'validating federal funding only when authors are editing beyond collecting committee', honors: true do
+    describe 'validating federal funding only when authors are editing beyond collecting committee', :honors do
       context 'when current_partner is not graduate' do
         it 'validates depending on certain criteria' do
           skip 'non-graduate only' if current_partner.graduate?
@@ -319,7 +319,7 @@ RSpec.describe Submission, type: :model do
       expect(submission).not_to be_valid
     end
 
-    it 'does not validate federal_funding_details if current_partner is not graduate', honors: true do
+    it 'does not validate federal_funding_details if current_partner is not graduate', :honors do
       skip 'non-graduate only' if current_partner.graduate?
 
       submission = create :submission, :waiting_for_final_submission_response
@@ -726,7 +726,7 @@ RSpec.describe Submission, type: :model do
 
     it 'allows titles with <= 4 uppercase, numbers, and symbols' do
       submission = described_class.new(title: 'THIS 1855 is %^&**% AlloweD')
-      expect(submission.check_title_capitalization).to eq(nil)
+      expect(submission.check_title_capitalization).to be_nil
       expect(submission.errors[:title]).to eq([])
     end
   end
@@ -858,7 +858,7 @@ RSpec.describe Submission, type: :model do
     end
   end
 
-  describe "#committee_review_requests_init", honors: true do
+  describe "#committee_review_requests_init", :honors do
     it 'sets approval_started_at timestamp for committee members and sends email to committee members only once' do
       submission = FactoryBot.create :submission
       allow(submission).to receive(:head_of_program_is_approving?).and_return false
@@ -1057,14 +1057,14 @@ RSpec.describe Submission, type: :model do
 
         context 'when a LionpathExportWorker has already been queued for this submission' do
           let(:schedule_set_item) do
-            instance_double('Sidekiq::ScheduleSet', queue: 'lionpath_exports',
-                                                    item: { "class" => 'LionpathExportWorker',
-                                                            "args" => [submission_lp.id] })
+            instance_double(Sidekiq::ScheduleSet, queue: 'lionpath_exports',
+                                                  item: { "class" => 'LionpathExportWorker',
+                                                          "args" => [submission_lp.id] })
           end
 
           it 'does not create a LionpathExport job' do
             allow(Sidekiq::ScheduledSet).to receive(:new).and_return [schedule_set_item]
-            expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+            expect { submission_lp.export_to_lionpath! }.not_to(change { Sidekiq::Worker.jobs.size })
           end
         end
       end
@@ -1076,7 +1076,7 @@ RSpec.describe Submission, type: :model do
         end
 
         it 'does not create LionpathExport job' do
-          expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+          expect { submission_lp.export_to_lionpath! }.not_to(change { Sidekiq::Worker.jobs.size })
         end
       end
 
@@ -1087,12 +1087,12 @@ RSpec.describe Submission, type: :model do
         end
 
         it 'does not create LionpathExport jobs' do
-          expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+          expect { submission_lp.export_to_lionpath! }.not_to(change { Sidekiq::Worker.jobs.size })
         end
       end
     end
 
-    context 'when partner is not graduate', honors: true do
+    context 'when partner is not graduate', :honors do
       # Note that candidate_number should never be present for non-graduate
       # partners.  However, to be totally logically correct we have
       # logic to check that the partner is in fact graduate
@@ -1100,7 +1100,7 @@ RSpec.describe Submission, type: :model do
         it 'does not create LionpathExport job' do
           skip 'Non Graduate Test' if current_partner.graduate?
 
-          expect { submission_lp.export_to_lionpath! }.to change { Sidekiq::Worker.jobs.size }.by(0)
+          expect { submission_lp.export_to_lionpath! }.not_to(change { Sidekiq::Worker.jobs.size })
         end
       end
     end
@@ -1139,7 +1139,7 @@ RSpec.describe Submission, type: :model do
       submission_3.build_federal_funding_details(training_support_funding: true, other_funding: true)
       [submission, submission_2, submission_3].each do |sub|
         sub.update_federal_funding
-        expect(sub.federal_funding).to eq true
+        expect(sub.federal_funding).to be true
       end
     end
 
@@ -1147,7 +1147,7 @@ RSpec.describe Submission, type: :model do
       submission = described_class.new
       submission.build_federal_funding_details(training_support_funding: false, other_funding: false)
       submission.update_federal_funding
-      expect(submission.federal_funding).to eq false
+      expect(submission.federal_funding).to be false
     end
 
     it 'does not update federal funding if the details are nil' do
@@ -1155,8 +1155,8 @@ RSpec.describe Submission, type: :model do
       submission2 = described_class.new(federal_funding: true)
       submission2.build_federal_funding_details
       [submission, submission2].each do |sub|
-        expect(sub.update_federal_funding).to eq false
-        expect(sub.federal_funding).to eq true
+        expect(sub.update_federal_funding).to be false
+        expect(sub.federal_funding).to be true
       end
     end
   end
@@ -1171,7 +1171,7 @@ RSpec.describe Submission, type: :model do
       end
     end
 
-    context 'when current_partner is not graduate', honors: true do
+    context 'when current_partner is not graduate', :honors do
       it "doesn't build a federal_funding_details record" do
         skip 'non-graduate only' if current_partner.graduate?
 

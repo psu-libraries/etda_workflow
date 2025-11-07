@@ -57,7 +57,7 @@ RSpec.describe Degree, type: :model do
       described_class.create(name: 'XBC', is_active: false, description: 'three', degree_type_id: DegreeType.default.id)
       described_class.create(name: 'MY degree name', is_active: true, description: 'four', degree_type_id: DegreeType.default.id)
       list = described_class.valid_degrees_list
-      expect(list).to be_a_kind_of(Array)
+      expect(list).to be_a(Array)
       expect(list.count).to eql(described_class.where(is_active: true).count)
       expect(list).to include('M_M_M')
       expect(list).not_to include('a b c')
@@ -76,7 +76,7 @@ RSpec.describe Degree, type: :model do
   end
 
   describe "#seed" do
-    it "seeds db with default degrees", honors: true, milsch: true, sset: true do
+    it "seeds db with default degrees", :honors, :milsch, :sset do
       described_class.seed
       if current_partner.graduate?
         expect(described_class.count).to eq 7

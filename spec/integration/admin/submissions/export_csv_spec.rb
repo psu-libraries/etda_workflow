@@ -1,4 +1,4 @@
-RSpec.describe "Exporting a list of approved submissions as an admin", type: :integration, js: true do
+RSpec.describe "Exporting a list of approved submissions as an admin", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:author) { FactoryBot.create :author }

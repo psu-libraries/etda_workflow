@@ -30,15 +30,15 @@ RSpec.describe CommitteeReminderWorker do
     it 'does not deliver an email' do
       committee_member.update_attribute :status, 'approved'
       Sidekiq::Testing.inline! do
-        expect { described_class.perform_async(submission.id, committee_member.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
+        expect { described_class.perform_async(submission.id, committee_member.id) }.not_to(change { WorkflowMailer.deliveries.size })
       end
       committee_member.update_attribute :status, 'rejected'
       Sidekiq::Testing.inline! do
-        expect { described_class.perform_async(submission.id, committee_member.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
+        expect { described_class.perform_async(submission.id, committee_member.id) }.not_to(change { WorkflowMailer.deliveries.size })
       end
       committee_member.update_attribute :status, 'did not vote'
       Sidekiq::Testing.inline! do
-        expect { described_class.perform_async(submission.id, committee_member.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
+        expect { described_class.perform_async(submission.id, committee_member.id) }.not_to(change { WorkflowMailer.deliveries.size })
       end
     end
   end
@@ -47,11 +47,11 @@ RSpec.describe CommitteeReminderWorker do
     it 'does not deliver an email' do
       submission.update status: 'waiting for committee review rejected'
       Sidekiq::Testing.inline! do
-        expect { described_class.perform_async(submission.id, committee_member.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
+        expect { described_class.perform_async(submission.id, committee_member.id) }.not_to(change { WorkflowMailer.deliveries.size })
       end
       submission.update status: 'waiting for final submission response'
       Sidekiq::Testing.inline! do
-        expect { described_class.perform_async(submission.id, committee_member.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
+        expect { described_class.perform_async(submission.id, committee_member.id) }.not_to(change { WorkflowMailer.deliveries.size })
       end
     end
   end
@@ -59,7 +59,7 @@ RSpec.describe CommitteeReminderWorker do
   context "when submission does not match committee member" do
     it 'does not deliver an email' do
       Sidekiq::Testing.inline! do
-        expect { described_class.perform_async(submission.id, detached_member.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
+        expect { described_class.perform_async(submission.id, detached_member.id) }.not_to(change { WorkflowMailer.deliveries.size })
       end
     end
   end
@@ -68,7 +68,7 @@ RSpec.describe CommitteeReminderWorker do
     it 'does not deliver an email' do
       committee_member.update(last_reminder_at: (DateTime.now - 1.minute))
       Sidekiq::Testing.inline! do
-        expect { described_class.perform_async(submission.id, committee_member.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
+        expect { described_class.perform_async(submission.id, committee_member.id) }.not_to(change { WorkflowMailer.deliveries.size })
       end
     end
   end

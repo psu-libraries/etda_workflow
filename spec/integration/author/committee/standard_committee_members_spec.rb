@@ -1,4 +1,4 @@
-RSpec.describe 'The standard committee form for authors', type: :integration, js: true do
+RSpec.describe 'The standard committee form for authors', :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:author) { current_author }
@@ -60,11 +60,11 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
 
   describe "save and continue submission" do
     context 'when submission is a master_thesis' do
-      it "allows editing and submission of committee", honors: true do
+      it "allows editing and submission of committee", :honors do
         expect(page).to have_link('Add Committee Member')
         submission.required_committee_roles.count.times do |i|
           if i == 0 && current_partner.graduate?
-            expect(find("#member-email").readonly?).to eq true
+            expect(find("#member-email").readonly?).to be true
             select("Test ProgHead", from: "program-head-name")
             expect(find("#member-email").value).to eq "abc123@psu.edu"
             next
@@ -113,10 +113,10 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
           visit new_author_submission_committee_members_path(submission_2)
           submission_2.committee_members.count.times do |i|
             expect(find("#submission_committee_members_attributes_#{i}_name").value).to eq('Professor Buck Murphy')
-            expect(find("#submission_committee_members_attributes_#{i}_name").disabled?).to eq true
-            expect(find("#submission_committee_members_attributes_#{i}_email").readonly?).to eq true
+            expect(find("#submission_committee_members_attributes_#{i}_name").disabled?).to be true
+            expect(find("#submission_committee_members_attributes_#{i}_email").readonly?).to be true
           end
-          expect(find("#member-email").readonly?).to eq true
+          expect(find("#member-email").readonly?).to be true
           select("Test ProgHead", from: "program-head-name")
           expect(find("#member-email").value).to eq "abc123@psu.edu"
           expect(find_all(".hidden", visible: false)[-3].value)
@@ -151,9 +151,9 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
 
               visit edit_author_submission_committee_members_path(submission_2)
               num = submission_2.committee_members.count - 1
-              expect(find("#submission_committee_members_attributes_#{num}_name").disabled?).to eq false
+              expect(find("#submission_committee_members_attributes_#{num}_name").disabled?).to be false
               expect(find("#submission_committee_members_attributes_#{num}_name").value).to eq 'Member Committee'
-              expect(find("#submission_committee_members_attributes_#{num}_email").readonly?).to eq false
+              expect(find("#submission_committee_members_attributes_#{num}_email").readonly?).to be false
               expect(find("#submission_committee_members_attributes_#{num}_email").value).to eq ''
             end
           end
@@ -170,9 +170,9 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
 
               visit edit_author_submission_committee_members_path(submission_2)
               num = submission_2.committee_members.count - 1
-              expect(find("#submission_committee_members_attributes_#{num}_name").disabled?).to eq false
+              expect(find("#submission_committee_members_attributes_#{num}_name").disabled?).to be false
               expect(find("#submission_committee_members_attributes_#{num}_name").value).to eq committee_member_4.name
-              expect(find("#submission_committee_members_attributes_#{num}_email").disabled?).to eq false
+              expect(find("#submission_committee_members_attributes_#{num}_email").disabled?).to be false
               expect(find("#submission_committee_members_attributes_#{num}_email").value).to eq committee_member_4.email
             end
           end
@@ -208,14 +208,14 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
             fill_in "Name", with: "Extra Member"
             fill_in "Email", with: "extra_member@example.com"
           end
-          expect { click_button 'Save and Continue Submission' }.to change { submission_2.committee_members.count }.by 0
+          expect { click_button 'Save and Continue Submission' }.not_to(change { submission_2.committee_members.count })
           expect(page).to have_content 'Your committee is not complete'
         end
       end
     end
   end
 
-  describe "filling in committee members", js: true, honors: true do
+  describe "filling in committee members", :honors, :js do
     before do
       @email_list = []
       submission.required_committee_roles.count.times do |i|
@@ -231,7 +231,7 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
       click_button 'Save and Continue Editing'
     end
 
-    it 'allows an additional committee member to be added', js: true do
+    it 'allows an additional committee member to be added', :js do
       expect(page).to have_link('Add Committee Member')
       assert_equal submission.committee_email_list, @email_list.uniq unless current_partner.graduate?
       click_link 'Add Committee Member'
@@ -248,7 +248,7 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
       submission.reload
       expect(submission.status).to eq 'collecting format review files'
       expect(submission.committee_provided_at).not_to be_nil
-      expect(submission.committee_members.last.is_voting).to eq(true)
+      expect(submission.committee_members.last.is_voting).to be(true)
     end
 
     it 'sets is_voting to false for special signatory' do
@@ -263,11 +263,11 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
       end
       click_button 'Save and Continue Editing'
       submission.reload
-      expect(submission.committee_members.last.is_voting).to eq(false)
+      expect(submission.committee_members.last.is_voting).to be(false)
     end
   end
 
-  describe "Remove an optional committee member", js: true do
+  describe "Remove an optional committee member", :js do
     before do
       submission.committee_members = []
       submission.status = 'collecting format review files'
@@ -341,7 +341,7 @@ RSpec.describe 'The standard committee form for authors', type: :integration, js
   describe 'email form checkbox' do
     let!(:committee) { create_committee(submission) }
 
-    it 'toggles email form box readonly/writable', milsch: true do
+    it 'toggles email form box readonly/writable', :milsch do
       skip 'Non honors' if current_partner.honors?
 
       checkboxes = find_all('#email_form_release_switch')

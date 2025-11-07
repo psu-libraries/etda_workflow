@@ -1,4 +1,4 @@
-RSpec.describe "Committee Member Dashboard", type: :integration, js: true do
+RSpec.describe "Committee Member Dashboard", :js, type: :integration do
   require 'integration/integration_spec_helper'
   let!(:committee_member1) { FactoryBot.create :committee_member, faculty_member_id: faculty_member1.id, submission_id: submission1.id }
   let!(:faculty_member1) { FactoryBot.create :faculty_member, department: "IST", college: "College of IST" }

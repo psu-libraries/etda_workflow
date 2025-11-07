@@ -195,7 +195,10 @@ RSpec/ExampleWording:
   IgnoredWords:
     - only
 
-RSpec/FilePath:
+RSpec/SpecFilePathFormat:
+  Enabled: false
+
+RSpec/SpecFilePathSuffix:
   Enabled: false
 
 RSpec/InstanceVariable:

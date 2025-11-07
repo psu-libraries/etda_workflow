@@ -552,7 +552,7 @@ RSpec.describe ApprovalStatus, type: :model do
                                                           is_voting: true,
                                                           approval_started_at: (DateTime.now - (7.days + 1.hour)))
 
-        expect(described_class.new(submission).approved_with_non_voters?).to eq(false)
+        expect(described_class.new(submission).approved_with_non_voters?).to be(false)
       end
     end
 
@@ -580,7 +580,7 @@ RSpec.describe ApprovalStatus, type: :model do
                                                             is_voting: true,
                                                             approval_started_at: (DateTime.now - (7.days + 1.hour)))
 
-          expect(described_class.new(submission).approved_with_non_voters?).to eq(true)
+          expect(described_class.new(submission).approved_with_non_voters?).to be(true)
         end
       end
 
@@ -607,7 +607,7 @@ RSpec.describe ApprovalStatus, type: :model do
                                                             is_voting: true,
                                                             approval_started_at: (DateTime.now - (7.days + 1.hour)))
 
-          expect(described_class.new(submission).approved_with_non_voters?).to eq(false)
+          expect(described_class.new(submission).approved_with_non_voters?).to be(false)
         end
       end
     end

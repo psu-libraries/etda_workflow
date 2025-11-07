@@ -1,4 +1,4 @@
-RSpec.describe "Placing a final submission on hold as an admin", type: :integration, js: true do
+RSpec.describe "Placing a final submission on hold as an admin", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:author) { FactoryBot.create :author }

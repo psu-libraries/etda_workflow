@@ -5,7 +5,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
 
   describe '#import' do
     context 'when current_partner is not graduate' do
-      it 'raises an error', milsch: true, honors: true do
+      it 'raises an error', :honors, :milsch do
         skip 'non graduate' if current_partner.graduate?
 
         expect { lionpath_csv_importer.import }.to raise_error(Lionpath::LionpathCsvImporter::InvalidPartner)
@@ -14,7 +14,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
 
     context 'when lionpath_resource is bogus' do
       it 'raises an error' do
-        bogus = class_double('Lionpath::Bogus')
+        bogus = class_double(Lionpath::Bogus)
         expect { lionpath_csv_importer.send(:grab_file, bogus) }.to raise_error(Lionpath::LionpathCsvImporter::InvalidResource)
       end
     end
@@ -45,7 +45,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
         expect { lionpath_csv_importer.send(:parse_csv, Lionpath::LionpathCommitteeRoles.new) }
           .to change(CommitteeRole, :count).by 2
         expect(CommitteeRole.find(committee_role.id).name).to eq 'Dissertation Advisor'
-        expect(CommitteeRole.last.is_active).to eq false
+        expect(CommitteeRole.last.is_active).to be false
       end
     end
 
@@ -68,7 +68,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
         expect(Author.find(author_1.id).submissions.first.candidate_number).to eq '000000001234'
         expect(Author.find(author_3.id).submissions.first.degree.degree_type.slug).to eq 'master_thesis'
         expect(Author.find(author_3.id).submissions.first.academic_program).to eq 'MD'
-        expect(Author.find(author_3.id).submissions.first.candidate_number).to eq nil
+        expect(Author.find(author_3.id).submissions.first.candidate_number).to be_nil
         expect(Author.find(author_4.id).submissions.first.degree_checkout_status).to eq 'EG'
       end
     end
