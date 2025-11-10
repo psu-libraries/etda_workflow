@@ -34,6 +34,7 @@ RSpec.describe SolrDataImportService, type: :model do
     end
 
     it 'sends update to solr for given submission' do
+      pending('incomplete test - no expect block')
       solr_data_import_service.index_submission(submission, true)
     end
   end
@@ -66,6 +67,7 @@ RSpec.describe SolrDataImportService, type: :model do
     end
 
     it 'sends delete to solr for given submission' do
+      pending('incomplete test - no expect block')
       solr_data_import_service.remove_submission(submission)
     end
   end

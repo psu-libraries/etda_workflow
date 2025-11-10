@@ -4,7 +4,7 @@ require 'model_spec_helper'
 
 RSpec.describe SubmissionStates::WaitingInFinalSubmissionOnHold do
   describe 'instance methods' do
-    let(:subject) { described_class.new }
+    subject { described_class.new }
 
     it "transitions to WaitingForPublicationRelease" do
       expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease)
@@ -24,21 +24,23 @@ RSpec.describe SubmissionStates::WaitingInFinalSubmissionOnHold do
   end
 
   describe 'name' do
-    let(:subject) { described_class.name }
+    subject { described_class.name }
 
     it { is_expected.to eq 'waiting in final submission on hold' }
   end
 
   describe 'status_date' do
+    subject { described_class.new.status_date(submission) }
+
     let(:submission) { FactoryBot.create :submission, :waiting_in_final_submission_on_hold, placed_on_hold_at: DateTime.now }
-    let(:subject) { described_class.new.status_date(submission) }
 
     it { is_expected.to eq(submission.placed_on_hold_at) }
   end
 
   describe '#transition' do
+    subject { described_class.transition submission }
+
     let(:submission) { FactoryBot.create :submission, :final_is_restricted, status: }
-    let(:subject) { described_class.transition submission }
 
     context 'when submission status WaitingInFinalSubmissionOnHold' do
       let(:status) { described_class.name }
