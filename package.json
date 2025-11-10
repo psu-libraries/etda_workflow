@@ -50,6 +50,7 @@
     "websocket-extensions": "0.1.4",
     "yargs-parser": "^18.1.2"
   },
+  "packageManager": "yarn@1.22.22",
   "babel": {
     "presets": [
       "./node_modules/shakapacker/package/babel/preset.js"
