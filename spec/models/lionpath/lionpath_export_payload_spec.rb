@@ -3,7 +3,7 @@ require 'model_spec_helper'
 RSpec.describe Lionpath::LionpathExportPayload do
   subject(:export_payload) { described_class.new(submission) }
 
-  let(:status_behavior) { instance_double(StatusGiver) }
+  let(:status_behavior) { instance_double(SubmissionStatusGiver) }
   let(:approval_status_behavior) { instance_double(ApprovalStatus) }
   let(:submission) do
     instance_double(Submission,
