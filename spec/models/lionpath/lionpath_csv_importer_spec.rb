@@ -14,7 +14,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
 
     context 'when lionpath_resource is bogus' do
       it 'raises an error' do
-        bogus = class_double(Lionpath::Bogus)
+        bogus = class_double('Lionpath::Bogus')
         expect { lionpath_csv_importer.send(:grab_file, bogus) }.to raise_error(Lionpath::LionpathCsvImporter::InvalidResource)
       end
     end
