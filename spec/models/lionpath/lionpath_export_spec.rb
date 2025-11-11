@@ -3,8 +3,8 @@ require 'model_spec_helper'
 RSpec.describe Lionpath::LionpathExport do
   subject(:exporter) { described_class.new(submission) }
 
-  let(:submission) { instance_double(Submission) }
-  let(:payload_instance) { instance_double(Lionpath::LionpathExportPayload, json_payload:) }
+  let(:submission) { instance_double('Submission') }
+  let(:payload_instance) { instance_double('Lionpath::LionpathExportPayload', json_payload:) }
   let(:json_payload) { '{"PE_SR199_ETD_REQ":{"key":"value"}}' }
   let(:auth) { ['test_user', 'test_password'] }
   let(:host) { 'https://test.com' }

@@ -1057,9 +1057,9 @@ RSpec.describe Submission, type: :model do
 
         context 'when a LionpathExportWorker has already been queued for this submission' do
           let(:schedule_set_item) do
-            instance_double(Sidekiq::ScheduleSet, queue: 'lionpath_exports',
-                                                  item: { "class" => 'LionpathExportWorker',
-                                                          "args" => [submission_lp.id] })
+            instance_double('Sidekiq::ScheduleSet', queue: 'lionpath_exports',
+                                                    item: { "class" => 'LionpathExportWorker',
+                                                            "args" => [submission_lp.id] })
           end
 
           it 'does not create a LionpathExport job' do

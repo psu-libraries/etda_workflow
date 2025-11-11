@@ -48,6 +48,9 @@ RSpec/RepeatedExampleGroupBody:
 RSpec/RepeatedExampleGroupDescription:
   Enabled: false
 
+RSpec/VerifiedDoubleReference:
+  Enabled: false
+
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Rails/ApplicationMailer:
