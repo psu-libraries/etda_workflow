@@ -107,7 +107,7 @@ RSpec.describe Author::SubmissionView do
     context "when submission's status is beyond collecting program information and was not imported via lionpath" do
       before do
         submission.status = 'collecting committee'
-        submission.created_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+        submission.created_at = Time.strptime('2020-01-01', '%Y-%m-%d')
       end
 
       it "returns completed partial and text as hash" do
@@ -118,8 +118,8 @@ RSpec.describe Author::SubmissionView do
     context "when submission's status is beyond collecting program information and was imported via lionpath" do
       before do
         submission.status = 'collecting committee'
-        submission.created_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
-        submission.lionpath_updated_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+        submission.created_at = Time.strptime('2020-01-01', '%Y-%m-%d')
+        submission.lionpath_updated_at = Time.strptime('2020-01-01', '%Y-%m-%d')
       end
 
       it "returns completed partial and created on text as hash" do
@@ -130,8 +130,8 @@ RSpec.describe Author::SubmissionView do
     context "when submission's status is collecting program information" do
       before do
         submission.status = 'collecting program information'
-        submission.created_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
-        submission.lionpath_updated_at = DateTime.strptime('2020-01-01', '%Y-%m-%d')
+        submission.created_at = Time.strptime('2020-01-01', '%Y-%m-%d')
+        submission.lionpath_updated_at = Time.strptime('2020-01-01', '%Y-%m-%d')
       end
 
       it "returns created on text as hash" do
