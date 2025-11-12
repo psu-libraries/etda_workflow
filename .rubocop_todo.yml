@@ -6,6 +6,11 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
+# Offense count: 4
+Lint/DuplicateMethods:
+  Exclude:
+    - 'app/models/submission.rb'
+
 # Offense count: 17
 Lint/MissingSuper:
   Enabled: false
@@ -130,6 +135,9 @@ Rails/SkipsModelValidations:
 Rails/UniqueValidationWithoutIndex:
   Exclude:
     - 'app/models/author.rb'
+
+Style/RedundantCondition:
+  Enabled: false
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).

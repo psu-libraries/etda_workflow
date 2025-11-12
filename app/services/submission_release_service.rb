@@ -60,7 +60,7 @@ class SubmissionReleaseService
       record_error(err)
       file_error_list << err
     end
-    { valid: file_error_list.empty? || false, file_error_list: }
+    { valid: file_error_list.empty? ? true : false, file_error_list: }
   end
 
   private

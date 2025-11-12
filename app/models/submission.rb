@@ -238,13 +238,21 @@ class Submission < ApplicationRecord
   end
 
   # TODO: Implement the following methods (next 30 lines) where appropriate
+  delegate :name, to: :degree, prefix: true
+
   delegate :name, to: :degree_type, prefix: true
 
   delegate :slug, to: :degree_type, prefix: true
 
+  delegate :name, to: :program, prefix: true
+
   delegate :description, to: :degree, prefix: true
 
+  delegate :last_name, to: :author, prefix: true
+
   delegate :middle_name, to: :author, prefix: true
+
+  delegate :first_name, to: :author, prefix: true
 
   def admin_can_edit?
     true
