@@ -33,8 +33,7 @@ RSpec.describe SolrDataImportService, type: :model do
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
     end
 
-    it 'sends update to solr for given submission' do
-      pending('incomplete test - no expect block')
+    it 'sends update to solr for given submission', skip: 'incomplete test' do
       solr_data_import_service.index_submission(submission, true)
     end
   end
@@ -66,8 +65,7 @@ RSpec.describe SolrDataImportService, type: :model do
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
     end
 
-    it 'sends delete to solr for given submission' do
-      pending('incomplete test - no expect block')
+    it 'sends delete to solr for given submission', skip: 'incomplete test' do
       solr_data_import_service.remove_submission(submission)
     end
   end

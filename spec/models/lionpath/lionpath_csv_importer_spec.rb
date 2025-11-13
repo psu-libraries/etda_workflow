@@ -22,8 +22,7 @@ RSpec.describe Lionpath::LionpathCsvImporter do
     context 'when error occurs during csv parsing' do
       let(:fixture_location) { "#{Rails.root}/spec/fixtures/lionpath/lionpath_committee.csv" }
 
-      it 'rescues error and reports to rails logger with lionpath: tag' do
-        pending('incomplete test - no expect block')
+      it 'rescues error and reports to rails logger with lionpath: tag', skip: "no expect block" do
         allow_any_instance_of(described_class).to receive(:lionpath_csv_loc).and_return(fixture_location)
         lionpath_committee = instance_spy(Lionpath::LionpathCommittee)
         allow(lionpath_committee).to receive(:import).and_raise StandardError
