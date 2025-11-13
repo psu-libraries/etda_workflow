@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "admins", charset: "utf8mb4", force: :cascade do |t|
+  create_table "admins", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
     t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
@@ -40,7 +40,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["access_id"], name: "index_admins_on_access_id", unique: true
   end
 
-  create_table "approval_configurations", charset: "utf8mb4", force: :cascade do |t|
+  create_table "approval_configurations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "degree_type_id"
     t.date "approval_deadline_on"
     t.integer "configuration_threshold"
@@ -53,7 +53,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["degree_type_id"], name: "degree_type_id_fk"
   end
 
-  create_table "approvers", charset: "utf8mb4", force: :cascade do |t|
+  create_table "approvers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
     t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
@@ -66,7 +66,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["access_id"], name: "index_approvers_on_access_id", unique: true
   end
 
-  create_table "authors", charset: "utf8mb4", force: :cascade do |t|
+  create_table "authors", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "access_id", default: "", null: false
     t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
@@ -98,7 +98,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["legacy_id"], name: "index_authors_on_legacy_id"
   end
 
-  create_table "committee_member_tokens", charset: "utf8mb4", force: :cascade do |t|
+  create_table "committee_member_tokens", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "authentication_token"
     t.bigint "committee_member_id"
     t.datetime "created_at", precision: nil, null: false
@@ -107,7 +107,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["committee_member_id"], name: "index_committee_member_tokens_on_committee_member_id"
   end
 
-  create_table "committee_members", charset: "utf8mb4", force: :cascade do |t|
+  create_table "committee_members", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
     t.bigint "committee_role_id"
     t.string "name"
@@ -138,7 +138,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["submission_id"], name: "committee_members_submission_id_fk"
   end
 
-  create_table "committee_roles", charset: "utf8mb4", force: :cascade do |t|
+  create_table "committee_roles", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "degree_type_id", null: false
     t.string "name", null: false
     t.integer "num_required", default: 0, null: false
@@ -151,7 +151,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["degree_type_id"], name: "committee_roles_degree_type_id_fk"
   end
 
-  create_table "confidential_hold_histories", charset: "utf8mb4", force: :cascade do |t|
+  create_table "confidential_hold_histories", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "author_id", null: false
     t.datetime "set_at", precision: nil
     t.datetime "removed_at", precision: nil
@@ -162,14 +162,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["author_id"], name: "index_confidential_hold_histories_on_author_id"
   end
 
-  create_table "degree_types", charset: "utf8mb4", force: :cascade do |t|
+  create_table "degree_types", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
     t.index ["name"], name: "index_degree_types_on_name", unique: true
     t.index ["slug"], name: "index_degree_types_on_slug", unique: true
   end
 
-  create_table "degrees", charset: "utf8mb4", force: :cascade do |t|
+  create_table "degrees", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.boolean "is_active"
@@ -183,7 +183,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["name"], name: "index_degrees_on_name", unique: true
   end
 
-  create_table "faculty_members", charset: "utf8mb4", force: :cascade do |t|
+  create_table "faculty_members", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "middle_name"
     t.string "last_name", null: false
@@ -204,9 +204,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["submission_id"], name: "index_federal_funding_details_on_submission_id"
   end
 
-  create_table "final_submission_files", charset: "utf8mb4", force: :cascade do |t|
+  create_table "final_submission_files", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
-    t.text "asset"
+    t.text "asset", size: :medium
     t.integer "legacy_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -214,9 +214,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["submission_id"], name: "final_submission_files_submission_id_fk"
   end
 
-  create_table "format_review_files", charset: "utf8mb4", force: :cascade do |t|
+  create_table "format_review_files", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
-    t.text "asset"
+    t.text "asset", size: :medium
     t.integer "legacy_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -224,7 +224,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["submission_id"], name: "format_review_files_submission_id_fk"
   end
 
-  create_table "invention_disclosures", charset: "utf8mb4", force: :cascade do |t|
+  create_table "invention_disclosures", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
     t.string "id_number"
     t.datetime "created_at", precision: nil, null: false
@@ -232,9 +232,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["submission_id"], name: "invention_disclosures_submission_id_fk"
   end
 
-  create_table "keywords", charset: "utf8mb4", force: :cascade do |t|
+  create_table "keywords", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "submission_id"
-    t.text "word"
+    t.text "word", size: :medium
     t.integer "legacy_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -242,7 +242,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["submission_id"], name: "keywords_submission_id_fk"
   end
 
-  create_table "programs", charset: "utf8mb4", force: :cascade do |t|
+  create_table "programs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.boolean "is_active"
@@ -256,7 +256,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.index ["name", "code"], name: "index_programs_on_name_and_code", unique: true
   end
 
-  create_table "submissions", charset: "utf8mb4", force: :cascade do |t|
+  create_table "submissions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "author_id"
     t.bigint "program_id"
     t.bigint "degree_id"
@@ -264,10 +264,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.integer "year"
     t.string "status"
     t.string "title", limit: 400
-    t.text "format_review_notes"
-    t.text "final_submission_notes"
+    t.text "format_review_notes", size: :medium
+    t.text "final_submission_notes", size: :medium
     t.datetime "defended_at", precision: nil
-    t.text "abstract"
+    t.text "abstract", size: :medium
     t.string "access_level"
     t.boolean "has_agreed_to_terms"
     t.datetime "committee_provided_at", precision: nil
@@ -291,7 +291,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.datetime "format_review_files_first_uploaded_at", precision: nil
     t.datetime "final_submission_files_first_uploaded_at", precision: nil
     t.string "lion_path_degree_code"
-    t.text "restricted_notes"
+    t.text "restricted_notes", size: :medium
     t.datetime "publication_release_terms_agreed_to_at", precision: nil
     t.boolean "has_agreed_to_publication_release"
     t.datetime "created_at", precision: nil, null: false
@@ -311,9 +311,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.string "lionpath_semester"
     t.string "academic_program"
     t.string "degree_checkout_status"
+    t.datetime "author_release_warning_sent_at", precision: nil
     t.datetime "acknowledgment_page_submitted_at", precision: nil
     t.string "candidate_number"
-    t.datetime "author_release_warning_sent_at", precision: nil
     t.string "extension_token"
     t.datetime "last_lionpath_export_at", precision: nil
     t.index ["author_id"], name: "submissions_author_id_fk"

@@ -1,5 +1,5 @@
-<%#this presenter is being initialized here since cocoon make it hard to initialize it another way
-    local_presenter = Author::CommitteeMemberView.new(f.object) %>
+<%#this presenter is being initialized here since cocoon make it hard to initialize it another way %>
+    <% local_presenter = Author::CommitteeMemberView.new(f.object) %>
 <% is_external_member = f.object.external_to_psu_id.present? %>
 <% disabled_bool = (current_partner.graduate? && f.object.lionpath_updated_at.present? && !is_external_member) %>
 <div class="nested-fields card card-committee">
