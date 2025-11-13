@@ -136,9 +136,6 @@ Rails/UniqueValidationWithoutIndex:
   Exclude:
     - 'app/models/author.rb'
 
-Style/RedundantCondition:
-  Enabled: false
-
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: Mode.
