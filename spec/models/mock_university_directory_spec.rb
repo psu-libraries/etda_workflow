@@ -23,7 +23,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
       let(:search_string) { "alex" }
 
       it "returns an array of hashes that can be returned to jQuery autocomplete" do
-        expect(result).to be_a_kind_of(Array)
+        expect(result).to be_a(Array)
         expect(result.first).to have_key(:id)
         expect(result.first).to have_key(:label)
         expect(result.first).to have_key(:value)
@@ -66,7 +66,7 @@ RSpec.describe MockUniversityDirectory, type: :model do
       let(:access_id) { "ajk5603" }
 
       it "returns an array of hashes for an author record" do
-        expect(result).to be_a_kind_of(Hash)
+        expect(result).to be_a(Hash)
         expect(result).to have_key(:access_id)
         expect(result).to have_key(:first_name)
         expect(result).to have_key(:address_1)

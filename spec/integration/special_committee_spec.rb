@@ -29,7 +29,7 @@ RSpec.describe 'Special committee page', type: :integration do
       expect(page).to have_button('Proceed to ETD My Reviews Page')
     end
 
-    it 'marries an approver and multiple committee member records via token when clicking advance button', js: true do
+    it 'marries an approver and multiple committee member records via token when clicking advance button', :js do
       committee_member_two = FactoryBot.create(:committee_member, submission:, status: '', email: 'approverflow@gmail.com')
       committee_member_token_two = FactoryBot.create :committee_member_token, authentication_token: '2'
       committee_member_two.committee_member_token = nil
@@ -49,14 +49,14 @@ RSpec.describe 'Special committee page', type: :integration do
       expect(page).to have_link(submission.title)
     end
 
-    it 'does not marry an approver and committee member record via token when clicking advance button', js: true do
+    it 'does not marry an approver and committee member record via token when clicking advance button', :js do
       visit '/special_committee/1'
       click_button("Proceed to ETD My Reviews Page")
       expect { Approver.find_by(access_id: 'approverflow').committee_members.count }.to raise_error NoMethodError
       expect(CommitteeMemberToken.find(committee_member_token.id)).to eq committee_member_token
     end
 
-    it 'marries an approver and committee member record via token when clicking advance button', js: true do
+    it 'marries an approver and committee member record via token when clicking advance button', :js do
       visit '/special_committee/1'
       allow_any_instance_of(Devise::Strategies::OidcAuthenticatable).to receive(:remote_user).and_return('approverflow')
       allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).and_return(true)

@@ -1,4 +1,4 @@
-RSpec.describe "Author Navigation", type: :integration, js: true do
+RSpec.describe "Author Navigation", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   before do
@@ -16,7 +16,7 @@ RSpec.describe "Author Navigation", type: :integration, js: true do
     expect(page).to have_link('Log Out')
   end
 
-  it 'has an about page', honors: true do
+  it 'has an about page', :honors do
     click_link 'About'
     expect(page).to have_link('Thesis and Dissertation Guide') if current_partner.graduate?
     expect(page).to have_link('Thesis Guide') unless current_partner.graduate?

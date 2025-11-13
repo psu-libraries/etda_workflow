@@ -1,4 +1,4 @@
-RSpec.describe 'When Collecting Committee status', type: :integration, js: true do
+RSpec.describe 'When Collecting Committee status', :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   describe "author can delete a submission" do
@@ -11,7 +11,7 @@ RSpec.describe 'When Collecting Committee status', type: :integration, js: true 
       oidc_authorize_author
     end
 
-    it "deletes the submission", honors: true, sset: true do
+    it "deletes the submission", :honors, :sset do
       start_count = author.submissions.count
       expect(start_count > 0).to be_truthy
       visit author_root_path

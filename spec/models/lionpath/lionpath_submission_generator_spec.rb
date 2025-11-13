@@ -33,12 +33,12 @@ RSpec.describe Lionpath::LionpathSubmissionGenerator, type: :model do
       expect(admin_author.submissions.first.campus).to eq 'UP'
       expect(admin_author.submissions.first.lionpath_updated_at).to be_truthy
       expect(admin_author.submissions.first.committee_members.count).to eq 5
-      expect(admin_author.submissions.first.committee_members.first.is_voting).to eq true
+      expect(admin_author.submissions.first.committee_members.first.is_voting).to be true
       expect(admin_author.submissions.first.committee_members.first.name).to match(/Fake Person/)
       expect(admin_author.submissions.first.committee_members.first.email).to match(/abc.*@psu.edu/)
       expect(admin_author.submissions.first.committee_members.first.access_id).to match(/abc.*/)
       expect(admin_author.submissions.first.committee_members.first.lionpath_updated_at).to be_truthy
-      expect(admin_author.submissions.first.committee_members.first.committee_role.is_program_head).to eq false
+      expect(admin_author.submissions.first.committee_members.first.committee_role.is_program_head).to be false
       expect(admin_author.submissions.first.committee_members.first.committee_role.code).to eq 'XYZ'
       expect(admin_author.submissions.first.lionpath_updated_at).to be_truthy
     end

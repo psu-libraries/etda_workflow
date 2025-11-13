@@ -6,10 +6,10 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 2
-Capybara/VisibilityMatcher:
+# Offense count: 4
+Lint/DuplicateMethods:
   Exclude:
-    - 'spec/integration/admin/manage_submissions_spec.rb'
+    - 'app/models/submission.rb'
 
 # Offense count: 17
 Lint/MissingSuper:
@@ -51,6 +51,9 @@ RSpec/RepeatedExampleGroupBody:
 
 # Offense count: 42
 RSpec/RepeatedExampleGroupDescription:
+  Enabled: false
+
+RSpec/VerifiedDoubleReference:
   Enabled: false
 
 # Offense count: 1

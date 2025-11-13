@@ -1,4 +1,4 @@
-RSpec.describe 'Author submission access_level', type: :integration, js: true do
+RSpec.describe 'Author submission access_level', :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let!(:submission) { FactoryBot.create :submission, :collecting_final_submission_files, author: current_author }
@@ -16,7 +16,7 @@ RSpec.describe 'Author submission access_level', type: :integration, js: true do
     visit author_submission_edit_final_submission_path(submission)
   end
 
-  context 'graduate an honors authors can choose the access level', milsch: true do
+  context 'graduate an honors authors can choose the access level', :milsch do
     unless current_partner.milsch?
       it 'has an open_access radio button' do
         expect(page).not_to have_content('Access Level for this paper:')
@@ -49,7 +49,7 @@ RSpec.describe 'Author submission access_level', type: :integration, js: true do
     end
   end
 
-  context 'milsch authors cannot choose the access level', milsch: true do
+  context 'milsch authors cannot choose the access level', :milsch do
     if current_partner.milsch?
       it 'has an open_access description' do
         expect(page).to have_content('Access Level for this paper: Open Access')

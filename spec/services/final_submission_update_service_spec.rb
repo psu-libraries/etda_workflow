@@ -59,7 +59,7 @@ RSpec.describe FinalSubmissionUpdateService do
       expect(submission.status).to eq('waiting for publication release')
       expect(submission.title).to eq('update this title')
       expect(submission.publication_release_terms_agreed_to_at).not_to be_nil
-      expect(submission.federal_funding).to eq true
+      expect(submission.federal_funding).to be true
       mailer_count = ActionMailer::Base.deliveries.count
       expect(mailer_count).to eq(1)
     end
@@ -106,7 +106,7 @@ RSpec.describe FinalSubmissionUpdateService do
       expect(submission.has_agreed_to_terms).to be_falsey
       expect(submission.has_agreed_to_publication_release).to be_falsey
       expect(submission.abstract).to eq('this abstract is updated')
-      expect(submission.committee_members.first.is_voting).to eq(false)
+      expect(submission.committee_members.first.is_voting).to be(false)
       expect(submission.committee_members.first.notes).to match(/testuser123 changed Voting Attribute to 'False' at:/)
       expect(ActionMailer::Base.deliveries.count).to eq(1)
     end
@@ -132,7 +132,7 @@ RSpec.describe FinalSubmissionUpdateService do
       expect(submission.status).to eq('waiting for final submission response')
       expect(submission.title).to eq('a different title')
       expect(submission.final_submission_notes).to eq('a note to you')
-      expect(submission.committee_members.first.is_voting).to eq(false)
+      expect(submission.committee_members.first.is_voting).to be(false)
       expect(submission.committee_members.first.notes).to match(/testuser123 changed Voting Attribute to 'False' at:/)
       expect(ActionMailer::Base.deliveries.count).to eq(start_count + 0)
     end
@@ -183,8 +183,8 @@ RSpec.describe FinalSubmissionUpdateService do
       # ("/admin/#{submission.degree_type.slug}/final_submission_approved")
       expect(submission.status).to eq('waiting for final submission response')
       expect(submission.final_submission_notes).to eq('a final note to you!!!')
-      expect(submission.final_submission_approved_at).to be(nil)
-      expect(submission.final_submission_rejected_at).to be(nil)
+      expect(submission.final_submission_approved_at).to be_nil
+      expect(submission.final_submission_rejected_at).to be_nil
       expect(submission.committee_members.first.status).to eq('rejected')
       expect(submission.committee_members.first.notes).to match(/testuser123 changed Review Status to 'Rejected' at:*/)
       # no email updates for moving submission out of waiting to be released (this has not been published yet)
@@ -226,7 +226,7 @@ RSpec.describe FinalSubmissionUpdateService do
       expect(result[:redirect_path]).to eql(admin_edit_submission_path(submission.id.to_s))
       expect(submission.status).to eq('collecting final submission files')
       expect(submission.title).to eq(title)
-      expect(submission.committee_members.first.is_voting).to eq(false)
+      expect(submission.committee_members.first.is_voting).to be(false)
       expect(submission.committee_members.first.notes).to match(/testuser123 changed Voting Attribute to 'False' at:/)
       expect(ActionMailer::Base.deliveries.count).to eq(start_count)
     end

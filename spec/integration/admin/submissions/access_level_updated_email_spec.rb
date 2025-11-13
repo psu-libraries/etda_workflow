@@ -1,4 +1,4 @@
-RSpec.describe 'actions that send an email notifying users of an access level update on a submission', type: :integration, js: true do
+RSpec.describe 'actions that send an email notifying users of an access level update on a submission', :js, type: :integration do
   require 'integration/integration_spec_helper'
   before do
     stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
@@ -34,7 +34,7 @@ RSpec.describe 'actions that send an email notifying users of an access level up
     end
   end
 
-  describe 'bulk releasing submissions', js: true do
+  describe 'bulk releasing submissions', :js do
     before do
       oidc_authorize_admin
     end

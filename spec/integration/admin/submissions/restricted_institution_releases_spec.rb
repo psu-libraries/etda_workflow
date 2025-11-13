@@ -1,4 +1,4 @@
-RSpec.describe "when an admin releases a restricted to institution submission for publication after 2 years", type: :integration, js: true do
+RSpec.describe "when an admin releases a restricted to institution submission for publication after 2 years", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:submission) { FactoryBot.create :submission, :final_is_restricted_to_institution, author: }
@@ -27,7 +27,7 @@ RSpec.describe "when an admin releases a restricted to institution submission fo
       FileUtilityHelper.new.copy_test_file(Rails.root.join(final_submission_file.current_location))
 
       psuonly_location = Rails.root.join(final_submission_file.current_location)
-      expect(File).to be_exist(psuonly_location)
+      expect(File).to exist(psuonly_location)
       expect(Submission.where(degree: submission.degree).released_for_publication.count).to eql(initial_released_count)
       expect(Submission.where(degree: submission.degree).final_is_restricted_institution.count).to eql(initial_restricted_institution_count)
       expect(submission.released_for_publication_at).not_to be_nil

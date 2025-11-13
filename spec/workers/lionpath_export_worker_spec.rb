@@ -7,7 +7,7 @@ RSpec.describe LionpathExportWorker do
     it 'finds the submission and calls Lionpath::LionpathExport' do
       allow(Submission).to receive(:find).with(submission.id).and_return(submission)
 
-      export_instance = instance_double(Lionpath::LionpathExport)
+      export_instance = instance_double('Lionpath::LionpathExport')
       allow(Lionpath::LionpathExport).to receive(:new).with(submission).and_return(export_instance)
       allow(export_instance).to receive(:call)
 

@@ -9,8 +9,7 @@ RSpec.describe 'Devise Login', type: :request do
   let(:author) { FactoryBot.create(:author) }
 
   before do
-    allow(request).to receive(:controller).and_return("admin/degrees")
-    allow(request).to receive(:headers).and_return('HTTP_REMOTE_USER' => 'saw140')
+    allow(request).to receive_messages(controller: "admin/degrees", headers: { 'HTTP_REMOTE_USER' => 'saw140' })
   end
 
   it 'signs author in and out' do

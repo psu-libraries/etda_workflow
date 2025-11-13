@@ -22,21 +22,23 @@ RSpec.describe SubmissionStates::WaitingForHeadOfProgramReview do
   end
 
   describe 'name' do
-    let(:subject) { described_class.name }
+    subject { described_class.name }
 
     it { is_expected.to eq 'waiting for head of program review' }
   end
 
   describe 'status_date' do
+    subject { described_class.new.status_date(submission) }
+
     let(:submission) { FactoryBot.create :submission, :waiting_for_head_of_program_review, committee_review_accepted_at: DateTime.now }
-    let(:subject) { described_class.new.status_date(submission) }
 
     it { is_expected.to eq(submission.committee_review_accepted_at) }
   end
 
   describe '#transition' do
+    subject { described_class.transition submission }
+
     let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, status: }
-    let(:subject) { described_class.transition submission }
 
     context 'when submission status WaitingForFinalSubmissionResponse' do
       let(:status) { SubmissionStates::WaitingForFinalSubmissionResponse.name }

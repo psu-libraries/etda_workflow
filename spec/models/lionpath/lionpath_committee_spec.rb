@@ -25,7 +25,7 @@ RSpec.describe Lionpath::LionpathCommittee do
     end
 
     it 'does not import data' do
-      expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 0
+      expect { lionpath_committee.import(row) }.not_to(change { submission.committee_members.count })
     end
   end
 
@@ -35,7 +35,7 @@ RSpec.describe Lionpath::LionpathCommittee do
     end
 
     it 'does not import data' do
-      expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 0
+      expect { lionpath_committee.import(row) }.not_to(change { submission.committee_members.count })
     end
   end
 
@@ -45,7 +45,7 @@ RSpec.describe Lionpath::LionpathCommittee do
     end
 
     it 'does not import data' do
-      expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 0
+      expect { lionpath_committee.import(row) }.not_to(change { submission.committee_members.count })
     end
   end
 
@@ -65,7 +65,7 @@ RSpec.describe Lionpath::LionpathCommittee do
       end
 
       it 'updates that committee member record (does not update email)' do
-        expect { lionpath_committee.import(row) }.to change { submission.committee_members.count }.by 0
+        expect { lionpath_committee.import(row) }.not_to(change { submission.committee_members.count })
         expect(CommitteeMember.find(committee_member.id).name).to eq 'Test Tester'
         expect(CommitteeMember.find(committee_member.id).committee_role).to eq committee_role
         expect(CommitteeMember.find(committee_member.id).email).to eq 'xyz321@psu.edu'
@@ -132,7 +132,7 @@ RSpec.describe Lionpath::LionpathCommittee do
 
       context 'when the committee member in the db does not have an external_to_psu_id' do
         it 'just updates the is_external_to_psu field' do
-          expect { lionpath_committee.import(row2) }.to change { submission.committee_members.count }.by 0
+          expect { lionpath_committee.import(row2) }.not_to(change { submission.committee_members.count })
           committee_member.reload
           expect(committee_member.external_to_psu_id).to eq 'mgc25'
           expect(committee_member.email).to eq 'mgc25@psu.edu'
@@ -143,7 +143,7 @@ RSpec.describe Lionpath::LionpathCommittee do
         it 'does not create a record or update anything' do
           committee_member.update(name: "Test Tester", email: 'tester@email.com', committee_role: committee_role2,
                                   access_id: nil, external_to_psu_id: 'mgc25')
-          expect { lionpath_committee.import(row2) }.to change { submission.committee_members.count }.by 0
+          expect { lionpath_committee.import(row2) }.not_to(change { submission.committee_members.count })
           committee_member.reload
           expect(committee_member.email).to eq 'tester@email.com'
         end

@@ -38,7 +38,7 @@ RSpec.describe CommitteeMember, type: :model do
     let(:cm) { described_class.new }
 
     it 'has is_voting defaulted to false' do
-      expect(cm.is_voting).to eq false
+      expect(cm.is_voting).to be false
     end
 
     it 'has status defaulted to ""' do
@@ -127,7 +127,7 @@ RSpec.describe CommitteeMember, type: :model do
       end
 
       context 'when current_partner is not graduate' do
-        it 'is valid', milsch: true, honors: true, sset: true do
+        it 'is valid', :honors, :milsch, :sset do
           skip "Non Graduate Only" if current_partner.graduate?
 
           expect(cm).to be_valid
@@ -255,7 +255,7 @@ RSpec.describe CommitteeMember, type: :model do
 
     context "when status is changed to 'something invalid'" do
       it 'raises error' do
-        expect(cm.update(status: 'something invalid')).to eq false
+        expect(cm.update(status: 'something invalid')).to be false
       end
     end
   end
@@ -361,7 +361,7 @@ RSpec.describe CommitteeMember, type: :model do
 
     context 'when last_reminder_at is nil' do
       it 'returns true' do
-        expect(cm.reminder_email_authorized?).to eq(true)
+        expect(cm.reminder_email_authorized?).to be(true)
       end
     end
 
@@ -370,7 +370,7 @@ RSpec.describe CommitteeMember, type: :model do
         time_now = DateTime.now
         cm.last_reminder_at = time_now - 1.hour
 
-        expect(cm.reminder_email_authorized?).to eq(false)
+        expect(cm.reminder_email_authorized?).to be(false)
       end
     end
 
@@ -379,7 +379,7 @@ RSpec.describe CommitteeMember, type: :model do
         time_now = DateTime.now
         cm.last_reminder_at = time_now - 25.hours
 
-        expect(cm.reminder_email_authorized?).to eq(true)
+        expect(cm.reminder_email_authorized?).to be(true)
       end
     end
   end
@@ -415,7 +415,7 @@ RSpec.describe CommitteeMember, type: :model do
     end
   end
 
-  context 'thesis_supervisors', honors: true do
+  context 'thesis_supervisors', :honors do
     if current_partner.honors?
       it 'returns the Committee Members who have a Thesis Supervisor Role' do
         submission = FactoryBot.create(:submission)
@@ -427,7 +427,7 @@ RSpec.describe CommitteeMember, type: :model do
     end
   end
 
-  context 'thesis_supervisor_name', honors: true do
+  context 'thesis_supervisor_name', :honors do
     if current_partner.honors?
       it 'returns the Committee Member name of first Thesis Supervisor' do
         submission = FactoryBot.create(:submission)
@@ -439,7 +439,7 @@ RSpec.describe CommitteeMember, type: :model do
     end
   end
 
-  context 'thesis_supervisor_email', honors: true do
+  context 'thesis_supervisor_email', :honors do
     if current_partner.honors?
       it 'returns the Committee Member email of first Thesis Supervisor' do
         submission = FactoryBot.create(:submission)
@@ -570,7 +570,7 @@ RSpec.describe CommitteeMember, type: :model do
 
     context 'when committee does not contain a program head' do
       it 'returns nil' do
-        expect(described_class.program_head(submission)).to eq nil
+        expect(described_class.program_head(submission)).to be_nil
       end
     end
 

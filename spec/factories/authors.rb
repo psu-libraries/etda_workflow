@@ -25,7 +25,7 @@ FactoryBot.define do
     middle_name { "Quicny" }
     last_name { Faker::Name.unique.name }
     phone_number { "123-456-7890" }
-    is_alternate_email_public { current_partner.graduate? ? true : false }
+    is_alternate_email_public { current_partner.graduate? || false }
     address_1 { "123 Example Ave." }
     address_2 { "Apt. 8H" }
     city { "State College" }

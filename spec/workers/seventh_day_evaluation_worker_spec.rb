@@ -28,7 +28,7 @@ RSpec.describe SeventhDayEvaluationWorker do
 
       it 'does not send emails or send to SubmissionStatusUpdaterService' do
         expect_any_instance_of(SubmissionStatusUpdaterService).not_to receive(:update_status_from_committee)
-        expect { described_class.perform_async(submission.id) }.to change { WorkflowMailer.deliveries.size }.by(0)
+        expect { described_class.perform_async(submission.id) }.not_to(change { WorkflowMailer.deliveries.size })
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe SeventhDayEvaluationWorker do
           end
         end
 
-        context 'when non graduate', sset: true, honors: true, milsch: true do
+        context 'when non graduate', :honors, :milsch, :sset do
           it 'sends non dissertation emails' do
             skip "non graduate only" if current_partner.graduate?
 

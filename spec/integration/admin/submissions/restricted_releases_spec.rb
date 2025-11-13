@@ -1,4 +1,4 @@
-RSpec.describe "when an admin releases a restricted submission for publication after 2 years", type: :integration, js: true do
+RSpec.describe "when an admin releases a restricted submission for publication after 2 years", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:author) { FactoryBot.create :author }
@@ -26,7 +26,7 @@ RSpec.describe "when an admin releases a restricted submission for publication a
 
     specify "submission status updates to 'released for publication'" do
       unreleased_location = Rails.root.join(final_submission_file.current_location)
-      expect(File).to be_exist(unreleased_location)
+      expect(File).to exist(unreleased_location)
       expect(Submission.where(degree: submission.degree).released_for_publication.count).to eql(initial_released_count)
       expect(Submission.where(degree: submission.degree).final_is_withheld.count).to eql(initial_restricted_count)
       expect(submission.released_for_publication_at).not_to be_nil

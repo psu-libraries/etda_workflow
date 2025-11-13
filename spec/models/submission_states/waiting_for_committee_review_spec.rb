@@ -22,21 +22,23 @@ RSpec.describe SubmissionStates::WaitingForCommitteeReview do
   end
 
   describe 'name' do
-    let(:subject) { described_class.name }
+    subject { described_class.name }
 
     it { is_expected.to eq 'waiting for committee review' }
   end
 
   describe 'status_date' do
+    subject { described_class.new.status_date(submission) }
+
     let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review }
-    let(:subject) { described_class.new.status_date(submission) }
 
     it { is_expected.to eq(submission.final_submission_files_uploaded_at) }
   end
 
   describe '#transition' do
+    subject { described_class.transition submission }
+
     let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, status: }
-    let(:subject) { described_class.transition submission }
 
     context 'when submission status WaitingForCommittee' do
       let(:status) { described_class.name }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Manage Programs", type: :integration, js: true do
+RSpec.describe "Manage Programs", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let!(:program) { FactoryBot.create :program }

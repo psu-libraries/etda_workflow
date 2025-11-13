@@ -1,4 +1,4 @@
-RSpec.describe "Admins can run reports", type: :integration, js: true do
+RSpec.describe "Admins can run reports", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   submission_year = Semester.current.split[0]
@@ -100,7 +100,7 @@ RSpec.describe "Admins can run reports", type: :integration, js: true do
     end
   end
 
-  context 'clicking on Report link', js: true do
+  context 'clicking on Report link', :js do
     it 'displays the available report types' do
       expect(page).to have_link('Reports')
       page.find('a#reports_menu').click
@@ -123,7 +123,7 @@ RSpec.describe "Admins can run reports", type: :integration, js: true do
       expect(page).to have_content('Restricted')
     end
 
-    it 'displays the Custom Report page and allows filtering by semester', graduate: true, honors: true do
+    it 'displays the Custom Report page and allows filtering by semester', :graduate, :honors do
       expect(page).to have_link('Custom Report')
       click_link('Custom Report')
       expect(page).to have_content('Custom Report')

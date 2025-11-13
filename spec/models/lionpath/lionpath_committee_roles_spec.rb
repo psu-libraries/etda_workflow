@@ -21,8 +21,8 @@ RSpec.describe Lionpath::LionpathCommitteeRoles do
       expect { lionpath_committee_roles.import(row1) }.to(change { committee_role.reload.lionpath_updated_at })
       expect(CommitteeRole.count).to eq 14
       committee_role.reload
-      expect(committee_role.is_active).to eq false
-      expect(committee_role.is_program_head).to eq false
+      expect(committee_role.is_active).to be false
+      expect(committee_role.is_program_head).to be false
     end
   end
 
@@ -38,7 +38,7 @@ RSpec.describe Lionpath::LionpathCommitteeRoles do
       expect(CommitteeRole.last.name).to eq 'Primary Supervisor'
       expect(CommitteeRole.last.code).to eq 'PRIM'
       expect(CommitteeRole.last.lionpath_updated_at).to be_truthy
-      expect(CommitteeRole.last.is_program_head).to eq false
+      expect(CommitteeRole.last.is_program_head).to be false
     end
   end
 end

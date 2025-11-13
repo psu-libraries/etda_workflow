@@ -98,7 +98,7 @@ RSpec.describe Author, type: :model do
   end
 
   unless current_partner.graduate?
-    context 'non graduate students are not expected to have contact address fields', honors: true, milsch: true do
+    context 'non graduate students are not expected to have contact address fields', :honors, :milsch do
       it { is_expected.not_to validate_inclusion_of(:state).in_array(UsStates.names.keys.map(&:to_s)) }
       it { is_expected.not_to validate_presence_of(:state) }
       it { is_expected.not_to validate_presence_of(:zip) }
@@ -221,7 +221,7 @@ RSpec.describe Author, type: :model do
       allow(ConfidentialHoldHistory).to receive(:create).and_return nil
     end
 
-    it 'updates author attributes using LDAP information ' do
+    it 'updates author attributes using LDAP information' do
       expect(author.last_name).to be_blank
       expect(author.confidential_hold).to be_blank
       expect(author.phone_number).to be_blank

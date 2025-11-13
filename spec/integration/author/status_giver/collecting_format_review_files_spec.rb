@@ -1,4 +1,4 @@
-RSpec.describe 'When Collecting Format Review Files', type: :integration, js: true do
+RSpec.describe 'When Collecting Format Review Files', :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'collecting format review files'" do
@@ -25,7 +25,7 @@ RSpec.describe 'When Collecting Format Review Files', type: :integration, js: tr
         attach_file first_input_id, file_fixture('format_review_file_01.pdf')
         click_button 'Submit files for review'
         submission.reload
-        expect(submission.federal_funding).to eq(false)
+        expect(submission.federal_funding).to be(false)
         expect(submission.status).to eq 'waiting for format review response'
         expect(submission.format_review_files_uploaded_at).not_to be_nil
       end

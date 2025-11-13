@@ -6,7 +6,7 @@ require 'shoulda-matchers'
 RSpec.describe FormatReviewUpdateService, type: :model do
   let(:committee_member) { FactoryBot.create :committee_member, created_at: DateTime.yesterday }
 
-  context 'it processes approved format review submissions', sset: true, honors: true, milsch: true do
+  context 'it processes approved format review submissions', :honors, :milsch, :sset do
     it 'approves a format review' do
       submission = FactoryBot.create :submission, :waiting_for_format_review_response, committee_members: [committee_member]
       params = ActionController::Parameters.new
@@ -23,16 +23,16 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/format_review_submitted")
       expect(submission.status).to eq('collecting final submission files')
       expect(submission.title).to eq(title)
-      expect(submission.committee_members.first.is_voting).to eq(false)
+      expect(submission.committee_members.first.is_voting).to be(false)
       expect(submission.committee_members.first.status).to eq('approved')
       expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Review Status to 'Approved' at: .*\n\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
-      expect(submission.federal_funding).to eq false
+      expect(submission.federal_funding).to be false
       expect(WorkflowMailer.deliveries.count).to eq 1 unless current_partner.milsch?
       expect(WorkflowMailer.deliveries.count).to eq 0 if current_partner.milsch?
     end
   end
 
-  context 'it processes rejected format review submissions', sset: true, honors: true, milsch: true do
+  context 'it processes rejected format review submissions', :honors, :milsch, :sset do
     it 'rejects a format review' do
       submission = FactoryBot.create :submission, :waiting_for_format_review_response, committee_members: [committee_member]
       params = ActionController::Parameters.new
@@ -47,7 +47,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/format_review_submitted")
       expect(submission.status).to eq('collecting format review files rejected')
       expect(submission.semester).to eq(semester)
-      expect(submission.committee_members.first.is_voting).to eq(false)
+      expect(submission.committee_members.first.is_voting).to be(false)
       expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
       expect(WorkflowMailer.deliveries.count).to eq 1 unless current_partner.milsch?
       expect(WorkflowMailer.deliveries.count).to eq 0 if current_partner.milsch?
@@ -92,7 +92,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       expect(result[:redirect_path]).to eql("/admin/#{submission.degree_type.slug}/format_review_submitted")
       expect(submission.status).to eq('collecting final submission files')
       expect(submission.title == 'another different title').to be_truthy
-      expect(submission.committee_members.first.is_voting).to eq(false)
+      expect(submission.committee_members.first.is_voting).to be(false)
     end
   end
 end

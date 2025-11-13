@@ -1,4 +1,4 @@
-RSpec.describe 'Approver approval page', type: :integration, js: true do
+RSpec.describe 'Approver approval page', :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:submission) { FactoryBot.create :submission, :waiting_for_committee_review, created_at: Time.zone.now }

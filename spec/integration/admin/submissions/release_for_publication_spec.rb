@@ -1,4 +1,4 @@
-RSpec.describe "when an admin releases the submission for publication", type: :integration, js: true do
+RSpec.describe "when an admin releases the submission for publication", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:author) { FactoryBot.create :author }
@@ -13,12 +13,12 @@ RSpec.describe "when an admin releases the submission for publication", type: :i
     FileUtilityHelper.new.copy_test_file(Rails.root.join(final_submission_file.current_location))
   end
 
-  context 'when open access', js: true do
+  context 'when open access', :js do
     let(:initial_released_count) { Submission.where(degree: DegreeType.default).released_for_publication.count }
 
     it "updates the number of released submissions" do
       unreleased_location = Rails.root.join(final_submission_file.current_location)
-      expect(File).to be_exist(unreleased_location)
+      expect(File).to exist(unreleased_location)
       expect(Submission.where(degree: DegreeType.default).released_for_publication.count).to eq(initial_released_count)
       expect(submission.released_for_publication_at).to be_nil
       visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')
@@ -56,7 +56,7 @@ RSpec.describe "when an admin releases the submission for publication", type: :i
     it 'updates the number of released submissions should not change access_level' do
       submission.update(access_level: 'restricted_to_institution')
       unreleased_location = Rails.root.join(final_submission_file.current_location)
-      expect(File).to be_exist(unreleased_location)
+      expect(File).to exist(unreleased_location)
       expect(Submission.where(degree: DegreeType.default).released_for_publication.count).to eq(initial_released_count)
       expect(submission.released_for_publication_at).to be_nil
       visit admin_submissions_index_path(DegreeType.default, 'final_submission_approved')

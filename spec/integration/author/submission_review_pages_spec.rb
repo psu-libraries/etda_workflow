@@ -1,4 +1,4 @@
-RSpec.describe 'Author submission review pages', type: :integration, js: true do
+RSpec.describe 'Author submission review pages', :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let!(:submission1) { FactoryBot.create :submission, :waiting_for_publication_release, author: current_author }
@@ -130,7 +130,7 @@ Haec para/doca illi, nos admirabilia dicamus. Nobis aliter videtur, recte secusn
     end
   end
 
-  context 'author can review final submission information ' do
+  context 'author can review final submission information' do
     it 'in a new browser tab' do
       allow(final_submission_file).to receive(:current_location).and_return('spec/fixtures/files/final_submission_file_01.pdf')
       visit "/author/submissions/#{submission1.id}/final_submission"

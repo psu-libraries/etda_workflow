@@ -22,7 +22,7 @@ RSpec.describe FeePaymentService do
             }
           )
           .to_return(status: 200, body: "\r\n    {\"data\":[{\"ETDPAYMENTFOUND\":\"Y\"}],\"error\":\"\"}\r\n    ", headers: {})
-        expect(service.fee_is_paid?).to eq true
+        expect(service.fee_is_paid?).to be true
       end
     end
 
@@ -39,7 +39,7 @@ RSpec.describe FeePaymentService do
             }
           )
           .to_return(status: 200, body: "\r\n    {\"data\":[{\"ETDPAYMENTFOUND\":\"Y\"}],\"error\":\"\"}\r\n    ", headers: {})
-        expect(service.fee_is_paid?).to eq true
+        expect(service.fee_is_paid?).to be true
       end
     end
 
@@ -56,7 +56,7 @@ RSpec.describe FeePaymentService do
             }
           )
           .to_return(status: 200, body: "\r\n    {\"data\":[{\"ETDPAYMENTFOUND\":\"Y\"}],\"error\":\"\"}\r\n    ", headers: {})
-        expect(service.fee_is_paid?).to eq true
+        expect(service.fee_is_paid?).to be true
       end
     end
 
@@ -73,7 +73,7 @@ RSpec.describe FeePaymentService do
             }
           )
           .to_return(status: 200, body: "\r\n    {\"data\":[{\"ETDPAYMENTFOUND\":\"Y\"}],\"error\":\"\"}\r\n    ", headers: {})
-        expect(service.fee_is_paid?).to eq true
+        expect(service.fee_is_paid?).to be true
       end
     end
   end

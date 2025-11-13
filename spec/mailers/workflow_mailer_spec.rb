@@ -46,7 +46,7 @@ RSpec.describe WorkflowMailer do
     let(:email) { described_class.format_review_accepted(submission) }
     let(:partner_email) { current_partner.email_address }
 
-    context "when the current partner should receive format_review_accepted emails", sset: true, honors: true do
+    context "when the current partner should receive format_review_accepted emails", :honors, :sset do
       before do
         skip 'current partner does not send format_review_accepted emails' if current_partner.milsch?
       end
@@ -69,7 +69,7 @@ RSpec.describe WorkflowMailer do
       end
     end
 
-    context "when the current partner does not send format_review emails", milsch: true do
+    context "when the current partner does not send format_review emails", :milsch do
       it "raises an InvalidPartner Error" do
         skip 'current partner SHOULD send format_review_accepted emails' unless current_partner.milsch?
 
@@ -82,7 +82,7 @@ RSpec.describe WorkflowMailer do
     let(:email) { described_class.format_review_rejected(submission) }
     let(:partner_email) { current_partner.email_address }
 
-    context "when the current partner should send ", sset: true, honors: true do
+    context "when the current partner should send", :honors, :sset do
       before do
         skip 'current partner does NOT send format_review_rejected emails' if current_partner.milsch?
       end
@@ -105,7 +105,7 @@ RSpec.describe WorkflowMailer do
       end
     end
 
-    context "when the current partner should not send", milsch: true do
+    context "when the current partner should not send", :milsch do
       it "raises an InvalidPartner Error" do
         skip 'current partner SHOULD send' unless current_partner.milsch?
         expect { email.deliver_now }.to raise_error WorkflowMailer::InvalidPartner
@@ -305,7 +305,7 @@ RSpec.describe WorkflowMailer do
       expect(email.from).to eq([partner_email])
     end
 
-    it "is sent to proper recipients depending on partner", honors: true, sset: true, milsch: true do
+    it "is sent to proper recipients depending on partner", :honors, :milsch, :sset do
       if current_partner.graduate?
         committee_member = FactoryBot.create :committee_member,
                                              email: submission.committee_members.first.email,
@@ -343,7 +343,7 @@ RSpec.describe WorkflowMailer do
     end
   end
 
-  describe '#committee_rejected_committee', honors: true, sset: true, milsch: true do
+  describe '#committee_rejected_committee', :honors, :milsch, :sset do
     let(:email) { described_class.committee_rejected_committee(submission) }
 
     before do
@@ -383,7 +383,7 @@ RSpec.describe WorkflowMailer do
       expect(email.to).to eq("author alt address")
     end
 
-    it "is carbon copied to the " do
+    it "is carbon copied to the" do
       expect(email.cc).to eq(["cc's"])
     end
 
@@ -495,7 +495,7 @@ RSpec.describe WorkflowMailer do
       expect(email.from).to eq([partner_email])
     end
 
-    it "sets an appropriate subject", honors: true, milsch: true, sset: true do
+    it "sets an appropriate subject", :honors, :milsch, :sset do
       expect(email.subject).to eq("#{current_partner.name} #{submission.degree_type} Review Reminder")
     end
 
@@ -607,7 +607,7 @@ RSpec.describe WorkflowMailer do
       expect(email.from).to eq([partner_email])
     end
 
-    it "sets an appropriate subject", honors: true, milsch: true, sset: true do
+    it "sets an appropriate subject", :honors, :milsch, :sset do
       expect(email.subject).to eq("#{current_partner.name} #{submission.degree_type} Review Request")
     end
 
@@ -651,7 +651,7 @@ RSpec.describe WorkflowMailer do
         expect(email.from).to eq([partner_email])
       end
 
-      it "sets an appropriate subject", honors: true, milsch: true, sset: true do
+      it "sets an appropriate subject", :honors, :milsch, :sset do
         expect(email.subject).to eq("#{current_partner.name} #{submission.degree_type} Review Request")
       end
 

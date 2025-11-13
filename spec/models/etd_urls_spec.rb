@@ -1,6 +1,6 @@
 require 'model_spec_helper'
 
-RSpec.describe EtdUrls, type: :model, honors: true, milsch: true do
+RSpec.describe EtdUrls, :honors, :milsch, type: :model do
   context 'explore urls' do
     it 'returns graduate url' do
       expect(described_class.new.explore).to eql('http://etda.localhost:3000') if current_partner.graduate?

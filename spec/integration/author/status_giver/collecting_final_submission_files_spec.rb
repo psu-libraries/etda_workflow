@@ -1,4 +1,4 @@
-RSpec.describe 'When Collecting Final Submission Files', type: :integration, js: true do
+RSpec.describe 'When Collecting Final Submission Files', :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   describe "When status is 'collecting final submission files'" do

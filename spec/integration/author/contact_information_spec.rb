@@ -1,4 +1,4 @@
-RSpec.describe "Manage Contact Information", type: :integration, js: true do
+RSpec.describe "Manage Contact Information", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   before do
