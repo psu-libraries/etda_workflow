@@ -59,7 +59,6 @@ FactoryBot.define do
       access_level { 'open_access' }
       has_agreed_to_terms { 1 }
       has_agreed_to_publication_release { 1 }
-      final_submission_notes { "Final submission notes" }
       defended_at { Time.zone.yesterday if current_partner.graduate? }
       year { Time.zone.today.year }
       semester { Semester.current.split.last }

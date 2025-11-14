@@ -195,6 +195,7 @@ RSpec.describe "Editing format review and final submissions as an admin", type: 
   it 'Allows admin to edit final submission content' do
     visit admin_edit_submission_path(final_submission)
     within('#final-submission-information') do
+      expect(page.find_field("Final Submission Notes to Student").value).to eq(I18n.t('graduate.default_final_submission_note'))
       click_link "Additional File"
       all('input[type="file"]').first.set(file_fixture('final_submission_file_01.pdf'))
     end
