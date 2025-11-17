@@ -69,8 +69,7 @@ RSpec.describe "Committee Member Dashboard", :js, type: :integration do
       end
 
       # Before statement doesn't work. Can not click the node to go to the bar chart
-      it "Check for associated programs" do
-        pending('incomplete test - before block does not work')
+      it "Check for associated programs", skip: 'before statement does not work' do
         expect(page).to have_text("Publications for Committee Member Department: IST")
         expect(page).to have_text("Selected Committee Member College: College of IST")
         expect(page).to have_content("Data Science") # Program
@@ -84,8 +83,7 @@ RSpec.describe "Committee Member Dashboard", :js, type: :integration do
         end
 
         # does not go to the bar chart, so the back button is not available
-        it "test contents after back button" do
-          pending('incomplete test - back button does not work')
+        it "test contents after back button", skip: 'back button not available' do
           expect(page).to have_content("Food Science") # Program
         end
       end
@@ -93,8 +91,7 @@ RSpec.describe "Committee Member Dashboard", :js, type: :integration do
 
     describe "Visit Student Program" do
       # Before statement doesn't work. Can not click the node to go to the bar chart
-      it "Check for associated departments" do
-        pending('incomplete test - before block does not work')
+      it "Check for associated departments", skip: 'before statement does not work' do
         expect(page).to have_text("Publications for Student Program: Data Science")
         expect(page).to have_content("IST")
       end
