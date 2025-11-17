@@ -24,7 +24,7 @@ RSpec.describe SolrSubmission, type: :model do
     let(:format_review_file) { create :format_review_file }
     let(:committee_member_1) { create :committee_member }
     let(:committee_member_2) { create :committee_member }
-    let(:program) { create :program, name: 'Mechanical Engineering (MS)' }
+    let(:program) { create :program, name: 'Mechanical Engineering (DED)' }
     let(:program_name_condensed) { 'Mechanical Engineering' }
 
     it 'generates solr doc from submission attributes' do
