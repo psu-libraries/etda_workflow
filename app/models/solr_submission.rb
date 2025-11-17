@@ -113,6 +113,6 @@ class SolrSubmission < SimpleDelegator
     end
 
     def program_name_condensed
-      program_name.gsub(/ \(MS\)| \(PHD\)/, '')
+      program_name.gsub(/ \(MS\)| \(MA\)| \(DED\)| \(PhD\)| \(PHD\)/, '')
     end
 end
