@@ -1,4 +1,4 @@
-RSpec.describe "Editing a released submission as an admin", type: :integration, js: true do
+RSpec.describe "Editing a released submission as an admin", :js, type: :integration do
   require 'integration/integration_spec_helper'
   let!(:degree) { FactoryBot.create(:degree, name: "Master of Disaster", is_active: true) }
   let!(:program) { FactoryBot.create(:program, name: "Test Program", is_active: true) }
@@ -136,7 +136,7 @@ RSpec.describe "Editing a released submission as an admin", type: :integration, 
     end
   end
 
-  describe "Remove from  submission to be released", js: true, retry: 5 do
+  describe "Remove from submission to be released", :js, retry: 5 do
     let!(:author) { FactoryBot.create(:author) }
     let!(:submission) { FactoryBot.create(:submission, :waiting_for_publication_release, author:, degree:) }
     let!(:author_name) { submission.author.last_name }
@@ -166,7 +166,7 @@ RSpec.describe "Editing a released submission as an admin", type: :integration, 
     end
   end
 
-  describe "Remove legacy record from  submission to be released", js: true, retry: 10 do
+  describe "Remove legacy record from submission to be released", :js, retry: 10 do
     it "Changes the status to 'final submission submitted' and also saves any updates" do
       legacy_submission = FactoryBot.create(:submission, :waiting_for_publication_release, degree:)
       legacy_submission.legacy_id = 888

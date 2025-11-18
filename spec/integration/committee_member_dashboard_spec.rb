@@ -1,4 +1,4 @@
-RSpec.describe "Committee Member Dashboard", type: :integration, js: true do
+RSpec.describe "Committee Member Dashboard", :js, type: :integration do
   require 'integration/integration_spec_helper'
   let!(:committee_member1) { FactoryBot.create :committee_member, faculty_member_id: faculty_member1.id, submission_id: submission1.id }
   let!(:faculty_member1) { FactoryBot.create :faculty_member, department: "IST", college: "College of IST" }
@@ -69,7 +69,7 @@ RSpec.describe "Committee Member Dashboard", type: :integration, js: true do
       end
 
       # Before statement doesn't work. Can not click the node to go to the bar chart
-      xit "Check for associated programs" do
+      it "Check for associated programs", skip: 'before statement does not work' do
         expect(page).to have_text("Publications for Committee Member Department: IST")
         expect(page).to have_text("Selected Committee Member College: College of IST")
         expect(page).to have_content("Data Science") # Program
@@ -83,7 +83,7 @@ RSpec.describe "Committee Member Dashboard", type: :integration, js: true do
         end
 
         # does not go to the bar chart, so the back button is not available
-        xit "test contents after back button" do
+        it "test contents after back button", skip: 'back button not available' do
           expect(page).to have_content("Food Science") # Program
         end
       end
@@ -91,7 +91,7 @@ RSpec.describe "Committee Member Dashboard", type: :integration, js: true do
 
     describe "Visit Student Program" do
       # Before statement doesn't work. Can not click the node to go to the bar chart
-      xit "Check for associated departments" do
+      it "Check for associated departments", skip: 'before statement does not work' do
         expect(page).to have_text("Publications for Student Program: Data Science")
         expect(page).to have_content("IST")
       end

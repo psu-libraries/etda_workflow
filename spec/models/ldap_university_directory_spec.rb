@@ -9,7 +9,7 @@ require 'model_spec_helper'
 require 'support/ldap_lookup'
 require 'shared/shared_examples_for_university_directory'
 
-RSpec.describe LdapUniversityDirectory, type: :model, ldap: true do
+RSpec.describe LdapUniversityDirectory, :ldap, type: :model do
   subject(:directory) { described_class.new }
 
   it_behaves_like "a UniversityDirectory"

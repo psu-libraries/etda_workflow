@@ -65,7 +65,7 @@ RSpec.describe Lionpath::LionpathProgram do
       expect(Author.first.last_name).to eq('testlast')
       expect(Author.first.submissions.first.program.name).to eq(row_1['Transcript Descr'])
       expect(Author.first.submissions.first.program.code).to eq(row_1['Acadademic Plan'])
-      expect(Author.first.submissions.first.program.is_active).to eq(true)
+      expect(Author.first.submissions.first.program.is_active).to be(true)
       expect(Author.first.submissions.first.program.lionpath_updated_at).to be_truthy
       expect(Author.first.submissions.first.lionpath_updated_at).to be_truthy
       expect(Author.first.submissions.first.degree.name).to eq('PHD')
@@ -84,7 +84,7 @@ RSpec.describe Lionpath::LionpathProgram do
     let!(:program) { FactoryBot.create :program, code: row_1['Acadademic Plan'] }
 
     it 'links to existing author and program' do
-      expect { lionpath_program.import(row_1) }.to change(Author, :count).by 0
+      expect { lionpath_program.import(row_1) }.not_to change(Author, :count)
       expect(Submission.first.program).to eq program
       expect(Submission.first.author).to eq author
     end
@@ -109,7 +109,7 @@ RSpec.describe Lionpath::LionpathProgram do
     end
 
     it 'updates the submission' do
-      expect { lionpath_program.import(row_1) }.to change(Submission, :count).by 0
+      expect { lionpath_program.import(row_1) }.not_to change(Submission, :count)
       expect(Author.first.submissions.first.lionpath_updated_at).to be_truthy
       expect(Author.first.submissions.first.degree.name).to eq(row_1['Acadademic Plan'].split('_')[1].to_s)
       expect(Author.first.submissions.first.lionpath_year).to eq(2021)
@@ -180,7 +180,7 @@ RSpec.describe Lionpath::LionpathProgram do
     let!(:program) { FactoryBot.create :program, code: row_2['Acadademic Plan'] }
 
     it 'does not import the record' do
-      expect { lionpath_program.import(row_2) }.to change(Submission, :count).by 0
+      expect { lionpath_program.import(row_2) }.not_to change(Submission, :count)
     end
   end
 
@@ -201,7 +201,7 @@ RSpec.describe Lionpath::LionpathProgram do
         allow(Semester).to receive(:current).and_return "2021 Spring"
         author.submissions << sp2021_sub
         author.reload
-        expect { lionpath_program.import(row_3) }.to change(Submission, :count).by 0
+        expect { lionpath_program.import(row_3) }.not_to change(Submission, :count)
       end
     end
 
@@ -215,7 +215,7 @@ RSpec.describe Lionpath::LionpathProgram do
         it 'updates existing record' do
           author.submissions << sp2021_sub
           author.reload
-          expect { lionpath_program.import(row_3) }.to change(Submission, :count).by 0
+          expect { lionpath_program.import(row_3) }.not_to change(Submission, :count)
           sp2021_sub.reload
           expect(sp2021_sub.program.code).to eq row_3["Acadademic Plan"]
         end

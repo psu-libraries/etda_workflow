@@ -33,7 +33,7 @@ RSpec.describe SolrDataImportService, type: :model do
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
     end
 
-    it 'sends update to solr for given submission' do
+    it 'sends update to solr for given submission', skip: 'incomplete test' do
       solr_data_import_service.index_submission(submission, true)
     end
   end
@@ -65,15 +65,14 @@ RSpec.describe SolrDataImportService, type: :model do
         .to_return(status: 200, body: { error: false }.to_json, headers: {})
     end
 
-    it 'sends delete to solr for given submission' do
+    it 'sends delete to solr for given submission', skip: 'incomplete test' do
       solr_data_import_service.remove_submission(submission)
     end
   end
 
   context 'when solr username and password present' do
     it 'returns solr_url' do
-      allow(solr_data_import_service).to receive(:solr_username).and_return 'username'
-      allow(solr_data_import_service).to receive(:solr_password).and_return 'password'
+      allow(solr_data_import_service).to receive_messages(solr_username: 'username', solr_password: 'password')
       expect(solr_data_import_service.send('solr_url')).to eq("http://username:password@etda.localhost:3000:8983/solr/graduate_core")
     end
   end

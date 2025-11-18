@@ -1,4 +1,4 @@
-RSpec.describe "Editing committee member information", type: :integration, js: true, honors: true do
+RSpec.describe "Editing committee member information", :honors, :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let!(:author) { FactoryBot.create(:author) }
@@ -59,10 +59,10 @@ RSpec.describe "Editing committee member information", type: :integration, js: t
         sleep 1
         within('#committee') do
           expect(find_all("select.role").last.value).to eq committee_role.id.to_s
-          expect(find_all("select.role").last.disabled?).to eq true
+          expect(find_all("select.role").last.disabled?).to be true
           expect(find_all("input.ui-autocomplete-input").last.value).to eq 'LP Tester'
-          expect(find_all("input.ui-autocomplete-input").last.disabled?).to eq true
-          expect(find_all("input.email").last.disabled?).to eq false
+          expect(find_all("input.ui-autocomplete-input").last.disabled?).to be true
+          expect(find_all("input.email").last.disabled?).to be false
         end
       end
     end
@@ -83,10 +83,10 @@ RSpec.describe "Editing committee member information", type: :integration, js: t
         sleep 1
         within('#committee') do
           expect(find_all("select.role").last.value).to eq external_role.id.to_s
-          expect(find_all("select.role").last.disabled?).to eq false
+          expect(find_all("select.role").last.disabled?).to be false
           expect(find_all("input.ui-autocomplete-input").last.value).to eq committee_member.name
-          expect(find_all("input.ui-autocomplete-input").last.disabled?).to eq false
-          expect(find_all("input.email").last.disabled?).to eq false
+          expect(find_all("input.ui-autocomplete-input").last.disabled?).to be false
+          expect(find_all("input.email").last.disabled?).to be false
           expect(find_all("input.email").last.value).to eq committee_member.email
         end
       end

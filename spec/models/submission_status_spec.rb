@@ -16,7 +16,7 @@ RSpec.describe SubmissionStatus, type: :model do
 
   describe '#WORKFLOW_STATUS' do
     it 'is an array' do
-      expect(described_class::WORKFLOW_STATUS).to be_a_kind_of(Array)
+      expect(described_class::WORKFLOW_STATUS).to be_a(Array)
       expect(described_class::WORKFLOW_STATUS).to include('collecting committee')
       expect(described_class::WORKFLOW_STATUS).to include('released for publication')
     end

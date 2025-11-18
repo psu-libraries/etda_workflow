@@ -1,4 +1,4 @@
-RSpec.describe 'Approver datatables', type: :integration, js: true do
+RSpec.describe 'Approver datatables', :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:submission) do

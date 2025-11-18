@@ -32,7 +32,7 @@ RSpec.describe FacultyMember, type: :model do
         test_committee = create :committee_member, faculty_member_id: test_faculty.id
         expect(test_committee.faculty_member_id).to eq(test_faculty.id)
         test_faculty.destroy
-        expect(test_committee.reload.faculty_member_id).to eq(nil)
+        expect(test_committee.reload.faculty_member_id).to be_nil
       end
     end
   end

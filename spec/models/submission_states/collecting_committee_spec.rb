@@ -4,7 +4,7 @@ require 'model_spec_helper'
 
 RSpec.describe SubmissionStates::CollectingCommittee do
   describe 'instance methods' do
-    let(:subject) { described_class.new }
+    subject { described_class.new }
 
     it "transitions to CollectingFormatReviewFiles" do
       expect(described_class.new).to be_valid_state_change(SubmissionStates::CollectingFormatReviewFiles)
@@ -24,21 +24,23 @@ RSpec.describe SubmissionStates::CollectingCommittee do
   end
 
   describe 'name' do
-    let(:subject) { described_class.name }
+    subject { described_class.name }
 
     it { is_expected.to eq 'collecting committee' }
   end
 
   describe 'status_date' do
+    subject { described_class.new.status_date(submission) }
+
     let(:submission) { FactoryBot.create :submission, :collecting_committee }
-    let(:subject) { described_class.new.status_date(submission) }
 
     it { is_expected.to eq(submission.committee_provided_at) }
   end
 
   describe '#transition' do
+    subject { described_class.transition submission }
+
     let(:submission) { FactoryBot.create :submission, :final_is_restricted, status: }
-    let(:subject) { described_class.transition submission }
 
     context 'when submission status CollectingCommittee' do
       let(:status) { described_class.name }

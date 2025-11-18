@@ -20,7 +20,7 @@ RSpec.describe Author::SubmissionsIndexView do
       end
     end
 
-    context 'when partner is non graduate', sset: true, milsch: true, honors: true do
+    context 'when partner is non graduate', :honors, :milsch, :sset do
       it 'returns false for an author that does not have address_1 data' do
         skip 'non graduate only' if current_partner.graduate?
 

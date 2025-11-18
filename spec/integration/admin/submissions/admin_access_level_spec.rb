@@ -1,4 +1,4 @@
-RSpec.describe 'Admin submission access_level', type: :integration, js: true do
+RSpec.describe 'Admin submission access_level', :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response, degree: }
@@ -23,7 +23,7 @@ RSpec.describe 'Admin submission access_level', type: :integration, js: true do
     visit admin_edit_submission_path(submission)
   end
 
-  context 'admin users can choose the access level', milsch: true do
+  context 'admin users can choose the access level', :milsch do
     it 'has an open_access radio button' do
       page.find("input#submission_access_level_open_access").click
       expect(find("#submission_access_level_open_access")).to be_checked

@@ -22,7 +22,7 @@ RSpec.describe Approver::ApproversController, type: :controller do
       false_approver = FactoryBot.create :approver
       committee_member1 = FactoryBot.create :committee_member, access_id: 'approverflow'
       committee_member2 = FactoryBot.create :committee_member, access_id: 'approverflow', approver_id: false_approver.id
-      expect(committee_member1.approver_id).to eq nil
+      expect(committee_member1.approver_id).to be_nil
       expect(committee_member2.approver_id).to eq false_approver.id
       get :index
       expect(CommitteeMember.find(committee_member1.id).approver_id).to eq approver.id
@@ -33,8 +33,8 @@ RSpec.describe Approver::ApproversController, type: :controller do
       it 'does not link committee member records' do
         committee_member1 = FactoryBot.create :committee_member, access_id: 'approverflow'
         get :index, params: { format: :json }
-        expect(committee_member1.approver_id).to eq nil
-        expect(CommitteeMember.find(committee_member1.id).approver_id).to eq nil
+        expect(committee_member1.approver_id).to be_nil
+        expect(CommitteeMember.find(committee_member1.id).approver_id).to be_nil
         expect(Approver.find_by(access_id: 'approverflow').committee_members).to be_empty
       end
     end

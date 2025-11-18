@@ -1,4 +1,4 @@
-RSpec.describe "Sending an email reminder", type: :integration, js: true do
+RSpec.describe "Sending an email reminder", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:author) { FactoryBot.create :author }

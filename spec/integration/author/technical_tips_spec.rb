@@ -1,4 +1,4 @@
-RSpec.describe "Technical Tips page", type: :integration, js: true do
+RSpec.describe "Technical Tips page", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   before do

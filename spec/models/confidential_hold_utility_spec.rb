@@ -8,14 +8,14 @@ RSpec.describe ConfidentialHoldUtility, type: :model do
   describe '#original_confidential_status' do
     context "original_confidential_status initialization when author.confidential_hold is nil" do
       it 'returns false' do
-        expect(described_class.new(author.access_id, author.confidential_hold).original_confidential_status).to eq(false)
+        expect(described_class.new(author.access_id, author.confidential_hold).original_confidential_status).to be(false)
       end
     end
 
     context "initialization when author.confidential_hold is not nil" do
       it 'returns false' do
         author.confidential_hold = false
-        expect(described_class.new('conf123', author.confidential_hold).original_confidential_status).to eq(false)
+        expect(described_class.new('conf123', author.confidential_hold).original_confidential_status).to be(false)
       end
     end
   end
@@ -25,7 +25,7 @@ RSpec.describe ConfidentialHoldUtility, type: :model do
       it 'is true' do
         allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).with('conf123').and_return(true)
         allow_any_instance_of(LdapUniversityDirectory).to receive(:authors_confidential_status).with('conf123').and_return(true)
-        expect(described_class.new('conf123', false).new_confidential_status).to eq(true)
+        expect(described_class.new('conf123', false).new_confidential_status).to be(true)
       end
     end
 
@@ -33,7 +33,7 @@ RSpec.describe ConfidentialHoldUtility, type: :model do
       it 'is false' do
         allow_any_instance_of(LdapUniversityDirectory).to receive(:exists?).with('conf123').and_return(true)
         allow_any_instance_of(LdapUniversityDirectory).to receive(:authors_confidential_status).with('conf123').and_return(false)
-        expect(described_class.new('conf123', false).new_confidential_status).to eq(false)
+        expect(described_class.new('conf123', false).new_confidential_status).to be(false)
       end
     end
   end

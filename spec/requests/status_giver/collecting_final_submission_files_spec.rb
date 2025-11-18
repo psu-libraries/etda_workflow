@@ -118,7 +118,7 @@ RSpec.describe 'Step 5: Collecting Final Submission Files', type: :request do
         end
       end
 
-      context 'when current_partner is not graduate', honors: true, sset: true, milsch: true do
+      context 'when current_partner is not graduate', :honors, :milsch, :sset do
         before do
           skip 'Non-graduate Only' if current_partner.graduate?
         end

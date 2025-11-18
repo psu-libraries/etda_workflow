@@ -1,4 +1,4 @@
-RSpec.describe 'Tagit-keywords', type: :integration, js: true do
+RSpec.describe 'Tagit-keywords', :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   context 'keyword tagit' do
@@ -29,7 +29,7 @@ RSpec.describe 'Tagit-keywords', type: :integration, js: true do
       expect(page).to have_content('stuff and more stuff')
     end
 
-    it 'allows author to cancel a keyword delete', js: true do
+    it 'allows author to cancel a keyword delete', :js do
       visit author_submission_edit_final_submission_path(submission)
       keyword = page.find('.tagit-label').text
       page.find('.tagit-close').click
@@ -38,7 +38,7 @@ RSpec.describe 'Tagit-keywords', type: :integration, js: true do
       expect(page).to have_content(keyword)
     end
 
-    it 'allows author to add more than one keyword', js: true do
+    it 'allows author to add more than one keyword', :js do
       visit author_submission_edit_final_submission_path(submission)
       number_of_keywords = page.all('ul.tagit li span.tagit-label').count
       page.find("li.tagit-new input").set('add another keyword,')
@@ -46,7 +46,7 @@ RSpec.describe 'Tagit-keywords', type: :integration, js: true do
       expect(page).to have_selector('ul.tagit li span.tagit-label', count: number_of_keywords + 2)
     end
 
-    it 'allows a new keyword to be deleted via the confirmation modal', js: true do
+    it 'allows a new keyword to be deleted via the confirmation modal', :js do
       submission2.keywords = []
       new_keyword = 'a newkeyword'
       visit author_submission_edit_final_submission_path(submission2)

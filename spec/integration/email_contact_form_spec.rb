@@ -1,4 +1,4 @@
-RSpec.describe "Email Contact Form", type: :integration, js: true do
+RSpec.describe "Email Contact Form", :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:author) { current_author }

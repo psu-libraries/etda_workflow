@@ -12,7 +12,7 @@ RSpec.describe LionpathCommitteeCheckService do
       let(:submission) { FactoryBot.create :submission, degree: }
 
       it 'returns nil' do
-        expect(described_class.check_submission(submission)).to eq nil
+        expect(described_class.check_submission(submission)).to be_nil
       end
     end
 
@@ -21,7 +21,7 @@ RSpec.describe LionpathCommitteeCheckService do
       let(:submission) { FactoryBot.create :submission, lionpath_updated_at: DateTime.now, degree: }
 
       it 'returns nil' do
-        expect(described_class.check_submission(submission)).to eq nil
+        expect(described_class.check_submission(submission)).to be_nil
       end
     end
 
@@ -31,7 +31,7 @@ RSpec.describe LionpathCommitteeCheckService do
 
       it 'returns nil' do
         create_committee(submission)
-        expect(described_class.check_submission(submission)).to eq nil
+        expect(described_class.check_submission(submission)).to be_nil
       end
     end
 

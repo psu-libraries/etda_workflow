@@ -4,7 +4,7 @@ require 'model_spec_helper'
 
 RSpec.describe SubmissionStates::ReleasedForPublication do
   describe 'instance methods' do
-    let(:subject) { described_class.new }
+    subject { described_class.new }
 
     it "transitions to Waiting For Publication" do
       expect(described_class.new).to be_valid_state_change(SubmissionStates::WaitingForPublicationRelease)
@@ -23,21 +23,23 @@ RSpec.describe SubmissionStates::ReleasedForPublication do
   end
 
   describe 'name' do
-    let(:subject) { described_class.name }
+    subject { described_class.name }
 
     it { is_expected.to eq 'released for publication' }
   end
 
   describe 'status_date' do
+    subject { described_class.new.status_date(submission) }
+
     let(:submission) { FactoryBot.create :submission, :released_for_publication }
-    let(:subject) { described_class.new.status_date(submission) }
 
     it { is_expected.to eq(submission.released_for_publication_at) }
   end
 
   describe '#transition' do
+    subject { described_class.transition submission }
+
     let(:submission) { FactoryBot.create :submission, :final_is_restricted, status: }
-    let(:subject) { described_class.transition submission }
 
     context 'when submission status WaitingForPublicationRelease' do
       let(:status) { SubmissionStates::WaitingForPublicationRelease.name }

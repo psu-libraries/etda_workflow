@@ -14,7 +14,7 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
-  config.before(:each, js: true) do
+  config.before(:each, :js) do
     Capybara.current_driver = :selenium
     DatabaseCleaner.strategy = :truncation
   end

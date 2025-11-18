@@ -1,4 +1,4 @@
-RSpec.describe "Printing a graduate signatory page as an admin", type: :integration, js: true, honors: true do
+RSpec.describe "Printing a graduate signatory page as an admin", :honors, :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:submission_author) { FactoryBot.create :author }

@@ -1,4 +1,4 @@
-RSpec.describe "Release a submission with a public id", type: :integration, js: true, honors: true do
+RSpec.describe "Release a submission with a public id", :honors, :js, type: :integration do
   require 'integration/integration_spec_helper'
 
   let(:degree_type) { current_partner.graduate? ? 'dissertation' : 'thesis' }
@@ -18,7 +18,7 @@ RSpec.describe "Release a submission with a public id", type: :integration, js: 
     oidc_authorize_admin
   end
 
-  it 'assigns a public id and releases a submission', js: true do
+  it 'assigns a public id and releases a submission', :js do
     expect(submission.legacy_id).to be_blank
     expect(submission.public_id).to be_blank
     released_count = Submission.released_for_publication.count
@@ -37,7 +37,7 @@ RSpec.describe "Release a submission with a public id", type: :integration, js: 
     expect(submission.public_id).to eql("#{submission.id}#{submission.author.access_id}")
   end
 
-  it 'does not assign a public id that already exists and does not release a submission', js: true do
+  it 'does not assign a public id that already exists and does not release a submission', :js do
     expect(submission.legacy_id).to be_blank
     expect(submission.public_id).to be_blank
     submission_2.update_attribute(:public_id, "#{submission_1.id}#{submission_1.author.access_id}")

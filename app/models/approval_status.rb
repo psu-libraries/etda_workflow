@@ -45,11 +45,11 @@ class ApprovalStatus
     end
 
     def approved
-      APPROVED_STATUS unless (voting_committee_members.collect { |m| m.status == APPROVED_STATUS }).count(false) > rejections_permitted
+      APPROVED_STATUS unless voting_committee_members.collect { |m| m.status == APPROVED_STATUS }.count(false) > rejections_permitted
     end
 
     def rejected
-      REJECTED_STATUS if (voting_committee_members.collect { |m| m.status == REJECTED_STATUS }).count(true) > rejections_permitted
+      REJECTED_STATUS if voting_committee_members.collect { |m| m.status == REJECTED_STATUS }.count(true) > rejections_permitted
     end
 
     def pending

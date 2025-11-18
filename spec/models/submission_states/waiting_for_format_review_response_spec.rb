@@ -4,7 +4,7 @@ require 'model_spec_helper'
 
 RSpec.describe SubmissionStates::WaitingForFormatReviewResponse do
   describe 'instance methods' do
-    let(:subject) { described_class.new }
+    subject { described_class.new }
 
     it "transitions to CollectingFinalSubmissionFiles and CollectingFormatReviewFiles*" do
       expect(described_class.new).to be_valid_state_change(SubmissionStates::CollectingFinalSubmissionFiles)
@@ -24,21 +24,23 @@ RSpec.describe SubmissionStates::WaitingForFormatReviewResponse do
   end
 
   describe 'name' do
-    let(:subject) { described_class.name }
+    subject { described_class.name }
 
     it { is_expected.to eq 'waiting for format review response' }
   end
 
   describe 'status_date' do
+    subject { described_class.new.status_date(submission) }
+
     let(:submission) { FactoryBot.create :submission, :waiting_for_format_review_response }
-    let(:subject) { described_class.new.status_date(submission) }
 
     it { is_expected.to eq(submission.format_review_files_uploaded_at) }
   end
 
   describe '#transition' do
+    subject { described_class.transition submission }
+
     let(:submission) { FactoryBot.create :submission, :final_is_restricted, status: }
-    let(:subject) { described_class.transition submission }
 
     context 'when submission status WaitingForFormatReviewResponse' do
       let(:status) { described_class.name }
