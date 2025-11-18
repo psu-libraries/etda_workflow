@@ -32,10 +32,12 @@ $grid-float-breakpoint: 992px;
 
 h2.control-label {
   margin: 0;
+  line-height: 0.5;
 
   label {
     font-weight: bold;
     font-size: 1rem;
+    line-height: 1.5;
   }
 }
 
@@ -46,6 +48,10 @@ h2.control-label {
         font-weight: 100;
       }
     }
+}
+
+.tooltip-icon {
+  color: $primary;
 }
 
 a {

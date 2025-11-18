@@ -22,10 +22,9 @@
         </div>
       <% end %>
       <div class="row">
-        <p><%= f.label :issue_type %>
-          <a href="#">
-            <span class="fa fa-exclamation-circle" data-toggle="tooltip" data-placement="top" data-html="true" title="<%= EmailContactForm.tooltip_message %>"></span>
-          </a>
+        <p>
+          <h2 class="control-label pr-1"><%= f.label :issue_type %></h2>
+          <span class="fa fa-exclamation-circle tooltip-icon" role="tooltip" data-toggle="tooltip" data-placement="top" data-html="true" title aria-label="<%= EmailContactForm.tooltip_message.html_safe %>"></span>
         </p>
       </div>
       <div class="row">
