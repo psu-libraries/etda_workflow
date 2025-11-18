@@ -30,8 +30,22 @@ $border-radius-large:  6px !default;
 $primary: $medium-blue-bright;
 $grid-float-breakpoint: 992px;
 
-label.control-label {
-  font-weight: bold;
+h2.control-label {
+  margin: 0;
+
+  label {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+}
+
+.checkbox {
+    h2 {
+      display: inline;
+      label {
+        font-weight: 100;
+      }
+    }
 }
 
 a {

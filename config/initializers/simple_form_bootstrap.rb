@@ -8,7 +8,7 @@ SimpleForm.setup do |config|
   config.wrappers :vertical_form, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
     b.use :placeholder
-    b.use :label, class: 'control-label'
+    b.use :label, wrap_with: { tag: 'h2', class: 'control-label' }
 
     b.wrapper tag: 'div' do |ba|
       ba.use :input, class: 'form-control'
@@ -20,7 +20,7 @@ SimpleForm.setup do |config|
   config.wrappers :vertical_file_input, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
     b.use :placeholder
-    b.use :label, class: 'control-label'
+    b.use :label, wrap_with: { tag: 'h2', class: 'control-label' }
 
     b.wrapper tag: 'div' do |ba|
       ba.use :input
@@ -34,7 +34,7 @@ SimpleForm.setup do |config|
     b.use :placeholder
 
     b.wrapper tag: 'div', class: 'checkbox' do |ba|
-      ba.use :label_input
+      ba.use :label_input, wrap_with: { tag: 'h2', class: 'checkbox' }
     end
 
     b.use :error, wrap_with: { tag: 'span', class: 'help-block' }
@@ -44,7 +44,7 @@ SimpleForm.setup do |config|
   config.wrappers :vertical_radio_and_checkboxes, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
     b.use :placeholder
-    b.use :label, class: 'control-label'
+    b.use :label, wrap_with: { tag: 'h2', class: 'control-label' }
 
     b.wrapper tag: 'div', class: 'col-sm-12 vertical-radios' do |ba|
       ba.use :input
@@ -56,7 +56,7 @@ SimpleForm.setup do |config|
   config.wrappers :horizontal_form, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
     b.use :placeholder
-    b.use :label, class: 'col-sm-3 control-label'
+    b.use :label, wrap_with: { tag: 'h2', class: 'control-label col-sm-3' }
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input, class: 'form-control'
@@ -68,7 +68,7 @@ SimpleForm.setup do |config|
   config.wrappers :horizontal_file_input, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
     b.use :placeholder
-    b.use :label, class: 'col-sm-3 control-label'
+    b.use :label, wrap_with: { tag: 'h2', class: 'control-label col-sm-3' }
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input
@@ -83,7 +83,9 @@ SimpleForm.setup do |config|
 
     b.wrapper tag: 'div', class: 'col-sm-offset-3 col-sm-9' do |wr|
       wr.wrapper tag: 'div', class: 'checkbox' do |ba|
-        ba.use :label_input, class: 'col-sm-9'
+        b.use :label, wrap_with: { tag: 'h2', class: 'control-label col-sm-3' }
+
+        ba.use :input, class: 'col-sm-9'
       end
 
       wr.use :error, wrap_with: { tag: 'span', class: 'help-block' }
@@ -95,7 +97,7 @@ SimpleForm.setup do |config|
     b.use :html5
     b.use :placeholder
 
-    b.use :label, class: 'col-sm-3 control-label'
+    b.use :label, wrap_with: { tag: 'h2', class: 'control-label col-sm-3' }
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input
@@ -107,13 +109,14 @@ SimpleForm.setup do |config|
   config.wrappers :checkbox, tag: 'div', class: 'checkbox', error_class: 'has-error' do |b|
     b.use :html5
     b.use :placeholder
-    b.use :label_input, class: 'control-label'
+    b.use :label, wrap_with: { tag: 'h2', class: 'control-label' }
+    b.use :input
     b.use :error, wrap_with: { tag: 'span', class: 'help-block' }
     b.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
   end
 
   config.wrappers :hint_top, tag: 'div', class: 'field_with_hint form-group' do |b|
-    b.use :label, wrap_with: { tag: 'div', class: 'control-label' }
+    b.use :label, wrap_with: { tag: 'h2', class: 'control-label' }
     b.use :hint, wrap_with:  { tag: 'p', class: 'hint' }
     b.use :error, wrap_with: { tag: 'p', class: 'help-block' }
     b.use :input, class: 'form-control'
@@ -123,7 +126,7 @@ SimpleForm.setup do |config|
     b.use :html5
     b.use :placeholder
 
-    b.use :label, class: 'control-label col-sm-3'
+    b.use :label, wrap_with: { tag: 'h2', class: 'control-label col-sm-3' }
 
     b.wrapper tag: 'div', class: 'col-sm-12 vertical-radios' do |ba|
       ba.use :input
