@@ -43,9 +43,9 @@ SimpleForm.setup do |config|
 
     ## Inputs
     b.use :label, wrap_with: { tag: :h2 }
-    b.use :input
     b.use :hint,  wrap_with: { tag: :span, class: :hint }
     b.use :error, wrap_with: { tag: :span, class: :error }
+    b.use :input
 
     ## full_messages_for
     # If you want to display the full error message for the attribute, you can
