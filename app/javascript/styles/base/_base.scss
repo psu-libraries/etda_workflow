@@ -126,8 +126,7 @@ header {
   }
 
   #logo-old {
-    padding-top: 9px;
-    padding-left: 30px;
+    padding: 9px 0 19px 30px;
     a {
       color: #ffffff;
       font-size: $font-size-h3;
@@ -139,14 +138,14 @@ header {
   }
 
   #account-navigation {
-    background-color: $medium-blue-bright;
+    background-color: $medium-blue;
 
     .navbar-btn.btn-sm {
       color: #ffffff;
       font-size: $font-size-base;
 
       &:hover {
-        color: #000000;
+        font-weight: bold;
       }
     }
 
@@ -156,13 +155,14 @@ header {
 
     @media (min-width: 768px) {
       .navbar-text.small {
-        color: #000000;
+        color: $gray-lightest;
+        margin-right: 40px;
       }
     }
     #top-navigation ul {
       li.active a {
         font-weight: bold;
-        color: $dark-blue;
+        color: $gray-lightest;
       }
     }
   }
@@ -576,7 +576,7 @@ select.disabled {
 }
 
 #main-navigation > ul > li{
-  background-color: $medium-blue-bright;
+  background-color: $medium-blue;
   border-radius: $border-radius-large;
   width: 100%;
   margin: 0.5em 0px 0px 0px;
@@ -938,4 +938,9 @@ a.contact-support-link {
 .network-graph {
   width: 100vw;
   height: 100vh;
+}
+
+.step-heading {
+  font-weight: normal;
+  font-size: 1rem;
 }
