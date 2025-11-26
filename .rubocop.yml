@@ -186,6 +186,10 @@ Lint/UnreachableCode:
   Exclude:
     - 'app/presenters/admin/submission_form_view.rb'
 
+Rails/ActiveRecordOverride:
+  Exclude:
+    - 'app/models/committee_member.rb'
+
 RSpec/ExampleWording:
   CustomTransform:
     be: is

@@ -7,7 +7,7 @@ ruby '3.4.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.2.2'
 # Use mysql as the database for Active Record
-gem 'mysql2'
+gem 'mysql2', '0.5.7'
 # Use Puma as the app server
 gem 'puma', ">= 4.3.0"
 # For bundling/importing assets
@@ -81,6 +81,8 @@ gem 'bcrypt_pbkdf', '~> 1.0.0'
 gem 'bugsnag', '~> 6.26'
 # Configure environment settings
 gem 'config', '~> 5.5.2'
+# Soft delete records
+gem 'discard'
 
 
 group :development, :test do
