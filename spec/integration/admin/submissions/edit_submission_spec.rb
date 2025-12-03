@@ -216,6 +216,28 @@ RSpec.describe "Editing format review and final submissions as an admin", :js, t
     expect(final_submission.proquest_agreement).to be false if current_partner.graduate?
   end
 
+  context 'when a comittee member is removed' do
+    let(:role) { FactoryBot.create(:committee_role, name: 'Committee Member') }
+    let(:committee_member) { FactoryBot.create(:committee_member, name: 'Barbara Tester', email: 'barbara@email.com', notes: 'Some notes', committee_role_id: role.id) }
+
+    before do
+      submission.committee_members << committee_member
+      submission.save!
+    end
+
+    it 'lists removed committee members' do
+      visit admin_edit_submission_path(submission)
+
+      last_committee_member_remove = find_all("a", text: "Remove Committee Member").last
+      last_committee_member_remove.click
+      click_button 'Update Metadata'
+
+      expect(page).to have_content('Removed Committee Members:')
+      expect(page).to have_content('Barbara Tester (Committee Member) email: barbara@email.com - Discarded at')
+      expect(page).to have_content('Some notes')
+    end
+  end
+
   context "when master's thesis" do
     let!(:approval_configuration2) do
       FactoryBot.create(:approval_configuration, degree_type: masters_degree.degree_type)
