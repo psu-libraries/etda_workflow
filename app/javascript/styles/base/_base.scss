@@ -57,7 +57,6 @@ h2, h3.control-label {
 
 a {
   color: $primary;
-  font-weight: bold;
 
   .page-link {
     color: $primary;
@@ -473,6 +472,7 @@ textarea {
 }
 
 .radio {
+  margin-right: 15px;
   input {
     box-shadow: none;
   }

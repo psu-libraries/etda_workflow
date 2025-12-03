@@ -1,39 +1,53 @@
 <div tabindex="0">
     <%= f.simple_fields_for :federal_funding_details, @submission.federal_funding_details do |g| %>
-        <%= g.label :training_support_funding, I18n.t("#{current_partner.id}.federal_funding_author.question_1").html_safe %>
-        <%= g.label :training_support_funding, 'Yes' %>
-        <%= g.radio_button :training_support_funding, true %><br>
+        <%= g.input :training_support_funding,
+              as: :radio_buttons,
+              collection: [
+                ['Yes', true],
+                ['No', false]
+              ],
+              wrapper: :vertical_radio_and_checkboxes,
+              label: I18n.t("#{current_partner.id}.federal_funding_author.question_1").html_safe
+        %>
 
         <div id="fed_funding_confirmation_author_1" class="ml-5 collapse hide" aria-live="polite">
             <div class="alert alert-info">
-            <p><%= I18n.t("#{current_partner.id}.federal_funding_author.confirmation").html_safe %></p>
-            <%= g.label :training_support_acknowledged, 'Yes' %>
-            <%= g.radio_button :training_support_acknowledged, true %><br>
-            <%= g.label :training_support_acknowledged, 'No' %>
-            <%= g.radio_button :training_support_acknowledged, false %>
+            <%= g.input :training_support_acknowledged,
+              as: :radio_buttons,
+              collection: [
+                ['Yes', true],
+                ['No', false]
+              ],
+              wrapper: :vertical_radio_and_checkboxes,
+              label: I18n.t("#{current_partner.id}.federal_funding_author.confirmation").html_safe
+            %>
             </div>
             <p id="fed_funding_error_message_author_1" class="collapse hide alert alert-danger"><%= I18n.t("#{current_partner.id}.federal_funding_author.error_message").html_safe %></p>
         </div>
 
-        <%= g.label :training_support_funding, 'No' %>
-        <%= g.radio_button :training_support_funding, false %>
         <br>
-        <%= g.label :other_funding, I18n.t("#{current_partner.id}.federal_funding_author.question_2").html_safe %><br>
-        <%= g.label :other_funding, 'Yes' %>
-        <%= g.radio_button :other_funding, true %><br>
+        <%= g.input :other_funding,
+          as: :radio_buttons,
+          collection: [
+            ['Yes', true],
+            ['No', false]
+          ],
+          wrapper: :vertical_radio_and_checkboxes,
+          label: I18n.t("#{current_partner.id}.federal_funding_author.question_2").html_safe
+        %>
         <div id="fed_funding_confirmation_author_2" class="ml-5 collapse hide" aria-live="polite">
             <div class="alert alert-info">
-            <p><%= I18n.t("#{current_partner.id}.federal_funding_author.confirmation").html_safe %></p>
-            <%= g.label :other_funding_acknowledged, 'Yes' %>
-            <%= g.radio_button :other_funding_acknowledged, true %><br>
-            <%= g.label :other_funding_acknowledged, 'No' %>
-            <%= g.radio_button :other_funding_acknowledged, false %>
+            <%= g.input :other_funding_acknowledged,
+              as: :radio_buttons,
+              collection: [
+                ['Yes', true],
+                ['No', false]
+              ],
+              wrapper: :vertical_radio_and_checkboxes,
+              label: I18n.t("#{current_partner.id}.federal_funding_author.confirmation").html_safe
+            %>
             </div>
             <p id="fed_funding_error_message_author_2" class="collapse hide alert alert-danger"><%= I18n.t("#{current_partner.id}.federal_funding_author.error_message").html_safe %></p>
         </div>
-
-    <%= g.label :other_funding, 'No' %>
-    <%= g.radio_button :other_funding, false %>
-
     <% end %>
 </div>
