@@ -12,4 +12,16 @@
                                 data: { association_insertion_node: '#add_member', association_insertion_method: 'append' } %>
   </div>
   <br>
+  <% if @submission.committee_members.with_discarded.discarded.any? %>
+        <p><strong>Removed Committee Members:</strong></p>
+        <% @submission.committee_members.with_discarded.discarded.each do |cm| %>
+          <p><%= cm.name %> (<%= cm.committee_role.try(:name) || 'No Role Assigned' %>) email: <%= cm.email %> - Discarded at <%= cm.discarded_at.strftime("%B %d, %Y %I:%M %p") %></p>
+          <ul>
+            <% if cm.notes.present? %>
+              <li>Notes: <%= cm.notes %></li>
+            <% end %>
+          </ul>
+        <% end %>
+      <% end %>
+      <br>
 </div>

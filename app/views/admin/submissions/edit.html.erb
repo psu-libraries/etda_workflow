@@ -18,13 +18,6 @@
 
       <%= render "admin/submissions/edit/standard_committee_form", {f: f } %>
 
-      <% if @submission.committee_members.with_discarded.discarded.any? %>
-        <p><strong>Removed Committee Members:</strong></p>
-        <% @submission.committee_members.with_discarded.discarded.each do |cm| %>
-          <p><%= cm.name %> (<%= cm.committee_role.try(:name) || 'No Role Assigned' %>) email: <%= cm.email %> - Discarded at <%= cm.discarded_at.strftime("%B %d, %Y %I:%M %p") %></p>
-        <% end %>
-      <% end %>
-
       <%= render 'admin/submissions/edit/format_review_files', f: f %>
     </div>
     <div class="final">
