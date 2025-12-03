@@ -611,6 +611,21 @@ RSpec.describe CommitteeMember, type: :model do
     end
   end
 
+  describe '#hard_destroy' do
+    let(:submission) { FactoryBot.create(:submission) }
+    let(:token) { FactoryBot.create(:committee_member_token) }
+    let(:committee_member) { FactoryBot.create(:committee_member, submission: submission, committee_member_token: token) }
+
+    context 'when committee member is persisted' do
+      it 'soft deletes the committee member instead of hard deleting' do
+        committee_member.hard_destroy!
+
+        expect { described_class.with_discarded.find(committee_member.id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { CommitteeMemberToken.find(token.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
   describe 'nested attributes integration with soft deletion' do
     let(:submission) { FactoryBot.create(:submission) }
     let(:committee_member) { FactoryBot.create(:committee_member, submission: submission) }

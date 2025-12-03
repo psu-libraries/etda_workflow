@@ -163,6 +163,11 @@ class CommitteeMember < ApplicationRecord
     end
   end
 
+  def hard_destroy!
+    committee_member_token&.delete
+    delete
+  end
+
   private
 
     def one_head_of_program_check
