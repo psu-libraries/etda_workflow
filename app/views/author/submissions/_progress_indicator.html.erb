@@ -8,7 +8,7 @@
           <%= "<p>#{status[:text]}</p>".html_safe if status[:partial_name].blank? %>
         </div>
       </div>
-      <div class='number-arrow'>
+      <div class='number-arrow' aria-hidden="true">
         <div class="number">1</div>
         <div class="direction fa fa-arrow-down"></div>
       </div>
@@ -23,7 +23,7 @@
           <%= render('/author/shared/completed_indicator', step_number: 2, text: status) unless status.blank? %>
         </div>
       </div>
-      <div class='number-arrow'>
+      <div class='number-arrow' aria-hidden="true">
         <div class="number">2</div>
         <div class="direction fa fa-arrow-down"></div>
       </div>
@@ -37,7 +37,7 @@
           <%= render(status[:partial_name], step_number: 3, text: status[:text], note_type: 'Format Review', review_path: @submission_view.notes_link(3)) unless status[:partial_name].blank? %>
         </div>
       </div>
-      <div class='number-arrow'>
+      <div class='number-arrow' aria-hidden="true">
         <div class="number">3</div>
         <div class="direction fa fa-arrow-down"></div>
       </div>
@@ -52,7 +52,7 @@
         </div>
       </div>
       <div class='number-arrow'>
-        <div class="number">4</div>
+        <div class="number" aria-hidden="true">4</div>
         <div class="direction fa fa-arrow-down"></div>
       </div>
     </div>
@@ -66,7 +66,7 @@
         </div>
       </div>
       <div class='number-arrow'>
-        <div class="number">5</div>
+        <div class="number" aria-hidden="true">5</div>
         <div class="direction fa fa-arrow-down"></div>
       </div>
     </div>
@@ -80,7 +80,7 @@
         </div>
       </div>
       <div class='number-arrow'>
-        <div class="number">6</div>
+        <div class="number" aria-hidden="true">6</div>
         <div class="direction fa fa-arrow-down"></div>
       </div>
     </div>
@@ -94,7 +94,7 @@
         </div>
       </div>
       <div class='number-arrow'>
-        <div class="number">7</div>
+        <div class="number" aria-hidden="true">7</div>
         <%= @submission_view.step_eight_arrow %>
       </div>
     </div>
