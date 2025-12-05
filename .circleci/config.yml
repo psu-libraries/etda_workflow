@@ -120,10 +120,10 @@ jobs:
           command: |
             PARTNER=sset docker-compose run --name=test_sset --service-ports -d test
             docker exec -e RAILS_ENV=test test_sset /etda_workflow/bin/ci-rspec
-      - persist_to_workspace:
-          root: .
-          paths:
-            - unit_coverage.json
+      # - persist_to_workspace:
+      #     root: .
+      #     paths:
+      #       - unit_coverage.json
   integration_test_grad:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
