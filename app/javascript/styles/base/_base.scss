@@ -57,6 +57,7 @@ h2, h3.control-label {
 
 a {
   color: $primary;
+  font-weight: bold;
 
   .page-link {
     color: $primary;
@@ -787,6 +788,10 @@ a.cancel-link{
   padding-right: 15px;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+.btn-main:hover{
+  background-color: $blue-light;
 }
 
 .top-container{
