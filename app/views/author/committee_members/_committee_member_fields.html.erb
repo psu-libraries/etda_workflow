@@ -20,7 +20,7 @@
       <h2 class="sr-only">Optional Committee Member </h2>
       <div><%= f.label :committee_role %>
         <% if controller_name == 'committee_members' %>
-          <span class="fa fa-exclamation-circle tooltip-icon" data-toggle="tooltip" data-placement="top" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>" aria-label="<%= local_presenter.committee_members_tooltip_text_no_html  %>"></span>
+          <span class="fa fa-exclamation-circle tooltip-icon" data-toggle="tooltip" data-placement="top" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>" aria-label="<%= local_presenter.committee_members_tooltip_text_no_html %>"></span>
         <% end %>
       </div>
       <%= render partial: 'author/committee_members/committee_role_dropdown', locals: { controller_name: controller_name, f: f } %>

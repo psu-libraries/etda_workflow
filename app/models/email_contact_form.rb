@@ -40,7 +40,7 @@ class EmailContactForm < MailForm::Base
   end
 
   def self.alt_text_tooltip_message
-    tooltip_message.gsub('<strong>','').gsub('</strong>','')
+    tooltip_message.gsub('<strong>', '').gsub('</strong>', '')
   end
 
   def self.contact_form_message(message, desc, email, psuid, full_name)
