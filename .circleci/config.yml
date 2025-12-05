@@ -38,12 +38,12 @@ jobs:
             if [ -f etda-workflow.tar ]; then docker load -i etda-workflow.tar; fi
             docker build -t $REGISTRY_URL:$CIRCLE_SHA1 -t etda_workflow_web:latest --target base .
             docker save -o etda-workflow.tar etda_workflow_web:latest
-      - run:
-          name: "Setup Code Climate test-reporter"
-          command: |
-            # download test reporter as a static binary
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
-            chmod +x cc-test-reporter
+      # - run:
+      #     name: "Setup Code Climate test-reporter"
+      #     command: |
+      #       # download test reporter as a static binary
+      #       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
+      #       chmod +x cc-test-reporter
       # - save_cache:
       #     paths:
       #       - etda-workflow.tar
@@ -52,7 +52,7 @@ jobs:
           root: .
           paths:
             - etda-workflow.tar
-            - cc-test-reporter
+            # - cc-test-reporter
   build_prod:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -104,7 +104,7 @@ jobs:
             PARTNER=graduate docker-compose run --name=unit_test_grad --service-ports -d test
             docker exec -e RAILS_ENV=test unit_test_grad /etda_workflow/bin/ci-rspec
             docker cp unit_test_grad:/etda_workflow/coverage/.resultset.json .resultset.json
-            /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o unit_coverage.json -p /etda_workflow/ .resultset.json
+            # /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o unit_coverage.json -p /etda_workflow/ .resultset.json
       - run:
           name: "Test Honors"
           command: |
@@ -148,7 +148,7 @@ jobs:
             PARTNER=graduate docker-compose run --name=test --service-ports -d test
             docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
             docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
-            /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o integration_coverage.json -p /etda_workflow/ .resultset.json
+            # /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o integration_coverage.json -p /etda_workflow/ .resultset.json
             # docker cp test:/app/vendor .
       - persist_to_workspace:
           root: .
@@ -166,11 +166,11 @@ jobs:
       - checkout
       - attach_workspace:
           at: /tmp/workspace
-      - run:
-          name: "Upload test coverage results to Code Climate"
-          command: |
-            /tmp/workspace/cc-test-reporter sum-coverage /tmp/workspace/*coverage.json -p 2 -o /tmp/workspace/summed_coverage.json
-            /tmp/workspace/cc-test-reporter upload-coverage -i /tmp/workspace/summed_coverage.json
+      # - run:
+      #     name: "Upload test coverage results to Code Climate"
+      #     command: |
+      #       /tmp/workspace/cc-test-reporter sum-coverage /tmp/workspace/*coverage.json -p 2 -o /tmp/workspace/summed_coverage.json
+      #       /tmp/workspace/cc-test-reporter upload-coverage -i /tmp/workspace/summed_coverage.json
       - run:
           name: "Publish The Image"
           command: |
