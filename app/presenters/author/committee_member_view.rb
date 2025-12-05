@@ -57,7 +57,7 @@ class Author::CommitteeMemberView
   end
 
   def committee_members_tooltip_text_no_html
-    committee_members_tooltip_text.gsub('<p><strong>', '').gsub('</strong> -','').gsub('</p>','')
+    committee_members_tooltip_text.gsub('<p><strong>', '').gsub('</strong> -', '').gsub('</p>', '')
   end
 
   def program_chair_collection
