@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   release:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.3.0
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_REPO: library/etda-workflow
@@ -29,30 +29,16 @@ jobs:
           version: docker24
           docker_layer_caching: true
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - docker-image
       - run:
           name: "Build Container"
           command: |
             if [ -f etda-workflow.tar ]; then docker load -i etda-workflow.tar; fi
             docker build -t $REGISTRY_URL:$CIRCLE_SHA1 -t etda_workflow_web:latest --target base .
             docker save -o etda-workflow.tar etda_workflow_web:latest
-      # - run:
-      #     name: "Setup Code Climate test-reporter"
-      #     command: |
-      #       # download test reporter as a static binary
-      #       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
-      #       chmod +x cc-test-reporter
-      # - save_cache:
-      #     paths:
-      #       - etda-workflow.tar
-      #     key: docker-image
       - persist_to_workspace:
           root: .
           paths:
             - etda-workflow.tar
-            # - cc-test-reporter
   build_prod:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -104,7 +90,6 @@ jobs:
             PARTNER=graduate docker-compose run --name=unit_test_grad --service-ports -d test
             docker exec -e RAILS_ENV=test unit_test_grad /etda_workflow/bin/ci-rspec
             docker cp unit_test_grad:/etda_workflow/coverage/.resultset.json .resultset.json
-            # /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o unit_coverage.json -p /etda_workflow/ .resultset.json
       - run:
           name: "Test Honors"
           command: |
@@ -120,10 +105,6 @@ jobs:
           command: |
             PARTNER=sset docker-compose run --name=test_sset --service-ports -d test
             docker exec -e RAILS_ENV=test test_sset /etda_workflow/bin/ci-rspec
-      # - persist_to_workspace:
-      #     root: .
-      #     paths:
-      #       - unit_coverage.json
   integration_test_grad:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -148,12 +129,6 @@ jobs:
             PARTNER=graduate docker-compose run --name=test --service-ports -d test
             docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
             docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
-            # /tmp/workspace/cc-test-reporter format-coverage -t simplecov -o integration_coverage.json -p /etda_workflow/ .resultset.json
-            # docker cp test:/app/vendor .
-      - persist_to_workspace:
-          root: .
-          paths:
-            - integration_coverage.json
   publish:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -166,11 +141,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: /tmp/workspace
-      # - run:
-      #     name: "Upload test coverage results to Code Climate"
-      #     command: |
-      #       /tmp/workspace/cc-test-reporter sum-coverage /tmp/workspace/*coverage.json -p 2 -o /tmp/workspace/summed_coverage.json
-      #       /tmp/workspace/cc-test-reporter upload-coverage -i /tmp/workspace/summed_coverage.json
       - run:
           name: "Publish The Image"
           command: |
