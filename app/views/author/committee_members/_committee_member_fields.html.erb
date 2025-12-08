@@ -42,7 +42,13 @@
                     required: true %>
       </div>
       <div class="col-sm-6 committee-remove">
-        <%= link_to_remove_association "[ Remove Committee Member ]", f, class: 'text-danger' %>
+          <%= link_to_remove_association(
+      "[ Remove Committee Member ]",
+      f,
+      class: "text-danger",
+      wrapper_class: "nested-fields",
+      soft_remove: true
+) %>
       </div>
     <% else %>
       <div class="col-sm-6">

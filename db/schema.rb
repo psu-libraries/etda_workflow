@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_18_195423) do
   create_table "admin_feedback_files", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "submission_id"
     t.text "asset"
@@ -132,8 +132,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_26_183515) do
     t.datetime "lionpath_updated_at", precision: nil
     t.string "external_to_psu_id"
     t.bigint "faculty_member_id"
+    t.datetime "discarded_at"
     t.index ["approver_id"], name: "index_committee_members_on_approver_id"
     t.index ["committee_role_id"], name: "committee_members_committee_role_id_fk"
+    t.index ["discarded_at"], name: "index_committee_members_on_discarded_at"
     t.index ["faculty_member_id"], name: "committee_members_faculty_member_id_fk"
     t.index ["submission_id"], name: "committee_members_submission_id_fk"
   end

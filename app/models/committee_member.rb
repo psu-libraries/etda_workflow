@@ -4,6 +4,8 @@ class CommitteeMember < ApplicationRecord
   class ProgramHeadMissing < StandardError; end
   attr_accessor :approver_controller, :federal_funding_confirmation
 
+  include Discard::Model
+
   validate :validate_email, :one_head_of_program_check, :validate_status,
            :validate_notes, :validate_federal_funding_used
   validates :committee_role_id,
@@ -17,6 +19,8 @@ class CommitteeMember < ApplicationRecord
   has_one :committee_member_token, dependent: :destroy
 
   delegate :is_program_head, to: :committee_role
+
+  default_scope -> { kept }
 
   STATUS = [
     '',
@@ -147,6 +151,21 @@ class CommitteeMember < ApplicationRecord
 
   def core_committee_member?
     !(is_program_head || (self == submission.advisor && current_partner.graduate?))
+  end
+
+  def destroy
+    if persisted?
+      discard!
+
+      freeze
+    else
+      super
+    end
+  end
+
+  def hard_destroy!
+    committee_member_token&.delete
+    delete
   end
 
   private

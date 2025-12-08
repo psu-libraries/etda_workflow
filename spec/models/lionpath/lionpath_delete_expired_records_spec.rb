@@ -65,8 +65,8 @@ RSpec.describe Lionpath::LionpathDeleteExpiredRecords do
       FactoryBot.create_list :committee_member, 100, lionpath_updated_at: DateTime.now
       FactoryBot.create_list :submission, 100, lionpath_updated_at: DateTime.now
       expect { described_class.delete }.to change(CommitteeMember, :count).by(-2)
-      expect { exp_lp_cm1.reload }.to raise_error ActiveRecord::RecordNotFound
-      expect { exp_lp_cm2.reload }.to raise_error ActiveRecord::RecordNotFound
+      expect(exp_lp_cm1.reload.discarded?).to be true
+      expect(exp_lp_cm2.reload.discarded?).to be true
       expect(exp_lp_cm3.reload).to eq exp_lp_cm3
       expect(exp_lp_cm4.reload).to eq exp_lp_cm4
       expect(exp_lp_cm5.reload).to eq exp_lp_cm5

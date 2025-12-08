@@ -9,6 +9,8 @@ class Submission < ApplicationRecord
   belongs_to :program
   belongs_to :degree
 
+  before_destroy -> { committee_members.with_discarded.each(&:hard_destroy!) }
+
   has_many :committee_members, dependent: :destroy
   has_many :format_review_files, inverse_of: :submission, dependent: :destroy
   has_many :final_submission_files, inverse_of: :submission, dependent: :destroy

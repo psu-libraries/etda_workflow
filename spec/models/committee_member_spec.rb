@@ -583,4 +583,68 @@ RSpec.describe CommitteeMember, type: :model do
       end
     end
   end
+
+  describe '#destroy' do
+    let(:submission) { FactoryBot.create(:submission) }
+    let(:committee_member) { FactoryBot.create(:committee_member, submission: submission) }
+
+    context 'when committee member is persisted' do
+      it 'soft deletes the committee member instead of hard deleting' do
+        result = committee_member.destroy
+
+        expect(result).to eq(committee_member)
+        expect(result).to be_frozen
+        expect(committee_member.discarded?).to be true
+        expect(described_class.with_discarded.find(committee_member.id)).to eq(committee_member)
+        expect { described_class.find(committee_member.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when committee member is not persisted' do
+      let(:new_committee_member) { described_class.new }
+
+      it 'calls destroy' do
+        expect(new_committee_member.persisted?).to be false
+        new_committee_member.destroy
+        expect { described_class.find(new_committee_member.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe '#hard_destroy' do
+    let(:submission) { FactoryBot.create(:submission) }
+    let(:token) { FactoryBot.create(:committee_member_token) }
+    let(:committee_member) { FactoryBot.create(:committee_member, submission: submission, committee_member_token: token) }
+
+    context 'when committee member is persisted' do
+      it 'soft deletes the committee member instead of hard deleting' do
+        committee_member.hard_destroy!
+
+        expect { described_class.with_discarded.find(committee_member.id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { CommitteeMemberToken.find(token.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe 'nested attributes integration with soft deletion' do
+    let(:submission) { FactoryBot.create(:submission) }
+    let(:committee_member) { FactoryBot.create(:committee_member, submission: submission) }
+
+    context 'when updating submission with _destroy = "1"' do
+      it 'soft deletes the committee member' do
+        submission.update(
+          committee_members_attributes: [
+            {
+              id: committee_member.id,
+              _destroy: "1"
+            }
+          ]
+        )
+
+        expect(described_class.with_discarded.find(committee_member.id).discarded?).to be true
+        expect { described_class.find(committee_member.id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(submission.reload.committee_members).not_to include(committee_member)
+      end
+    end
+  end
 end
