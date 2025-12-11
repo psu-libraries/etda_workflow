@@ -23,8 +23,9 @@
       <% end %>
       <div class="row">
         <p><h2><%= f.label :issue_type %>
-            <span class="fa fa-exclamation-circle tooltip-icon" data-toggle="tooltip" data-placement="top" data-html="true" aria-label="<%= EmailContactForm.alt_text_tooltip_message %>" title="<%= EmailContactForm.tooltip_message %>"></span>
             </h2>
+            <span aria-describedby="email-tooltip-text" class="fa fa-exclamation-circle tooltip-icon" data-toggle="tooltip" data-placement="top" data-html="true" title="<%= EmailContactForm.tooltip_message %>"></span>
+            <span id="email-tooltip-text" role="tooltip" class="sr-only"><%= EmailContactForm.alt_text_tooltip_message %></span>
         </p>
       </div>
       <div class="row">

@@ -3,7 +3,8 @@
     <div class="container-fluid">
       <ul class="nav navbar-list">
         <li><a id="psu-shield" href="http://psu.edu/"><%= image_tag("#{asset_pack_path 'static/images/PS_HOR_REV_RGB_2C.png'}", alt: "P.S.U. Libraries logo", width: '100', height: '45' ) %></a></li>
-        <li class="text"><%= link_to t("#{current_partner.id}.partner.name"), t("#{current_partner.id}.partner.url"), class: 'small', target: '_blank', aria: {label: "t('#{current_partner.id}.partner.name'). Link opens in a new tab" } %></li>
+        <% partner_name = t("#{current_partner.id}.partner.name") %>
+        <li class="text"><%= link_to partner_name, t("#{current_partner.id}.partner.url"), class: 'small', target: '_blank', aria: {label: "#{partner_name}. Link opens in a new tab" } %></li>
         <li class="text"><%= link_to "© #{Time.now.year} The Pennsylvania State University", 'http://www.psu.edu/ur/copyright.html', class: 'small', target: '_blank', aria: {label: "© #{Time.now.year} The Pennsylvania State University. Link opens in a new tab" } %></li>
         <li class="text"><%= link_to 'Privacy and Legal Statements', 'http://www.psu.edu/ur/legal.html', class: 'small', target: '_blank', aria: {label: "Privacy and Legal Statements. Link opens in a new tab" } %></li>
         <li class="text"><%= link_to 'Accessibility', 'https://www.psu.edu/accessibilitystatement', class: 'small', target: '_blank', aria: {label: "Accessibility. Link opens in a new tab" } %></li>
