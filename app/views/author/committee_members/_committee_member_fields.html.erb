@@ -6,7 +6,9 @@
   <div class="row committee-role">
   <% if local_presenter.required? %>
     <div class="col-sm-12">
-      <h2 class="h2-small block-header"><%= local_presenter.role %> <span class="fa fa-exclamation-circle tooltip-icon" data-toggle="tooltip" data-placement="right" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>" aria-label="<%= local_presenter.committee_members_tooltip_text_no_html %>"></span></h2>
+      <h2 class="h2-small block-header"><%= local_presenter.role %> </h2>
+      <span class="fa fa-exclamation-circle tooltip-icon" data-toggle="tooltip" data-placement="right" aria-describedby="committee-member-tooltip-text" data-html="true" title="<%= local_presenter.committee_members_tooltip_text %>"></span>
+      <span id="committee-member-tooltip-text" role="tooltip" class="sr-only"><%= local_presenter.committee_members_tooltip_text_no_html %></span>
       <% if !current_partner.honors? && !disabled_bool && !is_external_member && !local_presenter.head_of_program? %>
         <p class="email_form_checkbox"><%= check_box 'email_form_release', "switch" %><small> Committee member is not in dropdown list</small></p>
       <% end %>
