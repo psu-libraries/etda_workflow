@@ -1,14 +1,14 @@
 <div class="progress-indicator in-process">
   <div class="step step-1 <%= @submission_view.step_one_class %>"><%= @submission_view.step_info(1) %>
     <div class="information">
-      <div class="description"><%= @submission_view.step_one_description %>
+      <div class="description"><h4 class="step-heading"><%= @submission_view.step_one_description %></h4>
         <div class="status">
           <% status = @submission_view.step_one_status %>
           <%= render(status[:partial_name], step_number: 1, text: status[:text]) unless status[:partial_name].blank? %>
           <%= "<p>#{status[:text]}</p>".html_safe if status[:partial_name].blank? %>
         </div>
       </div>
-      <div class='number-arrow'>
+      <div class='number-arrow' aria-hidden="true">
         <div class="number">1</div>
         <div class="direction fa fa-arrow-down"></div>
       </div>
@@ -16,13 +16,14 @@
   </div>
   <div class="step step-2 <%= @submission_view.step_two_class %>"><%= @submission_view.step_info(2) %>
     <div class="information">
-      <div class="description"><%= @submission_view.step_two_description %>
+      <div class="description">
+        <h4 class="step-heading"><%= @submission_view.step_two_description %></h4>
         <div class="status">
           <% status = @submission_view.step_two_status %>
           <%= render('/author/shared/completed_indicator', step_number: 2, text: status) unless status.blank? %>
         </div>
       </div>
-      <div class='number-arrow'>
+      <div class='number-arrow' aria-hidden="true">
         <div class="number">2</div>
         <div class="direction fa fa-arrow-down"></div>
       </div>
@@ -30,13 +31,13 @@
   </div>
   <div class="step step-3 <%= @submission_view.step_three_class %>"><%= @submission_view.step_info(3) %>
     <div class="information">
-      <div class="description"><%= @submission_view.step_three_description %>
+      <div class="description"><h4 class="step-heading"><%= @submission_view.step_three_description %></h4>
         <div class="status">
           <% status = @submission_view.step_three_status %>
           <%= render(status[:partial_name], step_number: 3, text: status[:text], note_type: 'Format Review', review_path: @submission_view.notes_link(3)) unless status[:partial_name].blank? %>
         </div>
       </div>
-      <div class='number-arrow'>
+      <div class='number-arrow' aria-hidden="true">
         <div class="number">3</div>
         <div class="direction fa fa-arrow-down"></div>
       </div>
@@ -44,63 +45,63 @@
   </div>
   <div class="step step-4 <%= @submission_view.step_four_class %>"><%= @submission_view.step_info(4) %>
     <div class="information">
-      <div class="description"> <%= @submission_view.step_four_description %>
+      <div class="description"> <h4 class="step-heading"><%= @submission_view.step_four_description %></h4>
         <div class='status'>
           <% status = @submission_view.step_four_status %>
           <%= render(status[:partial_name], step_number: 4, text: status[:text], note_type: 'Format Review', review_path: @submission_view.notes_link(4)) unless status[:partial_name].blank? %>
         </div>
       </div>
       <div class='number-arrow'>
-        <div class="number">4</div>
+        <div class="number" aria-hidden="true">4</div>
         <div class="direction fa fa-arrow-down"></div>
       </div>
     </div>
   </div>
   <div class="step step-5 <%= @submission_view.step_five_class %>"><%= @submission_view.step_info(5) %>
     <div class="information">
-      <div class="description"><%= @submission_view.step_five_description %>
+      <div class="description"><h4 class="step-heading"><%= @submission_view.step_five_description %></h4>
         <div class="status">
           <% status = @submission_view.step_five_status %>
           <%= render(status[:partial_name], step_number: 5, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(5)) unless status[:partial_name].blank? %>
         </div>
       </div>
       <div class='number-arrow'>
-        <div class="number">5</div>
+        <div class="number" aria-hidden="true">5</div>
         <div class="direction fa fa-arrow-down"></div>
       </div>
     </div>
   </div>
   <div class="step step-6 <%= @submission_view.step_six_class %>"><%= @submission_view.step_info(6) %>
     <div class="information">
-      <div class="description"><%= @submission_view.step_six_description %>
+      <div class="description"><h4 class="step-heading"><%= @submission_view.step_six_description %></h4>
         <div class="status">
           <% status = @submission_view.step_six_status %>
           <%= render(status[:partial_name], step_number: 6, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(6)) unless status[:partial_name].blank? %>
         </div>
       </div>
       <div class='number-arrow'>
-        <div class="number">6</div>
+        <div class="number" aria-hidden="true">6</div>
         <div class="direction fa fa-arrow-down"></div>
       </div>
     </div>
   </div>
   <div class="step step-7 <%= @submission_view.step_seven_class %>"><%= @submission_view.step_info(7) %>
     <div class="information">
-      <div class="description"><%= @submission_view.step_seven_description %> <%= @submission_view.step_seven_link %>
+      <div class="description"><h4 class="step-heading"><%= @submission_view.step_seven_description %> </h4><%= @submission_view.step_seven_link %>
         <div class="status">
           <% status = @submission_view.step_seven_status %>
           <%= render(status[:partial_name], step_number: 7, text: status[:text], note_type: 'Final Submission', review_path: @submission_view.notes_link(7)) unless status[:partial_name].blank? %>
         </div>
       </div>
       <div class='number-arrow'>
-        <div class="number">7</div>
+        <div class="number" aria-hidden="true">7</div>
         <%= @submission_view.step_eight_arrow %>
       </div>
     </div>
   </div>
   <div class="step step-8 <%= @submission_view.step_eight_class %>">
     <div>
-      <div><%= @submission_view.step_eight_status %></div>
+      <div><h4 class="step-heading"><%= @submission_view.step_eight_status %></h4></div>
     </div>
   </div>
 </div>

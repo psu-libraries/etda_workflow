@@ -1,18 +1,29 @@
 <fieldset>
-  <legend><strong>Document Availability</strong><hr></legend>
+  <legend><h2 class="control-label"><strong>Document Availability</strong></h2><hr></legend>
   <% if current_partner.sset? %>
     <div class="alert alert-info">
       <p class="hint"><u>At this time submissions are not being made public.</u>  If they are in the future, please select the access level for your submission.</p>
     </div>
   <% end %>
-    <div class="author">
-      <%= f.input :access_level,
-                  as: :radio_buttons,
-                  label: "Access Level",
-                  required: true,
-                  collection: AccessLevel.display.map{ |k| ["<strong>#{k[:label]}</strong> -- #{k[:description]}".html_safe,
-                  k[:type], { class: "#{k[:type]}" }]},
-                  wrapper: :vertical_radio_and_checkboxes %>
+<div class="author">
+  <% AccessLevel.display.each do |k| %>
+    <% value   = k[:type] %>
+    <% id      = "submission_access_level_#{value}" %>
+    <% desc_id = "#{id}-desc" %>
+
+    <div class="radio mb-3">
+      <%= f.radio_button :access_level,
+                          value,
+                          id: id,
+                          class: value,
+                          data: { description: k[:description] } %>
+
+      <label for="<%= id %>" class="d-inline">
+        <strong><%= k[:label] %></strong>
+          — <span id="<%= desc_id %>"><%= k[:description].html_safe %></span>
+      </label>
     </div>
+  <% end %>
+</div>
 </fieldset>
 <%= render partial: 'invention_disclosure_information', locals: {f: f} %>
