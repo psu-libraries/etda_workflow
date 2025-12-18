@@ -30,7 +30,13 @@ $border-radius-large:  6px !default;
 $primary: $medium-blue-bright;
 $grid-float-breakpoint: 992px;
 
-h2, h3.control-label {
+h2 {
+  line-height: 0.5;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+h2.control-label, h3.control-label {
   margin: 0;
   line-height: 0.5;
   font-weight: bold;

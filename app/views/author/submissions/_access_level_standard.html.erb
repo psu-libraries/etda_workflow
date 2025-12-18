@@ -20,7 +20,7 @@
 
       <label for="<%= id %>" class="d-inline">
         <strong><%= k[:label] %></strong>
-          — <span id="<%= desc_id %>"><%= k[:description] %></span>
+          — <span id="<%= desc_id %>"><%= k[:description].html_safe %></span>
       </label>
     </div>
   <% end %>
