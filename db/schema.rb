@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_18_195423) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_19_152657) do
   create_table "admin_feedback_files", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "submission_id"
     t.text "asset"
@@ -256,6 +256,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_18_195423) do
     t.datetime "lionpath_updated_at", precision: nil
     t.index ["legacy_id"], name: "index_programs_on_legacy_id"
     t.index ["name", "code"], name: "index_programs_on_name_and_code", unique: true
+  end
+
+  create_table "remediated_final_submission_files", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "submission_id"
+    t.bigint "final_submission_file_id"
+    t.text "asset"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "submissions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

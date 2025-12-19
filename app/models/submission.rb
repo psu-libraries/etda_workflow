@@ -14,6 +14,7 @@ class Submission < ApplicationRecord
   has_many :committee_members, dependent: :destroy
   has_many :format_review_files, inverse_of: :submission, dependent: :destroy
   has_many :final_submission_files, inverse_of: :submission, dependent: :destroy
+  has_many :remediated_final_submission_files, dependent: :destroy
   has_many :admin_feedback_files, inverse_of: :submission, dependent: :destroy
   has_many :keywords, dependent: :destroy, validate: true
   has_many :invention_disclosures, dependent: :destroy, validate: true
