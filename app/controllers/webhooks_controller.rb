@@ -18,7 +18,7 @@ class WebhooksController < ApplicationController
   private
 
     def authenticate_request
-      ## TODO: Potentailly replace this with database stored tokens
+      ## TODO: Replace this with database stored tokens
       secret = ENV['AUTO_REMEDIATE_WEBHOOK_SECRET']
       if secret.blank?
         Rails.logger.error('AUTO_REMEDIATE_WEBHOOK_SECRET not set')
