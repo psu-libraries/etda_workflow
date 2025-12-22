@@ -139,5 +139,7 @@ Rails.application.routes.draw do
   match "/404", to: 'errors#render_404', via: :all
   match "/500", to: 'errors#render_500', via: :all
   match "/401", to: 'errors#render_401', via: :all
+
+  post '/webhooks/auto_remediate', to: 'webhooks#auto_remediate'
 end
 # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
