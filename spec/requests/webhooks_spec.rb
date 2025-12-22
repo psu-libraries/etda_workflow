@@ -41,10 +41,18 @@ RSpec.describe 'Webhooks', type: :request do
 
         context 'when StandardError occurs' do
           it 'returns 500' do
-            allow(AutoRemediateWorker).to receive(:perform_async).and_raise(StandardError.new('Test error'))
+            original_logger = Rails.logger
+            log_output = StringIO.new
+            Rails.logger = ActiveSupport::Logger.new(log_output)
+            error = StandardError.new('Test error')
+            error.set_backtrace(["/path/to/file.rb:10:in `method_name'"])
+            allow(AutoRemediateWorker).to receive(:perform_async).and_raise(error)
             headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => 'secret-token' }
             post path, params: { final_submission_file_id: 'data' }.to_json, headers: headers
             expect(response).to have_http_status(:internal_server_error)
+            expect(log_output.string).to include("Webhook failed: StandardError - Test error\n/path/to/file.rb:10:in `method_name'")
+          ensure
+            Rails.logger = original_logger
           end
         end
       end
