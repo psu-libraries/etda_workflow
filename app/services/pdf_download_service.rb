@@ -4,7 +4,7 @@ class PdfDownloadService
   class DownloadError < StandardError; end
 
   def initialize(final_submission_file, url)
-    @final_submission_file = submission_file
+    @final_submission_file = final_submission_file
     @url = url
   end
 
@@ -16,8 +16,8 @@ class PdfDownloadService
       submission_id: @final_submission_file.submission.id
     )
   ensure
-    downloaded_file&.close
-    downloaded_file&.unlink
+    remediated_pdf&.close
+    remediated_pdf&.unlink
   end
 
   private def download_pdf
