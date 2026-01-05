@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PdfDownloadWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'pdf_download'

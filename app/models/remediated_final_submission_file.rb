@@ -6,4 +6,8 @@ class RemediatedFinalSubmissionFile < ApplicationRecord
 
   validates :submission_id, :asset, presence: true
   validates :asset, virus_free: true
+
+  def class_name
+    self.class.to_s.underscore.dasherize
+  end
 end
