@@ -95,7 +95,6 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to accept_nested_attributes_for :committee_members }
   it { is_expected.to accept_nested_attributes_for :format_review_files }
   it { is_expected.to accept_nested_attributes_for :final_submission_files }
-  it { is_expected.to accept_nested_attributes_for :remediated_final_submission_files }
 
   it { is_expected.to delegate_method(:program_name).to(:program).as(:name) }
   it { is_expected.to delegate_method(:degree_name).to(:degree).as(:name) }
