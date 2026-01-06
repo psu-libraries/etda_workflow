@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'open-uri'
-
 class PdfDownloadService
   class DownloadError < StandardError; end
 
@@ -28,16 +26,8 @@ class PdfDownloadService
       uri = URI.parse(@url)
       raise DownloadError, "URL does not point to a PDF" unless uri.path.end_with?('.pdf')
 
-      io = URI.open(uri, "rb", &:read)
-      tmp = Tempfile.new([File.basename(uri.path, ".pdf"), ".pdf"])
-      tmp.binmode
-      tmp.write(io)
-      tmp.rewind
-      # This is the metadata that Carrier Wave is expecting
-      tmp.define_singleton_method(:original_filename) { File.basename(uri.path) }
-      tmp.define_singleton_method(:content_type) { "application/pdf" }
-      tmp
-    rescue OpenURI::HTTPError => e
+      Down.download(@url)
+    rescue Down::Error => e
       raise DownloadError, "Failed to download PDF (#{e.message})"
     rescue SocketError, Errno::ECONNREFUSED => e
       raise DownloadError, "Network error while fetching PDF (#{e.message})"
