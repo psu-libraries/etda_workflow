@@ -30,12 +30,40 @@ $border-radius-large:  6px !default;
 $primary: $medium-blue-bright;
 $grid-float-breakpoint: 992px;
 
-label.control-label {
+h2 {
+  line-height: 0.5;
   font-weight: bold;
+  font-size: 1rem;
+}
+
+h2.control-label, h3.control-label {
+  margin: 0;
+  line-height: 0.5;
+  font-weight: bold;
+  font-size: 1rem;
+  label {
+    font-weight: inherit;
+    font-size: inherit;
+    line-height: 1.5;
+  }
+}
+
+.checkbox {
+    h2 {
+      display: inline;
+      label {
+        font-weight: 100;
+      }
+    }
+}
+
+.tooltip-icon {
+  color: $primary;
 }
 
 a {
   color: $primary;
+  font-weight: bold;
 
   .page-link {
     color: $primary;
@@ -71,6 +99,11 @@ a {
   border-color: $primary;
 }
 
+.btn-primary:hover {
+  font-weight: 500;
+  color: $gray-lightest;
+}
+
 .content-main {
   padding-left: 50px;
 }
@@ -101,8 +134,7 @@ header {
   }
 
   #logo-old {
-    padding-top: 9px;
-    padding-left: 30px;
+    padding: 9px 0 19px 30px;
     a {
       color: #ffffff;
       font-size: $font-size-h3;
@@ -114,14 +146,14 @@ header {
   }
 
   #account-navigation {
-    background-color: $medium-blue-bright;
+    background-color: $medium-blue;
 
     .navbar-btn.btn-sm {
       color: #ffffff;
       font-size: $font-size-base;
 
       &:hover {
-        color: #000000;
+        font-weight: bold;
       }
     }
 
@@ -131,13 +163,14 @@ header {
 
     @media (min-width: 768px) {
       .navbar-text.small {
-        color: #000000;
+        color: $gray-lightest;
+        margin-right: 40px;
       }
     }
     #top-navigation ul {
       li.active a {
         font-weight: bold;
-        color: $dark-blue;
+        color: $gray-lightest;
       }
     }
   }
@@ -150,6 +183,14 @@ header {
       padding-right: 50px;
     }
   }
+}
+
+.home-header {
+  font-size: 1.5rem;
+}
+
+.text-info {
+  color: $dark-blue !important;
 }
 
 ul.navbar-list {
@@ -438,6 +479,7 @@ textarea {
 }
 
 .radio {
+  margin-right: 15px;
   input {
     box-shadow: none;
   }
@@ -551,7 +593,7 @@ select.disabled {
 }
 
 #main-navigation > ul > li{
-  background-color: $medium-blue-bright;
+  background-color: $medium-blue;
   border-radius: $border-radius-large;
   width: 100%;
   margin: 0.5em 0px 0px 0px;
@@ -754,6 +796,10 @@ a.cancel-link{
   padding-bottom: 10px;
 }
 
+.btn-main:hover{
+  background-color: $blue-light;
+}
+
 .top-container{
   padding-bottom: 20px;
 }
@@ -913,4 +959,13 @@ a.contact-support-link {
 .network-graph {
   width: 100vw;
   height: 100vh;
+}
+
+.step-heading {
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+.form-control {
+  border: 1px solid $gray-dark;
 }

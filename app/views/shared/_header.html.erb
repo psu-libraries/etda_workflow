@@ -2,8 +2,8 @@
   <%= render partial: 'shared/announcements' if Settings.show_announcement %>
   <div class="container-fluid">
     <div id="shield-and-logo" class="row">
-      <div class="col-sm-1">
-        <a id="psu-shield" href="http://libraries.psu.edu/">
+      <div>
+        <a class="col-sm-1" id="psu-shield" href="http://libraries.psu.edu/">
           <%= image_tag("#{asset_pack_path 'static/images/PS_UL_REV_RGB_2C.png'}", alt: "PSU Libraries logo", width: '120', height: '55' ) %>
         </a>
       </div>

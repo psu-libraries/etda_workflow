@@ -46,7 +46,7 @@ To create mock submission files:
 To seed data:
 
 1. `docker-compose exec web bash`
-2. `PARTNER={parter} bundle exec rake db:seed:essential`
+2. `PARTNER={partner} bundle exec rake db:seed:essential`
 
 **_Note:_** For new devs you may need to add their `Author` and `Admin` records manually.  Alternatively, you can comment out the `MockUniversityDirectory` line
  in `config/initializers/autoload_constants.rb` for the development environment.  Then proceed to the admin and author routes to automatically create the records with LDAP.

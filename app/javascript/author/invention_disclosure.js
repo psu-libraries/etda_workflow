@@ -8,7 +8,7 @@ var $ = require('jquery');
 window.jQuery = $;
 
 const bind_to_access_level = () =>
-    $('body').on('click', 'div.author div.submission_access_level', function(e) {
+    $('body').on('click', 'div.author', function(e) {
         if ($('div.author #submission_access_level_restricted').prop('checked')) {
             $('div#invention').removeClass('d-none');
             $('#submission_invention_disclosures_attributes_0_id_number').focus();
