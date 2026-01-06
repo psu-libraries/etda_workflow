@@ -8,7 +8,7 @@
   <div class="author">
     <%
       access_level_collection = AccessLevel.display.filter_map do |k|
-        next if k[:type] == 'restricted_liberal_arts' && @submission.academic_program != 'LA'
+        next if k[:type] == 'restricted_liberal_arts' && @submission.academic_program != 'LA' && !current_partner.graduate?
 
         ["<strong>#{k[:label]}</strong> -- #{k[:description]}".html_safe, k[:type], { class: "#{k[:type]}" }]
       end
