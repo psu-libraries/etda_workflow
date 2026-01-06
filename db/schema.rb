@@ -259,11 +259,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_19_152657) do
   end
 
   create_table "remediated_final_submission_files", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "submission_id"
-    t.bigint "final_submission_file_id"
+    t.bigint "submission_id", null: false
+    t.bigint "final_submission_file_id", null: false
     t.text "asset"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["final_submission_file_id"], name: "idx_on_final_submission_file_id_69ad15d6f5"
+    t.index ["submission_id"], name: "index_remediated_final_submission_files_on_submission_id"
   end
 
   create_table "submissions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

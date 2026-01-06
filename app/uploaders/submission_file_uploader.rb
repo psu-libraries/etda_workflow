@@ -33,7 +33,6 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
     base_dir.join('cache', identity_subdir)
   end
 
-  # TODO: Refactor
   def asset_prefix
     case model.class_name
     when 'final-submission-file'
