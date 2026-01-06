@@ -135,9 +135,15 @@ RSpec.describe Submission, type: :model do
                         access_level: 'restricted_to_institution',
                         status: 'waiting for publication release'
     end
+    let!(:sub6) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.days_ago(1),
+                        access_level: 'restricted_liberal_arts',
+                        status: 'released for publication metadata only'
+    end
 
     it 'returns submissions that are ready for autorelease' do
-      expect(described_class.ok_to_autorelease).to contain_exactly(sub1, sub2)
+      expect(described_class.ok_to_autorelease).to contain_exactly(sub1, sub2, sub6)
     end
   end
 
@@ -165,9 +171,21 @@ RSpec.describe Submission, type: :model do
                         released_for_publication_at: Time.zone.today + 6.weeks,
                         released_metadata_at: Time.zone.today.years_ago(1)
     end
+    let!(:sub5) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.next_month,
+                        released_metadata_at: Time.zone.today.years_ago(4),
+                        access_level: 'restricted_liberal_arts'
+    end
+    let!(:sub6) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.next_month,
+                        released_metadata_at: Time.zone.today.years_ago(6),
+                        access_level: 'restricted_liberal_arts'
+    end
 
     it 'returns submissions that are ready for autorelease' do
-      expect(described_class.release_warning_needed?).to contain_exactly(sub1)
+      expect(described_class.release_warning_needed?).to contain_exactly(sub1, sub5)
     end
   end
 
@@ -829,6 +847,13 @@ RSpec.describe Submission, type: :model do
       submission.access_level = 'restricted'
       date_to_release = Time.zone.tomorrow
       expect(submission.publication_release_date(date_to_release)).to eq(date_to_release + 2.years)
+    end
+
+    it 'returns the release date plus 5 years for submissions not yet published and are liberal arts restricted' do
+      submission = FactoryBot.create :submission, :waiting_for_publication_release
+      submission.access_level = 'restricted_liberal_arts'
+      date_to_release = Time.zone.tomorrow
+      expect(submission.publication_release_date(date_to_release)).to eq(date_to_release + 5.years)
     end
   end
 
