@@ -12,12 +12,11 @@ RSpec.describe RemediatedFinalSubmissionFile, type: :model do
   it { is_expected.to have_db_index(:submission_id) }
   it { is_expected.to have_db_index(:final_submission_file_id) }
 
-
   it { is_expected.to validate_presence_of :asset }
   it { is_expected.to validate_presence_of :submission_id }
 
   it { is_expected.to belong_to :submission }
-  it { is_expected.to belong_to :final_submission_file}
+  it { is_expected.to belong_to :final_submission_file }
 
   it 'returns class name with dashes' do
     expect(described_class.new.class_name).to eql('remediated-final-submission-file')

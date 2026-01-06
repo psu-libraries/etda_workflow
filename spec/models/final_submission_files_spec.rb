@@ -18,6 +18,8 @@ RSpec.describe FinalSubmissionFile, type: :model do
 
   it { is_expected.to belong_to :submission }
 
+  it { is_expected.to have_one :remediated_final_submission_file }
+
   it 'returns class name with dashes' do
     final_submission_file = described_class.new
     expect(final_submission_file.class_name).to eql('final-submission-file')
