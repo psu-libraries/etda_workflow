@@ -25,10 +25,16 @@ RSpec.describe PdfDownloadService do
       service = described_class.new(final_submission_file, pdf_url)
       service.call
       expect(RemediatedFinalSubmissionFile.count).to eq(1)
+      expect(RemediatedFinalSubmissionFile.first.final_submission_file_id).to eq(final_submission_file.id)
+      expect(RemediatedFinalSubmissionFile.first.submission_id).to eq(final_submission_file.submission_id)
     end
 
-    context 'if the url does not end with pdf' do
-      it 'returns an error' do
+    context 'if Down throws an error' do
+      before do
+        allow(Down).to receive(:download).and_raise(Down::Error.new('download error'))
+      end
+
+      it 'returns a Download error' do
         service = described_class.new(final_submission_file, bogus_url)
         expect { service.call }.to raise_error(PdfDownloadService::DownloadError)
       end

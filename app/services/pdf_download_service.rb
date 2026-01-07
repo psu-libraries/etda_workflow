@@ -24,8 +24,6 @@ class PdfDownloadService
 
     def download_pdf
       uri = URI.parse(@url)
-      raise DownloadError, "URL does not point to a PDF" unless uri.path.end_with?('.pdf')
-
       Down.download(@url)
     rescue Down::Error => e
       raise DownloadError, "Failed to download PDF (#{e.message})"
