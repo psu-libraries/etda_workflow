@@ -10,7 +10,6 @@ default: &default
     - mailers
     - committee_evaluations
     - lionpath_exports
-    - pdf_download
 
 development:
   <<: *default
