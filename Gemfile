@@ -58,7 +58,7 @@ gem 'enumerize', '~> 2.6.0'
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 gem 'byebug', '~> 11.1.0', platforms: %i[mri mingw x64_mingw]
 # HTTParty for http requests
-gem 'httparty', '~> 0.21'
+gem 'httparty', '~> 0.24'
 # For db seeding
 gem 'seedbank', '~> 0.5.0'
 # Loading assets
