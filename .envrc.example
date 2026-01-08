@@ -1,0 +1,60 @@
+# Example environment for direnv (copy to .envrc and adjust)
+# These are most of the environment variables needed to run ETDA Workflow from end-to-end
+# Not everything is needed to run application locally for dev and test purposes
+# Load with: direnv allow
+
+# --- Database ---
+# Use either individual settings or DATABASE_URL
+export MYSQL_USER=root
+export MYSQL_PASSWORD=root
+export MYSQL_HOST=127.0.0.1
+export MYSQL_DATABASE=etda_workflow
+export MYSQL_DATABASE_TEST=etda_workflow_test
+
+# --- Redis ---
+export REDIS_HOST=localhost
+export REDIS_PORT=6379
+export REDIS_PASSWORD=
+
+# --- LDAP ---
+export LDAP_HOST=dirapps.aset.psu.edu
+export LDAP_PORT=636
+export LDAP_GROUP_BASE=dc=psu,dc=edu
+export LDAP_BASE=dc=psu,dc=edu
+export LDAP_UID=uid
+export LDAP_USER=
+export LDAP_PASSWORD=
+
+# --- PSU ID / Directory Service ---
+export PSU_ID_OAUTH_CLIENT_ID=
+export PSU_ID_OAUTH_CLIENT_SECRET=
+export PSU_ID_OAUTH_ENDPOINT=https://acceptance-oauth2-server.qa.k8s.psu.edu
+export DIRECTORY_SERVICE_ENDPOINT=https://acceptance-directory-service.qa.k8s.psu.edu
+
+# --- Solr ---
+export SOLR_HOST=localhost
+export SOLR_PORT=8983
+export SOLR_USERNAME=
+export SOLR_PASSWORD=
+
+# --- App Domain / Hosts ---
+export WORKFLOW_HOST=
+export EXPLORE_HOST=
+
+# --- LionPATH Integration ---
+export LIONPATH_SFTP_SERVER=
+export LIONPATH_SFTP_USER=
+# Place the private key text or a single-line PEM in this variable
+export LIONPATH_SSH_KEY=
+export LP_SA_USERNAME=
+export LP_SA_PASSWORD=
+export LP_EXPORT_HOST=
+# Only set to true if you want to run the LP export in the dev and test environments
+export LP_EXPORT_TEST=
+
+# --- Webhooks ---
+export AUTO_REMEDIATE_WEBHOOK_SECRET=
+
+# --- Partner Context ---
+# One of: graduate | honors | milsch | sset
+export PARTNER=graduate
