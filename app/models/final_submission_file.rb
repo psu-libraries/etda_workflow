@@ -5,6 +5,8 @@ class FinalSubmissionFile < ApplicationRecord
 
   belongs_to :submission
 
+  has_one :remediated_final_submission_file, dependent: :destroy
+
   validates :submission_id, :asset, presence: true
   validates :asset, virus_free: true
 

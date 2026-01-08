@@ -83,6 +83,8 @@ gem 'bugsnag', '~> 6.26'
 gem 'config', '~> 5.5.2'
 # Soft delete records
 gem 'discard'
+# Temporary file downloads over HTTP
+gem 'down'
 
 
 group :development, :test do
