@@ -10,7 +10,7 @@ module HealthChecks
 
     def check
       @failures = nil
-      @message = Hash.new
+      @message = {}
       Sidekiq::Queue.all.map do |q|
         queue_latency = Sidekiq::Queue.new(q.name).latency
         @message[q.name] = "has a latency of #{queue_latency} seconds"
