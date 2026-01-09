@@ -55,7 +55,7 @@ class WebhooksController < ApplicationController
     end
 
     def handle_success(job_data)
-      DownloadPdfWorker.perform_later(job_data[:uuid], job_data[:output_url])
+      BuildRemediatedFileWorker.perform_later(job_data[:uuid], job_data[:output_url])
       render json: { message: 'Update successful' }, status: :ok
     rescue StandardError => e
       store_failure(job_data[:uuid])

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PdfDownloadService do
+RSpec.describe BuildRemediatedFileService do
   let(:final_submission_file) { create(:final_submission_file) }
   let(:pdf_url) { 'https://www.example.com/fakepdf.pdf' }
   let(:bogus_url) { 'https://www.example.com/fakepdf.jpg' }
@@ -36,7 +36,7 @@ RSpec.describe PdfDownloadService do
 
       it 'returns a Download error' do
         service = described_class.new(final_submission_file, bogus_url)
-        expect { service.call }.to raise_error(PdfDownloadService::DownloadError)
+        expect { service.call }.to raise_error(BuildRemediatedFileService::DownloadError)
       end
     end
   end
