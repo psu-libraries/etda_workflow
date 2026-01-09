@@ -1,30 +1,23 @@
-require 'sidekiq/api'
+
+require_relative '../../lib/healthchecks/queue_latency_check'
+require_relative '../../lib/healthchecks/queue_dead_set_check'
+
 OkComputer.mount_at = false
 
-class SidekiqQueueCheck < OkComputer::SizeThresholdCheck
-    attr_accessor :queue
+OkComputer::Registry.register(
+  'sidekiq',
+  HealthChecks::QueueLatencyCheck.new(ENV.fetch('SIDEKIQ_QUEUE_LATENCY_THRESHOLD', 30).to_i)
+)
 
-    def initialize(queue, threshold = 100)
-        self.queue = queue
-        self.name = "Sidekiq queue '#{queue}' threshold"
-        self.threshold = Integer(threshold)
-    end
+OkComputer::Registry.register(
+  'sidekiq_deadset',
+  HealthChecks::QueueDeadSetCheck.new
+)
 
-    def size
-        Sidekiq::Queue.new(queue).size
-    end
-end
+# If you want to keep the size check, you can add it here, but scholarsphere does not have it:
+# OkComputer::Registry.register(
+#   'sidekiq_size',
+#   HealthChecks::QueueSizeCheck.new(ENV.fetch('SIDEKIQ_QUEUE_SIZE_THRESHOLD', 100).to_i)
+# )
 
-## Sidekiq Checks
-
-sidekiq_config = Rails.application.config_for(:sidekiq)
-
-sidekiq_config['queues'].each do |q|
-    threshold = sidekiq_config['latency_threshold'] || 30
-    OkComputer::Registry.register "sidekiq_latency_#{q}", OkComputer::SidekiqLatencyCheck.new(q, threshold=threshold)
-end
-
-sidekiq_config['queues'].each do |q|
-    threshold = sidekiq_config['size_threshold'] || 100
-    OkComputer::Registry.register "sidekiq_size_#{q}", SidekiqQueueCheck.new(q, threshold=threshold)
-end
+OkComputer.make_optional %w(sidekiq sidekiq_deadset)
