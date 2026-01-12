@@ -6,7 +6,10 @@ class WebhooksController < ApplicationController
 
   def auto_remediate
     if params[:final_submission_file_id].present?
-      AutoRemediateWorker.perform_async(params[:final_submission_file_id])
+      if can_remediate?
+        final_submission_file.update!(remediation_started_at: Time.current)
+        AutoRemediateWorker.perform_async(params[:final_submission_file_id])
+      end
       head :ok
     else
       head :bad_request
@@ -35,5 +38,13 @@ class WebhooksController < ApplicationController
         "Webhook failed: #{error.class} - #{error.message}\n" \
         "#{error.backtrace.take(10).join("\n")}"
       end
+    end
+
+    def can_remediate?
+      final_submission_file.remediation_started_at.nil?
+    end
+
+    def final_submission_file
+      @final_submission_file ||= FinalSubmissionFile.find(params[:final_submission_file_id])
     end
 end
