@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_19_152657) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_12_160000) do
   create_table "admin_feedback_files", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "submission_id"
     t.text "asset"
@@ -212,6 +212,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_19_152657) do
     t.integer "legacy_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.datetime "remediation_started_at"
+    t.string "remediation_job_uuid"
     t.index ["legacy_id"], name: "index_final_submission_files_on_legacy_id"
     t.index ["submission_id"], name: "final_submission_files_submission_id_fk"
   end
