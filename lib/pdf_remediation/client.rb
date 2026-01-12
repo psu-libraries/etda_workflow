@@ -32,7 +32,7 @@ module PdfRemediation
         raise "Unexpected response: #{response.status} - #{response.body}"
       end
     rescue Faraday::Error => e
-      raise ConnectionError.new(e)
+      raise ConnectionError, e
     end
 
     private
@@ -47,15 +47,11 @@ module PdfRemediation
       end
 
       def endpoint
-        @endpoint ||= ENV['PDF_REMEDIATION_ENDPOINT'] or raise MissingConfiguration.new(
-          'PDF_REMEDIATION_ENDPOINT is not set'
-        )
+        @endpoint ||= ENV['PDF_REMEDIATION_ENDPOINT'] or raise(MissingConfiguration, 'PDF_REMEDIATION_ENDPOINT is not set')
       end
 
       def api_key
-        @api_key ||= ENV['PDF_REMEDIATION_API_KEY'] or raise MissingConfiguration.new(
-          'PDF_REMEDIATION_API_KEY is not set'
-        )
+        @api_key ||= ENV['PDF_REMEDIATION_API_KEY'] or raise(MissingConfiguration, 'PDF_REMEDIATION_API_KEY is not set')
       end
   end
 end
