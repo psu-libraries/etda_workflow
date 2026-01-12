@@ -29,7 +29,7 @@
  <% access_level_collection = AccessLevel.display.filter_map do |k|
         next if k[:type] == 'restricted_liberal_arts' && (@submission.academic_program != 'LA' || !current_partner.graduate?)
 
-        ["<strong>#{k[:label]}</strong> -- #{k[:description]}".html_safe, k[:type], { class: "#{k[:type]}" }]
+        ["<strong> #{k[:label]} </strong> -- #{k[:description]} #{render partial: 'restricted_notes', locals: {f: f} if @view.psu_only(k[:label])}".html_safe, k[:type], { class: "#{k[:type]}" }]
       end %>
     <%= f.input :access_level, as: :radio_buttons,
                 label: '<strong>Access level<span class="required-asterisk">*</span></strong>'.html_safe,
