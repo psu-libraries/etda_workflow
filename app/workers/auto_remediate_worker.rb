@@ -2,16 +2,12 @@
 
 class AutoRemediateWorker
   include Sidekiq::Worker
-  sidekiq_options queue: 'default'
+  sidekiq_options queue: 'auto_remediate_out'
 
   def perform(final_submission_file_id)
-    final_submission_file = FinalSubmissionFile.find(final_submission_file_id)
-    PdfRemediation::Client.new.remediate(final_submission_file.file.path)
-  rescue StandardError => e
-    Rails.logger.error do
-      "AutoRemediateWorker failed for FinalSubmissionFile ID #{final_submission_file_id}: " \
-      "#{e.class} - #{e.message}\n" \
-      "#{e.backtrace.take(10).join("\n")}"
-    end
+    file = FinalSubmissionFile.find(final_submission_file_id)
+
+    remediation_job_uuid = PdfRemediation::Client.new(file.file_url).request_remediation
+    file.update(remediation_job_uuid: remediation_job_uuid)
   end
 end
