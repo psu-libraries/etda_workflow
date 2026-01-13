@@ -94,13 +94,13 @@ RSpec.describe 'Webhooks', type: :request do
     let(:error_message) { nil }
     let(:params) do
       { event_type: event_type,
-        job: { uuid: job_uuid,
-              output_url: output_url,
-              processing_error_message: error_message } }
+        job: { uuid: remediation_job_uuid,
+               output_url: output_url,
+               processing_error_message: error_message } }
     end
 
     before do
-      allow(BuildRemediatedFileWorker).to receive(:perform_later).with(job_uuid, output_url)
+      allow(BuildRemediatedFileWorker).to receive(:perform_later).with(remediation_job_uuid, output_url)
       @orig_secret = ENV['AUTO_REMEDIATE_WEBHOOK_SECRET']
       ENV['AUTO_REMEDIATE_WEBHOOK_SECRET'] = 'secret-token'
     end
@@ -115,16 +115,18 @@ RSpec.describe 'Webhooks', type: :request do
 
     context 'when remediation has succeeded' do
       let(:event_type) { 'job.succeeded' }
+
       it 'calls perform_later on BuildSubmissionFileWorker' do
         headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => 'secret-token' }
         post path, params: params.to_json, headers: headers
-        expect(BuildRemediatedFileWorker).to have_received(:perform_later).with(job_uuid, output_url)
+        expect(BuildRemediatedFileWorker).to have_received(:perform_later).with(remediation_job_uuid, output_url)
       end
     end
 
     context 'when remediation has failed' do
       let(:event_type) { 'job.failed' }
-      let(:error_message) { 'Some error message'}
+      let(:error_message) { 'Some error message' }
+
       it 'logs the failure message from the PDF API' do
         original_logger = Rails.logger
         log_output = StringIO.new
@@ -140,6 +142,7 @@ RSpec.describe 'Webhooks', type: :request do
 
     context 'when event type is not recognized' do
       let(:event_type) { 'job.other' }
+
       it 'logs an unrecognized event type' do
         original_logger = Rails.logger
         log_output = StringIO.new
@@ -156,6 +159,7 @@ RSpec.describe 'Webhooks', type: :request do
 
     context 'when another error is thrown' do
       let(:event_type) { 'job.succeeded' }
+
       it 'logs an unrecognized event type' do
         original_logger = Rails.logger
         log_output = StringIO.new
