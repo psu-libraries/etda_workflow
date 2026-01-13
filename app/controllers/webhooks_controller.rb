@@ -7,7 +7,7 @@ class WebhooksController < ApplicationController
   def auto_remediate
     if params[:final_submission_file_id].present?
       if can_remediate?
-        final_submission_file.update!(remediation_started_at: Time.current)
+        final_submission_file.update_column(:remediation_started_at, Time.current)
         AutoRemediateWorker.perform_async(params[:final_submission_file_id])
       end
       head :ok
