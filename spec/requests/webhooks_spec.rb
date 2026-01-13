@@ -130,7 +130,7 @@ RSpec.describe 'Webhooks', type: :request do
   describe 'POST /webhooks/handle_remediation_results' do
     let(:path) { '/webhooks/handle_remediation_results' }
     let(:output_url) { 'http://www.test.com' }
-    let(:job_uuid) { 1 }
+    let(:remediation_job_uuid) { 1 }
     let(:error_message) { nil }
     let(:params) do
       { event_type: event_type,
