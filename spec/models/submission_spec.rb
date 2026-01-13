@@ -184,7 +184,7 @@ RSpec.describe Submission, type: :model do
                         access_level: 'restricted_liberal_arts'
     end
 
-    it 'returns submissions that are ready for autorelease' do
+    it 'returns submissions that need a release warning' do
       expect(described_class.release_warning_needed?).to contain_exactly(sub1, sub5)
     end
   end
