@@ -52,6 +52,23 @@ RSpec.describe 'Webhooks', type: :request do
               expect(final_submission_file.reload.remediation_started_at).not_to be_nil
             end
           end
+
+          context 'when remediated_final_submission_file is already present' do
+            let(:final_submission_file) do
+              FactoryBot.create(:final_submission_file)
+            end
+
+            it 'returns 200 but does not queue the job' do
+              FactoryBot.create(:remediated_final_submission_file,
+                                final_submission_file: final_submission_file)
+              allow(AutoRemediateWorker).to receive(:perform_async)
+              post path, params: { final_submission_file_id: final_submission_file.id }.to_json, headers: headers
+
+              expect(AutoRemediateWorker).not_to have_received(:perform_async)
+              expect(response).to have_http_status(:ok)
+              expect(final_submission_file.reload.remediation_started_at).to be_nil
+            end
+          end
         end
 
         context 'when final_submission_file_id is missing' do
