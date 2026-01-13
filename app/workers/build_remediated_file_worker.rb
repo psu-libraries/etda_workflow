@@ -5,7 +5,7 @@ class BuildRemediatedFileWorker
   sidekiq_options queue: 'default'
 
   def perform(remediation_job_uuid, output_url)
-    final_submission_file = FinalSubmissionFile.where(remediation_job_uuid: remediation_job_uuid).first
+    final_submission_file = FinalSubmissionFile.where(remediation_job_uuid:).first
     BuildRemediatedFileService.new(final_submission_file, output_url).call
   end
 end
