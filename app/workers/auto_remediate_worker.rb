@@ -12,6 +12,6 @@ class AutoRemediateWorker
     download_url = "#{EtdUrls.new.explore}/files/final_submissions/#{file.id}"
 
     remediation_job_uuid = PdfRemediation::Client.new(download_url).request_remediation
-    file.update(remediation_job_uuid: remediation_job_uuid)
+    file.update_column(:remediation_job_uuid, remediation_job_uuid)
   end
 end
