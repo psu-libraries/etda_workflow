@@ -1,6 +1,6 @@
 
-require_relative '../../lib/healthchecks/queue_latency_check'
-require_relative '../../lib/healthchecks/queue_dead_set_check'
+require_relative '../../lib/health_checks/queue_latency_check'
+require_relative '../../lib/health_checks/queue_dead_set_check'
 
 OkComputer.mount_at = false
 
