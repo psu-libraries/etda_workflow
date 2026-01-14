@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PdfDownloadService
+class BuildRemediatedFileService
   class DownloadError < StandardError; end
 
   def initialize(final_submission_file, url)

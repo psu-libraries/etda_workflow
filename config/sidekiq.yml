@@ -11,6 +11,7 @@ default: &default
     - committee_evaluations
     - lionpath_exports
     - auto_remediate_out
+    - auto_remediate_in
 
 development:
   <<: *default

@@ -19,6 +19,24 @@ class WebhooksController < ApplicationController
     head :internal_server_error
   end
 
+  def handle_remediation_results
+    event_type = params[:event_type]
+    job_data   = params[:job] || {}
+
+    case event_type
+    when 'job.succeeded'
+      handle_success(job_data)
+    when 'job.failed'
+      handle_failure(job_data)
+    else
+      Rails.logger.error("Unknown event type received: #{event_type}")
+      render json: { error: 'Unknown event type' }, status: :bad_request
+    end
+  rescue StandardError => e
+    log_webhook_error(e)
+    head :internal_server_error
+  end
+
   private
 
     def authenticate_request
@@ -47,5 +65,18 @@ class WebhooksController < ApplicationController
 
     def final_submission_file
       @final_submission_file ||= FinalSubmissionFile.find(params[:final_submission_file_id])
+    end
+
+    def handle_success(job_data)
+      BuildRemediatedFileWorker.perform_async(job_data[:uuid], job_data[:output_url])
+      render json: { message: 'Update successful' }, status: :ok
+    rescue StandardError => e
+      log_webhook_error(e)
+      render json: { error: e.message }, status: :internal_server_error
+    end
+
+    def handle_failure(job_data)
+      Rails.logger.error("Auto-remediation job failed: #{job_data[:processing_error_message]}")
+      render json: { message: job_data[:processing_error_message] }, status: :ok
     end
 end
