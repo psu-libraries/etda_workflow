@@ -140,7 +140,7 @@ RSpec.describe 'Webhooks', type: :request do
     end
 
     before do
-      allow(BuildRemediatedFileWorker).to receive(:perform_later).with(remediation_job_uuid, output_url)
+      allow(BuildRemediatedFileWorker).to receive(:perform_async).with(remediation_job_uuid, output_url)
       @orig_secret = ENV['AUTO_REMEDIATE_WEBHOOK_SECRET']
       ENV['AUTO_REMEDIATE_WEBHOOK_SECRET'] = 'secret-token'
     end
@@ -156,10 +156,10 @@ RSpec.describe 'Webhooks', type: :request do
     context 'when remediation has succeeded' do
       let(:event_type) { 'job.succeeded' }
 
-      it 'calls perform_later on BuildSubmissionFileWorker' do
+      it 'calls perform_async on BuildSubmissionFileWorker' do
         headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => 'secret-token' }
         post path, params: params.to_json, headers: headers
-        expect(BuildRemediatedFileWorker).to have_received(:perform_later).with(remediation_job_uuid, output_url)
+        expect(BuildRemediatedFileWorker).to have_received(:perform_async).with(remediation_job_uuid, output_url)
       end
     end
 
@@ -206,7 +206,7 @@ RSpec.describe 'Webhooks', type: :request do
         Rails.logger = ActiveSupport::Logger.new(log_output)
         error = StandardError.new('Another test error')
         error.set_backtrace(["aw dang it"])
-        allow(BuildRemediatedFileWorker).to receive(:perform_later).and_raise(error)
+        allow(BuildRemediatedFileWorker).to receive(:perform_async).and_raise(error)
         headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => 'secret-token' }
         post path, params: params.to_json, headers: headers
         expect(response).to have_http_status(:internal_server_error)

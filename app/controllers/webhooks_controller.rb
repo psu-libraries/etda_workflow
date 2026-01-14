@@ -68,7 +68,7 @@ class WebhooksController < ApplicationController
     end
 
     def handle_success(job_data)
-      BuildRemediatedFileWorker.perform_later(job_data[:uuid], job_data[:output_url])
+      BuildRemediatedFileWorker.perform_async(job_data[:uuid], job_data[:output_url])
       render json: { message: 'Update successful' }, status: :ok
     rescue StandardError => e
       log_webhook_error(e)
