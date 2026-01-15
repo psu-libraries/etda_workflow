@@ -25,7 +25,7 @@ class RemediatedFinalSubmissionFile < ApplicationRecord
 
   def main_file_path
     # base portion of path up to file_detail_path
-    "#{SubmissionFilePath.new(submission).full_path_for_final_submissions}remediated_final_submission_files/"
+    "#{SubmissionFilePath.new(submission).full_path_for_remediated_final_submissions}remediated_final_submission_files/"
   end
 
   private
