@@ -22,11 +22,30 @@ RSpec.describe RemediatedFinalSubmissionFile, type: :model do
     expect(described_class.new.class_name).to eql('remediated-final-submission-file')
   end
 
-  it '#full_file_path returns the full file path w/o filename' do
-    submission = FactoryBot.create :submission, :waiting_for_publication_release
-    final_submission_file = described_class.new(submission_id: submission.id)
-    final_submission_file.id = 1234
-    expect(final_submission_file.full_file_path).to eq("#{WORKFLOW_BASE_PATH}remediated_final_submission_files/#{EtdaFilePaths.new.detailed_file_path(final_submission_file.id)}")
+  describe '#full_file_path' do
+    context 'when submission is waiting for publication release' do
+      it 'returns full workflow file path w/o filename' do
+        submission = FactoryBot.create :submission, :waiting_for_publication_release
+        final_submission_file = described_class.new(submission_id: submission.id)
+        final_submission_file.id = 1234
+        expect(final_submission_file.full_file_path)
+          .to eq(
+            "#{WORKFLOW_BASE_PATH}remediated_final_submission_files/#{EtdaFilePaths.new.detailed_file_path(final_submission_file.id)}"
+          )
+      end
+    end
+
+    context 'when submission has been released for publication' do
+      it 'returns full explore file path w/o filename' do
+        submission = FactoryBot.create :submission, :released_for_publication
+        final_submission_file = described_class.new(submission_id: submission.id)
+        final_submission_file.id = 1234
+        expect(final_submission_file.full_file_path)
+          .to eq(
+            "#{EXPLORE_BASE_PATH + submission.access_level_key}/remediated_final_submission_files/#{EtdaFilePaths.new.detailed_file_path(final_submission_file.id)}"
+          )
+      end
+    end
   end
 
   describe 'virus scanning' do
