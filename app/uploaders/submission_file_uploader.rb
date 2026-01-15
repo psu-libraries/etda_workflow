@@ -39,7 +39,7 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
       Rails.root.join(WORKFLOW_BASE_PATH, 'final_submission_files')
     when 'admin-feedback-file'
       Rails.root.join(WORKFLOW_BASE_PATH, 'admin_feedback_files')
-    when 'remediated_final_submission_files'
+    when 'remediated-final-submission-file'
       Rails.root.join(WORKFLOW_BASE_PATH, 'remediated_final_submission_files')
     else
       Rails.root.join(WORKFLOW_BASE_PATH, 'format_review_files')
