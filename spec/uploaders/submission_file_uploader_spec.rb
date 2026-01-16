@@ -41,8 +41,8 @@ RSpec.describe SubmissionFileUploader do
     context "when model.class_name is 'remediated-final-submission-file'" do
       let(:model) { create :remediated_final_submission_file }
 
-      it 'returns the remediated final submission files path' do
-        expect(asset_prefix).to eq(Rails.root.join(WORKFLOW_BASE_PATH, 'remediated_final_submission_files'))
+      it 'returns the final submission files path' do
+        expect(asset_prefix).to eq(Rails.root.join(WORKFLOW_BASE_PATH, 'final_submission_files'))
       end
     end
 
@@ -51,6 +51,30 @@ RSpec.describe SubmissionFileUploader do
 
       it 'returns the format review files path' do
         expect(asset_prefix).to eq(Rails.root.join(WORKFLOW_BASE_PATH, 'format_review_files'))
+      end
+    end
+  end
+
+  describe '#asset_hash' do
+    subject(:asset_hash) { described_class.new(model).asset_hash }
+
+    context "when model.class_name is 'remediated-final-submission-file'" do
+      let(:model) { create :remediated_final_submission_file }
+
+      it 'builds the path with remediated: true' do
+        path_builder = EtdaFilePaths.new
+        expected_hash = path_builder.detailed_file_path(model.id, remediated: true)
+        expect(asset_hash).to eq(expected_hash)
+      end
+    end
+
+    context 'when model.class_name is anything else' do
+      let(:model) { create :final_submission_file }
+
+      it 'builds the path with remediated: false' do
+        path_builder = EtdaFilePaths.new
+        expected_hash = path_builder.detailed_file_path(model.id, remediated: false)
+        expect(asset_hash).to eq(expected_hash)
       end
     end
   end
