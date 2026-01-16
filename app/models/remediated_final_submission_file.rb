@@ -20,12 +20,13 @@ class RemediatedFinalSubmissionFile < ApplicationRecord
 
   def file_detail_path
     # partial unique path built from file id -- ie('/01/01/')
-    EtdaFilePaths.new.detailed_file_path(id)
+    # Note: remediated is true to differentiate paths from original files
+    EtdaFilePaths.new.detailed_file_path(id, remediated: true)
   end
 
   def main_file_path
     # base portion of path up to file_detail_path
-    "#{SubmissionFilePath.new(submission).full_path_for_remediated_final_submissions}remediated_final_submission_files/"
+    SubmissionFilePath.new(submission).full_path_for_final_submissions.to_s
   end
 
   private
@@ -34,7 +35,7 @@ class RemediatedFinalSubmissionFile < ApplicationRecord
       return unless submission.status_behavior.released_for_publication?
 
       path_builder = EtdaFilePaths.new
-      original_file_location = "#{WORKFLOW_BASE_PATH}remediated_final_submission_files/#{path_builder.detailed_file_path(id)}#{asset_identifier}"
+      original_file_location = "#{WORKFLOW_BASE_PATH}final_submission_files/#{path_builder.detailed_file_path(id, remediated: true)}#{asset_identifier}"
       path_builder.move_a_file(id, original_file_location, remediated_file: true)
     end
 end
