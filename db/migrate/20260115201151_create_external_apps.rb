@@ -5,6 +5,7 @@ class CreateExternalApps < ActiveRecord::Migration[7.2]
 
       t.timestamps
     end
-    add_index :external_apps, :name
+
+    add_index :external_apps, :name, unique: true
   end
 end

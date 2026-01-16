@@ -7,5 +7,7 @@ class CreateApiTokens < ActiveRecord::Migration[7.2]
 
       t.timestamps
     end
+
+    add_index :api_tokens, :token
   end
 end
