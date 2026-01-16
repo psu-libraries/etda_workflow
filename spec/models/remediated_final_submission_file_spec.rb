@@ -30,7 +30,7 @@ RSpec.describe RemediatedFinalSubmissionFile, type: :model do
         final_submission_file.id = 1234
         expect(final_submission_file.full_file_path)
           .to eq(
-            "#{WORKFLOW_BASE_PATH}remediated_final_submission_files/#{EtdaFilePaths.new.detailed_file_path(final_submission_file.id)}"
+            "#{WORKFLOW_BASE_PATH}final_submission_files/#{EtdaFilePaths.new.detailed_file_path(final_submission_file.id, remediated: true)}"
           )
       end
     end
@@ -42,7 +42,7 @@ RSpec.describe RemediatedFinalSubmissionFile, type: :model do
         final_submission_file.id = 1234
         expect(final_submission_file.full_file_path)
           .to eq(
-            "#{EXPLORE_BASE_PATH + submission.access_level_key}/remediated_final_submission_files/#{EtdaFilePaths.new.detailed_file_path(final_submission_file.id)}"
+            "#{EXPLORE_BASE_PATH + submission.access_level_key}/#{EtdaFilePaths.new.detailed_file_path(final_submission_file.id, remediated: true)}"
           )
       end
     end
