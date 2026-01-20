@@ -86,4 +86,23 @@ RSpec.describe RemediatedFinalSubmissionFile, type: :model do
       end
     end
   end
+
+  describe 'after_save :move_file' do
+    let(:submission) { FactoryBot.create :submission, :released_for_publication }
+    let(:remediated_file) { FactoryBot.create :remediated_final_submission_file, submission: submission }
+
+    it 'calls EtdaFilePaths.move_a_file with remediated_file: true' do
+      path_builder = instance_double(EtdaFilePaths)
+      allow(EtdaFilePaths).to receive(:new).and_return(path_builder)
+      allow(path_builder).to receive(:detailed_file_path).and_return('path/to/file/')
+      allow(path_builder).to receive(:move_a_file)
+
+      original_file_location = "#{WORKFLOW_BASE_PATH}final_submission_files/#{path_builder.detailed_file_path(remediated_file.id, remediated: true)}#{remediated_file.asset_identifier}"
+
+      remediated_file.save!
+
+      # Expect twice: once during create, once during save!
+      expect(path_builder).to have_received(:move_a_file).with(remediated_file.id, original_file_location, file_class: remediated_file.class).twice
+    end
+  end
 end
