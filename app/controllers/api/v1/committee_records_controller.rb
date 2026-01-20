@@ -14,8 +14,8 @@ module Api
       # Example request:
       #   curl -X POST http://localhost:3000/api/v1/committee_records/faculty_committees \
       #     -H "Content-Type: application/json" \
-      #     -H "Authorization: your-api-key" \
-      #     -d '{"access_id": "abc123"}'
+      #     -H "Authorization: secure-api-key-change-this-in-production" \
+      #     -d '{"access_id": "mms8130"}'
 
       def faculty_committees
         access_id = params[:access_id]
