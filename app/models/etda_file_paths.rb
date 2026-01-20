@@ -9,7 +9,8 @@ class EtdaFilePaths < EtdaUtilities::EtdaFilePaths
     EXPLORE_BASE_PATH
   end
 
-  def move_a_file(fid, original_file_location, remediated_file: false)
+  # file_class injection options: [FinalSubmissionFile, RemediatedFinalSubmissionFile]
+  def move_a_file(fid, original_file_location, file_class: FinalSubmissionFile)
     error_msg = ''
 
     unless File.exist?(original_file_location)
@@ -18,7 +19,7 @@ class EtdaFilePaths < EtdaUtilities::EtdaFilePaths
       return error_msg
     end
 
-    updated_file = (remediated_file ? RemediatedFinalSubmissionFile : FinalSubmissionFile).find(fid)
+    updated_file = file_class.find(fid)
     # this is calculating the new location based on updated submission and file attributes
 
     new_location = updated_file.full_file_path
