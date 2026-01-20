@@ -17,6 +17,8 @@ RSpec.describe SolrSubmission, type: :model do
              final_submission_files_uploaded_at: DateTime.now,
              # Test that nil stays nil
              defended_at: nil,
+             # Test that restricted liberal arts maps to restricted to institution
+             access_level: 'restricted_liberal_arts',
              program_id: program.id
     end
     let(:final_submission_file_1) { create :final_submission_file }
@@ -26,6 +28,7 @@ RSpec.describe SolrSubmission, type: :model do
     let(:committee_member_2) { create :committee_member }
     let(:program) { create :program, name: 'Mechanical Engineering (DED)' }
     let(:program_name_condensed) { 'Mechanical Engineering' }
+    let(:converted_access_level) { 'restricted_to_institution' }
 
     it 'generates solr doc from submission attributes' do
       submission.committee_members << committee_member_1
@@ -36,7 +39,7 @@ RSpec.describe SolrSubmission, type: :model do
       submission.save
       expect(solr_submission.to_solr).to eq({
                                               "abstract_tesi" => submission.abstract,
-                                              "access_level_ss" => submission.access_level,
+                                              "access_level_ss" => converted_access_level,
                                               "author_name_tesi" => "#{submission.author_last_name}, #{submission.author_first_name} #{submission.author_middle_name}",
                                               "committee_member_and_role_tesim" => ["#{committee_member_1.name}, #{committee_member_1.committee_role.name}",
                                                                                     "#{committee_member_2.name}, #{committee_member_2.committee_role.name}"],
