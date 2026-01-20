@@ -22,6 +22,16 @@ Rails.application.routes.draw do
 
   mount OkComputer::Engine, at: "/healthcheck"
 
+  namespace :api do
+    namespace :v1 do
+      resources :committee_records, only: [] do
+        collection do
+          post :faculty_committees
+        end
+      end
+    end
+  end
+
   ## works: get '/committee_members/autocomplete', to: 'ldap_lookup#autocomplete', as: :committee_members_autocomplete
   get '/committee_members/autocomplete', to: 'application#autocomplete', as: :committee_members_autocomplete
 
