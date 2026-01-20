@@ -93,7 +93,7 @@ class SolrSubmission < SimpleDelegator
     end
 
     def adjusted_access_level
-      access_level=='restricted_liberal_arts' ? 'restricted_to_institution' : access_level
+      access_level == 'restricted_liberal_arts' ? 'restricted_to_institution' : access_level
     end
 
     def author_name_tesi
