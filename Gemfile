@@ -25,8 +25,7 @@ gem 'font-awesome-rails', '~> 4.7.0.0'
 # Authentication gem
 gem "devise", ">= 4.7.1"
 # Shared libraries for workflow and explore
-## TODO: Update to official release when available
-gem 'etda_utilities', git: 'https://github.com/psu-libraries/etda_utilities.git', branch: '968-remed-file-paths'
+gem 'etda_utilities', "~> 0.22.0"
 # Ldap client
 gem 'net-ldap', '~> 0.16.1'
 # sftp for lionapth csv imports
