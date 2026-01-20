@@ -34,7 +34,7 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
   end
 
   def asset_prefix
-    case model.class_name
+    case model_class_name
     when 'final-submission-file', 'remediated-final-submission-file'
       Rails.root.join(WORKFLOW_BASE_PATH, 'final_submission_files')
     when 'admin-feedback-file'
@@ -47,7 +47,7 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
   def asset_hash
     path_builder = EtdaFilePaths.new
     path_builder.detailed_file_path(model.id,
-                                    remediated: model.class_name == 'remediated-final-submission-file')
+                                    remediated: model_class_name == 'remediated-final-submission-file')
   end
 
   def identity_subdir
@@ -64,4 +64,10 @@ class SubmissionFileUploader < CarrierWave::Uploader::Base
   def extension_allowlist
     %w[pdf txt jpg jpeg png gif mp3 wav mov mp4 zip]
   end
+
+  private
+
+    def model_class_name
+      model.class_name
+    end
 end
