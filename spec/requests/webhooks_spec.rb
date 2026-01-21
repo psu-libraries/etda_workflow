@@ -3,126 +3,101 @@
 require 'rails_helper'
 
 RSpec.describe 'Webhooks', type: :request do
+  let(:external_app) { ExternalApp.pdf_accessibility_api }
+
   describe 'POST /webhooks/auto_remediate' do
     let(:path) { '/webhooks/auto_remediate' }
 
-    before do
-      @orig_secret = ENV['AUTO_REMEDIATE_WEBHOOK_SECRET']
-      ENV['AUTO_REMEDIATE_WEBHOOK_SECRET'] = 'secret-token'
-    end
+    context 'when X-API-KEY is valid' do
+      let(:headers) { { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => external_app.token } }
 
-    after do
-      if @orig_secret.nil?
-        ENV.delete('AUTO_REMEDIATE_WEBHOOK_SECRET')
-      else
-        ENV['AUTO_REMEDIATE_WEBHOOK_SECRET'] = @orig_secret
-      end
-    end
+      context 'when final_submission_file_id is not missing' do
+        let(:final_submission_file) { FactoryBot.create(:final_submission_file) }
 
-    context 'when AUTO_REMEDIATE_WEBHOOK_SECRET is set' do
-      context 'when X-API-KEY is valid' do
-        let(:headers) { { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => 'secret-token' } }
+        it 'returns 200, sets remediation_started_at, and queues the job' do
+          expect(final_submission_file.remediation_started_at).to be_nil
 
-        context 'when final_submission_file_id is not missing' do
-          let(:final_submission_file) { FactoryBot.create(:final_submission_file) }
+          allow(AutoRemediateWorker).to receive(:perform_async)
+          post path, params: { final_submission_file_id: final_submission_file.id }.to_json, headers: headers
 
-          it 'returns 200, sets remediation_started_at, and queues the job' do
-            expect(final_submission_file.remediation_started_at).to be_nil
+          expect(response).to have_http_status(:ok)
+          expect(final_submission_file.reload.remediation_started_at).not_to be_nil
+          expect(AutoRemediateWorker).to have_received(:perform_async).with(final_submission_file.id)
+        end
 
+        context 'when remediation_started_at is already set' do
+          let(:final_submission_file) do
+            FactoryBot.create(:final_submission_file,
+                              remediation_started_at: Time.current)
+          end
+
+          it 'returns 200 but does not queue the job' do
             allow(AutoRemediateWorker).to receive(:perform_async)
             post path, params: { final_submission_file_id: final_submission_file.id }.to_json, headers: headers
 
+            expect(AutoRemediateWorker).not_to have_received(:perform_async)
             expect(response).to have_http_status(:ok)
             expect(final_submission_file.reload.remediation_started_at).not_to be_nil
-            expect(AutoRemediateWorker).to have_received(:perform_async).with(final_submission_file.id)
-          end
-
-          context 'when remediation_started_at is already set' do
-            let(:final_submission_file) do
-              FactoryBot.create(:final_submission_file,
-                                remediation_started_at: Time.current)
-            end
-
-            it 'returns 200 but does not queue the job' do
-              allow(AutoRemediateWorker).to receive(:perform_async)
-              post path, params: { final_submission_file_id: final_submission_file.id }.to_json, headers: headers
-
-              expect(AutoRemediateWorker).not_to have_received(:perform_async)
-              expect(response).to have_http_status(:ok)
-              expect(final_submission_file.reload.remediation_started_at).not_to be_nil
-            end
-          end
-
-          context 'when remediated_final_submission_file is already present' do
-            let(:final_submission_file) do
-              FactoryBot.create(:final_submission_file)
-            end
-
-            it 'returns 200 but does not queue the job' do
-              FactoryBot.create(:remediated_final_submission_file,
-                                final_submission_file: final_submission_file)
-              allow(AutoRemediateWorker).to receive(:perform_async)
-              post path, params: { final_submission_file_id: final_submission_file.id }.to_json, headers: headers
-
-              expect(AutoRemediateWorker).not_to have_received(:perform_async)
-              expect(response).to have_http_status(:ok)
-              expect(final_submission_file.reload.remediation_started_at).to be_nil
-            end
           end
         end
 
-        context 'when final_submission_file_id is missing' do
-          it 'returns 400' do
-            post path, params: {}.to_json, headers: headers
-            expect(response).to have_http_status(:bad_request)
+        context 'when remediated_final_submission_file is already present' do
+          let(:final_submission_file) do
+            FactoryBot.create(:final_submission_file)
           end
-        end
 
-        context 'when StandardError occurs' do
-          it 'returns 500 and logs error; the timestamp is still set' do
-            original_logger = Rails.logger
-            log_output = StringIO.new
-            Rails.logger = ActiveSupport::Logger.new(log_output)
-            error = StandardError.new('Test error')
-            error.set_backtrace(["/path/to/file.rb:10:in `method_name'"])
-            allow(AutoRemediateWorker).to receive(:perform_async).and_raise(error)
-            final_submission_file = FactoryBot.create(:final_submission_file)
+          it 'returns 200 but does not queue the job' do
+            FactoryBot.create(:remediated_final_submission_file,
+                              final_submission_file: final_submission_file)
+            allow(AutoRemediateWorker).to receive(:perform_async)
             post path, params: { final_submission_file_id: final_submission_file.id }.to_json, headers: headers
-            expect(response).to have_http_status(:internal_server_error)
-            expect(log_output.string).to include("Webhook failed: StandardError - Test error\n/path/to/file.rb:10:in `method_name'")
-            expect(final_submission_file.reload.remediation_started_at).not_to be_nil
-          ensure
-            Rails.logger = original_logger
+
+            expect(AutoRemediateWorker).not_to have_received(:perform_async)
+            expect(response).to have_http_status(:ok)
+            expect(final_submission_file.reload.remediation_started_at).to be_nil
           end
         end
       end
 
-      context 'when X-API-KEY is invalid' do
-        it 'returns 401' do
-          headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => 'wrong-token' }
-          post path, params: { final_submission_file_id: 'data' }.to_json, headers: headers
-          expect(response).to have_http_status(:unauthorized)
+      context 'when final_submission_file_id is missing' do
+        it 'returns 400' do
+          post path, params: {}.to_json, headers: headers
+          expect(response).to have_http_status(:bad_request)
         end
       end
 
-      context 'when X-API-KEY is missing' do
-        it 'returns 401' do
-          headers = { 'CONTENT_TYPE' => 'application/json' }
-          post path, params: { final_submission_file_id: 'data' }.to_json, headers: headers
-          expect(response).to have_http_status(:unauthorized)
+      context 'when StandardError occurs' do
+        it 'returns 500 and logs error; the timestamp is still set' do
+          original_logger = Rails.logger
+          log_output = StringIO.new
+          Rails.logger = ActiveSupport::Logger.new(log_output)
+          error = StandardError.new('Test error')
+          error.set_backtrace(["/path/to/file.rb:10:in `method_name'"])
+          allow(AutoRemediateWorker).to receive(:perform_async).and_raise(error)
+          final_submission_file = FactoryBot.create(:final_submission_file)
+          post path, params: { final_submission_file_id: final_submission_file.id }.to_json, headers: headers
+          expect(response).to have_http_status(:internal_server_error)
+          expect(log_output.string).to include("Webhook failed: StandardError - Test error\n/path/to/file.rb:10:in `method_name'")
+          expect(final_submission_file.reload.remediation_started_at).not_to be_nil
+        ensure
+          Rails.logger = original_logger
         end
       end
+    end
 
-      context 'when AUTO_REMEDIATE_WEBHOOK_SECRET is not set' do
-        before do
-          ENV.delete('AUTO_REMEDIATE_WEBHOOK_SECRET')
-        end
+    context 'when X-API-KEY is invalid' do
+      it 'returns 401' do
+        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => 'wrong-token' }
+        post path, params: { final_submission_file_id: 'data' }.to_json, headers: headers
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
 
-        it 'returns 401' do
-          headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => 'secret-token' }
-          post path, params: { final_submission_file_id: 'data' }.to_json, headers: headers
-          expect(response).to have_http_status(:unauthorized)
-        end
+    context 'when X-API-KEY is missing' do
+      it 'returns 401' do
+        headers = { 'CONTENT_TYPE' => 'application/json' }
+        post path, params: { final_submission_file_id: 'data' }.to_json, headers: headers
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end
@@ -141,23 +116,13 @@ RSpec.describe 'Webhooks', type: :request do
 
     before do
       allow(BuildRemediatedFileWorker).to receive(:perform_async).with(remediation_job_uuid, output_url)
-      @orig_secret = ENV['AUTO_REMEDIATE_WEBHOOK_SECRET']
-      ENV['AUTO_REMEDIATE_WEBHOOK_SECRET'] = 'secret-token'
-    end
-
-    after do
-      if @orig_secret.nil?
-        ENV.delete('AUTO_REMEDIATE_WEBHOOK_SECRET')
-      else
-        ENV['AUTO_REMEDIATE_WEBHOOK_SECRET'] = @orig_secret
-      end
     end
 
     context 'when remediation has succeeded' do
       let(:event_type) { 'job.succeeded' }
 
       it 'calls perform_async on BuildSubmissionFileWorker' do
-        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => 'secret-token' }
+        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => external_app.token }
         post path, params: params.to_json, headers: headers
         expect(BuildRemediatedFileWorker).to have_received(:perform_async).with(remediation_job_uuid, output_url)
       end
@@ -172,7 +137,7 @@ RSpec.describe 'Webhooks', type: :request do
         log_output = StringIO.new
         Rails.logger = ActiveSupport::Logger.new(log_output)
 
-        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => 'secret-token' }
+        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => external_app.token }
         post path, params: params.to_json, headers: headers
         expect(log_output.string).to include('Some error message')
       ensure
@@ -188,7 +153,7 @@ RSpec.describe 'Webhooks', type: :request do
         log_output = StringIO.new
         Rails.logger = ActiveSupport::Logger.new(log_output)
 
-        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => 'secret-token' }
+        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => external_app.token }
         post path, params: params.to_json, headers: headers
         expect(log_output.string).to include('Unknown event type received:')
         expect(log_output.string).to include('other')
@@ -207,7 +172,7 @@ RSpec.describe 'Webhooks', type: :request do
         error = StandardError.new('Another test error')
         error.set_backtrace(["aw dang it"])
         allow(BuildRemediatedFileWorker).to receive(:perform_async).and_raise(error)
-        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => 'secret-token' }
+        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => external_app.token }
         post path, params: params.to_json, headers: headers
         expect(response).to have_http_status(:internal_server_error)
         expect(log_output.string).to include("Webhook failed: StandardError - Another test error\naw dang it")
