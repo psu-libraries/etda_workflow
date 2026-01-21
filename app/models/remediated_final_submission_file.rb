@@ -13,6 +13,11 @@ class RemediatedFinalSubmissionFile < ApplicationRecord
     self.class.to_s.underscore.dasherize
   end
 
+  def current_location
+    # full file path including file name
+    full_file_path + asset_identifier
+  end
+
   def full_file_path
     # file path w/o file name
     main_file_path + file_detail_path
