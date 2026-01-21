@@ -141,13 +141,26 @@ RSpec.describe Admin::SubmissionFormView do
     end
 
     context "When the status is 'psu-only'" do
-      before do
-        submission.status = 'released for publication'
-        submission.access_level = 'restricted_to_institution'
+      context 'when access level is restricted to institution' do
+        before do
+          submission.status = 'released for publication'
+          submission.access_level = 'restricted_to_institution'
+        end
+
+        it "returns 'final_restricted_institution'" do
+          expect(view.actions_partial_name).to eq 'restricted_institution_actions'
+        end
       end
 
-      it "returns 'final_restricted_institution'" do
-        expect(view.actions_partial_name).to eq 'restricted_institution_actions'
+      context 'when access level is restricted to liberal arts' do
+        before do
+          submission.status = 'released for publication'
+          submission.access_level = 'restricted_liberal_arts'
+        end
+
+        it "returns 'final_restricted_institution'" do
+          expect(view.actions_partial_name).to eq 'restricted_institution_actions'
+        end
       end
     end
   end

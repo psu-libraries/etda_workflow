@@ -7,6 +7,7 @@
   <% end %>
 <div class="author">
   <% AccessLevel.display.each do |k| %>
+    <% next if k[:type] == 'restricted_liberal_arts' && (@submission.academic_program != 'LA' || !current_partner.graduate?) %>
     <% value   = k[:type] %>
     <% id      = "submission_access_level_#{value}" %>
     <% desc_id = "#{id}-desc" %>

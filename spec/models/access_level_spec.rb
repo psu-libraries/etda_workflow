@@ -6,15 +6,17 @@ RSpec.describe AccessLevel do
   let(:open_access_view_struct) { { type: 'open_access', label: 'Open Access', description: EtdaUtilities::AccessLevel.partner_access_levels['access_level']['open_access_attr']['description_html'] } }
   let(:restricted_view_struct) { { type: 'restricted', label: 'Restricted', description: EtdaUtilities::AccessLevel.partner_access_levels['access_level']['restricted_attr']['description_html'] } }
   let(:restricted_to_institution_view_struct) { { type: 'restricted_to_institution', label: 'Restricted (Penn State Only)', description: EtdaUtilities::AccessLevel.partner_access_levels['access_level']['restricted_to_institution_attr']['description_html'] } }
+  let(:restricted_liberal_arts_view_struct) { { type: 'restricted_liberal_arts', label: 'Restricted (Liberal Arts Only)', description: EtdaUtilities::AccessLevel.partner_access_levels['access_level']['restricted_liberal_arts_attr']['description_html'] } }
 
   describe '#ACCESS_LEVEL_KEYS' do
     it 'constant containing all access levels' do
-      expect(described_class::ACCESS_LEVEL_KEYS).to contain_exactly('open_access', 'restricted_to_institution', 'restricted', '')
+      expect(described_class::ACCESS_LEVEL_KEYS).to contain_exactly('open_access', 'restricted_to_institution', 'restricted', 'restricted_liberal_arts', '')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('open_access')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('restricted')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('restricted_to_institution')
+      expect(described_class::ACCESS_LEVEL_KEYS).to include('restricted_liberal_arts')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('')
-      expect(described_class::ACCESS_LEVEL_KEYS.length).to eq(4)
+      expect(described_class::ACCESS_LEVEL_KEYS.length).to eq(5)
     end
   end
 
@@ -45,14 +47,17 @@ RSpec.describe AccessLevel do
       expect(described_class.paper_access_levels).to include(open_access_view_struct)
       expect(described_class.paper_access_levels).to include(restricted_view_struct)
       expect(described_class.paper_access_levels).to include(restricted_to_institution_view_struct)
+      expect(described_class.paper_access_levels).to include(restricted_liberal_arts_view_struct)
     end
   end
 
   describe 'ordering' do
-    it "levels should evaluate int he correct order" do
+    it "levels should evaluate in the correct order" do
       expect(described_class.OPEN_ACCESS.to_i < described_class.RESTRICTED.to_i).to be_truthy
       expect(described_class.OPEN_ACCESS.to_i < described_class.RESTRICTED_TO_INSTITUTION.to_i).to be_truthy
+      expect(described_class.OPEN_ACCESS.to_i < described_class.RESTRICTED_LIBERAL_ARTS.to_i).to be_truthy
       expect(described_class.RESTRICTED_TO_INSTITUTION.to_i < described_class.RESTRICTED.to_i).to be_truthy
+      expect(described_class.RESTRICTED_LIBERAL_ARTS.to_i < described_class.RESTRICTED.to_i).to be_truthy
     end
   end
 end

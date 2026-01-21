@@ -29,7 +29,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     return 'Edit Final Submission On Hold' if status_behavior.waiting_in_final_submission_on_hold?
     return 'Edit Released Submission' if status_behavior.released_for_publication? && open_access?
     return 'Edit Restricted Submission' if status_behavior.released_for_publication_metadata_only? && restricted?
-    return 'Edit Final Submission is Restricted to Penn State' if status_behavior.released_for_publication? && access_level == 'restricted_to_institution'
+    return 'Edit Final Submission is Restricted to Penn State' if status_behavior.released_for_publication? && (access_level == 'restricted_to_institution' || access_level == 'restricted_liberal_arts')
 
     'Edit Incomplete Format Review'
   end
@@ -79,7 +79,7 @@ class Admin::SubmissionFormView < SimpleDelegator
     case access_level
     when 'restricted'
       "<b>Metadata released:</b> #{date_information(released_metadata_at)}<br /><b>Scheduled for full release: </b> #{date_information(released_for_publication_at)}".html_safe
-    when 'restricted_to_institution'
+    when 'restricted_to_institution', 'restricted_liberal_arts'
       "<b>Released to Penn State Community: </b> #{date_information(released_metadata_at)}<br /><b>Scheduled for full release: </b>#{date_information(released_for_publication_at)}".html_safe
     else
       metadata_str = ''
@@ -139,7 +139,7 @@ class Admin::SubmissionFormView < SimpleDelegator
       #  return "/admin/#{degree_type}/released_for_publication" if status_behavior.released_for_publication? && open_access?  TOO SLOW; RETURN TO DASHBOARD
       return "/admin/#{degree_type.slug}" if status_behavior.released_for_publication? && open_access?
       return "/admin/#{degree_type.slug}/final_withheld" if status_behavior.released_for_publication_metadata_only? && restricted?
-      return "/admin/#{degree_type.slug}/final_restricted_institution" if status_behavior.released_for_publication? && access_level == 'restricted_to_institution'
+      return "/admin/#{degree_type.slug}/final_restricted_institution" if status_behavior.released_for_publication? && (access_level == 'restricted_to_institution' || access_level == 'restricted_liberal_arts')
 
       "/admin/#{degree_type.slug}/format_review_incomplete"
     end

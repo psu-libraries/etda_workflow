@@ -47,6 +47,39 @@ RSpec.describe 'Author submission access_level', :js, type: :integration do
         expect(page).not_to have_content('Invention disclosure number is required for Restricted submissions.')
       end
     end
+
+    context 'when author is in college of liberal arts' do
+      before do
+        submission.update(academic_program: 'LA')
+        page.refresh
+      end
+
+      if current_partner.graduate?
+        it 'has a restricted_liberal_arts radio button' do
+          page.find("input#submission_access_level_restricted_liberal_arts").click
+          expect(page.find("input#submission_access_level_restricted_liberal_arts")).to be_checked
+          expect(page).not_to have_content('Enter justification')
+          expect(page).not_to have_field('submission_invention_disclosures_attributes_0_id_number')
+        end
+      end
+
+      unless current_partner.graduate?
+        it 'does not have a restricted_liberal_arts radio button' do
+          expect(page).not_to have_selector("input#submission_access_level_restricted_liberal_arts")
+        end
+      end
+    end
+
+    context 'when author is not in college of liberal arts' do
+      before do
+        submission.update(academic_program: 'CA')
+        page.refresh
+      end
+
+      it 'does not have a restricted_liberal_arts radio button' do
+        expect(page).not_to have_selector("input#submission_access_level_restricted_liberal_arts")
+      end
+    end
   end
 
   context 'milsch authors cannot choose the access level', :milsch do

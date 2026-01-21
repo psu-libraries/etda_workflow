@@ -39,7 +39,7 @@ class SolrSubmission < SimpleDelegator
         keyword_list: ['keyword_ssim', 'keyword_tesim'],
         title: ['title_ssi', 'title_tesi'],
         id: ['db_id'],
-        access_level: 'access_level_ss',
+        adjusted_access_level: 'access_level_ss',
         semester: 'semester_ssi',
         abstract: 'abstract_tesi',
         defended_at_dtsi: 'defended_at_dtsi',
@@ -90,6 +90,10 @@ class SolrSubmission < SimpleDelegator
         names.append(member.name)
       end
       names
+    end
+
+    def adjusted_access_level
+      access_level == 'restricted_liberal_arts' ? 'restricted_to_institution' : access_level
     end
 
     def author_name_tesi

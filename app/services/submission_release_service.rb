@@ -73,7 +73,7 @@ class SubmissionReleaseService
 
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_release_for_publication?
-      if submission.restricted? || submission.restricted_to_institution?
+      if submission.restricted? || submission.restricted_to_institution? || submission.restricted_liberal_arts?
         status_giver.released_for_publication_metadata_only!
       else
         status_giver.released_for_publication!
@@ -97,7 +97,7 @@ class SubmissionReleaseService
       new_public_id = submission.public_id.presence || PublicIdMinter.new(submission).id
       return unless public_id_ok(new_public_id)
 
-      return if new_access_level == 'restricted' || new_access_level == 'restricted to institution'
+      return if new_access_level == 'restricted' || new_access_level == 'restricted to institution' || new_access_level == 'restricted liberal arts'
 
       status_giver = SubmissionStatusGiver.new(submission)
       status_giver.can_release_for_publication?
