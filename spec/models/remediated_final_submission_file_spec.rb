@@ -22,27 +22,33 @@ RSpec.describe RemediatedFinalSubmissionFile, type: :model do
     expect(described_class.new.class_name).to eql('remediated-final-submission-file')
   end
 
-  describe '#full_file_path' do
+  describe '#current_location' do
     context 'when submission is waiting for publication release' do
-      it 'returns full workflow file path w/o filename' do
+      it 'returns full workflow file path w filename' do
         submission = FactoryBot.create :submission, :waiting_for_publication_release
-        final_submission_file = described_class.new(submission_id: submission.id)
-        final_submission_file.id = 1234
-        expect(final_submission_file.full_file_path)
+        remediated_final_submission_file = FactoryBot.create(:remediated_final_submission_file,
+                                                             submission_id: submission.id)
+        remediated_final_submission_file.id = 1234
+        expect(remediated_final_submission_file.current_location)
           .to eq(
-            "#{WORKFLOW_BASE_PATH}final_submission_files/#{EtdaFilePaths.new.detailed_file_path(final_submission_file.id, remediated: true)}"
+            "#{WORKFLOW_BASE_PATH}final_submission_files/" \
+            "#{EtdaFilePaths.new.detailed_file_path(remediated_final_submission_file.id, remediated: true)}" \
+            "#{remediated_final_submission_file.asset_identifier}"
           )
       end
     end
 
     context 'when submission has been released for publication' do
-      it 'returns full explore file path w/o filename' do
+      it 'returns full explore file path w filename' do
         submission = FactoryBot.create :submission, :released_for_publication
-        final_submission_file = described_class.new(submission_id: submission.id)
-        final_submission_file.id = 1234
-        expect(final_submission_file.full_file_path)
+        remediated_final_submission_file = FactoryBot.create(:remediated_final_submission_file,
+                                                             submission_id: submission.id)
+        remediated_final_submission_file.id = 1234
+        expect(remediated_final_submission_file.current_location)
           .to eq(
-            "#{EXPLORE_BASE_PATH + submission.access_level_key}/#{EtdaFilePaths.new.detailed_file_path(final_submission_file.id, remediated: true)}"
+            "#{EXPLORE_BASE_PATH + submission.access_level_key}" \
+            "/#{EtdaFilePaths.new.detailed_file_path(remediated_final_submission_file.id, remediated: true)}" \
+            "#{remediated_final_submission_file.asset_identifier}"
           )
       end
     end

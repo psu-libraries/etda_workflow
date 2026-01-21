@@ -31,7 +31,7 @@ class SubmissionReleaseService
   end
 
   def final_files_for_submission(submission)
-    # saves the file id and the original file path
+    # saves the file id, the original file path, and the class name
     location_array = []
     submission.final_submission_files.each do |f|
       location_array << [f.id, f.current_location, f.class.name]
