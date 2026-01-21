@@ -40,8 +40,7 @@ class WebhooksController < ApplicationController
   private
 
     def authenticate_request
-      ## TODO: Replace this with database stored tokens
-      secret = ENV['AUTO_REMEDIATE_WEBHOOK_SECRET']
+      secret = ExternalApp.pdf_accessibility_api.token
       if secret.blank?
         Rails.logger.error('AUTO_REMEDIATE_WEBHOOK_SECRET not set')
         return head :unauthorized
