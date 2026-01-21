@@ -74,7 +74,7 @@ RSpec.describe SubmissionReleaseService do
   describe '#unpublish' do
     it 'delegates to #release_files and returns its result' do
       original_final_files = [[1, '/some/path/file.pdf', 'FinalSubmissionFile']]
-      allow(service).to receive(:release_files).with(original_final_files).and_return(true)
+      allow(service).to receive(:release_files).and_return(true)
 
       result = service.unpublish(original_final_files)
       expect(service).to have_received(:release_files).with(original_final_files)
@@ -122,8 +122,8 @@ RSpec.describe SubmissionReleaseService do
       etda_double = instance_double(EtdaFilePaths)
       allow(EtdaFilePaths).to receive(:new).and_return(etda_double)
 
-      allow(etda_double).to receive(:move_a_file).with(1, '/workflow/path/1.pdf', file_class: FinalSubmissionFile).and_return('')
-      allow(etda_double).to receive(:move_a_file).with(2, '/workflow/path/2.pdf', file_class: RemediatedFinalSubmissionFile).and_return('')
+      allow(etda_double).to receive(:move_a_file)
+      allow(etda_double).to receive(:move_a_file)
 
       result = service.release_files(locations)
       expect(etda_double).to have_received(:move_a_file).with(1, '/workflow/path/1.pdf', file_class: FinalSubmissionFile)
@@ -135,13 +135,16 @@ RSpec.describe SubmissionReleaseService do
       etda_double = instance_double(EtdaFilePaths)
       allow(EtdaFilePaths).to receive(:new).and_return(etda_double)
 
+      # First iteration fails
       allow(etda_double).to receive(:move_a_file).with(1, '/workflow/path/1.pdf', file_class: FinalSubmissionFile).and_return('Error moving file')
-      # The second call should never be reached once an error occurs
       allow(etda_double).to receive(:move_a_file).with(2, '/workflow/path/2.pdf', file_class: RemediatedFinalSubmissionFile)
 
-      allow(service).to receive(:record_error).with('Error moving file')
+      allow(service).to receive(:record_error)
 
       result = service.release_files(locations)
+      expect(etda_double).to have_received(:move_a_file).with(1, '/workflow/path/1.pdf', file_class: FinalSubmissionFile)
+      # The second call should never be reached once an error occurs
+      expect(etda_double).not_to have_received(:move_a_file).with(2, '/workflow/path/2.pdf', file_class: RemediatedFinalSubmissionFile)
       expect(service).to have_received(:record_error).with('Error moving file')
       expect(result).to be false
     end
@@ -169,7 +172,7 @@ RSpec.describe SubmissionReleaseService do
       allow(File).to receive(:exist?).with('/workflow/path/2.pdf').and_return(false)
 
       expected_error = 'File Not Found for Remediated final submission file 2, /workflow/path/2.pdf '
-      allow(service).to receive(:record_error).with(expected_error)
+      allow(service).to receive(:record_error)
 
       result = service.file_verification(files_array)
       expect(service).to have_received(:record_error).with(expected_error)
