@@ -83,7 +83,7 @@ RSpec.describe EtdaFilePaths, type: :model do
       end
     end
 
-    context 'when using the default file_class' do
+    context 'when using FinalSubmissionFile as the file_class' do
       it 'uses FinalSubmissionFile to find the record' do
         file_class = class_double('FinalSubmissionFile').as_stubbed_const
 
@@ -92,7 +92,7 @@ RSpec.describe EtdaFilePaths, type: :model do
         allow(FileUtils).to receive(:mkpath)
         allow(FileUtils).to receive(:mv)
 
-        file_paths.move_a_file(fid, original_file_location)
+        file_paths.move_a_file(fid, original_file_location, file_class: file_class)
 
         expect(file_class).to have_received(:find).with(fid)
       end

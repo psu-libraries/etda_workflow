@@ -123,4 +123,24 @@ RSpec.describe RemediatedFinalSubmissionFile, type: :model do
         .twice
     end
   end
+
+  describe 'before_destroy :delete_file' do
+    let(:submission) do
+      FactoryBot.create :submission,
+                        :released_for_publication
+    end
+
+    let(:remediated_file) do
+      FactoryBot.create :remediated_final_submission_file,
+                        submission: submission
+    end
+
+    it 'deletes the file from the filesystem' do
+      expect(File.exist?(remediated_file.current_location)).to be true
+
+      remediated_file.destroy
+
+      expect(File.exist?(remediated_file.current_location)).to be false
+    end
+  end
 end

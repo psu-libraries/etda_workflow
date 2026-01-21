@@ -8,6 +8,7 @@ class RemediatedFinalSubmissionFile < ApplicationRecord
   validates :asset, virus_free: true
 
   after_save :move_file
+  before_destroy :delete_file
 
   def class_name
     self.class.to_s.underscore.dasherize
@@ -42,5 +43,11 @@ class RemediatedFinalSubmissionFile < ApplicationRecord
       path_builder = EtdaFilePaths.new
       original_file_location = "#{WORKFLOW_BASE_PATH}final_submission_files/#{path_builder.detailed_file_path(id, remediated: true)}#{asset_identifier}"
       path_builder.move_a_file(id, original_file_location, file_class: self.class)
+    end
+
+    def delete_file
+      return unless submission.status_behavior.released_for_publication?
+
+      FileUtils.rm current_location
     end
 end

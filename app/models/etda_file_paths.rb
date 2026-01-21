@@ -10,7 +10,7 @@ class EtdaFilePaths < EtdaUtilities::EtdaFilePaths
   end
 
   # file_class injection options: [FinalSubmissionFile, RemediatedFinalSubmissionFile]
-  def move_a_file(fid, original_file_location, file_class: FinalSubmissionFile)
+  def move_a_file(fid, original_file_location, file_class:)
     error_msg = ''
 
     unless File.exist?(original_file_location)
