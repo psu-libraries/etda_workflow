@@ -41,10 +41,6 @@ class WebhooksController < ApplicationController
 
     def authenticate_request
       secret = ExternalApp.pdf_accessibility_api.token
-      if secret.blank?
-        Rails.logger.error('AUTO_REMEDIATE_WEBHOOK_SECRET not set')
-        return head :unauthorized
-      end
 
       token = request.headers['X-API-KEY'].to_s
       head :unauthorized unless ActiveSupport::SecurityUtils.secure_compare(token, secret)

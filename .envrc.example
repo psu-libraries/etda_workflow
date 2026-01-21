@@ -51,9 +51,6 @@ export LP_EXPORT_HOST=
 # Only set to true if you want to run the LP export in the dev and test environments
 export LP_EXPORT_TEST=
 
-# --- Webhooks ---
-export AUTO_REMEDIATE_WEBHOOK_SECRET=
-
 # --- Partner Context ---
 # One of: graduate | honors | milsch | sset
 export PARTNER=graduate

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ExternalApp < ApplicationRecord
   has_many :api_tokens, dependent: :destroy
 

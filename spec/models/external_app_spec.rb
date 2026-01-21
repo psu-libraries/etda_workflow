@@ -22,9 +22,10 @@ RSpec.describe ExternalApp do
     subject(:app) { described_class.pdf_accessibility_api }
 
     it { is_expected.to be_a(described_class) }
+
     it 'has a token upon creation' do
       expect(app.token).to eq(app.api_tokens.first.token)
-      expect(app.token).not_to eq(nil)
+      expect(app.token).not_to be_nil
     end
   end
 end
