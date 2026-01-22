@@ -9,12 +9,13 @@ RSpec.describe AccessLevel do
 
   describe '#ACCESS_LEVEL_KEYS' do
     it 'constant containing all access levels' do
-      expect(described_class::ACCESS_LEVEL_KEYS).to contain_exactly('open_access', 'restricted_to_institution', 'restricted', '')
+      expect(described_class::ACCESS_LEVEL_KEYS).to contain_exactly('open_access', 'restricted_to_institution', 'restricted_liberal_arts', 'restricted', '')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('open_access')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('restricted')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('restricted_to_institution')
+      expect(described_class::ACCESS_LEVEL_KEYS).to include('restricted_liberal_arts')
       expect(described_class::ACCESS_LEVEL_KEYS).to include('')
-      expect(described_class::ACCESS_LEVEL_KEYS.length).to eq(4)
+      expect(described_class::ACCESS_LEVEL_KEYS.length).to eq(5)
     end
   end
 
