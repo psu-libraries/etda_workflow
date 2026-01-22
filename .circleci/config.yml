@@ -1,29 +1,96 @@
 version: 2.1
-jobs:
-  release:
-    docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.3.0
-    environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_REPO: library/etda-workflow
-      GITHUB_USER: 'psu-stewardship-bot'
-      CONFIG_REPO: git@github.com:psu-libraries/etda-config.git
+
+
+parameters:
+
+  GHA_Action:
+    type: string
+    default: ""
+  GHA_Actor:
+    type: string
+    default: ""
+  GHA_Event:
+    type: string
+    default: ""
+  GHA_Meta:
+    type: string
+    default: ""
+  CI_UTILS_IMAGE_TAG:
+    type: string
+    default: "v4.4.0"
+  CONFIG_REPO_NAME:
+    type: string
+    default: "etda-config"
+  CONFIG_REPO_URL:
+    type: string
+    default: "git@github.com:psu-libraries/etda-config.git"
+  CLUSTERS_DEV:
+    type: string
+    default: "uldev"
+  CLUSTERS_PROD:
+    type: string
+    default: "prod"    
+  REGISTRY_HOST:
+    type: string
+    default: "harbor.k8s.libraries.psu.edu"
+  PIPELINE_CONFIG_VERSION:
+    type: string
+    default: "1.0.1"
+
+commands:
+  clone-config-repo:
     steps:
       - add_ssh_keys
       - run:
+          name: Prepare GitHub Access
+          command: |
+            mkdir -p ~/.ssh
+            ssh-keyscan github.com > ~/.ssh/known_hosts
+            git clone << pipeline.parameters.CONFIG_REPO_URL >>
+
+executors:
+
+  ci-utils:
+    parameters:
+      image_tag:
+        type: string
+      registry_host:
+        type: string
+    docker:
+      - image: << parameters.registry_host >>/library/ci-utils:<< parameters.image_tag >>
+
+jobs:
+  release:
+    executor:
+      name: ci-utils
+      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
+      registry_host: << pipeline.parameters.REGISTRY_HOST >>
+    environment:
+      CONFIG_REPO: << pipeline.parameters.CONFIG_REPO_URL >>
+      CONFIG_REPO_NAME: << pipeline.parameters.CONFIG_REPO_NAME >>
+      REGISTRY_HOST: << pipeline.parameters.REGISTRY_HOST >>
+      FROM_TAG: "<< pipeline.git.revision >>"
+      TO_TAG: "<< pipeline.git.tag >>"
+      TO_YAML_TAG_TARGET: ".spec.source.helm.values.workflow.image.tag"
+      TARGET_CLUSTER: prod
+    steps:
+      - clone-config-repo
+      - run:
           name: "Release"
           command: |
-            /usr/local/bin/tag-image
-            ssh-keyscan github.com > ~/.ssh/known_hosts
-            git clone $CONFIG_REPO
+            export TRIGGERED_BY="$CIRCLE_USERNAME"
+            export REGISTRY_REPO="$CIRCLE_PROJECT_REPONAME"
+            /usr/local/bin/image-tag
             cd etda-config
-            ./bin/pr-release clusters/prod/manifests/prod.yaml
+            /usr/local/bin/image-release-pr "clusters/$TARGET_CLUSTER/manifests/prod.yaml"
   build_test:
-    docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+    executor:
+      name: ci-utils
+      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
+      registry_host: << pipeline.parameters.REGISTRY_HOST >>
     environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: << pipeline.parameters.REGISTRY_HOST >>
+      REGISTRY_URL: << pipeline.parameters.REGISTRY_HOST >>/library/etda-workflow
     steps:
       - setup_remote_docker:
           version: docker24
@@ -40,11 +107,13 @@ jobs:
           paths:
             - etda-workflow.tar
   build_prod:
-    docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+    executor:
+      name: ci-utils
+      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
+      registry_host: << pipeline.parameters.REGISTRY_HOST >>
     environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: << pipeline.parameters.REGISTRY_HOST >>
+      REGISTRY_URL: << pipeline.parameters.REGISTRY_HOST >>/library/etda-workflow
     steps:
       - setup_remote_docker:
           version: docker24
@@ -61,11 +130,13 @@ jobs:
           paths:
             - etda-workflow-prod.tar
   rubocop_unit_partner_tests:
-    docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+    executor:
+      name: ci-utils
+      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
+      registry_host: << pipeline.parameters.REGISTRY_HOST >>
     environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: << pipeline.parameters.REGISTRY_HOST >>
+      REGISTRY_URL: << pipeline.parameters.REGISTRY_HOST >>/library/etda-workflow
     steps:
       - attach_workspace:
           at: /tmp/workspace
@@ -106,11 +177,13 @@ jobs:
             PARTNER=sset docker-compose run --name=test_sset --service-ports -d test
             docker exec -e RAILS_ENV=test test_sset /etda_workflow/bin/ci-rspec
   integration_test_grad:
-    docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+    executor:
+      name: ci-utils
+      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
+      registry_host: << pipeline.parameters.REGISTRY_HOST >>
     environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: << pipeline.parameters.REGISTRY_HOST >>
+      REGISTRY_URL: << pipeline.parameters.REGISTRY_HOST >>/library/etda-workflow
     steps:
       - attach_workspace:
           at: /tmp/workspace
@@ -130,11 +203,13 @@ jobs:
             docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
             docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
   publish:
-    docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+    executor:
+      name: ci-utils
+      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
+      registry_host: << pipeline.parameters.REGISTRY_HOST >>
     environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: << pipeline.parameters.REGISTRY_HOST >>
+      REGISTRY_URL: << pipeline.parameters.REGISTRY_HOST >>/library/etda-workflow
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
@@ -160,21 +235,57 @@ jobs:
                   docker tag etda_workflow_web:latest $REGISTRY_URL:latest
                   docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
                   docker push $REGISTRY_URL:latest
-  deploy:
-    docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+  delete-deployment:
+    parameters:
+      delete_branch:
+        type: string
+    executor:
+      name: ci-utils
+      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
+      registry_host: << pipeline.parameters.REGISTRY_HOST >>
     environment:
-      CONFIG_REPO: git@github.com:psu-libraries/etda-config.git
+      CONFIG_REPO_NAME: << pipeline.parameters.CONFIG_REPO_NAME >>
+      CONFIG_REPO_URL: << pipeline.parameters.CONFIG_REPO_URL >>
+      DELETE_BRANCH: << parameters.delete_branch >>
     steps:
-      - add_ssh_keys
+      - clone-config-repo
+      - run:
+          name: Delete Deployment
+          command: |
+            export TRIGGERED_BY="$CIRCLE_USERNAME"
+            cd $CONFIG_REPO_NAME
+            ./bin/ci-delete-manifest
+  deploy:
+    executor:
+      name: ci-utils
+      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
+      registry_host: << pipeline.parameters.REGISTRY_HOST >>
+    environment:
+      CONFIG_REPO: << pipeline.parameters.CONFIG_REPO_URL >>
+      CONFIG_REPO_NAME: etda-config
+      TARGET_CLUSTER: uldev
+      TO_YAML_TAG_TARGET: ".spec.source.helm.values.workflow.image.tag"
+    steps:
+      - clone-config-repo
       - run:
           name: "Updating Config Repo"
           command: |
-            ssh-keyscan github.com > ~/.ssh/known_hosts
-            git clone $CONFIG_REPO
+            export TRIGGERED_BY="$CIRCLE_USERNAME"
             cd etda-config
-            ./bin/generate_app
+            ./bin/ci-write-manifest
 workflows:
+  handle-delete-event:
+    when:
+      equal: ["delete", << pipeline.parameters.GHA_Event >>]
+    jobs:
+      - delete-deployment:
+          name: delete-deployment
+          context:
+            - org-global
+          delete_branch: << pipeline.parameters.GHA_Meta >>
+          filters:
+            branches:
+              only: main
   etda-workflow:
     jobs:
       - release:
@@ -183,7 +294,7 @@ workflows:
           filters:
             tags:
               only:
-                - /^v\d+.\d+.\d+.*/
+                - /^v\d+\.\d+\.\d+.*$/
             branches:
               ignore:
                 - /.*/
