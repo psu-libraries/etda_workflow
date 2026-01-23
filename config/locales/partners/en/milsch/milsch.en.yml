@@ -235,6 +235,11 @@ en:
          scope: final_withheld
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
+    accessible_version_heading: 'Accessible Version Generation Privacy Notice'
+    accessible_version_notice: |
+      When your PDF is downloaded for the first time, an accessible version will be created to meet ADA Title II requirements.
+      Your file will be temporarily processed by Adobe to generate an accessible format.
+      Images will be temporarily sent to AWS Bedrock for AI-generated alt-text.
     approver:
       review_form:
         file_list_heading: "Files I need to review:"
