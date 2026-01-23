@@ -80,7 +80,7 @@ en:
         committee_member_review_requested:
           message: |
                     Hello %{committee_member_name},
-                    The Schreyer Honors College and %{full_name} are requesting your prompt attention to review and approve their honors thesis. Please login to %{review_url} and complete this task as soon as you are able.
+                    The Schreyer Honors College and %{full_name} are requesting your prompt attention to review and approve their honors thesis. Please login to %{review_url} and complete this task within one week's time.
 
         special_committee_review_request:
           message: |
