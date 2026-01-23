@@ -170,7 +170,7 @@ GEM
       rubocop (>= 1)
       smart_properties
     erubi (1.13.1)
-    etda_utilities (0.21.0)
+    etda_utilities (0.22.0)
     factory_bot (6.5.1)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.4.4)
@@ -566,7 +566,7 @@ DEPENDENCIES
   down
   ed25519 (~> 1.2.4)
   enumerize (~> 2.6.0)
-  etda_utilities (~> 0.0)
+  etda_utilities (~> 0.22.0)
   factory_bot_rails (~> 6.4.0)
   faker (~> 3.5.1)
   font-awesome-rails (~> 4.7.0.0)
