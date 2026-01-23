@@ -25,7 +25,12 @@ class FormatReviewUpdateService
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params)
       submission.update! format_review_approved_at: Time.zone.now
       status_giver.collecting_final_submission_files!
-      WorkflowMailer.format_review_accepted(@submission).deliver unless current_partner.milsch?
+      if (current_partner.honors?) do
+        @submission.committee_members.each do |c|
+          WorkflowMailer.format_review_accepted(@submission, c.email).deliver
+        end
+      end
+      WorkflowMailer.format_review_accepted(@submission, @submission.author.psu_email_address).deliver unless current_partner.milsch?
       msg = "The submission\'s format review information was successfully approved and returned to the author to collect final submission information."
     elsif update_actions.rejected?
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params)
