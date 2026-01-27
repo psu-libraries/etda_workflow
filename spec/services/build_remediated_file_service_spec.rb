@@ -8,6 +8,7 @@ RSpec.describe BuildRemediatedFileService do
   let(:bogus_url) { 'https://www.example.com/fakepdf.jpg' }
   let(:pdf_path) { Rails.root.join('spec/fixtures/files/final_submission_file_01.pdf') }
   let(:pdf_bytes) { File.binread(pdf_path) }
+  let(:solr_service) { instance_double('SolrDataImportService', index_submission: nil) }
 
   before do
     stub_request(:get, pdf_url)
@@ -16,6 +17,7 @@ RSpec.describe BuildRemediatedFileService do
         body: pdf_bytes,
         headers: { "Content-Type" => "application/pdf" }
       )
+    allow(SolrDataImportService).to receive(:new).and_return(solr_service)
   end
 
   describe '#call' do
@@ -27,6 +29,12 @@ RSpec.describe BuildRemediatedFileService do
       expect(RemediatedFinalSubmissionFile.count).to eq(1)
       expect(RemediatedFinalSubmissionFile.first.final_submission_file_id).to eq(final_submission_file.id)
       expect(RemediatedFinalSubmissionFile.first.submission_id).to eq(final_submission_file.submission_id)
+    end
+
+    it 'reindexes the submission related to the remediated file' do
+      service = described_class.new(final_submission_file, pdf_url)
+      service.call
+      expect(solr_service).to have_received(:index_submission).with(final_submission_file.submission, true)
     end
 
     context 'if Down throws an error' do
