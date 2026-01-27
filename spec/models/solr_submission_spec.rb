@@ -57,6 +57,8 @@ RSpec.describe SolrSubmission, type: :model do
                                               "degree_type_ssi" => submission.degree_type_name,
                                               "file_name_ssim" => [submission.final_submission_files.first.asset_identifier,
                                                                    submission.final_submission_files.second.asset_identifier],
+                                              "remediated_file_name_ssim" => [remediated_final_submission_file_1.asset_identifier,
+                                                                              remediated_final_submission_file_2.asset_identifier],
                                               "final_submission_file_isim" => [submission.final_submission_files.first.id,
                                                                                submission.final_submission_files.second.id],
                                               "final_submission_files_uploaded_at_dtsi" => submission.final_submission_files_uploaded_at.getutc,
