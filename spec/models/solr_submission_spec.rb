@@ -19,8 +19,10 @@ RSpec.describe SolrSubmission, type: :model do
              defended_at: nil,
              program_id: program.id
     end
-    let(:final_submission_file_1) { create :final_submission_file }
-    let(:final_submission_file_2) { create :final_submission_file }
+    let(:final_submission_file_1) { create :final_submission_file, remediated_final_submission_file: remediated_final_submission_file_1 }
+    let(:remediated_final_submission_file_1) { create :remediated_final_submission_file }
+    let(:final_submission_file_2) { create :final_submission_file, remediated_final_submission_file: remediated_final_submission_file_2 }
+    let(:remediated_final_submission_file_2) { create :remediated_final_submission_file }
     let(:format_review_file) { create :format_review_file }
     let(:committee_member_1) { create :committee_member }
     let(:committee_member_2) { create :committee_member }
@@ -58,6 +60,8 @@ RSpec.describe SolrSubmission, type: :model do
                                               "final_submission_file_isim" => [submission.final_submission_files.first.id,
                                                                                submission.final_submission_files.second.id],
                                               "final_submission_files_uploaded_at_dtsi" => submission.final_submission_files_uploaded_at.getutc,
+                                              "remediated_final_submission_file_isim" => [remediated_final_submission_file_1.id,
+                                                                                          remediated_final_submission_file_2.id],
                                               "first_name_ssi" => submission.author_first_name,
                                               "id" => submission.public_id,
                                               "keyword_ssim" => submission.keywords.collect(&:word),

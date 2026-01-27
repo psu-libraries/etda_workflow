@@ -71,6 +71,7 @@ Metrics/ClassLength:
   - app/controllers/author/submissions_controller.rb
   - app/models/committee_member.rb
   - app/models/export_report.rb
+  - app/models/solr_submission.rb
 
 Metrics/CyclomaticComplexity:
   Exclude:
