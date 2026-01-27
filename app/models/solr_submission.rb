@@ -26,6 +26,7 @@ class SolrSubmission < SimpleDelegator
         final_submission_file_isim: 'final_submission_file_isim',
         remediated_final_submission_file_isim: 'remediated_final_submission_file_isim',
         file_name_ssim: 'file_name_ssim',
+        remediated_file_name_ssim: 'remediated_file_name_ssim',
         author_name_tesi: 'author_name_tesi',
         author_last_name: ['last_name_ssi', 'last_name_tesi'],
         author_middle_name: ['middle_name_ssi'],
@@ -101,6 +102,14 @@ class SolrSubmission < SimpleDelegator
       files = []
       final_submission_files.each do |file|
         files.append(file[:asset])
+      end
+      files
+    end
+
+    def remediated_file_name_ssim
+      files = []
+      final_submission_files.each do |file|
+        files.append(file.remediated_final_submission_file[:asset]) if file.remediated_final_submission_file.present?
       end
       files
     end
