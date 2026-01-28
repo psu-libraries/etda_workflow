@@ -31,6 +31,7 @@ class SolrSubmission < SimpleDelegator
         author_last_name: ['last_name_ssi', 'last_name_tesi'],
         author_middle_name: ['middle_name_ssi'],
         author_first_name: 'first_name_ssi',
+        author_email_ssi: 'author_email_ssi',
         degree_type_slug: ['degree_type_slug_ssi'],
         degree_type_name: ['degree_type_ssi'],
         legacy_id: 'db_legacy_id',
@@ -96,6 +97,10 @@ class SolrSubmission < SimpleDelegator
 
     def author_name_tesi
       "#{author.last_name}, #{author.first_name} #{author.middle_name}"
+    end
+
+    def author_email_ssi
+      author.psu_email_address
     end
 
     def file_name_ssim
