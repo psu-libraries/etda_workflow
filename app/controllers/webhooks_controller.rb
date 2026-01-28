@@ -54,7 +54,8 @@ class WebhooksController < ApplicationController
     end
 
     def can_remediate?
-      final_submission_file.remediation_started_at.nil? &&
+      final_submission_file.pdf? &&
+        final_submission_file.remediation_started_at.nil? &&
         final_submission_file.remediated_final_submission_file.blank?
     end
 
