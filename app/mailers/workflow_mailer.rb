@@ -27,6 +27,7 @@ class WorkflowMailer < ActionMailer::Base
 
     @submission = submission
     @author = submission.author
+    @title = submission.title
     @recipient_email = recipient_email
     @deadline_url = DEADLINE_URL
     @etd_site = AUTHOR_WORKFLOW
@@ -190,6 +191,7 @@ class WorkflowMailer < ActionMailer::Base
   def committee_member_review_reminder(submission, committee_member)
     @submission = submission
     @committee_member = committee_member
+    @title = submission.title
     @author = submission.author
     @review_url = APPROVER_WORKFLOW
 
