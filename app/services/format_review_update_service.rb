@@ -25,7 +25,7 @@ class FormatReviewUpdateService
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params)
       submission.update! format_review_approved_at: Time.zone.now
       status_giver.collecting_final_submission_files!
-      if (current_partner.honors?)
+      if current_partner.honors?
         @submission.committee_members.each do |c|
           WorkflowMailer.format_review_accepted(@submission, c.email).deliver
         end

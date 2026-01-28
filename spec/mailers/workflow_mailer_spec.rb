@@ -43,7 +43,7 @@ RSpec.describe WorkflowMailer do
   end
 
   describe '#format_review_accepted' do
-    let(:email_address) { "test@psu.edu"}
+    let(:email_address) { "test@psu.edu" }
     let(:email) { described_class.format_review_accepted(submission, email_address) }
     let(:partner_email) { current_partner.email_address }
 
