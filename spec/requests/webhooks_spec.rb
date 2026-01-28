@@ -60,7 +60,7 @@ RSpec.describe 'Webhooks', type: :request do
 
         context 'when file is not a PDF' do
           let(:final_submission_file) do
-            FactoryBot.create(:final_submission_file, :docx)
+            FactoryBot.create(:final_submission_file, :jpg)
           end
 
           it 'returns 200 but does not queue the job' do
