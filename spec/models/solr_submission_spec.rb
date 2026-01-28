@@ -40,6 +40,7 @@ RSpec.describe SolrSubmission, type: :model do
                                               "abstract_tesi" => submission.abstract,
                                               "access_level_ss" => submission.access_level,
                                               "author_name_tesi" => "#{submission.author_last_name}, #{submission.author_first_name} #{submission.author_middle_name}",
+                                              "author_email_ssi" => submission.author.psu_email_address,
                                               "committee_member_and_role_tesim" => ["#{committee_member_1.name}, #{committee_member_1.committee_role.name}",
                                                                                     "#{committee_member_2.name}, #{committee_member_2.committee_role.name}"],
                                               "committee_member_email_ssim" => [committee_member_1.email.to_s, committee_member_2.email.to_s],
