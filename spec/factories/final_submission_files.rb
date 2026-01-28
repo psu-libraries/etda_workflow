@@ -13,6 +13,10 @@ FactoryBot.define do
       asset { File.open(fixture('files/final_submission_file_02.docx')) }
     end
 
+    trait :jpg do
+      asset { File.open(fixture('files/test_image.jpg')) }
+    end
+
     trait :remediate do
       asset { File.open(fixture('files/final_submission_file_01.pdf')) }
       remediation_job_uuid { 1 }

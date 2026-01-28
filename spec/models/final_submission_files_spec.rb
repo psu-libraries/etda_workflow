@@ -79,4 +79,22 @@ RSpec.describe FinalSubmissionFile, type: :model do
       end
     end
   end
+
+  describe '#pdf?' do
+    context 'when the asset is a PDF' do
+      let(:pdf_file) { FactoryBot.create(:final_submission_file, :pdf) }
+
+      it 'returns true' do
+        expect(pdf_file.pdf?).to be true
+      end
+    end
+
+    context 'when the asset is not a PDF' do
+      let(:jpg_file) { FactoryBot.create(:final_submission_file, :jpg) }
+
+      it 'returns false' do
+        expect(jpg_file.pdf?).to be false
+      end
+    end
+  end
 end

@@ -45,6 +45,10 @@ class FinalSubmissionFile < ApplicationRecord
     SubmissionFilePath.new(submission).full_path_for_final_submissions
   end
 
+  def pdf?
+    asset.content_type == 'application/pdf'
+  end
+
   private
 
     def move_file
