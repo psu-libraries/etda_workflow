@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PdfDownloadService
+class BuildRemediatedFileService
   class DownloadError < StandardError; end
 
   def initialize(final_submission_file, url)
@@ -10,11 +10,13 @@ class PdfDownloadService
 
   def call
     remediated_pdf = Down.download(@url)
-    RemediatedFinalSubmissionFile.create(
+    if RemediatedFinalSubmissionFile.create(
       asset: remediated_pdf,
       final_submission_file: @final_submission_file,
       submission_id: @final_submission_file.submission.id
     )
+      SolrDataImportService.new.index_submission(@final_submission_file.submission, true)
+    end
   rescue Down::Error => e
     raise DownloadError, "Failed to download PDF (#{e.message})"
   rescue SocketError, Errno::ECONNREFUSED => e

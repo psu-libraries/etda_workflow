@@ -43,7 +43,8 @@ RSpec.describe WorkflowMailer do
   end
 
   describe '#format_review_accepted' do
-    let(:email) { described_class.format_review_accepted(submission) }
+    let(:email_address) { "test@psu.edu" }
+    let(:email) { described_class.format_review_accepted(submission, email_address) }
     let(:partner_email) { current_partner.email_address }
 
     context "when the current partner should receive format_review_accepted emails", :honors, :sset do
@@ -59,9 +60,8 @@ RSpec.describe WorkflowMailer do
         expect(email.from).to eq([partner_email])
       end
 
-      it "is sent to the student's PSU email address" do
-        expect(author.psu_email_address).not_to be_blank
-        expect(email.to).to eq([author.psu_email_address])
+      it "is sent to the email address provided" do
+        expect(email.to).to eq([email_address])
       end
 
       it "tells them that their format review has been accepted" do

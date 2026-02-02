@@ -9,6 +9,8 @@ RSpec.describe FinalSubmissionFile, type: :model do
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:legacy_id).of_type(:integer) }
+  it { is_expected.to have_db_column(:remediation_started_at).of_type(:datetime) }
+  it { is_expected.to have_db_column(:remediation_job_uuid).of_type(:string) }
 
   it { is_expected.to have_db_index(:submission_id) }
   it { is_expected.to have_db_index(:legacy_id) }
@@ -74,6 +76,24 @@ RSpec.describe FinalSubmissionFile, type: :model do
         it "returns the content type for the file" do
           expect(file1.asset.content_type).to eq "application/pdf"
         end
+      end
+    end
+  end
+
+  describe '#pdf?' do
+    context 'when the asset is a PDF' do
+      let(:pdf_file) { FactoryBot.create(:final_submission_file, :pdf) }
+
+      it 'returns true' do
+        expect(pdf_file.pdf?).to be true
+      end
+    end
+
+    context 'when the asset is not a PDF' do
+      let(:jpg_file) { FactoryBot.create(:final_submission_file, :jpg) }
+
+      it 'returns false' do
+        expect(jpg_file.pdf?).to be false
       end
     end
   end

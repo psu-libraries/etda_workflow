@@ -61,7 +61,7 @@ en:
 
         format_review_accepted:
           message: |
-                    Your thesis format review has been approved! There are no formatting changes you need to make for your final submission.
+                    Your thesis format review for %{title} has been approved! There are no formatting changes you need to make for your final submission.
 
         format_review_rejected:
           message: |

@@ -151,5 +151,6 @@ Rails.application.routes.draw do
   match "/401", to: 'errors#render_401', via: :all
 
   post '/webhooks/auto_remediate', to: 'webhooks#auto_remediate'
+  post '/webhooks/handle_remediation_results', to: 'webhooks#handle_remediation_results'
 end
 # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

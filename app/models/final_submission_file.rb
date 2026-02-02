@@ -45,6 +45,10 @@ class FinalSubmissionFile < ApplicationRecord
     SubmissionFilePath.new(submission).full_path_for_final_submissions
   end
 
+  def pdf?
+    asset.content_type == 'application/pdf'
+  end
+
   private
 
     def move_file
@@ -53,7 +57,7 @@ class FinalSubmissionFile < ApplicationRecord
 
       path_builder = EtdaFilePaths.new
       original_file_location = "#{WORKFLOW_BASE_PATH}final_submission_files/#{path_builder.detailed_file_path(id)}#{asset_identifier}"
-      path_builder.move_a_file(id, original_file_location)
+      path_builder.move_a_file(id, original_file_location, file_class: self.class)
     end
 
     def delete_file

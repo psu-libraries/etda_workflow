@@ -19,8 +19,10 @@ RSpec.describe SolrSubmission, type: :model do
              defended_at: nil,
              program_id: program.id
     end
-    let(:final_submission_file_1) { create :final_submission_file }
-    let(:final_submission_file_2) { create :final_submission_file }
+    let(:final_submission_file_1) { create :final_submission_file, remediated_final_submission_file: remediated_final_submission_file_1 }
+    let(:remediated_final_submission_file_1) { create :remediated_final_submission_file }
+    let(:final_submission_file_2) { create :final_submission_file, remediated_final_submission_file: remediated_final_submission_file_2 }
+    let(:remediated_final_submission_file_2) { create :remediated_final_submission_file }
     let(:format_review_file) { create :format_review_file }
     let(:committee_member_1) { create :committee_member }
     let(:committee_member_2) { create :committee_member }
@@ -38,6 +40,7 @@ RSpec.describe SolrSubmission, type: :model do
                                               "abstract_tesi" => submission.abstract,
                                               "access_level_ss" => submission.access_level,
                                               "author_name_tesi" => "#{submission.author_last_name}, #{submission.author_first_name} #{submission.author_middle_name}",
+                                              "author_email_ssi" => submission.author.psu_email_address,
                                               "committee_member_and_role_tesim" => ["#{committee_member_1.name}, #{committee_member_1.committee_role.name}",
                                                                                     "#{committee_member_2.name}, #{committee_member_2.committee_role.name}"],
                                               "committee_member_email_ssim" => [committee_member_1.email.to_s, committee_member_2.email.to_s],
@@ -55,9 +58,13 @@ RSpec.describe SolrSubmission, type: :model do
                                               "degree_type_ssi" => submission.degree_type_name,
                                               "file_name_ssim" => [submission.final_submission_files.first.asset_identifier,
                                                                    submission.final_submission_files.second.asset_identifier],
+                                              "remediated_file_name_ssim" => [remediated_final_submission_file_1.asset_identifier,
+                                                                              remediated_final_submission_file_2.asset_identifier],
                                               "final_submission_file_isim" => [submission.final_submission_files.first.id,
                                                                                submission.final_submission_files.second.id],
                                               "final_submission_files_uploaded_at_dtsi" => submission.final_submission_files_uploaded_at.getutc,
+                                              "remediated_final_submission_file_isim" => [remediated_final_submission_file_1.id,
+                                                                                          remediated_final_submission_file_2.id],
                                               "first_name_ssi" => submission.author_first_name,
                                               "id" => submission.public_id,
                                               "keyword_ssim" => submission.keywords.collect(&:word),

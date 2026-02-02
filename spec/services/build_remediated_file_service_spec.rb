@@ -2,12 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe PdfDownloadService do
+RSpec.describe BuildRemediatedFileService do
   let(:final_submission_file) { create(:final_submission_file) }
   let(:pdf_url) { 'https://www.example.com/fakepdf.pdf' }
   let(:bogus_url) { 'https://www.example.com/fakepdf.jpg' }
   let(:pdf_path) { Rails.root.join('spec/fixtures/files/final_submission_file_01.pdf') }
   let(:pdf_bytes) { File.binread(pdf_path) }
+  let(:solr_service) { instance_double('SolrDataImportService', index_submission: nil) }
 
   before do
     stub_request(:get, pdf_url)
@@ -16,6 +17,7 @@ RSpec.describe PdfDownloadService do
         body: pdf_bytes,
         headers: { "Content-Type" => "application/pdf" }
       )
+    allow(SolrDataImportService).to receive(:new).and_return(solr_service)
   end
 
   describe '#call' do
@@ -29,6 +31,12 @@ RSpec.describe PdfDownloadService do
       expect(RemediatedFinalSubmissionFile.first.submission_id).to eq(final_submission_file.submission_id)
     end
 
+    it 'reindexes the submission related to the remediated file' do
+      service = described_class.new(final_submission_file, pdf_url)
+      service.call
+      expect(solr_service).to have_received(:index_submission).with(final_submission_file.submission, true)
+    end
+
     context 'if Down throws an error' do
       before do
         allow(Down).to receive(:download).and_raise(Down::Error.new('download error'))
@@ -36,7 +44,7 @@ RSpec.describe PdfDownloadService do
 
       it 'returns a Download error' do
         service = described_class.new(final_submission_file, bogus_url)
-        expect { service.call }.to raise_error(PdfDownloadService::DownloadError)
+        expect { service.call }.to raise_error(BuildRemediatedFileService::DownloadError)
       end
     end
   end

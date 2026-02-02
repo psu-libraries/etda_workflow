@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_12_160000) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_15_201936) do
   create_table "admin_feedback_files", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "submission_id"
     t.text "asset"
@@ -40,7 +40,17 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_12_160000) do
     t.index ["access_id"], name: "index_admins_on_access_id", unique: true
   end
 
-  create_table "approval_configurations", charset: "utf8mb4", force: :cascade do |t|
+  create_table "api_tokens", charset: "utf8mb4", force: :cascade do |t|
+    t.string "token"
+    t.datetime "last_used_at"
+    t.bigint "external_app_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["external_app_id"], name: "index_api_tokens_on_external_app_id"
+    t.index ["token"], name: "index_api_tokens_on_token"
+  end
+
+  create_table "approval_configurations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "degree_type_id"
     t.date "approval_deadline_on"
     t.integer "configuration_threshold"
@@ -185,7 +195,14 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_12_160000) do
     t.index ["name"], name: "index_degrees_on_name", unique: true
   end
 
-  create_table "faculty_members", charset: "utf8mb4", force: :cascade do |t|
+  create_table "external_apps", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_external_apps_on_name", unique: true
+  end
+
+  create_table "faculty_members", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "middle_name"
     t.string "last_name", null: false
@@ -341,6 +358,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_12_160000) do
     t.index ["public_id"], name: "index_submissions_on_public_id", unique: true
   end
 
+  add_foreign_key "api_tokens", "external_apps"
   add_foreign_key "approval_configurations", "degree_types", name: "degree_type_id_fk"
   add_foreign_key "committee_member_tokens", "committee_members", name: "committee_member_tokens_committee_member_id_fk"
   add_foreign_key "committee_members", "approvers", name: "committee_members_approver_id_fk"

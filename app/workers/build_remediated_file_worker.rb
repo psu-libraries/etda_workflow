@@ -1,0 +1,11 @@
+# frozen_string_literal: true
+
+class BuildRemediatedFileWorker
+  include Sidekiq::Worker
+  sidekiq_options queue: 'auto_remediate_in'
+
+  def perform(remediation_job_uuid, output_url)
+    final_submission_file = FinalSubmissionFile.where(remediation_job_uuid:).first
+    BuildRemediatedFileService.new(final_submission_file, output_url).call
+  end
+end
