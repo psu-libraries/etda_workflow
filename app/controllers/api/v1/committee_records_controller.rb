@@ -14,7 +14,7 @@ module Api
       # Example request:
       #   curl -X POST http://localhost:3000/api/v1/committee_records/faculty_committees \
       #     -H "Content-Type: application/json" \
-      #     -H "Authorization: secure-api-key-change-this-in-production" \
+      #     -H "Authorization: Bearer your_token_here"\
       #     -d '{"access_id": "mms8130"}'
 
       def faculty_committees
@@ -43,12 +43,26 @@ module Api
         # Authenticate using API Key from environment variable
         # The API Key should be passed in the Authorization header
         def authenticate_api_key
-          provided_key = request.headers['Authorization'].to_s
-          expected_key = ENV['COMMITTEE_API_KEY'].to_s
+          raw = request.headers["Authorization"].to_s.strip
 
-          return if provided_key.present? && provided_key == expected_key
+          token =
+            if raw.downcase.start_with?("bearer ")
+              raw.split(" ", 2).last.to_s.strip
+            else
+              raw
+            end
 
-          render json: { error: 'Unauthorized' }, status: :unauthorized
+          @api_token = ApiToken.includes(:external_app).find_by(token: token)
+          return unauthorized! unless @api_token
+
+          @external_app = @api_token.external_app
+          @api_token.update_column(:last_used_at, Time.current)
+
+          true
+        end
+
+        def unauthorized!
+          render json: { error: "Unauthorized" }, status: :unauthorized
         end
 
         # Format committee memberships for Activity Insight
