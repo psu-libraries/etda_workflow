@@ -19,6 +19,20 @@ class ExternalApp < ApplicationRecord
     PdfAccessibilityApi.build
   end
 
+  class EtdaExplore
+    NAME = 'ETDA Explore'
+
+    def self.build
+      ExternalApp.find_or_create_by(name: NAME) do |app|
+        app.api_tokens.build
+      end
+    end
+  end
+
+  def self.etda_explore
+    EtdaExplore.build
+  end
+
   def token
     api_tokens.first.token
   end

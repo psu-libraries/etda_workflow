@@ -40,7 +40,7 @@ class WebhooksController < ApplicationController
   private
 
     def authenticate_request
-      secret = ExternalApp.pdf_accessibility_api.token
+      secret = request.path.include?('auto_remediate') ? ExternalApp.etda_explore.token : ExternalApp.pdf_accessibility_api.token
 
       token = request.headers['X-API-KEY'].to_s
       head :unauthorized unless ActiveSupport::SecurityUtils.secure_compare(token, secret)

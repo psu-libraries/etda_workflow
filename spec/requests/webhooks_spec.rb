@@ -3,13 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe 'Webhooks', type: :request do
-  let(:external_app) { ExternalApp.pdf_accessibility_api }
+  let(:explore_app) { ExternalApp.etda_explore }
+  let(:pdf_api_app) { ExternalApp.pdf_accessibility_api }
 
   describe 'POST /webhooks/auto_remediate' do
     let(:path) { '/webhooks/auto_remediate' }
 
     context 'when X-API-KEY is valid' do
-      let(:headers) { { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => external_app.token } }
+      let(:headers) { { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => explore_app.token } }
 
       context 'when final_submission_file_id is not missing' do
         let(:final_submission_file) { FactoryBot.create(:final_submission_file) }
@@ -137,7 +138,7 @@ RSpec.describe 'Webhooks', type: :request do
       let(:event_type) { 'job.succeeded' }
 
       it 'calls perform_async on BuildSubmissionFileWorker' do
-        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => external_app.token }
+        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => pdf_api_app.token }
         post path, params: params.to_json, headers: headers
         expect(BuildRemediatedFileWorker).to have_received(:perform_async).with(remediation_job_uuid, output_url)
       end
@@ -152,7 +153,7 @@ RSpec.describe 'Webhooks', type: :request do
         log_output = StringIO.new
         Rails.logger = ActiveSupport::Logger.new(log_output)
 
-        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => external_app.token }
+        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => pdf_api_app.token }
         post path, params: params.to_json, headers: headers
         expect(log_output.string).to include('Some error message')
       ensure
@@ -168,7 +169,7 @@ RSpec.describe 'Webhooks', type: :request do
         log_output = StringIO.new
         Rails.logger = ActiveSupport::Logger.new(log_output)
 
-        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => external_app.token }
+        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => pdf_api_app.token }
         post path, params: params.to_json, headers: headers
         expect(log_output.string).to include('Unknown event type received:')
         expect(log_output.string).to include('other')
@@ -187,7 +188,7 @@ RSpec.describe 'Webhooks', type: :request do
         error = StandardError.new('Another test error')
         error.set_backtrace(["aw dang it"])
         allow(BuildRemediatedFileWorker).to receive(:perform_async).and_raise(error)
-        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => external_app.token }
+        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => pdf_api_app.token }
         post path, params: params.to_json, headers: headers
         expect(response).to have_http_status(:internal_server_error)
         expect(log_output.string).to include("Webhook failed: StandardError - Another test error\naw dang it")
