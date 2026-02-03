@@ -12,49 +12,59 @@ RSpec.describe 'Webhooks::AutoRemediate', type: :request do
       let(:headers) { { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => explore_app.token } }
 
       context 'when final_submission_file_id is not missing' do
-        let(:final_submission_file) { FactoryBot.create(:final_submission_file) }
+        let!(:final_submission) { FactoryBot.create(:submission) }
+        let!(:final_submission_file) { FactoryBot.create(:final_submission_file, submission: final_submission) }
+        let!(:final_submission_file_2) { FactoryBot.create(:final_submission_file, submission: final_submission) }
 
         it 'returns 200, sets remediation_started_at, and queues the job' do
           expect(final_submission_file.remediation_started_at).to be_nil
+          expect(final_submission_file_2.remediation_started_at).to be_nil
 
           allow(AutoRemediateWorker).to receive(:perform_async)
           post path, params: { final_submission_file_id: final_submission_file.id }.to_json, headers: headers
 
           expect(response).to have_http_status(:ok)
           expect(final_submission_file.reload.remediation_started_at).not_to be_nil
+          expect(final_submission_file_2.reload.remediation_started_at).not_to be_nil
           expect(AutoRemediateWorker).to have_received(:perform_async).with(final_submission_file.id)
+          expect(AutoRemediateWorker).to have_received(:perform_async).with(final_submission_file_2.id)
         end
 
         context 'when remediation_started_at is already set' do
-          let(:final_submission_file) do
+          let!(:final_submission_file) do
             FactoryBot.create(:final_submission_file,
-                              remediation_started_at: Time.current)
+                              remediation_started_at: Time.current,
+                              submission: final_submission)
           end
 
-          it 'returns 200 but does not queue the job' do
+          it 'returns 200 but only queues the job for non-remediated files' do
             allow(AutoRemediateWorker).to receive(:perform_async)
             post path, params: { final_submission_file_id: final_submission_file.id }.to_json, headers: headers
 
-            expect(AutoRemediateWorker).not_to have_received(:perform_async)
+            expect(AutoRemediateWorker).not_to have_received(:perform_async).with(final_submission_file.id)
+            expect(AutoRemediateWorker).to have_received(:perform_async).with(final_submission_file_2.id)
             expect(response).to have_http_status(:ok)
             expect(final_submission_file.reload.remediation_started_at).not_to be_nil
+            expect(final_submission_file_2.reload.remediation_started_at).not_to be_nil
           end
         end
 
         context 'when remediated_final_submission_file is already present' do
-          let(:final_submission_file) do
-            FactoryBot.create(:final_submission_file)
+          let!(:final_submission_file) do
+            FactoryBot.create(:final_submission_file, submission: final_submission)
           end
 
-          it 'returns 200 but does not queue the job' do
+          it 'returns 200 but only queues the job for non-remediated files' do
             FactoryBot.create(:remediated_final_submission_file,
                               final_submission_file: final_submission_file)
             allow(AutoRemediateWorker).to receive(:perform_async)
             post path, params: { final_submission_file_id: final_submission_file.id }.to_json, headers: headers
 
-            expect(AutoRemediateWorker).not_to have_received(:perform_async)
+            expect(AutoRemediateWorker).not_to have_received(:perform_async).with(final_submission_file.id)
+            expect(AutoRemediateWorker).to have_received(:perform_async).with(final_submission_file_2.id)
             expect(response).to have_http_status(:ok)
             expect(final_submission_file.reload.remediation_started_at).to be_nil
+            expect(final_submission_file_2.reload.remediation_started_at).not_to be_nil
           end
         end
 
