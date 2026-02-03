@@ -3,9 +3,11 @@
 class Webhooks::AutoRemediateController < Webhooks::BaseController
   def create
     if params[:final_submission_file_id].present?
-      if can_remediate?
-        final_submission_file.update_column(:remediation_started_at, Time.current)
-        AutoRemediateWorker.perform_async(params[:final_submission_file_id])
+      final_submission.final_submission_files.each do |file|
+        if file.can_remediate?
+          file.update_column(:remediation_started_at, Time.current)
+          AutoRemediateWorker.perform_async(file.id)
+        end
       end
       head :ok
     else
@@ -25,13 +27,8 @@ class Webhooks::AutoRemediateController < Webhooks::BaseController
       head :unauthorized unless ActiveSupport::SecurityUtils.secure_compare(token, secret)
     end
 
-    def can_remediate?
-      final_submission_file.pdf? &&
-        final_submission_file.remediation_started_at.nil? &&
-        final_submission_file.remediated_final_submission_file.blank?
-    end
-
-    def final_submission_file
-      @final_submission_file ||= FinalSubmissionFile.find(params[:final_submission_file_id])
+    def final_submission
+      requested_file = FinalSubmissionFile.find(params[:final_submission_file_id])
+      @final_submission ||= requested_file.submission
     end
 end
