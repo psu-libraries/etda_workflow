@@ -17,6 +17,7 @@ class Webhooks::AutoRemediateController < Webhooks::BaseController
   end
 
   private
+
     def authenticate_request
       secret = ExternalApp.etda_explore.token
 
