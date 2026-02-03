@@ -15,11 +15,10 @@ module Api
       #   curl -X POST http://localhost:3000/api/v1/committee_records/faculty_committees \
       #     -H "Content-Type: application/json" \
       #     -H "Authorization: Bearer your_token_here"\
-      #     -d '{"access_id": "mms8130"}'
+      #     -d '{"access_id": "aab27"}'
 
       def faculty_committees
         access_id = params[:access_id]
-
         # Validate required parameter
         if access_id.blank?
           render json: { error: 'access_id is required' }, status: :bad_request
@@ -36,6 +35,8 @@ module Api
           faculty_access_id: access_id,
           committees: format_committees(committee_memberships)
         }, status: :ok
+      rescue StandardError => e
+        render json: { error: e.message }, status: :internal_server_error
       end
 
       private
@@ -84,7 +85,8 @@ module Api
               role_code: membership.committee_role&.code,
 
               # Student information
-              student_name: submission.author&.name || "Unknown",
+              student_fname: submission.author&.first_name || "Unknown",
+              student_lname: submission.author&.last_name || "Unknown",
               student_access_id: submission.author&.access_id,
 
               # Submission information
