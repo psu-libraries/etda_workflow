@@ -49,6 +49,10 @@ class FinalSubmissionFile < ApplicationRecord
     asset.content_type == 'application/pdf'
   end
 
+  def can_remediate?
+    pdf? && remediation_started_at.nil? && remediated_final_submission_file.blank?
+  end
+
   private
 
     def move_file

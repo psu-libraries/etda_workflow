@@ -97,4 +97,46 @@ RSpec.describe FinalSubmissionFile, type: :model do
       end
     end
   end
+
+  describe '#can_remediate?' do
+    context 'when the file is not a PDF' do
+      let(:jpg_file) { FactoryBot.create(:final_submission_file, :jpg) }
+
+      it 'returns false' do
+        expect(jpg_file.can_remediate?).to be false
+      end
+    end
+
+    context 'when the file is a PDF' do
+      let(:pdf_file) { FactoryBot.create(:final_submission_file, :pdf) }
+
+      context 'when remediation has started' do
+        before do
+          pdf_file.update(remediation_started_at: Time.current)
+        end
+
+        it 'returns false' do
+          expect(pdf_file.can_remediate?).to be false
+        end
+      end
+
+      context 'when remediation has not started' do
+        context 'when there is already a remediated file' do
+          before do
+            FactoryBot.create(:remediated_final_submission_file, final_submission_file: pdf_file)
+          end
+
+          it 'returns false' do
+            expect(pdf_file.can_remediate?).to be false
+          end
+        end
+
+        context 'when there is no remediated file' do
+          it 'returns true' do
+            expect(pdf_file.can_remediate?).to be true
+          end
+        end
+      end
+    end
+  end
 end
