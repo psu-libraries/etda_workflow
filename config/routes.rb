@@ -24,11 +24,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :committee_records, only: [] do
-        collection do
-          post :faculty_committees
-        end
-      end
+        post "committee_records/faculty_committees"
     end
   end
 
