@@ -66,54 +66,55 @@ module Api
           render json: { error: "Unauthorized" }, status: :unauthorized
         end
 
-        # Format committee memberships for Activity Insight
-        # Returns an array of committee membership objects
         def format_committees(committee_memberships)
-          committee_memberships.map do |membership|
-            submission = membership.submission
+          committee_memberships.map { |membership| committee_payload(membership) }
+        end
 
-            # Build the committee data object
-            {
-              # Committee member info
-              committee_member_id: membership.id,
-              faculty_name: membership.name,
-              faculty_email: membership.email,
-              faculty_access_id: membership.access_id,
+        def committee_payload(membership)
+          submission = membership.submission
+          author = submission&.author
 
-              # Committee role
-              role: membership.committee_role&.name,
-              role_code: membership.committee_role&.code,
+          # Build the committee data object
+          {
+            # Committee member info
+            committee_member_id: membership.id,
+            faculty_name: membership.name,
+            faculty_email: membership.email,
+            faculty_access_id: membership.access_id,
 
-              # Student information
-              student_fname: submission.author&.first_name || "Unknown",
-              student_lname: submission.author&.last_name || "Unknown",
-              student_access_id: submission.author&.access_id,
+            # Committee role
+            role: membership.committee_role&.name,
+            role_code: membership.committee_role&.code,
 
-              # Submission information
-              submission_id: submission.id,
-              title: submission.title,
-              degree_name: submission.degree&.name,
-              program_name: submission.program&.name,
-              semester: submission.semester,
-              year: submission.year,
+            # Student information
+            student_fname: author&.first_name || "Unknown",
+            student_lname: author&.last_name || "Unknown",
+            student_access_id: author&.access_id,
 
-              # Important dates
-              defended_at: submission.defended_at,
-              committee_provided_at: submission.committee_provided_at,
-              final_submission_approved_at: submission.final_submission_approved_at,
+            # Submission information
+            submission_id: submission.id,
+            title: submission.title,
+            degree_name: submission.degree&.name,
+            program_name: submission.program&.name,
+            semester: submission.semester,
+            year: submission.year,
 
-              # Status information
-              submission_status: submission.status,
-              committee_member_status: membership.status,
-              approved_at: membership.approved_at,
-              rejected_at: membership.rejected_at,
+            # Important dates
+            defended_at: submission.defended_at,
+            committee_provided_at: submission.committee_provided_at,
+            final_submission_approved_at: submission.final_submission_approved_at,
 
-              # Additional metadata
-              is_required: membership.is_required,
-              is_voting: membership.is_voting,
-              federal_funding_used: membership.federal_funding_used
-            }
-          end
+            # Status information
+            submission_status: submission.status,
+            committee_member_status: membership.status,
+            approved_at: membership.approved_at,
+            rejected_at: membership.rejected_at,
+
+            # Additional metadata
+            is_required: membership.is_required,
+            is_voting: membership.is_voting,
+            federal_funding_used: membership.federal_funding_used
+          }
         end
     end
   end
