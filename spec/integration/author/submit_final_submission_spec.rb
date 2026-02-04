@@ -43,6 +43,7 @@ RSpec.describe 'Submitting a final submission as an author', :js, type: :integra
         else
           find('#submission_federal_funding_false').click
         end
+        expect(page).to have_content(I18n.t("#{current_partner.id}.accessible_version_heading")) unless current_partner.sset?
         expect(page).to have_content('I hereby certify that')
         check 'I agree to copyright statement'
         check 'I agree to ProQuest statement' if current_partner.graduate?
