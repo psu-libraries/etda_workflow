@@ -18,8 +18,6 @@ Rails.application.routes.draw do
 
   get '/', to: redirect(path: '/main')
 
-  mount Sidekiq::Web => '/sidekiq'
-
   mount OkComputer::Engine, at: "/healthcheck"
 
   ## works: get '/committee_members/autocomplete', to: 'ldap_lookup#autocomplete', as: :committee_members_autocomplete
@@ -43,6 +41,10 @@ Rails.application.routes.draw do
     resources :approval_configurations, except: [:new, :create, :destroy]
     resources :authors,  except: [:new, :create, :show, :destroy]
 
+    authenticate :admin do
+      mount Sidekiq::Web => '/sidekiq'
+    end
+
     get '/custom_report', to: 'reports#custom_report_index', as: :custom_report_index
     patch '/custom_report_export', to: 'reports#custom_report_export', defaults: { format: 'csv' }, as: :custom_report_export
     get '/committee_report', to: 'reports#committee_report_index', as: :committee_report_index
@@ -52,7 +54,6 @@ Rails.application.routes.draw do
     get '/committee_member_report', to: 'reports#committee_member_report_index', as: :committee_member_report_index
     patch '/committee_member_report_export', to: 'reports#committee_member_report_export', defaults: { format: 'csv' }, as: :committee_member_report_export
     patch '/graduate_data_report_export', to: 'reports#graduate_data_report_export', defaults: { format: 'json' }, as: :graduate_data_report_export
-
 
     get '/authors/contact_list', to: 'authors#email_contact_list', as: :email_contact_list
 
