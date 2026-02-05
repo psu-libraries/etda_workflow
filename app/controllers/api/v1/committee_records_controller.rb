@@ -28,6 +28,7 @@ module Api
         # Find all committee memberships for this faculty member
         # Note: We search by access_id which is the PSU ID
         committee_memberships = CommitteeMember
+                                .joins(:submission).where('submissions.status LIKE "released for publication%" OR submissions.status = "waiting for publication release"')
                                 .includes(:committee_role, submission: [:author, :degree, :program])
                                 .where(access_id: access_id)
 
@@ -78,17 +79,14 @@ module Api
           {
             # Committee member info
             committee_member_id: membership.id,
-            faculty_name: membership.name,
-            faculty_email: membership.email,
-            faculty_access_id: membership.access_id,
 
             # Committee role
             role: membership.committee_role&.name,
             role_code: membership.committee_role&.code,
 
             # Student information
-            student_fname: author&.first_name || "Unknown",
-            student_lname: author&.last_name || "Unknown",
+            student_fname: author&.first_name,
+            student_lname: author&.last_name,
             student_access_id: author&.access_id,
 
             # Submission information
@@ -100,20 +98,12 @@ module Api
             year: submission.year,
 
             # Important dates
-            defended_at: submission.defended_at,
-            committee_provided_at: submission.committee_provided_at,
+            approval_started_at: membership.approval_started_at,
             final_submission_approved_at: submission.final_submission_approved_at,
 
             # Status information
             submission_status: submission.status,
-            committee_member_status: membership.status,
-            approved_at: membership.approved_at,
-            rejected_at: membership.rejected_at,
-
-            # Additional metadata
-            is_required: membership.is_required,
-            is_voting: membership.is_voting,
-            federal_funding_used: membership.federal_funding_used
+            committee_member_status: membership.status
           }
         end
     end
