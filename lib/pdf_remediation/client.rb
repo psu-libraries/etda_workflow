@@ -51,7 +51,7 @@ module PdfRemediation
       end
 
       def api_key
-        @api_key ||= ENV['PDF_REMEDIATION_API_KEY'] or raise(MissingConfiguration, 'PDF_REMEDIATION_API_KEY is not set')
+        @api_key ||= ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] or raise(MissingConfiguration, "PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase} is not set")
       end
   end
 end
