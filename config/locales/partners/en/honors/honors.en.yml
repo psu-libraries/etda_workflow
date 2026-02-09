@@ -232,6 +232,11 @@ en:
       restricted_attr:
         description_html: 'The option selected secures the body of the thesis for a period of two years. Selection of this option requires that an invention disclosure (ID) be filed with the Office of Technology Management (OTM) prior to submission of the final honors thesis and confirmed by OTM. At the end of the two-year period, the work will be released automatically for open access unless a written request is made to extend this option for an additional year. The written request for an extension should be sent 30 days prior to the end of the two-year period to the Honors College Records Department, 10 Schreyer Honors College, The Pennsylvania State University, University Park, PA 16802, or by e-mail to %{link}. Please note: No one will be able to view your work under this option.'
         scope: final_withheld
+    accessible_version_heading: 'Accessible Version Generation Privacy Notice'
+    accessible_version_notice: |
+      When your PDF is downloaded for the first time, an accessible version will be created to meet ADA Title II requirements.
+      Your file will be temporarily processed by Adobe to generate an accessible format.
+      Images will be temporarily sent to AWS Bedrock for AI-generated alt-text.
     download:
       login_html: 'Login using your Penn State access account to view the paper.'
     approver:
