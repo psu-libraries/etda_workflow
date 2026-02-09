@@ -48,7 +48,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
 
   describe "internal error handling" do
     it "returns 500 when an exception occurs" do
-      allow(CommitteeMember).to receive(:includes).and_raise(StandardError.new("boom"))
+      allow(CommitteeMember).to receive(:joins).and_raise(StandardError.new("boom"))
 
       post path, params: { access_id: "aab27" }.to_json, headers: headers
 
@@ -58,49 +58,113 @@ RSpec.describe "CommitteeRecords API", type: :request do
   end
 
   describe "response body structure" do
-    it "returns committee payload with core fields" do
-      committee_role = instance_double("CommitteeRole", name: "Advisor", code: "ADV")
-      author = instance_double("Author", first_name: "Ada", last_name: "Lovelace", access_id: "apl123")
+    let(:relation) { instance_double("ActiveRecord::Relation") }
 
-      submission = instance_double(
-        "Submission",
-        id: 42,
-        title: "Thesis Title",
-        semester: "Spring",
-        year: 2026,
-        degree: nil,
-        program: nil,
-        final_submission_approved_at: nil,
-        status: "released for publication"
+    before do
+      allow(CommitteeMember).to receive(:joins).with(:submission).and_return(relation)
+
+      allow(relation).to receive_messages(
+        where: relation,
+        includes: relation
       )
+    end
 
-      allow(submission).to receive(:author).and_return(author)
+    describe "when submission is complete" do
+      it "returns key submission and student fields" do
+        committee_role = instance_double("CommitteeRole", name: "Advisor", code: "ADV")
+        author = instance_double("Author", first_name: "Ada", last_name: "Lovelace", access_id: "apl123")
 
-      membership = instance_double(
-        "CommitteeMember",
-        id: 7,
-        committee_role: committee_role,
-        submission: submission,
-        approval_started_at: nil,
-        status: "approved"
-      )
+        degree = instance_double("Degree", name: "MS")
+        program = instance_double("Program", name: "Computer Science")
 
-      allow(CommitteeMember).to receive_messages(includes: CommitteeMember, where: [membership])
+        submission = instance_double(
+          "Submission",
+          id: 42,
+          title: "Thesis Title",
+          semester: "Spring",
+          year: 2026,
+          degree: degree,
+          program: program,
+          final_submission_approved_at: nil,
+          status: "released for publication",
+          author: author
+        )
 
-      post path, params: { access_id: "aab27" }.to_json, headers: headers
+        membership = instance_double(
+          "CommitteeMember",
+          id: 7,
+          committee_role: committee_role,
+          submission: submission,
+          approval_started_at: nil,
+          status: "approved"
+        )
 
-      expect(response).to have_http_status(:ok)
+        allow(relation).to receive(:where).with(access_id: "aab27").and_return([membership])
 
-      json = JSON.parse(response.body)
-      committee = json["committees"].first
+        post path, params: { access_id: "aab27" }.to_json, headers: headers
 
-      expect(committee).to include(
-        "committee_member_id" => 7,
-        "role" => "Advisor",
-        "student_access_id" => "apl123",
-        "submission_id" => 42,
-        "title" => "Thesis Title"
-      )
+        expect(response).to have_http_status(:ok)
+
+        committee = JSON.parse(response.body)["committees"].first
+
+        expect(committee).to include(
+          "committee_member_id" => 7,
+          "role" => "Advisor",
+          "student_access_id" => "apl123",
+          "submission_id" => 42,
+          "title" => "Thesis Title"
+        )
+
+        expect(committee["degree_name"]).to eq("MS")
+        expect(committee["program_name"]).to eq("Computer Science")
+      end
+    end
+
+    describe "when submission data is blank" do
+      it "returns nils for safe fields" do
+        committee_role = instance_double("CommitteeRole", name: nil, code: nil)
+
+        submission = instance_double(
+          "Submission",
+          id: 42,
+          title: nil,
+          semester: nil,
+          year: nil,
+          degree: nil,
+          program: nil,
+          final_submission_approved_at: nil,
+          status: "waiting for publication release",
+          author: nil
+        )
+
+        membership = instance_double(
+          "CommitteeMember",
+          id: 7,
+          committee_role: committee_role,
+          submission: submission,
+          approval_started_at: nil,
+          status: nil
+        )
+
+        allow(relation).to receive(:where).with(access_id: "aab27").and_return([membership])
+
+        post path, params: { access_id: "aab27" }.to_json, headers: headers
+
+        expect(response).to have_http_status(:ok)
+
+        committee = JSON.parse(response.body)["committees"].first
+
+        expect(committee).to include(
+          "committee_member_id" => 7,
+          "submission_id" => 42
+        )
+
+        expect(committee["role"]).to be_nil
+        expect(committee["student_access_id"]).to be_nil
+        expect(committee["title"]).to be_nil
+        expect(committee["degree_name"]).to be_nil
+        expect(committee["program_name"]).to be_nil
+      end
     end
   end
 end
