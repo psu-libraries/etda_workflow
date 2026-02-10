@@ -25,24 +25,32 @@ RSpec.describe PdfRemediation::Client do
     allow(response).to receive_messages(status: 200, body: %{{"uuid": "uuid-123"}})
   end
 
-  describe '#request_remediation' do
+  after do
+    ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] = "testValue"
+    ENV['PDF_REMEDIATION_ENDPOINT'] = "testValue"
+  end
+
+
+  describe '#request_remediation', :honors, :milsch do
     context 'when PDF_REMEDIATION_ENDPOINT has not been configured' do
-      before { ENV['PDF_REMEDIATION_ENDPOINT'] = nil }
-      after { ENV['PDF_REMEDIATION_ENDPOINT'] = endpoint }
+      before do
+        ENV['PDF_REMEDIATION_ENDPOINT'] = nil
+      end
 
       it 'raises an error' do
         expect { client.request_remediation }.to raise_error PdfRemediation::Client::MissingConfiguration
       end
     end
 
-    # context 'when PDF_REMEDIATION_API_KEY for partner has not been configured' do
-    #   before { ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] = nil }
-    #   after { ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] = api_key }
+    context 'when PDF_REMEDIATION_API_KEY for the current partner has not been configured' do
+      before do
+        ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] = nil
+      end
 
-    #   it 'raises an error' do
-    #     expect { client.request_remediation }.to raise_error PdfRemediation::Client::MissingConfiguration
-    #   end
-    # end
+      it 'raises an error' do
+        expect { client.request_remediation }.to raise_error PdfRemediation::Client::MissingConfiguration
+      end
+    end
 
     context 'when Faraday::Error is raised' do
       before { allow(connection).to receive(:post).and_raise Faraday::Error }
