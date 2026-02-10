@@ -166,5 +166,74 @@ RSpec.describe "CommitteeRecords API", type: :request do
         expect(committee["program_name"]).to be_nil
       end
     end
+
+    describe "when faculty has multiple committees" do
+      it "returns all committee memberships for the faculty access_id" do
+        relation = instance_double("ActiveRecord::Relation")
+        allow(CommitteeMember).to receive(:joins).with(:submission).and_return(relation)
+        allow(relation).to receive_messages(where: relation, includes: relation)
+
+        role1 = instance_double("CommitteeRole", name: "Advisor", code: "ADV")
+        role2 = instance_double("CommitteeRole", name: "Reader", code: "RDR")
+        author = instance_double("Author", first_name: "Ada", last_name: "Lovelace", access_id: "apl123")
+
+        submission1 = instance_double(
+          "Submission",
+          id: 101,
+          title: "Thesis One",
+          semester: "Spring",
+          year: 2026,
+          degree: nil,
+          program: nil,
+          final_submission_approved_at: nil,
+          status: "released for publication",
+          author: author
+        )
+
+        submission2 = instance_double(
+          "Submission",
+          id: 202,
+          title: "Thesis Two",
+          semester: "Fall",
+          year: 2025,
+          degree: nil,
+          program: nil,
+          final_submission_approved_at: nil,
+          status: "waiting for publication release",
+          author: author
+        )
+
+        membership1 = instance_double(
+          "CommitteeMember",
+          id: 1,
+          committee_role: role1,
+          submission: submission1,
+          approval_started_at: nil,
+          status: "approved"
+        )
+
+        membership2 = instance_double(
+          "CommitteeMember",
+          id: 2,
+          committee_role: role2,
+          submission: submission2,
+          approval_started_at: nil,
+          status: "pending"
+        )
+
+        allow(relation).to receive(:where).with(access_id: "aab27").and_return([membership1, membership2])
+
+        post path, params: { access_id: "aab27" }.to_json, headers: headers
+
+        expect(response).to have_http_status(:ok)
+
+        body = JSON.parse(response.body)
+        expect(body["faculty_access_id"]).to eq("aab27")
+        expect(body["committees"].size).to eq(2)
+
+        ids = body["committees"].map { |c| c["committee_member_id"] }
+        expect(ids).to contain_exactly(1, 2)
+      end
+    end
   end
 end
