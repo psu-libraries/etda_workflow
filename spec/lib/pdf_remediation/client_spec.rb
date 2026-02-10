@@ -15,6 +15,11 @@ RSpec.describe PdfRemediation::Client do
   let!(:endpoint) { ENV['PDF_REMEDIATION_ENDPOINT'] }
   let!(:api_key) { ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] }
 
+  before(:all) do
+    ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] = 'test_key'
+    ENV['PDF_REMEDIATION_ENDPOINT'] = 'test_endpoint'
+  end
+
   before do
     allow(Faraday).to receive(:new).with(
       url: endpoint,
@@ -26,10 +31,9 @@ RSpec.describe PdfRemediation::Client do
   end
 
   after do
-    ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] = "testValue"
-    ENV['PDF_REMEDIATION_ENDPOINT'] = "testValue"
+    ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] = 'test_key'
+    ENV['PDF_REMEDIATION_ENDPOINT'] = 'test_endpoint'
   end
-
 
   describe '#request_remediation', :honors, :milsch do
     context 'when PDF_REMEDIATION_ENDPOINT has not been configured' do
