@@ -54,3 +54,9 @@ export LP_EXPORT_TEST=
 # --- Partner Context ---
 # One of: graduate | honors | milsch | sset
 export PARTNER=graduate
+
+# --- PDF Remediation API
+export PDF_REMEDIATION_ENDPOINT=
+export PDF_REMEDIATION_API_KEY_GRADUATE=
+export PDF_REMEDIATION_API_KEY_HONORS=
+export PDF_REMEDIATION_API_KEY_MILSCH=

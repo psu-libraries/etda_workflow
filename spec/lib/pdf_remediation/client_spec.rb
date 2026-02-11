@@ -4,6 +4,7 @@
 # If this client is used in more than two places, we should consider extracting it into a gem.
 
 require 'spec_helper'
+require 'model_spec_helper'
 require 'pdf_remediation/client'
 
 RSpec.describe PdfRemediation::Client do
@@ -12,7 +13,12 @@ RSpec.describe PdfRemediation::Client do
   let(:request) { instance_spy Faraday::Request }
   let(:response) { instance_double Faraday::Response }
   let!(:endpoint) { ENV['PDF_REMEDIATION_ENDPOINT'] }
-  let!(:api_key) { ENV['PDF_REMEDIATION_API_KEY'] }
+  let!(:api_key) { ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] }
+
+  before(:all) do
+    ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] = 'test_key'
+    ENV['PDF_REMEDIATION_ENDPOINT'] = 'test_endpoint'
+  end
 
   before do
     allow(Faraday).to receive(:new).with(
@@ -24,19 +30,26 @@ RSpec.describe PdfRemediation::Client do
     allow(response).to receive_messages(status: 200, body: %{{"uuid": "uuid-123"}})
   end
 
-  describe '#request_remediation' do
+  after do
+    ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] = 'test_key'
+    ENV['PDF_REMEDIATION_ENDPOINT'] = 'test_endpoint'
+  end
+
+  describe '#request_remediation', :honors, :milsch do
     context 'when PDF_REMEDIATION_ENDPOINT has not been configured' do
-      before { ENV['PDF_REMEDIATION_ENDPOINT'] = nil }
-      after { ENV['PDF_REMEDIATION_ENDPOINT'] = endpoint }
+      before do
+        ENV['PDF_REMEDIATION_ENDPOINT'] = nil
+      end
 
       it 'raises an error' do
         expect { client.request_remediation }.to raise_error PdfRemediation::Client::MissingConfiguration
       end
     end
 
-    context 'when PDF_REMEDIATION_API_KEY has not been configured' do
-      before { ENV['PDF_REMEDIATION_API_KEY'] = nil }
-      after { ENV['PDF_REMEDIATION_API_KEY'] = api_key }
+    context 'when PDF_REMEDIATION_API_KEY for the current partner has not been configured' do
+      before do
+        ENV["PDF_REMEDIATION_API_KEY_#{current_partner.id.upcase}"] = nil
+      end
 
       it 'raises an error' do
         expect { client.request_remediation }.to raise_error PdfRemediation::Client::MissingConfiguration
