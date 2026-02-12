@@ -1,0 +1,86 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/committee_records":
+    post:
+      summary: Retrieves committee records
+      tags:
+      - Committee Records
+      description: Retrieves committee records for a faculty member based on their
+        access ID (PSU)
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: committee records retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  committee_records:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        committee_member_id:
+                          type: integer
+                        role:
+                          type: string
+                          nullable: true
+                        role_code:
+                          type: string
+                          nullable: true
+                        student_fname:
+                          type: string
+                          nullable: true
+                        student_lname:
+                          type: string
+                          nullable: true
+                        student_access_id:
+                          type: string
+                          nullable: true
+                        submission_id:
+                          type: integer
+                          nullable: true
+                        title:
+                          type: string
+                          nullable: true
+                        degree_name:
+                          type: string
+                          nullable: true
+                        program_name:
+                          type: string
+                          nullable: true
+                        semester:
+                          type: string
+                          nullable: true
+                        year:
+                          type: integer
+                          nullable: true
+                        approval_started_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        final_submission_approved_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        submission_status:
+                          type: string
+                          nullable: true
+                        committee_member_status:
+                          type: string
+                          nullable: true
+                required:
+                - committee_records
+        '401':
+          description: unauthorized
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
