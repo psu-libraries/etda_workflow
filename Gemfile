@@ -95,6 +95,8 @@ group :development, :test do
   # Coverage report
   gem 'simplecov', '~> 0.17.0'
   gem 'mutex_m'
+  # API documentation
+  gem 'rswag' 
 end
 
 group :development do
