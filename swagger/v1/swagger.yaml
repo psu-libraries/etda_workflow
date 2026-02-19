@@ -4,7 +4,7 @@ info:
   title: API V1
   version: v1
 paths:
-  "/api/v1/committee_records":
+  "/api/v1/committee_records/faculty_committees":
     post:
       summary: Retrieves committee records
       tags:
@@ -12,7 +12,14 @@ paths:
       description: Retrieves committee records for a faculty member based on their
         access ID (PSU)
       security:
-      - Bearer: []
+      - BearerAuth: []
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer token for authentication
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: committee records retrieved
@@ -76,9 +83,42 @@ paths:
                           type: string
                           nullable: true
                 required:
+                - faculty_access_id
                 - committee_records
+        '400':
+          description: access_id missing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_id:
+                  type: string
+                  example: aab27
+              required:
+              - access_id
+        required: true
 servers:
 - url: https://{defaultHost}
   variables:

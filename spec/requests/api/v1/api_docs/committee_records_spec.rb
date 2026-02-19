@@ -1,14 +1,38 @@
-RSpec.describe 'API::V1::CommitteeRecords' do
-  path '/api/v1/committee_records' do
+require 'swagger_helper'
+
+RSpec.describe 'API::V1::CommitteeRecords', type: :request do
+  path '/api/v1/committee_records/faculty_committees' do
     post 'Retrieves committee records' do
       tags 'Committee Records'
       produces 'application/json'
       consumes 'application/json'
 
       description 'Retrieves committee records for a faculty member based on their access ID (PSU)'
-      security [Bearer: []]
+      security [BearerAuth: []]
+
+      parameter name: :Authorization,
+                in: :header,
+                type: :string,
+                description: 'Bearer token for authentication',
+                required: true
+
+      parameter name: :payload,
+                in: :body,
+                required: true,
+                schema: {
+                  type: :object,
+                  properties: {
+                    access_id: { type: :string, example: 'aab27' }
+                  },
+                  required: ['access_id']
+                }
+      let!(:external_app) { ExternalApp.create!(name: 'Test App') }
+      let!(:api_token) { ApiToken.create!(token: 'test_token', external_app: external_app) }
 
       response '200', 'committee records retrieved' do
+        let(:Authorization) { "Bearer #{api_token.token}" }
+        let(:payload) { { access_id: 'aab27' } }
+
         schema type: :object,
                properties: {
                  committee_records: {
@@ -36,17 +60,35 @@ RSpec.describe 'API::V1::CommitteeRecords' do
                    }
                  }
                },
-               required: ['committee_records']
-
-        let(:Authorization) { "Bearer valid_api_token" }
+               required: ['faculty_access_id', 'committee_records']
 
         run_test!
       end
 
-      response '401', 'unauthorized' do
-        let(:Authorization) { 'Bearer invalid_api_token' }
+      response '400', 'access_id missing' do
+        let(:Authorization) { "Bearer #{api_token.token}" }
+        let(:payload) { {} }
 
-        run_test!
+        schema type: :object,
+               properties: { error: { type: :string } },
+               required: ['error']
+
+        run_test! do |response|
+          expect(JSON.parse(response.body)['error']).to eq('access_id is required')
+        end
+      end
+
+      response '401', 'unauthorized' do
+        let(:Authorization) { nil }
+        let(:payload) { { access_id: 'aab27' } }
+
+        schema type: :object,
+               properties: { error: { type: :string } },
+               required: ['error']
+
+        run_test! do |response|
+          expect(JSON.parse(response.body)['error']).to eq('Unauthorized')
+        end
       end
     end
   end
