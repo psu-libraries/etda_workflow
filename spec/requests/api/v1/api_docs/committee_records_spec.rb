@@ -35,7 +35,7 @@ RSpec.describe 'API::V1::CommitteeRecords', type: :request do
 
         schema type: :object,
                properties: {
-                 committee_records: {
+                 committees: {
                    type: :array,
                    items: {
                      type: :object,
@@ -60,7 +60,7 @@ RSpec.describe 'API::V1::CommitteeRecords', type: :request do
                    }
                  }
                },
-               required: ['faculty_access_id', 'committee_records']
+               required: ['faculty_access_id', 'committees']
 
         run_test!
       end
