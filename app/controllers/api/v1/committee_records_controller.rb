@@ -1,32 +1,17 @@
 module Api
   module V1
     class CommitteeRecordsController < ApplicationController
-      # Skip CSRF token verification for API requests
       skip_before_action :verify_authenticity_token
 
-      # Authentication filter
       before_action :authenticate_api_key
-
-      # POST /api/v1/committee_records/faculty_committees
-      # Expected params: { access_id: "xyz123" }
-      # Returns: JSON with all committee memberships for the faculty member
-      #
-      # Example request:
-      #   curl -X POST http://localhost:3000/api/v1/committee_records/faculty_committees \
-      #     -H "Content-Type: application/json" \
-      #     -H "Authorization: Bearer your_token_here"\
-      #     -d '{"access_id": "aab27"}'
 
       def faculty_committees
         access_id = params[:access_id]
-        # Validate required parameter
         if access_id.blank?
           render json: { error: 'access_id is required' }, status: :bad_request
           return
         end
 
-        # Find all committee memberships for this faculty member
-        # Note: We search by access_id which is the PSU ID
         committee_memberships = CommitteeMember
                                 .joins(:submission).where('submissions.status LIKE "released for publication%" OR submissions.status = "waiting for publication release"')
                                 .includes(:committee_role, submission: [:author, :degree, :program])
@@ -42,8 +27,7 @@ module Api
 
       private
 
-        # Authenticate using API Key from environment variable
-        # The API Key should be passed in the Authorization header
+
         def authenticate_api_key
           raw = request.headers["Authorization"].to_s.strip
 
@@ -75,7 +59,6 @@ module Api
           submission = membership.submission
           author = submission&.author
 
-          # Build the committee data object
           {
             # Committee member info
             committee_member_id: membership.id,

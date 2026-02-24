@@ -28,7 +28,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  committee_records:
+                  committees:
                     type: array
                     items:
                       type: object
@@ -84,7 +84,7 @@ paths:
                           nullable: true
                 required:
                 - faculty_access_id
-                - committee_records
+                - committees
         '400':
           description: access_id missing
           content:
