@@ -2,9 +2,6 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  mount Rswag::Api::Engine => '/api-docs'
-  mount Rswag::Ui::Engine => '/api-docs'
-
   devise_for :approvers, path: 'approver'
   devise_for :authors, path: 'author'
   devise_for :admins, path: 'admin'
@@ -51,6 +48,8 @@ Rails.application.routes.draw do
 
     authenticate :admin do
       mount Sidekiq::Web => '/sidekiq'
+      mount Rswag::Api::Engine => '/api-docs'
+      mount Rswag::Ui::Engine => '/api-docs'
     end
 
     get '/custom_report', to: 'reports#custom_report_index', as: :custom_report_index

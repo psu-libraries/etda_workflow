@@ -27,7 +27,6 @@ module Api
 
       private
 
-
         def authenticate_api_key
           raw = request.headers["Authorization"].to_s.strip
 
