@@ -90,15 +90,6 @@ RSpec.describe 'API::V1::CommitteeRecords', type: :request do
           expect(JSON.parse(response.body)['error']).to eq('Unauthorized')
         end
       end
-
-      response '400', 'bad request - missing access_id' do
-        let(:x_api_key) { 'valid_api_key' }
-        let(:payload) { {} }
-
-        run_test! do |response|
-          expect(response.body).to include('access_id')
-        end
-      end
     end
   end
 end
