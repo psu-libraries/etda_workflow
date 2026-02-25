@@ -59,19 +59,15 @@ module Api
           author = submission&.author
 
           {
-            # Committee member info
             committee_member_id: membership.id,
 
-            # Committee role
             role: membership.committee_role&.name,
             role_code: membership.committee_role&.code,
 
-            # Student information
             student_fname: author&.first_name,
             student_lname: author&.last_name,
             student_access_id: author&.access_id,
 
-            # Submission information
             submission_id: submission.id,
             title: submission.title,
             degree_name: submission.degree&.name,
@@ -79,11 +75,9 @@ module Api
             semester: submission.semester,
             year: submission.year,
 
-            # Important dates
             approval_started_at: membership.approval_started_at,
             final_submission_approved_at: submission.final_submission_approved_at,
 
-            # Status information
             submission_status: submission.status,
             committee_member_status: membership.status
           }
