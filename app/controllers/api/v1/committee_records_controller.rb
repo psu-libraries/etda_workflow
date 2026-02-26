@@ -28,14 +28,7 @@ module Api
       private
 
         def authenticate_api_key
-          raw = request.headers["Authorization"].to_s.strip
-
-          token =
-            if raw.downcase.start_with?("bearer ")
-              raw.split(" ", 2).last.to_s.strip
-            else
-              raw
-            end
+          token = request.headers['HTTP_X_API_KEY']
 
           @api_token = ApiToken.includes(:external_app).find_by(token: token)
           return unauthorized! unless @api_token

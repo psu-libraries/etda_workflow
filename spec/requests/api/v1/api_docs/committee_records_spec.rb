@@ -1,6 +1,9 @@
 require 'swagger_helper'
 
 RSpec.describe 'API::V1::CommitteeRecords', type: :request do
+  let!(:external_app) { ExternalApp.create!(name: "Test App") }
+  let!(:api_token) { ApiToken.create!(token: "test_token", external_app: external_app) }
+
   path '/api/v1/committee_records/faculty_committees' do
     post 'Retrieves committee records' do
       tags 'Committee Records'
@@ -8,13 +11,7 @@ RSpec.describe 'API::V1::CommitteeRecords', type: :request do
       consumes 'application/json'
 
       description 'Retrieves committee records for a faculty member based on their access ID (PSU)'
-      security [BearerAuth: []]
-
-      parameter name: :Authorization,
-                in: :header,
-                type: :string,
-                description: 'Bearer token for authentication',
-                required: true
+      security [ApiKeyAuth: []]
 
       parameter name: :payload,
                 in: :body,
@@ -30,7 +27,7 @@ RSpec.describe 'API::V1::CommitteeRecords', type: :request do
       let!(:api_token) { ApiToken.create!(token: 'test_token', external_app: external_app) }
 
       response '200', 'committee records retrieved' do
-        let(:Authorization) { "Bearer #{api_token.token}" }
+        let(:'X-API-KEY') { external_app.token }
         let(:payload) { { access_id: 'aab27' } }
 
         schema type: :object,
@@ -40,22 +37,22 @@ RSpec.describe 'API::V1::CommitteeRecords', type: :request do
                    items: {
                      type: :object,
                      properties: {
-                       committee_member_id: { type: :integer },
-                       role: { type: :string, nullable: true },
-                       role_code: { type: :string, nullable: true },
-                       student_fname: { type: :string, nullable: true },
-                       student_lname: { type: :string, nullable: true },
-                       student_access_id: { type: :string, nullable: true },
-                       submission_id: { type: :integer, nullable: true },
-                       title: { type: :string, nullable: true },
-                       degree_name: { type: :string, nullable: true },
-                       program_name: { type: :string, nullable: true },
-                       semester: { type: :string, nullable: true },
-                       year: { type: :integer, nullable: true },
-                       approval_started_at: { type: :string, format: 'date-time', nullable: true },
-                       final_submission_approved_at: { type: :string, format: 'date-time', nullable: true },
-                       submission_status: { type: :string, nullable: true },
-                       committee_member_status: { type: :string, nullable: true }
+                       committee_member_id: { type: :integer, example: 789 },
+                       role: { type: :string, nullable: true, example: 'Director' },
+                       role_code: { type: :string, nullable: true, example: 'DI' },
+                       student_fname: { type: :string, nullable: true, example: 'Muhammad' },
+                       student_lname: { type: :string, nullable: true, example: 'Siddiqui' },
+                       student_access_id: { type: :string, nullable: true, example: 'ums467' },
+                       submission_id: { type: :integer, nullable: true, example: 43 },
+                       title: { type: :string, nullable: true, example: 'SPIDERMAN' },
+                       degree_name: { type: :string, nullable: true, example: 'Masters' },
+                       program_name: { type: :string, nullable: true, example: 'Computer science' },
+                       semester: { type: :string, nullable: true, example: 'Fall' },
+                       year: { type: :integer, nullable: true, example: 2028 },
+                       approval_started_at: { type: :string, format: 'date-time', nullable: true, example: Time.now },
+                       final_submission_approved_at: { type: :string, format: 'date-time', nullable: true, example: Time.now },
+                       submission_status: { type: :string, nullable: true, example: 'released for publication' },
+                       committee_member_status: { type: :string, nullable: true, example: 'approved' }
                      }
                    }
                  }
@@ -66,11 +63,11 @@ RSpec.describe 'API::V1::CommitteeRecords', type: :request do
       end
 
       response '400', 'access_id missing' do
-        let(:Authorization) { "Bearer #{api_token.token}" }
+        let(:'X-API-KEY') { external_app.token }
         let(:payload) { {} }
 
         schema type: :object,
-               properties: { error: { type: :string } },
+               properties: { error: { type: :string, example: 'access_id is required' } },
                required: ['error']
 
         run_test! do |response|
@@ -79,11 +76,11 @@ RSpec.describe 'API::V1::CommitteeRecords', type: :request do
       end
 
       response '401', 'unauthorized' do
-        let(:Authorization) { nil }
+        let(:'X-API-KEY') { nil }
         let(:payload) { { access_id: 'aab27' } }
 
         schema type: :object,
-               properties: { error: { type: :string } },
+               properties: { error: { type: :string, example: 'Unauthorized' } },
                required: ['error']
 
         run_test! do |response|

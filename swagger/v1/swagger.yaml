@@ -3,6 +3,13 @@ openapi: 3.0.1
 info:
   title: API V1
   version: v1
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+      description: API key required in the X-API-KEY header
 paths:
   "/api/v1/committee_records/faculty_committees":
     post:
@@ -12,14 +19,8 @@ paths:
       description: Retrieves committee records for a faculty member based on their
         access ID (PSU)
       security:
-      - BearerAuth: []
-      parameters:
-      - name: Authorization
-        in: header
-        description: Bearer token for authentication
-        required: true
-        schema:
-          type: string
+      - ApiKeyAuth: []
+      parameters: []
       responses:
         '200':
           description: committee records retrieved
@@ -35,53 +36,69 @@ paths:
                       properties:
                         committee_member_id:
                           type: integer
+                          example: 789
                         role:
                           type: string
                           nullable: true
+                          example: Director
                         role_code:
                           type: string
                           nullable: true
+                          example: DI
                         student_fname:
                           type: string
                           nullable: true
+                          example: Muhammad
                         student_lname:
                           type: string
                           nullable: true
+                          example: Siddiqui
                         student_access_id:
                           type: string
                           nullable: true
+                          example: ums467
                         submission_id:
                           type: integer
                           nullable: true
+                          example: 43
                         title:
                           type: string
                           nullable: true
+                          example: SPIDERMAN
                         degree_name:
                           type: string
                           nullable: true
+                          example: Masters
                         program_name:
                           type: string
                           nullable: true
+                          example: Computer science
                         semester:
                           type: string
                           nullable: true
+                          example: Fall
                         year:
                           type: integer
                           nullable: true
+                          example: 2028
                         approval_started_at:
                           type: string
                           format: date-time
                           nullable: true
+                          example: '2026-02-26T11:38:23.895-05:00'
                         final_submission_approved_at:
                           type: string
                           format: date-time
                           nullable: true
+                          example: '2026-02-26T11:38:23.895-05:00'
                         submission_status:
                           type: string
                           nullable: true
+                          example: released for publication
                         committee_member_status:
                           type: string
                           nullable: true
+                          example: approved
                 required:
                 - faculty_access_id
                 - committees
@@ -94,6 +111,7 @@ paths:
                 properties:
                   error:
                     type: string
+                    example: access_id is required
                 required:
                 - error
         '401':
@@ -105,6 +123,7 @@ paths:
                 properties:
                   error:
                     type: string
+                    example: Unauthorized
                 required:
                 - error
       requestBody:
@@ -119,8 +138,3 @@ paths:
               required:
               - access_id
         required: true
-servers:
-- url: https://{defaultHost}
-  variables:
-    defaultHost:
-      default: www.example.com
