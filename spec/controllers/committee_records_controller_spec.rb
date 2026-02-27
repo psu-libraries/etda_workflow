@@ -10,7 +10,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
     {
       "CONTENT_TYPE" => "application/json",
       "ACCEPT" => "application/json",
-      "Authorization" => "Bearer #{api_token.token}"
+      "X-API-KEY" => api_token.token
     }
   end
 
