@@ -49,8 +49,8 @@ RSpec.describe 'API::V1::CommitteeRecords', type: :request do
                        program_name: { type: :string, nullable: true, example: 'Computer science' },
                        semester: { type: :string, nullable: true, example: 'Fall' },
                        year: { type: :integer, nullable: true, example: 2028 },
-                       approval_started_at: { type: :string, format: 'date-time', nullable: true, example: Time.now },
-                       final_submission_approved_at: { type: :string, format: 'date-time', nullable: true, example: Time.now },
+                       approval_started_at: { type: :string, format: 'date-time', nullable: true, example: Time.zone.now },
+                       final_submission_approved_at: { type: :string, format: 'date-time', nullable: true, example: Time.zone.now },
                        submission_status: { type: :string, nullable: true, example: 'released for publication' },
                        committee_member_status: { type: :string, nullable: true, example: 'approved' }
                      }

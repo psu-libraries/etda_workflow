@@ -85,12 +85,12 @@ paths:
                           type: string
                           format: date-time
                           nullable: true
-                          example: '2026-02-26T11:38:23.895-05:00'
+                          example: '2026-02-27 08:37:15 -0500'
                         final_submission_approved_at:
                           type: string
                           format: date-time
                           nullable: true
-                          example: '2026-02-26T11:38:23.895-05:00'
+                          example: '2026-02-27 08:37:15 -0500'
                         submission_status:
                           type: string
                           nullable: true
