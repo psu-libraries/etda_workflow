@@ -46,7 +46,7 @@ class FinalSubmissionFile < ApplicationRecord
   end
 
   def pdf?
-    asset.content_type == 'application/pdf'
+    asset.content_type == 'application/pdf' || File.extname(asset.to_s) == '.pdf'
   end
 
   def can_remediate?

@@ -96,6 +96,22 @@ RSpec.describe FinalSubmissionFile, type: :model do
         expect(jpg_file.pdf?).to be false
       end
     end
+
+    context 'when asset is a PDF that has been moved' do
+      let(:pdf_file) { FactoryBot.create(:final_submission_file, :pdf) }
+
+      before do
+        original_location = pdf_file.current_location
+        new_location = original_location.gsub('_01', '_moved')
+        FileUtils.mv(original_location, new_location)
+      end
+
+      it 'returns true' do
+        pdf_file.reload
+        expect(pdf_file.asset.content_type).to eq('application/octet-stream')
+        expect(pdf_file.pdf?).to be true
+      end
+    end
   end
 
   describe '#can_remediate?' do
