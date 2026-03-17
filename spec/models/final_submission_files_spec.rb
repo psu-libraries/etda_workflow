@@ -96,7 +96,6 @@ RSpec.describe FinalSubmissionFile, type: :model do
         expect(jpg_file.pdf?).to be false
       end
     end
-
   end
 
   describe '#can_remediate?' do
