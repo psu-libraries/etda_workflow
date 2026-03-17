@@ -131,3 +131,5 @@ group :test do
   # Stub http requests
   gem 'webmock', '~> 3.24.0'
 end
+
+gem "marcel", "~> 1.0"
