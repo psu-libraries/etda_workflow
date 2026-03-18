@@ -40,4 +40,11 @@ class Webhooks::RemediationResultsController < Webhooks::BaseController
       Rails.logger.error("Auto-remediation job failed: #{job_data[:processing_error_message]}")
       render json: { message: job_data[:processing_error_message] }, status: :ok
     end
+
+    def remediation_results_params
+      params.permit(
+        :event_type,
+        job: [:uuid, :status, :output_url, :processing_error_message]
+      )
+    end
 end
