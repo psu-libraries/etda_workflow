@@ -1,0 +1,140 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+      description: API key required in the X-API-KEY header
+paths:
+  "/api/v1/committee_records/faculty_committees":
+    post:
+      summary: Retrieves committee records
+      tags:
+      - Committee Records
+      description: Retrieves committee records for a faculty member based on their
+        access ID (PSU)
+      security:
+      - ApiKeyAuth: []
+      parameters: []
+      responses:
+        '200':
+          description: committee records retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  committees:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        committee_member_id:
+                          type: integer
+                          example: 789
+                        role:
+                          type: string
+                          nullable: true
+                          example: Director
+                        role_code:
+                          type: string
+                          nullable: true
+                          example: DI
+                        student_fname:
+                          type: string
+                          nullable: true
+                          example: Muhammad
+                        student_lname:
+                          type: string
+                          nullable: true
+                          example: Siddiqui
+                        student_access_id:
+                          type: string
+                          nullable: true
+                          example: ums467
+                        submission_id:
+                          type: integer
+                          nullable: true
+                          example: 43
+                        title:
+                          type: string
+                          nullable: true
+                          example: SPIDERMAN
+                        degree_name:
+                          type: string
+                          nullable: true
+                          example: Masters
+                        program_name:
+                          type: string
+                          nullable: true
+                          example: Computer science
+                        semester:
+                          type: string
+                          nullable: true
+                          example: Fall
+                        year:
+                          type: integer
+                          nullable: true
+                          example: 2028
+                        approval_started_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                          example: '2026-02-27 08:37:15 -0500'
+                        final_submission_approved_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                          example: '2026-02-27 08:37:15 -0500'
+                        submission_status:
+                          type: string
+                          nullable: true
+                          example: released for publication
+                        committee_member_status:
+                          type: string
+                          nullable: true
+                          example: approved
+                required:
+                - faculty_access_id
+                - committees
+        '400':
+          description: access_id missing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: access_id is required
+                required:
+                - error
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                - error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_id:
+                  type: string
+                  example: aab27
+              required:
+              - access_id
+        required: true

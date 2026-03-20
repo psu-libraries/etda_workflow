@@ -195,7 +195,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_201936) do
     t.index ["name"], name: "index_degrees_on_name", unique: true
   end
 
-  create_table "external_apps", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "external_apps", charset: "utf8mb4", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -277,7 +277,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_201936) do
     t.index ["name", "code"], name: "index_programs_on_name_and_code", unique: true
   end
 
-  create_table "remediated_final_submission_files", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "remediated_final_submission_files", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "submission_id", null: false
     t.bigint "final_submission_file_id", null: false
     t.text "asset"
@@ -342,9 +342,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_201936) do
     t.string "lionpath_semester"
     t.string "academic_program"
     t.string "degree_checkout_status"
-    t.datetime "author_release_warning_sent_at", precision: nil
-    t.datetime "acknowledgment_page_submitted_at", precision: nil
     t.string "candidate_number"
+    t.datetime "acknowledgment_page_submitted_at", precision: nil
+    t.datetime "author_release_warning_sent_at", precision: nil
     t.string "extension_token"
     t.datetime "last_lionpath_export_at", precision: nil
     t.index ["author_id"], name: "submissions_author_id_fk"

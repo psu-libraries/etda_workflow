@@ -85,7 +85,8 @@ gem 'config', '~> 5.5.2'
 gem 'discard'
 # Temporary file downloads over HTTP
 gem 'down'
-
+# API documentation
+gem 'rswag' 
 
 group :development, :test do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
@@ -95,6 +96,8 @@ group :development, :test do
   # Coverage report
   gem 'simplecov', '~> 0.17.0'
   gem 'mutex_m'
+  # API documentation
+  gem 'rswag' 
 end
 
 group :development do
