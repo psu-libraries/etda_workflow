@@ -10,6 +10,7 @@ class BuildRemediatedFileService
 
   def call
     remediated_pdf = Down.download(@url)
+    Rails.logger.info("Remediated PDF: #{remediated_pdf}")
     if RemediatedFinalSubmissionFile.create(
       asset: remediated_pdf,
       final_submission_file: @final_submission_file,
@@ -18,9 +19,11 @@ class BuildRemediatedFileService
       SolrDataImportService.new.index_submission(@final_submission_file.submission, true)
     end
   rescue Down::Error => e
-    raise DownloadError, "Failed to download PDF (#{e.message})"
+    Rails.logger.error("Failed to download PDF(#{e.message})")
+    # raise DownloadError, "Failed to download PDF (#{e.message})"
   rescue SocketError, Errno::ECONNREFUSED => e
-    raise DownloadError, "Network error while fetching PDF (#{e.message})"
+    Rails.logger.error("Failed to download PDF(#{e.message})")
+    # raise DownloadError, "Network error while fetching PDF (#{e.message})"
   ensure
     remediated_pdf&.close
     remediated_pdf&.unlink
