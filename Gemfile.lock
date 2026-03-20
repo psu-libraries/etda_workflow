@@ -583,6 +583,7 @@ DEPENDENCIES
   lograge-sql (~> 2.4.0)
   logstash-event (~> 1.2.0)
   mail_form (~> 1.10.1)
+  marcel (~> 1.0)
   matrix (~> 0.4.2)
   mini_magick (>= 4.9.4)
   mutex_m
