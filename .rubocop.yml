@@ -151,10 +151,6 @@ Style/ClassVars:
   Exclude:
    - 'spec/support/authentication.rb'
 
-Style/GlobalVars:
-  Exclude:
-    - 'node_modules/node-sass/src/libsass/extconf.rb'
-
 Layout/SpaceInsideBlockBraces:
   Exclude:
     - 'spec/services/solr_data_import_service_spec.rb'
