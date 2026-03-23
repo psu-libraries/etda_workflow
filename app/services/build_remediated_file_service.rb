@@ -24,7 +24,7 @@ class BuildRemediatedFileService
   rescue SocketError, Errno::ECONNREFUSED => e
     Rails.logger.error("Failed to download PDF(#{e.message})")
     # raise DownloadError, "Network error while fetching PDF (#{e.message})"
-  rescue StandardError => end
+  rescue StandardError => e
     Rails.logger.error("Other Error: (#{e.message})")
   ensure
     remediated_pdf&.close
