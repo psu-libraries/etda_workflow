@@ -10,25 +10,25 @@ RSpec.describe "Unrelease a submission", :honors, :js, type: :integration do
   let(:degree_type) { current_partner.graduate? ? 'dissertation' : 'thesis' }
 
   before do
-    stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
+    stub_request(:post, /localhost:3000\/solr\/update\?wt=json/)
       .with(
         body: "{\"delete\":\"publicid\"}",
         headers: {
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
-          'User-Agent' => "Faraday v2.14.1"
+          'User-Agent' => "Faraday v#{Faraday::VERSION}"
         }
       )
       .to_return(status: 200, body: { error: false }.to_json, headers: {})
-    stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
+    stub_request(:post, /localhost:3000\/solr\/update\?wt=json/)
       .with(
         body: "{\"commit\":{}}",
         headers: {
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
-          'User-Agent' => "Faraday v2.14.1"
+          'User-Agent' => "Faraday v#{Faraday::VERSION}"
         }
       )
       .to_return(status: 200, body: { error: false }.to_json, headers: {})
@@ -90,18 +90,18 @@ RSpec.describe 'Unrelease a legacy submission without missing data', :honors, :j
   let!(:legacy_submission) { FactoryBot.create(:submission, :released_for_publication_legacy, public_id: 'publicid') }
 
   before do
-    stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
+    stub_request(:post, /localhost:3000\/solr\/update\?wt=json/)
       .with(
         body: "{\"delete\":\"publicid\"}",
         headers: {
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
-          'User-Agent' => "Faraday v2.14.1"
+          'User-Agent' => "Faraday v#{Faraday::VERSION}"
         }
       )
       .to_return(status: 200, body: { error: false }.to_json, headers: {})
-    stub_request(:post, "https://etda.localhost:3000/solr/update?wt=json")
+    stub_request(:post, /localhost:3000\/solr\/update\?wt=json/)
       .with(
         body: "{\"commit\":{}}",
         headers: {
