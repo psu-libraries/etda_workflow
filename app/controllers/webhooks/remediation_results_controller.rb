@@ -5,10 +5,6 @@ class Webhooks::RemediationResultsController < Webhooks::BaseController
     event_type = params[:event_type]
     job_data   = params[:job] || {}
 
-    # For debugging: Remove when no longer needed
-    Rails.logger.info("Remediation Results Event type: #{event_type}")
-    Rails.logger.info("Remediation Results Job Data: #{job_data}")
-
     case event_type
     when 'job.succeeded'
       handle_success(job_data)
