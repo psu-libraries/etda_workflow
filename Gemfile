@@ -23,7 +23,7 @@ gem 'jquery-rails', '~> 4.4.0'
 # FontAwesome sass integration
 gem 'font-awesome-rails', '~> 4.7.0.0'
 # Authentication gem
-gem "devise", ">= 4.7.1"
+gem "devise", ">= 5.0.3"
 # Shared libraries for workflow and explore
 gem 'etda_utilities', "~> 0.22.0"
 # Ldap client
