@@ -45,7 +45,7 @@ RSpec.describe 'API::V1::CommitteeRecords', type: :request do
                        student_access_id: { type: :string, nullable: true, example: 'ums467' },
                        submission_id: { type: :integer, nullable: true, example: 43 },
                        title: { type: :string, nullable: true, example: 'SPIDERMAN' },
-                       degree_name: { type: :string, nullable: true, example: 'Masters' },
+                       degree_type: { type: :string, nullable: true, example: 'Dissertation' },
                        program_name: { type: :string, nullable: true, example: 'Computer science' },
                        semester: { type: :string, nullable: true, example: 'Fall' },
                        year: { type: :integer, nullable: true, example: 2028 },

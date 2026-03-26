@@ -65,10 +65,10 @@ paths:
                           type: string
                           nullable: true
                           example: SPIDERMAN
-                        degree_name:
+                        degree_type:
                           type: string
                           nullable: true
-                          example: Masters
+                          example: Dissertation
                         program_name:
                           type: string
                           nullable: true
