@@ -63,7 +63,7 @@ module Api
 
             submission_id: submission.id,
             title: submission.title,
-            degree_name: submission.degree&.name,
+            degree_type: submission.degree_type&.name,
             program_name: submission.program&.name,
             semester: submission.semester,
             year: submission.year,

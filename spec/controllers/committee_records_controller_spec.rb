@@ -74,7 +74,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
         committee_role = instance_double("CommitteeRole", name: "Advisor", code: "ADV")
         author = instance_double("Author", first_name: "Ada", last_name: "Lovelace", access_id: "apl123")
 
-        degree = instance_double("Degree", name: "MS")
+        degree_type = instance_double("DegreeType", name: "Master Thesis")
         program = instance_double("Program", name: "Computer Science")
 
         submission = instance_double(
@@ -83,7 +83,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
           title: "Thesis Title",
           semester: "Spring",
           year: 2026,
-          degree: degree,
+          degree_type: degree_type,
           program: program,
           final_submission_approved_at: nil,
           status: "released for publication",
@@ -115,7 +115,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
           "title" => "Thesis Title"
         )
 
-        expect(committee["degree_name"]).to eq("MS")
+        expect(committee["degree_type"]).to eq("Master Thesis")
         expect(committee["program_name"]).to eq("Computer Science")
       end
     end
@@ -130,7 +130,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
           title: nil,
           semester: nil,
           year: nil,
-          degree: nil,
+          degree_type: nil,
           program: nil,
           final_submission_approved_at: nil,
           status: "waiting for publication release",
@@ -162,7 +162,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
         expect(committee["role"]).to be_nil
         expect(committee["student_access_id"]).to be_nil
         expect(committee["title"]).to be_nil
-        expect(committee["degree_name"]).to be_nil
+        expect(committee["degree_type"]).to be_nil
         expect(committee["program_name"]).to be_nil
       end
     end
@@ -183,7 +183,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
           title: "Thesis One",
           semester: "Spring",
           year: 2026,
-          degree: nil,
+          degree_type: nil,
           program: nil,
           final_submission_approved_at: nil,
           status: "released for publication",
@@ -196,7 +196,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
           title: "Thesis Two",
           semester: "Fall",
           year: 2025,
-          degree: nil,
+          degree_type: nil,
           program: nil,
           final_submission_approved_at: nil,
           status: "waiting for publication release",
