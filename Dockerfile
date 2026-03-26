@@ -38,9 +38,11 @@ CMD ["/etda_workflow/bin/startup"]
 FROM base AS rspec
 CMD ["/etda_workflow/bin/ci-rspec"]
 
+
 FROM base AS production
 
-RUN bundle install --without development test
+RUN bundle config set without 'development test' \
+  && bundle install
 
 RUN PARTNER=graduate RAILS_ENV=production SECRET_KEY_BASE=$(bundle exec rails secret) bundle exec rails assets:precompile
 
