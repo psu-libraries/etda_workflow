@@ -11,7 +11,7 @@ gem 'mysql2', '0.5.7'
 # Use Puma as the app server
 gem 'puma', ">= 4.3.0"
 # For bundling/importing assets
-gem 'shakapacker', '~> 8.3.0'
+gem 'shakapacker', '~> 9.7.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # SideKiq for queueing jobs
@@ -23,7 +23,7 @@ gem 'jquery-rails', '~> 4.4.0'
 # FontAwesome sass integration
 gem 'font-awesome-rails', '~> 4.7.0.0'
 # Authentication gem
-gem "devise", ">= 4.7.1"
+gem "devise", ">= 5.0.3"
 # Shared libraries for workflow and explore
 gem 'etda_utilities', "~> 0.22.0"
 # Ldap client
@@ -58,7 +58,7 @@ gem 'enumerize', '~> 2.6.0'
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 gem 'byebug', '~> 11.1.0', platforms: %i[mri mingw x64_mingw]
 # HTTParty for http requests
-gem 'httparty', '~> 0.21'
+gem 'httparty', '~> 0.24'
 # For db seeding
 gem 'seedbank', '~> 0.5.0'
 # Loading assets

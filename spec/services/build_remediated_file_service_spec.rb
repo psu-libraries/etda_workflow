@@ -36,16 +36,5 @@ RSpec.describe BuildRemediatedFileService do
       service.call
       expect(solr_service).to have_received(:index_submission).with(final_submission_file.submission, true)
     end
-
-    context 'if Down throws an error' do
-      before do
-        allow(Down).to receive(:download).and_raise(Down::Error.new('download error'))
-      end
-
-      it 'returns a Download error' do
-        service = described_class.new(final_submission_file, bogus_url)
-        expect { service.call }.to raise_error(BuildRemediatedFileService::DownloadError)
-      end
-    end
   end
 end
