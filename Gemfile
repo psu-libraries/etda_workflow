@@ -15,7 +15,7 @@ gem 'shakapacker', '~> 9.7.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # SideKiq for queueing jobs
-gem 'sidekiq', '~> 7.1.3'
+gem 'sidekiq', '~> 8.1.0'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1.2'
 # Jquery for rails
@@ -62,7 +62,7 @@ gem 'httparty', '~> 0.24'
 # For db seeding
 gem 'seedbank', '~> 0.5.0'
 # Loading assets
-gem 'sprockets', '~> 3.7.2'
+gem 'sprockets', '~> 4.2.2'
 # Create pdf documents
 gem 'prawn', '~> 2.4.0'
 # Create docx documents
