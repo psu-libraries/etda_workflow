@@ -128,7 +128,7 @@ GEM
     config (5.5.2)
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
-    connection_pool (3.0.2)
+    connection_pool (2.5.5)
     countries (7.1.1)
       unaccent (~> 0.3)
     country_select (10.0.1)
@@ -322,7 +322,7 @@ GEM
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (2.2.22)
+    rack (2.2.23)
     rack-proxy (0.7.7)
       rack
     rack-session (1.0.2)
@@ -373,7 +373,7 @@ GEM
     rb-inotify (0.11.1)
       ffi (~> 1.0)
     rdoc (6.3.4.1)
-    redis-client (0.23.2)
+    redis-client (0.28.0)
       connection_pool
     regexp_parser (2.11.3)
     reline (0.6.3)
@@ -563,6 +563,7 @@ DEPENDENCIES
   clamby
   cocoon (~> 1.2.0)
   config (~> 5.5.2)
+  connection_pool (~> 2.5.4)
   country_select (~> 10.0.0)
   database_cleaner (~> 2.1.0)
   devise (>= 5.0.3)
@@ -620,7 +621,7 @@ DEPENDENCIES
   webrick
 
 RUBY VERSION
-   ruby 3.4.9p0
+  ruby 3.4.9p0
 
 BUNDLED WITH
-   4.0.8
+  4.0.8
