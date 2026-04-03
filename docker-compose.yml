@@ -25,9 +25,6 @@ services:
     stdin_open: true
     user: root
     image: etda_workflow_web:latest
-    # build:
-      # context: .
-      # target: base
     environment:
       INTEGRATION: ${INTEGRATION:-false}
       REDIS_HOST: redis
@@ -43,15 +40,6 @@ services:
     - db
     - selenium
     - redis
-    # volumes:
-    # - workflow_files:/etda_workflow/tmp/workflow_files
-    # - explore_files:/etda_workflow/tmp/explore_files
-    # - bundle-data:/etda_workflow/vendor/bundle
-    # - node-data:/etda_workflow/node_modules
-    # - type: bind
-    #   consistency: cached
-    #   source: .
-    #   target: /etda_workflow/
   web:
     tty: true
     stdin_open: true
@@ -74,6 +62,12 @@ services:
       PDF_REMEDIATION_API_KEY_GRADUATE: ${PDF_REMEDIATION_API_KEY_GRADUATE}
       PDF_REMEDIATION_API_KEY_HONORS: ${PDF_REMEDIATION_API_KEY_HONORS}
       PDF_REMEDIATION_API_KEY_MILSCH: ${PDF_REMEDIATION_API_KEY_MILSCH}
+      # The following values are only used in development environments
+      ACCESS_ID: ${ACCESS_ID}
+      FIRST_NAME: ${FIRST_NAME}
+      LAST_NAME: ${LAST_NAME}
+      PSU_EMAIL_ADDRESS: ${PSU_EMAIL_ADDRESS}
+      PSU_IDN: ${PSU_IDN}
     command: >
       sh -c "/etda_workflow/bin/startup"
     ports:

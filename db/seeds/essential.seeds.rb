@@ -14,4 +14,6 @@ ApprovalConfiguration.seed
 if Rails.env == 'development'
   Degree.seed
   Program.seed
+  Author.seed
+  Admin.seed
 end
