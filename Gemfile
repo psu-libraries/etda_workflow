@@ -85,6 +85,10 @@ gem 'config', '~> 5.5.2'
 gem 'discard'
 # Temporary file downloads over HTTP
 gem 'down'
+# Limits connection pool to under 3 until we can update sidekiq
+gem 'connection_pool', '~> 2.5.4'
+# Evaluates document type
+gem "marcel", "~> 1.0"
 
 
 group :development, :test do
@@ -131,5 +135,3 @@ group :test do
   # Stub http requests
   gem 'webmock', '~> 3.24.0'
 end
-
-gem "marcel", "~> 1.0"
