@@ -1,5 +1,5 @@
 <div>
   <h3 class='control-label mb-3'> <%= I18n.t('text.accessibility..accessible_version_heading')%></h3>
   <p> <%= I18n.t('text.accessibility.accessible_version_notice')%> </p>
-  <p> <%= I18n.t('text.accessibility.accessible_version_notice_2', email: I18n.t('external_contacts.a11y_queue'))%> </p>
+  <p> <%= I18n.t('text.accessibility.accessible_version_notice_2', email: I18n.t('external_contacts.a11y_queue.email_address')).html_safe%> </p>
 </div>
