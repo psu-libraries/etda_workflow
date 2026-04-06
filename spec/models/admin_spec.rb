@@ -38,4 +38,19 @@ RSpec.describe Admin, type: :model do
       expect(author).not_to be_site_administrator
     end
   end
+
+  describe "#seed" do
+    before do
+      ENV['ACCESS_ID']='abc123'
+      ENV['FIRST_NAME']='Samwise'
+      ENV['LAST_NAME']='Gamgee'
+      ENV['PSU_EMAIL_ADDRESS']='abc123@psu.edu'
+      ENV['PSU_IDN']='999999999'
+    end
+    it "seeds db with default program data" do
+      described_class.seed
+      expect(described_class.count).to eq 1
+      expect(described_class.first.first_name).to eq 'Samwise'
+    end
+  end
 end

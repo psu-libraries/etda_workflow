@@ -13,7 +13,7 @@ class Lionpath::LionpathSubmissionGenerator
     rand_num = rand(1..994)
     seq = 1
     5.times.each do
-      com_role = CommitteeRole.where('committee_roles.degree_type_id = ?', degree_type.id).sample
+      com_role = CommitteeRole.where('committee_roles.degree_type_id = ? AND is_program_head = false', degree_type.id).sample
       CommitteeMember.create(committee_role: com_role,
                              name: "Fake Person#{rand_num + seq}",
                              email: "abc#{rand_num + seq}@psu.edu",

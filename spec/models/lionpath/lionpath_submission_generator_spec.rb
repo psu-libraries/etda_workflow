@@ -25,7 +25,7 @@ RSpec.describe Lionpath::LionpathSubmissionGenerator, type: :model do
       FactoryBot.create :degree, degree_type: DegreeType.default, name: 'PHD'
       FactoryBot.create :program, name: 'Program (MS)'
       FactoryBot.create :program, name: 'Program (PHD)'
-      FactoryBot.create :committee_role, degree_type: DegreeType.default, code: 'XYZ'
+      FactoryBot.create :committee_role, degree_type: DegreeType.default, is_program_head: false
       expect { described_class.new('adminflow', DegreeType.default).create_submission }.to change(Submission, :count).by 1
       expect(admin_author.submissions.first.degree_type.slug).to eq 'dissertation'
       expect(admin_author.submissions.first.degree.name).to eq 'PHD'
@@ -39,7 +39,6 @@ RSpec.describe Lionpath::LionpathSubmissionGenerator, type: :model do
       expect(admin_author.submissions.first.committee_members.first.access_id).to match(/abc.*/)
       expect(admin_author.submissions.first.committee_members.first.lionpath_updated_at).to be_truthy
       expect(admin_author.submissions.first.committee_members.first.committee_role.is_program_head).to be false
-      expect(admin_author.submissions.first.committee_members.first.committee_role.code).to eq 'XYZ'
       expect(admin_author.submissions.first.lionpath_updated_at).to be_truthy
     end
   end
