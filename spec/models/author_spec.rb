@@ -277,12 +277,13 @@ RSpec.describe Author, type: :model do
 
   describe "#seed" do
     before do
-      ENV['ACCESS_ID']='abc123'
-      ENV['FIRST_NAME']='Frodo'
-      ENV['LAST_NAME']='Baggins'
-      ENV['PSU_EMAIL_ADDRESS']='abc123@psu.edu'
-      ENV['PSU_IDN']='999999999'
+      ENV['ACCESS_ID'] = 'abc123'
+      ENV['FIRST_NAME'] = 'Frodo'
+      ENV['LAST_NAME'] = 'Baggins'
+      ENV['PSU_EMAIL_ADDRESS'] = 'abc123@psu.edu'
+      ENV['PSU_IDN'] = '999999999'
     end
+
     it "seeds db with default program data" do
       described_class.seed
       expect(described_class.count).to eq 1
