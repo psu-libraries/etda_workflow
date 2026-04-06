@@ -50,7 +50,9 @@ RSpec.describe Program, type: :model do
   describe "#seed" do
     it "seeds db with default program data" do
       described_class.seed
-      expect(described_class.count).to eq 23
+      expect(described_class.count).to eq 16
+      expect(described_class.first.name).to eq "Public Administration (PHD)"
+      expect(described_class.first.code).to eq "PADM_PHD"
     end
   end
 end
