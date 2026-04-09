@@ -46,7 +46,7 @@ class FinalSubmissionFile < ApplicationRecord
   end
 
   def pdf?
-    asset.content_type == 'application/pdf'
+    Marcel::MimeType.for(Pathname.new(current_location)) == 'application/pdf'
   end
 
   def can_remediate?

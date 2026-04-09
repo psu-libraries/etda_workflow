@@ -60,3 +60,11 @@ export PDF_REMEDIATION_ENDPOINT=
 export PDF_REMEDIATION_API_KEY_GRADUATE=
 export PDF_REMEDIATION_API_KEY_HONORS=
 export PDF_REMEDIATION_API_KEY_MILSCH=
+
+# --- Local Setup ---
+# Use your own information in order to be auto-created as an Author and Admin
+export ACCESS_ID=
+export FIRST_NAME=
+export LAST_NAME=
+export PSU_EMAIL_ADDRESS=
+export PSU_IDN=

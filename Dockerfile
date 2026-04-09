@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM harbor.k8s.libraries.psu.edu/library/ruby-3.4.1-node-22:20260202 as base
+FROM harbor.k8s.libraries.psu.edu/library/ruby-3.4.9-node-22:20260317 AS base
 
 # hadolint ignore=DL3008
 RUN apt-get update && \
@@ -35,12 +35,14 @@ RUN mkdir -p tmp/cache
 
 CMD ["/etda_workflow/bin/startup"]
 
-FROM base as rspec
+FROM base AS rspec
 CMD ["/etda_workflow/bin/ci-rspec"]
 
-FROM base as production
 
-RUN bundle install --without development test
+FROM base AS production
+
+RUN bundle config set without 'development test' \
+  && bundle install
 
 RUN PARTNER=graduate RAILS_ENV=production SECRET_KEY_BASE=$(bundle exec rails secret) bundle exec rails assets:precompile
 

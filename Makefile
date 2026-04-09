@@ -8,10 +8,10 @@ help: ## This help.
 .DEFAULT_GOAL := help
 
 exec: ## pop a shell in this thing
-	docker-compose exec web /bin/bash
+	docker-compose exec web bash
 
 exec_redis: ## pop a shell in redis container
-	docker-compose exec redis /bin/bash
+	docker-compose exec redis bash
 
 bundle: ## run bundle install in container
 	docker-compose exec web bundle install

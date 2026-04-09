@@ -30,6 +30,7 @@ class Webhooks::RemediationResultsController < Webhooks::BaseController
 
     def handle_success(job_data)
       BuildRemediatedFileWorker.perform_async(job_data[:uuid], job_data[:output_url])
+      Rails.logger.info("Auto-remediation job succeeded: #{job_data[:uuid]}")
       render json: { message: 'Update successful' }, status: :ok
     rescue StandardError => e
       log_webhook_error(e)

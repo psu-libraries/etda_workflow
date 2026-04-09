@@ -43,4 +43,19 @@ class Admin < ApplicationRecord
     update(mapped_attributes)
     save(validate: false)
   end
+
+  def self.seed
+    return if ENV['RAIL_ENV'] == 'production'
+    return if ENV['ACCESS_ID'].blank?
+
+    find_or_create_by!(access_id: ENV['ACCESS_ID']) do |r|
+      r.first_name = ENV['FIRST_NAME']
+      r.last_name = ENV['LAST_NAME']
+      r.psu_email_address = ENV['PSU_EMAIL_ADDRESS']
+      r.psu_idn = ENV['PSU_IDN']
+      r.phone_number = '555-555-5555'
+      r.administrator = true
+      r.site_administrator = true
+    end
+  end
 end
