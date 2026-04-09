@@ -2,7 +2,6 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-
   devise_for :approvers, path: 'approver'
   devise_for :authors, path: 'author'
   devise_for :admins, path: 'admin'
@@ -19,6 +18,12 @@ Rails.application.routes.draw do
   get '/', to: redirect(path: '/main')
 
   mount OkComputer::Engine, at: "/healthcheck"
+
+  namespace :api do
+    namespace :v1 do
+        post "committee_records/faculty_committees"
+    end
+  end
 
   ## works: get '/committee_members/autocomplete', to: 'ldap_lookup#autocomplete', as: :committee_members_autocomplete
   get '/committee_members/autocomplete', to: 'application#autocomplete', as: :committee_members_autocomplete
@@ -43,6 +48,8 @@ Rails.application.routes.draw do
 
     authenticate :admin do
       mount Sidekiq::Web => '/sidekiq'
+      mount Rswag::Api::Engine => '/api-docs'
+      mount Rswag::Ui::Engine => '/api-docs'
     end
 
     get '/custom_report', to: 'reports#custom_report_index', as: :custom_report_index
