@@ -86,7 +86,7 @@ gem 'discard'
 # Temporary file downloads over HTTP
 gem 'down'
 # API documentation
-gem 'rswag' 
+gem 'rswag'
 # Limits connection pool to under 3 until we can update sidekiq
 gem 'connection_pool', '~> 2.5.4'
 # Evaluates document type
@@ -101,8 +101,6 @@ group :development, :test do
   # Coverage report
   gem 'simplecov', '~> 0.17.0'
   gem 'mutex_m'
-  # API documentation
-  gem 'rswag' 
 end
 
 group :development do
