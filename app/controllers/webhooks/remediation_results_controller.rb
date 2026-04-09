@@ -2,8 +2,8 @@
 
 class Webhooks::RemediationResultsController < Webhooks::BaseController
   def create
-    event_type = params[:event_type]
-    job_data   = params[:job] || {}
+    event_type = remediation_results_params[:event_type]
+    job_data   = remediation_results_params[:job] || {}
 
     case event_type
     when 'job.succeeded'
