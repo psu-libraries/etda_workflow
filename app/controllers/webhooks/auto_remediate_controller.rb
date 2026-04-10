@@ -2,7 +2,7 @@
 
 class Webhooks::AutoRemediateController < Webhooks::BaseController
   def create
-    if params[:final_submission_file_id].present?
+    if auto_remediate_params[:final_submission_file_id].present?
       final_submission.final_submission_files.each do |file|
         if file.can_remediate?
           file.update_column(:remediation_started_at, Time.current)
@@ -28,7 +28,13 @@ class Webhooks::AutoRemediateController < Webhooks::BaseController
     end
 
     def final_submission
-      requested_file = FinalSubmissionFile.find(params[:final_submission_file_id])
+      requested_file = FinalSubmissionFile.find(auto_remediate_params[:final_submission_file_id])
       @final_submission ||= requested_file.submission
+    end
+
+    def auto_remediate_params
+      params.permit(
+        :final_submission_file_id
+      )
     end
 end

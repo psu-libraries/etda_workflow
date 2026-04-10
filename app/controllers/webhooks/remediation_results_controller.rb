@@ -2,8 +2,8 @@
 
 class Webhooks::RemediationResultsController < Webhooks::BaseController
   def create
-    event_type = params[:event_type]
-    job_data   = params[:job] || {}
+    event_type = remediation_results_params[:event_type]
+    job_data   = remediation_results_params[:job] || {}
 
     case event_type
     when 'job.succeeded'
@@ -40,5 +40,12 @@ class Webhooks::RemediationResultsController < Webhooks::BaseController
     def handle_failure(job_data)
       Rails.logger.error("Auto-remediation job failed: #{job_data[:processing_error_message]}")
       render json: { message: job_data[:processing_error_message] }, status: :ok
+    end
+
+    def remediation_results_params
+      params.permit(
+        :event_type,
+        job: [:uuid, :status, :output_url, :processing_error_message]
+      )
     end
 end
