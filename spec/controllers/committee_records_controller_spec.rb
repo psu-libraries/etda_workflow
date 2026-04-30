@@ -75,6 +75,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
         author = instance_double("Author", first_name: "Ada", last_name: "Lovelace", access_id: "apl123")
 
         degree_type = instance_double("DegreeType", name: "Master Thesis")
+        degree = instance_double("Degree", name: "PhD")
         program = instance_double("Program", name: "Computer Science")
 
         submission = instance_double(
@@ -84,6 +85,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
           semester: "Spring",
           year: 2026,
           degree_type: degree_type,
+          degree: degree,
           program: program,
           final_submission_approved_at: nil,
           status: "released for publication",
@@ -116,6 +118,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
         )
 
         expect(committee["degree_type"]).to eq("Master Thesis")
+        expect(committee["degree_name"]).to eq("PhD")
         expect(committee["program_name"]).to eq("Computer Science")
       end
     end
@@ -131,6 +134,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
           semester: nil,
           year: nil,
           degree_type: nil,
+          degree: nil,
           program: nil,
           final_submission_approved_at: nil,
           status: "waiting for publication release",
@@ -163,6 +167,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
         expect(committee["student_access_id"]).to be_nil
         expect(committee["title"]).to be_nil
         expect(committee["degree_type"]).to be_nil
+        expect(committee["degree_name"]).to be_nil
         expect(committee["program_name"]).to be_nil
       end
     end
@@ -184,6 +189,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
           semester: "Spring",
           year: 2026,
           degree_type: nil,
+          degree: nil,
           program: nil,
           final_submission_approved_at: nil,
           status: "released for publication",
@@ -197,6 +203,7 @@ RSpec.describe "CommitteeRecords API", type: :request do
           semester: "Fall",
           year: 2025,
           degree_type: nil,
+          degree: nil,
           program: nil,
           final_submission_approved_at: nil,
           status: "waiting for publication release",
