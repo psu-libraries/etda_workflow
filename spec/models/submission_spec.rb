@@ -85,6 +85,7 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_many :committee_members }
   it { is_expected.to have_many :format_review_files }
   it { is_expected.to have_many :final_submission_files }
+  it { is_expected.to have_many :remediated_final_submission_files }
   it { is_expected.to have_many :admin_feedback_files }
   it { is_expected.to have_many :keywords }
   it { is_expected.to have_many :invention_disclosures }

@@ -151,10 +151,6 @@ Style/ClassVars:
   Exclude:
    - 'spec/support/authentication.rb'
 
-Style/GlobalVars:
-  Exclude:
-    - 'node_modules/node-sass/src/libsass/extconf.rb'
-
 Layout/SpaceInsideBlockBraces:
   Exclude:
     - 'spec/services/solr_data_import_service_spec.rb'
@@ -322,3 +318,16 @@ Naming/MemoizedInstanceVariableName:
 
 Style/MultipleComparison:
   Enabled: false
+
+
+# Rubocop doesn't seem to understand the rswag DSL.
+# Exclude the rswag spec file spec/requests/api/v1/api_docs/committee_records_spec.rb
+# from RSpec/EmptyExampleGroup.  Without this, autocorrect will delete 
+# the code in that file.
+RSpec/EmptyExampleGroup:
+  Exclude:
+    - 'spec/requests/api/v1/api_docs/committee_records_spec.rb'
+ 
+RSpec/VariableName:
+  Exclude:
+    - 'spec/requests/api/v1/api_docs/committee_records_spec.rb'

@@ -31,18 +31,28 @@ class SubmissionReleaseService
   end
 
   def final_files_for_submission(submission)
-    # saves the file id and the original file path
+    # saves the file id, the original file path, and the class name
     location_array = []
     submission.final_submission_files.each do |f|
-      location_array << [f.id, f.current_location]
+      location_array << [f.id, f.current_location, f.class.name]
+
+      # also include remediated final submission files to be moved
+      next if f.remediated_final_submission_file.blank?
+
+      location_array << [f.remediated_final_submission_file.id,
+                         f.remediated_final_submission_file.current_location,
+                         f.remediated_final_submission_file.class.name]
     end
+
     location_array
   end
 
   def release_files(original_file_locations)
     etda_file_util = EtdaFilePaths.new
-    original_file_locations.each do |fid, original_file_location|
-      msg = etda_file_util.move_a_file(fid, original_file_location)
+    original_file_locations.each do |fid, original_file_location, class_name|
+      msg = etda_file_util.move_a_file(fid,
+                                       original_file_location,
+                                       file_class: class_name.constantize)
       next if msg.blank?
 
       record_error(msg)
@@ -53,10 +63,10 @@ class SubmissionReleaseService
 
   def file_verification(original_files_array)
     file_error_list = []
-    original_files_array.each do |id, original_file|
+    original_files_array.each do |id, original_file, class_name|
       next if File.exist? original_file
 
-      err = "File Not Found for Final Submission File #{id}, #{original_file} "
+      err = "File Not Found for #{class_name.underscore.humanize} #{id}, #{original_file} "
       record_error(err)
       file_error_list << err
     end

@@ -1,14 +1,12 @@
 [![CircleCI](https://circleci.com/gh/psu-libraries/etda_workflow.svg?style=svg)](https://circleci.com/gh/psu-stewardship/etda_workflow)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a38c9040c48fe53aaa85/maintainability)](https://codeclimate.com/github/psu-libraries/etda_workflow/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/a38c9040c48fe53aaa85/test_coverage)](https://codeclimate.com/github/psu-libraries/etda_workflow/test_coverage)
 
 # Electronic Theses and Dissertations Workflow
 
-* Ruby version: 3.4.1
-* Node version 21.7.3 (using yarn as npm)
+* Ruby version: 3.4.9
+* Node version 22 (using yarn as npm)
 * Rails 7.2
 * Sidekiq 7
-* Redis 6.2+
+* Redis 8.6+
 
 ## Setup
 
@@ -16,7 +14,7 @@ Clone the repo to your local device and `cd` to the project root directory
 
 If you do not have direnv, use brew to install 
 
-Run `vi .envrc` and add environment variables
+Run `cp .envrc.example .envrc`, add environment variables to `.envrc`, and run `direnv allow`
 
 ### Docker
 
@@ -24,9 +22,10 @@ Run `vi .envrc` and add environment variables
 
 To build the image and run necessary containers:
 
- 1. `docker-compose build`
- 2. `docker-compose up -d selenium db redis web`
- 3. Check it out at `localhost:3000` in your browser
+ 1. `docker-compose build` (or `make build`)
+ 2. `docker-compose up -d selenium db redis web` (or `make up`)
+ 3. Alternatively, to combine those steps use `docker-compose up -d selenium db redis web --build` (or `make rebuild`)
+ 4. Check it out at `localhost:3000` in your browser
 
 To copy database data into container:
 
@@ -40,16 +39,17 @@ To create mock submission files:
 
 *This should be done after the database data is created, or else nothing will be created*
 
-1. `docker-compose exec web bash` (running bash in the web container)
-2. `rake etda_files:create:empty_files` (this may take a while)
+1. `docker-compose exec web bash` (or `make exec`): running bash in the web container
+2. `rake etda_files:create:empty_files` This may take a while.
 
-To seed data:
-
-1. `docker-compose exec web bash`
+Data seeding should happen upon running the docker container. To run it manually:
+1. `docker-compose exec web bash` (or `make exec`)
 2. `PARTNER={partner} bundle exec rake db:seed:essential`
 
-**_Note:_** For new devs you may need to add their `Author` and `Admin` records manually.  Alternatively, you can comment out the `MockUniversityDirectory` line
- in `config/initializers/autoload_constants.rb` for the development environment.  Then proceed to the admin and author routes to automatically create the records with LDAP.
+**_Note:_** `Author` and `Admin` records for the user will be created if the developer has put their information in the Local Setup section of the envrc file.
+
+Alternatively, you can comment out the `MockUniversityDirectory` line in `config/initializers/autoload_constants.rb` 
+for the development environment.  Then proceed to the admin and author routes to automatically create the records with LDAP.
 
 You're good to go from here!  Any changes made in the project files on your local machine will automatically be updated in the container.  Run `make restart` to restart the puma server if changes do not appear in the web browser.  Remember to check the Makefile for more commands.  If you are running a shell in the web container, you can run all of the rails commands you would normally use for development: ie `rspec, rails restart, rails c, etc.`
 
@@ -57,13 +57,9 @@ You're good to go from here!  Any changes made in the project files on your loca
 
    To run the tests:
    1.  `RAILS_ENV=test bundle exec rspec` tests Graduate School instance   
-   2.  `RAILS_ENV=test PARTNER=honors bundle exec rspec` tests Honors College instance
-   3.  `RAILS_ENV=test PARTNER=milsch bundle exec rspec` tests Millennium Scholars instance
-
-   Running the entire test suite for each partner can take a while.  To run tests for non-graduate instances that are unique to that instance, use tags like this:
-
-   1. `RAILS_ENV=test PARTNER=milsch bundle exec rspec --tag milsch`
-   1. `RAILS_ENV=test PARTNER=honors bundle exec rspec --tag honors`
+   3.  `RAILS_ENV=test PARTNER=honors bundle exec rspec --tag honors` tests Honors College – only tagged tests
+   2.  `RAILS_ENV=test PARTNER=milsch bundle exec rspec --tag milsch` tests Millennium Scholars – only tagged tests
+   4.  `RAILS_ENV=test PARTNER=sset bundle exec rspec --tag sset` tests School of Science, Engineering, and Technology – only tagged tests
 
    Additionally, there are some component tests that run against Penn State's LDAP directory service: rspec --tag ldap. Ldap tests are excluded because they require connecting to the University LDAP server and should only be run occasionally.  When in development or testing, you must edit the `config/initializers/autoload_constants.rb` file and comment out the `MockUniversityDirectory` lines for the development and test environments to allow a true ldap call.
 
@@ -78,9 +74,8 @@ To initiate a production deploy, create a new release. Then, merge the automatic
 ### Config
 The [config](https://rubygems.org/gems/config) gem provides a means for adding ad-hoc config as needed.
 The file `config/settings.local.yml` is not tracked in git. 
-Currently this is used to add announcements quickly. By adding values such as:
+Currently this is used to add announcements quickly by adding values such as:
 ```rb
-# Strings
 show_announcement: true
 announcement:
   header: "Announcement header text goes here"

@@ -9,6 +9,7 @@ default: &default
   check_yarn_integrity: false
   webpack_compile_output: false
   shakapacker_precompile: true
+  javascript_transpiler: babel
 
   # Location for manifest.json, defaults to {public_output_path}/manifest.json if unset
   # manifest_path: public/packs/manifest.json

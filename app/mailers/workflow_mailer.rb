@@ -22,16 +22,17 @@ class WorkflowMailer < ActionMailer::Base
          subject: "Your format review has been received"
   end
 
-  def format_review_accepted(submission)
+  def format_review_accepted(submission, recipient_email)
     raise InvalidPartner unless current_partner.sset? || current_partner.honors? || current_partner.graduate?
 
     @submission = submission
     @author = submission.author
+    @recipient_email = recipient_email
     @deadline_url = DEADLINE_URL
     @etd_site = AUTHOR_WORKFLOW
     @thesis_guide = THESIS_GUIDE
 
-    mail to: @author.psu_email_address,
+    mail to: @recipient_email,
          from: current_partner.email_address,
          subject: "Your format review has been accepted"
   end

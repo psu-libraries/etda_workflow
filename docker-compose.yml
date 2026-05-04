@@ -7,7 +7,7 @@ services:
     ports:
       - "4444:4444"
   redis:
-    image: redis:7.0.12
+    image: redis:8.6
     volumes:
     - redis-data:/data
     ports:
@@ -15,7 +15,7 @@ services:
   db:
     environment:
       MYSQL_ROOT_PASSWORD: root
-    image: mariadb:10.4.6
+    image: mariadb:11.4
     ports:
     - "3306:3306"
     volumes:
@@ -25,9 +25,6 @@ services:
     stdin_open: true
     user: root
     image: etda_workflow_web:latest
-    # build:
-      # context: .
-      # target: base
     environment:
       INTEGRATION: ${INTEGRATION:-false}
       REDIS_HOST: redis
@@ -43,15 +40,6 @@ services:
     - db
     - selenium
     - redis
-    # volumes:
-    # - workflow_files:/etda_workflow/tmp/workflow_files
-    # - explore_files:/etda_workflow/tmp/explore_files
-    # - bundle-data:/etda_workflow/vendor/bundle
-    # - node-data:/etda_workflow/node_modules
-    # - type: bind
-    #   consistency: cached
-    #   source: .
-    #   target: /etda_workflow/
   web:
     tty: true
     stdin_open: true
@@ -70,6 +58,16 @@ services:
       LIONPATH_SSH_KEY: ${LIONPATH_SSH_KEY}
       LDAP_PASSWORD: ${LDAP_PASSWORD}
       LDAP_USER: ${LDAP_USER}
+      PDF_REMEDIATION_ENDPOINT: ${PDF_REMEDIATION_ENDPOINT}
+      PDF_REMEDIATION_API_KEY_GRADUATE: ${PDF_REMEDIATION_API_KEY_GRADUATE}
+      PDF_REMEDIATION_API_KEY_HONORS: ${PDF_REMEDIATION_API_KEY_HONORS}
+      PDF_REMEDIATION_API_KEY_MILSCH: ${PDF_REMEDIATION_API_KEY_MILSCH}
+      # The following values are only used in development environments
+      ACCESS_ID: ${ACCESS_ID}
+      FIRST_NAME: ${FIRST_NAME}
+      LAST_NAME: ${LAST_NAME}
+      PSU_EMAIL_ADDRESS: ${PSU_EMAIL_ADDRESS}
+      PSU_IDN: ${PSU_IDN}
     command: >
       sh -c "/etda_workflow/bin/startup"
     ports:

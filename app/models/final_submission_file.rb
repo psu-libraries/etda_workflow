@@ -5,6 +5,8 @@ class FinalSubmissionFile < ApplicationRecord
 
   belongs_to :submission
 
+  has_one :remediated_final_submission_file, dependent: :destroy
+
   validates :submission_id, :asset, presence: true
   validates :asset, virus_free: true
 
@@ -43,6 +45,14 @@ class FinalSubmissionFile < ApplicationRecord
     SubmissionFilePath.new(submission).full_path_for_final_submissions
   end
 
+  def pdf?
+    Marcel::MimeType.for(Pathname.new(current_location)) == 'application/pdf'
+  end
+
+  def can_remediate?
+    pdf? && remediation_started_at.nil? && remediated_final_submission_file.blank?
+  end
+
   private
 
     def move_file
@@ -51,7 +61,7 @@ class FinalSubmissionFile < ApplicationRecord
 
       path_builder = EtdaFilePaths.new
       original_file_location = "#{WORKFLOW_BASE_PATH}final_submission_files/#{path_builder.detailed_file_path(id)}#{asset_identifier}"
-      path_builder.move_a_file(id, original_file_location)
+      path_builder.move_a_file(id, original_file_location, file_class: self.class)
     end
 
     def delete_file

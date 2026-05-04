@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_18_195423) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_15_201936) do
   create_table "admin_feedback_files", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "submission_id"
     t.text "asset"
@@ -38,6 +38,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_18_195423) do
     t.boolean "administrator"
     t.boolean "site_administrator"
     t.index ["access_id"], name: "index_admins_on_access_id", unique: true
+  end
+
+  create_table "api_tokens", charset: "utf8mb4", force: :cascade do |t|
+    t.string "token"
+    t.datetime "last_used_at"
+    t.bigint "external_app_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["external_app_id"], name: "index_api_tokens_on_external_app_id"
+    t.index ["token"], name: "index_api_tokens_on_token"
   end
 
   create_table "approval_configurations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -185,6 +195,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_18_195423) do
     t.index ["name"], name: "index_degrees_on_name", unique: true
   end
 
+  create_table "external_apps", charset: "utf8mb4", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_external_apps_on_name", unique: true
+  end
+
   create_table "faculty_members", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "middle_name"
@@ -212,6 +229,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_18_195423) do
     t.integer "legacy_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.datetime "remediation_started_at"
+    t.string "remediation_job_uuid"
     t.index ["legacy_id"], name: "index_final_submission_files_on_legacy_id"
     t.index ["submission_id"], name: "final_submission_files_submission_id_fk"
   end
@@ -256,6 +275,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_18_195423) do
     t.datetime "lionpath_updated_at", precision: nil
     t.index ["legacy_id"], name: "index_programs_on_legacy_id"
     t.index ["name", "code"], name: "index_programs_on_name_and_code", unique: true
+  end
+
+  create_table "remediated_final_submission_files", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "submission_id", null: false
+    t.bigint "final_submission_file_id", null: false
+    t.text "asset"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["final_submission_file_id"], name: "idx_on_final_submission_file_id_69ad15d6f5"
+    t.index ["submission_id"], name: "index_remediated_final_submission_files_on_submission_id"
   end
 
   create_table "submissions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -313,9 +342,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_18_195423) do
     t.string "lionpath_semester"
     t.string "academic_program"
     t.string "degree_checkout_status"
-    t.datetime "author_release_warning_sent_at", precision: nil
-    t.datetime "acknowledgment_page_submitted_at", precision: nil
     t.string "candidate_number"
+    t.datetime "acknowledgment_page_submitted_at", precision: nil
+    t.datetime "author_release_warning_sent_at", precision: nil
     t.string "extension_token"
     t.datetime "last_lionpath_export_at", precision: nil
     t.index ["author_id"], name: "submissions_author_id_fk"
@@ -329,6 +358,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_18_195423) do
     t.index ["public_id"], name: "index_submissions_on_public_id", unique: true
   end
 
+  add_foreign_key "api_tokens", "external_apps"
   add_foreign_key "approval_configurations", "degree_types", name: "degree_type_id_fk"
   add_foreign_key "committee_member_tokens", "committee_members", name: "committee_member_tokens_committee_member_id_fk"
   add_foreign_key "committee_members", "approvers", name: "committee_members_approver_id_fk"

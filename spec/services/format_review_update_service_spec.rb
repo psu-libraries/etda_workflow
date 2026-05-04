@@ -27,8 +27,15 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       expect(submission.committee_members.first.status).to eq('approved')
       expect(submission.committee_members.first.notes).to match(/\nThe admin user testuser123 changed Review Status to 'Approved' at: .*\n\nThe admin user testuser123 changed Voting Attribute to 'False' at:/)
       expect(submission.federal_funding).to be false
-      expect(WorkflowMailer.deliveries.count).to eq 1 unless current_partner.milsch?
+      expect(WorkflowMailer.deliveries.count).to eq 1 if current_partner.graduate? || current_partner.sset?
       expect(WorkflowMailer.deliveries.count).to eq 0 if current_partner.milsch?
+      # Honors college has requested that we send the format review approved email to committee_members as well
+      if current_partner.honors?
+        committee_members = submission.committee_members
+        expect(WorkflowMailer.deliveries[0].to).to eq([committee_members.first.email])
+        expect(WorkflowMailer.deliveries[1].to).to eq([submission.author.psu_email_address])
+        expect(WorkflowMailer.deliveries.count).to eq(1 + committee_members.count)
+      end
     end
   end
 

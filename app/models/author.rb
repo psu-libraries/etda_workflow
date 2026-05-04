@@ -111,6 +111,24 @@ class Author < ApplicationRecord
     confidential_hold || false
   end
 
+  def self.seed
+    return if ENV['RAIL_ENV'] == 'production'
+    return if ENV['ACCESS_ID'].blank?
+
+    find_or_create_by!(access_id: ENV['ACCESS_ID']) do |r|
+      r.first_name = ENV['FIRST_NAME']
+      r.last_name = ENV['LAST_NAME']
+      r.psu_email_address = ENV['PSU_EMAIL_ADDRESS']
+      r.psu_idn = ENV['PSU_IDN']
+      r.alternate_email_address = 'test@mail.com'
+      r.address_1 = '1 Paterno Library'
+      r.city = 'State College'
+      r.state = 'PA'
+      r.zip = '12345'
+      r.phone_number = '555-555-5555'
+    end
+  end
+
   private
 
     def ldap_results_valid?(results)
