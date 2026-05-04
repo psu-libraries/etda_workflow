@@ -141,18 +141,21 @@ class Submission < ApplicationRecord
   scope :final_submission_is_approved, -> { where(status: 'waiting for publication release') }
   scope :final_submission_is_on_hold, -> { where(status: 'waiting in final submission on hold') }
   scope :released_for_publication, -> { where('status LIKE "released for publication%"') }
-  scope :final_is_restricted_institution, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted_to_institution') }
+  scope :final_is_restricted_institution, -> { where('status LIKE "released for publication%"').where(access_level: ['restricted_to_institution', 'restricted_liberal_arts']) }
   scope :final_is_withheld, -> { where('status LIKE "released for publication%"').where(access_level: 'restricted') }
   scope :ok_to_release, -> { where('released_for_publication_at <= ?', Time.zone.today.end_of_day) }
   scope :ok_to_autorelease, -> {
-                              ok_to_release.where(access_level: 'restricted_to_institution')
+                              ok_to_release.where(access_level: ['restricted_to_institution', 'restricted_liberal_arts'])
                                            .where(status: 'released for publication metadata only')
                             }
   scope :release_warning_needed?, -> {
-                                    where('released_metadata_at >= ?', Time.zone.today.years_ago(2).end_of_day)
+                                    where(
+                                      '(released_metadata_at >= ? AND access_level = ?) OR (released_metadata_at >= ? AND access_level = ?)',
+                                      Time.zone.today.years_ago(2).end_of_day, 'restricted_to_institution',
+                                      Time.zone.today.years_ago(5).end_of_day, 'restricted_liberal_arts'
+                                    )
                                       .where('released_for_publication_at <= ?', Time.zone.today.next_month)
                                       .where(author_release_warning_sent_at: nil)
-                                      .where(access_level: 'restricted_to_institution')
                                   }
 
   def advisor
@@ -335,6 +338,8 @@ class Submission < ApplicationRecord
 
   delegate :restricted_to_institution?, to: :access_level
 
+  delegate :restricted_liberal_arts?, to: :access_level
+
   def publication_release_access_level
     return 'open_access' if status_behavior.released_for_publication? # full release of submission that was held for 2 years
 
@@ -349,6 +354,8 @@ class Submission < ApplicationRecord
     # release restricted after 2-year-hold (time period may be longer)
     #   released_fo_publication_at = date_to_release
     return date_to_release if open_access?
+
+    return date_to_release.to_date + 5.years if restricted_liberal_arts?
 
     date_to_release.to_date + 2.years
   end

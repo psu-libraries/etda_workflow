@@ -74,6 +74,13 @@ RSpec.describe Author::FinalSubmissionFilesView do
       end
     end
 
+    context 'restricted_liberal_arts' do
+      it 'returns restricted_liberal_arts label' do
+        submission.access_level = 'restricted_liberal_arts'
+        expect(view.selected_access_level).to eq(submission.current_access_level.label)
+      end
+    end
+
     context 'restricted' do
       it 'returns restricted label' do
         submission.access_level = 'restricted'

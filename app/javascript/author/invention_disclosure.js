@@ -18,7 +18,8 @@ const bind_to_access_level = () =>
             e.preventDefault;
         }
 
-        if ($('div.author #submission_access_level_restricted_to_institution').prop('checked')) {
+        if ($('div.author #submission_access_level_restricted_to_institution').prop('checked') || 
+            $('div.author #submission_access_level_restricted_liberal_arts').prop('checked')) {
             $('div#restricted_note').removeClass('d-none');
             return $('#submission_restricted_notes').focus();
         } else {

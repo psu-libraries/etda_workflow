@@ -48,6 +48,7 @@ class Lionpath::LionpathExportPayload
       access_level_map = {
         'open_access' => 'OPEN',
         'restricted_to_institution' => 'RPSU',
+        'restricted_liberal_arts' => 'RLA',
         'restricted' => 'RSTR'
       }
       access_level_map[submission.access_level]

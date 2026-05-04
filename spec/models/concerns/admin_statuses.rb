@@ -78,11 +78,22 @@ RSpec.describe AdminStatuses do
     end
 
     context 'when the admin status is final_restricted_institution' do
-      it 'returns the correct label' do
-        status = 'final_restricted_institution'
-        submission = Submission.new(status: 'released for publication!!!',
-                                    access_level: 'restricted_to_institution')
-        expect(submission.admin_status).to eq I18n.t!("#{current_partner.id}.admin_filters.#{status}.title")
+      context 'when access level is restricted to institution' do
+        it 'returns the correct label' do
+          status = 'final_restricted_institution'
+          submission = Submission.new(status: 'released for publication!!!',
+                                      access_level: 'restricted_to_institution')
+          expect(submission.admin_status).to eq I18n.t!("#{current_partner.id}.admin_filters.#{status}.title")
+        end
+      end
+
+      context 'when access level is restricted liberal arts' do
+        it 'returns the correct label' do
+          status = 'final_restricted_institution'
+          submission = Submission.new(status: 'released for publication!!!',
+                                      access_level: 'restricted_liberal_arts')
+          expect(submission.admin_status).to eq I18n.t!("#{current_partner.id}.admin_filters.#{status}.title")
+        end
       end
     end
 

@@ -84,7 +84,7 @@ module AdminStatuses
     end
 
     def final_restricted_institution
-      access_level == 'restricted_to_institution' && status.start_with?('released for publication')
+      access_level.in?(['restricted_to_institution', 'restricted_liberal_arts']) && status.start_with?('released for publication')
     end
 
     def final_withheld

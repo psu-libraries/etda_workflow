@@ -36,6 +36,18 @@ RSpec.describe SubmissionReleaseService do
         end
       end
 
+      context "when submission's access_level is restricted_liberal_arts" do
+        let(:submission) do
+          FactoryBot.create :submission, :waiting_for_publication_release, access_level: 'restricted_liberal_arts'
+        end
+
+        it "changes the submission's status to 'released for publication metadata only'" do
+          service.publish([submission.id], DateTime.now, release_type)
+          submission.reload
+          expect(submission.status).to eq 'released for publication metadata only'
+        end
+      end
+
       context "when submission's access_level is restricted" do
         let(:submission) do
           FactoryBot.create :submission, :waiting_for_publication_release, access_level: 'restricted_to_institution'

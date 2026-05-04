@@ -35,12 +35,18 @@ RSpec.describe AutoReleaseService do
                         access_level: 'restricted_to_institution',
                         status: 'waiting for publication release'
     end
+    let!(:sub6) do
+      FactoryBot.create :submission,
+                        released_for_publication_at: Time.zone.today.days_ago(1),
+                        access_level: 'restricted_liberal_arts',
+                        status: 'released for publication metadata only'
+    end
 
-    before { allow(Submission).to receive(:release_for_publication).with([sub1.id, sub3.id], DateTime.now.end_of_day, 'Release as Open Access') }
+    before { allow(Submission).to receive(:release_for_publication).with([sub1.id, sub3.id, sub6.id], DateTime.now.end_of_day, 'Release as Open Access') }
 
     it 'sends eligible submissions for release to publication' do
       described_class.new.release
-      expect(Submission).to have_received(:release_for_publication).with([sub1.id, sub3.id], DateTime.now.end_of_day, 'Release as Open Access')
+      expect(Submission).to have_received(:release_for_publication).with([sub1.id, sub3.id, sub6.id], DateTime.now.end_of_day, 'Release as Open Access')
     end
   end
 
