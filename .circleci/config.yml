@@ -26,7 +26,6 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
       - setup_remote_docker:
-          version: docker24
           docker_layer_caching: true
       - checkout
       - run:
@@ -47,7 +46,6 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
       - setup_remote_docker:
-          version: docker24
           docker_layer_caching: true
       - checkout
       - run:
@@ -70,7 +68,6 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - setup_remote_docker:
-          version: docker24
           docker_layer_caching: true
       - checkout
       - run:
@@ -80,6 +77,10 @@ jobs:
             export TAG=${CIRCLE_SHA1}
             export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
             docker-compose up -d db selenium redis
+      - run:
+          name: Capture container logs on failure
+          command: docker-compose logs db selenium redis
+          when: on_fail
       - run:
           name: "Rubocop"
           command: |
@@ -115,7 +116,6 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - setup_remote_docker:
-          version: docker24
           docker_layer_caching: true
       - checkout
       - run:
@@ -125,10 +125,17 @@ jobs:
             export TAG=${CIRCLE_SHA1}
             export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
             docker-compose up -d db selenium redis
-            sleep 10
+            until docker-compose exec -T db mysqladmin ping -h localhost -u root --password=root --silent 2>/dev/null; do
+              echo "Waiting for db..."
+              sleep 2
+            done
             PARTNER=graduate docker-compose run --name=test --service-ports -d test
             docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
             docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
+      - run:
+          name: Capture container logs on failure
+          command: docker-compose logs db selenium redis
+          when: on_fail
   publish:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
