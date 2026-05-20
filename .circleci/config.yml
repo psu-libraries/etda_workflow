@@ -329,7 +329,7 @@ workflows:
             branches:
               only: /.*/
 
-  docker-push:
+  etda-workflow:
     unless:
       equal: [ "delete", << pipeline.parameters.GHA_Event >> ]
     jobs:
