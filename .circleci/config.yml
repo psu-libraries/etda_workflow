@@ -383,7 +383,7 @@ workflows:
 
       - release-image:
           name: release-image
-          clusters: << pipeline.parameters.CLUSTERS_ULPROD >>
+          clusters: << pipeline.parameters.CLUSTERS_PROD >>,<< pipeline.parameters.CLUSTERS_ULPROD >>
           context:
             - org-global
           from_tag: "<< pipeline.git.revision >>"
