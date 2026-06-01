@@ -1,85 +1,23 @@
 version: 2.1
-
-orbs:
-
-  docker: circleci/docker@3.0.1
-
-parameters:
-
-  GHA_Action:
-    type: string
-    default: ""
-  GHA_Actor:
-    type: string
-    default: ""
-  GHA_Event:
-    type: string
-    default: ""
-  GHA_Meta:
-    type: string
-    default: ""
-  CI_UTILS_IMAGE_TAG:
-    type: string
-    default: "v4.6.4"
-  CONFIG_REPO_NAME:
-    type: string
-    default: "etda-config"
-  CONFIG_REPO_URL:
-    type: string
-    default: "git@github.com:psu-libraries/etda-config.git"
-  REGISTRY_HOST:
-    type: string
-    default: "harbor.k8s.libraries.psu.edu"
-  CLUSTERS_DEV:
-    type: string
-    default: "uldev"
-  CLUSTERS_PROD:
-    type: string
-    default: "prod"
-  CLUSTERS_ULPROD:
-    type: string
-    default: "ulprod"
-  PIPELINE_CONFIG_VERSION:
-    type: string
-    default: "1.0.1"
-
-commands:
-
-  clone-config-repo:
+jobs:
+  release:
+    docker:
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.3.0
+    environment:
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_REPO: library/etda-workflow
+      GITHUB_USER: 'psu-stewardship-bot'
+      CONFIG_REPO: git@github.com:psu-libraries/etda-config.git
     steps:
       - add_ssh_keys
       - run:
-          name: Prepare GitHub Access
+          name: "Release"
           command: |
+            /usr/local/bin/tag-image
             ssh-keyscan github.com > ~/.ssh/known_hosts
-            git clone $CONFIG_REPO_URL
-
-  compute-docker-tag:
-    steps:
-      - run:
-          name: Compute Docker Tag
-          command: |
-            if [[ "$CIRCLE_BRANCH" == "main" ]]; then
-              TAG="$CIRCLE_SHA1"
-            else
-              SLUG=$(slugify-branch "$CIRCLE_BRANCH")
-              TAG="${SLUG}--$CIRCLE_SHA1"
-            fi
-            echo "export TAG=$TAG" >> "$BASH_ENV"
-
-executors:
-
-  ci-utils:
-    parameters:
-      image_tag:
-        type: string
-      registry_host:
-        type: string
-    docker:
-      - image: << parameters.registry_host >>/library/ci-utils:<< parameters.image_tag >>
-
-jobs:
-
+            git clone $CONFIG_REPO
+            cd etda-config
+            ./bin/pr-release clusters/prod/manifests/prod.yaml
   build_test:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -88,6 +26,7 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
       - setup_remote_docker:
+          version: docker24
           docker_layer_caching: true
       - checkout
       - run:
@@ -100,7 +39,6 @@ jobs:
           root: .
           paths:
             - etda-workflow.tar
-
   build_prod:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -109,6 +47,7 @@ jobs:
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
     steps:
       - setup_remote_docker:
+          version: docker24
           docker_layer_caching: true
       - checkout
       - run:
@@ -121,7 +60,6 @@ jobs:
           root: .
           paths:
             - etda-workflow-prod.tar
-
   rubocop_unit_partner_tests:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -132,6 +70,7 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - setup_remote_docker:
+          version: docker24
           docker_layer_caching: true
       - checkout
       - run:
@@ -141,10 +80,6 @@ jobs:
             export TAG=${CIRCLE_SHA1}
             export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
             docker-compose up -d db selenium redis
-      - run:
-          name: Capture container logs on failure
-          command: docker-compose logs db selenium redis
-          when: on_fail
       - run:
           name: "Rubocop"
           command: |
@@ -170,7 +105,6 @@ jobs:
           command: |
             PARTNER=sset docker-compose run --name=test_sset --service-ports -d test
             docker exec -e RAILS_ENV=test test_sset /etda_workflow/bin/ci-rspec
-
   integration_test_grad:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -181,6 +115,7 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - setup_remote_docker:
+          version: docker24
           docker_layer_caching: true
       - checkout
       - run:
@@ -190,18 +125,10 @@ jobs:
             export TAG=${CIRCLE_SHA1}
             export GIT_COMMITED_AT=$(git log -1 --date=short --pretty=format:%ct)
             docker-compose up -d db selenium redis
-            until docker-compose exec -T db mariadb-admin ping -h localhost -u root --password=root --silent 2>/dev/null; do
-              echo "Waiting for db..."
-              sleep 2
-            done
+            sleep 10
             PARTNER=graduate docker-compose run --name=test --service-ports -d test
             docker exec -e RAILS_ENV=test -e INTEGRATION=true test /etda_workflow/bin/ci-rspec
             docker cp test:/etda_workflow/coverage/.resultset.json .resultset.json
-      - run:
-          name: Capture container logs on failure
-          command: docker-compose logs db selenium redis
-          when: on_fail
-
   publish:
     docker:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
@@ -233,164 +160,57 @@ jobs:
                   docker tag etda_workflow_web:latest $REGISTRY_URL:latest
                   docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
                   docker push $REGISTRY_URL:latest
-
-  delete-deployment:
-    parameters:
-      delete_branch:
-        type: string
-    executor:
-      name: ci-utils
-      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
-      registry_host: << pipeline.parameters.REGISTRY_HOST >>
+  deploy:
+    docker:
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
-      CONFIG_REPO_NAME: << pipeline.parameters.CONFIG_REPO_NAME >>
-      CONFIG_REPO_URL: << pipeline.parameters.CONFIG_REPO_URL >>
-      DELETE_BRANCH: << parameters.delete_branch >>
+      CONFIG_REPO: git@github.com:psu-libraries/etda-config.git
     steps:
-      - clone-config-repo
+      - add_ssh_keys
       - run:
-          name: Delete Deployment
+          name: "Updating Config Repo"
           command: |
-            export TRIGGERED_BY="$CIRCLE_USERNAME"
-            cd $CONFIG_REPO_NAME
-            ./bin/ci-delete-manifest
-
-  deploy-application:
-    executor:
-      name: ci-utils
-      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
-      registry_host: << pipeline.parameters.REGISTRY_HOST >>
-    environment:
-      clusters: << parameters.clusters >>
-      CONFIG_REPO_NAME: << pipeline.parameters.CONFIG_REPO_NAME >>
-      CONFIG_REPO_URL: << pipeline.parameters.CONFIG_REPO_URL >>
-      CONFIG_REPO: << pipeline.parameters.CONFIG_REPO_URL >>
-      TO_YAML_TAG_TARGET: ".spec.source.helm.values.workflow.image.tag"
-    parameters:
-      clusters:
-        type: string
-    steps:
-      - clone-config-repo
-      - compute-docker-tag
-      - run:
-          name: Add or Update Application Manifest
-          command: |
-            export TRIGGERED_BY="$CIRCLE_USERNAME"
-            clusters="${clusters// /}"
-            IFS=',' read -ra CLUSTERS \<<< "$clusters"
-            echo "Pre loop Directory: $(pwd)"
-            for cluster in "${CLUSTERS[@]}"; do
-                export TARGET_CLUSTER="$cluster"
-                echo "Processing cluster: $TARGET_CLUSTER"
-                cd $CONFIG_REPO_NAME
-                ./bin/ci-write-manifest
-                echo "Finished processing $TARGET_CLUSTER"
-                git status
-            done
-
-  release-image:
-    parameters:
-      clusters:
-        type: string
-      from_tag:
-        type: string
-      to_tag:
-        type: string
-    executor:
-      name: ci-utils
-      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
-      registry_host: << pipeline.parameters.REGISTRY_HOST >>
-    environment:
-      clusters: << parameters.clusters >>
-      CONFIG_REPO_NAME: << pipeline.parameters.CONFIG_REPO_NAME >>
-      CONFIG_REPO: << pipeline.parameters.CONFIG_REPO_URL >>
-      CONFIG_REPO_URL: << pipeline.parameters.CONFIG_REPO_URL >>
-      REGISTRY_HOST: << pipeline.parameters.REGISTRY_HOST >>
-      REGISTRY_REPO: "etda-workflow"
-      TO_YAML_TAG_TARGET: ".spec.source.helm.values.workflow.image.tag"
-      FROM_TAG: << parameters.from_tag >>
-      TO_TAG: << parameters.to_tag >>
-      PIPELINE_CONFIG_VERSION: << pipeline.parameters.PIPELINE_CONFIG_VERSION >>
-    steps:
-      - clone-config-repo
-      - run:
-          name: Tag & Release Image
-          command: |
-            /usr/local/bin/image-release-for-clusters
-
+            ssh-keyscan github.com > ~/.ssh/known_hosts
+            git clone $CONFIG_REPO
+            cd etda-config
+            ./bin/generate_app
 workflows:
-
-  delete-deployment:
-    when:
-      equal: [ "delete", << pipeline.parameters.GHA_Event >> ]
-    jobs:
-      - delete-deployment:
-          name: delete-deployment
-          context: [org-global]
-          delete_branch: << pipeline.parameters.GHA_Meta >>
-          filters:
-            branches:
-              only: /.*/
-
   etda-workflow:
-    unless:
-      equal: [ "delete", << pipeline.parameters.GHA_Event >> ]
     jobs:
+      - release:
+          context: org-global
+          name: "Release"
+          filters:
+            tags:
+              only:
+                - /^v\d+.\d+.\d+.*/
+            branches:
+              ignore:
+                - /.*/
       - build_test:
           context: org-global
-
       - build_prod:
           context: org-global
-          filters:
-            branches:
-              only:
-                - main
-                - /preview\/.*/
-
       - rubocop_unit_partner_tests:
           context: org-global
           requires:
             - build_test
-
       - integration_test_grad:
           context: org-global
           requires:
             - build_test
-
       - publish:
           context: org-global
           requires:
             - build_prod
             - rubocop_unit_partner_tests
             - integration_test_grad
-          filters:
-            branches:
-              only:
-                - main
-                - /preview\/.*/
-
-      - deploy-application:
-          name: deploy-application
-          context:
-            - org-global
-          clusters: << pipeline.parameters.CLUSTERS_DEV >>
-          filters:
-            branches:
-              only:
-                - main
-                - /preview\/.*/
+      - deploy:
+          context: org-global
           requires:
             - publish
-
-      - release-image:
-          name: release-image
-          clusters: << pipeline.parameters.CLUSTERS_PROD >>,<< pipeline.parameters.CLUSTERS_ULPROD >>
-          context:
-            - org-global
-          from_tag: "<< pipeline.git.revision >>"
-          to_tag: "<< pipeline.git.tag >>"
           filters:
             branches:
-              ignore: /.*/
-            tags:
-              only: /^v\d+\.\d+\.\d+.*/
+              only:
+                - /preview\/.*/
+                - main
