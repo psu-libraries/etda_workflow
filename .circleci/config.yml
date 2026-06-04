@@ -20,7 +20,7 @@ parameters:
     default: ""
   CI_UTILS_IMAGE_TAG:
     type: string
-    default: "v4.6.4"
+    default: "v4.6.5"
   CONFIG_REPO_NAME:
     type: string
     default: "etda-config"
@@ -316,7 +316,7 @@ jobs:
       - run:
           name: Tag & Release Image
           command: |
-            /usr/local/bin/image-release-for-clusters
+            /usr/local/bin/image-release-for-clusters --manifest-path "clusters/{cluster}/manifests/prod.yaml"
 
 workflows:
 
