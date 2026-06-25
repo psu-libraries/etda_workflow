@@ -135,12 +135,9 @@ en:
 
                     Request extension: %{url}
 
-                    If you have questions or comments, please email the Office of Theses and Dissertations at thesis@foxgradschool.psu.edu.
-                    You may also call (814)865-5448, or send mail to:
-                    Office of Theses and Dissertations
-                    115 Kern Building
-                    Graduate School
-                    University Park, PA  16802
+                    If you have any further questions, please contact:  
+                    Sarah Richards, Coordinator of Student Records & Advising Services
+                    SHCAcademics@psu.edu
         release_for_publication:
           message: |
                     Congratulations! Your honors thesis titled "%{title}" has been released for publication with the access level of Open Access. You can view it at: %{url}.
