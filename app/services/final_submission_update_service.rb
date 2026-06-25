@@ -44,10 +44,8 @@ class FinalSubmissionUpdateService
       approved_service.release_updated
     elsif update_actions.rejected?
       approved_service.release_rejected
-    elsif update_actions.send_to_hold?
-      approved_service.release_sent_to_hold
-    elsif update_actions.remove_hold?
-      approved_service.release_remove_hold
+    else
+      approved_service.release_updated
     end
   end
 
