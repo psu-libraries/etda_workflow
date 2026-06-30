@@ -14,6 +14,7 @@ class FinalSubmissionUpdateService
 
   def update_record
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
+    submission.export_to_lionpath!
     { msg: "The submission was successfully updated.", redirect_path: admin_edit_sub_path }
   end
 

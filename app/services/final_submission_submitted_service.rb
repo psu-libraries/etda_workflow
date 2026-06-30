@@ -62,6 +62,7 @@ class FinalSubmissionSubmittedService
 
   def final_submission_updated
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
+    submission.export_to_lionpath!
     " Final submission information was successfully edited by an administrator"
   end
 end

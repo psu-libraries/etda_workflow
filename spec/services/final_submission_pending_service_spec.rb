@@ -7,6 +7,10 @@ RSpec.describe FinalSubmissionPendingService do
   let!(:degree) { FactoryBot.create :degree, degree_type: DegreeType.default }
   let!(:approval_config) { FactoryBot.create :approval_configuration, degree_type: DegreeType.default, head_of_program_is_approving: false }
 
+  before do
+    allow(submission).to receive(:export_to_lionpath!)
+  end
+
   describe "#respond" do
     context 'when params[:update_metadata]' do
       let(:params) do
@@ -22,6 +26,7 @@ RSpec.describe FinalSubmissionPendingService do
           submission.reload
           expect(submission.title).to eq 'New Title'
           expect(submission.status).to eq 'waiting for committee review'
+          expect(submission).to have_received(:export_to_lionpath!).once
           expect(WorkflowMailer.deliveries.count).to eq 0
         end
       end

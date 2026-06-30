@@ -6,6 +6,10 @@ RSpec.describe FinalSubmissionSubmittedService do
   let!(:submission) { FactoryBot.create :submission, :waiting_for_final_submission_response }
   let(:status_giver) { SubmissionStatusGiver.new(submission) }
 
+  before do
+    allow(submission).to receive(:export_to_lionpath!)
+  end
+
   describe '#final_submission_approved' do
     it "sends submissions to 'waiting for publication release'" do
       described_class_inst.final_submission_approved
@@ -56,6 +60,13 @@ RSpec.describe FinalSubmissionSubmittedService do
         expect(submission.status).to eq 'waiting for final submission response'
         expect(WorkflowMailer.deliveries.count).to eq 0
       end
+    end
+  end
+
+  describe '#final_submission_updated' do
+    it 'sends updated changes to lionpath' do
+      described_class_inst.final_submission_updated
+      expect(submission).to have_received(:export_to_lionpath!).once
     end
   end
 end
