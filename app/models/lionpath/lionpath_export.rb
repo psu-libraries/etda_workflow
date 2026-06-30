@@ -2,10 +2,12 @@ require 'httparty'
 
 class Lionpath::LionpathExport
   def initialize(submission)
+    @submission = submission
     @payload = Lionpath::LionpathExportPayload.new(submission)
   end
 
   def call
+    return unless @submission.status_behavior.beyond_collecting_format_review_files?
     options = {
       body: payload.json_payload,
       headers: {

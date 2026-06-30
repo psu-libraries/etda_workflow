@@ -4,6 +4,7 @@ RSpec.describe Lionpath::LionpathExport do
   subject(:exporter) { described_class.new(submission) }
 
   let(:submission) { instance_double('Submission') }
+  let(:status_behavior) { instance_double('SubmissionStatus')}
   let(:payload_instance) { instance_double('Lionpath::LionpathExportPayload', json_payload:) }
   let(:json_payload) { '{"PE_SR199_ETD_REQ":{"key":"value"}}' }
   let(:auth) { ['test_user', 'test_password'] }
@@ -18,6 +19,8 @@ RSpec.describe Lionpath::LionpathExport do
     allow(ENV).to receive(:fetch).with('LP_SA_USERNAME', 'test_user').and_return('test_user')
     allow(ENV).to receive(:fetch).with('LP_SA_PASSWORD', 'test_password').and_return('test_password')
     allow(ENV).to receive(:fetch).with('LP_EXPORT_HOST', 'abcdef').and_return('https://test.com')
+    allow(status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(true)
+    allow(submission).to receive(:status_behavior).and_return(status_behavior)
   end
 
   describe '#call' do
@@ -60,6 +63,17 @@ RSpec.describe Lionpath::LionpathExport do
 
       it 'raises an error with the parsed response error message' do
         expect { exporter.call }.to raise_error('Error occurred')
+      end
+    end
+
+    context 'when the submission is not at format review submitted' do
+      before do
+        allow(status_behavior).to receive(:beyond_collecting_format_review_files?).and_return(false)
+      end
+
+      it 'does not make a call to Lionpath' do
+        exporter.call
+        expect(WebMock).not_to have_requested(:put, full_url)
       end
     end
   end
