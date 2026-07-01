@@ -102,8 +102,10 @@ jobs:
             - etda-workflow.tar
 
   build_prod:
-    docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+    executor:
+      name: ci-utils
+      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
+      registry_host: << pipeline.parameters.REGISTRY_HOST >>
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -111,11 +113,12 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - checkout
+      - compute-docker-tag
       - run:
           name: "Build Container"
           command: |
             if [ -f etda-workflow-prod.tar ]; then docker load -i etda-workflow-prod.tar; fi
-            docker build -t $REGISTRY_URL:$CIRCLE_SHA1 -t etda_workflow_web:latest .
+            docker build -t $REGISTRY_URL:$TAG -t etda_workflow_web:latest .
             docker save -o etda-workflow-prod.tar etda_workflow_web:latest
       - persist_to_workspace:
           root: .
@@ -203,8 +206,10 @@ jobs:
           when: on_fail
 
   publish:
-    docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+    executor:
+      name: ci-utils
+      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
+      registry_host: << pipeline.parameters.REGISTRY_HOST >>
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
@@ -212,15 +217,16 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - checkout
+      - compute-docker-tag
       - attach_workspace:
           at: /tmp/workspace
       - run:
           name: "Publish The Image"
           command: |
             docker load -i /tmp/workspace/etda-workflow-prod.tar
-            docker tag etda_workflow_web:latest $REGISTRY_URL:$CIRCLE_SHA1
+            docker tag etda_workflow_web:latest $REGISTRY_URL:$TAG
             docker login -u $DOCKER_USERNAME -p $HARBOR_PASSWORD $REGISTRY_HOST
-            docker push $REGISTRY_URL:$CIRCLE_SHA1
+            docker push $REGISTRY_URL:$TAG
       - when:
           condition:
             and:
