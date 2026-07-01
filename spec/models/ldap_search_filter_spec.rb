@@ -46,5 +46,15 @@ RSpec.describe LdapSearchFilter, type: :model do
 
       expect(filter).to be_nil
     end
+
+    it 'returns nil and logs an error when the identity service raises an error' do
+      allow(client).to receive(:search).and_raise(PsuIdentity::SearchService::Error, 'timeout')
+      allow(Rails.logger).to receive(:error)
+
+      filter = described_class.new(term).create_filter
+
+      expect(filter).to be_nil
+      expect(Rails.logger).to have_received(:error).with('Error searching PSU Identity Service: timeout')
+    end
   end
 end

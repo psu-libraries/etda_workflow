@@ -28,6 +28,9 @@ class LdapSearchFilter
       PsuIdentity::SearchService::Client
         .new
         .search(text: @term, size: 50, active: true, service_account: false)
+    rescue PsuIdentity::SearchService::Error => e
+      Rails.logger.error("Error searching PSU Identity Service: #{e.message}")
+      []
     end
 
     def eligible_affiliation?(person)
