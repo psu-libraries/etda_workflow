@@ -10,9 +10,7 @@ RSpec.describe ExportReport, type: :model do
     context 'columns' do
       it 'has initialized columns', :graduate, :honors do
         expect(export_report.columns).to include('Access Level')
-        if current_partner.honors?
-          expect(export_report.columns).to include('PSU IDN')
-        end
+        expect(export_report.columns).to include('PSU IDN') if current_partner.honors?
       end
     end
 
@@ -23,9 +21,7 @@ RSpec.describe ExportReport, type: :model do
         expect(fields).to include(author.last_name)
         expect(fields).to include(author.first_name)
         expect(fields).to include(submission.title)
-        if current_partner.honors?
-          expect(fields).to include(author.psu_idn)
-        end
+        expect(fields).to include(author.psu_idn) if current_partner.honors?
       end
     end
 
