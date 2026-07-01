@@ -19,7 +19,7 @@ class MockUniversityDirectory
 
   # Return an array of tuples that are suitable for returning
   # to a jQuery autocomplete widget.
-  def autocomplete(search_string, _only_faculty_staff: true)
+  def autocomplete(search_string)
     case search_string
     when /(alex)/i
       return [{ id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling', dept: 'University Libraries' }] unless Rails.env.test?
@@ -36,8 +36,6 @@ class MockUniversityDirectory
       [
         { id: 'buck@hotmail.com', label: 'Professor Buck Murphy', value: 'Professor Buck Murphy', dept: 'University Libraries' }
       ]
-    else
-      []
     end
   end
 

@@ -25,7 +25,7 @@ RSpec.describe LdapUniversityDirectory, :ldap, type: :model do
       end
     end
 
-    context 'when given "no match"' do
+    context 'when given a string that does not match any users' do
       let(:search_string) { "not there" }
 
       it "returns an empty array" do
