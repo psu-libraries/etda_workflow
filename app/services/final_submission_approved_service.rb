@@ -11,6 +11,7 @@ class FinalSubmissionApprovedService
   def release_updated
     # Editing a submission that is waiting to be released for publication
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
+    submission.export_to_lionpath!
     { msg: 'The submission was successfully updated.', redirect_path: admin_edit_sub_path }
   end
 

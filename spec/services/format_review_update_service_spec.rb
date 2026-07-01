@@ -64,6 +64,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
   context 'it updates the record' do
     it 'updates a format review' do
       submission = FactoryBot.create :submission, :waiting_for_format_review_response, committee_members: [committee_member]
+      allow(submission).to receive(:export_to_lionpath!)
       original_title = submission.title
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
@@ -74,6 +75,7 @@ RSpec.describe FormatReviewUpdateService, type: :model do
       params[:submission][:committee_members_attributes]["0"]['status'] = 'rejected'
       format_review_update_service = described_class.new(params, submission, 'testuser123')
       result = format_review_update_service.update_record
+      expect(submission).to have_received(:export_to_lionpath!).once
       expect(result[:msg]).to eql("The submission was successfully updated.")
       expect(result[:redirect_path]).to eql(admin_edit_submission_path(submission.id.to_s))
       expect(submission.title).to eq('a different title')
