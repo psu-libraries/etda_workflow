@@ -12,6 +12,7 @@ def stub_directory_search(search_results:, operation_message: 'Success')
 
   allow(connection).to receive(:search).and_return(search_results)
   allow(connection).to receive(:get_operation_result).and_return(operation_result)
+  # Requires an intialized LdapUniversityDirectory stored in the `directory` variable in the test
   allow(directory).to receive(:with_connection).and_yield(connection)
   allow(directory).to receive(:ldap_configuration).and_return('base' => 'dc=example,dc=edu')
 
