@@ -18,7 +18,6 @@ class SubmissionStatus
       'waiting for head of program review',
       'waiting for committee review rejected',
       'waiting for publication release',
-      'waiting in final submission on hold',
       'released for publication metadata only',
       'released for publication',
       'format review accepted' # this is legacy FR fix
@@ -83,10 +82,6 @@ class SubmissionStatus
     current_status == 'waiting for publication release'
   end
 
-  def waiting_in_final_submission_on_hold?
-    current_status == 'waiting in final submission on hold'
-  end
-
   def released_for_publication?
     current_status == 'released for publication' || current_status == 'released for publication metadata only'
   end
@@ -136,7 +131,7 @@ class SubmissionStatus
   end
 
   def beyond_waiting_for_final_submission_response_rejected?
-    waiting_for_publication_release? || released_for_publication? || waiting_in_final_submission_on_hold?
+    waiting_for_publication_release? || released_for_publication?
   end
 
   def format_review_rejected?

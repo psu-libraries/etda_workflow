@@ -69,14 +69,6 @@ RSpec.describe AdminStatuses do
       end
     end
 
-    context 'when the admin status is final_submission_on_hold' do
-      it 'returns the correct label' do
-        status = 'final_submission_on_hold'
-        submission = Submission.new(status: 'waiting in final submission on hold')
-        expect(submission.admin_status).to eq I18n.t!("#{current_partner.id}.admin_filters.#{status}.title")
-      end
-    end
-
     context 'when the admin status is final_restricted_institution' do
       context 'when access level is restricted to institution' do
         it 'returns the correct label' do

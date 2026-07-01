@@ -25,33 +25,10 @@ class FinalSubmissionApprovedService
     { msg: 'Submission was removed from waiting to be released', redirect_path: admin_approved_sub_index_path }
   end
 
-  def release_sent_to_hold
-    UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-    submission.placed_on_hold_at = DateTime.now
-    submission.save
-    status_giver.can_waiting_in_final_submission_on_hold?
-    status_giver.waiting_in_final_submission_on_hold!
-    { msg: "The submission was successfully placed on hold.", redirect_path: admin_hold_sub_index_path }
-  end
-
-  def release_remove_hold
-    UpdateSubmissionService.admin_update_submission(submission, current_remote_user, final_submission_params)
-    submission.removed_hold_at = DateTime.now
-    submission.save
-    status_giver.can_waiting_for_publication_release?
-    status_giver.waiting_for_publication_release!
-    msg = "The submission was successfully removed from its hold and is waiting to be released."
-    { msg:, redirect_path: admin_approved_sub_index_path }
-  end
-
   private
 
     def admin_edit_sub_path
       url_helpers.admin_edit_submission_path(submission.id.to_s)
-    end
-
-    def admin_hold_sub_index_path
-      url_helpers.admin_submissions_index_path(submission.degree_type.slug, 'final_submission_on_hold')
     end
 
     def admin_approved_sub_index_path

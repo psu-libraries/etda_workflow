@@ -21,7 +21,6 @@ module AdminStatuses
       'final_submission_submitted',
       'final_submission_incomplete',
       'final_submission_approved',
-      'final_submission_on_hold',
       'final_restricted_institution',
       'final_withheld',
       'released_for_publication'
@@ -77,10 +76,6 @@ module AdminStatuses
 
     def final_submission_approved
       status == 'waiting for publication release'
-    end
-
-    def final_submission_on_hold
-      status == 'waiting in final submission on hold'
     end
 
     def final_restricted_institution

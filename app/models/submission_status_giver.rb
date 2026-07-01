@@ -49,7 +49,6 @@ class SubmissionStatusGiver
                              SubmissionStates::WaitingForCommitteeReviewRejected,
                              SubmissionStates::WaitingForFinalSubmissionResponse,
                              SubmissionStates::WaitingForPublicationRelease,
-                             SubmissionStates::WaitingInFinalSubmissionOnHold,
                              SubmissionStates::ReleasedForPublication,
                              SubmissionStates::CollectingFormatReviewFilesRejected,
                              SubmissionStates::WaitingForAdvisorReview]
@@ -68,7 +67,6 @@ class SubmissionStatusGiver
                              SubmissionStates::FormatReviewAccepted,
                              SubmissionStates::WaitingForFinalSubmissionResponse,
                              SubmissionStates::WaitingForPublicationRelease,
-                             SubmissionStates::WaitingInFinalSubmissionOnHold,
                              SubmissionStates::ReleasedForPublication,
                              SubmissionStates::CollectingFormatReviewFilesRejected,
                              SubmissionStates::CollectingFinalSubmissionFilesRejected,
@@ -89,7 +87,6 @@ class SubmissionStatusGiver
                              SubmissionStates::WaitingForCommitteeReviewRejected,
                              SubmissionStates::WaitingForFinalSubmissionResponse,
                              SubmissionStates::WaitingForPublicationRelease,
-                             SubmissionStates::WaitingInFinalSubmissionOnHold,
                              SubmissionStates::ReleasedForPublication,
                              SubmissionStates::CollectingFinalSubmissionFilesRejected,
                              SubmissionStates::WaitingForAdvisorReview]
@@ -108,7 +105,6 @@ class SubmissionStatusGiver
                              SubmissionStates::WaitingForCommitteeReviewRejected,
                              SubmissionStates::WaitingForFinalSubmissionResponse,
                              SubmissionStates::WaitingForPublicationRelease,
-                             SubmissionStates::WaitingInFinalSubmissionOnHold,
                              SubmissionStates::ReleasedForPublication,
                              SubmissionStates::WaitingForAdvisorReview]
   end
@@ -158,12 +154,7 @@ class SubmissionStatusGiver
   end
 
   def can_waiting_for_publication_release?
-    validate_current_state! [SubmissionStates::WaitingForFinalSubmissionResponse,
-                             SubmissionStates::WaitingInFinalSubmissionOnHold]
-  end
-
-  def can_waiting_in_final_submission_on_hold?
-    validate_current_state! [SubmissionStates::WaitingForPublicationRelease]
+    validate_current_state! [SubmissionStates::WaitingForFinalSubmissionResponse]
   end
 
   def can_release_for_publication?
@@ -232,10 +223,6 @@ class SubmissionStatusGiver
 
   def waiting_for_publication_release!
     transition_to SubmissionStates::WaitingForPublicationRelease
-  end
-
-  def waiting_in_final_submission_on_hold!
-    transition_to SubmissionStates::WaitingInFinalSubmissionOnHold
   end
 
   def remove_from_waiting_to_be_released!

@@ -93,13 +93,6 @@ RSpec.describe Admin::SubmissionsDashboardView do
             count: nil
           },
           {
-            id: 'final-submission-on-hold',
-            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_on_hold.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_on_hold.description"),
-            path: nil,
-            count: nil
-          },
-          {
             id: 'released-for-publication',
             title: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.title", submission: 'Theses'),
             description: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.description", submission: 'theses'),
@@ -186,13 +179,6 @@ RSpec.describe Admin::SubmissionsDashboardView do
             count: nil
           },
           {
-            id: 'final-submission-on-hold',
-            title: I18n.t("#{current_partner.id}.admin_filters.final_submission_on_hold.title"),
-            description: I18n.t("#{current_partner.id}.admin_filters.final_submission_on_hold.description"),
-            path: nil,
-            count: nil
-          },
-          {
             id: 'released-for-publication',
             title: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.title", submission: 'Dissertations'),
             description: I18n.t("#{current_partner.id}.admin_filters.released_for_publication.description", submission: 'dissertations'),
@@ -232,7 +218,6 @@ RSpec.describe Admin::SubmissionsDashboardView do
       FactoryBot.create :submission, :waiting_for_committee_review_rejected
       FactoryBot.create :submission, :waiting_for_final_submission_response
       FactoryBot.create :submission, :waiting_for_publication_release
-      FactoryBot.create :submission, :waiting_in_final_submission_on_hold
       FactoryBot.create :submission, :released_for_publication
       FactoryBot.create :submission, :final_is_restricted_to_institution, released_for_publication_at: 1.day.ago
       FactoryBot.create :submission, :final_is_restricted_to_institution, released_for_publication_at: 1.day.from_now
@@ -282,11 +267,6 @@ RSpec.describe Admin::SubmissionsDashboardView do
         a_hash_including(
           id: 'final-submission-approved',
           path: admin_submissions_index_path(degree_type, 'final_submission_approved'),
-          count: '1'
-        ),
-        a_hash_including(
-          id: 'final-submission-on-hold',
-          path: admin_submissions_index_path(degree_type, 'final_submission_on_hold'),
           count: '1'
         ),
         a_hash_including(

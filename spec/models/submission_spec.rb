@@ -47,8 +47,6 @@ RSpec.describe Submission, type: :model do
   it { is_expected.to have_db_column(:head_of_program_review_accepted_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:head_of_program_review_rejected_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:federal_funding).of_type(:boolean) }
-  it { is_expected.to have_db_column(:placed_on_hold_at).of_type(:datetime) }
-  it { is_expected.to have_db_column(:removed_hold_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:proquest_agreement).of_type(:boolean) }
   it { is_expected.to have_db_column(:proquest_agreement_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:lionpath_updated_at).of_type(:datetime) }

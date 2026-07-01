@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_15_201936) do
-  create_table "admin_feedback_files", charset: "utf8mb4", force: :cascade do |t|
+ActiveRecord::Schema[7.2].define(version: 2026_06_30_120000) do
+  create_table "admin_feedback_files", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "submission_id"
     t.text "asset"
     t.string "feedback_type"
@@ -40,7 +40,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_201936) do
     t.index ["access_id"], name: "index_admins_on_access_id", unique: true
   end
 
-  create_table "api_tokens", charset: "utf8mb4", force: :cascade do |t|
+  create_table "api_tokens", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "token"
     t.datetime "last_used_at"
     t.bigint "external_app_id", null: false
@@ -195,7 +195,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_201936) do
     t.index ["name"], name: "index_degrees_on_name", unique: true
   end
 
-  create_table "external_apps", charset: "utf8mb4", force: :cascade do |t|
+  create_table "external_apps", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -212,7 +212,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_201936) do
     t.index ["webaccess_id"], name: "index_faculty_members_on_webaccess_id", unique: true
   end
 
-  create_table "federal_funding_details", charset: "utf8mb4", force: :cascade do |t|
+  create_table "federal_funding_details", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.boolean "training_support_funding"
     t.boolean "other_funding"
     t.boolean "training_support_acknowledged"
@@ -277,7 +277,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_201936) do
     t.index ["name", "code"], name: "index_programs_on_name_and_code", unique: true
   end
 
-  create_table "remediated_final_submission_files", charset: "utf8mb4", force: :cascade do |t|
+  create_table "remediated_final_submission_files", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "submission_id", null: false
     t.bigint "final_submission_file_id", null: false
     t.text "asset"
@@ -332,8 +332,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_201936) do
     t.datetime "head_of_program_review_accepted_at", precision: nil
     t.datetime "head_of_program_review_rejected_at", precision: nil
     t.boolean "federal_funding"
-    t.datetime "placed_on_hold_at", precision: nil
-    t.datetime "removed_hold_at", precision: nil
     t.string "campus"
     t.datetime "lionpath_updated_at", precision: nil
     t.datetime "proquest_agreement_at", precision: nil

@@ -5,7 +5,6 @@ module SubmissionStates
     @class_cache = {
       ReleasedForPublication.name => ReleasedForPublication.new,
       ReleasedForPublicationMetadataOnly.name => ReleasedForPublicationMetadataOnly.new,
-      WaitingInFinalSubmissionOnHold.name => WaitingInFinalSubmissionOnHold.new,
       WaitingForPublicationRelease.name => WaitingForPublicationRelease.new,
       WaitingForFinalSubmissionResponse.name => WaitingForFinalSubmissionResponse.new,
       WaitingForAdvisorReview.name => WaitingForAdvisorReview.new,
