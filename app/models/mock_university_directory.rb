@@ -36,6 +36,8 @@ class MockUniversityDirectory
       [
         { id: 'buck@hotmail.com', label: 'Professor Buck Murphy', value: 'Professor Buck Murphy', dept: 'University Libraries' }
       ]
+    else
+      []
     end
   end
 
