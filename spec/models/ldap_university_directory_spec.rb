@@ -39,7 +39,13 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
       ]
     end
 
+    let(:psu_identity_client) { instance_double(PsuIdentity::SearchService::Client) }
+    let(:person_1) { instance_double('Person', user_id: 'abc123', affiliation: ['FACULTY']) }
+    let(:person_2) { instance_double('Person', user_id: 'def456', affiliation: ['RETIREE']) }
+
     before do
+      allow(psu_identity_client).to receive(:search).and_return([person_1, person_2])
+      allow(PsuIdentity::SearchService::Client).to receive(:new).and_return(psu_identity_client)
       allow(LdapSearchFilter).to receive(:new).and_return(instance_double(LdapSearchFilter, create_filter: Net::LDAP::Filter.eq('uid', 'abc123')))
       allow(connection).to receive(:search).and_return(ldap_records)
       allow(connection).to receive(:get_operation_result).and_return(operation_result)
@@ -97,19 +103,23 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
                                   dept: 'Department not available'
                                 }
                               ])
+        expect(connection).to have_received(:search).with(base: 'dc=example,dc=edu',
+                                                          filter: Net::LDAP::Filter.eq('uid', 'abc123'),
+                                                          attributes: %w[cn displayname mail psadminarea psdepartment],
+                                                          return_result: true)
       end
     end
   end
 
   describe '#exists?' do
     it 'returns true when retrieve is present' do
-      allow(directory).to receive(:retrieve).and_return(access_id: 'abc123')
+      allow(directory).to receive(:directory_lookup).and_return([build_entry('uid' => ['abc123'])])
 
       expect(directory.exists?('abc123')).to be(true)
     end
 
     it 'returns false when retrieve is blank' do
-      allow(directory).to receive(:retrieve).and_return({})
+      allow(directory).to receive(:directory_lookup).and_return([])
 
       expect(directory.exists?('missing')).to be(false)
     end

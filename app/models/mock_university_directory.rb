@@ -22,10 +22,8 @@ class MockUniversityDirectory
   def autocomplete(search_string)
     case search_string
     when /(alex)/i
-      return [{ id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex Kiessling', dept: 'University Libraries' }] unless Rails.env.test?
-
       [
-        { id: 'ajk5603@psu.edu', label: 'Alex James Kiessling', value: 'Alex James Kiessling', dept: 'University Libraries' }
+        { id: 'ajk5603@psu.edu', label: 'Alex Kiessling', value: 'Alex James Kiessling', dept: 'University Libraries' }
       ]
     when /(john)/i
       [
