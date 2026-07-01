@@ -1,5 +1,23 @@
 # frozen_string_literal: true
 
+def build_entry(attrs)
+  entry = Net::LDAP::Entry.new('uid=test-user,dc=example,dc=edu')
+  attrs.each { |key, value| entry[key.to_sym] = value }
+  entry
+end
+
+def stub_directory_search(search_results:, operation_message: 'Success')
+  connection = instance_double('Net::LDAP')
+  operation_result = instance_double('OperationResult', message: operation_message)
+
+  allow(connection).to receive(:search).and_return(search_results)
+  allow(connection).to receive(:get_operation_result).and_return(operation_result)
+  allow(directory).to receive(:with_connection).and_yield(connection)
+  allow(directory).to receive(:ldap_configuration).and_return('base' => 'dc=example,dc=edu')
+
+  connection
+end
+
 def mock_ldap_entry
   [{ dn: ["uid=xxb13,dc=psu,dc=edu"],
      objectclass: ["top", "PSUperson", "eduPerson", "inetOrgPerson",

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'model_spec_helper'
+require 'support/ldap_lookup'
 require 'shared/shared_examples_for_university_directory'
 
 # These tests are for LdapUniversityDirectory, but we mock LdapUniversityDirectory
@@ -9,12 +10,6 @@ require 'shared/shared_examples_for_university_directory'
 # and call it TestLdapUniversityDirectory here.
 RSpec.describe TestLdapUniversityDirectory, type: :model do
   subject(:directory) { described_class.new }
-
-  def build_entry(attrs)
-    entry = Net::LDAP::Entry.new('uid=test-user,dc=example,dc=edu')
-    attrs.each { |key, value| entry[key.to_sym] = value }
-    entry
-  end
 
   it_behaves_like 'a UniversityDirectory'
 
@@ -56,6 +51,16 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
 
       it 'returns an empty array' do
         expect(results).to eq([])
+      end
+    end
+
+    context 'when term is invalid' do
+      let(:search_string) { 'invalid123' }
+
+      it 'returns an empty array without querying LDAP' do
+        expect(results).to eq([])
+
+        expect(directory).not_to have_received(:with_connection)
       end
     end
 
@@ -113,15 +118,20 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
 
   describe '#exists?' do
     it 'returns true when retrieve is present' do
-      allow(directory).to receive(:directory_lookup).and_return([build_entry('uid' => ['abc123'])])
+      expected_filter = Net::LDAP::Filter.eq('uid', 'abc123')
+      connection = stub_directory_search(search_results: [build_entry('uid' => ['abc123'])])
 
       expect(directory.exists?('abc123')).to be(true)
+      expect(connection).to have_received(:search).with(base: 'dc=example,dc=edu',
+                                                        filter: expected_filter,
+                                                        attributes: [])
     end
 
     it 'returns false when retrieve is blank' do
-      allow(directory).to receive(:directory_lookup).and_return([])
+      connection = stub_directory_search(search_results: [])
 
       expect(directory.exists?('missing')).to be(false)
+      expect(connection).to have_received(:search)
     end
   end
 
@@ -138,15 +148,17 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
       )
     end
 
-    before do
-      allow(directory).to receive(:directory_lookup).and_return([record])
-    end
-
     it 'returns empty hash for wildcard search strings' do
+      allow(directory).to receive(:with_connection)
       expect(directory.retrieve('abc*', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP)).to eq({})
+
+      expect(directory).not_to have_received(:with_connection)
     end
 
     it 'returns mapped author attributes for a valid lookup' do
+      expected_filter = Net::LDAP::Filter.eq('uid', 'abc123')
+      connection = stub_directory_search(search_results: [record])
+
       result = directory.retrieve('abc123', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP)
 
       expect(result).to include(
@@ -162,32 +174,53 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
         psu_idn: '999999999',
         confidential_hold: true
       )
+      expect(connection).to have_received(:search).with(base: 'dc=example,dc=edu',
+                                                        filter: expected_filter,
+                                                        attributes: [])
+    end
+
+    it 'raises ResultError when LDAP search returns nil' do
+      stub_directory_search(search_results: nil, operation_message: 'Operations Error')
+
+      expect { directory.retrieve('abc123', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP) }
+        .to raise_error(described_class::ResultError, 'Operations Error')
+    end
+
+    it 'raises UnreachableError when directory connection fails' do
+      allow(directory).to receive(:with_connection).and_raise(described_class::UnreachableError)
+
+      expect { directory.retrieve('abc123', 'uid', LdapResultsMap::AUTHOR_LDAP_MAP) }
+        .to raise_error(described_class::UnreachableError)
     end
   end
 
   describe '#retrieve_committee_access_id' do
     it 'returns the access id when record exists' do
-      allow(directory).to receive(:directory_lookup).and_return([
-                                                                  build_entry(
-                                                                    'uid' => ['abc123'],
-                                                                    'displayname' => ['SAMPLE USER'],
-                                                                    'mail' => ['sample.user@psu.edu'],
-                                                                    'psadminarea' => ['SHARED SERVICES'],
-                                                                    'psdepartment' => ['INFORMATION TECHNOLOGY']
-                                                                  )
-                                                                ])
+      expected_filter = Net::LDAP::Filter.eq('psMailID', 'sample.user@psu.edu')
+      connection = stub_directory_search(search_results: [
+                                           build_entry(
+                                             'uid' => ['abc123'],
+                                             'displayname' => ['SAMPLE USER'],
+                                             'mail' => ['sample.user@psu.edu'],
+                                             'psadminarea' => ['SHARED SERVICES'],
+                                             'psdepartment' => ['INFORMATION TECHNOLOGY']
+                                           )
+                                         ])
 
       expect(directory.retrieve_committee_access_id('sample.user@psu.edu')).to eq('abc123')
+      expect(connection).to have_received(:search).with(base: 'dc=example,dc=edu',
+                                                        filter: expected_filter,
+                                                        attributes: [])
     end
 
     it 'returns nil when lookup is blank' do
-      allow(directory).to receive(:directory_lookup).and_return([])
+      stub_directory_search(search_results: [])
 
       expect(directory.retrieve_committee_access_id('missing@psu.edu')).to be_nil
     end
 
     it 'returns nil when directory is unreachable' do
-      allow(directory).to receive(:directory_lookup).and_raise(described_class::UnreachableError)
+      allow(directory).to receive(:with_connection).and_raise(described_class::UnreachableError)
 
       expect(directory.retrieve_committee_access_id('sample.user@psu.edu')).to be_nil
     end
@@ -195,13 +228,17 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
 
   describe '#get_psu_id_number' do
     it 'returns the psu id number when available' do
-      allow(directory).to receive(:directory_lookup).and_return([build_entry('psidn' => ['999999999'])])
+      expected_filter = Net::LDAP::Filter.eq('uid', 'abc123')
+      connection = stub_directory_search(search_results: [build_entry('psidn' => ['999999999'])])
 
       expect(directory.get_psu_id_number('abc123')).to eq('999999999')
+      expect(connection).to have_received(:search).with(base: 'dc=example,dc=edu',
+                                                        filter: expected_filter,
+                                                        attributes: [])
     end
 
     it 'returns an empty string when lookup is blank' do
-      allow(directory).to receive(:directory_lookup).and_return([])
+      stub_directory_search(search_results: [])
 
       expect(directory.get_psu_id_number('missing')).to eq('')
     end
@@ -209,13 +246,13 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
 
   describe '#authors_confidential_status' do
     it 'returns true when psconfhold is true-like' do
-      allow(directory).to receive(:directory_lookup).and_return([build_entry('psconfhold' => ['true'])])
+      stub_directory_search(search_results: [build_entry('psconfhold' => ['true'])])
 
       expect(directory.authors_confidential_status('abc123')).to be(true)
     end
 
     it 'returns false when psconfhold is missing' do
-      allow(directory).to receive(:directory_lookup).and_return([build_entry('psconfhold' => [nil])])
+      stub_directory_search(search_results: [build_entry('psconfhold' => [nil])])
 
       expect(directory.authors_confidential_status('abc123')).to be(false)
     end
@@ -227,21 +264,21 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
     end
 
     it 'returns true when membership includes a recognized admin group DN' do
-      allow(directory).to receive(:directory_lookup).and_return([
-                                                                  build_entry(
-                                                                    'psmemberof' => ['cn=umg/psu.sas.etda-graduate-admins,dc=psu,dc=edu']
-                                                                  )
-                                                                ])
+      stub_directory_search(search_results: [
+                              build_entry(
+                                'psmemberof' => ['cn=umg/psu.sas.etda-graduate-admins,dc=psu,dc=edu']
+                              )
+                            ])
 
       expect(directory.in_admin_group?('abc123')).to be(true)
     end
 
     it 'returns false when no recognized admin group DN is present' do
-      allow(directory).to receive(:directory_lookup).and_return([
-                                                                  build_entry(
-                                                                    'psmemberof' => ['cn=umg/psu.some.other.group,dc=psu,dc=edu']
-                                                                  )
-                                                                ])
+      stub_directory_search(search_results: [
+                              build_entry(
+                                'psmemberof' => ['cn=umg/psu.some.other.group,dc=psu,dc=edu']
+                              )
+                            ])
 
       expect(directory.in_admin_group?('abc123')).to be(false)
     end
