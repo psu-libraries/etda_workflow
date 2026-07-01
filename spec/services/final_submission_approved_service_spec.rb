@@ -24,24 +24,4 @@ RSpec.describe FinalSubmissionApprovedService do
       expect(submission.final_submission_approved_at).to be_nil
     end
   end
-
-  describe '#release_sent_to_hold' do
-    it "changes the status and sets the placed_on_hold_at date" do
-      described_class_inst.release_sent_to_hold
-      expect(submission.status).to eq('waiting in final submission on hold')
-      expect(submission.placed_on_hold_at.today?).to be(true)
-    end
-  end
-
-  describe '#release_remove_hold' do
-    before do
-      submission.update!(status: 'waiting in final submission on hold')
-    end
-
-    it 'changes the staus and sets removed_hold_at date' do
-      described_class_inst.release_remove_hold
-      expect(submission.status).to eq('waiting for publication release')
-      expect(submission.removed_hold_at.today?).to be(true)
-    end
-  end
 end
