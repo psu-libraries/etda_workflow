@@ -47,8 +47,7 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
       allow(psu_identity_client).to receive(:search).and_return([person_1, person_2])
       allow(PsuIdentity::SearchService::Client).to receive(:new).and_return(psu_identity_client)
       allow(LdapSearchFilter).to receive(:new).and_return(instance_double(LdapSearchFilter, create_filter: Net::LDAP::Filter.eq('uid', 'abc123')))
-      allow(connection).to receive(:search).and_return(ldap_records)
-      allow(connection).to receive(:get_operation_result).and_return(operation_result)
+      allow(connection).to receive_messages(search: ldap_records, get_operation_result: operation_result)
       allow(directory).to receive(:with_connection).and_yield(connection)
       allow(directory).to receive(:ldap_configuration).and_return('base' => 'dc=example,dc=edu')
     end
