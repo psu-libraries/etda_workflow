@@ -1,52 +1,40 @@
 # frozen_string_literal: true
 
 class LdapSearchFilter
-  def initialize(term, restrict_to_non_member)
+  ELIGIBLE_AFFILIATIONS = %w[FACULTY STAFF EMERITUS RETIREE].freeze
+
+  def initialize(term)
     @term = term
-    @restrict_to_non_member = restrict_to_non_member
   end
 
   def create_filter
-    search_words = @term.split(/\s+/)
-    ldap_search_string = case search_words.count
-                         when 1
-                           # Assume they're in the process of typing the last name.
-                           "#{search_words[0]}*"
-                         when 2
-                           # Assume that they're typing first and last name, but a middle
-                           # name might be present.
-                           "#{search_words[0]}* #{search_words[1]}*"
-                         else
-                           # Once they're on their third word, assume that they're going
-                           # for an exact match, but still typing the last word.
-                           "#{search_words.join(' ')}*"
-                         end
+    filters = access_ids.map { |id| uid_filter(id) }
+    return nil if filters.empty?
 
-    ldap_name_attribute = search_words.count == 1 ? 'sn' : 'cn'
-    search_string_filter = Net::LDAP::Filter.eq(ldap_name_attribute, ldap_search_string)
-
-    if @restrict_to_non_member
-      # faculty_filter = Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "FACULTY")
-      # staff_filter = Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "STAFF")
-      # faculty_staff_filter = Net::LDAP::Filter.intersect(faculty_filter, staff_filter) # yeah, we know
-
-      Net::LDAP::Filter.join(combined_filter, search_string_filter)
-    else
-      search_string_filter
-    end
+    filters.reduce(:|)
   end
 
   private
 
-    def faculty_staff_filter
-      Net::LDAP::Filter.intersect(Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'FACULTY'), Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'STAFF'))
+    def access_ids
+      people_search_results.filter_map do |person|
+        person.user_id if eligible_affiliation?(person)
+      end
     end
 
-    def emeritus_retired_filter
-      Net::LDAP::Filter.intersect(Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'EMERITUS'), Net::LDAP::Filter.eq('edupersonprimaryaffiliation', 'RETIREE'))
+    def people_search_results
+      # There is no way to filter by affiliation in the PSU Identity Services API,
+      # so keep `size` large and filter out 'STUDENT', 'MEMBER', etc. in code
+      PsuIdentity::SearchService::Client
+        .new
+        .search(text: @term, size: 50, active: true, service_account: false)
     end
 
-    def combined_filter
-      Net::LDAP::Filter.intersect(faculty_staff_filter, emeritus_retired_filter)
+    def eligible_affiliation?(person)
+      ELIGIBLE_AFFILIATIONS.any? { |affiliation| person.affiliation.include?(affiliation) }
+    end
+
+    def uid_filter(access_id)
+      Net::LDAP::Filter.eq('uid', access_id)
     end
 end

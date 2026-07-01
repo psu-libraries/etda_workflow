@@ -26,6 +26,8 @@ gem 'font-awesome-rails', '~> 4.7.0.0'
 gem "devise", ">= 5.0.3"
 # Shared libraries for workflow and explore
 gem 'etda_utilities', "~> 0.22.0"
+# PSU Identity Services API client
+gem 'psu_identity'
 # Ldap client
 gem 'net-ldap', '~> 0.16.1'
 # sftp for lionapth csv imports
