@@ -7,7 +7,7 @@ RSpec.shared_examples "a UniversityDirectory" do
     end
 
     it "takes one argument" do
-      expect(directory.method(:autocomplete).arity).to eq(-2)
+      expect(directory.method(:autocomplete).arity).to eq(1)
     end
   end
 

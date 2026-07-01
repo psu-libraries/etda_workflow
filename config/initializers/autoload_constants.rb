@@ -1,5 +1,6 @@
 Rails.application.config.to_prepare do
   if Rails.env == 'test'
+    TestLdapUniversityDirectory = LdapUniversityDirectory unless defined?(TestLdapUniversityDirectory)
     LdapUniversityDirectory = MockUniversityDirectory
     VirusScanner = MockVirusScanner
     DirectoryService = MockDirectoryService

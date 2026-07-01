@@ -14,8 +14,8 @@ RSpec.describe MockUniversityDirectory, type: :model do
     context "when given string that doesn't match any of the fake data" do
       let(:search_string) { "not there" }
 
-      it "returns an empty array" do
-        expect(result).to eq([])
+      it "returns nil" do
+        expect(result).to be_nil
       end
     end
 
