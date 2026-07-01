@@ -10,7 +10,7 @@ class ExportReport
   def columns
     case query_type
     when 'final_submission_approved'
-      column_list = ['Access Id', 'Title', 'Id', 'Last Name', 'First Name', 'Middle Name', 'Program Name', 'Thesis Supervisor', 'Access Level']
+      column_list = ['Access Id', 'Title', 'Id', 'PSU IDN', 'Last Name', 'First Name', 'Middle Name', 'Program Name', 'Thesis Supervisor', 'Access Level']
       column_list = ['Title', 'Id', 'Last Name', 'First Name', 'Middle Name', 'Program Name', 'Committee Members', 'Access Level'] if current_partner.graduate?
     when 'custom_report'
       column_list = [
@@ -53,7 +53,7 @@ class ExportReport
 
     case query_type
     when 'final_submission_approved'
-      field_list = [r.author.access_id, r.cleaned_title, r.id, r.author.last_name, r.author.first_name, r.author.middle_name, r.program_name, CommitteeMember.advisor_name(r), r.current_access_level.label]
+      field_list = [r.author.access_id, r.cleaned_title, r.id, r.author.psu_id, r.author.last_name, r.author.first_name, r.author.middle_name, r.program_name, CommitteeMember.advisor_name(r), r.current_access_level.label]
       field_list = [r.cleaned_title, r.id, r.author.last_name, r.author.first_name, r.author.middle_name, r.program_name, r.committee_members.map(&:name).join('; '), r.current_access_level.label] if current_partner.graduate?
     when 'custom_report'
       field_list = [

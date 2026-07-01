@@ -8,18 +8,20 @@ RSpec.describe ExportReport, type: :model do
 
   describe 'csv for final_submission_approved' do
     context 'columns' do
-      it 'has initialized columns' do
+      it 'has initialized columns', :graduate, :honors do
         expect(export_report.columns).to include('Access Level')
+        expect(export_report.columns).to include('PSU IDN') if current_partner.honors?
       end
     end
 
     context 'fields when initialized with one submission' do
-      it 'has one submission' do
+      it 'has one submission', :graduate, :honors do
         fields = export_report.fields(submission)
         expect(fields).not_to be_nil
         expect(fields).to include(author.last_name)
         expect(fields).to include(author.first_name)
         expect(fields).to include(submission.title)
+        expect(fields).to include(author.psu_idn) if current_partner.honors?
       end
     end
 
