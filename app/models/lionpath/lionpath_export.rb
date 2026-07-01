@@ -8,6 +8,7 @@ class Lionpath::LionpathExport
 
   def call
     return unless @submission.status_behavior.beyond_collecting_format_review_files?
+
     options = {
       body: payload.json_payload,
       headers: {
