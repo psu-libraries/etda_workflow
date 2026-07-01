@@ -1,5 +1,4 @@
 --format documentation 
 --color
 --tty
---tag ~ldap
 --tag ~import_test
