@@ -46,7 +46,6 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
     before do
       allow(psu_identity_client).to receive(:search).and_return([person_1, person_2])
       allow(PsuIdentity::SearchService::Client).to receive(:new).and_return(psu_identity_client)
-      allow(LdapSearchFilter).to receive(:new).and_return(instance_double(LdapSearchFilter, create_filter: Net::LDAP::Filter.eq('uid', 'abc123')))
       allow(connection).to receive_messages(search: ldap_records, get_operation_result: operation_result)
       allow(directory).to receive(:with_connection).and_yield(connection)
       allow(directory).to receive(:ldap_configuration).and_return('base' => 'dc=example,dc=edu')
@@ -88,6 +87,8 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
 
     context 'when records are returned successfully' do
       it 'maps autocomplete attributes and defaults' do
+        expected_filter = Net::LDAP::Filter.eq('uid', 'abc123') | Net::LDAP::Filter.eq('uid', 'def456')
+
         expect(results).to eq([
                                 {
                                   label: 'Sample User',
@@ -103,7 +104,7 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
                                 }
                               ])
         expect(connection).to have_received(:search).with(base: 'dc=example,dc=edu',
-                                                          filter: Net::LDAP::Filter.eq('uid', 'abc123'),
+                                                          filter: expected_filter,
                                                           attributes: %w[cn displayname mail psadminarea psdepartment],
                                                           return_result: true)
       end
