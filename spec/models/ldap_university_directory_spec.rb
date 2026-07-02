@@ -54,6 +54,16 @@ RSpec.describe TestLdapUniversityDirectory, type: :model do
       end
     end
 
+    context 'when term is too short' do
+      let(:search_string) { 'ab' }
+
+      it 'returns an empty array without querying LDAP' do
+        expect(results).to eq([])
+
+        expect(directory).not_to have_received(:with_connection)
+      end
+    end
+
     context 'when term is invalid' do
       let(:search_string) { 'invalid123' }
 

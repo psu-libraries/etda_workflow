@@ -8,7 +8,7 @@ class LdapSearchFilter
   end
 
   def create_filter
-    filters = access_ids.map { |id| uid_filter(id) }
+    filters = access_ids[..9].map { |id| uid_filter(id) }
     return nil if filters.empty?
 
     filters.reduce(:|)

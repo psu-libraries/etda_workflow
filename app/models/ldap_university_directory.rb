@@ -124,7 +124,7 @@ class LdapUniversityDirectory
     end
 
     def searchterm_valid?(term)
-      return false if term.blank?
+      return false if term.blank? || term.length < 3
       return false unless term.present? && term =~ /^[a-zÀ-ÖØ-öø-ÿ '\-.]+$/i
 
       true
