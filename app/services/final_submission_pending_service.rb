@@ -19,6 +19,7 @@ class FinalSubmissionPendingService
       { msg: "The submission was successfully returned to the student for resubmission.", redirect_to: submission_path }
     else
       SubmissionStatusUpdaterService.new(submission).update_status_from_committee
+      submission.export_to_lionpath!
       { msg: "The submission was successfully updated.", redirect_to: submission_path }
     end
   end

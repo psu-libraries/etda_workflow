@@ -13,6 +13,7 @@ class FormatReviewUpdateService
 
   def update_record
     UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params)
+    submission.export_to_lionpath!
     msg = "The submission was successfully updated."
     { msg:, redirect_path: Rails.application.routes.url_helpers.admin_edit_submission_path(submission.id.to_s) }
   end
@@ -41,6 +42,7 @@ class FormatReviewUpdateService
     end
     if update_actions.record_updated?
       UpdateSubmissionService.admin_update_submission(submission, current_remote_user, format_review_params)
+      submission.export_to_lionpath!
       msg += " Format review information was successfully edited by an administrator"
     end
     { msg:, redirect_path: "/admin/#{submission.degree_type.slug}/format_review_submitted" }

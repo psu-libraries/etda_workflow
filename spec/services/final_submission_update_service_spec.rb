@@ -142,6 +142,7 @@ RSpec.describe FinalSubmissionUpdateService do
       submission = FactoryBot.create :submission,
                                      :waiting_for_publication_release,
                                      committee_members: [committee_member]
+      allow(submission).to receive(:export_to_lionpath!)
       params = ActionController::Parameters.new
       params[:submission] = submission.attributes
       params[:submission][:committee_members_attributes] = { "0" => submission.committee_members.first.attributes }
@@ -153,7 +154,7 @@ RSpec.describe FinalSubmissionUpdateService do
       result = update_service.respond_waiting_to_be_released
       expect(result[:msg]).to eql("The submission was successfully updated.")
       expect(result[:redirect_path]).to eql(admin_edit_submission_path(submission.id.to_s))
-      # ("/admin/submissions/#{submission.id}/edit")
+      expect(submission).to have_received(:export_to_lionpath!).once
       expect(submission.status).to eq('waiting for publication release')
       expect(submission.title).to eq('a different title for release')
       expect(submission.abstract).to eq('a new abstract')
