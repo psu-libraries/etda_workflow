@@ -14,7 +14,9 @@ class LdapUniversityDirectory
     ldap_records = []
 
     with_connection do |connection|
-      autocomplete_search_filter = LdapSearchFilter.new(term, true).create_filter
+      autocomplete_search_filter = LdapSearchFilter.new(term).create_filter
+      return [] if autocomplete_search_filter.blank?
+
       ldap_records = connection.search(base: ldap_configuration['base'],
                                        filter: autocomplete_search_filter,
                                        attributes: %w[cn displayname mail psadminarea psdepartment],
@@ -122,7 +124,7 @@ class LdapUniversityDirectory
     end
 
     def searchterm_valid?(term)
-      return false if term.blank?
+      return false if term.blank? || term.length < 3
       return false unless term.present? && term =~ /^[a-zÀ-ÖØ-öø-ÿ '\-.]+$/i
 
       true

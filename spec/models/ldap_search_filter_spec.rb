@@ -1,58 +1,60 @@
 # frozen_string_literal: true
 
+require 'model_spec_helper'
+
 RSpec.describe LdapSearchFilter, type: :model do
   describe '#create_filter' do
-    let(:ldap_faculty) { Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "FACULTY") }
-    let(:ldap_staff) { Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "STAFF") }
-    let(:ldap_emeritus) { Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "EMERITUS") }
-    let(:ldap_retired) { Net::LDAP::Filter.eq('edupersonprimaryaffiliation', "RETIREE") }
+    let(:term) { 'jim smith' }
+    let(:client) { instance_double(PsuIdentity::SearchService::Client) }
+    let(:eligible_person) { instance_double('Person', user_id: 'abc123', affiliation: ['FACULTY']) }
+    let(:second_eligible_person) { instance_double('Person', user_id: 'def456', affiliation: ['RETIREE']) }
+    let(:ineligible_person) { instance_double('Person', user_id: 'ghi789', affiliation: ['STUDENT']) }
 
-    context 'search for first and last name' do
-      let(:ldap_search) { Net::LDAP::Filter.eq('cn', 'jim* smith*') }
-      let(:ldap_combined) { Net::LDAP::Filter.intersect(Net::LDAP::Filter.intersect(ldap_faculty, ldap_staff), Net::LDAP::Filter.intersect(ldap_emeritus, ldap_retired)) }
-      let(:ldap_filter) { Net::LDAP::Filter.join(ldap_combined, ldap_search) }
-
-      it 'returns the same filter' do
-        filter = described_class.new('jim smith', true).create_filter
-        expect(filter.to_json).to eql(ldap_filter.to_json)
-      end
-
-      it 'does not return the same filter' do
-        filter = described_class.new('jim Jones', true).create_filter
-        expect(filter.to_json).not_to eql(ldap_filter.to_json)
-      end
+    before do
+      allow(PsuIdentity::SearchService::Client).to receive(:new).and_return(client)
     end
 
-    context 'search with only first name' do
-      let(:ldap_search) { Net::LDAP::Filter.eq('sn', 'lee*') }
-      let(:ldap_combined) { Net::LDAP::Filter.intersect(Net::LDAP::Filter.intersect(ldap_faculty, ldap_staff), Net::LDAP::Filter.intersect(ldap_emeritus, ldap_retired)) }
-      let(:ldap_filter) { Net::LDAP::Filter.join(ldap_combined, ldap_search) }
+    it 'queries the identity service with expected parameters' do
+      allow(client).to receive(:search).and_return([eligible_person])
 
-      it 'returns the same filter' do
-        filter = described_class.new('lee ', true).create_filter
-        expect(filter.to_json).to eql(ldap_filter.to_json)
-      end
+      described_class.new(term).create_filter
 
-      it 'does not return the same filter' do
-        filter = described_class.new('larry ', true).create_filter
-        expect(filter.to_json).not_to eql(ldap_filter.to_json)
-      end
+      expect(client).to have_received(:search).with(text: term, size: 50, active: true, service_account: false)
     end
 
-    context 'search with three names' do
-      let(:ldap_search) { Net::LDAP::Filter.eq('cn', 'lee harvey oswald*') }
-      let(:ldap_combined) { Net::LDAP::Filter.intersect(Net::LDAP::Filter.intersect(ldap_faculty, ldap_staff), Net::LDAP::Filter.intersect(ldap_emeritus, ldap_retired)) }
-      let(:ldap_filter) { Net::LDAP::Filter.join(ldap_combined, ldap_search) }
+    it 'builds an OR uid LDAP filter for eligible affiliations only' do
+      allow(client).to receive(:search).and_return([eligible_person, ineligible_person, second_eligible_person])
 
-      it 'returns the same filter' do
-        filter = described_class.new('lee harvey oswald', true).create_filter
-        expect(filter.to_json).to eql(ldap_filter.to_json)
-      end
+      filter = described_class.new(term).create_filter
+      expected_filter = Net::LDAP::Filter.eq('uid', 'abc123') | Net::LDAP::Filter.eq('uid', 'def456')
 
-      it 'does not return the same filter' do
-        filter = described_class.new('bad lee oswald', true).create_filter
-        expect(filter.to_json).not_to eql(ldap_filter.to_json)
-      end
+      expect(filter.to_json).to eql(expected_filter.to_json)
+    end
+
+    it 'returns nil when no eligible people are returned' do
+      allow(client).to receive(:search).and_return([ineligible_person])
+
+      filter = described_class.new(term).create_filter
+
+      expect(filter).to be_nil
+    end
+
+    it 'returns nil when search returns no people' do
+      allow(client).to receive(:search).and_return([])
+
+      filter = described_class.new(term).create_filter
+
+      expect(filter).to be_nil
+    end
+
+    it 'returns nil and logs an error when the identity service raises an error' do
+      allow(client).to receive(:search).and_raise(PsuIdentity::SearchService::Error, 'timeout')
+      allow(Rails.logger).to receive(:error)
+
+      filter = described_class.new(term).create_filter
+
+      expect(filter).to be_nil
+      expect(Rails.logger).to have_received(:error).with('Error searching PSU Identity Service: timeout')
     end
   end
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'model_spec_helper'
+require 'support/ldap_lookup'
 
 RSpec.describe LdapResult, type: :model do
   describe 'AUTHOR_LDAP_MAP' do

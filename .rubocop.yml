@@ -331,3 +331,7 @@ RSpec/EmptyExampleGroup:
 RSpec/VariableName:
   Exclude:
     - 'spec/requests/api/v1/api_docs/committee_records_spec.rb'
+
+RSpec/SubjectStub:
+  Exclude:
+    - 'spec/models/ldap_university_directory_spec.rb'
