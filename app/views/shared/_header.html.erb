@@ -1,4 +1,5 @@
 <header class="<%= page_classes %>">
+  <%= render partial: 'shared/google_analytics_tag' %>
   <%= render partial: 'shared/announcements' if Settings.show_announcement %>
   <div class="container-fluid">
     <div id="shield-and-logo" class="row">
@@ -14,7 +15,5 @@
       </div>
     </div>
   </div>
-  <%= render partial: 'shared/google_analytics_tag' if ENV.fetch('HOSTNAME', 'dev').match(/^etda-wf-/).present? %>
   <%= render partial: 'shared/nav_bar' %>
-
 </header>
