@@ -68,3 +68,7 @@ export FIRST_NAME=
 export LAST_NAME=
 export PSU_EMAIL_ADDRESS=
 export PSU_IDN=
+
+# --- Google Analytics ---
+# Only set if you want to test out analytics
+export GOOGLE_TAG_MANAGER_ID=
