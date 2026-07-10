@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "active_support/core_ext/integer/time"
+
 Rails.application.configure do
 
   config.shakapacker.check_yarn_integrity = false
@@ -7,25 +9,18 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
-  config.cache_classes = true
+  config.enable_reloading = false
 
-  # Eager load code on boot. This eager loads most of Rails and
-  # your application in memory, allowing both threaded web servers
-  # and those relying on copy on write to perform better.
-  # Rake tasks automatically ignore this option for performance.
+  # Eager load code on boot for better performance and memory savings (ignored by Rake tasks).
   config.eager_load = true
 
-  # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  # Full error reports are disabled.
+  config.consider_all_requests_local = false
+
+  # Turn on fragment caching in view templates.
   config.action_controller.perform_caching = true
 
-  # Attempt to read encrypted secrets from `config/secrets.yml.enc`.
-  # Requires an encryption key in `ENV["RAILS_MASTER_KEY"]` or
-  # `config/secrets.yml.key`.
-  # config.read_encrypted_secrets = true
-
-  # Disable serving static files from the `/public` folder by default since
-  # Apache or NGINX already handles this.
+  # Cache assets for far-future expiry since they are all digest stamped.
   config.public_file_server.enabled = true # ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Compress JavaScripts and CSS.
@@ -38,16 +33,10 @@ Rails.application.configure do
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  # config.action_controller.asset_host = 'http://assets.example.com'
+  # config.asset_host = "http://assets.example.com"
 
-  # Specifies the header that your server uses for sending files.
-  # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
-  # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
-
-  # Mount Action Cable outside main process or domain
-  # config.action_cable.mount_path = nil
-  # config.action_cable.url = 'wss://example.com/cable'
-  # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
+  # Assume all access to the app is happening through a SSL-terminating reverse proxy.
+  # config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # HTTPS is enforced at the Kubernetes ingress layer, so it is safe to disable
@@ -56,13 +45,14 @@ Rails.application.configure do
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
   config.log_level = :debug
-  # Allow kubernetes to reach healthcheck endpoint insecurely
+  # Skip http-to-https redirect for the default health check endpoint.
   config.ssl_options = { redirect: { exclude: -> request { request.path =~ /healthcheck/ } } }
 
-  # Prepend all log lines with the following tags.
-  # config.log_tags = [:request_id]
+  # Log to STDOUT with the current request id as a default log tag.
+  # config.log_tags = [ :request_id ]
+  # config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
 
-  # Use a different cache store in production.
+  # Replace the default in-process memory cache store with a durable alternative.
   # config.cache_store = :mem_cache_store
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
@@ -99,13 +89,6 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  # Moved into application.rb
-  # if ENV["RAILS_LOG_TO_STDOUT"].present?
-  #   logger           = ActiveSupport::Logger.new(STDOUT)
-  #   logger.formatter = config.log_formatter
-  #   config.logger = ActiveSupport::Logger.new(STDOUT)
-  #   # config.logger    = ActiveSupport::TaggedLogging.new(logger)
-  # end
 
   Clamby.configure({
     :daemonize => true

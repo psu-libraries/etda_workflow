@@ -4,7 +4,7 @@
 
 * Ruby version: 3.4.9
 * Node version 22 (using yarn as npm)
-* Rails 7.2
+* Rails 8.1
 * Sidekiq 7
 * Redis 8.6+
 
