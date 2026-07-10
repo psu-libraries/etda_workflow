@@ -41,7 +41,7 @@ RSpec.describe Author::SubmissionsController, type: :controller do
         submission = FactoryBot.create(:submission, acknowledgment_page_submitted_at: Time.zone.now)
         params = { id: submission.id.to_s }
         allow(controller).to receive(:find_submission).and_return(submission)
-        expect(get(:edit, params:)).to render_template(:edit)
+        expect(get(:edit, params:)).to redirect_to edit_author_submission_path(submission.id)
       end
     end
 
