@@ -36,7 +36,7 @@ gem "net-sftp", "~> 4.0"
 gem 'country_select', '~> 10.0.0'
 gem 'simple_form', "~> 5.3.1"
 # File uploads
-gem 'carrierwave', "~> 3.0.7"
+gem 'carrierwave', "~> 3.1.3"
 # Virus scanning for file uploads
 gem 'clamby'
 # For image resizing
