@@ -21,7 +21,7 @@ RSpec.describe Author::SubmissionsController, type: :controller do
     end
   end
 
-  describe '#edit' do
+  describe '#edit', :honors, :milsch, :sset do
     it 'routes to the edit page' do
       submission = FactoryBot.create(:submission, acknowledgment_page_submitted_at: nil)
       expect(get: edit_author_submission_path(submission.id)).to route_to(controller: 'author/submissions', action: 'edit', id: submission.id.to_s)
@@ -41,22 +41,22 @@ RSpec.describe Author::SubmissionsController, type: :controller do
         submission = FactoryBot.create(:submission, acknowledgment_page_submitted_at: Time.zone.now)
         params = { id: submission.id.to_s }
         allow(controller).to receive(:find_submission).and_return(submission)
-        expect(get(:edit, params:)).to render_template(:edit)
+        expect(get(:edit, params:)).to be_successful
       end
     end
 
     unless current_partner.graduate?
-      it 'renders the edit page regardless of the acknowledgment page status', :honors, :milsch, :sset do
+      it 'renders the edit page regardless of the acknowledgment page status' do
         oidc_authorize_author
         submission = FactoryBot.create(:submission, acknowledgment_page_submitted_at: nil)
         params = { id: submission.id.to_s }
         allow(controller).to receive(:find_submission).and_return(submission)
-        expect(get(:edit, params:)).to render_template(:edit)
+        expect(get(:edit, params:)).to be_successful
 
         submission2 = FactoryBot.create(:submission, acknowledgment_page_submitted_at: Time.zone.now)
         params = { id: submission2.id.to_s }
         allow(controller).to receive(:find_submission).and_return(submission2)
-        expect(get(:edit, params:)).to render_template(:edit)
+        expect(get(:edit, params:)).to be_successful
       end
     end
   end

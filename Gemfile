@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 ruby '3.4.9'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.2.2'
+gem 'rails', '~> 8.1.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '0.5.7'
 # Use Puma as the app server
@@ -52,7 +52,7 @@ gem 'mail_form', '~> 1.10.1'
 gem 'okcomputer', '~> 1.18.0'
 gem 'logstash-event', '~> 1.2.0'
 gem 'lograge', '~> 0.12.0'
-gem 'lograge-sql', '~> 2.4.0'
+gem 'lograge-sql', '~> 2.6.0'
 # Ruby client for Apache solr
 gem 'rsolr', '~> 2.5.0'
 # Enumerated attributes with I18n
