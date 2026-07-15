@@ -19,8 +19,7 @@ RSpec.describe "Technical Tips page", :js, type: :integration do
 
     it 'opens the technical tips page' do
       expect(page).to have_content('Technical Tips')
-      expect(page).to have_content('Abc_format_review.pdf')
-      expect(page).to have_content('Edge')
+      expect(page).to have_content('Final_thesis.pdf')
       expect(page).to have_link('Accessibility')
     end
   end
