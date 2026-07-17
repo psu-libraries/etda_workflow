@@ -266,3 +266,18 @@
     float:left;
   }
 }
+
+#user-guide {
+  h2 {
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+
+  .question {
+    font-weight: 700; 
+  }
+  .answer {
+    margin-bottom: 20px;
+  }
+}

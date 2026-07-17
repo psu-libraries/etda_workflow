@@ -1,0 +1,58 @@
+<h1>Frequently Asked Questions</h1>
+<div id="user-guide">
+  <h2>Admins</h2>
+  <% if current_partner.graduate? %>
+    <p class="question">Does an email go out to the head of program at the beginning of the committee review stage?</p>
+    <p class="answer">No, an email is not sent out to the head of program to review until the core committee has approved the submission.</p>
+  <% end %>
+
+  <p class="question">How can I move a submission out of “Final Submission is Pending” (committee review stage)?</p>
+  <p class="answer">Scroll to the bottom of the submission and choose “Reject & return to author”.<br>When you perform this action, you do not need to alter anyone's votes.  It ends the process there and kicks it back for the student to resubmit.  This marks the submission as “Committee Review Rejected”.</p>
+
+
+  <p class="question">I am changing the committee members' statuses to approved/reject but the submission is not moving forward/backwards.</p>
+  <p class="answer">This method only works at the “Final Submission is Pending” stage.  If the submission is in “Committee Review Rejected” or “Final Submission is Incomplete” you must wait for the student to resubmit. If it is in “Final Submission to be Released”, you must use the buttons at the bottom of the submission screen.</p>
+
+  <p class="question">How do I remove a submission from “Final Submission to be Released” to be re-submitted?</p>
+  <p class="answer">Go into the submission's edit page.  Click the “Remove from Submission to be Released” button at the bottom of the page.  The submission will move back to “Final Submission is Submitted”.  Do not change the committee member voting statuses.  Go into the submission's edit page again and click the “Reject & request revisions” button at the bottom of the page.  The student must now resubmit.  Once the student has submitted a new submission, go into the submission's edit page and click the “Approve Final Submission” button at the bottom of the page.  Click “ok” in the pop up.  The submission will now move to the “Final Submission to be Released” bucket.</p>
+
+  <p class="question">How do I edit a submission that has already been released?</p>
+  <p class="answer">Withdraw the submission by clicking the red “Withdraw Publication” button at the bottom of the submission page. Take note of when the submission was originally released. The submission will then go to “Final Submission to be Released”. Select that submission, change the metadata, and click “Update Metadata Only”. Then you can re-release the submission; remember to set the release date as the original release date.</p>
+
+  <p class="question">We have been ordered to remove a submission from release.  How do I do this, and how many times has the submission been downloaded?</p>
+  <p class="answer">Find the submission and go to its edit page.  Click the red “Withdraw Publication” at the bottom of the page.  The publication is no longer open to the public and is sitting in “Final Submission to be Released.”  Ask Libraries IT to obtain the number of downloads for this submission.</p>
+
+  <p class="question">This submission's metadata is way out of whack. There is no title, timestamps, and the author is having trouble uploading their documents.</p>
+  <p class="answer">Some students start their submissions early in their grad school career. Check their program or committee submission timestamps. If it goes back to pre-2018, then this is the case.  With the ETD system in constant change, submissions this old and this early in the process may no longer be viable.  The best approach is to have the student start over from scratch.</p>
+
+  <h2>Authors</h2>
+  <p class="question">One of my committee members is not approving. They are not receiving an email to get to the site.</p>
+  <p class="answer">If the emails are bouncing back claiming the email does not exist, an invalid email was given. If they are not bouncing, then either the wrong email was given, or the emails are being sent to the committee member's spam folder. Have the student get in touch with the committee member or contact them yourself.</p>
+
+  <p class="question">I cannot input my committee member because they are not showing up in the drop-down:  How should I proceed?</p>
+  <p class="answer">No titles should be included; only formal names.  Typing the first and last name should work for most cases.  Try including a middle name or middle initial if the first and last name is not working. See how the committee member's name is written in LDAP and try to match that.<br>A very small percentage of students will have a committee member that is not faculty/staff/retiree/emeritus.  These committee members will not show up in the drop-down.  Have the student input one of their other committee members twice (as a placeholder for the other person).  Then, change the committee member yourself in the admin interface after the student submits.</p>
+
+  <p class="question">I was able to access the site before, but now I get a 500 error when I try to log in. What should I do?</p>
+  <p class="answer">The most common cause of this is the Web Application Firewall blocking certain IP addresses. Connecting to the campus Wi-Fi or to Global Connect will address firewall issues.</p>
+
+  <p class="question">I'm having trouble uploading something!</p>
+  <p class="answer">There is a size cap on uploaded files; we can currently only accommodate files under 1GB. For big files, make sure you are uploading somewhere with a fast internet connection. Remember that the thesis or dissertation must be in PDF format; Word files are not accepted. For supplementary materials, it may be necessary to compress them into a ZIP file to reduce the file size.</p>
+
+  <h2>Approvers</h2>
+  <p class="question">The student's work is at the committee review stage, but I didn't get an email!</p>
+  <p class="answer">Confirm that the email associated with this approver in the submission is correct. If it is, have them check their spam/junk folders in case. If it's still nowhere to be found, contact <a href='mailto:uletdasupport@psu.edu'>uletdasupport@psu.edu</a>, and let the approver know that they can visit <a href='https://submit-etda.libraries.psu.edu/approver'>https://submit-etda.libraries.psu.edu/approver</a> (or submit-honors, submit-millennium-scholars, etc.) to see their submissions.</p>
+
+  <p class="question">I received an email to approve a submission, but when I click the link the student's submission is not on the page.</p>
+  <p class="answer">It may be that the committee member has received a lot of requests around the same time.  Have the committee member use the “All Reviews” filter in the top right of the index page, and/or search for the author's name or title of submission.  Committee members will often use their phones to quickly approve, especially if they are traveling.  The interface may be a little scrunched, but it is fully functional on mobile devices.  If a committee member is having trouble finding things, guide them to the left of the screen on the index page where active links and titles are to access submission approval pages.  Also, encourage them to scroll down on the approval page to find the approval form to submit their review.</p>
+
+  <p class="question">Does someone who is serving in multiple roles on the same submission have to submit a review for each role? Will they receive multiple emails?</p>
+  <p class="answer">The committee member will receive an email for each role they are in. However, they need only submit a single review per submission.</p>
+
+  <p class="question">I am a non-PSU affiliated committee member, and I cannot create an account.</p>
+  <p class="answer">This is an issue with the accounts site, which we have no control over.  Check with the PSU accounts office or Libraries IT to see when things will be operational again.  Ask the committee member to wait until the issue is resolved.</p>
+
+  <% if current_partner.graduate? %>
+    <p class="question">Does a committee member who is serving in multiple roles, one of which is the program head, must vote twice (Once for the non-head roles and once for the head role)? Will they receive an email for the head of program review? (Graduate only)</p>
+    <p class="answer">The committee member will only need to submit their review once. If they are also the head of program, this step will be skipped, and no email will be sent out.</p>
+  <% end %>
+</div>

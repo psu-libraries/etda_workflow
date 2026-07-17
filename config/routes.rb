@@ -62,6 +62,8 @@ Rails.application.routes.draw do
     patch '/committee_member_report_export', to: 'reports#committee_member_report_export', defaults: { format: 'csv' }, as: :committee_member_report_export
     patch '/graduate_data_report_export', to: 'reports#graduate_data_report_export', defaults: { format: 'json' }, as: :graduate_data_report_export
 
+    get '/user_guide', to: 'admin#user_guide'
+
     get '/authors/contact_list', to: 'authors#email_contact_list', as: :email_contact_list
 
     get '/submissions/:id/edit', to: 'submissions#edit', as: :edit_submission
