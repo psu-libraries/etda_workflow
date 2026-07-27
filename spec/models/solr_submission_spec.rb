@@ -43,6 +43,7 @@ RSpec.describe SolrSubmission, type: :model do
                                               "abstract_tesi" => submission.abstract,
                                               "access_level_ss" => converted_access_level,
                                               "author_name_tesi" => "#{submission.author_last_name}, #{submission.author_first_name} #{submission.author_middle_name}",
+                                              "author_ssi" => "#{submission.author_last_name}, #{submission.author_first_name} #{submission.author_middle_name}",
                                               "author_email_ssi" => submission.author.psu_email_address,
                                               "committee_member_and_role_tesim" => ["#{committee_member_1.name}, #{committee_member_1.committee_role.name}",
                                                                                     "#{committee_member_2.name}, #{committee_member_2.committee_role.name}"],
@@ -77,8 +78,10 @@ RSpec.describe SolrSubmission, type: :model do
                                               "middle_name_ssi" => submission.author_middle_name,
                                               "program_name_ssi" => program_name_condensed,
                                               "program_name_tesi" => program_name_condensed,
+                                              "pub_date_si" => submission.year,
                                               "released_metadata_at_dtsi" => submission.released_metadata_at.to_datetime.getutc,
                                               "semester_ssi" => submission.semester,
+                                              "title_si" => submission.title,
                                               "title_ssi" => submission.title,
                                               "title_tesi" => submission.title,
                                               "year_isi" => submission.year

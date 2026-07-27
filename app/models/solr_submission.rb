@@ -19,7 +19,7 @@ class SolrSubmission < SimpleDelegator
 
     def field_semantics
       {
-        year: 'year_isi',
+        year: ['year_isi', 'pub_date_si'],
         public_id: 'id',
         final_submission_files_uploaded_at_dtsi: 'final_submission_files_uploaded_at_dtsi',
         final_submission_legacy_old_id: 'db_legacy_old_id',
@@ -28,6 +28,7 @@ class SolrSubmission < SimpleDelegator
         file_name_ssim: 'file_name_ssim',
         remediated_file_name_ssim: 'remediated_file_name_ssim',
         author_name_tesi: 'author_name_tesi',
+        author_name_ssi: 'author_ssi',
         author_last_name: ['last_name_ssi', 'last_name_tesi'],
         author_middle_name: ['middle_name_ssi'],
         author_first_name: 'first_name_ssi',
@@ -40,7 +41,7 @@ class SolrSubmission < SimpleDelegator
         committee_member_emails: ['committee_member_email_ssim'],
         committee_member_and_role: ['committee_member_and_role_tesim', 'committee_member_role_ssim'],
         keyword_list: ['keyword_ssim', 'keyword_tesim'],
-        title: ['title_ssi', 'title_tesi'],
+        title: ['title_ssi', 'title_tesi', 'title_si'],
         id: ['db_id'],
         adjusted_access_level: 'access_level_ss',
         semester: 'semester_ssi',
@@ -101,6 +102,10 @@ class SolrSubmission < SimpleDelegator
 
     def author_name_tesi
       "#{author.last_name}, #{author.first_name} #{author.middle_name}"
+    end
+
+    def author_name_ssi
+      author_name_tesi
     end
 
     def author_email_ssi
