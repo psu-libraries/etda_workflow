@@ -752,11 +752,11 @@ RSpec.describe Author::SubmissionView do
       expect(view.send('display_final_submission_notes?', 7)).to be_truthy
     end
 
-    it 'displays notes for step 7 if final submission has been approved' do
+    it 'does not display notes for step 7 if final submission has been approved' do
       submission.final_submission_approved_at = Time.zone.yesterday
       submission.final_submission_notes = 'final note'
       submission.status = 'waiting for publication release'
-      expect(view.send('display_final_submission_notes?', 7)).to be_truthy
+      expect(view.send('display_final_submission_notes?', 7)).to be_falsey
     end
   end
 end
