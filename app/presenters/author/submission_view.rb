@@ -320,8 +320,7 @@ class Author::SubmissionView < SimpleDelegator
 
     def display_final_submission_notes?(step_number)
       return false if final_submission_notes.blank?
-      return true if step_number == 7 && status_behavior.collecting_final_submission_files_rejected?
-      return true if step_number == 7 && !final_submission_approved_at.nil?
+      return true if step_number == 7 && !status_behavior.beyond_waiting_for_final_submission_response_rejected?
 
       false
     end
