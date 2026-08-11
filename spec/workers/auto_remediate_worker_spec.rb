@@ -28,6 +28,23 @@ RSpec.describe AutoRemediateWorker do
       expect { described_class.new.perform(file.id) }.to raise_error(PdfRemediation::Client::MissingConfiguration)
       expect(file.reload.remediation_job_uuid).to be_nil
     end
+
+    context 'when a transient error occurs during remediation request' do
+      let(:transient_error) { StandardError.new('Transient error') }
+
+      before do
+        allow(PdfRemediation::Client).to receive(:new).with(expected_download_url).and_raise(transient_error)
+      end
+
+      it 'resets the remediation_started_at timestamp and does not update the job UUID' do
+        file.update_column(:remediation_started_at, Time.current)
+
+        expect { described_class.new.perform(file.id) }.to raise_error(StandardError, 'Transient error')
+
+        expect(file.reload.remediation_started_at).to be_nil
+        expect(file.reload.remediation_job_uuid).to be_nil
+      end
+    end
   end
 
   describe '.perform_async' do
