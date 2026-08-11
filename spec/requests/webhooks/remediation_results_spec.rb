@@ -16,7 +16,7 @@ RSpec.describe 'Webhooks::RemediationResults', type: :request do
                output_url: output_url,
                processing_error_message: error_message } }
     end
-    let(:final_submission_file) { create(:final_submission_file, :remediate) }
+    let!(:final_submission_file) { create(:final_submission_file, :remediate) }
 
     before do
       allow(BuildRemediatedFileWorker).to receive(:perform_async).with(remediation_job_uuid, output_url)
