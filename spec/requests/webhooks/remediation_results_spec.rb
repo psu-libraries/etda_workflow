@@ -16,6 +16,7 @@ RSpec.describe 'Webhooks::RemediationResults', type: :request do
                output_url: output_url,
                processing_error_message: error_message } }
     end
+    let(:final_submission_file) { create(:final_submission_file, :remediate) }
 
     before do
       allow(BuildRemediatedFileWorker).to receive(:perform_async).with(remediation_job_uuid, output_url)
@@ -36,7 +37,6 @@ RSpec.describe 'Webhooks::RemediationResults', type: :request do
 
       context 'when the error message indicates a transient error' do
         let(:error_message) { '50 exceeds the unit\'s overall page limit' }
-        let!(:final_submission_file) { create(:final_submission_file, remediation_job_uuid:) }
 
         it 'resets the remediation_started_at timestamp and remediation_job_uuid' do
           headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => pdf_api_app.token }
@@ -58,6 +58,8 @@ RSpec.describe 'Webhooks::RemediationResults', type: :request do
           headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => pdf_api_app.token }
           post path, params: params.to_json, headers: headers
           expect(log_output.string).to include('Some error message')
+          expect(final_submission_file.reload.remediation_started_at).not_to be_nil
+          expect(final_submission_file.reload.remediation_job_uuid).not_to be_nil
         ensure
           Rails.logger = original_logger
         end
