@@ -22,6 +22,7 @@ RSpec.describe FinalSubmissionSubmitService do
       service.submit_final_submission
       expect(Submission.find(submission.id).status).to eq 'waiting for final submission response'
       expect(WorkflowMailer.deliveries.count).to eq 1
+      expect(WorkflowMailer.deliveries.last.subject).to match(/revised final/i)
     end
   end
 

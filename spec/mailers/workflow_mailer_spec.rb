@@ -142,6 +142,27 @@ RSpec.describe WorkflowMailer do
     end
   end
 
+  describe '#final_submission_resubmitted_received' do
+    let(:email) { described_class.final_submission_resubmitted_received(submission) }
+
+    it 'sets an appropriate subject' do
+      expect(email.subject).to match(/revised final/i)
+    end
+
+    it 'is sent from the partner support email address' do
+      expect(email.from).to eq([partner_email])
+    end
+
+    it "is sent to the student's PSU email address" do
+      expect(email.to).to eq([author.psu_email_address])
+    end
+
+    it 'tells the author that their revised final submission has been received' do
+      expect(email.body).to match(/revised final submission/i)
+      expect(email.body).to match(/administrator for review/i)
+    end
+  end
+
   describe '#final_submission_approved' do
     let(:email) { described_class.final_submission_approved(submission) }
 

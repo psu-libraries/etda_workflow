@@ -63,6 +63,12 @@ en:
                     Thank you for submitting your final %{degree_type}.  Your %{degree_type} has been accepted for committee review.
                     You will be notified after your committee (your thesis supervisor and reviewer) have completed the review.
 
+        final_submission_resubmitted_received:
+          message: |
+                    Thank you for resubmitting your final submission. Your revised final submission was received and sent to an administrator for review.
+
+                    You will be notified when a decision has been made regarding your document.
+
         sent_to_committee:
           message: |
                     Your %{degree_type}: "%{title}" has been sent back to the committee review stage to be approved by your committee.

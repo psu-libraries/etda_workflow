@@ -73,6 +73,12 @@ en:
                     Thank you for submitting your final thesis submission. It has been automatically sent to your committee for review.
                     You will be notified once your committee has made a decision.
 
+        final_submission_resubmitted_received:
+          message: |
+                    Thank you for resubmitting your final submission. Your revised final submission was received and sent to an administrator for review.
+
+                    You will be notified when a decision has been made regarding your document.
+
         sent_to_committee:
           message: |
                     Your thesis has been sent back to the committee review stage to be approved by your committee. No action is required of you at this time. You will be notified once your committee has made a decision.
