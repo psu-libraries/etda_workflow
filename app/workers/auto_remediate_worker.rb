@@ -11,7 +11,17 @@ class AutoRemediateWorker
     # it needs to know the URL structure of ETDA Explore, without any shared code.
     download_url = "#{EtdUrls.new.explore}/files/final_submissions/#{file.id}"
 
-    remediation_job_uuid = PdfRemediation::Client.new(download_url).request_remediation
+    remediation_job_uuid = begin
+      PdfRemediation::Client.new(download_url).request_remediation
+    rescue PdfRemediation::Client::InvalidFileURL
+      raise
+    rescue StandardError => e
+      # Errors at this stage are likely to be transient (except InvalidFileURL), so we reset the remediation_started_at timestamp so that the file can be retried later.
+      Rails.logger.error("AutoRemediateWorker remediation request failed for FinalSubmissionFile #{final_submission_file_id}: #{e.class}: #{e.message}")
+      file.update_column(:remediation_started_at, nil)
+      raise
+    end
+
     file.update_column(:remediation_job_uuid, remediation_job_uuid)
   end
 end

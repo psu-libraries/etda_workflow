@@ -33,18 +33,34 @@ RSpec.describe 'Webhooks::RemediationResults', type: :request do
 
     context 'when remediation has failed' do
       let(:event_type) { 'job.failed' }
-      let(:error_message) { 'Some error message' }
 
-      it 'logs the failure message from the PDF API' do
-        original_logger = Rails.logger
-        log_output = StringIO.new
-        Rails.logger = ActiveSupport::Logger.new(log_output)
+      context 'when the error message indicates a transient error' do
+        let(:error_message) { '50 exceeds the unit\'s overall page limit' }
+        let!(:final_submission_file) { create(:final_submission_file, remediation_job_uuid:) }
 
-        headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => pdf_api_app.token }
-        post path, params: params.to_json, headers: headers
-        expect(log_output.string).to include('Some error message')
-      ensure
-        Rails.logger = original_logger
+        it 'resets the remediation_started_at timestamp and remediation_job_uuid' do
+          headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => pdf_api_app.token }
+          post path, params: params.to_json, headers: headers
+          final_submission_file.reload
+          expect(final_submission_file.remediation_started_at).to be_nil
+          expect(final_submission_file.remediation_job_uuid).to be_nil
+        end
+      end
+
+      context 'when the error message indicates a non-transient error' do
+        let(:error_message) { 'Some error message' }
+
+        it 'logs the failure message from the PDF API' do
+          original_logger = Rails.logger
+          log_output = StringIO.new
+          Rails.logger = ActiveSupport::Logger.new(log_output)
+
+          headers = { 'CONTENT_TYPE' => 'application/json', 'X-API-KEY' => pdf_api_app.token }
+          post path, params: params.to_json, headers: headers
+          expect(log_output.string).to include('Some error message')
+        ensure
+          Rails.logger = original_logger
+        end
       end
     end
 

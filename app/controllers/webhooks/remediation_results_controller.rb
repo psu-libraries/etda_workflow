@@ -21,6 +21,14 @@ class Webhooks::RemediationResultsController < Webhooks::BaseController
 
   private
 
+    RESET_REMEDIATION_ERRORS = [
+      'Owner must belong to a unit to validate page quota',
+      'must be greater than 0',
+      'exceeds the unit\'s overall page limit',
+      'exceeds the user\'s daily page limit',
+      'must be an integer'
+    ].freeze
+
     def authenticate_request
       secret = ExternalApp.pdf_accessibility_api.token
 
@@ -38,8 +46,20 @@ class Webhooks::RemediationResultsController < Webhooks::BaseController
     end
 
     def handle_failure(job_data)
-      Rails.logger.error("Auto-remediation job failed: #{job_data[:processing_error_message]}")
-      render json: { message: job_data[:processing_error_message] }, status: :ok
+      error_message = job_data[:processing_error_message]
+
+      Rails.logger.error("Auto-remediation job failed: #{error_message}")
+
+      if RESET_REMEDIATION_ERRORS.any? { |message| error_message.include?(message) }
+        final_submission_file = FinalSubmissionFile.find_by(remediation_job_uuid: job_data[:uuid])
+
+        final_submission_file&.update_columns(
+          remediation_started_at: nil,
+          remediation_job_uuid: nil
+        )
+      end
+
+      render json: { message: error_message }, status: :ok
     end
 
     def remediation_results_params
