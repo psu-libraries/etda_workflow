@@ -60,6 +60,15 @@ class WorkflowMailer < ActionMailer::Base
          subject: "Your final #{@submission.degree_type} has been received"
   end
 
+  def final_submission_resubmitted_received(submission)
+    @submission = submission
+    @author = submission.author
+
+    mail to: @author.psu_email_address,
+         from: current_partner.email_address,
+         subject: "Your revised final #{@submission.degree_type} has been received"
+  end
+
   def final_submission_approved(submission)
     @submission = submission
     @author = submission.author

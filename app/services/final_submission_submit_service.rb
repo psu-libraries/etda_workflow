@@ -35,7 +35,7 @@ class FinalSubmissionSubmitService
       status_giver.can_waiting_for_final_submission_response?
       status_giver.waiting_for_final_submission_response!
       submission.update_final_submission_timestamps!(Time.zone.now)
-      WorkflowMailer.send_final_submission_received_email(submission)
+      WorkflowMailer.final_submission_resubmitted_received(submission).deliver
     end
 
     def collect_final_sub_submit

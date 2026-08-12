@@ -77,9 +77,15 @@ en:
 
         final_submission_received:
           message: |
-                    Thank you for submitting your final submission. Your final submission has been automatically sent through the ETD system to your committee members' emails for approval. 
+                    Thank you for submitting your final submission. Your final submission has been automatically sent through the ETD system to your committee members' emails for approval.
 
                     <em>Students are required to ensure that each of their committee members approve.</em> You will be notified once your committee has reviewed and made a decision regarding your document. Please ensure that your embargo status is correct and remember that no changes can be made after this point.
+
+        final_submission_resubmitted_received:
+          message: |
+                    Thank you for resubmitting your final submission. Your revised final submission was received and sent to an administrator for review.
+
+                    You will be notified when a decision has been made regarding your document.
 
         format_review_rejected:
           message: |

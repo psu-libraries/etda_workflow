@@ -15,6 +15,10 @@ class WorkflowMailerPreview < ActionMailer::Preview
     WorkflowMailer.final_submission_received(SUBMISSION)
   end
 
+  def final_submission_resubmitted_received
+    WorkflowMailer.final_submission_resubmitted_received(SUBMISSION)
+  end
+
   unless current_partner.milsch?
     def format_review_rejected
       WorkflowMailer.format_review_rejected(SUBMISSION)
