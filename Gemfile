@@ -9,7 +9,7 @@ gem 'rails', '~> 8.1.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '0.5.7'
 # Use Puma as the app server
-gem 'puma', ">= 4.3.0"
+gem 'puma', "~> 7.2.1"
 # For bundling/importing assets
 gem 'shakapacker', '~> 9.7.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -36,7 +36,7 @@ gem "net-sftp", "~> 4.0"
 gem 'country_select', '~> 10.0.0'
 gem 'simple_form', "~> 5.3.1"
 # File uploads
-gem 'carrierwave', "~> 3.0.7"
+gem 'carrierwave', "~> 3.1.3"
 # Virus scanning for file uploads
 gem 'clamby'
 # For image resizing
