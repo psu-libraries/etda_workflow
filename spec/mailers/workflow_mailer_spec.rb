@@ -261,6 +261,26 @@ RSpec.describe WorkflowMailer do
     it "tells the author that the submission's metadata is released" do
       expect(email.body).to match(/The metadata for your #{submission.degree_type.name} titled "#{submission.title}" has been released./i)
     end
+
+    context 'when the submission is restricted with a liberal arts embargo' do
+      before do
+        submission.update(access_level: 'restricted_liberal_arts')
+      end
+
+      it 'tells the author that the embargo will last five years' do
+        expect(email.body).to match(/The full publication will be released in five years./i)
+      end
+    end
+
+    context 'when the submission is restricted but not with a liberal arts embargo' do
+      before do
+        submission.update(access_level: 'restricted')
+      end
+
+      it 'tells the author that the embargo will last two years' do
+        expect(email.body).to match(/The full publication will be released in two years./i)
+      end
+    end
   end
 
   describe '#sent_to_committee' do
