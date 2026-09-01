@@ -1,4 +1,5 @@
 Dear <%= @author.full_name %>,
+
 <%= simple_format t( "#{current_partner.id}.partner.email.release_for_publication_metadata_only.message",
        title: @submission.title,
        access_level: @submission.current_access_level.label,
