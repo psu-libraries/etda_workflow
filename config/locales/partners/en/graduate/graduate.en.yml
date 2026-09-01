@@ -230,7 +230,7 @@ en:
         release_for_publication_metadata_only:
           message: |
                     The metadata for your %{degree_type} titled "%{title}" has been released. You can view this information at: %{url}.
-                    Your work retains its access level of %{access_level}. <em>The full publication will be released in two years.</em>
+                    Your work retains its access level of %{access_level}. <em>The full publication will be released in %{years} years.</em>
 
         access_level_updated:
           message: |
