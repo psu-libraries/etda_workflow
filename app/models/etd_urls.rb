@@ -15,12 +15,8 @@ class EtdUrls
 
     def explore_url
       # Prefer an explicit ENV override when present (useful for deploy-time host overrides)
-      host = if ENV['EXPLORE_HOST']
-        ENV['EXPLORE_HOST']
-      else
-        # Fall back to building the host from EtdaUtilities when no ENV override is set
-        EtdaUtilities::Hosts.new.explore_host(current_partner.id, ENV['RAILS_ENV'])
-      end
+      # Fall back to building the host from EtdaUtilities when no ENV override is set
+      host = ENV['EXPLORE_HOST'] || EtdaUtilities::Hosts.new.explore_host(current_partner.id, ENV['RAILS_ENV'])
 
       # In production only: remove a trailing '-main' (branch suffix) if supplied by ENV
       host = host.to_s.delete_suffix('-main') if Rails.env.production?
@@ -30,12 +26,8 @@ class EtdUrls
 
     def workflow_url
       # Prefer an explicit ENV override when present (useful for deploy-time host overrides)
-      host = if ENV['WORKFLOW_HOST']
-        ENV['WORKFLOW_HOST']
-      else
-        # Fall back to building the host from EtdaUtilities when no ENV override is set
-        EtdaUtilities::Hosts.new.workflow_submit_host(current_partner.id, ENV['RAILS_ENV'])
-      end
+      # Fall back to building the host from EtdaUtilities when no ENV override is set
+      host = ENV['WORKFLOW_HOST'] || EtdaUtilities::Hosts.new.workflow_submit_host(current_partner.id, ENV['RAILS_ENV'])
 
       # In production only: remove a trailing '-main' (branch suffix) if supplied by ENV
       host = host.to_s.delete_suffix('-main') if Rails.env.production?
