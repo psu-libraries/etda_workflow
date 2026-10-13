@@ -30,8 +30,7 @@ COPY --chown=etda vendor/ vendor/
 RUN bundle config set --local path 'vendor/bundle'
 RUN bundle install
 
-COPY yarn.lock /etda_workflow
-COPY package.json /etda_workflow
+COPY --chown=etda yarn.lock package.json /etda_workflow/
 RUN yarn
 
 COPY --chown=etda . /etda_workflow
