@@ -29,7 +29,7 @@ parameters:
     default: "git@github.com:psu-libraries/etda-config.git"
   REGISTRY_HOST:
     type: string
-    default: "harbor.k8s.libraries.psu.edu"
+    default: "harbor.libraries.psu.edu"
   CLUSTERS_DEV:
     type: string
     default: "uldev"
@@ -82,10 +82,10 @@ jobs:
 
   build_test:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+      - image: harbor.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.libraries.psu.edu
+      REGISTRY_URL: harbor.libraries.psu.edu/library/etda-workflow
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
@@ -107,8 +107,8 @@ jobs:
       image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
       registry_host: << pipeline.parameters.REGISTRY_HOST >>
     environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.libraries.psu.edu
+      REGISTRY_URL: harbor.libraries.psu.edu/library/etda-workflow
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
@@ -127,10 +127,10 @@ jobs:
 
   rubocop_unit_partner_tests:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+      - image: harbor.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.libraries.psu.edu
+      REGISTRY_URL: harbor.libraries.psu.edu/library/etda-workflow
     steps:
       - attach_workspace:
           at: /tmp/workspace
@@ -176,10 +176,10 @@ jobs:
 
   integration_test_grad:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v3.0.0
+      - image: harbor.libraries.psu.edu/library/ci-utils:v3.0.0
     environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.libraries.psu.edu
+      REGISTRY_URL: harbor.libraries.psu.edu/library/etda-workflow
     steps:
       - attach_workspace:
           at: /tmp/workspace
@@ -211,8 +211,8 @@ jobs:
       image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
       registry_host: << pipeline.parameters.REGISTRY_HOST >>
     environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_URL: harbor.k8s.libraries.psu.edu/library/etda-workflow
+      REGISTRY_HOST: harbor.libraries.psu.edu
+      REGISTRY_URL: harbor.libraries.psu.edu/library/etda-workflow
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
