@@ -35,9 +35,6 @@ parameters:
     default: "uldev"
   CLUSTERS_PROD:
     type: string
-    default: "prod"
-  CLUSTERS_ULPROD:
-    type: string
     default: "ulprod"
   PIPELINE_CONFIG_VERSION:
     type: string
@@ -390,7 +387,7 @@ workflows:
 
       - release-image:
           name: release-image
-          clusters: << pipeline.parameters.CLUSTERS_PROD >>,<< pipeline.parameters.CLUSTERS_ULPROD >>
+          clusters: << pipeline.parameters.CLUSTERS_PROD >>
           context:
             - org-global
           from_tag: "<< pipeline.git.revision >>"
