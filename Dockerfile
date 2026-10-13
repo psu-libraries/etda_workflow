@@ -24,7 +24,7 @@ ENV GEM_HOME=/etda_workflow/.gem
 ENV PATH=/etda_workflow/.gem/bin:$PATH
 
 RUN mkdir -p "$GEM_HOME" && \
-  gem install bundler -v "$(grep '/^BUNDLED WITH$/{getline; gsub(/^[[:space:]]+|[[:space:]]+$/, ""); print}' Gemfile.lock)"
+  gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1 | xargs)"
 
 COPY --chown=etda vendor/ vendor/
 RUN bundle config set --local path 'vendor/bundle'
