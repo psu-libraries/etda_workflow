@@ -2,9 +2,9 @@
 
 # Electronic Theses and Dissertations Workflow
 
-* Ruby version: 3.4.9
+* Ruby version: 3.4.11
 * Node version 22 (using yarn as npm)
-* Rails 8.1
+* Rails 8.1.4
 * Sidekiq 7
 * Redis 8.6+
 

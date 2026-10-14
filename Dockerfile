@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM harbor.k8s.libraries.psu.edu/library/ruby-3.4.9-node-22-yarn-4.16.0 AS base
+FROM harbor.libraries.psu.edu/library/ruby-3.4.11-node-22-yarn-4.18.1 AS base
 
 # hadolint ignore=DL3008
 RUN apt-get update && \
@@ -19,13 +19,18 @@ RUN useradd -u 10000 etda -d /etda_workflow && \
 
 USER etda
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
+
+ENV GEM_HOME=/etda_workflow/.gem
+ENV PATH=/etda_workflow/.gem/bin:$PATH
+
+RUN mkdir -p "$GEM_HOME" && \
+  gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1 | xargs)"
+
 COPY --chown=etda vendor/ vendor/
 RUN bundle config set --local path 'vendor/bundle'
 RUN bundle install
 
-COPY yarn.lock /etda_workflow
-COPY package.json /etda_workflow
+COPY --chown=etda yarn.lock package.json /etda_workflow/
 RUN yarn
 
 COPY --chown=etda . /etda_workflow
