@@ -2,10 +2,10 @@
 
 source 'https://rubygems.org'
 
-ruby '3.4.9'
+ruby '3.4.11'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 8.1.3'
+gem 'rails', '~> 8.1.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '0.5.7'
 # Use Puma as the app server
@@ -25,7 +25,7 @@ gem 'font-awesome-rails', '~> 4.7.0.0'
 # Authentication gem
 gem "devise", ">= 5.0.3"
 # Shared libraries for workflow and explore
-gem 'etda_utilities', "~> 0.22.0"
+gem 'etda_utilities', "~> 0.22.1"
 # PSU Identity Services API client
 gem 'psu_identity'
 # Ldap client
